@@ -44,7 +44,7 @@ func ExampleIncidentsClient_RunPlaybook() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/GetIncidents.json
-func ExampleIncidentsClient_List() {
+func ExampleIncidentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleIncidentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<workspace-name>",
 		&armsecurityinsights.IncidentsClientListOptions{Filter: nil,
 			Orderby:   to.Ptr("<orderby>"),

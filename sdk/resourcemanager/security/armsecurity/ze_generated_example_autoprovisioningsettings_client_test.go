@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/AutoProvisioningSettings/GetAutoProvisioningSettingsSubscription_example.json
-func ExampleAutoProvisioningSettingsClient_List() {
+func ExampleAutoProvisioningSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAutoProvisioningSettingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

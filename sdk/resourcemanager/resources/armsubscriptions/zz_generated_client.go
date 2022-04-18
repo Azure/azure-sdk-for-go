@@ -145,10 +145,10 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// List - Gets all subscriptions for a tenant.
+// NewListPager - Gets all subscriptions for a tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -199,12 +199,12 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 	return result, nil
 }
 
-// ListLocations - This operation provides all the locations that are available for resource providers; however, each resource
-// provider may support a subset of this list.
+// NewListLocationsPager - This operation provides all the locations that are available for resource providers; however, each
+// resource provider may support a subset of this list.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The ID of the target subscription.
 // options - ClientListLocationsOptions contains the optional parameters for the Client.ListLocations method.
-func (client *Client) ListLocations(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
+func (client *Client) NewListLocationsPager(subscriptionID string, options *ClientListLocationsOptions) *runtime.Pager[ClientListLocationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListLocationsResponse]{
 		More: func(page ClientListLocationsResponse) bool {
 			return false

@@ -142,7 +142,7 @@ func ExampleApplicationsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationsByResourceGroup.json
-func ExampleApplicationsClient_ListByResourceGroup() {
+func ExampleApplicationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -154,7 +154,7 @@ func ExampleApplicationsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -170,7 +170,7 @@ func ExampleApplicationsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listApplicationsBySubscription.json
-func ExampleApplicationsClient_ListBySubscription() {
+func ExampleApplicationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,7 +182,7 @@ func ExampleApplicationsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

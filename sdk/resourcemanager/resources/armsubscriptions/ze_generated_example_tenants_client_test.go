@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetTenants.json
-func ExampleTenantsClient_List() {
+func ExampleTenantsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleTenantsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

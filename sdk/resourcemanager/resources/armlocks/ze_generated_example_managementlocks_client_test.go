@@ -339,7 +339,7 @@ func ExampleManagementLocksClient_GetAtSubscriptionLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_ListAtResourceGroupLevel.json
-func ExampleManagementLocksClient_ListAtResourceGroupLevel() {
+func ExampleManagementLocksClient_NewListAtResourceGroupLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -351,7 +351,7 @@ func ExampleManagementLocksClient_ListAtResourceGroupLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAtResourceGroupLevel("<resource-group-name>",
+	pager := client.NewListAtResourceGroupLevelPager("<resource-group-name>",
 		&armlocks.ManagementLocksClientListAtResourceGroupLevelOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -367,7 +367,7 @@ func ExampleManagementLocksClient_ListAtResourceGroupLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_ListAtResourceLevel.json
-func ExampleManagementLocksClient_ListAtResourceLevel() {
+func ExampleManagementLocksClient_NewListAtResourceLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -379,7 +379,7 @@ func ExampleManagementLocksClient_ListAtResourceLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAtResourceLevel("<resource-group-name>",
+	pager := client.NewListAtResourceLevelPager("<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-path>",
 		"<resource-type>",
@@ -399,7 +399,7 @@ func ExampleManagementLocksClient_ListAtResourceLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_ListAtSubscriptionLevel.json
-func ExampleManagementLocksClient_ListAtSubscriptionLevel() {
+func ExampleManagementLocksClient_NewListAtSubscriptionLevelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -411,7 +411,7 @@ func ExampleManagementLocksClient_ListAtSubscriptionLevel() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAtSubscriptionLevel(&armlocks.ManagementLocksClientListAtSubscriptionLevelOptions{Filter: nil})
+	pager := client.NewListAtSubscriptionLevelPager(&armlocks.ManagementLocksClientListAtSubscriptionLevelOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -426,7 +426,7 @@ func ExampleManagementLocksClient_ListAtSubscriptionLevel() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-05-01/examples/ManagementLocks_ListAtScope.json
-func ExampleManagementLocksClient_ListByScope() {
+func ExampleManagementLocksClient_NewListByScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -438,7 +438,7 @@ func ExampleManagementLocksClient_ListByScope() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByScope("<scope>",
+	pager := client.NewListByScopePager("<scope>",
 		&armlocks.ManagementLocksClientListByScopeOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

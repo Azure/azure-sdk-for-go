@@ -412,12 +412,12 @@ func (client *ApplicationDefinitionsClient) getByIDHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the managed application definitions in a resource group.
+// NewListByResourceGroupPager - Lists the managed application definitions in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ApplicationDefinitionsClient.ListByResourceGroup
 // method.
-func (client *ApplicationDefinitionsClient) ListByResourceGroup(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse] {
+func (client *ApplicationDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationDefinitionsClientListByResourceGroupResponse]{
 		More: func(page ApplicationDefinitionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

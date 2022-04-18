@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/ListAssessmentsMetadata_example.json
-func ExampleAssessmentsMetadataClient_List() {
+func ExampleAssessmentsMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAssessmentsMetadataClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -69,7 +69,7 @@ func ExampleAssessmentsMetadataClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/ListAssessmentsMetadata_subscription_example.json
-func ExampleAssessmentsMetadataClient_ListBySubscription() {
+func ExampleAssessmentsMetadataClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,7 +81,7 @@ func ExampleAssessmentsMetadataClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

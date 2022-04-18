@@ -191,10 +191,10 @@ func (client *ReservationOrderClient) getHandleResponse(resp *http.Response) (Re
 	return result, nil
 }
 
-// List - List of all the ReservationOrders that the user has access to in the current tenant.
+// NewListPager - List of all the ReservationOrders that the user has access to in the current tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReservationOrderClientListOptions contains the optional parameters for the ReservationOrderClient.List method.
-func (client *ReservationOrderClient) List(options *ReservationOrderClientListOptions) *runtime.Pager[ReservationOrderClientListResponse] {
+func (client *ReservationOrderClient) NewListPager(options *ReservationOrderClientListOptions) *runtime.Pager[ReservationOrderClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReservationOrderClientListResponse]{
 		More: func(page ReservationOrderClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

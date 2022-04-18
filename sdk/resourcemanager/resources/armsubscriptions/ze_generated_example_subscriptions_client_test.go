@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetLocations.json
-func ExampleClient_ListLocations() {
+func ExampleClient_NewListLocationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleClient_ListLocations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLocations("<subscription-id>",
+	pager := client.NewListLocationsPager("<subscription-id>",
 		&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -70,7 +70,7 @@ func ExampleClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetSubscriptions.json
-func ExampleClient_List() {
+func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -82,7 +82,7 @@ func ExampleClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

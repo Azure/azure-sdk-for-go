@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscription_example.json
-func ExampleJitNetworkAccessPoliciesClient_List() {
+func ExampleJitNetworkAccessPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleJitNetworkAccessPoliciesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleJitNetworkAccessPoliciesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
-func ExampleJitNetworkAccessPoliciesClient_ListByRegion() {
+func ExampleJitNetworkAccessPoliciesClient_NewListByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleJitNetworkAccessPoliciesClient_ListByRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRegion("<asc-location>",
+	pager := client.NewListByRegionPager("<asc-location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -75,7 +75,7 @@ func ExampleJitNetworkAccessPoliciesClient_ListByRegion() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroup_example.json
-func ExampleJitNetworkAccessPoliciesClient_ListByResourceGroup() {
+func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,7 +87,7 @@ func ExampleJitNetworkAccessPoliciesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -103,7 +103,7 @@ func ExampleJitNetworkAccessPoliciesClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroupLocation_example.json
-func ExampleJitNetworkAccessPoliciesClient_ListByResourceGroupAndRegion() {
+func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupAndRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -115,7 +115,7 @@ func ExampleJitNetworkAccessPoliciesClient_ListByResourceGroupAndRegion() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupAndRegion("<resource-group-name>",
+	pager := client.NewListByResourceGroupAndRegionPager("<resource-group-name>",
 		"<asc-location>",
 		nil)
 	for pager.More() {

@@ -54,16 +54,16 @@ func (testsuite *FeaturesClientTestSuite) TestFeaturesCRUD() {
 	testsuite.Require().NoError(err)
 
 	// list
-	pager := featureClient.List("Microsoft.Network", nil)
+	pager := featureClient.NewListPager("Microsoft.Network", nil)
 	testsuite.Require().True(pager.More())
 
 	// list all
-	listAll := featureClient.ListAll(nil)
+	listAll := featureClient.NewListAllPager(nil)
 	testsuite.Require().True(listAll.More())
 
 	// list operation
 	featuresClient, err := armfeatures.NewFeatureClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	listOperations := featuresClient.ListOperations(nil)
+	listOperations := featuresClient.NewListOperationsPager(nil)
 	testsuite.Require().True(listOperations.More())
 }

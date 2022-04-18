@@ -157,11 +157,11 @@ func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Exposes the auto provisioning settings of the subscriptions
+// NewListPager - Exposes the auto provisioning settings of the subscriptions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.List
 // method.
-func (client *AutoProvisioningSettingsClient) List(options *AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse] {
+func (client *AutoProvisioningSettingsClient) NewListPager(options *AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutoProvisioningSettingsClientListResponse]{
 		More: func(page AutoProvisioningSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

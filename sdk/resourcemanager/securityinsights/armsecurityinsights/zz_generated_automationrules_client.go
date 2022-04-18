@@ -238,12 +238,12 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 	return result, nil
 }
 
-// List - Gets all automation rules.
+// NewListPager - Gets all automation rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.List method.
-func (client *AutomationRulesClient) List(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {
+func (client *AutomationRulesClient) NewListPager(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutomationRulesClientListResponse]{
 		More: func(page AutomationRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

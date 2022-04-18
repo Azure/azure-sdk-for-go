@@ -54,11 +54,11 @@ func NewSecureScoreControlDefinitionsClient(subscriptionID string, credential az
 	return client, nil
 }
 
-// List - List the available security controls, their assessments, and the max score
+// NewListPager - List the available security controls, their assessments, and the max score
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecureScoreControlDefinitionsClientListOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.List
 // method.
-func (client *SecureScoreControlDefinitionsClient) List(options *SecureScoreControlDefinitionsClientListOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListResponse] {
+func (client *SecureScoreControlDefinitionsClient) NewListPager(options *SecureScoreControlDefinitionsClientListOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlDefinitionsClientListResponse]{
 		More: func(page SecureScoreControlDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -109,12 +109,12 @@ func (client *SecureScoreControlDefinitionsClient) listHandleResponse(resp *http
 	return result, nil
 }
 
-// ListBySubscription - For a specified subscription, list the available security controls, their assessments, and the max
-// score
+// NewListBySubscriptionPager - For a specified subscription, list the available security controls, their assessments, and
+// the max score
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecureScoreControlDefinitionsClientListBySubscriptionOptions contains the optional parameters for the SecureScoreControlDefinitionsClient.ListBySubscription
 // method.
-func (client *SecureScoreControlDefinitionsClient) ListBySubscription(options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse] {
+func (client *SecureScoreControlDefinitionsClient) NewListBySubscriptionPager(options *SecureScoreControlDefinitionsClientListBySubscriptionOptions) *runtime.Pager[SecureScoreControlDefinitionsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlDefinitionsClientListBySubscriptionResponse]{
 		More: func(page SecureScoreControlDefinitionsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

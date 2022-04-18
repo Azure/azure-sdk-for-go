@@ -213,11 +213,11 @@ func (client *AutomationsClient) getHandleResponse(resp *http.Response) (Automat
 	return result, nil
 }
 
-// List - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to
-// get the next page of security automations for the specified subscription.
+// NewListPager - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response
+// to get the next page of security automations for the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutomationsClientListOptions contains the optional parameters for the AutomationsClient.List method.
-func (client *AutomationsClient) List(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
+func (client *AutomationsClient) NewListPager(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutomationsClientListResponse]{
 		More: func(page AutomationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -272,13 +272,13 @@ func (client *AutomationsClient) listHandleResponse(resp *http.Response) (Automa
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the security automations in the specified resource group. Use the 'nextLink' property in
-// the response to get the next page of security automations for the specified resource group.
+// NewListByResourceGroupPager - Lists all the security automations in the specified resource group. Use the 'nextLink' property
+// in the response to get the next page of security automations for the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AutomationsClientListByResourceGroupOptions contains the optional parameters for the AutomationsClient.ListByResourceGroup
 // method.
-func (client *AutomationsClient) ListByResourceGroup(resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) *runtime.Pager[AutomationsClientListByResourceGroupResponse] {
+func (client *AutomationsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutomationsClientListByResourceGroupOptions) *runtime.Pager[AutomationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutomationsClientListByResourceGroupResponse]{
 		More: func(page AutomationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

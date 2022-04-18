@@ -114,12 +114,12 @@ func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets all alert rule templates.
+// NewListPager - Gets all alert rule templates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.List method.
-func (client *AlertRuleTemplatesClient) List(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) *runtime.Pager[AlertRuleTemplatesClientListResponse] {
+func (client *AlertRuleTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) *runtime.Pager[AlertRuleTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertRuleTemplatesClientListResponse]{
 		More: func(page AlertRuleTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -196,10 +196,10 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 	return result, nil
 }
 
-// List - Security contact configurations for the subscription
+// NewListPager - Security contact configurations for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ContactsClientListOptions contains the optional parameters for the ContactsClient.List method.
-func (client *ContactsClient) List(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
+func (client *ContactsClient) NewListPager(options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContactsClientListResponse]{
 		More: func(page ContactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

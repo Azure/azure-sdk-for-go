@@ -157,10 +157,10 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Gets all resource providers for a subscription.
+// NewListPager - Gets all resource providers for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProvidersClientListOptions contains the optional parameters for the ProvidersClient.List method.
-func (client *ProvidersClient) List(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
+func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProvidersClientListResponse]{
 		More: func(page ProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -218,11 +218,11 @@ func (client *ProvidersClient) listHandleResponse(resp *http.Response) (Provider
 	return result, nil
 }
 
-// ListAtTenantScope - Gets all resource providers for the tenant.
+// NewListAtTenantScopePager - Gets all resource providers for the tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProvidersClientListAtTenantScopeOptions contains the optional parameters for the ProvidersClient.ListAtTenantScope
 // method.
-func (client *ProvidersClient) ListAtTenantScope(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
+func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProvidersClientListAtTenantScopeResponse]{
 		More: func(page ProvidersClientListAtTenantScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

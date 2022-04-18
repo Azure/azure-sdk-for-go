@@ -55,7 +55,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// ListSupported - Gets a list of all supported private link resource types for the given service.
+// NewListSupportedPager - Gets a list of all supported private link resource types for the given service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
@@ -64,7 +64,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 // method.
 // options - PrivateLinkResourcesClientListSupportedOptions contains the optional parameters for the PrivateLinkResourcesClient.ListSupported
 // method.
-func (client *PrivateLinkResourcesClient) ListSupported(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateLinkResourcesClientListSupportedOptions) *runtime.Pager[PrivateLinkResourcesClientListSupportedResponse] {
+func (client *PrivateLinkResourcesClient) NewListSupportedPager(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateLinkResourcesClientListSupportedOptions) *runtime.Pager[PrivateLinkResourcesClientListSupportedResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListSupportedResponse]{
 		More: func(page PrivateLinkResourcesClientListSupportedResponse) bool {
 			return false

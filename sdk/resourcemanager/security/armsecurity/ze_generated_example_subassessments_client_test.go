@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/ListSubscriptionSubAssessments_example.json
-func ExampleSubAssessmentsClient_ListAll() {
+func ExampleSubAssessmentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleSubAssessmentsClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll("<scope>",
+	pager := client.NewListAllPager("<scope>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -45,7 +45,7 @@ func ExampleSubAssessmentsClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/SubAssessments/ListSubAssessments_example.json
-func ExampleSubAssessmentsClient_List() {
+func ExampleSubAssessmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleSubAssessmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<scope>",
+	pager := client.NewListPager("<scope>",
 		"<assessment-name>",
 		nil)
 	for pager.More() {

@@ -54,13 +54,13 @@ func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// Get - Gets a list of unresolved dependencies.
+// NewGetPager - Gets a list of unresolved dependencies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // options - UnresolvedDependenciesClientGetOptions contains the optional parameters for the UnresolvedDependenciesClient.Get
 // method.
-func (client *UnresolvedDependenciesClient) Get(resourceGroupName string, moveCollectionName string, options *UnresolvedDependenciesClientGetOptions) *runtime.Pager[UnresolvedDependenciesClientGetResponse] {
+func (client *UnresolvedDependenciesClient) NewGetPager(resourceGroupName string, moveCollectionName string, options *UnresolvedDependenciesClientGetOptions) *runtime.Pager[UnresolvedDependenciesClientGetResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UnresolvedDependenciesClientGetResponse]{
 		More: func(page UnresolvedDependenciesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

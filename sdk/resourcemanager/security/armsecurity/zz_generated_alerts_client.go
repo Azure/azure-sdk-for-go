@@ -171,10 +171,10 @@ func (client *AlertsClient) getSubscriptionLevelHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - List all the alerts that are associated with the subscription
+// NewListPager - List all the alerts that are associated with the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertsClientListOptions contains the optional parameters for the AlertsClient.List method.
-func (client *AlertsClient) List(options *AlertsClientListOptions) *runtime.Pager[AlertsClientListResponse] {
+func (client *AlertsClient) NewListPager(options *AlertsClientListOptions) *runtime.Pager[AlertsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsClientListResponse]{
 		More: func(page AlertsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -229,12 +229,12 @@ func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsClien
 	return result, nil
 }
 
-// ListByResourceGroup - List all the alerts that are associated with the resource group
+// NewListByResourceGroupPager - List all the alerts that are associated with the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AlertsClientListByResourceGroupOptions contains the optional parameters for the AlertsClient.ListByResourceGroup
 // method.
-func (client *AlertsClient) ListByResourceGroup(resourceGroupName string, options *AlertsClientListByResourceGroupOptions) *runtime.Pager[AlertsClientListByResourceGroupResponse] {
+func (client *AlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertsClientListByResourceGroupOptions) *runtime.Pager[AlertsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsClientListByResourceGroupResponse]{
 		More: func(page AlertsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -293,14 +293,14 @@ func (client *AlertsClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListResourceGroupLevelByRegion - List all the alerts that are associated with the resource group that are stored in a specific
-// location
+// NewListResourceGroupLevelByRegionPager - List all the alerts that are associated with the resource group that are stored
+// in a specific location
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - AlertsClientListResourceGroupLevelByRegionOptions contains the optional parameters for the AlertsClient.ListResourceGroupLevelByRegion
 // method.
-func (client *AlertsClient) ListResourceGroupLevelByRegion(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
+func (client *AlertsClient) NewListResourceGroupLevelByRegionPager(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions) *runtime.Pager[AlertsClientListResourceGroupLevelByRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsClientListResourceGroupLevelByRegionResponse]{
 		More: func(page AlertsClientListResourceGroupLevelByRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,13 +363,13 @@ func (client *AlertsClient) listResourceGroupLevelByRegionHandleResponse(resp *h
 	return result, nil
 }
 
-// ListSubscriptionLevelByRegion - List all the alerts that are associated with the subscription that are stored in a specific
-// location
+// NewListSubscriptionLevelByRegionPager - List all the alerts that are associated with the subscription that are stored in
+// a specific location
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - AlertsClientListSubscriptionLevelByRegionOptions contains the optional parameters for the AlertsClient.ListSubscriptionLevelByRegion
 // method.
-func (client *AlertsClient) ListSubscriptionLevelByRegion(ascLocation string, options *AlertsClientListSubscriptionLevelByRegionOptions) *runtime.Pager[AlertsClientListSubscriptionLevelByRegionResponse] {
+func (client *AlertsClient) NewListSubscriptionLevelByRegionPager(ascLocation string, options *AlertsClientListSubscriptionLevelByRegionOptions) *runtime.Pager[AlertsClientListSubscriptionLevelByRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsClientListSubscriptionLevelByRegionResponse]{
 		More: func(page AlertsClientListSubscriptionLevelByRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

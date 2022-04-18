@@ -335,13 +335,13 @@ func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *h
 	return result, nil
 }
 
-// List - Gets all deployments operations for a deployment.
+// NewListPager - Gets all deployments operations for a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListOptions contains the optional parameters for the DeploymentOperationsClient.List
 // method.
-func (client *DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, options *DeploymentOperationsClientListOptions) *runtime.Pager[DeploymentOperationsClientListResponse] {
+func (client *DeploymentOperationsClient) NewListPager(resourceGroupName string, deploymentName string, options *DeploymentOperationsClientListOptions) *runtime.Pager[DeploymentOperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentOperationsClientListResponse]{
 		More: func(page DeploymentOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -407,13 +407,13 @@ func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListAtManagementGroupScope - Gets all deployments operations for a deployment.
+// NewListAtManagementGroupScopePager - Gets all deployments operations for a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // groupID - The management group ID.
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtManagementGroupScope
 // method.
-func (client *DeploymentOperationsClient) ListAtManagementGroupScope(groupID string, deploymentName string, options *DeploymentOperationsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtManagementGroupScopeResponse] {
+func (client *DeploymentOperationsClient) NewListAtManagementGroupScopePager(groupID string, deploymentName string, options *DeploymentOperationsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtManagementGroupScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentOperationsClientListAtManagementGroupScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtManagementGroupScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -475,13 +475,13 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleRespon
 	return result, nil
 }
 
-// ListAtScope - Gets all deployments operations for a deployment.
+// NewListAtScopePager - Gets all deployments operations for a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The resource scope.
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtScope
 // method.
-func (client *DeploymentOperationsClient) ListAtScope(scope string, deploymentName string, options *DeploymentOperationsClientListAtScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtScopeResponse] {
+func (client *DeploymentOperationsClient) NewListAtScopePager(scope string, deploymentName string, options *DeploymentOperationsClientListAtScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentOperationsClientListAtScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -540,12 +540,12 @@ func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListAtSubscriptionScope - Gets all deployments operations for a deployment.
+// NewListAtSubscriptionScopePager - Gets all deployments operations for a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtSubscriptionScope
 // method.
-func (client *DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtSubscriptionScopeResponse] {
+func (client *DeploymentOperationsClient) NewListAtSubscriptionScopePager(deploymentName string, options *DeploymentOperationsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtSubscriptionScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentOperationsClientListAtSubscriptionScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtSubscriptionScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -607,12 +607,12 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(
 	return result, nil
 }
 
-// ListAtTenantScope - Gets all deployments operations for a deployment.
+// NewListAtTenantScopePager - Gets all deployments operations for a deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deploymentName - The name of the deployment.
 // options - DeploymentOperationsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentOperationsClient.ListAtTenantScope
 // method.
-func (client *DeploymentOperationsClient) ListAtTenantScope(deploymentName string, options *DeploymentOperationsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtTenantScopeResponse] {
+func (client *DeploymentOperationsClient) NewListAtTenantScopePager(deploymentName string, options *DeploymentOperationsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtTenantScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeploymentOperationsClientListAtTenantScopeResponse]{
 		More: func(page DeploymentOperationsClientListAtTenantScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

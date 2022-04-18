@@ -129,7 +129,7 @@ func ExampleQuotaClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getComputeUsages.json
-func ExampleQuotaClient_List() {
+func ExampleQuotaClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +141,7 @@ func ExampleQuotaClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<subscription-id>",
+	pager := client.NewListPager("<subscription-id>",
 		"<provider-id>",
 		"<location>",
 		nil)

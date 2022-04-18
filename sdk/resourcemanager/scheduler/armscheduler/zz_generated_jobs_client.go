@@ -226,12 +226,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 	return result, nil
 }
 
-// List - Lists all jobs under the specified job collection.
+// NewListPager - Lists all jobs under the specified job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
-func (client *JobsClient) List(resourceGroupName string, jobCollectionName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
+func (client *JobsClient) NewListPager(resourceGroupName string, jobCollectionName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,13 +303,13 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 	return result, nil
 }
 
-// ListJobHistory - Lists job history.
+// NewListJobHistoryPager - Lists job history.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
 // options - JobsClientListJobHistoryOptions contains the optional parameters for the JobsClient.ListJobHistory method.
-func (client *JobsClient) ListJobHistory(resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientListJobHistoryOptions) *runtime.Pager[JobsClientListJobHistoryResponse] {
+func (client *JobsClient) NewListJobHistoryPager(resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientListJobHistoryOptions) *runtime.Pager[JobsClientListJobHistoryResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobsClientListJobHistoryResponse]{
 		More: func(page JobsClientListJobHistoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

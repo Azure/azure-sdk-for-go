@@ -289,12 +289,12 @@ func (client *IncidentsClient) getHandleResponse(resp *http.Response) (Incidents
 	return result, nil
 }
 
-// List - Gets all incidents.
+// NewListPager - Gets all incidents.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - IncidentsClientListOptions contains the optional parameters for the IncidentsClient.List method.
-func (client *IncidentsClient) List(resourceGroupName string, workspaceName string, options *IncidentsClientListOptions) *runtime.Pager[IncidentsClientListResponse] {
+func (client *IncidentsClient) NewListPager(resourceGroupName string, workspaceName string, options *IncidentsClientListOptions) *runtime.Pager[IncidentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IncidentsClientListResponse]{
 		More: func(page IncidentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

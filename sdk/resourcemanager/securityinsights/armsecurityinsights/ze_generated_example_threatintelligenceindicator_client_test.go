@@ -167,7 +167,7 @@ func ExampleThreatIntelligenceIndicatorClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/threatintelligence/QueryThreatIntelligence.json
-func ExampleThreatIntelligenceIndicatorClient_QueryIndicators() {
+func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExampleThreatIntelligenceIndicatorClient_QueryIndicators() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.QueryIndicators("<resource-group-name>",
+	pager := client.NewQueryIndicatorsPager("<resource-group-name>",
 		"<workspace-name>",
 		armsecurityinsights.ThreatIntelligenceFilteringCriteria{
 			MaxConfidence: to.Ptr[int32](80),

@@ -100,12 +100,12 @@ func (client *CompliancesClient) getHandleResponse(resp *http.Response) (Complia
 	return result, nil
 }
 
-// List - The Compliance scores of the specific management group.
+// NewListPager - The Compliance scores of the specific management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - CompliancesClientListOptions contains the optional parameters for the CompliancesClient.List method.
-func (client *CompliancesClient) List(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
+func (client *CompliancesClient) NewListPager(scope string, options *CompliancesClientListOptions) *runtime.Pager[CompliancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CompliancesClientListResponse]{
 		More: func(page CompliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -103,11 +103,11 @@ func (testsuite *PolicyDefinitionsClientTestSuite) TestPolicyDefinitionsCRUD() {
 	testsuite.Require().Equal(policyDefinitionName, *getResp.Name)
 
 	// list policy definition
-	list := policyDefinitionsClient.List(nil)
+	list := policyDefinitionsClient.NewListPager(nil)
 	testsuite.Require().True(list.More())
 
 	// list policy definition
-	listBuiltIn := policyDefinitionsClient.ListBuiltIn(nil)
+	listBuiltIn := policyDefinitionsClient.NewListBuiltInPager(nil)
 	testsuite.Require().True(listBuiltIn.More())
 
 	// delete policy definition

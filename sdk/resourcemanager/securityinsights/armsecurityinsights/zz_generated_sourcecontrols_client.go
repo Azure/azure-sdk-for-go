@@ -226,12 +226,12 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 	return result, nil
 }
 
-// List - Gets all source controls, without source control items.
+// NewListPager - Gets all source controls, without source control items.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.List method.
-func (client *SourceControlsClient) List(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse] {
+func (client *SourceControlsClient) NewListPager(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SourceControlsClientListResponse]{
 		More: func(page SourceControlsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,59 @@
 # Release History
 
+## 0.3.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*BookmarksClient.List` has been removed
+- Function `*WatchlistsClient.List` has been removed
+- Function `*IncidentRelationsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SourceControlsClient.List` has been removed
+- Function `*AutomationRulesClient.List` has been removed
+- Function `*DataConnectorsClient.List` has been removed
+- Function `*EntitiesClient.List` has been removed
+- Function `*MetadataClient.List` has been removed
+- Function `*ThreatIntelligenceIndicatorsClient.List` has been removed
+- Function `*WatchlistItemsClient.List` has been removed
+- Function `*AlertRuleTemplatesClient.List` has been removed
+- Function `*IncidentCommentsClient.List` has been removed
+- Function `*IncidentsClient.List` has been removed
+- Function `*OfficeConsentsClient.List` has been removed
+- Function `*ActionsClient.ListByAlertRule` has been removed
+- Function `*BookmarkRelationsClient.List` has been removed
+- Function `*AlertRulesClient.List` has been removed
+- Function `*ThreatIntelligenceIndicatorClient.QueryIndicators` has been removed
+- Function `*EntityQueryTemplatesClient.List` has been removed
+- Function `*EntitiesRelationsClient.List` has been removed
+- Function `*SourceControlClient.ListRepositories` has been removed
+- Function `*EntityQueriesClient.List` has been removed
+
+### Features Added
+
+- New function `*IncidentRelationsClient.NewListPager(string, string, string, *IncidentRelationsClientListOptions) *runtime.Pager[IncidentRelationsClientListResponse]`
+- New function `*AlertRuleTemplatesClient.NewListPager(string, string, *AlertRuleTemplatesClientListOptions) *runtime.Pager[AlertRuleTemplatesClientListResponse]`
+- New function `*BookmarksClient.NewListPager(string, string, *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse]`
+- New function `*EntityQueriesClient.NewListPager(string, string, *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse]`
+- New function `*SourceControlsClient.NewListPager(string, string, *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*EntitiesClient.NewListPager(string, string, *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse]`
+- New function `*ThreatIntelligenceIndicatorClient.NewQueryIndicatorsPager(string, string, ThreatIntelligenceFilteringCriteria, *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse]`
+- New function `*IncidentCommentsClient.NewListPager(string, string, string, *IncidentCommentsClientListOptions) *runtime.Pager[IncidentCommentsClientListResponse]`
+- New function `*ActionsClient.NewListByAlertRulePager(string, string, string, *ActionsClientListByAlertRuleOptions) *runtime.Pager[ActionsClientListByAlertRuleResponse]`
+- New function `*BookmarkRelationsClient.NewListPager(string, string, string, *BookmarkRelationsClientListOptions) *runtime.Pager[BookmarkRelationsClientListResponse]`
+- New function `*AutomationRulesClient.NewListPager(string, string, *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse]`
+- New function `*SourceControlClient.NewListRepositoriesPager(string, string, RepoType, *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse]`
+- New function `*DataConnectorsClient.NewListPager(string, string, *DataConnectorsClientListOptions) *runtime.Pager[DataConnectorsClientListResponse]`
+- New function `*IncidentsClient.NewListPager(string, string, *IncidentsClientListOptions) *runtime.Pager[IncidentsClientListResponse]`
+- New function `*WatchlistsClient.NewListPager(string, string, *WatchlistsClientListOptions) *runtime.Pager[WatchlistsClientListResponse]`
+- New function `*ThreatIntelligenceIndicatorsClient.NewListPager(string, string, *ThreatIntelligenceIndicatorsClientListOptions) *runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse]`
+- New function `*AlertRulesClient.NewListPager(string, string, *AlertRulesClientListOptions) *runtime.Pager[AlertRulesClientListResponse]`
+- New function `*EntityQueryTemplatesClient.NewListPager(string, string, *EntityQueryTemplatesClientListOptions) *runtime.Pager[EntityQueryTemplatesClientListResponse]`
+- New function `*WatchlistItemsClient.NewListPager(string, string, string, *WatchlistItemsClientListOptions) *runtime.Pager[WatchlistItemsClientListResponse]`
+- New function `*OfficeConsentsClient.NewListPager(string, string, *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse]`
+- New function `*EntitiesRelationsClient.NewListPager(string, string, string, *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse]`
+- New function `*MetadataClient.NewListPager(string, string, *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse]`
+
+
 ## 0.2.0 (2022-04-13)
 ### Breaking Changes
 

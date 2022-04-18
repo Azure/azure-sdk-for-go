@@ -41,7 +41,7 @@ func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
-func ExampleDataPolicyManifestsClient_List() {
+func ExampleDataPolicyManifestsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleDataPolicyManifestsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armpolicy.DataPolicyManifestsClientListOptions{Filter: nil})
+	pager := client.NewListPager(&armpolicy.DataPolicyManifestsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

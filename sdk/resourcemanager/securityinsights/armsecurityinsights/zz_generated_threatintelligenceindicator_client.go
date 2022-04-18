@@ -339,14 +339,14 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// QueryIndicators - Query threat intelligence indicators as per filtering criteria.
+// NewQueryIndicatorsPager - Query threat intelligence indicators as per filtering criteria.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
 // options - ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.QueryIndicators
 // method.
-func (client *ThreatIntelligenceIndicatorClient) QueryIndicators(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse] {
+func (client *ThreatIntelligenceIndicatorClient) NewQueryIndicatorsPager(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse]{
 		More: func(page ThreatIntelligenceIndicatorClientQueryIndicatorsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

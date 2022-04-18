@@ -144,7 +144,7 @@ func ExampleAssignmentsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResourceGroup.json
-func ExampleAssignmentsClient_ListForResourceGroup() {
+func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,7 +156,7 @@ func ExampleAssignmentsClient_ListForResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResourceGroup("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.Ptr("<filter>"),
 			Top: nil,
 		})
@@ -174,7 +174,7 @@ func ExampleAssignmentsClient_ListForResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForResource.json
-func ExampleAssignmentsClient_ListForResource() {
+func ExampleAssignmentsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -186,7 +186,7 @@ func ExampleAssignmentsClient_ListForResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResource("<resource-group-name>",
+	pager := client.NewListForResourcePager("<resource-group-name>",
 		"<resource-provider-namespace>",
 		"<parent-resource-path>",
 		"<resource-type>",
@@ -208,7 +208,7 @@ func ExampleAssignmentsClient_ListForResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignmentsForManagementGroup.json
-func ExampleAssignmentsClient_ListForManagementGroup() {
+func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,7 +220,7 @@ func ExampleAssignmentsClient_ListForManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForManagementGroup("<management-group-id>",
+	pager := client.NewListForManagementGroupPager("<management-group-id>",
 		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.Ptr("<filter>"),
 			Top: nil,
 		})
@@ -238,7 +238,7 @@ func ExampleAssignmentsClient_ListForManagementGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyAssignments.json
-func ExampleAssignmentsClient_List() {
+func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -250,7 +250,7 @@ func ExampleAssignmentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("<filter>"),
 		Top: nil,
 	})
 	for pager.More() {

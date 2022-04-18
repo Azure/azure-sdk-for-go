@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SubscriptionLevelClient.ListByResourceGroup` has been removed
+- Function `*ApplicationsClient.List` has been removed
+- Function `*SubscriptionLevelClient.ListByAzureSubscription` has been removed
+- Function `*ResourcesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*SubscriptionLevelClient.NewListByResourceGroupPager(string, *SubscriptionLevelClientListByResourceGroupOptions) *runtime.Pager[SubscriptionLevelClientListByResourceGroupResponse]`
+- New function `*SubscriptionLevelClient.NewListByAzureSubscriptionPager(*SubscriptionLevelClientListByAzureSubscriptionOptions) *runtime.Pager[SubscriptionLevelClientListByAzureSubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ResourcesClient.NewListPager(*ResourcesClientListOptions) *runtime.Pager[ResourcesClientListResponse]`
+- New function `*ApplicationsClient.NewListPager(string, *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

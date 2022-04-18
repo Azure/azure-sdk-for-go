@@ -147,11 +147,11 @@ func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - List of all the dismiss rules for the given subscription
+// NewListPager - List of all the dismiss rules for the given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertsSuppressionRulesClientListOptions contains the optional parameters for the AlertsSuppressionRulesClient.List
 // method.
-func (client *AlertsSuppressionRulesClient) List(options *AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse] {
+func (client *AlertsSuppressionRulesClient) NewListPager(options *AlertsSuppressionRulesClientListOptions) *runtime.Pager[AlertsSuppressionRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertsSuppressionRulesClientListResponse]{
 		More: func(page AlertsSuppressionRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

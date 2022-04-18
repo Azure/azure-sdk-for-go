@@ -208,15 +208,15 @@ func (client *ExemptionsClient) getHandleResponse(resp *http.Response) (Exemptio
 	return result, nil
 }
 
-// List - This operation retrieves the list of all policy exemptions associated with the given subscription that match the
-// optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
+// NewListPager - This operation retrieves the list of all policy exemptions associated with the given subscription that match
+// the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
 // 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
 // exemptions associated with the subscription, including those that apply
 // directly or from management groups that contain the given subscription, as well as any applied to objects contained within
 // the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExemptionsClientListOptions contains the optional parameters for the ExemptionsClient.List method.
-func (client *ExemptionsClient) List(options *ExemptionsClientListOptions) *runtime.Pager[ExemptionsClientListResponse] {
+func (client *ExemptionsClient) NewListPager(options *ExemptionsClientListOptions) *runtime.Pager[ExemptionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListResponse]{
 		More: func(page ExemptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -276,8 +276,8 @@ func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (Exempti
 	return result, nil
 }
 
-// ListForManagementGroup - This operation retrieves the list of all policy exemptions applicable to the management group
-// that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
+// NewListForManagementGroupPager - This operation retrieves the list of all policy exemptions applicable to the management
+// group that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()',
 // 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter=atScope() is provided, the returned list includes all
 // policy exemptions that are assigned to the management group or the management
 // group's ancestors.
@@ -285,7 +285,7 @@ func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (Exempti
 // managementGroupID - The ID of the management group.
 // options - ExemptionsClientListForManagementGroupOptions contains the optional parameters for the ExemptionsClient.ListForManagementGroup
 // method.
-func (client *ExemptionsClient) ListForManagementGroup(managementGroupID string, options *ExemptionsClientListForManagementGroupOptions) *runtime.Pager[ExemptionsClientListForManagementGroupResponse] {
+func (client *ExemptionsClient) NewListForManagementGroupPager(managementGroupID string, options *ExemptionsClientListForManagementGroupOptions) *runtime.Pager[ExemptionsClientListForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForManagementGroupResponse]{
 		More: func(page ExemptionsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -345,8 +345,8 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListForResource - This operation retrieves the list of all policy exemptions associated with the specified resource in
-// the given resource group and subscription that match the optional given $filter. Valid values for
+// NewListForResourcePager - This operation retrieves the list of all policy exemptions associated with the specified resource
+// in the given resource group and subscription that match the optional given $filter. Valid values for
 // $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not
 // provided, the unfiltered list includes all policy exemptions associated with the
 // resource, including those that apply directly or from all containing scopes, as well as any applied to resources contained
@@ -370,7 +370,7 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 // resourceName - The name of the resource.
 // options - ExemptionsClientListForResourceOptions contains the optional parameters for the ExemptionsClient.ListForResource
 // method.
-func (client *ExemptionsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ExemptionsClientListForResourceOptions) *runtime.Pager[ExemptionsClientListForResourceResponse] {
+func (client *ExemptionsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ExemptionsClientListForResourceOptions) *runtime.Pager[ExemptionsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceResponse]{
 		More: func(page ExemptionsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -444,8 +444,8 @@ func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListForResourceGroup - This operation retrieves the list of all policy exemptions associated with the given resource group
-// in the given subscription that match the optional given $filter. Valid values for $filter are:
+// NewListForResourceGroupPager - This operation retrieves the list of all policy exemptions associated with the given resource
+// group in the given subscription that match the optional given $filter. Valid values for $filter are:
 // 'atScope()', 'atExactScope()', 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, the
 // unfiltered list includes all policy exemptions associated with the resource
 // group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained
@@ -454,7 +454,7 @@ func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Respons
 // resourceGroupName - The name of the resource group containing the resource.
 // options - ExemptionsClientListForResourceGroupOptions contains the optional parameters for the ExemptionsClient.ListForResourceGroup
 // method.
-func (client *ExemptionsClient) ListForResourceGroup(resourceGroupName string, options *ExemptionsClientListForResourceGroupOptions) *runtime.Pager[ExemptionsClientListForResourceGroupResponse] {
+func (client *ExemptionsClient) NewListForResourceGroupPager(resourceGroupName string, options *ExemptionsClientListForResourceGroupOptions) *runtime.Pager[ExemptionsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceGroupResponse]{
 		More: func(page ExemptionsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

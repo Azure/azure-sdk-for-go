@@ -246,11 +246,11 @@ func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *h
 	return result, nil
 }
 
-// List - Get metadata information on all assessment types
+// NewListPager - Get metadata information on all assessment types
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.List
 // method.
-func (client *AssessmentsMetadataClient) List(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
+func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssessmentsMetadataClientListResponse]{
 		More: func(page AssessmentsMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,11 +301,11 @@ func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySubscription - Get metadata information on all assessment types in a specific subscription
+// NewListBySubscriptionPager - Get metadata information on all assessment types in a specific subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssessmentsMetadataClientListBySubscriptionOptions contains the optional parameters for the AssessmentsMetadataClient.ListBySubscription
 // method.
-func (client *AssessmentsMetadataClient) ListBySubscription(options *AssessmentsMetadataClientListBySubscriptionOptions) *runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse] {
+func (client *AssessmentsMetadataClient) NewListBySubscriptionPager(options *AssessmentsMetadataClientListBySubscriptionOptions) *runtime.Pager[AssessmentsMetadataClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssessmentsMetadataClientListBySubscriptionResponse]{
 		More: func(page AssessmentsMetadataClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

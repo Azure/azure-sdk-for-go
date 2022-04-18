@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/actions/GetAllActionsByAlertRule.json
-func ExampleActionsClient_ListByAlertRule() {
+func ExampleActionsClient_NewListByAlertRulePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleActionsClient_ListByAlertRule() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAlertRule("<resource-group-name>",
+	pager := client.NewListByAlertRulePager("<resource-group-name>",
 		"<workspace-name>",
 		"<rule-id>",
 		nil)

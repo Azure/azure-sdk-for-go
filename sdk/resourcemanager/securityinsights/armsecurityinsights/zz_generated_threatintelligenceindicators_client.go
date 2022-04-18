@@ -55,13 +55,13 @@ func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// List - Get all threat intelligence indicators.
+// NewListPager - Get all threat intelligence indicators.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.List
 // method.
-func (client *ThreatIntelligenceIndicatorsClient) List(resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorsClientListOptions) *runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse] {
+func (client *ThreatIntelligenceIndicatorsClient) NewListPager(resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorsClientListOptions) *runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ThreatIntelligenceIndicatorsClientListResponse]{
 		More: func(page ThreatIntelligenceIndicatorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

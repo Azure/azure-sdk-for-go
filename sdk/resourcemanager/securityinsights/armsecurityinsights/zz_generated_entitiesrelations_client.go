@@ -55,13 +55,13 @@ func NewEntitiesRelationsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// List - Gets all relations of an entity.
+// NewListPager - Gets all relations of an entity.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // entityID - entity ID
 // options - EntitiesRelationsClientListOptions contains the optional parameters for the EntitiesRelationsClient.List method.
-func (client *EntitiesRelationsClient) List(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse] {
+func (client *EntitiesRelationsClient) NewListPager(resourceGroupName string, workspaceName string, entityID string, options *EntitiesRelationsClientListOptions) *runtime.Pager[EntitiesRelationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EntitiesRelationsClientListResponse]{
 		More: func(page EntitiesRelationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

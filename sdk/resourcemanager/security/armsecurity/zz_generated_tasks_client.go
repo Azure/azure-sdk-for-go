@@ -171,10 +171,10 @@ func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Recommended tasks that will help improve the security of the subscription proactively
+// NewListPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TasksClientListOptions contains the optional parameters for the TasksClient.List method.
-func (client *TasksClient) List(options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
+func (client *TasksClient) NewListPager(options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TasksClientListResponse]{
 		More: func(page TasksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -232,11 +232,11 @@ func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientL
 	return result, nil
 }
 
-// ListByHomeRegion - Recommended tasks that will help improve the security of the subscription proactively
+// NewListByHomeRegionPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TasksClientListByHomeRegionOptions contains the optional parameters for the TasksClient.ListByHomeRegion method.
-func (client *TasksClient) ListByHomeRegion(ascLocation string, options *TasksClientListByHomeRegionOptions) *runtime.Pager[TasksClientListByHomeRegionResponse] {
+func (client *TasksClient) NewListByHomeRegionPager(ascLocation string, options *TasksClientListByHomeRegionOptions) *runtime.Pager[TasksClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TasksClientListByHomeRegionResponse]{
 		More: func(page TasksClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -298,13 +298,13 @@ func (client *TasksClient) listByHomeRegionHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Recommended tasks that will help improve the security of the subscription proactively
+// NewListByResourceGroupPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TasksClientListByResourceGroupOptions contains the optional parameters for the TasksClient.ListByResourceGroup
 // method.
-func (client *TasksClient) ListByResourceGroup(resourceGroupName string, ascLocation string, options *TasksClientListByResourceGroupOptions) *runtime.Pager[TasksClientListByResourceGroupResponse] {
+func (client *TasksClient) NewListByResourceGroupPager(resourceGroupName string, ascLocation string, options *TasksClientListByResourceGroupOptions) *runtime.Pager[TasksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TasksClientListByResourceGroupResponse]{
 		More: func(page TasksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

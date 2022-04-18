@@ -353,7 +353,7 @@ func ExampleMoveCollectionsClient_BeginBulkRemove() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ListMoveCollectionsBySubscription.json
-func ExampleMoveCollectionsClient_ListMoveCollectionsBySubscription() {
+func ExampleMoveCollectionsClient_NewListMoveCollectionsBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -365,7 +365,7 @@ func ExampleMoveCollectionsClient_ListMoveCollectionsBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMoveCollectionsBySubscription(nil)
+	pager := client.NewListMoveCollectionsBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -380,7 +380,7 @@ func ExampleMoveCollectionsClient_ListMoveCollectionsBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcemover/resource-manager/Microsoft.Migrate/stable/2021-08-01/examples/MoveCollections_ListMoveCollectionsByResourceGroup.json
-func ExampleMoveCollectionsClient_ListMoveCollectionsByResourceGroup() {
+func ExampleMoveCollectionsClient_NewListMoveCollectionsByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -392,7 +392,7 @@ func ExampleMoveCollectionsClient_ListMoveCollectionsByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMoveCollectionsByResourceGroup("<resource-group-name>",
+	pager := client.NewListMoveCollectionsByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

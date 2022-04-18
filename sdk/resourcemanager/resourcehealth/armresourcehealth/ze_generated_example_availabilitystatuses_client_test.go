@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/AvailabilityStatuses_ListByResourceGroup.json
-func ExampleAvailabilityStatusesClient_ListByResourceGroup() {
+func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleAvailabilityStatusesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions{Filter: nil,
 			Expand: to.Ptr("<expand>"),
 		})
@@ -74,7 +74,7 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/AvailabilityStatuses_List.json
-func ExampleAvailabilityStatusesClient_List() {
+func ExampleAvailabilityStatusesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -86,7 +86,7 @@ func ExampleAvailabilityStatusesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-uri>",
+	pager := client.NewListPager("<resource-uri>",
 		&armresourcehealth.AvailabilityStatusesClientListOptions{Filter: nil,
 			Expand: nil,
 		})

@@ -54,11 +54,11 @@ func NewSecureScoreControlsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// List - Get all security controls within a scope
+// NewListPager - Get all security controls within a scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecureScoreControlsClientListOptions contains the optional parameters for the SecureScoreControlsClient.List
 // method.
-func (client *SecureScoreControlsClient) List(options *SecureScoreControlsClientListOptions) *runtime.Pager[SecureScoreControlsClientListResponse] {
+func (client *SecureScoreControlsClient) NewListPager(options *SecureScoreControlsClientListOptions) *runtime.Pager[SecureScoreControlsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlsClientListResponse]{
 		More: func(page SecureScoreControlsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -116,12 +116,12 @@ func (client *SecureScoreControlsClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListBySecureScore - Get all security controls for a specific initiative within a scope
+// NewListBySecureScorePager - Get all security controls for a specific initiative within a scope
 // If the operation fails it returns an *azcore.ResponseError type.
 // secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 // options - SecureScoreControlsClientListBySecureScoreOptions contains the optional parameters for the SecureScoreControlsClient.ListBySecureScore
 // method.
-func (client *SecureScoreControlsClient) ListBySecureScore(secureScoreName string, options *SecureScoreControlsClientListBySecureScoreOptions) *runtime.Pager[SecureScoreControlsClientListBySecureScoreResponse] {
+func (client *SecureScoreControlsClient) NewListBySecureScorePager(secureScoreName string, options *SecureScoreControlsClientListBySecureScoreOptions) *runtime.Pager[SecureScoreControlsClientListBySecureScoreResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecureScoreControlsClientListBySecureScoreResponse]{
 		More: func(page SecureScoreControlsClientListBySecureScoreResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

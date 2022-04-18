@@ -227,12 +227,12 @@ func (client *BookmarksClient) getHandleResponse(resp *http.Response) (Bookmarks
 	return result, nil
 }
 
-// List - Gets all bookmarks.
+// NewListPager - Gets all bookmarks.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.List method.
-func (client *BookmarksClient) List(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse] {
+func (client *BookmarksClient) NewListPager(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BookmarksClientListResponse]{
 		More: func(page BookmarksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

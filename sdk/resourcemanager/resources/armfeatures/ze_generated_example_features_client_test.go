@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/listSubscriptionFeatures.json
-func ExampleClient_ListAll() {
+func ExampleClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(nil)
+	pager := client.NewListAllPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,7 +44,7 @@ func ExampleClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/listProviderFeatures.json
-func ExampleClient_List() {
+func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-provider-namespace>",
+	pager := client.NewListPager("<resource-provider-namespace>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

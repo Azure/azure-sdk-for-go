@@ -191,7 +191,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByService - Gets a list of all private endpoint connections in the given service.
+// NewListByServicePager - Gets a list of all private endpoint connections in the given service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
@@ -200,7 +200,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 // method.
 // options - PrivateEndpointConnectionsClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByService
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByService(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByServicePager(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *PrivateEndpointConnectionsClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

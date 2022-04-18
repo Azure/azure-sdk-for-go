@@ -255,7 +255,7 @@ func ExampleDefinitionsClient_GetAtManagementGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitions.json
-func ExampleDefinitionsClient_List() {
+func ExampleDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -267,7 +267,7 @@ func ExampleDefinitionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armpolicy.DefinitionsClientListOptions{Filter: nil,
+	pager := client.NewListPager(&armpolicy.DefinitionsClientListOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -284,7 +284,7 @@ func ExampleDefinitionsClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listBuiltInPolicyDefinitions.json
-func ExampleDefinitionsClient_ListBuiltIn() {
+func ExampleDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -296,7 +296,7 @@ func ExampleDefinitionsClient_ListBuiltIn() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBuiltIn(&armpolicy.DefinitionsClientListBuiltInOptions{Filter: nil,
+	pager := client.NewListBuiltInPager(&armpolicy.DefinitionsClientListBuiltInOptions{Filter: nil,
 		Top: nil,
 	})
 	for pager.More() {
@@ -313,7 +313,7 @@ func ExampleDefinitionsClient_ListBuiltIn() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/listPolicyDefinitionsByManagementGroup.json
-func ExampleDefinitionsClient_ListByManagementGroup() {
+func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -325,7 +325,7 @@ func ExampleDefinitionsClient_ListByManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByManagementGroup("<management-group-id>",
+	pager := client.NewListByManagementGroupPager("<management-group-id>",
 		&armpolicy.DefinitionsClientListByManagementGroupOptions{Filter: nil,
 			Top: nil,
 		})

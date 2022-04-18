@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/repositories/GetRepositories.json
-func ExampleSourceControlClient_ListRepositories() {
+func ExampleSourceControlClient_NewListRepositoriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleSourceControlClient_ListRepositories() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRepositories("<resource-group-name>",
+	pager := client.NewListRepositoriesPager("<resource-group-name>",
 		"<workspace-name>",
 		armsecurityinsights.RepoTypeGithub,
 		nil)

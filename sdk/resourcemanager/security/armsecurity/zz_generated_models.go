@@ -1282,8 +1282,8 @@ type AutomationAction struct {
 	ActionType *ActionType `json:"actionType,omitempty"`
 }
 
-// AutomationActionEventHub - The target Event Hub to which event data will be exported. To learn more about Security Center
-// continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
+// AutomationActionEventHub - The target Event Hub to which event data will be exported. To learn more about Microsoft Defender
+// for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionEventHub struct {
 	// REQUIRED; The type of the action that will be triggered by the Automation
 	ActionType *ActionType `json:"actionType,omitempty"`
@@ -1298,8 +1298,8 @@ type AutomationActionEventHub struct {
 	SasPolicyName *string `json:"sasPolicyName,omitempty" azure:"ro"`
 }
 
-// AutomationActionLogicApp - The logic app action that should be triggered. To learn more about Security Center's Workflow
-// Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
+// AutomationActionLogicApp - The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's
+// Workflow Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
 type AutomationActionLogicApp struct {
 	// REQUIRED; The type of the action that will be triggered by the Automation
 	ActionType *ActionType `json:"actionType,omitempty"`
@@ -1316,7 +1316,7 @@ type AutomationActionLogicApp struct {
 // reside in the 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation'
 // table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the
 // Security Center Log Analytics free/standard solution needs to be enabled on that
-// workspace. To learn more about Security Center continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
+// workspace. To learn more about Microsoft Defender for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionWorkspace struct {
 	// REQUIRED; The type of the action that will be triggered by the Automation
 	ActionType *ActionType `json:"actionType,omitempty"`
@@ -3921,9 +3921,9 @@ type PathRecommendation struct {
 	Usernames []*UserRecommendation `json:"usernames,omitempty"`
 }
 
-// Pricing - Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with
-// a trial period. The standard tier offers advanced security capabilities, while the free
-// tier offers basic security features.
+// Pricing - Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier available
+// with a trial period. The standard tier offers advanced security capabilities, while
+// the free tier offers basic security features.
 type Pricing struct {
 	// Pricing data
 	Properties *PricingProperties `json:"properties,omitempty"`
@@ -3946,9 +3946,9 @@ type PricingList struct {
 
 // PricingProperties - Pricing properties for the relevant scope
 type PricingProperties struct {
-	// REQUIRED; The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard
-	// tier available with a trial period. The standard tier offers advanced security
-	// capabilities, while the free tier offers basic security features.
+	// REQUIRED; The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with
+	// the standard tier available with a trial period. The standard tier offers advanced
+	// security capabilities, while the free tier offers basic security features.
 	PricingTier *PricingTier `json:"pricingTier,omitempty"`
 
 	// The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables

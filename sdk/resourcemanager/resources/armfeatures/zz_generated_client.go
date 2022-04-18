@@ -109,11 +109,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// List - Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
+// NewListPager - Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceProviderNamespace - The namespace of the resource provider for getting features.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(resourceProviderNamespace string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(resourceProviderNamespace string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -172,10 +172,10 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 	return result, nil
 }
 
-// ListAll - Gets all the preview features that are available through AFEC for the subscription.
+// NewListAllPager - Gets all the preview features that are available through AFEC for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListAllOptions contains the optional parameters for the Client.ListAll method.
-func (client *Client) ListAll(options *ClientListAllOptions) *runtime.Pager[ClientListAllResponse] {
+func (client *Client) NewListAllPager(options *ClientListAllOptions) *runtime.Pager[ClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListAllResponse]{
 		More: func(page ClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ResourceLinksClient.ListAtSubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ResourceLinksClient.ListAtSourceScope` has been removed
+
+### Features Added
+
+- New function `*ResourceLinksClient.NewListAtSourceScopePager(string, *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse]`
+- New function `*ResourceLinksClient.NewListAtSubscriptionPager(*ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-14)
 ### Breaking Changes
 

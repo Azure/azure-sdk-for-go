@@ -44,7 +44,7 @@ func ExampleQuotaRequestStatusClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/reservations/resource-manager/Microsoft.Capacity/stable/2020-10-25/examples/getQuotaRequestsHistory.json
-func ExampleQuotaRequestStatusClient_List() {
+func ExampleQuotaRequestStatusClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleQuotaRequestStatusClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<subscription-id>",
+	pager := client.NewListPager("<subscription-id>",
 		"<provider-id>",
 		"<location>",
 		&armreservations.QuotaRequestStatusClientListOptions{Filter: nil,

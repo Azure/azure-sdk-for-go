@@ -728,12 +728,12 @@ func (client *ManagementLocksClient) getByScopeHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListAtResourceGroupLevel - Gets all the management locks for a resource group.
+// NewListAtResourceGroupLevelPager - Gets all the management locks for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the locks to get.
 // options - ManagementLocksClientListAtResourceGroupLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceGroupLevel
 // method.
-func (client *ManagementLocksClient) ListAtResourceGroupLevel(resourceGroupName string, options *ManagementLocksClientListAtResourceGroupLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceGroupLevelResponse] {
+func (client *ManagementLocksClient) NewListAtResourceGroupLevelPager(resourceGroupName string, options *ManagementLocksClientListAtResourceGroupLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceGroupLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementLocksClientListAtResourceGroupLevelResponse]{
 		More: func(page ManagementLocksClientListAtResourceGroupLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -795,7 +795,7 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp
 	return result, nil
 }
 
-// ListAtResourceLevel - Gets all the management locks for a resource or any level below resource.
+// NewListAtResourceLevelPager - Gets all the management locks for a resource or any level below resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing the locked resource. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
@@ -804,7 +804,7 @@ func (client *ManagementLocksClient) listAtResourceGroupLevelHandleResponse(resp
 // resourceName - The name of the locked resource.
 // options - ManagementLocksClientListAtResourceLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtResourceLevel
 // method.
-func (client *ManagementLocksClient) ListAtResourceLevel(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksClientListAtResourceLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceLevelResponse] {
+func (client *ManagementLocksClient) NewListAtResourceLevelPager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ManagementLocksClientListAtResourceLevelOptions) *runtime.Pager[ManagementLocksClientListAtResourceLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementLocksClientListAtResourceLevelResponse]{
 		More: func(page ManagementLocksClientListAtResourceLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -876,11 +876,11 @@ func (client *ManagementLocksClient) listAtResourceLevelHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListAtSubscriptionLevel - Gets all the management locks for a subscription.
+// NewListAtSubscriptionLevelPager - Gets all the management locks for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagementLocksClientListAtSubscriptionLevelOptions contains the optional parameters for the ManagementLocksClient.ListAtSubscriptionLevel
 // method.
-func (client *ManagementLocksClient) ListAtSubscriptionLevel(options *ManagementLocksClientListAtSubscriptionLevelOptions) *runtime.Pager[ManagementLocksClientListAtSubscriptionLevelResponse] {
+func (client *ManagementLocksClient) NewListAtSubscriptionLevelPager(options *ManagementLocksClientListAtSubscriptionLevelOptions) *runtime.Pager[ManagementLocksClientListAtSubscriptionLevelResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementLocksClientListAtSubscriptionLevelResponse]{
 		More: func(page ManagementLocksClientListAtSubscriptionLevelResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -938,7 +938,7 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp 
 	return result, nil
 }
 
-// ListByScope - Gets all the management locks for a scope.
+// NewListByScopePager - Gets all the management locks for a scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions,
 // '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for
@@ -947,7 +947,7 @@ func (client *ManagementLocksClient) listAtSubscriptionLevelHandleResponse(resp 
 // resources.
 // options - ManagementLocksClientListByScopeOptions contains the optional parameters for the ManagementLocksClient.ListByScope
 // method.
-func (client *ManagementLocksClient) ListByScope(scope string, options *ManagementLocksClientListByScopeOptions) *runtime.Pager[ManagementLocksClientListByScopeResponse] {
+func (client *ManagementLocksClient) NewListByScopePager(scope string, options *ManagementLocksClientListByScopeOptions) *runtime.Pager[ManagementLocksClientListByScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementLocksClientListByScopeResponse]{
 		More: func(page ManagementLocksClientListByScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -101,7 +101,7 @@ func ExampleCustomAssessmentAutomationsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationListByResourceGroup_example.json
-func ExampleCustomAssessmentAutomationsClient_ListByResourceGroup() {
+func ExampleCustomAssessmentAutomationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -113,7 +113,7 @@ func ExampleCustomAssessmentAutomationsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -129,7 +129,7 @@ func ExampleCustomAssessmentAutomationsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationListBySubscription_example.json
-func ExampleCustomAssessmentAutomationsClient_ListBySubscription() {
+func ExampleCustomAssessmentAutomationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +141,7 @@ func ExampleCustomAssessmentAutomationsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

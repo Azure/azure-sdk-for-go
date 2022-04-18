@@ -165,12 +165,12 @@ func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (Offi
 	return result, nil
 }
 
-// List - Gets all office365 consents.
+// NewListPager - Gets all office365 consents.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.List method.
-func (client *OfficeConsentsClient) List(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse] {
+func (client *OfficeConsentsClient) NewListPager(resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) *runtime.Pager[OfficeConsentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OfficeConsentsClientListResponse]{
 		More: func(page OfficeConsentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -169,13 +169,13 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleRespo
 	return result, nil
 }
 
-// List - Use this method to get the aggregated alert list of yours IoT Security solution.
+// NewListPager - Use this method to get the aggregated alert list of yours IoT Security solution.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.List
 // method.
-func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse] {
+func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) NewListPager(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse]{
 		More: func(page IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

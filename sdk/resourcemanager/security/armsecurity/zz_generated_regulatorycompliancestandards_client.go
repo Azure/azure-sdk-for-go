@@ -105,11 +105,11 @@ func (client *RegulatoryComplianceStandardsClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - Supported regulatory compliance standards details and state
+// NewListPager - Supported regulatory compliance standards details and state
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RegulatoryComplianceStandardsClientListOptions contains the optional parameters for the RegulatoryComplianceStandardsClient.List
 // method.
-func (client *RegulatoryComplianceStandardsClient) List(options *RegulatoryComplianceStandardsClientListOptions) *runtime.Pager[RegulatoryComplianceStandardsClientListResponse] {
+func (client *RegulatoryComplianceStandardsClient) NewListPager(options *RegulatoryComplianceStandardsClientListOptions) *runtime.Pager[RegulatoryComplianceStandardsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegulatoryComplianceStandardsClientListResponse]{
 		More: func(page RegulatoryComplianceStandardsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

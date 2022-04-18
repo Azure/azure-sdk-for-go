@@ -200,10 +200,10 @@ func (client *AccountConnectorsClient) getHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// List - Cloud accounts connectors of a subscription
+// NewListPager - Cloud accounts connectors of a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.List method.
-func (client *AccountConnectorsClient) List(options *AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse] {
+func (client *AccountConnectorsClient) NewListPager(options *AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountConnectorsClientListResponse]{
 		More: func(page AccountConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

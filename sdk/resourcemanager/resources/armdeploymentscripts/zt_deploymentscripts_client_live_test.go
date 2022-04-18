@@ -132,11 +132,11 @@ func (testsuite *DeploymentScriptsClientTestSuite) TestDeploymentScriptsCRUD() {
 	testsuite.Require().Equal("live", *updateResp.GetDeploymentScript().Tags["test"])
 
 	// list deployment script by subscription
-	listBySubscription := deploymentScriptsClient.ListBySubscription(nil)
+	listBySubscription := deploymentScriptsClient.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// list deployment script by resource group
-	listByResourceGroup := deploymentScriptsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
+	listByResourceGroup := deploymentScriptsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// delete deployment script

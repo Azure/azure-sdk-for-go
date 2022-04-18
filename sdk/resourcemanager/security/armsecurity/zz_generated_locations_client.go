@@ -104,12 +104,12 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 	return result, nil
 }
 
-// List - The location of the responsible ASC of the specific subscription (home region). For each subscription there is only
-// one responsible location. The location in the response should be used to read or
+// NewListPager - The location of the responsible ASC of the specific subscription (home region). For each subscription there
+// is only one responsible location. The location in the response should be used to read or
 // write other resources in ASC according to their ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

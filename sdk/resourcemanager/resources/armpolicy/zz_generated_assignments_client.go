@@ -364,8 +364,8 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 	return result, nil
 }
 
-// List - This operation retrieves the list of all policy assignments associated with the given subscription that match the
-// optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
+// NewListPager - This operation retrieves the list of all policy assignments associated with the given subscription that
+// match the optional given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
 // 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy assignments associated
 // with the subscription, including those that apply directly or from
 // management groups that contain the given subscription, as well as any applied to objects contained within the subscription.
@@ -377,7 +377,7 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 // definition whose id is {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
-func (client *AssignmentsClient) List(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
+func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -440,8 +440,8 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 	return result, nil
 }
 
-// ListForManagementGroup - This operation retrieves the list of all policy assignments applicable to the management group
-// that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
+// NewListForManagementGroupPager - This operation retrieves the list of all policy assignments applicable to the management
+// group that match the given $filter. Valid values for $filter are: 'atScope()', 'atExactScope()' or
 // 'policyDefinitionId eq '{value}''. If $filter=atScope() is provided, the returned list includes all policy assignments
 // that are assigned to the management group or the management group's ancestors. If
 // $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the management group.
@@ -451,7 +451,7 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 // managementGroupID - The ID of the management group.
 // options - AssignmentsClientListForManagementGroupOptions contains the optional parameters for the AssignmentsClient.ListForManagementGroup
 // method.
-func (client *AssignmentsClient) ListForManagementGroup(managementGroupID string, options *AssignmentsClientListForManagementGroupOptions) *runtime.Pager[AssignmentsClientListForManagementGroupResponse] {
+func (client *AssignmentsClient) NewListForManagementGroupPager(managementGroupID string, options *AssignmentsClientListForManagementGroupOptions) *runtime.Pager[AssignmentsClientListForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForManagementGroupResponse]{
 		More: func(page AssignmentsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -514,8 +514,8 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 	return result, nil
 }
 
-// ListForResource - This operation retrieves the list of all policy assignments associated with the specified resource in
-// the given resource group and subscription that match the optional given $filter. Valid values for
+// NewListForResourcePager - This operation retrieves the list of all policy assignments associated with the specified resource
+// in the given resource group and subscription that match the optional given $filter. Valid values for
 // $filter are: 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered
 // list includes all policy assignments associated with the resource, including
 // those that apply directly or from all containing scopes, as well as any applied to resources contained within the resource.
@@ -544,7 +544,7 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // resourceName - The name of the resource.
 // options - AssignmentsClientListForResourceOptions contains the optional parameters for the AssignmentsClient.ListForResource
 // method.
-func (client *AssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse] {
+func (client *AssignmentsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *AssignmentsClientListForResourceOptions) *runtime.Pager[AssignmentsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceResponse]{
 		More: func(page AssignmentsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -621,8 +621,8 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListForResourceGroup - This operation retrieves the list of all policy assignments associated with the given resource group
-// in the given subscription that match the optional given $filter. Valid values for $filter are:
+// NewListForResourceGroupPager - This operation retrieves the list of all policy assignments associated with the given resource
+// group in the given subscription that match the optional given $filter. Valid values for $filter are:
 // 'atScope()', 'atExactScope()' or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes
 // all policy assignments associated with the resource group, including those
 // that apply directly or apply from containing scopes, as well as any applied to resources contained within the resource
@@ -636,7 +636,7 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 // resourceGroupName - The name of the resource group that contains policy assignments.
 // options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.ListForResourceGroup
 // method.
-func (client *AssignmentsClient) ListForResourceGroup(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
+func (client *AssignmentsClient) NewListForResourceGroupPager(resourceGroupName string, options *AssignmentsClientListForResourceGroupOptions) *runtime.Pager[AssignmentsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListForResourceGroupResponse]{
 		More: func(page AssignmentsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

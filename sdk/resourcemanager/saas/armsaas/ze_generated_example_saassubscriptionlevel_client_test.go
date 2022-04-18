@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInAzureSubscription.json
-func ExampleSubscriptionLevelClient_ListByAzureSubscription() {
+func ExampleSubscriptionLevelClient_NewListByAzureSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSubscriptionLevelClient_ListByAzureSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAzureSubscription(nil)
+	pager := client.NewListByAzureSubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -47,7 +47,7 @@ func ExampleSubscriptionLevelClient_ListByAzureSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/saas/resource-manager/Microsoft.SaaS/preview/2018-03-01-beta/examples/saasSubscriptionLevel/SaasGetAllInResourceGroup.json
-func ExampleSubscriptionLevelClient_ListByResourceGroup() {
+func ExampleSubscriptionLevelClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -59,7 +59,7 @@ func ExampleSubscriptionLevelClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

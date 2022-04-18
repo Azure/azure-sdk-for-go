@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/ListByExtendedResourceAdaptiveNetworkHardenings_example.json
-func ExampleAdaptiveNetworkHardeningsClient_ListByExtendedResource() {
+func ExampleAdaptiveNetworkHardeningsClient_NewListByExtendedResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAdaptiveNetworkHardeningsClient_ListByExtendedResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByExtendedResource("<resource-group-name>",
+	pager := client.NewListByExtendedResourcePager("<resource-group-name>",
 		"<resource-namespace>",
 		"<resource-type>",
 		"<resource-name>",

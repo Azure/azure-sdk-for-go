@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListByExtendedResourceSoftwareInventories_example.json
-func ExampleSoftwareInventoriesClient_ListByExtendedResource() {
+func ExampleSoftwareInventoriesClient_NewListByExtendedResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleSoftwareInventoriesClient_ListByExtendedResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByExtendedResource("<resource-group-name>",
+	pager := client.NewListByExtendedResourcePager("<resource-group-name>",
 		"<resource-namespace>",
 		"<resource-type>",
 		"<resource-name>",
@@ -48,7 +48,7 @@ func ExampleSoftwareInventoriesClient_ListByExtendedResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/ListBySubscriptionSoftwareInventories_example.json
-func ExampleSoftwareInventoriesClient_ListBySubscription() {
+func ExampleSoftwareInventoriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,7 +60,7 @@ func ExampleSoftwareInventoriesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

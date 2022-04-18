@@ -1,5 +1,47 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*DeploymentOperationsClient.ListAtTenantScope` has been removed
+- Function `*DeploymentsClient.ListAtSubscriptionScope` has been removed
+- Function `*DeploymentsClient.ListByResourceGroup` has been removed
+- Function `*ResourceGroupsClient.List` has been removed
+- Function `*DeploymentsClient.ListAtTenantScope` has been removed
+- Function `*DeploymentsClient.ListAtScope` has been removed
+- Function `*Client.List` has been removed
+- Function `*DeploymentOperationsClient.List` has been removed
+- Function `*DeploymentOperationsClient.ListAtManagementGroupScope` has been removed
+- Function `*DeploymentOperationsClient.ListAtSubscriptionScope` has been removed
+- Function `*ProvidersClient.List` has been removed
+- Function `*ProvidersClient.ListAtTenantScope` has been removed
+- Function `*DeploymentsClient.ListAtManagementGroupScope` has been removed
+- Function `*DeploymentOperationsClient.ListAtScope` has been removed
+- Function `*TagsClient.List` has been removed
+- Function `*Client.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*DeploymentsClient.NewListAtSubscriptionScopePager(*DeploymentsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentsClientListAtSubscriptionScopeResponse]`
+- New function `*DeploymentOperationsClient.NewListPager(string, string, *DeploymentOperationsClientListOptions) *runtime.Pager[DeploymentOperationsClientListResponse]`
+- New function `*ProvidersClient.NewListAtTenantScopePager(*ProvidersClientListAtTenantScopeOptions) *runtime.Pager[ProvidersClientListAtTenantScopeResponse]`
+- New function `*DeploymentsClient.NewListAtScopePager(string, *DeploymentsClientListAtScopeOptions) *runtime.Pager[DeploymentsClientListAtScopeResponse]`
+- New function `*TagsClient.NewListPager(*TagsClientListOptions) *runtime.Pager[TagsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DeploymentOperationsClient.NewListAtScopePager(string, string, *DeploymentOperationsClientListAtScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtScopeResponse]`
+- New function `*DeploymentOperationsClient.NewListAtTenantScopePager(string, *DeploymentOperationsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtTenantScopeResponse]`
+- New function `*ProvidersClient.NewListPager(*ProvidersClientListOptions) *runtime.Pager[ProvidersClientListResponse]`
+- New function `*DeploymentOperationsClient.NewListAtManagementGroupScopePager(string, string, *DeploymentOperationsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtManagementGroupScopeResponse]`
+- New function `*DeploymentOperationsClient.NewListAtSubscriptionScopePager(string, *DeploymentOperationsClientListAtSubscriptionScopeOptions) *runtime.Pager[DeploymentOperationsClientListAtSubscriptionScopeResponse]`
+- New function `*DeploymentsClient.NewListByResourceGroupPager(string, *DeploymentsClientListByResourceGroupOptions) *runtime.Pager[DeploymentsClientListByResourceGroupResponse]`
+- New function `*DeploymentsClient.NewListAtTenantScopePager(*DeploymentsClientListAtTenantScopeOptions) *runtime.Pager[DeploymentsClientListAtTenantScopeResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*ResourceGroupsClient.NewListPager(*ResourceGroupsClientListOptions) *runtime.Pager[ResourceGroupsClientListResponse]`
+- New function `*DeploymentsClient.NewListAtManagementGroupScopePager(string, *DeploymentsClientListAtManagementGroupScopeOptions) *runtime.Pager[DeploymentsClientListAtManagementGroupScopeResponse]`
+
+
 ## 0.4.0 (2022-04-08)
 ### Breaking Changes
 

@@ -115,11 +115,11 @@ func (client *DiscoveredSecuritySolutionsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Gets a list of discovered Security Solutions for the subscription.
+// NewListPager - Gets a list of discovered Security Solutions for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DiscoveredSecuritySolutionsClientListOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.List
 // method.
-func (client *DiscoveredSecuritySolutionsClient) List(options *DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse] {
+func (client *DiscoveredSecuritySolutionsClient) NewListPager(options *DiscoveredSecuritySolutionsClientListOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiscoveredSecuritySolutionsClientListResponse]{
 		More: func(page DiscoveredSecuritySolutionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -174,12 +174,12 @@ func (client *DiscoveredSecuritySolutionsClient) listHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByHomeRegion - Gets a list of discovered Security Solutions for the subscription and location.
+// NewListByHomeRegionPager - Gets a list of discovered Security Solutions for the subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - DiscoveredSecuritySolutionsClientListByHomeRegionOptions contains the optional parameters for the DiscoveredSecuritySolutionsClient.ListByHomeRegion
 // method.
-func (client *DiscoveredSecuritySolutionsClient) ListByHomeRegion(ascLocation string, options *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListByHomeRegionResponse] {
+func (client *DiscoveredSecuritySolutionsClient) NewListByHomeRegionPager(ascLocation string, options *DiscoveredSecuritySolutionsClientListByHomeRegionOptions) *runtime.Pager[DiscoveredSecuritySolutionsClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DiscoveredSecuritySolutionsClientListByHomeRegionResponse]{
 		More: func(page DiscoveredSecuritySolutionsClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

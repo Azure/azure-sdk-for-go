@@ -115,14 +115,14 @@ func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - For the specified Azure region (location), subscription, and resource provider, get the history of the quota requests
-// for the past year. To select specific quota requests, use the oData filter.
+// NewListPager - For the specified Azure region (location), subscription, and resource provider, get the history of the quota
+// requests for the past year. To select specific quota requests, use the oData filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
-func (client *QuotaRequestStatusClient) List(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
+func (client *QuotaRequestStatusClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QuotaRequestStatusClientListResponse]{
 		More: func(page QuotaRequestStatusClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

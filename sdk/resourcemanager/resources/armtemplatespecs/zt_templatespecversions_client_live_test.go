@@ -123,7 +123,7 @@ func (testsuite *TemplateSpecVersionsClientTestSuite) TestTemplateSpecVersionsCR
 	testsuite.Require().Equal(templateSpecVersion, *getResp.Name)
 
 	// list
-	pager := templateSpecVersionsClient.List(testsuite.resourceGroupName, templateSpecName, nil)
+	pager := templateSpecVersionsClient.NewListPager(testsuite.resourceGroupName, templateSpecName, nil)
 	testsuite.Require().True(pager.More())
 
 	// delete

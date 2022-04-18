@@ -276,7 +276,7 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByService - Gets a list of all shared private link resources managed by the given service.
+// NewListByServicePager - Gets a list of all shared private link resources managed by the given service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
@@ -285,7 +285,7 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 // method.
 // options - SharedPrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.ListByService
 // method.
-func (client *SharedPrivateLinkResourcesClient) ListByService(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientListByServiceOptions) *runtime.Pager[SharedPrivateLinkResourcesClientListByServiceResponse] {
+func (client *SharedPrivateLinkResourcesClient) NewListByServicePager(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *SharedPrivateLinkResourcesClientListByServiceOptions) *runtime.Pager[SharedPrivateLinkResourcesClientListByServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SharedPrivateLinkResourcesClientListByServiceResponse]{
 		More: func(page SharedPrivateLinkResourcesClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

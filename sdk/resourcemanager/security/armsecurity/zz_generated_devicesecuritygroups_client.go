@@ -193,12 +193,12 @@ func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Use this method get the list of device security groups for the specified IoT Hub resource.
+// NewListPager - Use this method get the list of device security groups for the specified IoT Hub resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - The identifier of the resource.
 // options - DeviceSecurityGroupsClientListOptions contains the optional parameters for the DeviceSecurityGroupsClient.List
 // method.
-func (client *DeviceSecurityGroupsClient) List(resourceID string, options *DeviceSecurityGroupsClientListOptions) *runtime.Pager[DeviceSecurityGroupsClientListResponse] {
+func (client *DeviceSecurityGroupsClient) NewListPager(resourceID string, options *DeviceSecurityGroupsClientListOptions) *runtime.Pager[DeviceSecurityGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeviceSecurityGroupsClientListResponse]{
 		More: func(page DeviceSecurityGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

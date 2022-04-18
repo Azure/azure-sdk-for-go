@@ -1,5 +1,21 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*JobCollectionsClient.ListByResourceGroup` has been removed
+- Function `*JobsClient.List` has been removed
+- Function `*JobCollectionsClient.ListBySubscription` has been removed
+- Function `*JobsClient.ListJobHistory` has been removed
+
+### Features Added
+
+- New function `*JobsClient.NewListPager(string, string, *JobsClientListOptions) *runtime.Pager[JobsClientListResponse]`
+- New function `*JobCollectionsClient.NewListBySubscriptionPager(*JobCollectionsClientListBySubscriptionOptions) *runtime.Pager[JobCollectionsClientListBySubscriptionResponse]`
+- New function `*JobsClient.NewListJobHistoryPager(string, string, string, *JobsClientListJobHistoryOptions) *runtime.Pager[JobsClientListJobHistoryResponse]`
+- New function `*JobCollectionsClient.NewListByResourceGroupPager(string, *JobCollectionsClientListByResourceGroupOptions) *runtime.Pager[JobCollectionsClientListByResourceGroupResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

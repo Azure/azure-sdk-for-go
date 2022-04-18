@@ -229,13 +229,13 @@ func (client *TemplateSpecVersionsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Lists all the Template Spec versions in the specified Template Spec.
+// NewListPager - Lists all the Template Spec versions in the specified Template Spec.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // templateSpecName - Name of the Template Spec.
 // options - TemplateSpecVersionsClientListOptions contains the optional parameters for the TemplateSpecVersionsClient.List
 // method.
-func (client *TemplateSpecVersionsClient) List(resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsClientListOptions) *runtime.Pager[TemplateSpecVersionsClientListResponse] {
+func (client *TemplateSpecVersionsClient) NewListPager(resourceGroupName string, templateSpecName string, options *TemplateSpecVersionsClientListOptions) *runtime.Pager[TemplateSpecVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TemplateSpecVersionsClientListResponse]{
 		More: func(page TemplateSpecVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

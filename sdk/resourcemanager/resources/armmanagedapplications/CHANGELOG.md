@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ApplicationsClient.ListBySubscription` has been removed
+- Function `*ApplicationsClient.ListByResourceGroup` has been removed
+- Function `*ApplicationDefinitionsClient.ListByResourceGroup` has been removed
+- Function `*ApplicationClient.ListOperations` has been removed
+
+### Features Added
+
+- New function `*ApplicationDefinitionsClient.NewListByResourceGroupPager(string, *ApplicationDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ApplicationDefinitionsClientListByResourceGroupResponse]`
+- New function `*ApplicationClient.NewListOperationsPager(*ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse]`
+- New function `*ApplicationsClient.NewListBySubscriptionPager(*ApplicationsClientListBySubscriptionOptions) *runtime.Pager[ApplicationsClientListBySubscriptionResponse]`
+- New function `*ApplicationsClient.NewListByResourceGroupPager(string, *ApplicationsClientListByResourceGroupOptions) *runtime.Pager[ApplicationsClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-14)
 ### Breaking Changes
 

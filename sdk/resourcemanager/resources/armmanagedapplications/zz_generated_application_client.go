@@ -48,11 +48,11 @@ func NewApplicationClient(credential azcore.TokenCredential, options *arm.Client
 	return client, nil
 }
 
-// ListOperations - Lists all of the available Microsoft.Solutions REST API operations.
+// NewListOperationsPager - Lists all of the available Microsoft.Solutions REST API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.ListOperations
 // method.
-func (client *ApplicationClient) ListOperations(options *ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse] {
+func (client *ApplicationClient) NewListOperationsPager(options *ApplicationClientListOperationsOptions) *runtime.Pager[ApplicationClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListOperationsResponse]{
 		More: func(page ApplicationClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

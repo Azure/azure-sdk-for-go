@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ReplicationUsagesClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.List` has been removed
+- Function `*VaultsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*VaultsClient.ListBySubscriptionID` has been removed
+- Function `*UsagesClient.ListByVaults` has been removed
+
+### Features Added
+
+- New function `*VaultsClient.NewListByResourceGroupPager(string, *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse]`
+- New function `*UsagesClient.NewListByVaultsPager(string, string, *UsagesClientListByVaultsOptions) *runtime.Pager[UsagesClientListByVaultsResponse]`
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*VaultsClient.NewListBySubscriptionIDPager(*VaultsClientListBySubscriptionIDOptions) *runtime.Pager[VaultsClientListBySubscriptionIDResponse]`
+- New function `*ReplicationUsagesClient.NewListPager(string, string, *ReplicationUsagesClientListOptions) *runtime.Pager[ReplicationUsagesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

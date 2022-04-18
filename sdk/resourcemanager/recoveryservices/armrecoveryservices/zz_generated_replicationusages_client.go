@@ -54,12 +54,12 @@ func NewReplicationUsagesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// List - Fetches the replication usages of the vault.
+// NewListPager - Fetches the replication usages of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // vaultName - The name of the recovery services vault.
 // options - ReplicationUsagesClientListOptions contains the optional parameters for the ReplicationUsagesClient.List method.
-func (client *ReplicationUsagesClient) List(resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) *runtime.Pager[ReplicationUsagesClientListResponse] {
+func (client *ReplicationUsagesClient) NewListPager(resourceGroupName string, vaultName string, options *ReplicationUsagesClientListOptions) *runtime.Pager[ReplicationUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationUsagesClientListResponse]{
 		More: func(page ReplicationUsagesClientListResponse) bool {
 			return false

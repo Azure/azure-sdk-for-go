@@ -217,12 +217,12 @@ func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClient
 	return result, nil
 }
 
-// ListByResourceGroup - Retrieve a list of Vaults.
+// NewListByResourceGroupPager - Retrieve a list of Vaults.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.ListByResourceGroup
 // method.
-func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse] {
+func (client *VaultsClient) NewListByResourceGroupPager(resourceGroupName string, options *VaultsClientListByResourceGroupOptions) *runtime.Pager[VaultsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListByResourceGroupResponse]{
 		More: func(page VaultsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -281,11 +281,11 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscriptionID - Fetches all the resources of the specified type in the subscription.
+// NewListBySubscriptionIDPager - Fetches all the resources of the specified type in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.ListBySubscriptionID
 // method.
-func (client *VaultsClient) ListBySubscriptionID(options *VaultsClientListBySubscriptionIDOptions) *runtime.Pager[VaultsClientListBySubscriptionIDResponse] {
+func (client *VaultsClient) NewListBySubscriptionIDPager(options *VaultsClientListBySubscriptionIDOptions) *runtime.Pager[VaultsClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListBySubscriptionIDResponse]{
 		More: func(page VaultsClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

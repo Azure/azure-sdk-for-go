@@ -74,7 +74,7 @@ func (testsuite *ResourceGroupsClientTestSuite) TestResourceGroupsCRUD() {
 	testsuite.Require().Equal(rgName, *getResp.Name)
 
 	// list resource group
-	listPager := rgClient.List(nil)
+	listPager := rgClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// update resource group

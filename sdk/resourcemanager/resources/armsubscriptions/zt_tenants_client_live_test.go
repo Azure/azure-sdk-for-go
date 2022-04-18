@@ -53,6 +53,6 @@ func TestTenantsClient(t *testing.T) {
 func (testsuite *TenantsClientTestSuite) TestTenantsCRUD() {
 	tenantsClient, err := armsubscriptions.NewTenantsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	pager := tenantsClient.List(nil)
+	pager := tenantsClient.NewListPager(nil)
 	testsuite.Require().True(pager.More())
 }

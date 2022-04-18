@@ -143,7 +143,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsCRUD() {
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list by resource group
-	listPager := deploymentsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
+	listPager := deploymentsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// what if
@@ -241,7 +241,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment at scope
-	listPager := deploymentsClient.ListAtScope(scopeResource, nil)
+	listPager := deploymentsClient.NewListAtScopePager(scopeResource, nil)
 	testsuite.Require().True(listPager.More())
 
 	vPoller, err := deploymentsClient.BeginValidateAtScope(
@@ -334,7 +334,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
-	listPager := deploymentsClient.ListAtManagementGroupScope(groupName, nil)
+	listPager := deploymentsClient.NewListAtManagementGroupScopePager(groupName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// validate deployment
@@ -389,7 +389,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtTenantScope() {
 	testsuite.Require().False(resp.Success)
 
 	// list deployment
-	listResp := deploymentsClient.ListAtTenantScope(nil)
+	listResp := deploymentsClient.NewListAtTenantScopePager(nil)
 	testsuite.Require().True(listResp.More())
 }
 
@@ -431,7 +431,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope(
 	testsuite.Require().Equal(deploymentName, *getResp.Name)
 
 	// list deployment
-	listResp := deploymentsClient.ListAtSubscriptionScope(nil)
+	listResp := deploymentsClient.NewListAtSubscriptionScopePager(nil)
 	testsuite.Require().True(listResp.More())
 
 	// what if deployment

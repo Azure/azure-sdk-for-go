@@ -68,7 +68,7 @@ func (testsuite *TagsClientTestSuite) TestTagsCRUD() {
 	testsuite.Require().Equal(valueName, *valueResp.TagValue.TagValue)
 
 	// list
-	listPager := tagsClient.List(nil)
+	listPager := tagsClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// delete tag value

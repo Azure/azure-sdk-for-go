@@ -178,12 +178,12 @@ func (testsuite *ResourcesClientTestSuite) TestResourcesCRUD() {
 	testsuite.Require().Equal(resourceName, *getByIDResp.Name)
 
 	// list resource
-	listPager := resourcesClient.List(nil)
+	listPager := resourcesClient.NewListPager(nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(listPager.More())
 
 	// list resource by resource group
-	listByResourceGroup := resourcesClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
+	listByResourceGroup := resourcesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().True(listByResourceGroup.More())
 

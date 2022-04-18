@@ -59,11 +59,11 @@ func (testsuite *SubscriptionsClientTestSuite) TestSubscriptionsCRUD() {
 	testsuite.Require().NoError(err)
 
 	// list
-	list := subscriptionsClient.List(nil)
+	list := subscriptionsClient.NewListPager(nil)
 	testsuite.Require().True(list.More())
 
 	// list locations
-	listLocations := subscriptionsClient.ListLocations(testsuite.subscriptionID, nil)
+	listLocations := subscriptionsClient.NewListLocationsPager(testsuite.subscriptionID, nil)
 	testsuite.Require().True(listLocations.More())
 
 	// check resource

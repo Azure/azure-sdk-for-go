@@ -91,11 +91,11 @@ func (testsuite *TemplateSpecsClientTestSuite) TestTemplateSpecsCRUD() {
 	testsuite.Require().Equal(templateSpecName, *getResp.Name)
 
 	// list template spec by resource group
-	listByResourceGroup := templateSpecsClient.ListByResourceGroup(testsuite.resourceGroupName, nil)
+	listByResourceGroup := templateSpecsClient.NewListByResourceGroupPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().True(listByResourceGroup.More())
 
 	// list template spec by subscription
-	listBySubscription := templateSpecsClient.ListBySubscription(nil)
+	listBySubscription := templateSpecsClient.NewListBySubscriptionPager(nil)
 	testsuite.Require().True(listBySubscription.More())
 
 	// delete template spec

@@ -55,11 +55,11 @@ func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// List - Gets the quantity used and quota limit for resources
+// NewListPager - Gets the quantity used and quota limit for resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The name of the region to query for usage information.
 // options - AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.List method.
-func (client *AscUsagesClient) List(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
+func (client *AscUsagesClient) NewListPager(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AscUsagesClientListResponse]{
 		More: func(page AscUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

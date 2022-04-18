@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CachesClient.ListByResourceGroup` has been removed
+- Function `*UsageModelsClient.List` has been removed
+- Function `*CachesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SKUsClient.List` has been removed
+- Function `*StorageTargetsClient.ListByCache` has been removed
+- Function `*AscUsagesClient.List` has been removed
+
+### Features Added
+
+- New function `*AscUsagesClient.NewListPager(string, *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*UsageModelsClient.NewListPager(*UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse]`
+- New function `*CachesClient.NewListPager(*CachesClientListOptions) *runtime.Pager[CachesClientListResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*StorageTargetsClient.NewListByCachePager(string, string, *StorageTargetsClientListByCacheOptions) *runtime.Pager[StorageTargetsClientListByCacheResponse]`
+- New function `*CachesClient.NewListByResourceGroupPager(string, *CachesClientListByResourceGroupOptions) *runtime.Pager[CachesClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

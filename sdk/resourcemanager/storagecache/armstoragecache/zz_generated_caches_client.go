@@ -360,10 +360,10 @@ func (client *CachesClient) getHandleResponse(resp *http.Response) (CachesClient
 	return result, nil
 }
 
-// List - Returns all Caches the user has access to under a subscription.
+// NewListPager - Returns all Caches the user has access to under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CachesClientListOptions contains the optional parameters for the CachesClient.List method.
-func (client *CachesClient) List(options *CachesClientListOptions) *runtime.Pager[CachesClientListResponse] {
+func (client *CachesClient) NewListPager(options *CachesClientListOptions) *runtime.Pager[CachesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CachesClientListResponse]{
 		More: func(page CachesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -418,12 +418,12 @@ func (client *CachesClient) listHandleResponse(resp *http.Response) (CachesClien
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all Caches the user has access to under a resource group.
+// NewListByResourceGroupPager - Returns all Caches the user has access to under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Target resource group.
 // options - CachesClientListByResourceGroupOptions contains the optional parameters for the CachesClient.ListByResourceGroup
 // method.
-func (client *CachesClient) ListByResourceGroup(resourceGroupName string, options *CachesClientListByResourceGroupOptions) *runtime.Pager[CachesClientListByResourceGroupResponse] {
+func (client *CachesClient) NewListByResourceGroupPager(resourceGroupName string, options *CachesClientListByResourceGroupOptions) *runtime.Pager[CachesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CachesClientListByResourceGroupResponse]{
 		More: func(page CachesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

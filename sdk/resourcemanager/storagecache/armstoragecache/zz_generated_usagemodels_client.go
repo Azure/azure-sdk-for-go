@@ -55,10 +55,10 @@ func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// List - Get the list of Cache Usage Models available to this subscription.
+// NewListPager - Get the list of Cache Usage Models available to this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.List method.
-func (client *UsageModelsClient) List(options *UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse] {
+func (client *UsageModelsClient) NewListPager(options *UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsageModelsClientListResponse]{
 		More: func(page UsageModelsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

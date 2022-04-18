@@ -331,13 +331,13 @@ func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (Stor
 	return result, nil
 }
 
-// ListByCache - Returns a list of Storage Targets for the specified Cache.
+// NewListByCachePager - Returns a list of Storage Targets for the specified Cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // options - StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache
 // method.
-func (client *StorageTargetsClient) ListByCache(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *runtime.Pager[StorageTargetsClientListByCacheResponse] {
+func (client *StorageTargetsClient) NewListByCachePager(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *runtime.Pager[StorageTargetsClientListByCacheResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageTargetsClientListByCacheResponse]{
 		More: func(page StorageTargetsClientListByCacheResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

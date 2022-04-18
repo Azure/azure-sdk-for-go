@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*JobsClient.ListByResourceGroup` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*JobsClient.ListBySubscription` has been removed
+- Function `*BitLockerKeysClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*BitLockerKeysClient.NewListPager(string, string, *BitLockerKeysClientListOptions) *runtime.Pager[BitLockerKeysClientListResponse]`
+- New function `*JobsClient.NewListByResourceGroupPager(string, *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse]`
+- New function `*LocationsClient.NewListPager(*LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*JobsClient.NewListBySubscriptionPager(*JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

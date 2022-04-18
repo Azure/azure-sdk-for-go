@@ -106,11 +106,11 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - Get Public Maintenance Configuration records
+// NewListPager - Get Public Maintenance Configuration records
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
 // method.
-func (client *PublicMaintenanceConfigurationsClient) List(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
+func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublicMaintenanceConfigurationsClientListResponse]{
 		More: func(page PublicMaintenanceConfigurationsClientListResponse) bool {
 			return false

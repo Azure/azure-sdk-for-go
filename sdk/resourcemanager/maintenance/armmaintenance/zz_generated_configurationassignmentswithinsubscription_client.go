@@ -55,11 +55,11 @@ func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, 
 	return client, nil
 }
 
-// List - Get configuration assignment within a subscription
+// NewListPager - Get configuration assignment within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
 // method.
-func (client *ConfigurationAssignmentsWithinSubscriptionClient) List(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
 		More: func(page ConfigurationAssignmentsWithinSubscriptionClientListResponse) bool {
 			return false

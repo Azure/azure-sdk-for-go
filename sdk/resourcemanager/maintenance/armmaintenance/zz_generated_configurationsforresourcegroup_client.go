@@ -55,12 +55,12 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 	return client, nil
 }
 
-// List - Get Configuration records within a subscription and resource group
+// NewListPager - Get Configuration records within a subscription and resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource Group Name
 // options - ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.List
 // method.
-func (client *ConfigurationsForResourceGroupClient) List(resourceGroupName string, options *ConfigurationsForResourceGroupClientListOptions) *runtime.Pager[ConfigurationsForResourceGroupClientListResponse] {
+func (client *ConfigurationsForResourceGroupClient) NewListPager(resourceGroupName string, options *ConfigurationsForResourceGroupClientListOptions) *runtime.Pager[ConfigurationsForResourceGroupClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationsForResourceGroupClientListResponse]{
 		More: func(page ConfigurationsForResourceGroupClientListResponse) bool {
 			return false

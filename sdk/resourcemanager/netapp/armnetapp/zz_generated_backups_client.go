@@ -410,14 +410,14 @@ func (client *BackupsClient) getVolumeRestoreStatusHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - List all backups for a volume
+// NewListPager - List all backups for a volume
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - BackupsClientListOptions contains the optional parameters for the BackupsClient.List method.
-func (client *BackupsClient) List(resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) *runtime.Pager[BackupsClientListResponse] {
+func (client *BackupsClient) NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *BackupsClientListOptions) *runtime.Pager[BackupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupsClientListResponse]{
 		More: func(page BackupsClientListResponse) bool {
 			return false

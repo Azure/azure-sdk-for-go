@@ -243,12 +243,12 @@ func (client *SnapshotPoliciesClient) getHandleResponse(resp *http.Response) (Sn
 	return result, nil
 }
 
-// List - List snapshot policy
+// NewListPager - List snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.List method.
-func (client *SnapshotPoliciesClient) List(resourceGroupName string, accountName string, options *SnapshotPoliciesClientListOptions) *runtime.Pager[SnapshotPoliciesClientListResponse] {
+func (client *SnapshotPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *SnapshotPoliciesClientListOptions) *runtime.Pager[SnapshotPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SnapshotPoliciesClientListResponse]{
 		More: func(page SnapshotPoliciesClientListResponse) bool {
 			return false

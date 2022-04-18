@@ -55,12 +55,12 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - List vaults for a Netapp Account
+// NewListPager - List vaults for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
-func (client *VaultsClient) List(resourceGroupName string, accountName string, options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
+func (client *VaultsClient) NewListPager(resourceGroupName string, accountName string, options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VaultsClientListResponse]{
 		More: func(page VaultsClientListResponse) bool {
 			return false

@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Subvolumes_List.json
-func ExampleSubvolumesClient_ListByVolume() {
+func ExampleSubvolumesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleSubvolumesClient_ListByVolume() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVolume("<resource-group-name>",
+	pager := client.NewListByVolumePager("<resource-group-name>",
 		"<account-name>",
 		"<pool-name>",
 		"<volume-name>",

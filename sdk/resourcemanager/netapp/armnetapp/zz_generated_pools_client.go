@@ -250,12 +250,12 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGe
 	return result, nil
 }
 
-// List - List all capacity pools in the NetApp Account
+// NewListPager - List all capacity pools in the NetApp Account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - PoolsClientListOptions contains the optional parameters for the PoolsClient.List method.
-func (client *PoolsClient) List(resourceGroupName string, accountName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
+func (client *PoolsClient) NewListPager(resourceGroupName string, accountName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PoolsClientListResponse]{
 		More: func(page PoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

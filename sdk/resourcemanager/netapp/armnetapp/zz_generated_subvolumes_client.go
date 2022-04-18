@@ -357,14 +357,14 @@ func (client *SubvolumesClient) getMetadataCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// ListByVolume - Returns a list of the subvolumes in the volume
+// NewListByVolumePager - Returns a list of the subvolumes in the volume
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - SubvolumesClientListByVolumeOptions contains the optional parameters for the SubvolumesClient.ListByVolume method.
-func (client *SubvolumesClient) ListByVolume(resourceGroupName string, accountName string, poolName string, volumeName string, options *SubvolumesClientListByVolumeOptions) *runtime.Pager[SubvolumesClientListByVolumeResponse] {
+func (client *SubvolumesClient) NewListByVolumePager(resourceGroupName string, accountName string, poolName string, volumeName string, options *SubvolumesClientListByVolumeOptions) *runtime.Pager[SubvolumesClientListByVolumeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubvolumesClientListByVolumeResponse]{
 		More: func(page SubvolumesClientListByVolumeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -279,14 +279,14 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 	return result, nil
 }
 
-// List - List all snapshots associated with the volume
+// NewListPager - List all snapshots associated with the volume
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
-func (client *SnapshotsClient) List(resourceGroupName string, accountName string, poolName string, volumeName string, options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
+func (client *SnapshotsClient) NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListResponse]{
 		More: func(page SnapshotsClientListResponse) bool {
 			return false

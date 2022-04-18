@@ -48,11 +48,11 @@ func NewListTenantConfigurationViolationsClient(credential azcore.TokenCredentia
 	return client, nil
 }
 
-// List - Gets list of items that violate tenant's configuration.
+// NewListPager - Gets list of items that violate tenant's configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ListTenantConfigurationViolationsClientListOptions contains the optional parameters for the ListTenantConfigurationViolationsClient.List
 // method.
-func (client *ListTenantConfigurationViolationsClient) List(options *ListTenantConfigurationViolationsClientListOptions) *runtime.Pager[ListTenantConfigurationViolationsClientListResponse] {
+func (client *ListTenantConfigurationViolationsClient) NewListPager(options *ListTenantConfigurationViolationsClientListOptions) *runtime.Pager[ListTenantConfigurationViolationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ListTenantConfigurationViolationsClientListResponse]{
 		More: func(page ListTenantConfigurationViolationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

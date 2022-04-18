@@ -279,10 +279,10 @@ func (client *ServerGroupsClient) getHandleResponse(resp *http.Response) (Server
 	return result, nil
 }
 
-// List - List all the server groups in a given subscription.
+// NewListPager - List all the server groups in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServerGroupsClientListOptions contains the optional parameters for the ServerGroupsClient.List method.
-func (client *ServerGroupsClient) List(options *ServerGroupsClientListOptions) *runtime.Pager[ServerGroupsClientListResponse] {
+func (client *ServerGroupsClient) NewListPager(options *ServerGroupsClientListOptions) *runtime.Pager[ServerGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerGroupsClientListResponse]{
 		More: func(page ServerGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -337,12 +337,12 @@ func (client *ServerGroupsClient) listHandleResponse(resp *http.Response) (Serve
 	return result, nil
 }
 
-// ListByResourceGroup - List all the server groups in a given resource group.
+// NewListByResourceGroupPager - List all the server groups in a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServerGroupsClientListByResourceGroupOptions contains the optional parameters for the ServerGroupsClient.ListByResourceGroup
 // method.
-func (client *ServerGroupsClient) ListByResourceGroup(resourceGroupName string, options *ServerGroupsClientListByResourceGroupOptions) *runtime.Pager[ServerGroupsClientListByResourceGroupResponse] {
+func (client *ServerGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ServerGroupsClientListByResourceGroupOptions) *runtime.Pager[ServerGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerGroupsClientListByResourceGroupResponse]{
 		More: func(page ServerGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -114,13 +114,13 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 	return result, nil
 }
 
-// ListByServerGroup - Lists servers of a server group.
+// NewListByServerGroupPager - Lists servers of a server group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - ServersClientListByServerGroupOptions contains the optional parameters for the ServersClient.ListByServerGroup
 // method.
-func (client *ServersClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) *runtime.Pager[ServersClientListByServerGroupResponse] {
+func (client *ServersClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) *runtime.Pager[ServersClientListByServerGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListByServerGroupResponse]{
 		More: func(page ServersClientListByServerGroupResponse) bool {
 			return false

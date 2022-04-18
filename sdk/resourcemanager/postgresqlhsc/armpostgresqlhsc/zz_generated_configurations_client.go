@@ -114,14 +114,14 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 	return result, nil
 }
 
-// ListByServer - List all the configurations of a server in server group.
+// NewListByServerPager - List all the configurations of a server in server group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // serverName - The name of the server.
 // options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
 // method.
-func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
+func (client *ConfigurationsClient) NewListByServerPager(resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerResponse]{
 		More: func(page ConfigurationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -188,13 +188,13 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByServerGroup - List all the configurations of a server group.
+// NewListByServerGroupPager - List all the configurations of a server group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - ConfigurationsClientListByServerGroupOptions contains the optional parameters for the ConfigurationsClient.ListByServerGroup
 // method.
-func (client *ConfigurationsClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *ConfigurationsClientListByServerGroupOptions) *runtime.Pager[ConfigurationsClientListByServerGroupResponse] {
+func (client *ConfigurationsClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *ConfigurationsClientListByServerGroupOptions) *runtime.Pager[ConfigurationsClientListByServerGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerGroupResponse]{
 		More: func(page ConfigurationsClientListByServerGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

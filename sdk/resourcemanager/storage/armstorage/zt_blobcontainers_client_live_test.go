@@ -126,7 +126,7 @@ func (testsuite *BlobContainersClientTestSuite) TestBlobContainersCRUD() {
 	testsuite.Require().Equal(blobContainerName, *getResp.Name)
 
 	// list
-	listPager := blobContainersClient.List(testsuite.resourceGroupName, scName, nil)
+	listPager := blobContainersClient.NewListPager(testsuite.resourceGroupName, scName, nil)
 	testsuite.Require().True(listPager.More())
 
 	// clear legal hold

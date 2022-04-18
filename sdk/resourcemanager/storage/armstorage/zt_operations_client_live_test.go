@@ -53,6 +53,6 @@ func TestOperationsClient(t *testing.T) {
 func (testsuite *OperationsClientTestSuite) TestOperations() {
 	operationsClient, err := armstorage.NewOperationsClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	resp := operationsClient.List(nil)
+	resp := operationsClient.NewListPager(nil)
 	testsuite.Require().True(resp.More())
 }

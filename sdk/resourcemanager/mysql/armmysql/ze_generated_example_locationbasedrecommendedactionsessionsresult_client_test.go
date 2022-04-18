@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2018-06-01/examples/RecommendedActionSessionResult.json
-func ExampleLocationBasedRecommendedActionSessionsResultClient_List() {
+func ExampleLocationBasedRecommendedActionSessionsResultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLocationBasedRecommendedActionSessionsResultClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location-name>",
+	pager := client.NewListPager("<location-name>",
 		"<operation-id>",
 		nil)
 	for pager.More() {

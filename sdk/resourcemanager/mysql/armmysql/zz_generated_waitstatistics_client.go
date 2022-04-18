@@ -114,14 +114,14 @@ func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (Wait
 	return result, nil
 }
 
-// ListByServer - Retrieve wait statistics for specified aggregation window.
+// NewListByServerPager - Retrieve wait statistics for specified aggregation window.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for retrieving wait statistics.
 // options - WaitStatisticsClientListByServerOptions contains the optional parameters for the WaitStatisticsClient.ListByServer
 // method.
-func (client *WaitStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse] {
+func (client *WaitStatisticsClient) NewListByServerPager(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WaitStatisticsClientListByServerResponse]{
 		More: func(page WaitStatisticsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

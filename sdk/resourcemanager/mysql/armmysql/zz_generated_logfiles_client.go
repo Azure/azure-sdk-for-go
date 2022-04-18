@@ -54,12 +54,12 @@ func NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// ListByServer - List all the log files in a given server.
+// NewListByServerPager - List all the log files in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.ListByServer method.
-func (client *LogFilesClient) ListByServer(resourceGroupName string, serverName string, options *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse] {
+func (client *LogFilesClient) NewListByServerPager(resourceGroupName string, serverName string, options *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LogFilesClientListByServerResponse]{
 		More: func(page LogFilesClientListByServerResponse) bool {
 			return false

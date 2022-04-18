@@ -91,7 +91,7 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2017-12-01/examples/ServerSecurityAlertsListByServer.json
-func ExampleServerSecurityAlertPoliciesClient_ListByServer() {
+func ExampleServerSecurityAlertPoliciesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -103,7 +103,7 @@ func ExampleServerSecurityAlertPoliciesClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

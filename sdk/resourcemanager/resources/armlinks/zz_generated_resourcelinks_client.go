@@ -181,14 +181,14 @@ func (client *ResourceLinksClient) getHandleResponse(resp *http.Response) (Resou
 	return result, nil
 }
 
-// ListAtSourceScope - Gets a list of resource links at and below the specified source scope.
+// NewListAtSourceScopePager - Gets a list of resource links at and below the specified source scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The fully qualified ID of the scope for getting the resource links. For example, to list resource links at and
 // under a resource group, set the scope to
 // /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup.
 // options - ResourceLinksClientListAtSourceScopeOptions contains the optional parameters for the ResourceLinksClient.ListAtSourceScope
 // method.
-func (client *ResourceLinksClient) ListAtSourceScope(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse] {
+func (client *ResourceLinksClient) NewListAtSourceScopePager(scope string, options *ResourceLinksClientListAtSourceScopeOptions) *runtime.Pager[ResourceLinksClientListAtSourceScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSourceScopeResponse]{
 		More: func(page ResourceLinksClientListAtSourceScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -243,11 +243,11 @@ func (client *ResourceLinksClient) listAtSourceScopeHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListAtSubscription - Gets all the linked resources for the subscription.
+// NewListAtSubscriptionPager - Gets all the linked resources for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceLinksClientListAtSubscriptionOptions contains the optional parameters for the ResourceLinksClient.ListAtSubscription
 // method.
-func (client *ResourceLinksClient) ListAtSubscription(options *ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse] {
+func (client *ResourceLinksClient) NewListAtSubscriptionPager(options *ResourceLinksClientListAtSubscriptionOptions) *runtime.Pager[ResourceLinksClientListAtSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceLinksClientListAtSubscriptionResponse]{
 		More: func(page ResourceLinksClientListAtSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

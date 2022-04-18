@@ -454,12 +454,12 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// ListByCluster - Gets all databases in the specified RedisEnterprise cluster.
+// NewListByClusterPager - Gets all databases in the specified RedisEnterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // options - DatabasesClientListByClusterOptions contains the optional parameters for the DatabasesClient.ListByCluster method.
-func (client *DatabasesClient) ListByCluster(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
+func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByClusterResponse]{
 		More: func(page DatabasesClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

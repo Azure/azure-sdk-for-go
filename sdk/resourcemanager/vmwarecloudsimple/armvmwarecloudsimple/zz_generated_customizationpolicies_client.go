@@ -115,13 +115,13 @@ func (client *CustomizationPoliciesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Returns list of customization policies in region for private cloud
+// NewListPager - Returns list of customization policies in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // options - CustomizationPoliciesClientListOptions contains the optional parameters for the CustomizationPoliciesClient.List
 // method.
-func (client *CustomizationPoliciesClient) List(regionID string, pcName string, options *CustomizationPoliciesClientListOptions) *runtime.Pager[CustomizationPoliciesClientListResponse] {
+func (client *CustomizationPoliciesClient) NewListPager(regionID string, pcName string, options *CustomizationPoliciesClientListOptions) *runtime.Pager[CustomizationPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomizationPoliciesClientListResponse]{
 		More: func(page CustomizationPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

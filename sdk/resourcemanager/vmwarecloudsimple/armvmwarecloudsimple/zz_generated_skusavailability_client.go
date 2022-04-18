@@ -54,11 +54,11 @@ func NewSKUsAvailabilityClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// List - Returns list of available resources in region
+// NewListPager - Returns list of available resources in region
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // options - SKUsAvailabilityClientListOptions contains the optional parameters for the SKUsAvailabilityClient.List method.
-func (client *SKUsAvailabilityClient) List(regionID string, options *SKUsAvailabilityClientListOptions) *runtime.Pager[SKUsAvailabilityClientListResponse] {
+func (client *SKUsAvailabilityClient) NewListPager(regionID string, options *SKUsAvailabilityClientListOptions) *runtime.Pager[SKUsAvailabilityClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsAvailabilityClientListResponse]{
 		More: func(page SKUsAvailabilityClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

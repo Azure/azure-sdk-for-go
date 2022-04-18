@@ -109,11 +109,11 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 	return result, nil
 }
 
-// List - Returns list of private clouds in particular region
+// NewListPager - Returns list of private clouds in particular region
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
-func (client *PrivateCloudsClient) List(regionID string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
+func (client *PrivateCloudsClient) NewListPager(regionID string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListResponse]{
 		More: func(page PrivateCloudsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

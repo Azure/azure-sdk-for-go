@@ -114,13 +114,13 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// List - Return list of virtual networks in location for private cloud
+// NewListPager - Return list of virtual networks in location for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // resourcePoolName - Resource pool used to derive vSphere cluster which contains virtual networks
 // options - VirtualNetworksClientListOptions contains the optional parameters for the VirtualNetworksClient.List method.
-func (client *VirtualNetworksClient) List(regionID string, pcName string, resourcePoolName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
+func (client *VirtualNetworksClient) NewListPager(regionID string, pcName string, resourcePoolName string, options *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworksClientListResponse]{
 		More: func(page VirtualNetworksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

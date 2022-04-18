@@ -115,14 +115,14 @@ func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Returns list of virtual machine templates in region for private cloud
+// NewListPager - Returns list of virtual machine templates in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // pcName - The private cloud name
 // regionID - The region Id (westus, eastus)
 // resourcePoolName - Resource pool used to derive vSphere cluster which contains VM templates
 // options - VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List
 // method.
-func (client *VirtualMachineTemplatesClient) List(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse] {
+func (client *VirtualMachineTemplatesClient) NewListPager(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineTemplatesClientListResponse]{
 		More: func(page VirtualMachineTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

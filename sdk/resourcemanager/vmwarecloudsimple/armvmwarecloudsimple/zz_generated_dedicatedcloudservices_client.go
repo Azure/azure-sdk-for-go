@@ -229,12 +229,12 @@ func (client *DedicatedCloudServicesClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByResourceGroup - Returns list of dedicated cloud services within a resource group
+// NewListByResourceGroupPager - Returns list of dedicated cloud services within a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group
 // options - DedicatedCloudServicesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudServicesClient.ListByResourceGroup
 // method.
-func (client *DedicatedCloudServicesClient) ListByResourceGroup(resourceGroupName string, options *DedicatedCloudServicesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudServicesClientListByResourceGroupResponse] {
+func (client *DedicatedCloudServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedCloudServicesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudServicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListByResourceGroupResponse]{
 		More: func(page DedicatedCloudServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *DedicatedCloudServicesClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// ListBySubscription - Returns list of dedicated cloud services within a subscription
+// NewListBySubscriptionPager - Returns list of dedicated cloud services within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DedicatedCloudServicesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudServicesClient.ListBySubscription
 // method.
-func (client *DedicatedCloudServicesClient) ListBySubscription(options *DedicatedCloudServicesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudServicesClientListBySubscriptionResponse] {
+func (client *DedicatedCloudServicesClient) NewListBySubscriptionPager(options *DedicatedCloudServicesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudServicesClientListBySubscriptionResponse]{
 		More: func(page DedicatedCloudServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

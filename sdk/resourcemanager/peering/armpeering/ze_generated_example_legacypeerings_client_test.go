@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListLegacyPeerings.json
-func ExampleLegacyPeeringsClient_List() {
+func ExampleLegacyPeeringsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLegacyPeeringsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<peering-location>",
+	pager := client.NewListPager("<peering-location>",
 		armpeering.LegacyPeeringsKindExchange,
 		&armpeering.LegacyPeeringsClientListOptions{Asn: nil})
 	for pager.More() {

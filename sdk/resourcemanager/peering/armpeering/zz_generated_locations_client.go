@@ -54,11 +54,11 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// List - Lists all of the available peering locations for the specified kind of peering.
+// NewListPager - Lists all of the available peering locations for the specified kind of peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // kind - The kind of the peering.
 // options - LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
-func (client *LocationsClient) List(kind PeeringLocationsKind, options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
+func (client *LocationsClient) NewListPager(kind PeeringLocationsKind, options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationsClientListResponse]{
 		More: func(page LocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

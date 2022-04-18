@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByResource` has been removed
+- Function `*PrivateLinkResourcesClient.ListByResource` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkResourcesClient.NewListByResourcePager(*PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByResourcePager(string, string, *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

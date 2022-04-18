@@ -100,7 +100,7 @@ func ExamplePrefixesClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListPrefixesByPeeringService.json
-func ExamplePrefixesClient_ListByPeeringService() {
+func ExamplePrefixesClient_NewListByPeeringServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -112,7 +112,7 @@ func ExamplePrefixesClient_ListByPeeringService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPeeringService("<resource-group-name>",
+	pager := client.NewListByPeeringServicePager("<resource-group-name>",
 		"<peering-service-name>",
 		&armpeering.PrefixesClientListByPeeringServiceOptions{Expand: nil})
 	for pager.More() {

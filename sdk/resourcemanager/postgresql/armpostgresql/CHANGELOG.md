@@ -1,5 +1,43 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ReplicasClient.ListByServer` has been removed
+- Function `*ServerKeysClient.List` has been removed
+- Function `*ServersClient.ListByResourceGroup` has been removed
+- Function `*ServerSecurityAlertPoliciesClient.ListByServer` has been removed
+- Function `*LogFilesClient.ListByServer` has been removed
+- Function `*ServerAdministratorsClient.List` has been removed
+- Function `*DatabasesClient.ListByServer` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByServer` has been removed
+- Function `*ConfigurationsClient.ListByServer` has been removed
+- Function `*ServerBasedPerformanceTierClient.List` has been removed
+- Function `*FirewallRulesClient.ListByServer` has been removed
+- Function `*VirtualNetworkRulesClient.ListByServer` has been removed
+- Function `*ServersClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.ListByServer` has been removed
+- Function `*LocationBasedPerformanceTierClient.List` has been removed
+
+### Features Added
+
+- New function `*ServerAdministratorsClient.NewListPager(string, string, *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse]`
+- New function `*ServerSecurityAlertPoliciesClient.NewListByServerPager(string, string, *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse]`
+- New function `*ServerBasedPerformanceTierClient.NewListPager(string, string, *ServerBasedPerformanceTierClientListOptions) *runtime.Pager[ServerBasedPerformanceTierClientListResponse]`
+- New function `*ConfigurationsClient.NewListByServerPager(string, string, *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse]`
+- New function `*FirewallRulesClient.NewListByServerPager(string, string, *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByServerPager(string, string, *PrivateEndpointConnectionsClientListByServerOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServerResponse]`
+- New function `*ServerKeysClient.NewListPager(string, string, *ServerKeysClientListOptions) *runtime.Pager[ServerKeysClientListResponse]`
+- New function `*ReplicasClient.NewListByServerPager(string, string, *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse]`
+- New function `*LocationBasedPerformanceTierClient.NewListPager(string, *LocationBasedPerformanceTierClientListOptions) *runtime.Pager[LocationBasedPerformanceTierClientListResponse]`
+- New function `*ServersClient.NewListByResourceGroupPager(string, *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse]`
+- New function `*ServersClient.NewListPager(*ServersClientListOptions) *runtime.Pager[ServersClientListResponse]`
+- New function `*LogFilesClient.NewListByServerPager(string, string, *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse]`
+- New function `*DatabasesClient.NewListByServerPager(string, string, *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse]`
+- New function `*VirtualNetworkRulesClient.NewListByServerPager(string, string, *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByServerPager(string, string, *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

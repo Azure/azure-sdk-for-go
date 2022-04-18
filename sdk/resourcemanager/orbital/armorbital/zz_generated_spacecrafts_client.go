@@ -235,11 +235,11 @@ func (client *SpacecraftsClient) getHandleResponse(resp *http.Response) (Spacecr
 	return result, nil
 }
 
-// List - Return list of spacecrafts
+// NewListPager - Return list of spacecrafts
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - SpacecraftsClientListOptions contains the optional parameters for the SpacecraftsClient.List method.
-func (client *SpacecraftsClient) List(resourceGroupName string, options *SpacecraftsClientListOptions) *runtime.Pager[SpacecraftsClientListResponse] {
+func (client *SpacecraftsClient) NewListPager(resourceGroupName string, options *SpacecraftsClientListOptions) *runtime.Pager[SpacecraftsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpacecraftsClientListResponse]{
 		More: func(page SpacecraftsClientListResponse) bool {
 			return false
@@ -356,11 +356,11 @@ func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// ListBySubscription - Return list of spacecrafts
+// NewListBySubscriptionPager - Return list of spacecrafts
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SpacecraftsClientListBySubscriptionOptions contains the optional parameters for the SpacecraftsClient.ListBySubscription
 // method.
-func (client *SpacecraftsClient) ListBySubscription(options *SpacecraftsClientListBySubscriptionOptions) *runtime.Pager[SpacecraftsClientListBySubscriptionResponse] {
+func (client *SpacecraftsClient) NewListBySubscriptionPager(options *SpacecraftsClientListBySubscriptionOptions) *runtime.Pager[SpacecraftsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpacecraftsClientListBySubscriptionResponse]{
 		More: func(page SpacecraftsClientListBySubscriptionResponse) bool {
 			return false

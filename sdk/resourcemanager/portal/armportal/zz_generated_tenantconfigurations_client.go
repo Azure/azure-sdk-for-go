@@ -185,11 +185,11 @@ func (client *TenantConfigurationsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Gets list of the tenant configurations.
+// NewListPager - Gets list of the tenant configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TenantConfigurationsClientListOptions contains the optional parameters for the TenantConfigurationsClient.List
 // method.
-func (client *TenantConfigurationsClient) List(options *TenantConfigurationsClientListOptions) *runtime.Pager[TenantConfigurationsClientListResponse] {
+func (client *TenantConfigurationsClient) NewListPager(options *TenantConfigurationsClientListOptions) *runtime.Pager[TenantConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TenantConfigurationsClientListResponse]{
 		More: func(page TenantConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,29 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ServerGroupsClient.ListByResourceGroup` has been removed
+- Function `*ConfigurationsClient.ListByServer` has been removed
+- Function `*FirewallRulesClient.ListByServerGroup` has been removed
+- Function `*RolesClient.ListByServerGroup` has been removed
+- Function `*ConfigurationsClient.ListByServerGroup` has been removed
+- Function `*ServerGroupsClient.List` has been removed
+- Function `*ServersClient.ListByServerGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*ServerGroupsClient.NewListByResourceGroupPager(string, *ServerGroupsClientListByResourceGroupOptions) *runtime.Pager[ServerGroupsClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ServerGroupsClient.NewListPager(*ServerGroupsClientListOptions) *runtime.Pager[ServerGroupsClientListResponse]`
+- New function `*ConfigurationsClient.NewListByServerGroupPager(string, string, *ConfigurationsClientListByServerGroupOptions) *runtime.Pager[ConfigurationsClientListByServerGroupResponse]`
+- New function `*FirewallRulesClient.NewListByServerGroupPager(string, string, *FirewallRulesClientListByServerGroupOptions) *runtime.Pager[FirewallRulesClientListByServerGroupResponse]`
+- New function `*ConfigurationsClient.NewListByServerPager(string, string, string, *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse]`
+- New function `*RolesClient.NewListByServerGroupPager(string, string, *RolesClientListByServerGroupOptions) *runtime.Pager[RolesClientListByServerGroupResponse]`
+- New function `*ServersClient.NewListByServerGroupPager(string, string, *ServersClientListByServerGroupOptions) *runtime.Pager[ServersClientListByServerGroupResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

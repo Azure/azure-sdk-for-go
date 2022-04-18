@@ -53,7 +53,7 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
-// ListQueryResultsForManagementGroup - Queries policy states for the resources under the management group.
+// NewListQueryResultsForManagementGroupPager - Queries policy states for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -62,7 +62,7 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 // method.
 // options - PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForManagementGroup(policyStatesResource PolicyStatesResource, managementGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForManagementGroupResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForManagementGroupPager(policyStatesResource PolicyStatesResource, managementGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForManagementGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -146,7 +146,7 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleRespon
 	return result, nil
 }
 
-// ListQueryResultsForPolicyDefinition - Queries policy states for the subscription level policy definition.
+// NewListQueryResultsForPolicyDefinitionPager - Queries policy states for the subscription level policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -156,7 +156,7 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleRespon
 // method.
 // options - PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicyDefinition
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForPolicyDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForPolicyDefinitionPager(policyStatesResource PolicyStatesResource, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForPolicyDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -244,7 +244,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleRespo
 	return result, nil
 }
 
-// ListQueryResultsForPolicySetDefinition - Queries policy states for the subscription level policy set definition.
+// NewListQueryResultsForPolicySetDefinitionPager - Queries policy states for the subscription level policy set definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -254,7 +254,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleRespo
 // method.
 // options - PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicySetDefinition
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForPolicySetDefinition(policyStatesResource PolicyStatesResource, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForPolicySetDefinitionPager(policyStatesResource PolicyStatesResource, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -342,7 +342,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionHandleRe
 	return result, nil
 }
 
-// ListQueryResultsForResource - Queries policy states for the resource.
+// NewListQueryResultsForResourcePager - Queries policy states for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -351,7 +351,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionHandleRe
 // method.
 // options - PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResource
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForResource(policyStatesResource PolicyStatesResource, resourceID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForResourcePager(policyStatesResource PolicyStatesResource, resourceID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -434,7 +434,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceHandleResponse(resp
 	return result, nil
 }
 
-// ListQueryResultsForResourceGroup - Queries policy states for the resources under the resource group.
+// NewListQueryResultsForResourceGroupPager - Queries policy states for the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -444,7 +444,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceHandleResponse(resp
 // method.
 // options - PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResourceGroup
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForResourceGroup(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupPager(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -531,7 +531,8 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse
 	return result, nil
 }
 
-// ListQueryResultsForResourceGroupLevelPolicyAssignment - Queries policy states for the resource group level policy assignment.
+// NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager - Queries policy states for the resource group level policy
+// assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -542,7 +543,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse
 // method.
 // options - PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
-func (client *PolicyStatesClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -634,7 +635,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 	return result, nil
 }
 
-// ListQueryResultsForSubscription - Queries policy states for the resources under the subscription.
+// NewListQueryResultsForSubscriptionPager - Queries policy states for the resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -643,7 +644,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 // method.
 // options - PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForSubscription
 // method.
-func (client *PolicyStatesClient) ListQueryResultsForSubscription(policyStatesResource PolicyStatesResource, subscriptionID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionPager(policyStatesResource PolicyStatesResource, subscriptionID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForSubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -726,7 +727,8 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(
 	return result, nil
 }
 
-// ListQueryResultsForSubscriptionLevelPolicyAssignment - Queries policy states for the subscription level policy assignment.
+// NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager - Queries policy states for the subscription level policy
+// assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
@@ -736,7 +738,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(
 // method.
 // options - PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
-func (client *PolicyStatesClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyStatesResource PolicyStatesResource, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
+func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyStatesResource PolicyStatesResource, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

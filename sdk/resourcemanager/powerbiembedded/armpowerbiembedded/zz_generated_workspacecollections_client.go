@@ -339,12 +339,12 @@ func (client *WorkspaceCollectionsClient) getByNameHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResourceGroup - Retrieves all existing Power BI workspace collections in the specified resource group.
+// NewListByResourceGroupPager - Retrieves all existing Power BI workspace collections in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group
 // options - WorkspaceCollectionsClientListByResourceGroupOptions contains the optional parameters for the WorkspaceCollectionsClient.ListByResourceGroup
 // method.
-func (client *WorkspaceCollectionsClient) ListByResourceGroup(resourceGroupName string, options *WorkspaceCollectionsClientListByResourceGroupOptions) *runtime.Pager[WorkspaceCollectionsClientListByResourceGroupResponse] {
+func (client *WorkspaceCollectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspaceCollectionsClientListByResourceGroupOptions) *runtime.Pager[WorkspaceCollectionsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceCollectionsClientListByResourceGroupResponse]{
 		More: func(page WorkspaceCollectionsClientListByResourceGroupResponse) bool {
 			return false
@@ -397,11 +397,11 @@ func (client *WorkspaceCollectionsClient) listByResourceGroupHandleResponse(resp
 	return result, nil
 }
 
-// ListBySubscription - Retrieves all existing Power BI workspace collections in the specified subscription.
+// NewListBySubscriptionPager - Retrieves all existing Power BI workspace collections in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkspaceCollectionsClientListBySubscriptionOptions contains the optional parameters for the WorkspaceCollectionsClient.ListBySubscription
 // method.
-func (client *WorkspaceCollectionsClient) ListBySubscription(options *WorkspaceCollectionsClientListBySubscriptionOptions) *runtime.Pager[WorkspaceCollectionsClientListBySubscriptionResponse] {
+func (client *WorkspaceCollectionsClient) NewListBySubscriptionPager(options *WorkspaceCollectionsClientListBySubscriptionOptions) *runtime.Pager[WorkspaceCollectionsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceCollectionsClientListBySubscriptionResponse]{
 		More: func(page WorkspaceCollectionsClientListBySubscriptionResponse) bool {
 			return false

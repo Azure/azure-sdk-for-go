@@ -54,10 +54,10 @@ func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// List - Lists all of the available peering service locations for the specified kind of peering.
+// NewListPager - Lists all of the available peering service locations for the specified kind of peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.List method.
-func (client *ServiceProvidersClient) List(options *ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse] {
+func (client *ServiceProvidersClient) NewListPager(options *ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceProvidersClientListResponse]{
 		More: func(page ServiceProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

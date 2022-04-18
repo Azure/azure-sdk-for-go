@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PrivateLinkResources_ListByResource.json
-func ExamplePrivateLinkResourcesClient_ListByResource() {
+func ExamplePrivateLinkResourcesClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExamplePrivateLinkResourcesClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource(nil)
+	pager := client.NewListByResourcePager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

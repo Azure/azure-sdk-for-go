@@ -105,12 +105,12 @@ func (client *AvailableGroundStationsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByCapability - Returns list of available ground stations
+// NewListByCapabilityPager - Returns list of available ground stations
 // If the operation fails it returns an *azcore.ResponseError type.
 // capability - Ground Station Capability
 // options - AvailableGroundStationsClientListByCapabilityOptions contains the optional parameters for the AvailableGroundStationsClient.ListByCapability
 // method.
-func (client *AvailableGroundStationsClient) ListByCapability(capability CapabilityType, options *AvailableGroundStationsClientListByCapabilityOptions) *runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse] {
+func (client *AvailableGroundStationsClient) NewListByCapabilityPager(capability CapabilityType, options *AvailableGroundStationsClientListByCapabilityOptions) *runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableGroundStationsClientListByCapabilityResponse]{
 		More: func(page AvailableGroundStationsClientListByCapabilityResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,77 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*RemediationsClient.ListDeploymentsAtSubscription` has been removed
+- Function `*AttestationsClient.ListForResource` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForResource` has been removed
+- Function `*RemediationsClient.ListForResourceGroup` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForPolicyDefinition` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForSubscription` has been removed
+- Function `*RemediationsClient.ListDeploymentsAtManagementGroup` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForPolicySetDefinition` has been removed
+- Function `*PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup` has been removed
+- Function `*AttestationsClient.ListForSubscription` has been removed
+- Function `*RemediationsClient.ListDeploymentsAtResourceGroup` has been removed
+- Function `*PolicyTrackedResourcesClient.ListQueryResultsForSubscription` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForResourceGroup` has been removed
+- Function `*RemediationsClient.ListForSubscription` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForPolicySetDefinition` has been removed
+- Function `*PolicyMetadataClient.List` has been removed
+- Function `*PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForPolicyDefinition` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForManagementGroup` has been removed
+- Function `*PolicyStatesClient.ListQueryResultsForManagementGroup` has been removed
+- Function `*AttestationsClient.ListForResourceGroup` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForSubscription` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForResourceGroup` has been removed
+- Function `*RemediationsClient.ListForManagementGroup` has been removed
+- Function `*PolicyTrackedResourcesClient.ListQueryResultsForResource` has been removed
+- Function `*PolicyEventsClient.ListQueryResultsForResource` has been removed
+- Function `*RemediationsClient.ListForResource` has been removed
+- Function `*RemediationsClient.ListDeploymentsAtResource` has been removed
+
+### Features Added
+
+- New function `*RemediationsClient.NewListDeploymentsAtSubscriptionPager(string, *QueryOptions, *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse]`
+- New function `*PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager(string, PolicyTrackedResourcesResourceType, *QueryOptions, *PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(PolicyEventsResourceType, string, string, *QueryOptions, *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForManagementGroupPager(PolicyStatesResource, string, *QueryOptions, *PolicyStatesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForManagementGroupResponse]`
+- New function `*RemediationsClient.NewListDeploymentsAtManagementGroupPager(string, string, *QueryOptions, *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(PolicyEventsResourceType, string, string, string, *QueryOptions, *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]`
+- New function `*RemediationsClient.NewListForResourceGroupPager(string, *QueryOptions, *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(PolicyStatesResource, string, string, *QueryOptions, *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]`
+- New function `*PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager(PolicyTrackedResourcesResourceType, *QueryOptions, *PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse]`
+- New function `*PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager(string, PolicyTrackedResourcesResourceType, *QueryOptions, *PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse]`
+- New function `*RemediationsClient.NewListDeploymentsAtResourcePager(string, string, *QueryOptions, *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse]`
+- New function `*PolicyMetadataClient.NewListPager(*QueryOptions, *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse]`
+- New function `*PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager(string, PolicyTrackedResourcesResourceType, *QueryOptions, *PolicyTrackedResourcesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForPolicySetDefinitionPager(PolicyEventsResourceType, string, string, *QueryOptions, *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForResourcePager(PolicyEventsResourceType, string, *QueryOptions, *PolicyEventsClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceResponse]`
+- New function `*RemediationsClient.NewListDeploymentsAtResourceGroupPager(string, string, *QueryOptions, *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForPolicyDefinitionPager(PolicyEventsResourceType, string, string, *QueryOptions, *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForManagementGroupPager(PolicyEventsResourceType, string, *QueryOptions, *PolicyEventsClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForManagementGroupResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForPolicySetDefinitionPager(PolicyStatesResource, string, string, *QueryOptions, *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]`
+- New function `*RemediationsClient.NewListForManagementGroupPager(string, *QueryOptions, *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse]`
+- New function `*RemediationsClient.NewListForResourcePager(string, *QueryOptions, *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForResourceGroupPager(PolicyStatesResource, string, string, *QueryOptions, *PolicyStatesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(PolicyStatesResource, string, string, string, *QueryOptions, *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForSubscriptionPager(PolicyStatesResource, string, *QueryOptions, *PolicyStatesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionResponse]`
+- New function `*RemediationsClient.NewListForSubscriptionPager(*QueryOptions, *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse]`
+- New function `*AttestationsClient.NewListForResourceGroupPager(string, *QueryOptions, *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse]`
+- New function `*AttestationsClient.NewListForSubscriptionPager(*QueryOptions, *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForResourcePager(PolicyStatesResource, string, *QueryOptions, *PolicyStatesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceResponse]`
+- New function `*AttestationsClient.NewListForResourcePager(string, *QueryOptions, *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse]`
+- New function `*PolicyStatesClient.NewListQueryResultsForPolicyDefinitionPager(PolicyStatesResource, string, string, *QueryOptions, *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForResourceGroupPager(PolicyEventsResourceType, string, string, *QueryOptions, *PolicyEventsClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupResponse]`
+- New function `*PolicyEventsClient.NewListQueryResultsForSubscriptionPager(PolicyEventsResourceType, string, *QueryOptions, *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

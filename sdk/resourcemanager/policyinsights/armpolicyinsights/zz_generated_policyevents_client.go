@@ -53,7 +53,7 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 	return client, nil
 }
 
-// ListQueryResultsForManagementGroup - Queries policy events for the resources under the management group.
+// NewListQueryResultsForManagementGroupPager - Queries policy events for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // managementGroupName - Management group name.
@@ -61,7 +61,7 @@ func NewPolicyEventsClient(credential azcore.TokenCredential, options *arm.Clien
 // method.
 // options - PolicyEventsClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForManagementGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForManagementGroup(policyEventsResource PolicyEventsResourceType, managementGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForManagementGroupResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForManagementGroupPager(policyEventsResource PolicyEventsResourceType, managementGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForManagementGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -145,7 +145,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 	return result, nil
 }
 
-// ListQueryResultsForPolicyDefinition - Queries policy events for the subscription level policy definition.
+// NewListQueryResultsForPolicyDefinitionPager - Queries policy events for the subscription level policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -154,7 +154,7 @@ func (client *PolicyEventsClient) listQueryResultsForManagementGroupHandleRespon
 // method.
 // options - PolicyEventsClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicyDefinition
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicyDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForPolicyDefinitionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicyDefinitionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForPolicyDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -242,7 +242,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 	return result, nil
 }
 
-// ListQueryResultsForPolicySetDefinition - Queries policy events for the subscription level policy set definition.
+// NewListQueryResultsForPolicySetDefinitionPager - Queries policy events for the subscription level policy set definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -251,7 +251,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicyDefinitionHandleRespo
 // method.
 // options - PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForPolicySetDefinition
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForPolicySetDefinition(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForPolicySetDefinitionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForPolicySetDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -339,7 +339,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 	return result, nil
 }
 
-// ListQueryResultsForResource - Queries policy events for the resource.
+// NewListQueryResultsForResourcePager - Queries policy events for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // resourceID - Resource ID.
@@ -347,7 +347,7 @@ func (client *PolicyEventsClient) listQueryResultsForPolicySetDefinitionHandleRe
 // method.
 // options - PolicyEventsClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResource
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResource(policyEventsResource PolicyEventsResourceType, resourceID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForResourcePager(policyEventsResource PolicyEventsResourceType, resourceID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -430,7 +430,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 	return result, nil
 }
 
-// ListQueryResultsForResourceGroup - Queries policy events for the resources under the resource group.
+// NewListQueryResultsForResourceGroupPager - Queries policy events for the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -439,7 +439,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceHandleResponse(resp
 // method.
 // options - PolicyEventsClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForResourceGroup
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroup(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForResourceGroupPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -526,7 +526,8 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 	return result, nil
 }
 
-// ListQueryResultsForResourceGroupLevelPolicyAssignment - Queries policy events for the resource group level policy assignment.
+// NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager - Queries policy events for the resource group level policy
+// assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -536,7 +537,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupHandleResponse
 // method.
 // options - PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyEventsClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
-func (client *PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -628,7 +629,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 	return result, nil
 }
 
-// ListQueryResultsForSubscription - Queries policy events for the resources under the subscription.
+// NewListQueryResultsForSubscriptionPager - Queries policy events for the resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -636,7 +637,7 @@ func (client *PolicyEventsClient) listQueryResultsForResourceGroupLevelPolicyAss
 // method.
 // options - PolicyEventsClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyEventsClient.ListQueryResultsForSubscription
 // method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscription(policyEventsResource PolicyEventsResourceType, subscriptionID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForSubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -719,7 +720,8 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 	return result, nil
 }
 
-// ListQueryResultsForSubscriptionLevelPolicyAssignment - Queries policy events for the subscription level policy assignment.
+// NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager - Queries policy events for the subscription level policy
+// assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyEventsResource - The name of the virtual resource under PolicyEvents resource type; only "default" is allowed.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -728,7 +730,7 @@ func (client *PolicyEventsClient) listQueryResultsForSubscriptionHandleResponse(
 // method.
 // options - PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyEventsClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
-func (client *PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignment(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
+func (client *PolicyEventsClient) NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyEventsResource PolicyEventsResourceType, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
 		More: func(page PolicyEventsClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

@@ -1,5 +1,47 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CdnPeeringPrefixesClient.List` has been removed
+- Function `*RegisteredPrefixesClient.ListByPeering` has been removed
+- Function `*PeerAsnsClient.ListBySubscription` has been removed
+- Function `*ConnectionMonitorTestsClient.ListByPeeringService` has been removed
+- Function `*PrefixesClient.ListByPeeringService` has been removed
+- Function `*ServicesClient.ListBySubscription` has been removed
+- Function `*PeeringsClient.ListByResourceGroup` has been removed
+- Function `*PeeringsClient.ListBySubscription` has been removed
+- Function `*RegisteredAsnsClient.ListByPeering` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*LegacyPeeringsClient.List` has been removed
+- Function `*ServicesClient.ListByResourceGroup` has been removed
+- Function `*ReceivedRoutesClient.ListByPeering` has been removed
+- Function `*ServiceProvidersClient.List` has been removed
+- Function `*ServiceLocationsClient.List` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*ServiceCountriesClient.List` has been removed
+
+### Features Added
+
+- New function `*ServicesClient.NewListByResourceGroupPager(string, *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse]`
+- New function `*PeerAsnsClient.NewListBySubscriptionPager(*PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse]`
+- New function `*ReceivedRoutesClient.NewListByPeeringPager(string, string, *ReceivedRoutesClientListByPeeringOptions) *runtime.Pager[ReceivedRoutesClientListByPeeringResponse]`
+- New function `*CdnPeeringPrefixesClient.NewListPager(string, *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse]`
+- New function `*ConnectionMonitorTestsClient.NewListByPeeringServicePager(string, string, *ConnectionMonitorTestsClientListByPeeringServiceOptions) *runtime.Pager[ConnectionMonitorTestsClientListByPeeringServiceResponse]`
+- New function `*RegisteredAsnsClient.NewListByPeeringPager(string, string, *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse]`
+- New function `*ServiceCountriesClient.NewListPager(*ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse]`
+- New function `*ServicesClient.NewListBySubscriptionPager(*ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse]`
+- New function `*PeeringsClient.NewListByResourceGroupPager(string, *PeeringsClientListByResourceGroupOptions) *runtime.Pager[PeeringsClientListByResourceGroupResponse]`
+- New function `*ServiceLocationsClient.NewListPager(*ServiceLocationsClientListOptions) *runtime.Pager[ServiceLocationsClientListResponse]`
+- New function `*RegisteredPrefixesClient.NewListByPeeringPager(string, string, *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse]`
+- New function `*LegacyPeeringsClient.NewListPager(string, LegacyPeeringsKind, *LegacyPeeringsClientListOptions) *runtime.Pager[LegacyPeeringsClientListResponse]`
+- New function `*LocationsClient.NewListPager(PeeringLocationsKind, *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*ServiceProvidersClient.NewListPager(*ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse]`
+- New function `*PrefixesClient.NewListByPeeringServicePager(string, string, *PrefixesClientListByPeeringServiceOptions) *runtime.Pager[PrefixesClientListByPeeringServiceResponse]`
+- New function `*PeeringsClient.NewListBySubscriptionPager(*PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

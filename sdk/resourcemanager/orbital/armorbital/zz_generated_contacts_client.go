@@ -249,12 +249,12 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 	return result, nil
 }
 
-// List - Returns list of contacts by spacecraftName
+// NewListPager - Returns list of contacts by spacecraftName
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // spacecraftName - Spacecraft ID
 // options - ContactsClientListOptions contains the optional parameters for the ContactsClient.List method.
-func (client *ContactsClient) List(resourceGroupName string, spacecraftName string, options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
+func (client *ContactsClient) NewListPager(resourceGroupName string, spacecraftName string, options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContactsClientListResponse]{
 		More: func(page ContactsClientListResponse) bool {
 			return false

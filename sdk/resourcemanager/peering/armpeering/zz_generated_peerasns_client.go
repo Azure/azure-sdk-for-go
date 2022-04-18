@@ -196,11 +196,11 @@ func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsCl
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the peer ASNs under the given subscription.
+// NewListBySubscriptionPager - Lists all of the peer ASNs under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PeerAsnsClientListBySubscriptionOptions contains the optional parameters for the PeerAsnsClient.ListBySubscription
 // method.
-func (client *PeerAsnsClient) ListBySubscription(options *PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse] {
+func (client *PeerAsnsClient) NewListBySubscriptionPager(options *PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PeerAsnsClientListBySubscriptionResponse]{
 		More: func(page PeerAsnsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

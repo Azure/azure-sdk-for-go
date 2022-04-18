@@ -228,13 +228,13 @@ func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (Regi
 	return result, nil
 }
 
-// ListByPeering - Lists all registered ASNs under the given subscription, resource group and peering.
+// NewListByPeeringPager - Lists all registered ASNs under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - RegisteredAsnsClientListByPeeringOptions contains the optional parameters for the RegisteredAsnsClient.ListByPeering
 // method.
-func (client *RegisteredAsnsClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse] {
+func (client *RegisteredAsnsClient) NewListByPeeringPager(resourceGroupName string, peeringName string, options *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegisteredAsnsClientListByPeeringResponse]{
 		More: func(page RegisteredAsnsClientListByPeeringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

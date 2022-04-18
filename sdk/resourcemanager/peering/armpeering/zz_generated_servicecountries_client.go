@@ -54,10 +54,10 @@ func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// List - Lists all of the available countries for peering service.
+// NewListPager - Lists all of the available countries for peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.List method.
-func (client *ServiceCountriesClient) List(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
+func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceCountriesClientListResponse]{
 		More: func(page ServiceCountriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

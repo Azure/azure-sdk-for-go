@@ -230,10 +230,10 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 	return result, nil
 }
 
-// List - List all the servers in a given subscription.
+// NewListPager - List all the servers in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
-func (client *ServersClient) List(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
+func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListResponse]{
 		More: func(page ServersClientListResponse) bool {
 			return false
@@ -282,12 +282,12 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 	return result, nil
 }
 
-// ListByResourceGroup - List all the servers in a given resource group.
+// NewListByResourceGroupPager - List all the servers in a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup
 // method.
-func (client *ServersClient) ListByResourceGroup(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
+func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListByResourceGroupResponse]{
 		More: func(page ServersClientListByResourceGroupResponse) bool {
 			return false

@@ -247,13 +247,13 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 	return result, nil
 }
 
-// ListByServer - List all the firewall rules in a given PostgreSQL server.
+// NewListByServerPager - List all the firewall rules in a given PostgreSQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - FirewallRulesClientListByServerOptions contains the optional parameters for the FirewallRulesClient.ListByServer
 // method.
-func (client *FirewallRulesClient) ListByServer(resourceGroupName string, serverName string, options *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse] {
+func (client *FirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallRulesClientListByServerResponse]{
 		More: func(page FirewallRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

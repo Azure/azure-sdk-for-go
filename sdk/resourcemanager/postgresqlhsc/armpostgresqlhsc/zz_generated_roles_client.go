@@ -185,12 +185,12 @@ func (client *RolesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// ListByServerGroup - List all the roles in a given server group.
+// NewListByServerGroupPager - List all the roles in a given server group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - RolesClientListByServerGroupOptions contains the optional parameters for the RolesClient.ListByServerGroup method.
-func (client *RolesClient) ListByServerGroup(resourceGroupName string, serverGroupName string, options *RolesClientListByServerGroupOptions) *runtime.Pager[RolesClientListByServerGroupResponse] {
+func (client *RolesClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *RolesClientListByServerGroupOptions) *runtime.Pager[RolesClientListByServerGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RolesClientListByServerGroupResponse]{
 		More: func(page RolesClientListByServerGroupResponse) bool {
 			return false

@@ -249,12 +249,12 @@ func (client *ServicesClient) initializeConnectionMonitorCreateRequest(ctx conte
 	return req, nil
 }
 
-// ListByResourceGroup - Lists all of the peering services under the given subscription and resource group.
+// NewListByResourceGroupPager - Lists all of the peering services under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup
 // method.
-func (client *ServicesClient) ListByResourceGroup(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
+func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListByResourceGroupResponse]{
 		More: func(page ServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -313,11 +313,11 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the peerings under the given subscription.
+// NewListBySubscriptionPager - Lists all of the peerings under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription
 // method.
-func (client *ServicesClient) ListBySubscription(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
+func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*DashboardsClient.ListBySubscription` has been removed
+- Function `*ListTenantConfigurationViolationsClient.List` has been removed
+- Function `*TenantConfigurationsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*DashboardsClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*ListTenantConfigurationViolationsClient.NewListPager(*ListTenantConfigurationViolationsClientListOptions) *runtime.Pager[ListTenantConfigurationViolationsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DashboardsClient.NewListBySubscriptionPager(*DashboardsClientListBySubscriptionOptions) *runtime.Pager[DashboardsClientListBySubscriptionResponse]`
+- New function `*TenantConfigurationsClient.NewListPager(*TenantConfigurationsClientListOptions) *runtime.Pager[TenantConfigurationsClientListResponse]`
+- New function `*DashboardsClient.NewListByResourceGroupPager(string, *DashboardsClientListByResourceGroupOptions) *runtime.Pager[DashboardsClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

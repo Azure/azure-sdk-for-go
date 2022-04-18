@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/GetPeeringReceivedRoutes.json
-func ExampleReceivedRoutesClient_ListByPeering() {
+func ExampleReceivedRoutesClient_NewListByPeeringPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleReceivedRoutesClient_ListByPeering() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPeering("<resource-group-name>",
+	pager := client.NewListByPeeringPager("<resource-group-name>",
 		"<peering-name>",
 		&armpeering.ReceivedRoutesClientListByPeeringOptions{Prefix: to.Ptr("<prefix>"),
 			AsPath:                  to.Ptr("<as-path>"),

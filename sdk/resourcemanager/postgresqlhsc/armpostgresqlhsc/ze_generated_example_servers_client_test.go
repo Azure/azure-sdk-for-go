@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2020-10-05-privatepreview/examples/ServerListByServerGroup.json
-func ExampleServersClient_ListByServerGroup() {
+func ExampleServersClient_NewListByServerGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleServersClient_ListByServerGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServerGroup("<resource-group-name>",
+	pager := client.NewListByServerGroupPager("<resource-group-name>",
 		"<server-group-name>",
 		nil)
 	for pager.More() {

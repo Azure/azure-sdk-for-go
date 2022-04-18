@@ -55,12 +55,12 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// List - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+// NewListPager - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // peeringLocation - The location of the peering.
 // kind - The kind of the peering.
 // options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
-func (client *LegacyPeeringsClient) List(peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) *runtime.Pager[LegacyPeeringsClientListResponse] {
+func (client *LegacyPeeringsClient) NewListPager(peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) *runtime.Pager[LegacyPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LegacyPeeringsClientListResponse]{
 		More: func(page LegacyPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -212,12 +212,12 @@ func (client *DashboardsClient) getHandleResponse(resp *http.Response) (Dashboar
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the Dashboards within a resource group.
+// NewListByResourceGroupPager - Gets all the Dashboards within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DashboardsClientListByResourceGroupOptions contains the optional parameters for the DashboardsClient.ListByResourceGroup
 // method.
-func (client *DashboardsClient) ListByResourceGroup(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *runtime.Pager[DashboardsClientListByResourceGroupResponse] {
+func (client *DashboardsClient) NewListByResourceGroupPager(resourceGroupName string, options *DashboardsClientListByResourceGroupOptions) *runtime.Pager[DashboardsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListByResourceGroupResponse]{
 		More: func(page DashboardsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -276,11 +276,11 @@ func (client *DashboardsClient) listByResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListBySubscription - Gets all the dashboards within a subscription.
+// NewListBySubscriptionPager - Gets all the dashboards within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DashboardsClientListBySubscriptionOptions contains the optional parameters for the DashboardsClient.ListBySubscription
 // method.
-func (client *DashboardsClient) ListBySubscription(options *DashboardsClientListBySubscriptionOptions) *runtime.Pager[DashboardsClientListBySubscriptionResponse] {
+func (client *DashboardsClient) NewListBySubscriptionPager(options *DashboardsClientListBySubscriptionOptions) *runtime.Pager[DashboardsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DashboardsClientListBySubscriptionResponse]{
 		More: func(page DashboardsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

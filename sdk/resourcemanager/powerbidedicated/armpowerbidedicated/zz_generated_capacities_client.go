@@ -287,10 +287,10 @@ func (client *CapacitiesClient) getDetailsHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// List - Lists all the Dedicated capacities for the given subscription.
+// NewListPager - Lists all the Dedicated capacities for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CapacitiesClientListOptions contains the optional parameters for the CapacitiesClient.List method.
-func (client *CapacitiesClient) List(options *CapacitiesClientListOptions) *runtime.Pager[CapacitiesClientListResponse] {
+func (client *CapacitiesClient) NewListPager(options *CapacitiesClientListOptions) *runtime.Pager[CapacitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapacitiesClientListResponse]{
 		More: func(page CapacitiesClientListResponse) bool {
 			return false
@@ -339,13 +339,13 @@ func (client *CapacitiesClient) listHandleResponse(resp *http.Response) (Capacit
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the Dedicated capacities for the given resource group.
+// NewListByResourceGroupPager - Gets all the Dedicated capacities for the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
 // must be at least 1 character in length, and no more than 90.
 // options - CapacitiesClientListByResourceGroupOptions contains the optional parameters for the CapacitiesClient.ListByResourceGroup
 // method.
-func (client *CapacitiesClient) ListByResourceGroup(resourceGroupName string, options *CapacitiesClientListByResourceGroupOptions) *runtime.Pager[CapacitiesClientListByResourceGroupResponse] {
+func (client *CapacitiesClient) NewListByResourceGroupPager(resourceGroupName string, options *CapacitiesClientListByResourceGroupOptions) *runtime.Pager[CapacitiesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CapacitiesClientListByResourceGroupResponse]{
 		More: func(page CapacitiesClientListByResourceGroupResponse) bool {
 			return false

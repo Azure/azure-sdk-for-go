@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"strconv"
 	"testing"
 	"time"
@@ -135,14 +136,16 @@ func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
 		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"),
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
+	verifier := pipelineVerifier{}
+
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
 	database, _:=newDatabase("databaseId", client)
 	container, _:= newContainer("containerId",database)
 
 	receivedIds := []string{}
-	queryPager := container.QueryItemsByPartitionKey("select * from c", NewPartitionKeyString("1"), &QueryOptions{PageSizeHint: 5})
+	queryPager := container.QueryItemsByPartitionKey("select * from c", NewPartitionKeyString("1"), nil)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {
@@ -179,6 +182,36 @@ func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
 	for i := 0; i < 5; i++ {
 		if receivedIds[i] != "doc" + strconv.Itoa(i+1) {
 			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
+		}
+	}
+
+	if len(verifier.requests) != 2 {
+		t.Fatalf("Expected 2 requests, got %d", len(verifier.requests))
+	}
+
+	for index, request := range verifier.requests {
+		if request.method != http.MethodPost {
+			t.Errorf("Expected method to be %s, but got %s", http.MethodPost, request.method)
+		}
+
+		if !request.isQuery {
+			t.Errorf("Expected request to be a query, but it was not")
+		}
+
+		if request.body != "{\"query\":\"select * from c\"}" {
+			t.Errorf("Expected %v, but got %v", "{\"query\":\"select * from c\"}", request.body)
+		}
+
+		if request.contentType != cosmosHeaderValuesQuery {
+			t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, request.contentType)
+		}
+		
+		if index == 0 && request.headers.Get(cosmosHeaderContinuationToken) != "" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "", request.headers.Get(cosmosHeaderContinuationToken))
+		}
+
+		if index == 1 && request.headers.Get(cosmosHeaderContinuationToken) != "someContinuationToken" {
+			t.Errorf("Expected ContinuationToken to be %s, but got %s", "someContinuationToken", request.headers.Get(cosmosHeaderContinuationToken))
 		}
 	}
 }

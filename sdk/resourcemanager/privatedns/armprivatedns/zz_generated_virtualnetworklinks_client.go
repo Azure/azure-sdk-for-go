@@ -262,13 +262,13 @@ func (client *VirtualNetworkLinksClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists the virtual network links to the specified Private DNS zone.
+// NewListPager - Lists the virtual network links to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // privateZoneName - The name of the Private DNS zone (without a terminating dot).
 // options - VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.List
 // method.
-func (client *VirtualNetworkLinksClient) List(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse] {
+func (client *VirtualNetworkLinksClient) NewListPager(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkLinksClientListResponse]{
 		More: func(page VirtualNetworkLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

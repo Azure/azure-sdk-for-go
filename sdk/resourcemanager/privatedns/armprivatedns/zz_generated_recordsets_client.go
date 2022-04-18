@@ -246,12 +246,12 @@ func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSe
 	return result, nil
 }
 
-// List - Lists all record sets in a Private DNS zone.
+// NewListPager - Lists all record sets in a Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // privateZoneName - The name of the Private DNS zone (without a terminating dot).
 // options - RecordSetsClientListOptions contains the optional parameters for the RecordSetsClient.List method.
-func (client *RecordSetsClient) List(resourceGroupName string, privateZoneName string, options *RecordSetsClientListOptions) *runtime.Pager[RecordSetsClientListResponse] {
+func (client *RecordSetsClient) NewListPager(resourceGroupName string, privateZoneName string, options *RecordSetsClientListOptions) *runtime.Pager[RecordSetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecordSetsClientListResponse]{
 		More: func(page RecordSetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -320,13 +320,13 @@ func (client *RecordSetsClient) listHandleResponse(resp *http.Response) (RecordS
 	return result, nil
 }
 
-// ListByType - Lists the record sets of a specified type in a Private DNS zone.
+// NewListByTypePager - Lists the record sets of a specified type in a Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // privateZoneName - The name of the Private DNS zone (without a terminating dot).
 // recordType - The type of record sets to enumerate.
 // options - RecordSetsClientListByTypeOptions contains the optional parameters for the RecordSetsClient.ListByType method.
-func (client *RecordSetsClient) ListByType(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse] {
+func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecordSetsClientListByTypeResponse]{
 		More: func(page RecordSetsClientListByTypeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

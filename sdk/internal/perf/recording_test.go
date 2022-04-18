@@ -5,6 +5,7 @@ package perf
 
 import (
 	"net/http"
+	"regexp"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -22,7 +23,9 @@ func TestRecordingHTTPClient_Do(t *testing.T) {
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
-	require.Contains(t, resp.Request.URL.String(), "https://www.bing.com")
+	matched, err := regexp.MatchString(`https://www\d*\.bing\.com`, resp.Request.URL.String())
+	require.NoError(t, err)
+	require.True(t, matched)
 
 	proxyTransportsSuite[t.Name()].SetMode("record")
 	req, err = http.NewRequest("POST", "https://www.bing.com", nil)

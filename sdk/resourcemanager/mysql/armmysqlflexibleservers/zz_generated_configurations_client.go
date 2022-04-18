@@ -178,13 +178,13 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 	return result, nil
 }
 
-// ListByServer - List all the configurations in a given server.
+// NewListByServerPager - List all the configurations in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
 // method.
-func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
+func (client *ConfigurationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerResponse]{
 		More: func(page ConfigurationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

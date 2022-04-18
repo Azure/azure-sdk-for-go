@@ -114,12 +114,12 @@ func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClie
 	return result, nil
 }
 
-// ListByServer - List all the backups for a given server.
+// NewListByServerPager - List all the backups for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.ListByServer method.
-func (client *BackupsClient) ListByServer(resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) *runtime.Pager[BackupsClientListByServerResponse] {
+func (client *BackupsClient) NewListByServerPager(resourceGroupName string, serverName string, options *BackupsClientListByServerOptions) *runtime.Pager[BackupsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupsClientListByServerResponse]{
 		More: func(page BackupsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

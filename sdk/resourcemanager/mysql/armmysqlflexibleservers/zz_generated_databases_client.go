@@ -246,12 +246,12 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 	return result, nil
 }
 
-// ListByServer - List all the databases in a given server.
+// NewListByServerPager - List all the databases in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.ListByServer method.
-func (client *DatabasesClient) ListByServer(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
+func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByServerResponse]{
 		More: func(page DatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

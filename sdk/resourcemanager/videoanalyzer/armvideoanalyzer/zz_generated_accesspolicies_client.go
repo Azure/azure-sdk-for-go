@@ -228,12 +228,12 @@ func (client *AccessPoliciesClient) getHandleResponse(resp *http.Response) (Acce
 	return result, nil
 }
 
-// List - Retrieves all existing access policy resources, along with their JSON representations.
+// NewListPager - Retrieves all existing access policy resources, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - AccessPoliciesClientListOptions contains the optional parameters for the AccessPoliciesClient.List method.
-func (client *AccessPoliciesClient) List(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *runtime.Pager[AccessPoliciesClientListResponse] {
+func (client *AccessPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *AccessPoliciesClientListOptions) *runtime.Pager[AccessPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccessPoliciesClientListResponse]{
 		More: func(page AccessPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

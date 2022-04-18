@@ -295,12 +295,12 @@ func (client *PipelineJobsClient) getHandleResponse(resp *http.Response) (Pipeli
 	return result, nil
 }
 
-// List - Retrieves a list of all live pipelines that have been created, along with their JSON representations.
+// NewListPager - Retrieves a list of all live pipelines that have been created, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineJobsClientListOptions contains the optional parameters for the PipelineJobsClient.List method.
-func (client *PipelineJobsClient) List(resourceGroupName string, accountName string, options *PipelineJobsClientListOptions) *runtime.Pager[PipelineJobsClientListResponse] {
+func (client *PipelineJobsClient) NewListPager(resourceGroupName string, accountName string, options *PipelineJobsClientListOptions) *runtime.Pager[PipelineJobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelineJobsClientListResponse]{
 		More: func(page PipelineJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

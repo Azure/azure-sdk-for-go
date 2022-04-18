@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*LivePipelinesClient.List` has been removed
+- Function `*VideosClient.List` has been removed
+- Function `*PipelineTopologiesClient.List` has been removed
+- Function `*AccessPoliciesClient.List` has been removed
+- Function `*PipelineJobsClient.List` has been removed
+- Function `*EdgeModulesClient.List` has been removed
+
+### Features Added
+
+- New function `*PipelineJobsClient.NewListPager(string, string, *PipelineJobsClientListOptions) *runtime.Pager[PipelineJobsClientListResponse]`
+- New function `*AccessPoliciesClient.NewListPager(string, string, *AccessPoliciesClientListOptions) *runtime.Pager[AccessPoliciesClientListResponse]`
+- New function `*EdgeModulesClient.NewListPager(string, string, *EdgeModulesClientListOptions) *runtime.Pager[EdgeModulesClientListResponse]`
+- New function `*PipelineTopologiesClient.NewListPager(string, string, *PipelineTopologiesClientListOptions) *runtime.Pager[PipelineTopologiesClientListResponse]`
+- New function `*VideosClient.NewListPager(string, string, *VideosClientListOptions) *runtime.Pager[VideosClientListResponse]`
+- New function `*LivePipelinesClient.NewListPager(string, string, *LivePipelinesClientListOptions) *runtime.Pager[LivePipelinesClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

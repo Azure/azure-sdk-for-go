@@ -102,7 +102,7 @@ func ExampleConnectionMonitorTestsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/peering/resource-manager/Microsoft.Peering/stable/2022-01-01/examples/ListConnectionMonitorTestsByPeeringService.json
-func ExampleConnectionMonitorTestsClient_ListByPeeringService() {
+func ExampleConnectionMonitorTestsClient_NewListByPeeringServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -114,7 +114,7 @@ func ExampleConnectionMonitorTestsClient_ListByPeeringService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPeeringService("<resource-group-name>",
+	pager := client.NewListByPeeringServicePager("<resource-group-name>",
 		"<peering-service-name>",
 		nil)
 	for pager.More() {

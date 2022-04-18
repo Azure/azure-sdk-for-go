@@ -230,13 +230,13 @@ func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesCl
 	return result, nil
 }
 
-// ListByPeeringService - Lists all prefixes under the given subscription, resource group and peering service.
+// NewListByPeeringServicePager - Lists all prefixes under the given subscription, resource group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // peeringServiceName - The name of the peering service.
 // options - PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.ListByPeeringService
 // method.
-func (client *PrefixesClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) *runtime.Pager[PrefixesClientListByPeeringServiceResponse] {
+func (client *PrefixesClient) NewListByPeeringServicePager(resourceGroupName string, peeringServiceName string, options *PrefixesClientListByPeeringServiceOptions) *runtime.Pager[PrefixesClientListByPeeringServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrefixesClientListByPeeringServiceResponse]{
 		More: func(page PrefixesClientListByPeeringServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

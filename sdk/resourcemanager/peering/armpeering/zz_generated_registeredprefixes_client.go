@@ -230,13 +230,13 @@ func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByPeering - Lists all registered prefixes under the given subscription, resource group and peering.
+// NewListByPeeringPager - Lists all registered prefixes under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - RegisteredPrefixesClientListByPeeringOptions contains the optional parameters for the RegisteredPrefixesClient.ListByPeering
 // method.
-func (client *RegisteredPrefixesClient) ListByPeering(resourceGroupName string, peeringName string, options *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse] {
+func (client *RegisteredPrefixesClient) NewListByPeeringPager(resourceGroupName string, peeringName string, options *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegisteredPrefixesClientListByPeeringResponse]{
 		More: func(page RegisteredPrefixesClientListByPeeringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

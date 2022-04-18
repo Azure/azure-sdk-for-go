@@ -54,11 +54,11 @@ func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// List - Lists all of the advertised prefixes for the specified peering location
+// NewListPager - Lists all of the advertised prefixes for the specified peering location
 // If the operation fails it returns an *azcore.ResponseError type.
 // peeringLocation - The peering location.
 // options - CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.List method.
-func (client *CdnPeeringPrefixesClient) List(peeringLocation string, options *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse] {
+func (client *CdnPeeringPrefixesClient) NewListPager(peeringLocation string, options *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CdnPeeringPrefixesClientListResponse]{
 		More: func(page CdnPeeringPrefixesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

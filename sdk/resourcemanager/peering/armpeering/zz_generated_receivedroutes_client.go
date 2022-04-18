@@ -54,13 +54,14 @@ func NewReceivedRoutesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// ListByPeering - Lists the prefixes received over the specified peering under the given subscription and resource group.
+// NewListByPeeringPager - Lists the prefixes received over the specified peering under the given subscription and resource
+// group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.ListByPeering
 // method.
-func (client *ReceivedRoutesClient) ListByPeering(resourceGroupName string, peeringName string, options *ReceivedRoutesClientListByPeeringOptions) *runtime.Pager[ReceivedRoutesClientListByPeeringResponse] {
+func (client *ReceivedRoutesClient) NewListByPeeringPager(resourceGroupName string, peeringName string, options *ReceivedRoutesClientListByPeeringOptions) *runtime.Pager[ReceivedRoutesClientListByPeeringResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReceivedRoutesClientListByPeeringResponse]{
 		More: func(page ReceivedRoutesClientListByPeeringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -232,13 +232,14 @@ func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByPeeringService - Lists all connection monitor tests under the given subscription, resource group and peering service.
+// NewListByPeeringServicePager - Lists all connection monitor tests under the given subscription, resource group and peering
+// service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // peeringServiceName - The name of the peering service.
 // options - ConnectionMonitorTestsClientListByPeeringServiceOptions contains the optional parameters for the ConnectionMonitorTestsClient.ListByPeeringService
 // method.
-func (client *ConnectionMonitorTestsClient) ListByPeeringService(resourceGroupName string, peeringServiceName string, options *ConnectionMonitorTestsClientListByPeeringServiceOptions) *runtime.Pager[ConnectionMonitorTestsClientListByPeeringServiceResponse] {
+func (client *ConnectionMonitorTestsClient) NewListByPeeringServicePager(resourceGroupName string, peeringServiceName string, options *ConnectionMonitorTestsClientListByPeeringServiceOptions) *runtime.Pager[ConnectionMonitorTestsClientListByPeeringServiceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectionMonitorTestsClientListByPeeringServiceResponse]{
 		More: func(page ConnectionMonitorTestsClientListByPeeringServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

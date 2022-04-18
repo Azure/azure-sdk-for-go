@@ -1,5 +1,15 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationClient.List` has been removed
+
+### Features Added
+
+- New function `*OperationClient.NewListPager(*OperationClientListOptions) *runtime.Pager[OperationClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

@@ -161,7 +161,7 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.Cloud.LoginEndpoint = srv.URL()
+	options.Cloud.ActiveDirectoryAuthorityHost = srv.URL()
 	options.Transport = srv
 	var key crypto.PrivateKey
 	_, err := NewClientCertificateCredential(fakeTenantID, fakeClientID, test.certs, key, &options)

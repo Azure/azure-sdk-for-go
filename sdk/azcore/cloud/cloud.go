@@ -9,15 +9,15 @@ package cloud
 var (
 	// AzureChina contains configuration for Azure China.
 	AzureChina = Configuration{
-		LoginEndpoint: "https://login.chinacloudapi.cn/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.chinacloudapi.cn/", Services: map[ServiceName]ServiceConfiguration{},
 	}
 	// AzureGovernment contains configuration for Azure Government.
 	AzureGovernment = Configuration{
-		LoginEndpoint: "https://login.microsoftonline.us/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.us/", Services: map[ServiceName]ServiceConfiguration{},
 	}
 	// AzurePublicCloud contains configuration for Azure Public Cloud.
 	AzurePublicCloud = Configuration{
-		LoginEndpoint: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
+		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
 	}
 )
 
@@ -37,8 +37,8 @@ type ServiceConfiguration struct {
 
 // Configuration configures a cloud.
 type Configuration struct {
-	// LoginEndpoint is the base URL of the cloud's Azure Active Directory.
-	LoginEndpoint string
+	// ActiveDirectoryAuthorityHost is the base URL of the cloud's Azure Active Directory.
+	ActiveDirectoryAuthorityHost string
 	// Services contains configuration for the cloud's services.
 	Services map[ServiceName]ServiceConfiguration
 }

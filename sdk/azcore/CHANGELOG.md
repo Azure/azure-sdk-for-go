@@ -1,10 +1,11 @@
 # Release History
 
-## 0.23.2 (Unreleased)
+## 0.24.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
 
 ### Bugs Fixed
 

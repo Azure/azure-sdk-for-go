@@ -162,7 +162,7 @@ func Test_WellKnownHosts(t *testing.T) {
 			t.Fatal(err)
 		}
 		if !strings.HasPrefix(host, "https://login.") {
-			t.Fatal("unexpected LoginEndpoint: " + host)
+			t.Fatal("unexpected ActiveDirectoryAuthorityHost: " + host)
 		}
 	}
 }
@@ -180,7 +180,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 
 func Test_CustomAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost + "/not"})
-	authorityHost, err := setAuthorityHost(cloud.Configuration{LoginEndpoint: testHost})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: testHost})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -196,7 +196,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != cloud.AzurePublicCloud.LoginEndpoint {
+	if authorityHost != cloud.AzurePublicCloud.ActiveDirectoryAuthorityHost {
 		t.Fatal("unexpected default host: " + authorityHost)
 	}
 }
@@ -231,7 +231,7 @@ func Test_GetTokenRequiresScopes(t *testing.T) {
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
-	authorityHost, err := setAuthorityHost(cloud.Configuration{LoginEndpoint: "http://localhost"})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: "http://localhost"})
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")
 	}

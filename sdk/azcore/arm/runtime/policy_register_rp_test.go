@@ -389,7 +389,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 
 	audience := "audience"
 	conf := cloud.Configuration{
-		LoginEndpoint: srv.URL(),
+		ActiveDirectoryAuthorityHost: srv.URL(),
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {Audience: audience, Endpoint: srv.URL()},
 		},

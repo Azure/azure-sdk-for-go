@@ -33,16 +33,16 @@ const (
 )
 
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
-// 1. cloud.Configuration.LoginEndpoint value set by user
+// 1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
 // 2. value of AZURE_AUTHORITY_HOST
 // 3. default: Azure Public Cloud
 func setAuthorityHost(cc cloud.Configuration) (string, error) {
-	host := cc.LoginEndpoint
+	host := cc.ActiveDirectoryAuthorityHost
 	if host == "" {
 		if len(cc.Services) > 0 {
-			return "", errors.New("missing LoginEndpoint for specified cloud")
+			return "", errors.New("missing ActiveDirectoryAuthorityHost for specified cloud")
 		}
-		host = cloud.AzurePublicCloud.LoginEndpoint
+		host = cloud.AzurePublicCloud.ActiveDirectoryAuthorityHost
 		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
 		}

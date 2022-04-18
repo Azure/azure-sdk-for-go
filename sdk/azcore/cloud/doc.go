@@ -30,7 +30,7 @@ Applications deployed to a private cloud such as Azure Stack create a Configurat
 appropriate values:
 
 	c = cloud.Configuration{
-		LoginEndpoint: "https://...",
+		ActiveDirectoryAuthorityHost: "https://...",
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {
 				Audience: "...",

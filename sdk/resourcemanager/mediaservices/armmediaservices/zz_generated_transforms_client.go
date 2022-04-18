@@ -227,12 +227,12 @@ func (client *TransformsClient) getHandleResponse(resp *http.Response) (Transfor
 	return result, nil
 }
 
-// List - Lists the Transforms in the account.
+// NewListPager - Lists the Transforms in the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
-func (client *TransformsClient) List(resourceGroupName string, accountName string, options *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse] {
+func (client *TransformsClient) NewListPager(resourceGroupName string, accountName string, options *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TransformsClientListResponse]{
 		More: func(page TransformsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

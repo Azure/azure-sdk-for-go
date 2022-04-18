@@ -251,12 +251,12 @@ func (client *StreamingEndpointsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Lists the streaming endpoints in the account.
+// NewListPager - Lists the streaming endpoints in the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingEndpointsClientListOptions contains the optional parameters for the StreamingEndpointsClient.List method.
-func (client *StreamingEndpointsClient) List(resourceGroupName string, accountName string, options *StreamingEndpointsClientListOptions) *runtime.Pager[StreamingEndpointsClientListResponse] {
+func (client *StreamingEndpointsClient) NewListPager(resourceGroupName string, accountName string, options *StreamingEndpointsClientListOptions) *runtime.Pager[StreamingEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StreamingEndpointsClientListResponse]{
 		More: func(page StreamingEndpointsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

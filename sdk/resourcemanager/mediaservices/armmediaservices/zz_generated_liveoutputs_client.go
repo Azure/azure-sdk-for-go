@@ -260,13 +260,13 @@ func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOut
 	return result, nil
 }
 
-// List - Lists the live outputs of a live event.
+// NewListPager - Lists the live outputs of a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
-func (client *LiveOutputsClient) List(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *runtime.Pager[LiveOutputsClientListResponse] {
+func (client *LiveOutputsClient) NewListPager(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *runtime.Pager[LiveOutputsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LiveOutputsClientListResponse]{
 		More: func(page LiveOutputsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

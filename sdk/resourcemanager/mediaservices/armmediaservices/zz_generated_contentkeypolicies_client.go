@@ -290,12 +290,12 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResp
 	return result, nil
 }
 
-// List - Lists the Content Key Policies in the account
+// NewListPager - Lists the Content Key Policies in the account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
-func (client *ContentKeyPoliciesClient) List(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse] {
+func (client *ContentKeyPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContentKeyPoliciesClientListResponse]{
 		More: func(page ContentKeyPoliciesClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

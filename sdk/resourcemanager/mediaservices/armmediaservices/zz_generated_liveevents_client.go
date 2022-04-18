@@ -315,12 +315,12 @@ func (client *LiveEventsClient) getHandleResponse(resp *http.Response) (LiveEven
 	return result, nil
 }
 
-// List - Lists all the live events in the account.
+// NewListPager - Lists all the live events in the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - LiveEventsClientListOptions contains the optional parameters for the LiveEventsClient.List method.
-func (client *LiveEventsClient) List(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse] {
+func (client *LiveEventsClient) NewListPager(resourceGroupName string, accountName string, options *LiveEventsClientListOptions) *runtime.Pager[LiveEventsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LiveEventsClientListResponse]{
 		More: func(page LiveEventsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

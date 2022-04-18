@@ -211,11 +211,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// List - List Media Services accounts in the resource group
+// NewListPager - List Media Services accounts in the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(resourceGroupName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(resourceGroupName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
@@ -274,10 +274,10 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 	return result, nil
 }
 
-// ListBySubscription - List Media Services accounts in the subscription.
+// NewListBySubscriptionPager - List Media Services accounts in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
-func (client *Client) ListBySubscription(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
+func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListBySubscriptionResponse]{
 		More: func(page ClientListBySubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

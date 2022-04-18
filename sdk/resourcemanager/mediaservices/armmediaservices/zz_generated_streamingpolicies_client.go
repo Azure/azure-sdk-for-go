@@ -229,12 +229,12 @@ func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// List - Lists the Streaming Policies in the account
+// NewListPager - Lists the Streaming Policies in the account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
-func (client *StreamingPoliciesClient) List(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *runtime.Pager[StreamingPoliciesClientListResponse] {
+func (client *StreamingPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *runtime.Pager[StreamingPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StreamingPoliciesClientListResponse]{
 		More: func(page StreamingPoliciesClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

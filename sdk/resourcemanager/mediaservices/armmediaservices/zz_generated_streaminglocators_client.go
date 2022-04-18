@@ -229,12 +229,12 @@ func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// List - Lists the Streaming Locators in the account
+// NewListPager - Lists the Streaming Locators in the account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
-func (client *StreamingLocatorsClient) List(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *runtime.Pager[StreamingLocatorsClientListResponse] {
+func (client *StreamingLocatorsClient) NewListPager(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *runtime.Pager[StreamingLocatorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StreamingLocatorsClientListResponse]{
 		More: func(page StreamingLocatorsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

@@ -268,14 +268,14 @@ func (client *CloudEndpointsClient) getHandleResponse(resp *http.Response) (Clou
 	return result, nil
 }
 
-// ListBySyncGroup - Get a CloudEndpoint List.
+// NewListBySyncGroupPager - Get a CloudEndpoint List.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // syncGroupName - Name of Sync Group resource.
 // options - CloudEndpointsClientListBySyncGroupOptions contains the optional parameters for the CloudEndpointsClient.ListBySyncGroup
 // method.
-func (client *CloudEndpointsClient) ListBySyncGroup(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsClientListBySyncGroupOptions) *runtime.Pager[CloudEndpointsClientListBySyncGroupResponse] {
+func (client *CloudEndpointsClient) NewListBySyncGroupPager(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *CloudEndpointsClientListBySyncGroupOptions) *runtime.Pager[CloudEndpointsClientListBySyncGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CloudEndpointsClientListBySyncGroupResponse]{
 		More: func(page CloudEndpointsClientListBySyncGroupResponse) bool {
 			return false

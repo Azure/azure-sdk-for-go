@@ -1,5 +1,31 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CloudEndpointsClient.ListBySyncGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SyncGroupsClient.ListByStorageSyncService` has been removed
+- Function `*ServerEndpointsClient.ListBySyncGroup` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByStorageSyncService` has been removed
+- Function `*RegisteredServersClient.ListByStorageSyncService` has been removed
+- Function `*ServicesClient.ListByResourceGroup` has been removed
+- Function `*ServicesClient.ListBySubscription` has been removed
+- Function `*WorkflowsClient.ListByStorageSyncService` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ServicesClient.NewListByResourceGroupPager(string, *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse]`
+- New function `*SyncGroupsClient.NewListByStorageSyncServicePager(string, string, *SyncGroupsClientListByStorageSyncServiceOptions) *runtime.Pager[SyncGroupsClientListByStorageSyncServiceResponse]`
+- New function `*WorkflowsClient.NewListByStorageSyncServicePager(string, string, *WorkflowsClientListByStorageSyncServiceOptions) *runtime.Pager[WorkflowsClientListByStorageSyncServiceResponse]`
+- New function `*CloudEndpointsClient.NewListBySyncGroupPager(string, string, string, *CloudEndpointsClientListBySyncGroupOptions) *runtime.Pager[CloudEndpointsClientListBySyncGroupResponse]`
+- New function `*RegisteredServersClient.NewListByStorageSyncServicePager(string, string, *RegisteredServersClientListByStorageSyncServiceOptions) *runtime.Pager[RegisteredServersClientListByStorageSyncServiceResponse]`
+- New function `*ServerEndpointsClient.NewListBySyncGroupPager(string, string, string, *ServerEndpointsClientListBySyncGroupOptions) *runtime.Pager[ServerEndpointsClientListBySyncGroupResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByStorageSyncServicePager(string, string, *PrivateEndpointConnectionsClientListByStorageSyncServiceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByStorageSyncServiceResponse]`
+- New function `*ServicesClient.NewListBySubscriptionPager(*ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

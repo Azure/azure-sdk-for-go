@@ -268,14 +268,14 @@ func (client *ServerEndpointsClient) getHandleResponse(resp *http.Response) (Ser
 	return result, nil
 }
 
-// ListBySyncGroup - Get a ServerEndpoint list.
+// NewListBySyncGroupPager - Get a ServerEndpoint list.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // syncGroupName - Name of Sync Group resource.
 // options - ServerEndpointsClientListBySyncGroupOptions contains the optional parameters for the ServerEndpointsClient.ListBySyncGroup
 // method.
-func (client *ServerEndpointsClient) ListBySyncGroup(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *ServerEndpointsClientListBySyncGroupOptions) *runtime.Pager[ServerEndpointsClientListBySyncGroupResponse] {
+func (client *ServerEndpointsClient) NewListBySyncGroupPager(resourceGroupName string, storageSyncServiceName string, syncGroupName string, options *ServerEndpointsClientListBySyncGroupOptions) *runtime.Pager[ServerEndpointsClientListBySyncGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerEndpointsClientListBySyncGroupResponse]{
 		More: func(page ServerEndpointsClientListBySyncGroupResponse) bool {
 			return false

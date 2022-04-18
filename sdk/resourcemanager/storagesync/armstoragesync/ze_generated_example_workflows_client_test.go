@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagesync/resource-manager/Microsoft.StorageSync/stable/2020-09-01/examples/Workflows_ListByStorageSyncService.json
-func ExampleWorkflowsClient_ListByStorageSyncService() {
+func ExampleWorkflowsClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleWorkflowsClient_ListByStorageSyncService() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByStorageSyncService("<resource-group-name>",
+	pager := client.NewListByStorageSyncServicePager("<resource-group-name>",
 		"<storage-sync-service-name>",
 		nil)
 	for pager.More() {

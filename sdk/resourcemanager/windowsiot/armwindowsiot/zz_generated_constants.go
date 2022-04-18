@@ -10,7 +10,7 @@ package armwindowsiot
 
 const (
 	moduleName    = "armwindowsiot"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ServiceNameUnavailabilityReason - The reason for unavailability.

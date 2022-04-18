@@ -362,11 +362,11 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(res
 	return result, nil
 }
 
-// List - Gets information about the VM image templates associated with the subscription.
+// NewListPager - Gets information about the VM image templates associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualMachineImageTemplatesClientListOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.List
 // method.
-func (client *VirtualMachineImageTemplatesClient) List(options *VirtualMachineImageTemplatesClientListOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListResponse] {
+func (client *VirtualMachineImageTemplatesClient) NewListPager(options *VirtualMachineImageTemplatesClientListOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,12 +421,12 @@ func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByResourceGroup - Gets information about the VM image templates associated with the specified resource group.
+// NewListByResourceGroupPager - Gets information about the VM image templates associated with the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachineImageTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListByResourceGroup
 // method.
-func (client *VirtualMachineImageTemplatesClient) ListByResourceGroup(resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse] {
+func (client *VirtualMachineImageTemplatesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListByResourceGroupResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -485,13 +485,13 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleRespo
 	return result, nil
 }
 
-// ListRunOutputs - List all run outputs for the specified Image Template resource
+// NewListRunOutputsPager - List all run outputs for the specified Image Template resource
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientListRunOutputsOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListRunOutputs
 // method.
-func (client *VirtualMachineImageTemplatesClient) ListRunOutputs(resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListRunOutputsResponse] {
+func (client *VirtualMachineImageTemplatesClient) NewListRunOutputsPager(resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListRunOutputsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListRunOutputsResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListRunOutputsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

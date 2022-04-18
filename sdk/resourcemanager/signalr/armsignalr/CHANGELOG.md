@@ -1,5 +1,31 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*Client.ListByResourceGroup` has been removed
+- Function `*SharedPrivateLinkResourcesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.List` has been removed
+- Function `*CustomDomainsClient.List` has been removed
+- Function `*UsagesClient.List` has been removed
+- Function `*CustomCertificatesClient.List` has been removed
+- Function `*Client.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*SharedPrivateLinkResourcesClient.NewListPager(string, string, *SharedPrivateLinkResourcesClientListOptions) *runtime.Pager[SharedPrivateLinkResourcesClientListResponse]`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListPager(string, string, *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse]`
+- New function `*CustomCertificatesClient.NewListPager(string, string, *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse]`
+- New function `*CustomDomainsClient.NewListPager(string, string, *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

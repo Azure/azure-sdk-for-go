@@ -48,10 +48,10 @@ func NewFeatureClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	return client, nil
 }
 
-// ListOperations - Lists all of the available Microsoft.Features REST API operations.
+// NewListOperationsPager - Lists all of the available Microsoft.Features REST API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FeatureClientListOperationsOptions contains the optional parameters for the FeatureClient.ListOperations method.
-func (client *FeatureClient) ListOperations(options *FeatureClientListOperationsOptions) *runtime.Pager[FeatureClientListOperationsResponse] {
+func (client *FeatureClient) NewListOperationsPager(options *FeatureClientListOperationsOptions) *runtime.Pager[FeatureClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FeatureClientListOperationsResponse]{
 		More: func(page FeatureClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

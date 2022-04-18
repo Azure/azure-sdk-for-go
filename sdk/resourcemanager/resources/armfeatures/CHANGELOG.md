@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*FeatureClient.ListOperations` has been removed
+- Function `*SubscriptionFeatureRegistrationsClient.ListAllBySubscription` has been removed
+- Function `*Client.List` has been removed
+- Function `*SubscriptionFeatureRegistrationsClient.ListBySubscription` has been removed
+- Function `*Client.ListAll` has been removed
+
+### Features Added
+
+- New function `*Client.NewListAllPager(*ClientListAllOptions) *runtime.Pager[ClientListAllResponse]`
+- New function `*SubscriptionFeatureRegistrationsClient.NewListBySubscriptionPager(string, *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]`
+- New function `*Client.NewListPager(string, *ClientListOptions) *runtime.Pager[ClientListResponse]`
+- New function `*FeatureClient.NewListOperationsPager(*FeatureClientListOperationsOptions) *runtime.Pager[FeatureClientListOperationsResponse]`
+- New function `*SubscriptionFeatureRegistrationsClient.NewListAllBySubscriptionPager(*SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-14)
 ### Breaking Changes
 

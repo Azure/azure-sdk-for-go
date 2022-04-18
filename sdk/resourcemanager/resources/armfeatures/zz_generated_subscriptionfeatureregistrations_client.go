@@ -216,11 +216,11 @@ func (client *SubscriptionFeatureRegistrationsClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListAllBySubscription - Returns subscription feature registrations for given subscription.
+// NewListAllBySubscriptionPager - Returns subscription feature registrations for given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListAllBySubscription
 // method.
-func (client *SubscriptionFeatureRegistrationsClient) ListAllBySubscription(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse] {
+func (client *SubscriptionFeatureRegistrationsClient) NewListAllBySubscriptionPager(options *SubscriptionFeatureRegistrationsClientListAllBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse]{
 		More: func(page SubscriptionFeatureRegistrationsClientListAllBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -275,12 +275,12 @@ func (client *SubscriptionFeatureRegistrationsClient) listAllBySubscriptionHandl
 	return result, nil
 }
 
-// ListBySubscription - Returns subscription feature registrations for given subscription and provider namespace.
+// NewListBySubscriptionPager - Returns subscription feature registrations for given subscription and provider namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The provider namespace.
 // options - SubscriptionFeatureRegistrationsClientListBySubscriptionOptions contains the optional parameters for the SubscriptionFeatureRegistrationsClient.ListBySubscription
 // method.
-func (client *SubscriptionFeatureRegistrationsClient) ListBySubscription(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse] {
+func (client *SubscriptionFeatureRegistrationsClient) NewListBySubscriptionPager(providerNamespace string, options *SubscriptionFeatureRegistrationsClientListBySubscriptionOptions) *runtime.Pager[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionFeatureRegistrationsClientListBySubscriptionResponse]{
 		More: func(page SubscriptionFeatureRegistrationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

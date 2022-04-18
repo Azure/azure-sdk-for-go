@@ -93,7 +93,7 @@ func ExampleSubscriptionFeatureRegistrationsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/SubscriptionFeatureRegistrationLIST.json
-func ExampleSubscriptionFeatureRegistrationsClient_ListBySubscription() {
+func ExampleSubscriptionFeatureRegistrationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -105,7 +105,7 @@ func ExampleSubscriptionFeatureRegistrationsClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription("<provider-namespace>",
+	pager := client.NewListBySubscriptionPager("<provider-namespace>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -121,7 +121,7 @@ func ExampleSubscriptionFeatureRegistrationsClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/SubscriptionFeatureRegistrationLISTALL.json
-func ExampleSubscriptionFeatureRegistrationsClient_ListAllBySubscription() {
+func ExampleSubscriptionFeatureRegistrationsClient_NewListAllBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,7 +133,7 @@ func ExampleSubscriptionFeatureRegistrationsClient_ListAllBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAllBySubscription(nil)
+	pager := client.NewListAllBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

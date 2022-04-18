@@ -208,8 +208,8 @@ func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Get the current health status of all monitors of a virtual machine. Optional parameters: $expand (retrieve the monitor's
-// evidence and configuration) and $filter (filter by monitor name).
+// NewListPager - Get the current health status of all monitors of a virtual machine. Optional parameters: $expand (retrieve
+// the monitor's evidence and configuration) and $filter (filter by monitor name).
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The subscription Id of the virtual machine.
 // resourceGroupName - The resource group of the virtual machine.
@@ -217,7 +217,7 @@ func (client *HealthMonitorsClient) getStateChangeHandleResponse(resp *http.Resp
 // resourceCollectionName - The resource collection name (ex: virtualMachines for virtual machines).
 // resourceName - The name of the virtual machine.
 // options - HealthMonitorsClientListOptions contains the optional parameters for the HealthMonitorsClient.List method.
-func (client *HealthMonitorsClient) List(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse] {
+func (client *HealthMonitorsClient) NewListPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, options *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListResponse]{
 		More: func(page HealthMonitorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,8 +294,8 @@ func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (Hea
 	return result, nil
 }
 
-// ListStateChanges - Get the health state changes of a monitor of a virtual machine within the provided time window (default
-// is the last 24 hours). Optional parameters: $expand (retrieve the monitor's evidence and
+// NewListStateChangesPager - Get the health state changes of a monitor of a virtual machine within the provided time window
+// (default is the last 24 hours). Optional parameters: $expand (retrieve the monitor's evidence and
 // configuration) and $filter (filter by heartbeat condition).
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionID - The subscription Id of the virtual machine.
@@ -306,7 +306,7 @@ func (client *HealthMonitorsClient) listHandleResponse(resp *http.Response) (Hea
 // monitorID - The monitor Id of the virtual machine.
 // options - HealthMonitorsClientListStateChangesOptions contains the optional parameters for the HealthMonitorsClient.ListStateChanges
 // method.
-func (client *HealthMonitorsClient) ListStateChanges(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse] {
+func (client *HealthMonitorsClient) NewListStateChangesPager(subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, options *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HealthMonitorsClientListStateChangesResponse]{
 		More: func(page HealthMonitorsClientListStateChangesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

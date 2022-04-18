@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorList_GetDefault.json
-func ExampleHealthMonitorsClient_List() {
+func ExampleHealthMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleHealthMonitorsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<subscription-id>",
+	pager := client.NewListPager("<subscription-id>",
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-collection-name>",
@@ -83,7 +83,7 @@ func ExampleHealthMonitorsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/workloadmonitor/resource-manager/Microsoft.WorkloadMonitor/preview/2020-01-13-preview/examples/MonitorHistory_GetDefault.json
-func ExampleHealthMonitorsClient_ListStateChanges() {
+func ExampleHealthMonitorsClient_NewListStateChangesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,7 +95,7 @@ func ExampleHealthMonitorsClient_ListStateChanges() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListStateChanges("<subscription-id>",
+	pager := client.NewListStateChangesPager("<subscription-id>",
 		"<resource-group-name>",
 		"<provider-name>",
 		"<resource-collection-name>",

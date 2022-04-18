@@ -237,12 +237,12 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// ListByResourceGroup - Returns list of virtual machine within resource group
+// NewListByResourceGroupPager - Returns list of virtual machine within resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group
 // options - VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
 // method.
-func (client *VirtualMachinesClient) ListByResourceGroup(resourceGroupName string, options *VirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachinesClientListByResourceGroupResponse] {
+func (client *VirtualMachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachinesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByResourceGroupResponse]{
 		More: func(page VirtualMachinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -310,11 +310,11 @@ func (client *VirtualMachinesClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - Returns list virtual machine within subscription
+// NewListBySubscriptionPager - Returns list virtual machine within subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.ListBySubscription
 // method.
-func (client *VirtualMachinesClient) ListBySubscription(options *VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse] {
+func (client *VirtualMachinesClient) NewListBySubscriptionPager(options *VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListBySubscriptionResponse]{
 		More: func(page VirtualMachinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

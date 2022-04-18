@@ -250,13 +250,13 @@ func (client *HubsClient) getHandleResponse(resp *http.Response) (HubsClientGetR
 	return result, nil
 }
 
-// List - List hub settings.
+// NewListPager - List hub settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - HubsClientListOptions contains the optional parameters for the HubsClient.List method.
-func (client *HubsClient) List(resourceGroupName string, resourceName string, options *HubsClientListOptions) *runtime.Pager[HubsClientListResponse] {
+func (client *HubsClient) NewListPager(resourceGroupName string, resourceName string, options *HubsClientListOptions) *runtime.Pager[HubsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HubsClientListResponse]{
 		More: func(page HubsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

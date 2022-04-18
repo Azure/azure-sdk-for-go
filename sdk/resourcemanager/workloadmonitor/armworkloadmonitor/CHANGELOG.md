@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*HealthMonitorsClient.ListStateChanges` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*HealthMonitorsClient.List` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*HealthMonitorsClient.NewListPager(string, string, string, string, string, *HealthMonitorsClientListOptions) *runtime.Pager[HealthMonitorsClientListResponse]`
+- New function `*HealthMonitorsClient.NewListStateChangesPager(string, string, string, string, string, string, *HealthMonitorsClientListStateChangesOptions) *runtime.Pager[HealthMonitorsClientListStateChangesResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

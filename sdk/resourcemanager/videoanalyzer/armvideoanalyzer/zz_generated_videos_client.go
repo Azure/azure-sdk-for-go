@@ -227,12 +227,12 @@ func (client *VideosClient) getHandleResponse(resp *http.Response) (VideosClient
 	return result, nil
 }
 
-// List - Retrieves a list of video resources that have been created, along with their JSON representations.
+// NewListPager - Retrieves a list of video resources that have been created, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - VideosClientListOptions contains the optional parameters for the VideosClient.List method.
-func (client *VideosClient) List(resourceGroupName string, accountName string, options *VideosClientListOptions) *runtime.Pager[VideosClientListResponse] {
+func (client *VideosClient) NewListPager(resourceGroupName string, accountName string, options *VideosClientListOptions) *runtime.Pager[VideosClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VideosClientListResponse]{
 		More: func(page VideosClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

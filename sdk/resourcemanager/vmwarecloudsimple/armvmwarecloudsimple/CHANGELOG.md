@@ -1,5 +1,41 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ResourcePoolsClient.List` has been removed
+- Function `*VirtualMachinesClient.ListByResourceGroup` has been removed
+- Function `*VirtualNetworksClient.List` has been removed
+- Function `*DedicatedCloudServicesClient.ListByResourceGroup` has been removed
+- Function `*CustomizationPoliciesClient.List` has been removed
+- Function `*SKUsAvailabilityClient.List` has been removed
+- Function `*DedicatedCloudNodesClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*VirtualMachinesClient.ListBySubscription` has been removed
+- Function `*DedicatedCloudServicesClient.ListBySubscription` has been removed
+- Function `*VirtualMachineTemplatesClient.List` has been removed
+- Function `*DedicatedCloudNodesClient.ListByResourceGroup` has been removed
+- Function `*PrivateCloudsClient.List` has been removed
+- Function `*UsagesClient.List` has been removed
+
+### Features Added
+
+- New function `*DedicatedCloudServicesClient.NewListByResourceGroupPager(string, *DedicatedCloudServicesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudServicesClientListByResourceGroupResponse]`
+- New function `*DedicatedCloudNodesClient.NewListByResourceGroupPager(string, *DedicatedCloudNodesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudNodesClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VirtualNetworksClient.NewListPager(string, string, string, *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse]`
+- New function `*VirtualMachinesClient.NewListByResourceGroupPager(string, *VirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachinesClientListByResourceGroupResponse]`
+- New function `*SKUsAvailabilityClient.NewListPager(string, *SKUsAvailabilityClientListOptions) *runtime.Pager[SKUsAvailabilityClientListResponse]`
+- New function `*PrivateCloudsClient.NewListPager(string, *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse]`
+- New function `*DedicatedCloudServicesClient.NewListBySubscriptionPager(*DedicatedCloudServicesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudServicesClientListBySubscriptionResponse]`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New function `*VirtualMachinesClient.NewListBySubscriptionPager(*VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse]`
+- New function `*ResourcePoolsClient.NewListPager(string, string, *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse]`
+- New function `*DedicatedCloudNodesClient.NewListBySubscriptionPager(*DedicatedCloudNodesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudNodesClientListBySubscriptionResponse]`
+- New function `*CustomizationPoliciesClient.NewListPager(string, string, *CustomizationPoliciesClientListOptions) *runtime.Pager[CustomizationPoliciesClientListResponse]`
+- New function `*VirtualMachineTemplatesClient.NewListPager(string, string, string, *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

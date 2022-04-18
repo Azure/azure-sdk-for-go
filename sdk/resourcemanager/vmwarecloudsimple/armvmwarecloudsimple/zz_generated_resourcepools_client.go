@@ -114,12 +114,12 @@ func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (Resou
 	return result, nil
 }
 
-// List - Returns list of resource pools in region for private cloud
+// NewListPager - Returns list of resource pools in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
-func (client *ResourcePoolsClient) List(regionID string, pcName string, options *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse] {
+func (client *ResourcePoolsClient) NewListPager(regionID string, pcName string, options *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourcePoolsClientListResponse]{
 		More: func(page ResourcePoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

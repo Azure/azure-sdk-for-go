@@ -235,12 +235,12 @@ func (client *EdgeModulesClient) getHandleResponse(resp *http.Response) (EdgeMod
 	return result, nil
 }
 
-// List - List all existing edge module resources, along with their JSON representations.
+// NewListPager - List all existing edge module resources, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - EdgeModulesClientListOptions contains the optional parameters for the EdgeModulesClient.List method.
-func (client *EdgeModulesClient) List(resourceGroupName string, accountName string, options *EdgeModulesClientListOptions) *runtime.Pager[EdgeModulesClientListResponse] {
+func (client *EdgeModulesClient) NewListPager(resourceGroupName string, accountName string, options *EdgeModulesClientListOptions) *runtime.Pager[EdgeModulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EdgeModulesClientListResponse]{
 		More: func(page EdgeModulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

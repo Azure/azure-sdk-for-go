@@ -361,12 +361,12 @@ func (client *LivePipelinesClient) getHandleResponse(resp *http.Response) (LiveP
 	return result, nil
 }
 
-// List - Retrieves a list of live pipelines that have been created, along with their JSON representations.
+// NewListPager - Retrieves a list of live pipelines that have been created, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - LivePipelinesClientListOptions contains the optional parameters for the LivePipelinesClient.List method.
-func (client *LivePipelinesClient) List(resourceGroupName string, accountName string, options *LivePipelinesClientListOptions) *runtime.Pager[LivePipelinesClientListResponse] {
+func (client *LivePipelinesClient) NewListPager(resourceGroupName string, accountName string, options *LivePipelinesClientListOptions) *runtime.Pager[LivePipelinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LivePipelinesClientListResponse]{
 		More: func(page LivePipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

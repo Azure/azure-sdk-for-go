@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*VirtualMachineImageTemplatesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*VirtualMachineImageTemplatesClient.ListByResourceGroup` has been removed
+- Function `*VirtualMachineImageTemplatesClient.ListRunOutputs` has been removed
+
+### Features Added
+
+- New function `*VirtualMachineImageTemplatesClient.NewListRunOutputsPager(string, string, *VirtualMachineImageTemplatesClientListRunOutputsOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListRunOutputsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VirtualMachineImageTemplatesClient.NewListPager(*VirtualMachineImageTemplatesClientListOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListResponse]`
+- New function `*VirtualMachineImageTemplatesClient.NewListByResourceGroupPager(string, *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

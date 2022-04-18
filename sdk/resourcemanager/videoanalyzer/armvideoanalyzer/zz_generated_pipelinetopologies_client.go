@@ -234,12 +234,13 @@ func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Retrieves a list of pipeline topologies that have been added to the account, if any, along with their JSON representation.
+// NewListPager - Retrieves a list of pipeline topologies that have been added to the account, if any, along with their JSON
+// representation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineTopologiesClientListOptions contains the optional parameters for the PipelineTopologiesClient.List method.
-func (client *PipelineTopologiesClient) List(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *runtime.Pager[PipelineTopologiesClientListResponse] {
+func (client *PipelineTopologiesClient) NewListPager(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *runtime.Pager[PipelineTopologiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PipelineTopologiesClientListResponse]{
 		More: func(page PipelineTopologiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

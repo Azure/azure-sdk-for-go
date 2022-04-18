@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmwarecloudsimple/resource-manager/Microsoft.VMwareCloudSimple/stable/2019-04-01/examples/ListCustomizationPolicies.json
-func ExampleCustomizationPoliciesClient_List() {
+func ExampleCustomizationPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleCustomizationPoliciesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<region-id>",
+	pager := client.NewListPager("<region-id>",
 		"<pc-name>",
 		&armvmwarecloudsimple.CustomizationPoliciesClientListOptions{Filter: nil})
 	for pager.More() {

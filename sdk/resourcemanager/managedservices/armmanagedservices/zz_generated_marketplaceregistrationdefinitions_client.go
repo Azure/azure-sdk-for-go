@@ -102,12 +102,12 @@ func (client *MarketplaceRegistrationDefinitionsClient) getHandleResponse(resp *
 	return result, nil
 }
 
-// List - Gets a list of the marketplace registration definitions for the marketplace identifier.
+// NewListPager - Gets a list of the marketplace registration definitions for the marketplace identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope of the resource.
 // options - MarketplaceRegistrationDefinitionsClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.List
 // method.
-func (client *MarketplaceRegistrationDefinitionsClient) List(scope string, options *MarketplaceRegistrationDefinitionsClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsClientListResponse] {
+func (client *MarketplaceRegistrationDefinitionsClient) NewListPager(scope string, options *MarketplaceRegistrationDefinitionsClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MarketplaceRegistrationDefinitionsClientListResponse]{
 		More: func(page MarketplaceRegistrationDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

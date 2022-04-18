@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*RegistrationAssignmentsClient.List` has been removed
+- Function `*RegistrationDefinitionsClient.List` has been removed
+- Function `*MarketplaceRegistrationDefinitionsClient.List` has been removed
+- Function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.List` has been removed
+
+### Features Added
+
+- New function `*RegistrationDefinitionsClient.NewListPager(string, *RegistrationDefinitionsClientListOptions) *runtime.Pager[RegistrationDefinitionsClientListResponse]`
+- New function `*RegistrationAssignmentsClient.NewListPager(string, *RegistrationAssignmentsClientListOptions) *runtime.Pager[RegistrationAssignmentsClientListResponse]`
+- New function `*MarketplaceRegistrationDefinitionsWithoutScopeClient.NewListPager(*MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsWithoutScopeClientListResponse]`
+- New function `*MarketplaceRegistrationDefinitionsClient.NewListPager(string, *MarketplaceRegistrationDefinitionsClientListOptions) *runtime.Pager[MarketplaceRegistrationDefinitionsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

@@ -195,12 +195,12 @@ func (client *RegistrationDefinitionsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Gets a list of the registration definitions.
+// NewListPager - Gets a list of the registration definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope of the resource.
 // options - RegistrationDefinitionsClientListOptions contains the optional parameters for the RegistrationDefinitionsClient.List
 // method.
-func (client *RegistrationDefinitionsClient) List(scope string, options *RegistrationDefinitionsClientListOptions) *runtime.Pager[RegistrationDefinitionsClientListResponse] {
+func (client *RegistrationDefinitionsClient) NewListPager(scope string, options *RegistrationDefinitionsClientListOptions) *runtime.Pager[RegistrationDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegistrationDefinitionsClientListResponse]{
 		More: func(page RegistrationDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

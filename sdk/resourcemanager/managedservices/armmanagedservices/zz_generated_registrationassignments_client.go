@@ -213,12 +213,12 @@ func (client *RegistrationAssignmentsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Gets a list of the registration assignments.
+// NewListPager - Gets a list of the registration assignments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The scope of the resource.
 // options - RegistrationAssignmentsClientListOptions contains the optional parameters for the RegistrationAssignmentsClient.List
 // method.
-func (client *RegistrationAssignmentsClient) List(scope string, options *RegistrationAssignmentsClientListOptions) *runtime.Pager[RegistrationAssignmentsClientListResponse] {
+func (client *RegistrationAssignmentsClient) NewListPager(scope string, options *RegistrationAssignmentsClientListOptions) *runtime.Pager[RegistrationAssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RegistrationAssignmentsClientListResponse]{
 		More: func(page RegistrationAssignmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

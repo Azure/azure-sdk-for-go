@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,19 @@
 
 package armstreamanalytics
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// AggregateFunctionProperties - The properties that are associated with an aggregate function.
+type AggregateFunctionProperties struct {
+	// REQUIRED; Indicates the type of function.
+	Type       *string                `json:"type,omitempty"`
+	Properties *FunctionConfiguration `json:"properties,omitempty"`
+
+	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
+	// has changed between requests. You can also use it in the If-Match or If-None-Match
+	// headers for write operations for optimistic concurrency.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+}
 
 // AvroSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
 // in Avro format.
@@ -22,45 +29,7 @@ type AvroSerialization struct {
 	Type *EventSerializationType `json:"type,omitempty"`
 
 	// The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties map[string]interface{} `json:"properties,omitempty"`
-}
-
-// GetSerialization implements the SerializationClassification interface for type AvroSerialization.
-func (a *AvroSerialization) GetSerialization() *Serialization {
-	return &Serialization{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvroSerialization.
-func (a AvroSerialization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = EventSerializationTypeAvro
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AvroSerialization.
-func (a *AvroSerialization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // AzureDataLakeStoreOutputDataSource - Describes an Azure Data Lake Store output data source.
@@ -70,44 +39,6 @@ type AzureDataLakeStoreOutputDataSource struct {
 
 	// The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureDataLakeStoreOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureDataLakeStoreOutputDataSource.
-func (a *AzureDataLakeStoreOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureDataLakeStoreOutputDataSource.
-func (a AzureDataLakeStoreOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.DataLake/Accounts"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureDataLakeStoreOutputDataSource.
-func (a *AzureDataLakeStoreOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureDataLakeStoreOutputDataSourceProperties - The properties that are associated with an Azure Data Lake Store.
@@ -146,6 +77,35 @@ type AzureDataLakeStoreOutputDataSourceProperties struct {
 	TokenUserPrincipalName *string `json:"tokenUserPrincipalName,omitempty"`
 }
 
+// AzureFunctionOutputDataSource - Defines the metadata of AzureFunctionOutputDataSource
+type AzureFunctionOutputDataSource struct {
+	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
+	Type *string `json:"type,omitempty"`
+
+	// The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests.
+	Properties *AzureFunctionOutputDataSourceProperties `json:"properties,omitempty"`
+}
+
+// AzureFunctionOutputDataSourceProperties - The properties that are associated with an Azure Function output.
+type AzureFunctionOutputDataSourceProperties struct {
+	// If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function.
+	APIKey *string `json:"apiKey,omitempty"`
+
+	// The name of your Azure Functions app.
+	FunctionAppName *string `json:"functionAppName,omitempty"`
+
+	// The name of the function in your Azure Functions app.
+	FunctionName *string `json:"functionName,omitempty"`
+
+	// A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The default
+	// value is 100.
+	MaxBatchCount *float32 `json:"maxBatchCount,omitempty"`
+
+	// A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input unit
+	// is in bytes. By default, this value is 262,144 bytes (256 KB).
+	MaxBatchSize *float32 `json:"maxBatchSize,omitempty"`
+}
+
 // AzureMachineLearningWebServiceFunctionBinding - The binding to an Azure Machine Learning web service.
 type AzureMachineLearningWebServiceFunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
@@ -153,44 +113,6 @@ type AzureMachineLearningWebServiceFunctionBinding struct {
 
 	// The binding properties associated with an Azure Machine learning web service.
 	Properties *AzureMachineLearningWebServiceFunctionBindingProperties `json:"properties,omitempty"`
-}
-
-// GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningWebServiceFunctionBinding.
-func (a *AzureMachineLearningWebServiceFunctionBinding) GetFunctionBinding() *FunctionBinding {
-	return &FunctionBinding{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningWebServiceFunctionBinding.
-func (a AzureMachineLearningWebServiceFunctionBinding) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.MachineLearning/WebService"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureMachineLearningWebServiceFunctionBinding.
-func (a *AzureMachineLearningWebServiceFunctionBinding) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureMachineLearningWebServiceFunctionBindingProperties - The binding properties associated with an Azure Machine learning
@@ -211,17 +133,6 @@ type AzureMachineLearningWebServiceFunctionBindingProperties struct {
 
 	// A list of outputs from the Azure Machine Learning web service endpoint execution.
 	Outputs []*AzureMachineLearningWebServiceOutputColumn `json:"outputs,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningWebServiceFunctionBindingProperties.
-func (a AzureMachineLearningWebServiceFunctionBindingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiKey", a.APIKey)
-	populate(objectMap, "batchSize", a.BatchSize)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populate(objectMap, "inputs", a.Inputs)
-	populate(objectMap, "outputs", a.Outputs)
-	return json.Marshal(objectMap)
 }
 
 // AzureMachineLearningWebServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an
@@ -245,45 +156,6 @@ type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters s
 	BindingRetrievalProperties *AzureMachineLearningWebServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
 }
 
-// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
-// interface for type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
-func (a *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
-	return &FunctionRetrieveDefaultDefinitionParameters{
-		BindingType: a.BindingType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
-func (a AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bindingRetrievalProperties", a.BindingRetrievalProperties)
-	objectMap["bindingType"] = "Microsoft.MachineLearning/WebService"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.
-func (a *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bindingRetrievalProperties":
-			err = unpopulate(val, &a.BindingRetrievalProperties)
-			delete(rawMsg, key)
-		case "bindingType":
-			err = unpopulate(val, &a.BindingType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureMachineLearningWebServiceInputColumn - Describes an input column for the Azure Machine Learning web service endpoint.
 type AzureMachineLearningWebServiceInputColumn struct {
 	// The (Azure Machine Learning supported) data type of the input column. A list of valid Azure Machine Learning data types
@@ -304,14 +176,6 @@ type AzureMachineLearningWebServiceInputs struct {
 
 	// The name of the input. This is the name provided while authoring the endpoint.
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureMachineLearningWebServiceInputs.
-func (a AzureMachineLearningWebServiceInputs) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "columnNames", a.ColumnNames)
-	populate(objectMap, "name", a.Name)
-	return json.Marshal(objectMap)
 }
 
 // AzureMachineLearningWebServiceOutputColumn - Describes an output column for the Azure Machine Learning web service endpoint.
@@ -360,44 +224,6 @@ type AzureSQLDatabaseOutputDataSource struct {
 	Properties *AzureSQLDatabaseOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSQLDatabaseOutputDataSource.
-func (a *AzureSQLDatabaseOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureSQLDatabaseOutputDataSource.
-func (a AzureSQLDatabaseOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.Sql/Server/Database"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureSQLDatabaseOutputDataSource.
-func (a *AzureSQLDatabaseOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureSQLDatabaseOutputDataSourceProperties - The properties that are associated with an Azure SQL database output.
 type AzureSQLDatabaseOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -432,44 +258,6 @@ type AzureSQLReferenceInputDataSource struct {
 
 	// The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureSQLReferenceInputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type AzureSQLReferenceInputDataSource.
-func (a *AzureSQLReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
-	return &ReferenceInputDataSource{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureSQLReferenceInputDataSource.
-func (a AzureSQLReferenceInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.Sql/Server/Database"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureSQLReferenceInputDataSource.
-func (a *AzureSQLReferenceInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureSQLReferenceInputDataSourceProperties - The properties that are associated with SQL DB input containing reference
@@ -536,44 +324,6 @@ type AzureSynapseOutputDataSource struct {
 	Properties *AzureSynapseOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSynapseOutputDataSource.
-func (a *AzureSynapseOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureSynapseOutputDataSource.
-func (a AzureSynapseOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.Sql/Server/DataWarehouse"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureSynapseOutputDataSource.
-func (a *AzureSynapseOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output.
 type AzureSynapseOutputDataSourceProperties struct {
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
@@ -599,44 +349,6 @@ type AzureTableOutputDataSource struct {
 
 	// The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
 	Properties *AzureTableOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureTableOutputDataSource.
-func (a *AzureTableOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureTableOutputDataSource.
-func (a AzureTableOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	objectMap["type"] = "Microsoft.Storage/Table"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureTableOutputDataSource.
-func (a *AzureTableOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureTableOutputDataSourceProperties - The properties that are associated with an Azure Table output.
@@ -665,21 +377,11 @@ type AzureTableOutputDataSourceProperties struct {
 	Table *string `json:"table,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureTableOutputDataSourceProperties.
-func (a AzureTableOutputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountKey", a.AccountKey)
-	populate(objectMap, "accountName", a.AccountName)
-	populate(objectMap, "batchSize", a.BatchSize)
-	populate(objectMap, "columnsToRemove", a.ColumnsToRemove)
-	populate(objectMap, "partitionKey", a.PartitionKey)
-	populate(objectMap, "rowKey", a.RowKey)
-	populate(objectMap, "table", a.Table)
-	return json.Marshal(objectMap)
-}
-
 // BlobDataSourceProperties - The properties that are associated with a blob data source.
 type BlobDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
 	Container *string `json:"container,omitempty"`
@@ -701,17 +403,6 @@ type BlobDataSourceProperties struct {
 	TimeFormat *string `json:"timeFormat,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobDataSourceProperties.
-func (b BlobDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "container", b.Container)
-	populate(objectMap, "dateFormat", b.DateFormat)
-	populate(objectMap, "pathPattern", b.PathPattern)
-	populate(objectMap, "storageAccounts", b.StorageAccounts)
-	populate(objectMap, "timeFormat", b.TimeFormat)
-	return json.Marshal(objectMap)
-}
-
 // BlobOutputDataSource - Describes a blob output data source.
 type BlobOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
@@ -719,44 +410,6 @@ type BlobOutputDataSource struct {
 
 	// The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests.
 	Properties *BlobOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type BlobOutputDataSource.
-func (b *BlobOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobOutputDataSource.
-func (b BlobOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", b.Properties)
-	objectMap["type"] = "Microsoft.Storage/Blob"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobOutputDataSource.
-func (b *BlobOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BlobOutputDataSourceProperties - The properties that are associated with a blob output.
@@ -785,18 +438,6 @@ type BlobOutputDataSourceProperties struct {
 	TimeFormat *string `json:"timeFormat,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type BlobOutputDataSourceProperties.
-func (b BlobOutputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMode", b.AuthenticationMode)
-	populate(objectMap, "container", b.Container)
-	populate(objectMap, "dateFormat", b.DateFormat)
-	populate(objectMap, "pathPattern", b.PathPattern)
-	populate(objectMap, "storageAccounts", b.StorageAccounts)
-	populate(objectMap, "timeFormat", b.TimeFormat)
-	return json.Marshal(objectMap)
-}
-
 // BlobReferenceInputDataSource - Describes a blob input data source that contains reference data.
 type BlobReferenceInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
@@ -806,46 +447,11 @@ type BlobReferenceInputDataSource struct {
 	Properties *BlobReferenceInputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type BlobReferenceInputDataSource.
-func (b *BlobReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource {
-	return &ReferenceInputDataSource{
-		Type: b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobReferenceInputDataSource.
-func (b BlobReferenceInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", b.Properties)
-	objectMap["type"] = "Microsoft.Storage/Blob"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobReferenceInputDataSource.
-func (b *BlobReferenceInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BlobReferenceInputDataSourceProperties - The properties that are associated with a blob input containing reference data.
 type BlobReferenceInputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
 	Container *string `json:"container,omitempty"`
@@ -865,17 +471,6 @@ type BlobReferenceInputDataSourceProperties struct {
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobReferenceInputDataSourceProperties.
-func (b BlobReferenceInputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "container", b.Container)
-	populate(objectMap, "dateFormat", b.DateFormat)
-	populate(objectMap, "pathPattern", b.PathPattern)
-	populate(objectMap, "storageAccounts", b.StorageAccounts)
-	populate(objectMap, "timeFormat", b.TimeFormat)
-	return json.Marshal(objectMap)
 }
 
 // BlobStreamInputDataSource - Describes a blob input data source that contains stream data.
@@ -887,46 +482,11 @@ type BlobStreamInputDataSource struct {
 	Properties *BlobStreamInputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type BlobStreamInputDataSource.
-func (b *BlobStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
-	return &StreamInputDataSource{
-		Type: b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobStreamInputDataSource.
-func (b BlobStreamInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", b.Properties)
-	objectMap["type"] = "Microsoft.Storage/Blob"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobStreamInputDataSource.
-func (b *BlobStreamInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BlobStreamInputDataSourceProperties - The properties that are associated with a blob input containing stream data.
 type BlobStreamInputDataSourceProperties struct {
+	// Authentication Mode.
+	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
 	Container *string `json:"container,omitempty"`
@@ -941,7 +501,7 @@ type BlobStreamInputDataSourceProperties struct {
 	// and example.
 	PathPattern *string `json:"pathPattern,omitempty"`
 
-	// The partition count of the blob input data source. Range 1 - 256.
+	// The partition count of the blob input data source. Range 1 - 1024.
 	SourcePartitionCount *int32 `json:"sourcePartitionCount,omitempty"`
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
@@ -949,18 +509,6 @@ type BlobStreamInputDataSourceProperties struct {
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
 	TimeFormat *string `json:"timeFormat,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobStreamInputDataSourceProperties.
-func (b BlobStreamInputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "container", b.Container)
-	populate(objectMap, "dateFormat", b.DateFormat)
-	populate(objectMap, "pathPattern", b.PathPattern)
-	populate(objectMap, "sourcePartitionCount", b.SourcePartitionCount)
-	populate(objectMap, "storageAccounts", b.StorageAccounts)
-	populate(objectMap, "timeFormat", b.TimeFormat)
-	return json.Marshal(objectMap)
 }
 
 // CSVSerialization - Describes how data from an input is serialized or how data is serialized when written to an output in
@@ -971,44 +519,6 @@ type CSVSerialization struct {
 
 	// The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests.
 	Properties *CSVSerializationProperties `json:"properties,omitempty"`
-}
-
-// GetSerialization implements the SerializationClassification interface for type CSVSerialization.
-func (c *CSVSerialization) GetSerialization() *Serialization {
-	return &Serialization{
-		Type: c.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CSVSerialization.
-func (c CSVSerialization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	objectMap["type"] = EventSerializationTypeCSV
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CSVSerialization.
-func (c *CSVSerialization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &c.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &c.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CSVSerializationProperties - The properties that are associated with the CSV serialization type.
@@ -1053,20 +563,6 @@ type Cluster struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Cluster.
-func (c Cluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", c.Etag)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ClusterInfo - The properties associated with a Stream Analytics cluster.
 type ClusterInfo struct {
 	// The resource id of cluster.
@@ -1094,14 +590,6 @@ type ClusterJobListResult struct {
 	Value []*ClusterJob `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterJobListResult.
-func (c ClusterJobListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ClusterListResult - A list of clusters populated by a 'list' operation.
 type ClusterListResult struct {
 	// READ-ONLY; The URL to fetch the next set of clusters.
@@ -1109,14 +597,6 @@ type ClusterListResult struct {
 
 	// READ-ONLY; A list of clusters.
 	Value []*Cluster `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterListResult.
-func (c ClusterListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClusterProperties - The properties associated with a Stream Analytics cluster.
@@ -1136,49 +616,6 @@ type ClusterProperties struct {
 
 	// READ-ONLY; The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled
 	ProvisioningState *ClusterProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterProperties.
-func (c ClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capacityAllocated", c.CapacityAllocated)
-	populate(objectMap, "capacityAssigned", c.CapacityAssigned)
-	populate(objectMap, "clusterId", c.ClusterID)
-	populateTimeRFC3339(objectMap, "createdDate", c.CreatedDate)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClusterProperties.
-func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "capacityAllocated":
-			err = unpopulate(val, &c.CapacityAllocated)
-			delete(rawMsg, key)
-		case "capacityAssigned":
-			err = unpopulate(val, &c.CapacityAssigned)
-			delete(rawMsg, key)
-		case "clusterId":
-			err = unpopulate(val, &c.ClusterID)
-			delete(rawMsg, key)
-		case "createdDate":
-			err = unpopulateTimeRFC3339(val, &c.CreatedDate)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ClusterSKU - The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate)
@@ -1201,11 +638,14 @@ type ClustersClientBeginCreateOrUpdateOptions struct {
 	// Set to '*' to allow a new resource to be created, but to prevent updating an existing record set. Other values will result
 	// in a 412 Pre-condition Failed response.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 type ClustersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
@@ -1213,6 +653,8 @@ type ClustersClientBeginUpdateOptions struct {
 	// The ETag of the resource. Omit this value to always overwrite the current record set. Specify the last-seen ETag value
 	// to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
@@ -1262,13 +704,6 @@ type Diagnostics struct {
 	Conditions []*DiagnosticCondition `json:"conditions,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Diagnostics.
-func (d Diagnostics) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "conditions", d.Conditions)
-	return json.Marshal(objectMap)
-}
-
 // DocumentDbOutputDataSource - Describes a DocumentDB output data source.
 type DocumentDbOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
@@ -1276,44 +711,6 @@ type DocumentDbOutputDataSource struct {
 
 	// The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests.
 	Properties *DocumentDbOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type DocumentDbOutputDataSource.
-func (d *DocumentDbOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: d.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DocumentDbOutputDataSource.
-func (d DocumentDbOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", d.Properties)
-	objectMap["type"] = "Microsoft.Storage/DocumentDB"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DocumentDbOutputDataSource.
-func (d *DocumentDbOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DocumentDbOutputDataSourceProperties - The properties that are associated with a DocumentDB output.
@@ -1375,16 +772,6 @@ type ErrorError struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorError.
-func (e ErrorError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Describes the error that occurred.
 type ErrorResponse struct {
 	// READ-ONLY; Error code associated with the error that occurred.
@@ -1423,44 +810,6 @@ type EventHubOutputDataSource struct {
 	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubOutputDataSource.
-func (e *EventHubOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHubOutputDataSource.
-func (e EventHubOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", e.Properties)
-	objectMap["type"] = "Microsoft.ServiceBus/EventHub"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubOutputDataSource.
-func (e *EventHubOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output.
 type EventHubOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -1487,19 +836,6 @@ type EventHubOutputDataSourceProperties struct {
 	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventHubOutputDataSourceProperties.
-func (e EventHubOutputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMode", e.AuthenticationMode)
-	populate(objectMap, "eventHubName", e.EventHubName)
-	populate(objectMap, "partitionKey", e.PartitionKey)
-	populate(objectMap, "propertyColumns", e.PropertyColumns)
-	populate(objectMap, "serviceBusNamespace", e.ServiceBusNamespace)
-	populate(objectMap, "sharedAccessPolicyKey", e.SharedAccessPolicyKey)
-	populate(objectMap, "sharedAccessPolicyName", e.SharedAccessPolicyName)
-	return json.Marshal(objectMap)
-}
-
 // EventHubStreamInputDataSource - Describes an Event Hub input data source that contains stream data.
 type EventHubStreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
@@ -1507,44 +843,6 @@ type EventHubStreamInputDataSource struct {
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubStreamInputDataSource.
-func (e *EventHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
-	return &StreamInputDataSource{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHubStreamInputDataSource.
-func (e EventHubStreamInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", e.Properties)
-	objectMap["type"] = "Microsoft.ServiceBus/EventHub"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubStreamInputDataSource.
-func (e *EventHubStreamInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EventHubStreamInputDataSourceProperties - The properties that are associated with a Event Hub input containing stream data.
@@ -1581,44 +879,6 @@ type EventHubV2OutputDataSource struct {
 	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubV2OutputDataSource.
-func (e *EventHubV2OutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHubV2OutputDataSource.
-func (e EventHubV2OutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", e.Properties)
-	objectMap["type"] = "Microsoft.EventHub/EventHub"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubV2OutputDataSource.
-func (e *EventHubV2OutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventHubV2StreamInputDataSource - Describes an Event Hub input data source that contains stream data.
 type EventHubV2StreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
@@ -1626,44 +886,6 @@ type EventHubV2StreamInputDataSource struct {
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubV2StreamInputDataSource.
-func (e *EventHubV2StreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
-	return &StreamInputDataSource{
-		Type: e.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHubV2StreamInputDataSource.
-func (e EventHubV2StreamInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", e.Properties)
-	objectMap["type"] = "Microsoft.EventHub/EventHub"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventHubV2StreamInputDataSource.
-func (e *EventHubV2StreamInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &e.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Function - A function object, containing all information associated with the named function. All functions are contained
@@ -1682,45 +904,6 @@ type Function struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Function.
-func (f Function) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", f.ID)
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "properties", f.Properties)
-	populate(objectMap, "type", f.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Function.
-func (f *Function) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &f.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "properties":
-			f.Properties, err = unmarshalFunctionPropertiesClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FunctionBindingClassification provides polymorphic access to related types.
 // Call the interface's GetFunctionBinding() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1737,8 +920,15 @@ type FunctionBinding struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetFunctionBinding implements the FunctionBindingClassification interface for type FunctionBinding.
-func (f *FunctionBinding) GetFunctionBinding() *FunctionBinding { return f }
+type FunctionConfiguration struct {
+	// The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the
+	// endpoint.
+	Binding FunctionBindingClassification `json:"binding,omitempty"`
+	Inputs  []*FunctionInput              `json:"inputs,omitempty"`
+
+	// Describes the output of a function.
+	Output *FunctionOutput `json:"output,omitempty"`
+}
 
 // FunctionInput - Describes one input parameter of a function.
 type FunctionInput struct {
@@ -1761,14 +951,6 @@ type FunctionListResult struct {
 	Value []*Function `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FunctionListResult.
-func (f FunctionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
 // FunctionOutput - Describes the output of a function.
 type FunctionOutput struct {
 	// The (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types
@@ -1779,7 +961,7 @@ type FunctionOutput struct {
 // FunctionPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetFunctionProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *FunctionProperties, *ScalarFunctionProperties
+// - *AggregateFunctionProperties, *FunctionProperties, *ScalarFunctionProperties
 type FunctionPropertiesClassification interface {
 	// GetFunctionProperties returns the FunctionProperties content of the underlying type.
 	GetFunctionProperties() *FunctionProperties
@@ -1788,16 +970,14 @@ type FunctionPropertiesClassification interface {
 // FunctionProperties - The properties that are associated with a function.
 type FunctionProperties struct {
 	// REQUIRED; Indicates the type of function.
-	Type *string `json:"type,omitempty"`
+	Type       *string                `json:"type,omitempty"`
+	Properties *FunctionConfiguration `json:"properties,omitempty"`
 
 	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
-
-// GetFunctionProperties implements the FunctionPropertiesClassification interface for type FunctionProperties.
-func (f *FunctionProperties) GetFunctionProperties() *FunctionProperties { return f }
 
 // FunctionRetrieveDefaultDefinitionParametersClassification provides polymorphic access to related types.
 // Call the interface's GetFunctionRetrieveDefaultDefinitionParameters() method to access the common type.
@@ -1816,12 +996,6 @@ type FunctionRetrieveDefaultDefinitionParameters struct {
 	BindingType *string `json:"bindingType,omitempty"`
 }
 
-// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
-// interface for type FunctionRetrieveDefaultDefinitionParameters.
-func (f *FunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
-	return f
-}
-
 // FunctionsClientBeginTestOptions contains the optional parameters for the FunctionsClient.BeginTest method.
 type FunctionsClientBeginTestOptions struct {
 	// If the function specified does not already exist, this parameter must contain the full function definition intended to
@@ -1830,6 +1004,8 @@ type FunctionsClientBeginTestOptions struct {
 	// in the existing function (exactly like a PATCH operation) and the
 	// resulting function will be tested.
 	Function *Function
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // FunctionsClientCreateOrReplaceOptions contains the optional parameters for the FunctionsClient.CreateOrReplace method.
@@ -1902,45 +1078,6 @@ type Input struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Input.
-func (i Input) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "properties", i.Properties)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Input.
-func (i *Input) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &i.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &i.Name)
-			delete(rawMsg, key)
-		case "properties":
-			i.Properties, err = unmarshalInputPropertiesClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InputListResult - Object containing a list of inputs under a streaming job.
 type InputListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -1948,14 +1085,6 @@ type InputListResult struct {
 
 	// READ-ONLY; A list of inputs under a streaming job. Populated by a 'List' operation.
 	Value []*Input `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InputListResult.
-func (i InputListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // InputPropertiesClassification provides polymorphic access to related types.
@@ -1991,56 +1120,6 @@ type InputProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
-// GetInputProperties implements the InputPropertiesClassification interface for type InputProperties.
-func (i *InputProperties) GetInputProperties() *InputProperties { return i }
-
-// MarshalJSON implements the json.Marshaller interface for type InputProperties.
-func (i InputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "compression", i.Compression)
-	populate(objectMap, "diagnostics", i.Diagnostics)
-	populate(objectMap, "etag", i.Etag)
-	populate(objectMap, "partitionKey", i.PartitionKey)
-	populate(objectMap, "serialization", i.Serialization)
-	objectMap["type"] = i.Type
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InputProperties.
-func (i *InputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "compression":
-			err = unpopulate(val, &i.Compression)
-			delete(rawMsg, key)
-		case "diagnostics":
-			err = unpopulate(val, &i.Diagnostics)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &i.Etag)
-			delete(rawMsg, key)
-		case "partitionKey":
-			err = unpopulate(val, &i.PartitionKey)
-			delete(rawMsg, key)
-		case "serialization":
-			i.Serialization, err = unmarshalSerializationClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InputsClientBeginTestOptions contains the optional parameters for the InputsClient.BeginTest method.
 type InputsClientBeginTestOptions struct {
 	// If the input specified does not already exist, this parameter must contain the full input definition intended to be tested.
@@ -2049,6 +1128,8 @@ type InputsClientBeginTestOptions struct {
 	// the existing input (exactly like a PATCH operation) and the resulting input will
 	// be tested.
 	Input *Input
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // InputsClientCreateOrReplaceOptions contains the optional parameters for the InputsClient.CreateOrReplace method.
@@ -2095,44 +1176,6 @@ type IoTHubStreamInputDataSource struct {
 	Properties *IoTHubStreamInputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type IoTHubStreamInputDataSource.
-func (i *IoTHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource {
-	return &StreamInputDataSource{
-		Type: i.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IoTHubStreamInputDataSource.
-func (i IoTHubStreamInputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", i.Properties)
-	objectMap["type"] = "Microsoft.Devices/IotHubs"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type IoTHubStreamInputDataSource.
-func (i *IoTHubStreamInputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &i.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &i.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // IoTHubStreamInputDataSourceProperties - The properties that are associated with a IoT Hub input containing stream data.
 type IoTHubStreamInputDataSourceProperties struct {
 	// The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the input
@@ -2163,44 +1206,6 @@ type JSONSerialization struct {
 	Properties *JSONSerializationProperties `json:"properties,omitempty"`
 }
 
-// GetSerialization implements the SerializationClassification interface for type JSONSerialization.
-func (j *JSONSerialization) GetSerialization() *Serialization {
-	return &Serialization{
-		Type: j.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JSONSerialization.
-func (j JSONSerialization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", j.Properties)
-	objectMap["type"] = EventSerializationTypeJSON
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JSONSerialization.
-func (j *JSONSerialization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &j.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &j.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // JSONSerializationProperties - The properties that are associated with the JSON serialization type.
 type JSONSerializationProperties struct {
 	// Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output.
@@ -2222,44 +1227,6 @@ type JavaScriptFunctionBinding struct {
 
 	// The binding properties associated with a JavaScript function.
 	Properties *JavaScriptFunctionBindingProperties `json:"properties,omitempty"`
-}
-
-// GetFunctionBinding implements the FunctionBindingClassification interface for type JavaScriptFunctionBinding.
-func (j *JavaScriptFunctionBinding) GetFunctionBinding() *FunctionBinding {
-	return &FunctionBinding{
-		Type: j.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JavaScriptFunctionBinding.
-func (j JavaScriptFunctionBinding) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", j.Properties)
-	objectMap["type"] = "Microsoft.StreamAnalytics/JavascriptUdf"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JavaScriptFunctionBinding.
-func (j *JavaScriptFunctionBinding) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &j.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &j.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // JavaScriptFunctionBindingProperties - The binding properties associated with a JavaScript function.
@@ -2285,45 +1252,6 @@ type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
 
 	// The binding retrieval properties associated with a JavaScript function.
 	BindingRetrievalProperties *JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
-}
-
-// GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
-// interface for type JavaScriptFunctionRetrieveDefaultDefinitionParameters.
-func (j *JavaScriptFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetrieveDefaultDefinitionParameters() *FunctionRetrieveDefaultDefinitionParameters {
-	return &FunctionRetrieveDefaultDefinitionParameters{
-		BindingType: j.BindingType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JavaScriptFunctionRetrieveDefaultDefinitionParameters.
-func (j JavaScriptFunctionRetrieveDefaultDefinitionParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bindingRetrievalProperties", j.BindingRetrievalProperties)
-	objectMap["bindingType"] = "Microsoft.StreamAnalytics/JavascriptUdf"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JavaScriptFunctionRetrieveDefaultDefinitionParameters.
-func (j *JavaScriptFunctionRetrieveDefaultDefinitionParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bindingRetrievalProperties":
-			err = unpopulate(val, &j.BindingRetrievalProperties)
-			delete(rawMsg, key)
-		case "bindingType":
-			err = unpopulate(val, &j.BindingType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // JobStorageAccount - The properties that are associated with an Azure Storage account with MSI
@@ -2394,14 +1322,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2423,22 +1343,12 @@ type Output struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Output.
-func (o Output) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "properties", o.Properties)
-	populate(objectMap, "type", o.Type)
-	return json.Marshal(objectMap)
-}
-
 // OutputDataSourceClassification provides polymorphic access to related types.
 // Call the interface's GetOutputDataSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureDataLakeStoreOutputDataSource, *AzureSQLDatabaseOutputDataSource, *AzureSynapseOutputDataSource, *AzureTableOutputDataSource,
-// - *BlobOutputDataSource, *DocumentDbOutputDataSource, *EventHubOutputDataSource, *EventHubV2OutputDataSource, *OutputDataSource,
-// - *PowerBIOutputDataSource, *ServiceBusQueueOutputDataSource, *ServiceBusTopicOutputDataSource
+// - *AzureDataLakeStoreOutputDataSource, *AzureFunctionOutputDataSource, *AzureSQLDatabaseOutputDataSource, *AzureSynapseOutputDataSource,
+// - *AzureTableOutputDataSource, *BlobOutputDataSource, *DocumentDbOutputDataSource, *EventHubOutputDataSource, *EventHubV2OutputDataSource,
+// - *OutputDataSource, *PowerBIOutputDataSource, *ServiceBusQueueOutputDataSource, *ServiceBusTopicOutputDataSource
 type OutputDataSourceClassification interface {
 	// GetOutputDataSource returns the OutputDataSource content of the underlying type.
 	GetOutputDataSource() *OutputDataSource
@@ -2450,9 +1360,6 @@ type OutputDataSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type OutputDataSource.
-func (o *OutputDataSource) GetOutputDataSource() *OutputDataSource { return o }
-
 // OutputListResult - Object containing a list of outputs under a streaming job.
 type OutputListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -2460,14 +1367,6 @@ type OutputListResult struct {
 
 	// READ-ONLY; A list of outputs under a streaming job. Populated by a 'List' operation.
 	Value []*Output `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OutputListResult.
-func (o OutputListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OutputProperties - The properties that are associated with an output.
@@ -2494,53 +1393,6 @@ type OutputProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OutputProperties.
-func (o OutputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "datasource", o.Datasource)
-	populate(objectMap, "diagnostics", o.Diagnostics)
-	populate(objectMap, "etag", o.Etag)
-	populate(objectMap, "serialization", o.Serialization)
-	populate(objectMap, "sizeWindow", o.SizeWindow)
-	populate(objectMap, "timeWindow", o.TimeWindow)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OutputProperties.
-func (o *OutputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "datasource":
-			o.Datasource, err = unmarshalOutputDataSourceClassification(val)
-			delete(rawMsg, key)
-		case "diagnostics":
-			err = unpopulate(val, &o.Diagnostics)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &o.Etag)
-			delete(rawMsg, key)
-		case "serialization":
-			o.Serialization, err = unmarshalSerializationClassification(val)
-			delete(rawMsg, key)
-		case "sizeWindow":
-			err = unpopulate(val, &o.SizeWindow)
-			delete(rawMsg, key)
-		case "timeWindow":
-			err = unpopulate(val, &o.TimeWindow)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OutputsClientBeginTestOptions contains the optional parameters for the OutputsClient.BeginTest method.
 type OutputsClientBeginTestOptions struct {
 	// If the output specified does not already exist, this parameter must contain the full output definition intended to be tested.
@@ -2549,6 +1401,8 @@ type OutputsClientBeginTestOptions struct {
 	// the existing output (exactly like a PATCH operation) and the resulting output
 	// will be tested.
 	Output *Output
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // OutputsClientCreateOrReplaceOptions contains the optional parameters for the OutputsClient.CreateOrReplace method.
@@ -2593,45 +1447,7 @@ type ParquetSerialization struct {
 	Type *EventSerializationType `json:"type,omitempty"`
 
 	// The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties map[string]interface{} `json:"properties,omitempty"`
-}
-
-// GetSerialization implements the SerializationClassification interface for type ParquetSerialization.
-func (p *ParquetSerialization) GetSerialization() *Serialization {
-	return &Serialization{
-		Type: p.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ParquetSerialization.
-func (p ParquetSerialization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", p.Properties)
-	objectMap["type"] = EventSerializationTypeParquet
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ParquetSerialization.
-func (p *ParquetSerialization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // PowerBIOutputDataSource - Describes a Power BI output data source.
@@ -2641,44 +1457,6 @@ type PowerBIOutputDataSource struct {
 
 	// The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
 	Properties *PowerBIOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type PowerBIOutputDataSource.
-func (p *PowerBIOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: p.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PowerBIOutputDataSource.
-func (p PowerBIOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", p.Properties)
-	objectMap["type"] = "PowerBI"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PowerBIOutputDataSource.
-func (p *PowerBIOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PowerBIOutputDataSourceProperties - The properties that are associated with a Power BI output.
@@ -2742,14 +1520,6 @@ type PrivateEndpointListResult struct {
 	Value []*PrivateEndpoint `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointListResult.
-func (p PrivateEndpointListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointProperties - The properties associated with a private endpoint.
 type PrivateEndpointProperties struct {
 	// A list of connections to the remote resource. Immutable after it is set.
@@ -2759,17 +1529,10 @@ type PrivateEndpointProperties struct {
 	CreatedDate *string `json:"createdDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointProperties.
-func (p PrivateEndpointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdDate", p.CreatedDate)
-	populate(objectMap, "manualPrivateLinkServiceConnections", p.ManualPrivateLinkServiceConnections)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointsClient.BeginDelete method.
 type PrivateEndpointsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointsClient.CreateOrUpdate
@@ -2829,16 +1592,6 @@ type PrivateLinkServiceConnectionProperties struct {
 	RequestMessage *string `json:"requestMessage,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceConnectionProperties.
-func (p PrivateLinkServiceConnectionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupIds", p.GroupIDs)
-	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
-	populate(objectMap, "privateLinkServiceId", p.PrivateLinkServiceID)
-	populate(objectMap, "requestMessage", p.RequestMessage)
-	return json.Marshal(objectMap)
-}
-
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags
 type ProxyResource struct {
@@ -2867,9 +1620,6 @@ type ReferenceInputDataSource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type ReferenceInputDataSource.
-func (r *ReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInputDataSource { return r }
-
 // ReferenceInputProperties - The properties that are associated with an input containing reference data.
 type ReferenceInputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
@@ -2895,69 +1645,6 @@ type ReferenceInputProperties struct {
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
-
-// GetInputProperties implements the InputPropertiesClassification interface for type ReferenceInputProperties.
-func (r *ReferenceInputProperties) GetInputProperties() *InputProperties {
-	return &InputProperties{
-		Type:          r.Type,
-		Serialization: r.Serialization,
-		Diagnostics:   r.Diagnostics,
-		Etag:          r.Etag,
-		Compression:   r.Compression,
-		PartitionKey:  r.PartitionKey,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReferenceInputProperties.
-func (r ReferenceInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "compression", r.Compression)
-	populate(objectMap, "datasource", r.Datasource)
-	populate(objectMap, "diagnostics", r.Diagnostics)
-	populate(objectMap, "etag", r.Etag)
-	populate(objectMap, "partitionKey", r.PartitionKey)
-	populate(objectMap, "serialization", r.Serialization)
-	objectMap["type"] = "Reference"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReferenceInputProperties.
-func (r *ReferenceInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "compression":
-			err = unpopulate(val, &r.Compression)
-			delete(rawMsg, key)
-		case "datasource":
-			r.Datasource, err = unmarshalReferenceInputDataSourceClassification(val)
-			delete(rawMsg, key)
-		case "diagnostics":
-			err = unpopulate(val, &r.Diagnostics)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &r.Etag)
-			delete(rawMsg, key)
-		case "partitionKey":
-			err = unpopulate(val, &r.PartitionKey)
-			delete(rawMsg, key)
-		case "serialization":
-			r.Serialization, err = unmarshalSerializationClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &r.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Resource - The base resource definition
@@ -2987,109 +1674,16 @@ type SKU struct {
 	Name *SKUName `json:"name,omitempty"`
 }
 
-// ScalarFunctionConfiguration - Describes the configuration of the scalar function.
-type ScalarFunctionConfiguration struct {
-	// The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the
-	// endpoint.
-	Binding FunctionBindingClassification `json:"binding,omitempty"`
-
-	// A list of inputs describing the parameters of the function.
-	Inputs []*FunctionInput `json:"inputs,omitempty"`
-
-	// The output of the function.
-	Output *FunctionOutput `json:"output,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScalarFunctionConfiguration.
-func (s ScalarFunctionConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "binding", s.Binding)
-	populate(objectMap, "inputs", s.Inputs)
-	populate(objectMap, "output", s.Output)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScalarFunctionConfiguration.
-func (s *ScalarFunctionConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "binding":
-			s.Binding, err = unmarshalFunctionBindingClassification(val)
-			delete(rawMsg, key)
-		case "inputs":
-			err = unpopulate(val, &s.Inputs)
-			delete(rawMsg, key)
-		case "output":
-			err = unpopulate(val, &s.Output)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ScalarFunctionProperties - The properties that are associated with a scalar function.
 type ScalarFunctionProperties struct {
 	// REQUIRED; Indicates the type of function.
-	Type *string `json:"type,omitempty"`
-
-	// Describes the configuration of the scalar function.
-	Properties *ScalarFunctionConfiguration `json:"properties,omitempty"`
+	Type       *string                `json:"type,omitempty"`
+	Properties *FunctionConfiguration `json:"properties,omitempty"`
 
 	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
-
-// GetFunctionProperties implements the FunctionPropertiesClassification interface for type ScalarFunctionProperties.
-func (s *ScalarFunctionProperties) GetFunctionProperties() *FunctionProperties {
-	return &FunctionProperties{
-		Type: s.Type,
-		Etag: s.Etag,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScalarFunctionProperties.
-func (s ScalarFunctionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", s.Etag)
-	populate(objectMap, "properties", s.Properties)
-	objectMap["type"] = "Scalar"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScalarFunctionProperties.
-func (s *ScalarFunctionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, &s.Etag)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ScaleStreamingJobParameters - Parameters supplied to the Scale Streaming Job operation.
@@ -3112,9 +1706,6 @@ type Serialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
 	Type *EventSerializationType `json:"type,omitempty"`
 }
-
-// GetSerialization implements the SerializationClassification interface for type Serialization.
-func (s *Serialization) GetSerialization() *Serialization { return s }
 
 // ServiceBusDataSourceProperties - The common properties that are associated with Service Bus data sources (Queues, Topics,
 // Event Hubs, etc.).
@@ -3143,44 +1734,6 @@ type ServiceBusQueueOutputDataSource struct {
 	Properties *ServiceBusQueueOutputDataSourceProperties `json:"properties,omitempty"`
 }
 
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusQueueOutputDataSource.
-func (s *ServiceBusQueueOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceBusQueueOutputDataSource.
-func (s ServiceBusQueueOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	objectMap["type"] = "Microsoft.ServiceBus/Queue"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceBusQueueOutputDataSource.
-func (s *ServiceBusQueueOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServiceBusQueueOutputDataSourceProperties - The properties that are associated with a Service Bus Queue output.
 type ServiceBusQueueOutputDataSourceProperties struct {
 	// Authentication Mode.
@@ -3206,20 +1759,7 @@ type ServiceBusQueueOutputDataSourceProperties struct {
 	// The system properties associated with the Service Bus Queue. The following system properties are supported: ReplyToSessionId,
 	// ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey,
 	// SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-	SystemPropertyColumns map[string]interface{} `json:"systemPropertyColumns,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceBusQueueOutputDataSourceProperties.
-func (s ServiceBusQueueOutputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMode", s.AuthenticationMode)
-	populate(objectMap, "propertyColumns", s.PropertyColumns)
-	populate(objectMap, "queueName", s.QueueName)
-	populate(objectMap, "serviceBusNamespace", s.ServiceBusNamespace)
-	populate(objectMap, "sharedAccessPolicyKey", s.SharedAccessPolicyKey)
-	populate(objectMap, "sharedAccessPolicyName", s.SharedAccessPolicyName)
-	populate(objectMap, "systemPropertyColumns", s.SystemPropertyColumns)
-	return json.Marshal(objectMap)
+	SystemPropertyColumns interface{} `json:"systemPropertyColumns,omitempty"`
 }
 
 // ServiceBusTopicOutputDataSource - Describes a Service Bus Topic output data source.
@@ -3229,44 +1769,6 @@ type ServiceBusTopicOutputDataSource struct {
 
 	// The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
 	Properties *ServiceBusTopicOutputDataSourceProperties `json:"properties,omitempty"`
-}
-
-// GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusTopicOutputDataSource.
-func (s *ServiceBusTopicOutputDataSource) GetOutputDataSource() *OutputDataSource {
-	return &OutputDataSource{
-		Type: s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceBusTopicOutputDataSource.
-func (s ServiceBusTopicOutputDataSource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	objectMap["type"] = "Microsoft.ServiceBus/Topic"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceBusTopicOutputDataSource.
-func (s *ServiceBusTopicOutputDataSource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ServiceBusTopicOutputDataSourceProperties - The properties that are associated with a Service Bus Topic output.
@@ -3297,19 +1799,6 @@ type ServiceBusTopicOutputDataSourceProperties struct {
 	TopicName *string `json:"topicName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceBusTopicOutputDataSourceProperties.
-func (s ServiceBusTopicOutputDataSourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authenticationMode", s.AuthenticationMode)
-	populate(objectMap, "propertyColumns", s.PropertyColumns)
-	populate(objectMap, "serviceBusNamespace", s.ServiceBusNamespace)
-	populate(objectMap, "sharedAccessPolicyKey", s.SharedAccessPolicyKey)
-	populate(objectMap, "sharedAccessPolicyName", s.SharedAccessPolicyName)
-	populate(objectMap, "systemPropertyColumns", s.SystemPropertyColumns)
-	populate(objectMap, "topicName", s.TopicName)
-	return json.Marshal(objectMap)
-}
-
 // StartStreamingJobParameters - Parameters supplied to the Start Streaming Job operation.
 type StartStreamingJobParameters struct {
 	// Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event
@@ -3321,37 +1810,6 @@ type StartStreamingJobParameters struct {
 	// to indicate that the output event stream will start whenever the streaming job is
 	// started. This property must have a value if outputStartMode is set to CustomTime.
 	OutputStartTime *time.Time `json:"outputStartTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StartStreamingJobParameters.
-func (s StartStreamingJobParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "outputStartMode", s.OutputStartMode)
-	populateTimeRFC3339(objectMap, "outputStartTime", s.OutputStartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StartStreamingJobParameters.
-func (s *StartStreamingJobParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "outputStartMode":
-			err = unpopulate(val, &s.OutputStartMode)
-			delete(rawMsg, key)
-		case "outputStartTime":
-			err = unpopulateTimeRFC3339(val, &s.OutputStartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // StorageAccount - The properties that are associated with an Azure Storage account
@@ -3378,9 +1836,6 @@ type StreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
 	Type *string `json:"type,omitempty"`
 }
-
-// GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type StreamInputDataSource.
-func (s *StreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSource { return s }
 
 // StreamInputProperties - The properties that are associated with an input containing stream data.
 type StreamInputProperties struct {
@@ -3409,69 +1864,6 @@ type StreamInputProperties struct {
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
 
-// GetInputProperties implements the InputPropertiesClassification interface for type StreamInputProperties.
-func (s *StreamInputProperties) GetInputProperties() *InputProperties {
-	return &InputProperties{
-		Type:          s.Type,
-		Serialization: s.Serialization,
-		Diagnostics:   s.Diagnostics,
-		Etag:          s.Etag,
-		Compression:   s.Compression,
-		PartitionKey:  s.PartitionKey,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamInputProperties.
-func (s StreamInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "compression", s.Compression)
-	populate(objectMap, "datasource", s.Datasource)
-	populate(objectMap, "diagnostics", s.Diagnostics)
-	populate(objectMap, "etag", s.Etag)
-	populate(objectMap, "partitionKey", s.PartitionKey)
-	populate(objectMap, "serialization", s.Serialization)
-	objectMap["type"] = "Stream"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StreamInputProperties.
-func (s *StreamInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "compression":
-			err = unpopulate(val, &s.Compression)
-			delete(rawMsg, key)
-		case "datasource":
-			s.Datasource, err = unmarshalStreamInputDataSourceClassification(val)
-			delete(rawMsg, key)
-		case "diagnostics":
-			err = unpopulate(val, &s.Diagnostics)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &s.Etag)
-			delete(rawMsg, key)
-		case "partitionKey":
-			err = unpopulate(val, &s.PartitionKey)
-			delete(rawMsg, key)
-		case "serialization":
-			s.Serialization, err = unmarshalSerializationClassification(val)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // StreamingJob - A streaming job object, containing all information associated with the named streaming job.
 type StreamingJob struct {
 	// Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs and outputs.
@@ -3496,19 +1888,6 @@ type StreamingJob struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StreamingJob.
-func (s StreamingJob) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "identity", s.Identity)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // StreamingJobListResult - Object containing a list of streaming jobs.
 type StreamingJobListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
@@ -3516,14 +1895,6 @@ type StreamingJobListResult struct {
 
 	// READ-ONLY; A list of streaming jobs. Populated by a 'List' operation.
 	Value []*StreamingJob `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingJobListResult.
-func (s StreamingJobListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // StreamingJobProperties - The properties that are associated with a streaming job.
@@ -3622,121 +1993,6 @@ type StreamingJobProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StreamingJobProperties.
-func (s StreamingJobProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cluster", s.Cluster)
-	populate(objectMap, "compatibilityLevel", s.CompatibilityLevel)
-	populate(objectMap, "contentStoragePolicy", s.ContentStoragePolicy)
-	populateTimeRFC3339(objectMap, "createdDate", s.CreatedDate)
-	populate(objectMap, "dataLocale", s.DataLocale)
-	populate(objectMap, "etag", s.Etag)
-	populate(objectMap, "eventsLateArrivalMaxDelayInSeconds", s.EventsLateArrivalMaxDelayInSeconds)
-	populate(objectMap, "eventsOutOfOrderMaxDelayInSeconds", s.EventsOutOfOrderMaxDelayInSeconds)
-	populate(objectMap, "eventsOutOfOrderPolicy", s.EventsOutOfOrderPolicy)
-	populate(objectMap, "functions", s.Functions)
-	populate(objectMap, "inputs", s.Inputs)
-	populate(objectMap, "jobId", s.JobID)
-	populate(objectMap, "jobState", s.JobState)
-	populate(objectMap, "jobStorageAccount", s.JobStorageAccount)
-	populate(objectMap, "jobType", s.JobType)
-	populateTimeRFC3339(objectMap, "lastOutputEventTime", s.LastOutputEventTime)
-	populate(objectMap, "outputErrorPolicy", s.OutputErrorPolicy)
-	populate(objectMap, "outputStartMode", s.OutputStartMode)
-	populateTimeRFC3339(objectMap, "outputStartTime", s.OutputStartTime)
-	populate(objectMap, "outputs", s.Outputs)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "transformation", s.Transformation)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type StreamingJobProperties.
-func (s *StreamingJobProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cluster":
-			err = unpopulate(val, &s.Cluster)
-			delete(rawMsg, key)
-		case "compatibilityLevel":
-			err = unpopulate(val, &s.CompatibilityLevel)
-			delete(rawMsg, key)
-		case "contentStoragePolicy":
-			err = unpopulate(val, &s.ContentStoragePolicy)
-			delete(rawMsg, key)
-		case "createdDate":
-			err = unpopulateTimeRFC3339(val, &s.CreatedDate)
-			delete(rawMsg, key)
-		case "dataLocale":
-			err = unpopulate(val, &s.DataLocale)
-			delete(rawMsg, key)
-		case "etag":
-			err = unpopulate(val, &s.Etag)
-			delete(rawMsg, key)
-		case "eventsLateArrivalMaxDelayInSeconds":
-			err = unpopulate(val, &s.EventsLateArrivalMaxDelayInSeconds)
-			delete(rawMsg, key)
-		case "eventsOutOfOrderMaxDelayInSeconds":
-			err = unpopulate(val, &s.EventsOutOfOrderMaxDelayInSeconds)
-			delete(rawMsg, key)
-		case "eventsOutOfOrderPolicy":
-			err = unpopulate(val, &s.EventsOutOfOrderPolicy)
-			delete(rawMsg, key)
-		case "functions":
-			err = unpopulate(val, &s.Functions)
-			delete(rawMsg, key)
-		case "inputs":
-			err = unpopulate(val, &s.Inputs)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &s.JobID)
-			delete(rawMsg, key)
-		case "jobState":
-			err = unpopulate(val, &s.JobState)
-			delete(rawMsg, key)
-		case "jobStorageAccount":
-			err = unpopulate(val, &s.JobStorageAccount)
-			delete(rawMsg, key)
-		case "jobType":
-			err = unpopulate(val, &s.JobType)
-			delete(rawMsg, key)
-		case "lastOutputEventTime":
-			err = unpopulateTimeRFC3339(val, &s.LastOutputEventTime)
-			delete(rawMsg, key)
-		case "outputErrorPolicy":
-			err = unpopulate(val, &s.OutputErrorPolicy)
-			delete(rawMsg, key)
-		case "outputStartMode":
-			err = unpopulate(val, &s.OutputStartMode)
-			delete(rawMsg, key)
-		case "outputStartTime":
-			err = unpopulateTimeRFC3339(val, &s.OutputStartTime)
-			delete(rawMsg, key)
-		case "outputs":
-			err = unpopulate(val, &s.Outputs)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "sku":
-			err = unpopulate(val, &s.SKU)
-			delete(rawMsg, key)
-		case "transformation":
-			err = unpopulate(val, &s.Transformation)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // StreamingJobsClientBeginCreateOrReplaceOptions contains the optional parameters for the StreamingJobsClient.BeginCreateOrReplace
 // method.
 type StreamingJobsClientBeginCreateOrReplaceOptions struct {
@@ -3746,28 +2002,36 @@ type StreamingJobsClientBeginCreateOrReplaceOptions struct {
 	// Set to '*' to allow a new streaming job to be created, but to prevent updating an existing record set. Other values will
 	// result in a 412 Pre-condition Failed response.
 	IfNoneMatch *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // StreamingJobsClientBeginDeleteOptions contains the optional parameters for the StreamingJobsClient.BeginDelete method.
 type StreamingJobsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // StreamingJobsClientBeginScaleOptions contains the optional parameters for the StreamingJobsClient.BeginScale method.
 type StreamingJobsClientBeginScaleOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 	// Parameters applicable to a scale streaming job operation.
 	ScaleJobParameters *ScaleStreamingJobParameters
 }
 
 // StreamingJobsClientBeginStartOptions contains the optional parameters for the StreamingJobsClient.BeginStart method.
 type StreamingJobsClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 	// Parameters applicable to a start streaming job operation.
 	StartJobParameters *StartStreamingJobParameters
 }
 
 // StreamingJobsClientBeginStopOptions contains the optional parameters for the StreamingJobsClient.BeginStop method.
 type StreamingJobsClientBeginStopOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // StreamingJobsClientGetOptions contains the optional parameters for the StreamingJobsClient.Get method.
@@ -3845,13 +2109,6 @@ type SubscriptionQuotasListResult struct {
 	Value []*SubscriptionQuota `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SubscriptionQuotasListResult.
-func (s SubscriptionQuotasListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SubscriptionsClientListQuotasOptions contains the optional parameters for the SubscriptionsClient.ListQuotas method.
 type SubscriptionsClientListQuotasOptions struct {
 	// placeholder for future optional parameters
@@ -3875,17 +2132,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // Transformation - A transformation object, containing all information associated with the named transformation. All transformations
 // are contained under a streaming job.
 type Transformation struct {
@@ -3900,16 +2146,6 @@ type Transformation struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Transformation.
-func (t Transformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
 }
 
 // TransformationProperties - The properties that are associated with a transformation.
@@ -3929,16 +2165,6 @@ type TransformationProperties struct {
 	// resource has changed between requests. You can also use it in the If-Match or
 	// If-None-Match headers for write operations for optimistic concurrency.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TransformationProperties.
-func (t TransformationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", t.Etag)
-	populate(objectMap, "query", t.Query)
-	populate(objectMap, "streamingUnits", t.StreamingUnits)
-	populate(objectMap, "validStreamingUnits", t.ValidStreamingUnits)
-	return json.Marshal(objectMap)
 }
 
 // TransformationsClientCreateOrReplaceOptions contains the optional parameters for the TransformationsClient.CreateOrReplace
@@ -3962,21 +2188,4 @@ type TransformationsClientUpdateOptions struct {
 	// The ETag of the transformation. Omit this value to always overwrite the current transformation. Specify the last-seen ETag
 	// value to prevent accidentally overwriting concurrent changes.
 	IfMatch *string
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

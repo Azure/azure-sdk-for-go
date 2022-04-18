@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type GlobalClient struct {
 // subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *GlobalClient {
+func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &GlobalClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetDeletedWebApp - Description for Get deleted app for a subscription.
@@ -92,7 +97,7 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 
 // getDeletedWebAppHandleResponse handles the GetDeletedWebApp response.
 func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response) (GlobalClientGetDeletedWebAppResponse, error) {
-	result := GlobalClientGetDeletedWebAppResponse{RawResponse: resp}
+	result := GlobalClientGetDeletedWebAppResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSite); err != nil {
 		return GlobalClientGetDeletedWebAppResponse{}, err
 	}
@@ -143,7 +148,7 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 
 // getDeletedWebAppSnapshotsHandleResponse handles the GetDeletedWebAppSnapshots response.
 func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.Response) (GlobalClientGetDeletedWebAppSnapshotsResponse, error) {
-	result := GlobalClientGetDeletedWebAppSnapshotsResponse{RawResponse: resp}
+	result := GlobalClientGetDeletedWebAppSnapshotsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotArray); err != nil {
 		return GlobalClientGetDeletedWebAppSnapshotsResponse{}, err
 	}
@@ -168,7 +173,7 @@ func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx contex
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, runtime.NewResponseError(resp)
 	}
-	return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{RawResponse: resp}, nil
+	return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, nil
 }
 
 // getSubscriptionOperationWithAsyncResponseCreateRequest creates the GetSubscriptionOperationWithAsyncResponse request.

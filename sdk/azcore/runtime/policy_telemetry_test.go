@@ -12,7 +12,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -24,7 +24,7 @@ func TestPolicyTelemetryDefault(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", nil))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -42,7 +42,7 @@ func TestPolicyTelemetryPreserveExisting(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", nil))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -63,7 +63,7 @@ func TestPolicyTelemetryWithAppID(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	const appID = "my_application"
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -82,7 +82,7 @@ func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	const appID = "This will get the spaces removed and truncated."
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -102,7 +102,7 @@ func TestPolicyTelemetryPreserveExistingWithAppID(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	const appID = "my_application"
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID}))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -123,7 +123,7 @@ func TestPolicyTelemetryDisabled(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	const appID = "my_application"
-	pl := pipeline.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID, Disabled: true}))
+	pl := exported.NewPipeline(srv, NewTelemetryPolicy("test", "v1.2.3", &policy.TelemetryOptions{ApplicationID: appID, Disabled: true}))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

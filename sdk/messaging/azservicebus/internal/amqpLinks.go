@@ -11,6 +11,8 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
@@ -36,7 +38,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error
+	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -84,7 +86,7 @@ type AMQPLinksImpl struct {
 	RPCLink RPCLink
 
 	// the AMQP session for either the 'sender' or 'receiver' link
-	session AMQPSessionCloser
+	session amqpwrap.AMQPSession
 
 	// these are populated by your `createLinkFunc` when you construct
 	// the amqpLinks
@@ -103,7 +105,7 @@ type AMQPLinksImpl struct {
 
 // CreateLinkFunc creates the links, using the given session. Typically you'll only create either an
 // *amqp.Sender or a *amqp.Receiver. AMQPLinks handles it either way.
-type CreateLinkFunc func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error)
+type CreateLinkFunc func(ctx context.Context, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error)
 
 type NewAMQPLinksArgs struct {
 	NS                  NamespaceForAMQPLinks
@@ -136,7 +138,7 @@ func (links *AMQPLinksImpl) ManagementPath() string {
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
 func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision LinkID) error {
-	log.Writef(EventConn, "Recovering link only")
+	log.Writef(exported.EventConn, "Recovering link only")
 
 	ctx, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
 	defer span.End()
@@ -191,7 +193,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 		return nil
 	}
 
-	log.Writef(EventConn, "Recovering link for error %s", origErr.Error())
+	log.Writef(exported.EventConn, "Recovering link for error %s", origErr.Error())
 
 	select {
 	case <-ctx.Done():
@@ -203,28 +205,28 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 	if rk == RecoveryKindLink {
 		if err := links.recoverLink(ctx, theirID); err != nil {
-			log.Writef(EventConn, "failed to recreate link: %s", err.Error())
+			log.Writef(exported.EventConn, "failed to recreate link: %s", err.Error())
 			return err
 		}
 
-		log.Writef(EventConn, "Recovered links")
+		log.Writef(exported.EventConn, "Recovered links")
 		return nil
 	} else if rk == RecoveryKindConn {
 		if err := links.recoverConnection(ctx, theirID); err != nil {
-			log.Writef(EventConn, "failed to recreate connection: %s", err.Error())
+			log.Writef(exported.EventConn, "failed to recreate connection: %s", err.Error())
 			return err
 		}
 
-		log.Writef(EventConn, "Recovered connection and links")
+		log.Writef(exported.EventConn, "Recovered connection and links")
 		return nil
 	}
 
-	log.Writef(EventConn, "Recovered, no action needed")
+	log.Writef(exported.EventConn, "Recovered, no action needed")
 	return nil
 }
 
 func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkID) error {
-	log.Writef(EventConn, "Recovering connection (and links)")
+	log.Writef(exported.EventConn, "Recovering connection (and links)")
 
 	links.mu.Lock()
 	defer links.mu.Unlock()
@@ -232,7 +234,7 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	created, err := links.ns.Recover(ctx, uint64(theirID.Conn))
 
 	if err != nil {
-		log.Writef(EventConn, "Recover connection failure: %s", err)
+		log.Writef(exported.EventConn, "Recover connection failure: %s", err)
 		return err
 	}
 
@@ -242,7 +244,7 @@ func (links *AMQPLinksImpl) recoverConnection(ctx context.Context, theirID LinkI
 	//   (if it wasn't the same then we've already recovered and created a new link,
 	//    so no recovery would be needed)
 	if created || theirID.Link == links.id.Link {
-		log.Writef(EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
+		log.Writef(exported.EventConn, "recreating link: c: %v, current:%v, old:%v", created, links.id, theirID)
 		if err := links.initWithoutLocking(ctx); err != nil {
 			return err
 		}
@@ -298,7 +300,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLinksFn, o utils.RetryOptions) error {
+func (l *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
 	var lastID LinkID
 
 	didQuickRetry := false
@@ -307,7 +309,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 		return l.getRecoveryKindFunc(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, name, func(ctx context.Context, args *utils.RetryFnArgs) error {
+	return utils.Retry(ctx, eventName, operation, func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := l.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}
@@ -340,7 +342,7 @@ func (l *AMQPLinksImpl) Retry(ctx context.Context, name string, fn RetryWithLink
 				// Whereas normally you'd do (for non-detach errors):
 				//   0th attempt
 				//   (actual retries)
-				log.Writef(EventConn, "Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error())
+				log.Writef(exported.EventConn, "Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error())
 				didQuickRetry = true
 				args.ResetAttempts()
 			}
@@ -417,7 +419,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
-			log.Writef(EventConn, "Failure during link cleanup after negotiateClaim: %s", err.Error())
+			log.Writef(exported.EventConn, "Failure during link cleanup after negotiateClaim: %s", err.Error())
 		}
 		return err
 	}
@@ -426,7 +428,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
-			log.Writef(EventConn, "Failure during link cleanup after negotiate claim for mgmt link: %s", err.Error())
+			log.Writef(exported.EventConn, "Failure during link cleanup after negotiate claim for mgmt link: %s", err.Error())
 		}
 		return err
 	}
@@ -435,7 +437,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
-			log.Writef(EventConn, "Failure during link cleanup after creating AMQP session: %s", err.Error())
+			log.Writef(exported.EventConn, "Failure during link cleanup after creating AMQP session: %s", err.Error())
 		}
 		return err
 	}
@@ -447,7 +449,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
-			log.Writef(EventConn, "Failure during link cleanup after creating link: %s", err.Error())
+			log.Writef(exported.EventConn, "Failure during link cleanup after creating link: %s", err.Error())
 		}
 		return err
 	}

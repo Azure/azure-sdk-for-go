@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
@@ -77,7 +78,7 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	return sessionReceiver, nil
 }
 
-func (r *SessionReceiver) newLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	const sessionFilterName = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 
@@ -183,7 +184,7 @@ type GetSessionStateOptions struct {
 func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSessionStateOptions) ([]byte, error) {
 	var sessionState []byte
 
-	err := sr.inner.amqpLinks.Retry(ctx, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		s, err := internal.GetSessionState(ctx, lwv.RPC, sr.SessionID())
 
 		if err != nil {
@@ -204,7 +205,7 @@ type SetSessionStateOptions struct {
 
 // SetSessionState sets the state associated with the session.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
-	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
 	}, sr.inner.retryOptions)
 }
@@ -217,7 +218,7 @@ type RenewSessionLockOptions struct {
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
-	return sr.inner.amqpLinks.Retry(ctx, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
 
 		if err != nil {

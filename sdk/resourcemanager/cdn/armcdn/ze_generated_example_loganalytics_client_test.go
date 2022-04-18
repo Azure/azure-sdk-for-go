@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,150 +18,192 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
 )
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetLogAnalyticsMetrics(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		[]armcdn.LogMetric{
-			armcdn.LogMetric("clientRequestCount")},
+			armcdn.LogMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T04:30:00.000Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T05:00:00.000Z"); return t }(),
-		armcdn.LogMetricsGranularity("PT5M"),
+		armcdn.LogMetricsGranularityPT5M,
 		[]string{
 			"customdomain1.azurecdn.net",
 			"customdomain2.azurecdn.net"},
 		[]string{
 			"https"},
 		&armcdn.LogAnalyticsClientGetLogAnalyticsMetricsOptions{GroupBy: []armcdn.LogMetricsGroupBy{
-			armcdn.LogMetricsGroupBy("protocol")},
+			armcdn.LogMetricsGroupByProtocol},
 			Continents:       []string{},
 			CountryOrRegions: []string{},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetLogAnalyticsMetricsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetLogAnalyticsRankings(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		[]armcdn.LogRanking{
-			armcdn.LogRanking("url")},
+			armcdn.LogRankingURL},
 		[]armcdn.LogRankingMetric{
-			armcdn.LogRankingMetric("clientRequestCount")},
+			armcdn.LogRankingMetricClientRequestCount},
 		5,
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(),
 		&armcdn.LogAnalyticsClientGetLogAnalyticsRankingsOptions{CustomDomains: []string{}})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetLogAnalyticsRankingsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsLocations.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsLocations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetLogAnalyticsLocations(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetLogAnalyticsLocationsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetLogAnalyticsResources.json
 func ExampleLogAnalyticsClient_GetLogAnalyticsResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetLogAnalyticsResources(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetLogAnalyticsResourcesResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsMetrics.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsMetrics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetWafLogAnalyticsMetrics(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		[]armcdn.WafMetric{
-			armcdn.WafMetric("clientRequestCount")},
+			armcdn.WafMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(),
-		armcdn.WafGranularity("PT5M"),
+		armcdn.WafGranularityPT5M,
 		&armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions{Actions: []armcdn.WafAction{
-			armcdn.WafAction("block"),
-			armcdn.WafAction("log")},
+			armcdn.WafActionBlock,
+			armcdn.WafActionLog},
 			GroupBy:   []armcdn.WafRankingGroupBy{},
 			RuleTypes: []armcdn.WafRuleType{},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetWafLogAnalyticsMetricsResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/LogAnalytics_GetWafLogAnalyticsRankings.json
 func ExampleLogAnalyticsClient_GetWafLogAnalyticsRankings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewLogAnalyticsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.GetWafLogAnalyticsRankings(ctx,
 		"<resource-group-name>",
 		"<profile-name>",
 		[]armcdn.WafMetric{
-			armcdn.WafMetric("clientRequestCount")},
+			armcdn.WafMetricClientRequestCount},
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T06:49:27.554Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-04T09:49:27.554Z"); return t }(),
 		5,
 		[]armcdn.WafRankingType{
-			armcdn.WafRankingType("ruleId")},
+			armcdn.WafRankingTypeRuleID},
 		&armcdn.LogAnalyticsClientGetWafLogAnalyticsRankingsOptions{Actions: []armcdn.WafAction{},
 			RuleTypes: []armcdn.WafRuleType{},
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.LogAnalyticsClientGetWafLogAnalyticsRankingsResult)
+	// TODO: use response item
+	_ = res
 }

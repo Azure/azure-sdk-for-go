@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,33 +19,45 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionGet.json
 func ExampleVPNConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		"<connection-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNConnectionsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionPut.json
 func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
@@ -53,112 +65,140 @@ func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 		armnetwork.VPNConnection{
 			Properties: &armnetwork.VPNConnectionProperties{
 				RemoteVPNSite: &armnetwork.SubResource{
-					ID: to.StringPtr("<id>"),
+					ID: to.Ptr("<id>"),
 				},
 				TrafficSelectorPolicies: []*armnetwork.TrafficSelectorPolicy{},
 				VPNLinkConnections: []*armnetwork.VPNSiteLinkConnection{
 					{
-						Name: to.StringPtr("<name>"),
+						Name: to.Ptr("<name>"),
 						Properties: &armnetwork.VPNSiteLinkConnectionProperties{
-							ConnectionBandwidth:            to.Int32Ptr(200),
-							SharedKey:                      to.StringPtr("<shared-key>"),
-							UsePolicyBasedTrafficSelectors: to.BoolPtr(false),
-							VPNConnectionProtocolType:      armnetwork.VirtualNetworkGatewayConnectionProtocol("IKEv2").ToPtr(),
-							VPNLinkConnectionMode:          armnetwork.VPNLinkConnectionMode("Default").ToPtr(),
+							ConnectionBandwidth:            to.Ptr[int32](200),
+							SharedKey:                      to.Ptr("<shared-key>"),
+							UsePolicyBasedTrafficSelectors: to.Ptr(false),
+							VPNConnectionProtocolType:      to.Ptr(armnetwork.VirtualNetworkGatewayConnectionProtocolIKEv2),
+							VPNLinkConnectionMode:          to.Ptr(armnetwork.VPNLinkConnectionModeDefault),
 							VPNSiteLink: &armnetwork.SubResource{
-								ID: to.StringPtr("<id>"),
+								ID: to.Ptr("<id>"),
 							},
 						},
 					}},
 			},
 		},
-		nil)
+		&armnetwork.VPNConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNConnectionsClientCreateOrUpdateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionDelete.json
 func ExampleVPNConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		"<connection-name>",
-		nil)
+		&armnetwork.VPNConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStartPacketCaptureFilterData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStartPacketCaptureFilterData.json
 func ExampleVPNConnectionsClient_BeginStartPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStartPacketCapture(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		"<vpn-connection-name>",
 		&armnetwork.VPNConnectionsClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNConnectionPacketCaptureStartParameters{
-			FilterData: to.StringPtr("<filter-data>"),
+			FilterData: to.Ptr("<filter-data>"),
 			LinkConnectionNames: []*string{
-				to.StringPtr("siteLink1"),
-				to.StringPtr("siteLink2")},
+				to.Ptr("siteLink1"),
+				to.Ptr("siteLink2")},
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNConnectionsClientStartPacketCaptureResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStopPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VpnConnectionStopPacketCapture.json
 func ExampleVPNConnectionsClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNConnectionsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginStopPacketCapture(ctx,
 		"<resource-group-name>",
 		"<gateway-name>",
 		"<vpn-connection-name>",
 		&armnetwork.VPNConnectionsClientBeginStopPacketCaptureOptions{Parameters: &armnetwork.VPNConnectionPacketCaptureStopParameters{
 			LinkConnectionNames: []*string{
-				to.StringPtr("vpnSiteLink1"),
-				to.StringPtr("vpnSiteLink2")},
-			SasURL: to.StringPtr("<sas-url>"),
+				to.Ptr("vpnSiteLink1"),
+				to.Ptr("vpnSiteLink2")},
+			SasURL: to.Ptr("<sas-url>"),
 		},
+			ResumeToken: "",
 		})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNConnectionsClientStopPacketCaptureResult)
+	// TODO: use response item
+	_ = res
 }

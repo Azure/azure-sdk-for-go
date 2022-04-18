@@ -4,9 +4,16 @@
 
 ### Features Added
 
+- Exported log.Event constants for azservicebus. This will maek them easier to
+  discover and they are also documented. The text of log messages themselves 
+  are not guaranteed to be stable. (#TBD)
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
+  couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
 
 ### Other Changes
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ApplicationTypesClient struct {
 // subscriptionID - The customer subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationTypesClient {
+func NewApplicationTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationTypesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ApplicationTypesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a Service Fabric application type name resource with the specified name.
@@ -104,7 +109,7 @@ func (client *ApplicationTypesClient) createOrUpdateCreateRequest(ctx context.Co
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Response) (ApplicationTypesClientCreateOrUpdateResponse, error) {
-	result := ApplicationTypesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ApplicationTypesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResource); err != nil {
 		return ApplicationTypesClientCreateOrUpdateResponse{}, err
 	}
@@ -118,22 +123,16 @@ func (client *ApplicationTypesClient) createOrUpdateHandleResponse(resp *http.Re
 // applicationTypeName - The name of the application type name resource.
 // options - ApplicationTypesClientBeginDeleteOptions contains the optional parameters for the ApplicationTypesClient.BeginDelete
 // method.
-func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (ApplicationTypesClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, applicationTypeName, options)
-	if err != nil {
-		return ApplicationTypesClientDeletePollerResponse{}, err
+func (client *ApplicationTypesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, options *ApplicationTypesClientBeginDeleteOptions) (*armruntime.Poller[ApplicationTypesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, applicationTypeName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ApplicationTypesClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ApplicationTypesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ApplicationTypesClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ApplicationTypesClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return ApplicationTypesClientDeletePollerResponse{}, err
-	}
-	result.Poller = &ApplicationTypesClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Delete a Service Fabric application type name resource with the specified name.
@@ -237,7 +236,7 @@ func (client *ApplicationTypesClient) getCreateRequest(ctx context.Context, reso
 
 // getHandleResponse handles the Get response.
 func (client *ApplicationTypesClient) getHandleResponse(resp *http.Response) (ApplicationTypesClientGetResponse, error) {
-	result := ApplicationTypesClientGetResponse{RawResponse: resp}
+	result := ApplicationTypesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResource); err != nil {
 		return ApplicationTypesClientGetResponse{}, err
 	}
@@ -293,7 +292,7 @@ func (client *ApplicationTypesClient) listCreateRequest(ctx context.Context, res
 
 // listHandleResponse handles the List response.
 func (client *ApplicationTypesClient) listHandleResponse(resp *http.Response) (ApplicationTypesClientListResponse, error) {
-	result := ApplicationTypesClientListResponse{RawResponse: resp}
+	result := ApplicationTypesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeResourceList); err != nil {
 		return ApplicationTypesClientListResponse{}, err
 	}

@@ -88,6 +88,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 // ctx: Context controlling the request lifetime.
 // opts: Options for the token request, in particular the desired scope of the access token.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, errors.New(credNameCert + ": GetToken() requires at least one scope")
+	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
 		logGetTokenSuccess(c, opts)

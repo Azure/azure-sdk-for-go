@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type IotSecuritySolutionAnalyticsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionAnalyticsClient {
+func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotSecuritySolutionAnalyticsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &IotSecuritySolutionAnalyticsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Use this method to get IoT Security Analytics metrics.
@@ -98,7 +103,7 @@ func (client *IotSecuritySolutionAnalyticsClient) getCreateRequest(ctx context.C
 
 // getHandleResponse handles the Get response.
 func (client *IotSecuritySolutionAnalyticsClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsClientGetResponse, error) {
-	result := IotSecuritySolutionAnalyticsClientGetResponse{RawResponse: resp}
+	result := IotSecuritySolutionAnalyticsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModel); err != nil {
 		return IotSecuritySolutionAnalyticsClientGetResponse{}, err
 	}
@@ -154,7 +159,7 @@ func (client *IotSecuritySolutionAnalyticsClient) listCreateRequest(ctx context.
 
 // listHandleResponse handles the List response.
 func (client *IotSecuritySolutionAnalyticsClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionAnalyticsClientListResponse, error) {
-	result := IotSecuritySolutionAnalyticsClientListResponse{RawResponse: resp}
+	result := IotSecuritySolutionAnalyticsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecuritySolutionAnalyticsModelList); err != nil {
 		return IotSecuritySolutionAnalyticsClientListResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,7 @@
 
 package armdeviceprovisioningservices
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AsyncOperationResult - Result of a long running operation.
 type AsyncOperationResult struct {
@@ -38,13 +32,6 @@ type CertificateBodyDescription struct {
 type CertificateListDescription struct {
 	// The array of Certificate objects.
 	Value []*CertificateResponse `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateListDescription.
-func (c CertificateListDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // CertificateProperties - The description of an X509 CA Certificate.
@@ -71,57 +58,6 @@ type CertificateProperties struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CertificateProperties.
-func (c CertificateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "certificate", c.Certificate, runtime.Base64StdFormat)
-	populateTimeRFC1123(objectMap, "created", c.Created)
-	populateTimeRFC1123(objectMap, "expiry", c.Expiry)
-	populate(objectMap, "isVerified", c.IsVerified)
-	populate(objectMap, "subject", c.Subject)
-	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTimeRFC1123(objectMap, "updated", c.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CertificateProperties.
-func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &c.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulateTimeRFC1123(val, &c.Created)
-			delete(rawMsg, key)
-		case "expiry":
-			err = unpopulateTimeRFC1123(val, &c.Expiry)
-			delete(rawMsg, key)
-		case "isVerified":
-			err = unpopulate(val, &c.IsVerified)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &c.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &c.Thumbprint)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeRFC1123(val, &c.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CertificateResponse - The X509 Certificate.
 type CertificateResponse struct {
 	// properties of a certificate
@@ -135,6 +71,9 @@ type CertificateResponse struct {
 
 	// READ-ONLY; The name of the certificate.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -274,15 +213,6 @@ type GroupIDInformationProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GroupIDInformationProperties.
-func (g GroupIDInformationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", g.GroupID)
-	populate(objectMap, "requiredMembers", g.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", g.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // IPFilterRule - The IP filter rules for a provisioning Service.
 type IPFilterRule struct {
 	// REQUIRED; The desired action for requests captured by this rule.
@@ -306,6 +236,9 @@ type IotDpsPropertiesDescription struct {
 
 	// List of authorization keys for a provisioning service.
 	AuthorizationPolicies []*SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
+
+	// Optional. Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
+	EnableDataResidency *bool `json:"enableDataResidency,omitempty"`
 
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule `json:"ipFilterRules,omitempty"`
@@ -335,49 +268,37 @@ type IotDpsPropertiesDescription struct {
 	ServiceOperationsHostName *string `json:"serviceOperationsHostName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotDpsPropertiesDescription.
-func (i IotDpsPropertiesDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allocationPolicy", i.AllocationPolicy)
-	populate(objectMap, "authorizationPolicies", i.AuthorizationPolicies)
-	populate(objectMap, "deviceProvisioningHostName", i.DeviceProvisioningHostName)
-	populate(objectMap, "idScope", i.IDScope)
-	populate(objectMap, "ipFilterRules", i.IPFilterRules)
-	populate(objectMap, "iotHubs", i.IotHubs)
-	populate(objectMap, "privateEndpointConnections", i.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", i.PublicNetworkAccess)
-	populate(objectMap, "serviceOperationsHostName", i.ServiceOperationsHostName)
-	populate(objectMap, "state", i.State)
-	return json.Marshal(objectMap)
-}
-
 // IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
 // method.
 type IotDpsResourceClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection
 // method.
 type IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete method.
 type IotDpsResourceClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 // method.
 type IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate method.
 type IotDpsResourceClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the IotDpsResourceClient.CheckProvisioningServiceNameAvailability
@@ -464,14 +385,6 @@ type IotDpsSKUDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IotDpsSKUDefinitionListResult.
-func (i IotDpsSKUDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // IotDpsSKUInfo - List of possible provisioning service SKUs.
 type IotDpsSKUInfo struct {
 	// The number of units to provision
@@ -551,14 +464,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -581,6 +486,9 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -598,13 +506,6 @@ type PrivateEndpointConnectionProperties struct {
 type PrivateLinkResources struct {
 	// The list of available private link resources for a provisioning service
 	Value []*GroupIDInformation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResources.
-func (p PrivateLinkResources) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
@@ -643,22 +544,11 @@ type ProvisioningServiceDescription struct {
 	// READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProvisioningServiceDescription.
-func (p ProvisioningServiceDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // ProvisioningServiceDescriptionListResult - List of provisioning service descriptions.
@@ -668,14 +558,6 @@ type ProvisioningServiceDescriptionListResult struct {
 
 	// READ-ONLY; the next link
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProvisioningServiceDescriptionListResult.
-func (p ProvisioningServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // Resource - The common properties of an Azure resource.
@@ -694,17 +576,6 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
 }
 
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription - Description of the shared access key.
@@ -731,12 +602,25 @@ type SharedAccessSignatureAuthorizationRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedAccessSignatureAuthorizationRuleListResult.
-func (s SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a Provisioning
@@ -744,13 +628,6 @@ func (s SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte,
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TagsResource.
-func (t TagsResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
 }
 
 // VerificationCodeRequest - The JSON-serialized leaf certificate
@@ -800,86 +677,4 @@ type VerificationCodeResponseProperties struct {
 
 	// Verification code.
 	VerificationCode *string `json:"verificationCode,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VerificationCodeResponseProperties.
-func (v VerificationCodeResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "certificate", v.Certificate, runtime.Base64StdFormat)
-	populate(objectMap, "created", v.Created)
-	populate(objectMap, "expiry", v.Expiry)
-	populate(objectMap, "isVerified", v.IsVerified)
-	populate(objectMap, "subject", v.Subject)
-	populate(objectMap, "thumbprint", v.Thumbprint)
-	populate(objectMap, "updated", v.Updated)
-	populate(objectMap, "verificationCode", v.VerificationCode)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VerificationCodeResponseProperties.
-func (v *VerificationCodeResponseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificate":
-			err = runtime.DecodeByteArray(string(val), &v.Certificate, runtime.Base64StdFormat)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulate(val, &v.Created)
-			delete(rawMsg, key)
-		case "expiry":
-			err = unpopulate(val, &v.Expiry)
-			delete(rawMsg, key)
-		case "isVerified":
-			err = unpopulate(val, &v.IsVerified)
-			delete(rawMsg, key)
-		case "subject":
-			err = unpopulate(val, &v.Subject)
-			delete(rawMsg, key)
-		case "thumbprint":
-			err = unpopulate(val, &v.Thumbprint)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulate(val, &v.Updated)
-			delete(rawMsg, key)
-		case "verificationCode":
-			err = unpopulate(val, &v.VerificationCode)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

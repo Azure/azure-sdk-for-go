@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccountsClient struct {
 // subscriptionID - The Azure subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccountsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccountsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckNameAvailability - Checks if the specified Visual Studio Team Services account name is available. Resource name can
@@ -90,7 +95,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
 func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (AccountsClientCheckNameAvailabilityResponse, error) {
-	result := AccountsClientCheckNameAvailabilityResponse{RawResponse: resp}
+	result := AccountsClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return AccountsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -146,7 +151,7 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *AccountsClient) createOrUpdateHandleResponse(resp *http.Response) (AccountsClientCreateOrUpdateResponse, error) {
-	result := AccountsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := AccountsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResource); err != nil {
 		return AccountsClientCreateOrUpdateResponse{}, err
 	}
@@ -170,7 +175,7 @@ func (client *AccountsClient) Delete(ctx context.Context, resourceGroupName stri
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AccountsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccountsClientDeleteResponse{RawResponse: resp}, nil
+	return AccountsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -246,7 +251,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 
 // getHandleResponse handles the Get response.
 func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
-	result := AccountsClientGetResponse{RawResponse: resp}
+	result := AccountsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResource); err != nil {
 		return AccountsClientGetResponse{}, err
 	}
@@ -298,7 +303,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Response) (AccountsClientListByResourceGroupResponse, error) {
-	result := AccountsClientListByResourceGroupResponse{RawResponse: resp}
+	result := AccountsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResourceListResult); err != nil {
 		return AccountsClientListByResourceGroupResponse{}, err
 	}
@@ -354,7 +359,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 
 // updateHandleResponse handles the Update response.
 func (client *AccountsClient) updateHandleResponse(resp *http.Response) (AccountsClientUpdateResponse, error) {
-	result := AccountsClientUpdateResponse{RawResponse: resp}
+	result := AccountsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountResource); err != nil {
 		return AccountsClientUpdateResponse{}, err
 	}

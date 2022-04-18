@@ -247,16 +247,16 @@ azlog.SetListener(func(event azlog.Event, s string) {
 
 // pick the set of events to log
 azlog.SetEvents(
-  // connection/reconnect related events)
-  "azsb.Conn",
-  // authentication events
-  "azsb.Auth",
-  // receiver specific events
-  "azsb.Receiver",
-  // management link related events
-  "azsb.Mgmt",
-  // retry related events
-  "azsb.Retry",
+  // EventConn is used whenever we create a connection or any links (ie: receivers, senders).
+  azservicebus.EventConn,
+  // EventAuth is used when we're doing authentication/claims negotiation.
+  azservicebus.EventAuth,
+  // EventReceiver represents operations that happen on Receivers.
+  azservicebus.EventReceiver,
+  // EventSender represents operations that happen on Senders.
+  azservicebus.EventSender,
+  // EventAdmin is used for operations in the azservicebus/admin.Client
+  azservicebus.EventAdmin,
 )
 ```
 

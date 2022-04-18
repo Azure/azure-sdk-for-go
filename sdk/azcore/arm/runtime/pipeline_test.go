@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -179,7 +179,7 @@ func TestPipelineAudience(t *testing.T) {
 			t.Fatal("unexpected audience " + audience)
 		}
 		getTokenCalled := false
-		cred := mockCredential{getTokenImpl: func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {
+		cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 			getTokenCalled = true
 			if n := len(options.Scopes); n != 1 {
 				t.Fatalf("expected 1 scope, got %d", n)
@@ -187,7 +187,7 @@ func TestPipelineAudience(t *testing.T) {
 			if options.Scopes[0] != audience+"/.default" {
 				t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 			}
-			return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+			return &azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 		}}
 		req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 		if err != nil {

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ConfigurationsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - The configuration object for the specified cluster. This API is not recommended and might be removed in the future.
@@ -104,7 +109,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 
 // getHandleResponse handles the Get response.
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
-	result := ConfigurationsClientGetResponse{RawResponse: resp}
+	result := ConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
@@ -159,7 +164,7 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resou
 
 // listHandleResponse handles the List response.
 func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (ConfigurationsClientListResponse, error) {
-	result := ConfigurationsClientListResponse{RawResponse: resp}
+	result := ConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterConfigurations); err != nil {
 		return ConfigurationsClientListResponse{}, err
 	}
@@ -175,22 +180,18 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 // parameters - The cluster configurations.
 // options - ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate
 // method.
-func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string, options *ConfigurationsClientBeginUpdateOptions) (ConfigurationsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
-	if err != nil {
-		return ConfigurationsClientUpdatePollerResponse{}, err
+func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string, options *ConfigurationsClientBeginUpdateOptions) (*armruntime.Poller[ConfigurationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, configurationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigurationsClientUpdateResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ConfigurationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ConfigurationsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ConfigurationsClient.Update", "location", resp, client.pl)
-	if err != nil {
-		return ConfigurationsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &ConfigurationsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Configures the HTTP settings on the specified cluster. This API is deprecated, please use UpdateGatewaySettings

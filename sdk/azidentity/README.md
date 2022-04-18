@@ -76,6 +76,7 @@ in any hosting environment which supports managed identities, such as (this list
 
 - [Authenticate with DefaultAzureCredential](#authenticate-with-defaultazurecredential "Authenticate with DefaultAzureCredential")
 - [Define a custom authentication flow with ChainedTokenCredential](#define-a-custom-authentication-flow-with-chainedtokencredential "Define a custom authentication flow with ChainedTokenCredential")
+- [Specify a user-assigned managed identity for DefaultAzureCredential](#specify-a-user-assigned-managed-identity-for-defaultazurecredential)
 
 ### Authenticate with DefaultAzureCredential
 
@@ -90,6 +91,9 @@ if err != nil {
 client := armresources.NewResourceGroupsClient("subscription ID", cred, nil)
 ```
 
+### Specify a user-assigned managed identity for DefaultAzureCredential
+
+To configure `DefaultAzureCredential` to authenticate a user-assigned managed identity, set the environment variable `AZURE_CLIENT_ID` to the identity's client ID.
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
@@ -139,7 +143,6 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 |[InteractiveBrowserCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#InteractiveBrowserCredential)|Interactively authenticate a user with the default web browser
 |[DeviceCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#DeviceCodeCredential)|Interactively authenticate a user on a device with limited UI
 |[UsernamePasswordCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#UsernamePasswordCredential)|Authenticate a user with a username and password
-|[AuthorizationCodeCredential](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#AuthorizationCodeCredential)|Authenticate a user with a previously obtained authorization code
 
 ### Authenticating via Development Tools
 

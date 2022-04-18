@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetMaintenanceWindows.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/GetMaintenanceWindows.json
 func ExampleMaintenanceWindowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<server-name>",
@@ -32,19 +37,26 @@ func ExampleMaintenanceWindowsClient_Get() {
 		"<maintenance-window-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.MaintenanceWindowsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateMaintenanceWindows.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/CreateOrUpdateMaintenanceWindows.json
 func ExampleMaintenanceWindowsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsql.NewMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewMaintenanceWindowsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<server-name>",
@@ -54,14 +66,15 @@ func ExampleMaintenanceWindowsClient_CreateOrUpdate() {
 			Properties: &armsql.MaintenanceWindowsProperties{
 				TimeRanges: []*armsql.MaintenanceWindowTimeRange{
 					{
-						DayOfWeek: armsql.DayOfWeek("Saturday").ToPtr(),
-						Duration:  to.StringPtr("<duration>"),
-						StartTime: to.StringPtr("<start-time>"),
+						DayOfWeek: to.Ptr(armsql.DayOfWeekSaturday),
+						Duration:  to.Ptr("<duration>"),
+						StartTime: to.Ptr("<start-time>"),
 					}},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

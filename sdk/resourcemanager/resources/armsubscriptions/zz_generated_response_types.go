@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,76 +8,32 @@
 
 package armsubscriptions
 
-import "net/http"
-
 // ClientCheckZonePeersResponse contains the response from method Client.CheckZonePeers.
 type ClientCheckZonePeersResponse struct {
-	ClientCheckZonePeersResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientCheckZonePeersResult contains the result from method Client.CheckZonePeers.
-type ClientCheckZonePeersResult struct {
 	CheckZonePeersResult
 }
 
 // ClientGetResponse contains the response from method Client.Get.
 type ClientGetResponse struct {
-	ClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientGetResult contains the result from method Client.Get.
-type ClientGetResult struct {
 	Subscription
 }
 
 // ClientListLocationsResponse contains the response from method Client.ListLocations.
 type ClientListLocationsResponse struct {
-	ClientListLocationsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientListLocationsResult contains the result from method Client.ListLocations.
-type ClientListLocationsResult struct {
 	LocationListResult
 }
 
 // ClientListResponse contains the response from method Client.List.
 type ClientListResponse struct {
-	ClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientListResult contains the result from method Client.List.
-type ClientListResult struct {
 	SubscriptionListResult
 }
 
 // SubscriptionClientCheckResourceNameResponse contains the response from method SubscriptionClient.CheckResourceName.
 type SubscriptionClientCheckResourceNameResponse struct {
-	SubscriptionClientCheckResourceNameResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// SubscriptionClientCheckResourceNameResult contains the result from method SubscriptionClient.CheckResourceName.
-type SubscriptionClientCheckResourceNameResult struct {
 	CheckResourceNameResult
 }
 
 // TenantsClientListResponse contains the response from method TenantsClient.List.
 type TenantsClientListResponse struct {
-	TenantsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TenantsClientListResult contains the result from method TenantsClient.List.
-type TenantsClientListResult struct {
 	TenantListResult
 }

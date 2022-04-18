@@ -13,7 +13,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -308,7 +307,7 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	if string(payload) != message {
 		t.Fatal("incorrect payload")
 	}
-	nb, ok := resp.Body.(*shared.NopClosingBytesReader)
+	nb, ok := resp.Body.(io.ReadSeekCloser)
 	if !ok {
 		t.Fatalf("unexpected body type: %t", resp.Body)
 	}

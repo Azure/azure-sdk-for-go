@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -300,6 +299,36 @@ func TestReceiver_ReceiveMessages_SomeMessagesAndError(t *testing.T) {
 	require.Equal(t, 1, fakeAMQPLinks.CloseIfNeededCalled, "prefetch is called")
 }
 
+func TestReceiver_CanCancelLinkCreation(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	receiverWasClosedCh := make(chan struct{})
+
+	fakeReceiver := &internal.FakeAMQPReceiver{
+		CloseFn: func(ctx context.Context) error {
+			close(receiverWasClosedCh)
+			return nil
+		},
+	}
+
+	session := &internal.FakeAMQPSession{
+		NewReceiverFn: func(opts ...amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
+			// simulate the client cancelling while we're stuck attempting to get the
+			// session receiver link.
+			cancel()
+			return fakeReceiver, nil
+		},
+	}
+
+	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
+	require.Nil(t, receiver)
+	require.ErrorIs(t, err, context.Canceled)
+
+	// also, the receiver we returned should be closed as part of the gourtine
+	// unwinding.
+	<-receiverWasClosedCh
+}
+
 func TestReceiverCancellationUnitTests(t *testing.T) {
 	t.Run("ImmediatelyCancelled", func(t *testing.T) {
 		r := &Receiver{
@@ -357,7 +386,7 @@ func TestReceiverOptions(t *testing.T) {
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
-		retryOptions: utils.RetryOptions{
+		retryOptions: RetryOptions{
 			MaxRetries: 101,
 		},
 	}))

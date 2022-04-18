@@ -9,7 +9,7 @@
 
 package redisenterpriseapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2021-03-01/redisenterprise/redisenterpriseapi"
+import original "github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise/redisenterpriseapi"
 
 type ClientAPI = original.ClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI

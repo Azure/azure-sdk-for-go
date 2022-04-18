@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,14 +17,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
 )
 
-// x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SensitivityLabelsRecommendedUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SensitivityLabelsRecommendedUpdate.json
 func ExampleSQLPoolRecommendedSensitivityLabelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	_, err = client.Update(ctx,
 		"<resource-group-name>",
 		"<workspace-name>",
@@ -33,31 +38,32 @@ func ExampleSQLPoolRecommendedSensitivityLabelsClient_Update() {
 			Operations: []*armsynapse.RecommendedSensitivityLabelUpdate{
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.StringPtr("<schema>"),
-						Column: to.StringPtr("<column>"),
-						Op:     armsynapse.RecommendedSensitivityLabelUpdateKindEnable.ToPtr(),
-						Table:  to.StringPtr("<table>"),
+						Schema: to.Ptr("<schema>"),
+						Column: to.Ptr("<column>"),
+						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindEnable),
+						Table:  to.Ptr("<table>"),
 					},
 				},
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.StringPtr("<schema>"),
-						Column: to.StringPtr("<column>"),
-						Op:     armsynapse.RecommendedSensitivityLabelUpdateKindEnable.ToPtr(),
-						Table:  to.StringPtr("<table>"),
+						Schema: to.Ptr("<schema>"),
+						Column: to.Ptr("<column>"),
+						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindEnable),
+						Table:  to.Ptr("<table>"),
 					},
 				},
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.StringPtr("<schema>"),
-						Column: to.StringPtr("<column>"),
-						Op:     armsynapse.RecommendedSensitivityLabelUpdateKindDisable.ToPtr(),
-						Table:  to.StringPtr("<table>"),
+						Schema: to.Ptr("<schema>"),
+						Column: to.Ptr("<column>"),
+						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindDisable),
+						Table:  to.Ptr("<table>"),
 					},
 				}},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 }

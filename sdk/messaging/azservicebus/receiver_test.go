@@ -564,7 +564,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 
 	failedOnFirstTry := false
 	for _, msg := range logMessages {
-		if strings.HasPrefix(msg, "[azsb.Retry] (renewMessageLock) Attempt 0 returned non-retryable error") {
+		if strings.HasPrefix(msg, "[azsb.Receiver] (renewMessageLock) Retry attempt 0 returned non-retryable error") {
 			failedOnFirstTry = true
 		}
 	}

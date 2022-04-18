@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type ServiceUnitsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServiceUnitsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceUnitsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ServiceUnitsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - This is an asynchronous operation and can be polled to completion using the operation resource returned
@@ -60,22 +65,16 @@ func NewServiceUnitsClient(subscriptionID string, credential azcore.TokenCredent
 // serviceUnitInfo - The service unit resource object.
 // options - ServiceUnitsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceUnitsClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceUnitsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceUnitName string, serviceUnitInfo ServiceUnitResource, options *ServiceUnitsClientBeginCreateOrUpdateOptions) (ServiceUnitsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, options)
-	if err != nil {
-		return ServiceUnitsClientCreateOrUpdatePollerResponse{}, err
+func (client *ServiceUnitsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceTopologyName string, serviceName string, serviceUnitName string, serviceUnitInfo ServiceUnitResource, options *ServiceUnitsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ServiceUnitsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ServiceUnitsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ServiceUnitsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ServiceUnitsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return ServiceUnitsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &ServiceUnitsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - This is an asynchronous operation and can be polled to completion using the operation resource returned
@@ -149,7 +148,7 @@ func (client *ServiceUnitsClient) Delete(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ServiceUnitsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ServiceUnitsClientDeleteResponse{RawResponse: resp}, nil
+	return ServiceUnitsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -244,7 +243,7 @@ func (client *ServiceUnitsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *ServiceUnitsClient) getHandleResponse(resp *http.Response) (ServiceUnitsClientGetResponse, error) {
-	result := ServiceUnitsClientGetResponse{RawResponse: resp}
+	result := ServiceUnitsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceUnitResource); err != nil {
 		return ServiceUnitsClientGetResponse{}, err
 	}
@@ -304,7 +303,7 @@ func (client *ServiceUnitsClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *ServiceUnitsClient) listHandleResponse(resp *http.Response) (ServiceUnitsClientListResponse, error) {
-	result := ServiceUnitsClientListResponse{RawResponse: resp}
+	result := ServiceUnitsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceUnitResourceArray); err != nil {
 		return ServiceUnitsClientListResponse{}, err
 	}

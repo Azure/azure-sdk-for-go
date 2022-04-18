@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type PipelineRunsClient struct {
 // subscriptionID - The subscription identifier.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PipelineRunsClient {
+func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelineRunsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PipelineRunsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Cancel - Cancel a pipeline run by its run ID.
@@ -68,7 +73,7 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PipelineRunsClientCancelResponse{}, runtime.NewResponseError(resp)
 	}
-	return PipelineRunsClientCancelResponse{RawResponse: resp}, nil
+	return PipelineRunsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -157,7 +162,7 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 
 // getHandleResponse handles the Get response.
 func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (PipelineRunsClientGetResponse, error) {
-	result := PipelineRunsClientGetResponse{RawResponse: resp}
+	result := PipelineRunsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRun); err != nil {
 		return PipelineRunsClientGetResponse{}, err
 	}
@@ -214,7 +219,7 @@ func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Contex
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
 func (client *PipelineRunsClient) queryByFactoryHandleResponse(resp *http.Response) (PipelineRunsClientQueryByFactoryResponse, error) {
-	result := PipelineRunsClientQueryByFactoryResponse{RawResponse: resp}
+	result := PipelineRunsClientQueryByFactoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRunsQueryResponse); err != nil {
 		return PipelineRunsClientQueryByFactoryResponse{}, err
 	}

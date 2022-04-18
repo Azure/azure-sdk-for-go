@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -31,14 +32,14 @@ const (
 	DeferredDisposition  DispositionStatus = "defered"
 )
 
-func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
 
 	backwardsMode := uint32(0)
-	if mode == PeekLock {
+	if mode == exported.PeekLock {
 		backwardsMode = 1
 	}
 

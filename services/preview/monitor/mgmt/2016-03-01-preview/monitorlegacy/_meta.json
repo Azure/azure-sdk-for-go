@@ -1,5 +1,5 @@
 {
-  "commit": "a1a224b54f05debfa94fd19477ed820c64f0f9fc",
+  "commit": "9d8640319ef481ae301b67b033d6ae0bd30422c3",
   "readme": "/_/azure-rest-api-specs/specification/monitor/resource-manager/readme.md",
   "tag": "package-2016-03-preview-monitorlegacy",
   "use": "@microsoft.azure/autorest.go@2.1.187",

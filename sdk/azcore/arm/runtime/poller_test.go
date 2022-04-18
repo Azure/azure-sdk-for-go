@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -42,11 +42,11 @@ type mockType struct {
 	Field *string `json:"field,omitempty"`
 }
 
-func getPipeline(srv *mock.Server) pipeline.Pipeline {
+func getPipeline(srv *mock.Server) runtime.Pipeline {
 	return runtime.NewPipeline(
 		"test",
 		"v0.1.0",
-		runtime.PipelineOptions{PerRetry: []pipeline.Policy{runtime.NewLogPolicy(nil)}},
+		runtime.PipelineOptions{PerRetry: []policy.Policy{runtime.NewLogPolicy(nil)}},
 		&policy.ClientOptions{Transport: srv},
 	)
 }
@@ -270,7 +270,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if err == nil {
 		t.Fatal(err)
 	}
-	if _, ok := err.(*shared.ResponseError); !ok {
+	if _, ok := err.(*exported.ResponseError); !ok {
 		t.Fatalf("unexpected error type %T", err)
 	}
 }

@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 )
 
 const (
@@ -113,7 +113,7 @@ func TestUpdateNoProvStateFail(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	if !errors.Is(err, shared.ErrNoBody) {
+	if !errors.Is(err, pollers.ErrNoBody) {
 		t.Fatalf("unexpected error type %T", err)
 	}
 }

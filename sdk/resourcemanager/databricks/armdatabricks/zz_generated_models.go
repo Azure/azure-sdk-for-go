@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,24 +8,12 @@
 
 package armdatabricks
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network.
 type AddressSpace struct {
 	// A list of address blocks reserved for this virtual network in CIDR notation.
 	AddressPrefixes []*string `json:"addressPrefixes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AddressSpace.
-func (a AddressSpace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "addressPrefixes", a.AddressPrefixes)
-	return json.Marshal(objectMap)
 }
 
 // CreatedBy - Provides details of the entity that created/updated the workspace.
@@ -91,14 +79,6 @@ type EndpointDependency struct {
 	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EndpointDependency.
-func (e EndpointDependency) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "domainName", e.DomainName)
-	populate(objectMap, "endpointDetails", e.EndpointDetails)
-	return json.Marshal(objectMap)
-}
-
 // EndpointDetail - Connect information from the Workspace to a single endpoint.
 type EndpointDetail struct {
 	// An IP Address that Domain Name currently resolves to.
@@ -141,16 +121,6 @@ type ErrorInfo struct {
 	Innererror *string `json:"innererror,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
-func (e ErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "innererror", e.Innererror)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Contains details when the response code indicates an error.
 type ErrorResponse struct {
 	// REQUIRED; The error details.
@@ -182,15 +152,6 @@ type GroupIDInformationProperties struct {
 
 	// The required DNS zones for a specific group id
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GroupIDInformationProperties.
-func (g GroupIDInformationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", g.GroupID)
-	populate(objectMap, "requiredMembers", g.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", g.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // ManagedIdentityConfiguration - The Managed Identity details for storage account.
@@ -236,14 +197,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -256,14 +209,6 @@ type OutboundEnvironmentEndpoint struct {
 
 	// The endpoints that Workspace connect to
 	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OutboundEnvironmentEndpoint.
-func (o OutboundEnvironmentEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", o.Category)
-	populate(objectMap, "endpoints", o.Endpoints)
-	return json.Marshal(objectMap)
 }
 
 // OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
@@ -308,13 +253,15 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -338,14 +285,6 @@ type PrivateEndpointConnectionsList struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionsList.
-func (p PrivateEndpointConnectionsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
 type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -363,14 +302,6 @@ type PrivateLinkResourcesList struct {
 
 	// The list of available private link resources for a workspace
 	Value []*GroupIDInformation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourcesList.
-func (p PrivateLinkResourcesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
@@ -427,53 +358,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -492,26 +376,17 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // VNetPeeringClientBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeeringClient.BeginCreateOrUpdate
 // method.
 type VNetPeeringClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VNetPeeringClientBeginDeleteOptions contains the optional parameters for the VNetPeeringClient.BeginDelete method.
 type VNetPeeringClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VNetPeeringClientGetOptions contains the optional parameters for the VNetPeeringClient.Get method.
@@ -546,14 +421,6 @@ type VirtualNetworkPeeringList struct {
 
 	// List of virtual network peerings on workspace.
 	Value []*VirtualNetworkPeering `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkPeeringList.
-func (v VirtualNetworkPeeringList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkPeeringPropertiesFormat - Properties of the virtual network peering.
@@ -633,20 +500,6 @@ type Workspace struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Workspace.
-func (w Workspace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", w.ID)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "sku", w.SKU)
-	populate(objectMap, "systemData", w.SystemData)
-	populate(objectMap, "tags", w.Tags)
-	populate(objectMap, "type", w.Type)
-	return json.Marshal(objectMap)
-}
-
 // WorkspaceCustomBooleanParameter - The value which should be used for this field.
 type WorkspaceCustomBooleanParameter struct {
 	// REQUIRED; The value which should be used for this field.
@@ -659,7 +512,7 @@ type WorkspaceCustomBooleanParameter struct {
 // WorkspaceCustomObjectParameter - The value which should be used for this field.
 type WorkspaceCustomObjectParameter struct {
 	// REQUIRED; The value which should be used for this field.
-	Value map[string]interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value,omitempty"`
 
 	// READ-ONLY; The type of variable that this is
 	Type *CustomParameterType `json:"type,omitempty" azure:"ro"`
@@ -744,14 +597,6 @@ type WorkspaceListResult struct {
 	Value []*Workspace `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceListResult.
-func (w WorkspaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
 // WorkspaceProperties - The workspace properties.
 type WorkspaceProperties struct {
 	// REQUIRED; The managed resource group Id.
@@ -802,89 +647,6 @@ type WorkspaceProperties struct {
 	WorkspaceURL *string `json:"workspaceUrl,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceProperties.
-func (w WorkspaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizations", w.Authorizations)
-	populate(objectMap, "createdBy", w.CreatedBy)
-	populateTimeRFC3339(objectMap, "createdDateTime", w.CreatedDateTime)
-	populate(objectMap, "encryption", w.Encryption)
-	populate(objectMap, "managedResourceGroupId", w.ManagedResourceGroupID)
-	populate(objectMap, "parameters", w.Parameters)
-	populate(objectMap, "privateEndpointConnections", w.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", w.PublicNetworkAccess)
-	populate(objectMap, "requiredNsgRules", w.RequiredNsgRules)
-	populate(objectMap, "storageAccountIdentity", w.StorageAccountIdentity)
-	populate(objectMap, "uiDefinitionUri", w.UIDefinitionURI)
-	populate(objectMap, "updatedBy", w.UpdatedBy)
-	populate(objectMap, "workspaceId", w.WorkspaceID)
-	populate(objectMap, "workspaceUrl", w.WorkspaceURL)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkspaceProperties.
-func (w *WorkspaceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authorizations":
-			err = unpopulate(val, &w.Authorizations)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &w.CreatedBy)
-			delete(rawMsg, key)
-		case "createdDateTime":
-			err = unpopulateTimeRFC3339(val, &w.CreatedDateTime)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &w.Encryption)
-			delete(rawMsg, key)
-		case "managedResourceGroupId":
-			err = unpopulate(val, &w.ManagedResourceGroupID)
-			delete(rawMsg, key)
-		case "parameters":
-			err = unpopulate(val, &w.Parameters)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &w.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &w.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &w.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "requiredNsgRules":
-			err = unpopulate(val, &w.RequiredNsgRules)
-			delete(rawMsg, key)
-		case "storageAccountIdentity":
-			err = unpopulate(val, &w.StorageAccountIdentity)
-			delete(rawMsg, key)
-		case "uiDefinitionUri":
-			err = unpopulate(val, &w.UIDefinitionURI)
-			delete(rawMsg, key)
-		case "updatedBy":
-			err = unpopulate(val, &w.UpdatedBy)
-			delete(rawMsg, key)
-		case "workspaceId":
-			err = unpopulate(val, &w.WorkspaceID)
-			delete(rawMsg, key)
-		case "workspaceUrl":
-			err = unpopulate(val, &w.WorkspaceURL)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkspacePropertiesEncryption - Encryption properties for databricks workspace
 type WorkspacePropertiesEncryption struct {
 	// REQUIRED; Encryption entities definition for the workspace.
@@ -909,27 +671,23 @@ type WorkspaceUpdate struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkspaceUpdate.
-func (w WorkspaceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", w.Tags)
-	return json.Marshal(objectMap)
-}
-
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
 // method.
 type WorkspacesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
 type WorkspacesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
 type WorkspacesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -947,21 +705,4 @@ type WorkspacesClientListByResourceGroupOptions struct {
 // method.
 type WorkspacesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

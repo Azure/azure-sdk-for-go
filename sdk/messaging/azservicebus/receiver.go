@@ -12,22 +12,23 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 // ReceiveMode represents the lock style to use for a receiver - either
 // `PeekLock` or `ReceiveAndDelete`
-type ReceiveMode = internal.ReceiveMode
+type ReceiveMode = exported.ReceiveMode
 
 const (
 	// ReceiveModePeekLock will lock messages as they are received and can be settled
 	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	ReceiveModePeekLock ReceiveMode = internal.PeekLock
+	ReceiveModePeekLock ReceiveMode = exported.PeekLock
 	// ReceiveModeReceiveAndDelete will delete messages as they are received.
-	ReceiveModeReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
+	ReceiveModeReceiveAndDelete ReceiveMode = exported.ReceiveAndDelete
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
@@ -47,7 +48,7 @@ type Receiver struct {
 	entityPath  string
 
 	settler        settler
-	retryOptions   utils.RetryOptions
+	retryOptions   RetryOptions
 	cleanupOnClose func()
 
 	lastPeekedSequenceNumber int64
@@ -81,7 +82,7 @@ type ReceiverOptions struct {
 	// of the queue or subscription.
 	SubQueue SubQueue
 
-	retryOptions utils.RetryOptions
+	retryOptions RetryOptions
 }
 
 const defaultLinkRxBuffer = 2048
@@ -119,7 +120,7 @@ type newReceiverArgs struct {
 	entity              entity
 	cleanupOnClose      func()
 	getRecoveryKindFunc func(err error) internal.RecoveryKind
-	newLinkFn           func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
+	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
 }
 
 func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, error) {
@@ -163,7 +164,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 	return receiver, nil
 }
 
-func (r *Receiver) newReceiverLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	linkOptions := createLinkOptions(r.receiveMode, r.entityPath)
 	link, err := createReceiverLink(ctx, session, linkOptions)
 	return nil, link, err
@@ -210,7 +211,7 @@ type ReceiveDeferredMessagesOptions struct {
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "receiveDeferredMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveDeferredMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, r.receiveMode, sequenceNumbers)
 
 		if err != nil {
@@ -225,7 +226,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		return nil
-	}, utils.RetryOptions(r.retryOptions))
+	}, r.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -248,7 +249,7 @@ type PeekMessagesOptions struct {
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
-	err := r.amqpLinks.Retry(ctx, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "peekMessages", func(ctx context.Context, links *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		var sequenceNumber = r.lastPeekedSequenceNumber + 1
 		updateInternalSequenceNumber := true
 
@@ -291,7 +292,7 @@ type RenewMessageLockOptions struct {
 
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
-	return r.amqpLinks.Retry(ctx, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	return r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
@@ -342,10 +343,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	var linksWithID *internal.LinksWithID
 
-	err := r.amqpLinks.Retry(ctx, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
 		return nil
-	}, utils.RetryOptions(r.retryOptions))
+	}, r.retryOptions)
 
 	if err != nil {
 		return nil, err
@@ -357,10 +358,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 				// if the user cancelled any of the "cleanup" operations then the link
 				// is an indeterminate state and should just be closed. It'll get recreated
 				// on the next operation.
-				log.Writef(internal.EventReceiver, "Closing link due to cancellation")
+				log.Writef(EventReceiver, "Closing link due to cancellation")
 				_ = r.amqpLinks.Close(context.Background(), false)
 			} else {
-				log.Writef(internal.EventReceiver, "Closing link/connection (potentially) for error %v", err)
+				log.Writef(EventReceiver, "Closing link/connection (potentially) for error %v", err)
 				_ = r.amqpLinks.CloseIfNeeded(context.Background(), err)
 			}
 		}
@@ -507,15 +508,47 @@ func (e *entity) SetSubQueue(subQueue SubQueue) error {
 	return fmt.Errorf("unknown SubQueue %d", subQueue)
 }
 
-func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
-	amqpReceiver, err := session.NewReceiver(linkOptions...)
-
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return nil, err
+func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
+	// If you're doing an AcceptNextSession it's possible for this call to take a long time before timing out
+	// on its own (it's by design - it's waiting for any empty session to become available).
+	type ret = struct {
+		Receiver internal.AMQPReceiverCloser
+		Err      error
 	}
 
-	return amqpReceiver, nil
+	done := make(chan ret)
+
+	go func(ctx context.Context) {
+		defer close(done)
+
+		tmpReceiver, tmpErr := session.NewReceiver(linkOptions...)
+
+		if tmpErr != nil {
+			done <- ret{Err: tmpErr}
+			return
+		}
+
+		select {
+		case <-ctx.Done():
+			// `createReceiverLink` will have already returned with a cancellation based error,
+			// so this goroutine just needs to make sure we close this link that nobody is going
+			// to use.
+			_ = tmpReceiver.Close(context.Background())
+			return
+		default:
+			done <- ret{Receiver: tmpReceiver}
+		}
+	}(ctx)
+
+	select {
+	case data := <-done:
+		return data.Receiver, data.Err
+	case <-ctx.Done():
+		// we'll early exit if cancelled - the goroutine above
+		// will just close the no-longer-needed link if/when it
+		// returns successfully.
+		return nil, ctx.Err()
+	}
 }
 
 func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {

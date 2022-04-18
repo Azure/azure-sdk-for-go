@@ -7,6 +7,7 @@
 package pollers
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -45,7 +47,7 @@ func Failed(s string) bool {
 
 // returns true if the LRO response contains a valid HTTP status code
 func StatusCodeValid(resp *http.Response) bool {
-	return shared.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
+	return exported.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)
 }
 
 // IsValidURL verifies that the URL is valid and absolute.
@@ -91,6 +93,27 @@ func DecodeID(tk string) (string, string, error) {
 		return "", "", fmt.Errorf("invalid token %s", tk)
 	}
 	return parts[0], parts[1], nil
+}
+
+// ErrNoBody is returned if the response didn't contain a body.
+var ErrNoBody = errors.New("the response did not contain a body")
+
+// GetJSON reads the response body into a raw JSON object.
+// It returns ErrNoBody if there was no content.
+func GetJSON(resp *http.Response) (map[string]interface{}, error) {
+	body, err := exported.Payload(resp)
+	if err != nil {
+		return nil, err
+	}
+	if len(body) == 0 {
+		return nil, ErrNoBody
+	}
+	// unmarshall the body to get the value
+	var jsonBody map[string]interface{}
+	if err = json.Unmarshal(body, &jsonBody); err != nil {
+		return nil, err
+	}
+	return jsonBody, nil
 }
 
 // used if the operation synchronously completed

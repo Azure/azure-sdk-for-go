@@ -21,11 +21,6 @@ const (
 	HeaderOperationLocation      = "Operation-Location"
 	HeaderRetryAfter             = "Retry-After"
 	HeaderUserAgent              = "User-Agent"
-	HeaderXmsDate                = "x-ms-date"
-)
-
-const (
-	DefaultMaxRetries = 3
 )
 
 const BearerTokenPrefix = "Bearer "

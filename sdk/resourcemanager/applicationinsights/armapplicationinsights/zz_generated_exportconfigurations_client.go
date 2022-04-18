@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ExportConfigurationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExportConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExportConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewExportConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExportConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExportConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a Continuous Export configuration of an Application Insights component.
@@ -100,7 +105,7 @@ func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Contex
 
 // createHandleResponse handles the Create response.
 func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Response) (ExportConfigurationsClientCreateResponse, error) {
-	result := ExportConfigurationsClientCreateResponse{RawResponse: resp}
+	result := ExportConfigurationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
 		return ExportConfigurationsClientCreateResponse{}, err
 	}
@@ -161,7 +166,7 @@ func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Contex
 
 // deleteHandleResponse handles the Delete response.
 func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Response) (ExportConfigurationsClientDeleteResponse, error) {
-	result := ExportConfigurationsClientDeleteResponse{RawResponse: resp}
+	result := ExportConfigurationsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientDeleteResponse{}, err
 	}
@@ -222,7 +227,7 @@ func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, 
 
 // getHandleResponse handles the Get response.
 func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response) (ExportConfigurationsClientGetResponse, error) {
-	result := ExportConfigurationsClientGetResponse{RawResponse: resp}
+	result := ExportConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientGetResponse{}, err
 	}
@@ -278,7 +283,7 @@ func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context,
 
 // listHandleResponse handles the List response.
 func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response) (ExportConfigurationsClientListResponse, error) {
-	result := ExportConfigurationsClientListResponse{RawResponse: resp}
+	result := ExportConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
 		return ExportConfigurationsClientListResponse{}, err
 	}
@@ -340,7 +345,7 @@ func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Contex
 
 // updateHandleResponse handles the Update response.
 func (client *ExportConfigurationsClient) updateHandleResponse(resp *http.Response) (ExportConfigurationsClientUpdateResponse, error) {
-	result := ExportConfigurationsClientUpdateResponse{RawResponse: resp}
+	result := ExportConfigurationsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,36 +8,36 @@
 
 package armwebpubsub
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
 type ClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 type ClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginRegenerateKeyOptions contains the optional parameters for the Client.BeginRegenerateKey method.
 type ClientBeginRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginRestartOptions contains the optional parameters for the Client.BeginRestart method.
 type ClientBeginRestartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
 type ClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
@@ -85,6 +85,40 @@ type Dimension struct {
 	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
 // EventHandler - Properties of event handler.
 type EventHandler struct {
 	// REQUIRED; Gets or sets the EventHandler URL template. You can use a predefined parameter {hub} and {event} inside the template,
@@ -102,16 +136,6 @@ type EventHandler struct {
 	// name 2. Combine multiple events with ",", for example "event1,event2", it
 	// matches event "event1" and "event2" 3. The single event name, for example, "event1", it matches "event1"
 	UserEventPattern *string `json:"userEventPattern,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventHandler.
-func (e EventHandler) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "auth", e.Auth)
-	populate(objectMap, "systemEvents", e.SystemEvents)
-	populate(objectMap, "urlTemplate", e.URLTemplate)
-	populate(objectMap, "userEventPattern", e.UserEventPattern)
-	return json.Marshal(objectMap)
 }
 
 // Hub - A hub setting
@@ -142,14 +166,6 @@ type HubList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HubList.
-func (h HubList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
 // HubProperties - Properties of a hub.
 type HubProperties struct {
 	// The settings for configuring if anonymous connections are allowed for this hub: "allow" or "deny". Default to "deny".
@@ -159,22 +175,16 @@ type HubProperties struct {
 	EventHandlers []*EventHandler `json:"eventHandlers,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HubProperties.
-func (h HubProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "anonymousConnectPolicy", h.AnonymousConnectPolicy)
-	populate(objectMap, "eventHandlers", h.EventHandlers)
-	return json.Marshal(objectMap)
-}
-
 // HubsClientBeginCreateOrUpdateOptions contains the optional parameters for the HubsClient.BeginCreateOrUpdate method.
 type HubsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // HubsClientBeginDeleteOptions contains the optional parameters for the HubsClient.BeginDelete method.
 type HubsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // HubsClientGetOptions contains the optional parameters for the HubsClient.Get method.
@@ -222,14 +232,6 @@ type LiveTraceConfiguration struct {
 	Enabled *string `json:"enabled,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LiveTraceConfiguration.
-func (l LiveTraceConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "categories", l.Categories)
-	populate(objectMap, "enabled", l.Enabled)
-	return json.Marshal(objectMap)
-}
-
 // LogSpecification - Specifications of the Logs for Azure Monitoring.
 type LogSpecification struct {
 	// Localized friendly display name of the log.
@@ -252,16 +254,6 @@ type ManagedIdentity struct {
 
 	// READ-ONLY; Get the tenant id for the system assigned identity. Only be used in response
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagedIdentity.
-func (m ManagedIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", m.PrincipalID)
-	populate(objectMap, "tenantId", m.TenantID)
-	populate(objectMap, "type", m.Type)
-	populate(objectMap, "userAssignedIdentities", m.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // ManagedIdentitySettings - Managed identity settings for upstream.
@@ -301,20 +293,6 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "category", m.Category)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "fillGapWithZero", m.FillGapWithZero)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // NameAvailability - Result of the request to check name availability. It contains a flag and possible reason of failure.
 type NameAvailability struct {
 	// The message of the operation.
@@ -345,14 +323,6 @@ type NetworkACL struct {
 	Deny []*WebPubSubRequestType `json:"deny,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkACL.
-func (n NetworkACL) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allow", n.Allow)
-	populate(objectMap, "deny", n.Deny)
-	return json.Marshal(objectMap)
-}
-
 // NetworkACLs - Network ACLs for the resource
 type NetworkACLs struct {
 	// Azure Networking ACL Action.
@@ -363,15 +333,6 @@ type NetworkACLs struct {
 
 	// Network ACL
 	PublicNetwork *NetworkACL `json:"publicNetwork,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetworkACLs.
-func (n NetworkACLs) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultAction", n.DefaultAction)
-	populate(objectMap, "privateEndpoints", n.PrivateEndpoints)
-	populate(objectMap, "publicNetwork", n.PublicNetwork)
-	return json.Marshal(objectMap)
 }
 
 // Operation - REST API operation supported by resource provider.
@@ -417,14 +378,6 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - Extra Operation properties.
 type OperationProperties struct {
 	// An object that describes a specification.
@@ -452,15 +405,6 @@ type PrivateEndpointACL struct {
 
 	// Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
 	Deny []*WebPubSubRequestType `json:"deny,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointACL.
-func (p PrivateEndpointACL) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allow", p.Allow)
-	populate(objectMap, "deny", p.Deny)
-	populate(objectMap, "name", p.Name)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnection - A private endpoint connection to an azure resource
@@ -491,14 +435,6 @@ type PrivateEndpointConnectionList struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionList.
-func (p PrivateEndpointConnectionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Private endpoint connection properties
 type PrivateEndpointConnectionProperties struct {
 	// Private endpoint
@@ -514,20 +450,11 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
-func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupIds", p.GroupIDs)
-	populate(objectMap, "privateEndpoint", p.PrivateEndpoint)
-	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -572,14 +499,6 @@ type PrivateLinkResourceList struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceList.
-func (p PrivateLinkResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Private link resource properties
 type PrivateLinkResourceProperties struct {
 	// Group Id of the private link resource
@@ -593,16 +512,6 @@ type PrivateLinkResourceProperties struct {
 
 	// The list of resources that are onboarded to private link service
 	ShareablePrivateLinkResourceTypes []*ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	populate(objectMap, "shareablePrivateLinkResourceTypes", p.ShareablePrivateLinkResourceTypes)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
@@ -675,28 +584,6 @@ type Properties struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Properties.
-func (p Properties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableAadAuth", p.DisableAADAuth)
-	populate(objectMap, "disableLocalAuth", p.DisableLocalAuth)
-	populate(objectMap, "externalIP", p.ExternalIP)
-	populate(objectMap, "hostName", p.HostName)
-	populate(objectMap, "hostNamePrefix", p.HostNamePrefix)
-	populate(objectMap, "liveTraceConfiguration", p.LiveTraceConfiguration)
-	populate(objectMap, "networkACLs", p.NetworkACLs)
-	populate(objectMap, "privateEndpointConnections", p.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", p.PublicNetworkAccess)
-	populate(objectMap, "publicPort", p.PublicPort)
-	populate(objectMap, "resourceLogConfiguration", p.ResourceLogConfiguration)
-	populate(objectMap, "serverPort", p.ServerPort)
-	populate(objectMap, "sharedPrivateLinkResources", p.SharedPrivateLinkResources)
-	populate(objectMap, "tls", p.TLS)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
-
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags
 type ProxyResource struct {
@@ -758,21 +645,6 @@ type ResourceInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceInfo.
-func (r ResourceInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "identity", r.Identity)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // ResourceInfoList - Object that includes an array of resources and a possible link for next set.
 type ResourceInfoList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
@@ -780,14 +652,6 @@ type ResourceInfoList struct {
 
 	// List of the resources
 	Value []*ResourceInfo `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceInfoList.
-func (r ResourceInfoList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ResourceLogCategory - Resource log category configuration of a Microsoft.SignalRService resource.
@@ -803,13 +667,6 @@ type ResourceLogCategory struct {
 type ResourceLogConfiguration struct {
 	// Gets or sets the list of category configurations.
 	Categories []*ResourceLogCategory `json:"categories,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceLogConfiguration.
-func (r ResourceLogConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "categories", r.Categories)
-	return json.Marshal(objectMap)
 }
 
 // ResourceSKU - The billing information of the resource.
@@ -863,17 +720,6 @@ type SKUCapacity struct {
 	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUCapacity.
-func (s SKUCapacity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedValues", s.AllowedValues)
-	populate(objectMap, "default", s.Default)
-	populate(objectMap, "maximum", s.Maximum)
-	populate(objectMap, "minimum", s.Minimum)
-	populate(objectMap, "scaleType", s.ScaleType)
-	return json.Marshal(objectMap)
-}
-
 // SKUList - The list skus operation response
 type SKUList struct {
 	// READ-ONLY; The URL the client should use to fetch the next page (per server side paging). It's null for now, added for
@@ -884,14 +730,6 @@ type SKUList struct {
 	Value []*SKU `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUList.
-func (s SKUList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ServiceSpecification - An object that describes a specification.
 type ServiceSpecification struct {
 	// Specifications of the Logs for Azure Monitoring.
@@ -899,14 +737,6 @@ type ServiceSpecification struct {
 
 	// Specifications of the Metrics for Azure Monitoring.
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", s.LogSpecifications)
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // ShareablePrivateLinkResourceProperties - Describes the properties of a resource type that has been onboarded to private
@@ -959,14 +789,6 @@ type SharedPrivateLinkResourceList struct {
 	Value []*SharedPrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SharedPrivateLinkResourceList.
-func (s SharedPrivateLinkResourceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SharedPrivateLinkResourceProperties - Describes the properties of an existing Shared Private Link Resource
 type SharedPrivateLinkResourceProperties struct {
 	// REQUIRED; The group id from the provider of resource the shared private link resource is for
@@ -988,13 +810,15 @@ type SharedPrivateLinkResourceProperties struct {
 // SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginCreateOrUpdate
 // method.
 type SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SharedPrivateLinkResourcesClientBeginDeleteOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginDelete
 // method.
 type SharedPrivateLinkResourcesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.Get
@@ -1036,14 +860,6 @@ type SignalRServiceUsageList struct {
 	Value []*SignalRServiceUsage `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SignalRServiceUsageList.
-func (s SignalRServiceUsageList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SignalRServiceUsageName - Localizable String object containing the name and a localized value.
 type SignalRServiceUsageName struct {
 	// Localized name of the usage.
@@ -1074,53 +890,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TLSSettings - TLS settings for the resource
 type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled
@@ -1145,17 +914,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UpstreamAuthSettings - Upstream auth settings. If not set, no auth is used for upstream messages.
 type UpstreamAuthSettings struct {
 	// Managed identity settings for upstream.
@@ -1177,21 +935,4 @@ type UserAssignedIdentityProperty struct {
 
 	// READ-ONLY; Get the principal id for the user assigned identity
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

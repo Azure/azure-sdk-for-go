@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -18,24 +18,32 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/GetVirtualWanVpnServerConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/GetVirtualWanVpnServerConfigurations.json
 func ExampleVPNServerConfigurationsAssociatedWithVirtualWanClient_BeginList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewVPNServerConfigurationsAssociatedWithVirtualWanClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVPNServerConfigurationsAssociatedWithVirtualWanClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginList(ctx,
 		"<resource-group-name>",
 		"<virtual-wanname>",
-		nil)
+		&armnetwork.VPNServerConfigurationsAssociatedWithVirtualWanClientBeginListOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.VPNServerConfigurationsAssociatedWithVirtualWanClientListResult)
+	// TODO: use response item
+	_ = res
 }

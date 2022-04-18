@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -31,19 +32,23 @@ type DiagnosticSettingsCategoryClient struct {
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticSettingsCategoryClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsCategoryClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DiagnosticSettingsCategoryClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.
@@ -88,7 +93,7 @@ func (client *DiagnosticSettingsCategoryClient) getCreateRequest(ctx context.Con
 
 // getHandleResponse handles the Get response.
 func (client *DiagnosticSettingsCategoryClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryClientGetResponse, error) {
-	result := DiagnosticSettingsCategoryClientGetResponse{RawResponse: resp}
+	result := DiagnosticSettingsCategoryClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResource); err != nil {
 		return DiagnosticSettingsCategoryClientGetResponse{}, err
 	}
@@ -132,7 +137,7 @@ func (client *DiagnosticSettingsCategoryClient) listCreateRequest(ctx context.Co
 
 // listHandleResponse handles the List response.
 func (client *DiagnosticSettingsCategoryClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsCategoryClientListResponse, error) {
-	result := DiagnosticSettingsCategoryClientListResponse{RawResponse: resp}
+	result := DiagnosticSettingsCategoryClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsCategoryResourceCollection); err != nil {
 		return DiagnosticSettingsCategoryClientListResponse{}, err
 	}

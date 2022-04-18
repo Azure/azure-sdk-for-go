@@ -1,14 +1,22 @@
 # Release History
 
-## 0.14.1 (Unreleased)
+## 0.15.0 (Unreleased)
 
 ### Features Added
+* `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
+  client ID of a user-assigned managed identity
+  ([#17293](https://github.com/Azure/azure-sdk-for-go/pull/17293))
 
 ### Breaking Changes
+* Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
+  to authenticate a user with the authorization code flow.
 
 ### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
 
 ### Other Changes
+* `GetToken()` returns an error when the caller specifies no scope
 
 ## 0.14.0 (2022-04-05)
 

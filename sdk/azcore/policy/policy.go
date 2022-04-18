@@ -10,20 +10,19 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
 // Request and react to the received Response.
-type Policy = pipeline.Policy
+type Policy = exported.Policy
 
 // Transporter represents an HTTP pipeline transport used to send HTTP requests and receive responses.
-type Transporter = pipeline.Transporter
+type Transporter = exported.Transporter
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 // Don't use this type directly, use runtime.NewRequest() instead.
-type Request = pipeline.Request
+type Request = exported.Request
 
 // ClientOptions contains optional settings for a client's pipeline.
 // All zero-value fields will be initialized with default values.
@@ -109,7 +108,13 @@ type TelemetryOptions struct {
 }
 
 // TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token.
-type TokenRequestOptions = shared.TokenRequestOptions
+type TokenRequestOptions struct {
+	// Scopes contains the list of permission scopes required for the token.
+	Scopes []string
+	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario, if TenantID is set
+	// it will override the tenant ID that was added at credential creation time.
+	TenantID string
+}
 
 // BearerTokenOptions configures the bearer token policy's behavior.
 type BearerTokenOptions struct {

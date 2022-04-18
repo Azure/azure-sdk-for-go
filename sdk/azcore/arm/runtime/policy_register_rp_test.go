@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -56,7 +56,7 @@ const rpRegisteredResp = `{
 
 const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/fakeResourceGroupo/providers/Microsoft.Storage/storageAccounts/fakeAccountName"
 
-func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server) pipeline.Pipeline {
+func newTestRPRegistrationPipeline(t *testing.T, srv *mock.Server) runtime.Pipeline {
 	opts := testRPRegistrationOptions(srv)
 	rp, err := NewRPRegistrationPolicy(mockCredential{}, testRPRegistrationOptions(srv))
 	if err != nil {
@@ -347,7 +347,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []pipeline.Policy{rp}}, nil)
+	pl := runtime.NewPipeline("test", "v0.1.0", runtime.PipelineOptions{PerCall: []azpolicy.Policy{rp}}, nil)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -395,7 +395,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		},
 	}
 	getTokenCalled := false
-	cred := mockCredential{getTokenImpl: func(ctx context.Context, options shared.TokenRequestOptions) (*shared.AccessToken, error) {
+	cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 		getTokenCalled = true
 		if n := len(options.Scopes); n != 1 {
 			t.Fatalf("expected 1 scope, got %d", n)
@@ -403,7 +403,7 @@ func TestRPRegistrationPolicyAudience(t *testing.T) {
 		if options.Scopes[0] != audience+"/.default" {
 			t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
 		}
-		return &shared.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
+		return &azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 	}}
 	opts := azpolicy.ClientOptions{Cloud: conf, Transport: srv}
 	rp, err := NewRPRegistrationPolicy(cred, &armpolicy.RegistrationOptions{ClientOptions: opts})

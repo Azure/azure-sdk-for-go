@@ -21,9 +21,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+const (
+	defaultMaxRetries = 3
+)
+
 func setDefaults(o *policy.RetryOptions) {
 	if o.MaxRetries == 0 {
-		o.MaxRetries = shared.DefaultMaxRetries
+		o.MaxRetries = defaultMaxRetries
 	} else if o.MaxRetries < 0 {
 		o.MaxRetries = 0
 	}

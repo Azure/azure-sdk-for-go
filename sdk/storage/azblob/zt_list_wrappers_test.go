@@ -1,11 +1,15 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package azblob
 
 import (
-	"github.com/stretchr/testify/assert"
 	"sort"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // tests general functionality

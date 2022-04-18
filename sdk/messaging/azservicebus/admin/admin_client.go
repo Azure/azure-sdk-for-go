@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // Client allows you to administer resources in a Service Bus Namespace.
@@ -23,7 +23,7 @@ type Client struct {
 }
 
 // RetryOptions represent the options for retries.
-type RetryOptions = utils.RetryOptions
+type RetryOptions = exported.RetryOptions
 
 // ClientOptions allows you to set optional configuration for `Client`.
 type ClientOptions struct {
@@ -49,7 +49,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // NewClient creates a Client authenticating using a TokenCredential.
 func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	var retryOptions utils.RetryOptions
+	var retryOptions exported.RetryOptions
 
 	if options != nil && options.RetryOptions != nil {
 		retryOptions = *options.RetryOptions

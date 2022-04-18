@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armdatashare
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ADLSGen1FileDataSet - An ADLS Gen 1 file data set.
 type ADLSGen1FileDataSet struct {
@@ -34,64 +29,6 @@ type ADLSGen1FileDataSet struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSet implements the DataSetClassification interface for type ADLSGen1FileDataSet.
-func (a *ADLSGen1FileDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen1FileDataSet.
-func (a ADLSGen1FileDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetKindAdlsGen1File
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen1FileDataSet.
-func (a *ADLSGen1FileDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ADLSGen1FileProperties - Properties of the ADLS Gen1 file data set.
@@ -136,64 +73,6 @@ type ADLSGen1FolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type ADLSGen1FolderDataSet.
-func (a *ADLSGen1FolderDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen1FolderDataSet.
-func (a ADLSGen1FolderDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetKindAdlsGen1Folder
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen1FolderDataSet.
-func (a *ADLSGen1FolderDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ADLSGen1FolderProperties - Properties of the ADLS Gen1 folder data set.
 type ADLSGen1FolderProperties struct {
 	// REQUIRED; The ADLS account name.
@@ -233,64 +112,6 @@ type ADLSGen2FileDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type ADLSGen2FileDataSet.
-func (a *ADLSGen2FileDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FileDataSet.
-func (a ADLSGen2FileDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetKindAdlsGen2File
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FileDataSet.
-func (a *ADLSGen2FileDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ADLSGen2FileDataSetMapping - An ADLS Gen2 file data set mapping.
 type ADLSGen2FileDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -310,64 +131,6 @@ type ADLSGen2FileDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FileDataSetMapping.
-func (a *ADLSGen2FileDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FileDataSetMapping.
-func (a ADLSGen2FileDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetMappingKindAdlsGen2File
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FileDataSetMapping.
-func (a *ADLSGen2FileDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ADLSGen2FileDataSetMappingProperties - ADLS Gen 2 file data set mapping property bag.
@@ -442,64 +205,6 @@ type ADLSGen2FileSystemDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type ADLSGen2FileSystemDataSet.
-func (a *ADLSGen2FileSystemDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FileSystemDataSet.
-func (a ADLSGen2FileSystemDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetKindAdlsGen2FileSystem
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FileSystemDataSet.
-func (a *ADLSGen2FileSystemDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ADLSGen2FileSystemDataSetMapping - An ADLS Gen2 file system data set mapping.
 type ADLSGen2FileSystemDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -519,64 +224,6 @@ type ADLSGen2FileSystemDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FileSystemDataSetMapping.
-func (a *ADLSGen2FileSystemDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FileSystemDataSetMapping.
-func (a ADLSGen2FileSystemDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetMappingKindAdlsGen2FileSystem
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FileSystemDataSetMapping.
-func (a *ADLSGen2FileSystemDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ADLSGen2FileSystemDataSetMappingProperties - ADLS Gen 2 file system data set mapping property bag.
@@ -642,64 +289,6 @@ type ADLSGen2FolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type ADLSGen2FolderDataSet.
-func (a *ADLSGen2FolderDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FolderDataSet.
-func (a ADLSGen2FolderDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetKindAdlsGen2Folder
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FolderDataSet.
-func (a *ADLSGen2FolderDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ADLSGen2FolderDataSetMapping - An ADLS Gen2 folder data set mapping.
 type ADLSGen2FolderDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -719,64 +308,6 @@ type ADLSGen2FolderDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type ADLSGen2FolderDataSetMapping.
-func (a *ADLSGen2FolderDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       a.Kind,
-		ID:         a.ID,
-		Name:       a.Name,
-		SystemData: a.SystemData,
-		Type:       a.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ADLSGen2FolderDataSetMapping.
-func (a ADLSGen2FolderDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	objectMap["kind"] = DataSetMappingKindAdlsGen2Folder
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ADLSGen2FolderDataSetMapping.
-func (a *ADLSGen2FolderDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &a.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &a.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &a.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ADLSGen2FolderDataSetMappingProperties - ADLS Gen 2 folder data set mapping property bag.
@@ -854,20 +385,6 @@ type Account struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AccountList - List response for get Accounts.
 type AccountList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -875,14 +392,6 @@ type AccountList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountList.
-func (a AccountList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AccountProperties - Account property bag.
@@ -900,66 +409,22 @@ type AccountProperties struct {
 	UserName *string `json:"userName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
-func (a AccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", a.CreatedAt)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "userEmail", a.UserEmail)
-	populate(objectMap, "userName", a.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
-func (a *AccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &a.CreatedAt)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
-			delete(rawMsg, key)
-		case "userEmail":
-			err = unpopulate(val, &a.UserEmail)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &a.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AccountUpdateParameters - Update parameters for accounts
 type AccountUpdateParameters struct {
 	// Tags on the azure resource.
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountUpdateParameters.
-func (a AccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
 type AccountsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 type AccountsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -1005,64 +470,6 @@ type BlobContainerDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type BlobContainerDataSet.
-func (b *BlobContainerDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobContainerDataSet.
-func (b BlobContainerDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetKindContainer
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobContainerDataSet.
-func (b *BlobContainerDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BlobContainerDataSetMapping - A Blob container data set mapping.
 type BlobContainerDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1082,64 +489,6 @@ type BlobContainerDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobContainerDataSetMapping.
-func (b *BlobContainerDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobContainerDataSetMapping.
-func (b BlobContainerDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetMappingKindContainer
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobContainerDataSetMapping.
-func (b *BlobContainerDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BlobContainerMappingProperties - Azure storage Blob container data set mapping property bag.
@@ -1205,64 +554,6 @@ type BlobDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type BlobDataSet.
-func (b *BlobDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobDataSet.
-func (b BlobDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetKindBlob
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobDataSet.
-func (b *BlobDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BlobDataSetMapping - A Blob data set mapping.
 type BlobDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1282,64 +573,6 @@ type BlobDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobDataSetMapping.
-func (b *BlobDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobDataSetMapping.
-func (b BlobDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetMappingKindBlob
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobDataSetMapping.
-func (b *BlobDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BlobFolderDataSet - An Azure storage blob folder data set.
@@ -1363,64 +596,6 @@ type BlobFolderDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type BlobFolderDataSet.
-func (b *BlobFolderDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobFolderDataSet.
-func (b BlobFolderDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetKindBlobFolder
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobFolderDataSet.
-func (b *BlobFolderDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BlobFolderDataSetMapping - A Blob folder data set mapping.
 type BlobFolderDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -1440,64 +615,6 @@ type BlobFolderDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type BlobFolderDataSetMapping.
-func (b *BlobFolderDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       b.Kind,
-		ID:         b.ID,
-		Name:       b.Name,
-		SystemData: b.SystemData,
-		Type:       b.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobFolderDataSetMapping.
-func (b BlobFolderDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", b.ID)
-	objectMap["kind"] = DataSetMappingKindBlobFolder
-	populate(objectMap, "name", b.Name)
-	populate(objectMap, "properties", b.Properties)
-	populate(objectMap, "systemData", b.SystemData)
-	populate(objectMap, "type", b.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BlobFolderDataSetMapping.
-func (b *BlobFolderDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &b.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &b.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &b.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &b.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &b.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // BlobFolderMappingProperties - Azure storage Blob folder data set mapping property bag.
@@ -1626,14 +743,6 @@ type ConsumerInvitationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConsumerInvitationList.
-func (c ConsumerInvitationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConsumerInvitationProperties - Properties of consumer invitation
 type ConsumerInvitationProperties struct {
 	// REQUIRED; Unique id of the invitation.
@@ -1682,89 +791,6 @@ type ConsumerInvitationProperties struct {
 	UserName *string `json:"userName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConsumerInvitationProperties.
-func (c ConsumerInvitationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSetCount", c.DataSetCount)
-	populate(objectMap, "description", c.Description)
-	populateTimeRFC3339(objectMap, "expirationDate", c.ExpirationDate)
-	populate(objectMap, "invitationId", c.InvitationID)
-	populate(objectMap, "invitationStatus", c.InvitationStatus)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "providerEmail", c.ProviderEmail)
-	populate(objectMap, "providerName", c.ProviderName)
-	populate(objectMap, "providerTenantName", c.ProviderTenantName)
-	populateTimeRFC3339(objectMap, "respondedAt", c.RespondedAt)
-	populateTimeRFC3339(objectMap, "sentAt", c.SentAt)
-	populate(objectMap, "shareName", c.ShareName)
-	populate(objectMap, "termsOfUse", c.TermsOfUse)
-	populate(objectMap, "userEmail", c.UserEmail)
-	populate(objectMap, "userName", c.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConsumerInvitationProperties.
-func (c *ConsumerInvitationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataSetCount":
-			err = unpopulate(val, &c.DataSetCount)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &c.Description)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &c.ExpirationDate)
-			delete(rawMsg, key)
-		case "invitationId":
-			err = unpopulate(val, &c.InvitationID)
-			delete(rawMsg, key)
-		case "invitationStatus":
-			err = unpopulate(val, &c.InvitationStatus)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &c.Location)
-			delete(rawMsg, key)
-		case "providerEmail":
-			err = unpopulate(val, &c.ProviderEmail)
-			delete(rawMsg, key)
-		case "providerName":
-			err = unpopulate(val, &c.ProviderName)
-			delete(rawMsg, key)
-		case "providerTenantName":
-			err = unpopulate(val, &c.ProviderTenantName)
-			delete(rawMsg, key)
-		case "respondedAt":
-			err = unpopulateTimeRFC3339(val, &c.RespondedAt)
-			delete(rawMsg, key)
-		case "sentAt":
-			err = unpopulateTimeRFC3339(val, &c.SentAt)
-			delete(rawMsg, key)
-		case "shareName":
-			err = unpopulate(val, &c.ShareName)
-			delete(rawMsg, key)
-		case "termsOfUse":
-			err = unpopulate(val, &c.TermsOfUse)
-			delete(rawMsg, key)
-		case "userEmail":
-			err = unpopulate(val, &c.UserEmail)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &c.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ConsumerInvitationsClientGetOptions contains the optional parameters for the ConsumerInvitationsClient.Get method.
 type ConsumerInvitationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1808,14 +834,6 @@ type ConsumerSourceDataSetList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsumerSourceDataSetList.
-func (c ConsumerSourceDataSetList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ConsumerSourceDataSetProperties - Properties of consumer source dataSet
@@ -1872,9 +890,6 @@ type DataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type DataSet.
-func (d *DataSet) GetDataSet() *DataSet { return d }
-
 // DataSetList - List response for get DataSets
 type DataSetList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -1882,37 +897,6 @@ type DataSetList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataSetList.
-func (d DataSetList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetList.
-func (d *DataSetList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &d.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			d.Value, err = unmarshalDataSetClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataSetMappingClassification provides polymorphic access to related types.
@@ -1944,9 +928,6 @@ type DataSetMapping struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSetMapping implements the DataSetMappingClassification interface for type DataSetMapping.
-func (d *DataSetMapping) GetDataSetMapping() *DataSetMapping { return d }
-
 // DataSetMappingList - List response for get DataSetMappings
 type DataSetMappingList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -1954,37 +935,6 @@ type DataSetMappingList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataSetMappingList.
-func (d DataSetMappingList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataSetMappingList.
-func (d *DataSetMappingList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &d.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			d.Value, err = unmarshalDataSetMappingClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataSetMappingsClientCreateOptions contains the optional parameters for the DataSetMappingsClient.Create method.
@@ -2015,7 +965,8 @@ type DataSetMappingsClientListByShareSubscriptionOptions struct {
 
 // DataSetsClientBeginDeleteOptions contains the optional parameters for the DataSetsClient.BeginDelete method.
 type DataSetsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DataSetsClientCreateOptions contains the optional parameters for the DataSetsClient.Create method.
@@ -2059,18 +1010,6 @@ type DefaultDto struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DefaultDto.
-func (d DefaultDto) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "systemData", d.SystemData)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DimensionProperties - properties for dimension
 type DimensionProperties struct {
 	// localized display name of the dimension to customer
@@ -2096,49 +1035,6 @@ type EmailRegistration struct {
 
 	// READ-ONLY; The tenant to register
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EmailRegistration.
-func (e EmailRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activationCode", e.ActivationCode)
-	populateTimeRFC3339(objectMap, "activationExpirationDate", e.ActivationExpirationDate)
-	populate(objectMap, "email", e.Email)
-	populate(objectMap, "registrationStatus", e.RegistrationStatus)
-	populate(objectMap, "tenantId", e.TenantID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EmailRegistration.
-func (e *EmailRegistration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activationCode":
-			err = unpopulate(val, &e.ActivationCode)
-			delete(rawMsg, key)
-		case "activationExpirationDate":
-			err = unpopulateTimeRFC3339(val, &e.ActivationExpirationDate)
-			delete(rawMsg, key)
-		case "email":
-			err = unpopulate(val, &e.Email)
-			delete(rawMsg, key)
-		case "registrationStatus":
-			err = unpopulate(val, &e.RegistrationStatus)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &e.TenantID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EmailRegistrationsClientActivateEmailOptions contains the optional parameters for the EmailRegistrationsClient.ActivateEmail
@@ -2172,16 +1068,6 @@ type ErrorInfo struct {
 
 	// Target of the error
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorInfo.
-func (e ErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // Identity of resource
@@ -2223,14 +1109,6 @@ type InvitationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InvitationList.
-func (i InvitationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
-}
-
 // InvitationProperties - Invitation property bag.
 type InvitationProperties struct {
 	// The expiration date for the invitation and share subscription.
@@ -2263,69 +1141,6 @@ type InvitationProperties struct {
 
 	// READ-ONLY; Name of the user who created the resource
 	UserName *string `json:"userName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InvitationProperties.
-func (i InvitationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expirationDate", i.ExpirationDate)
-	populate(objectMap, "invitationId", i.InvitationID)
-	populate(objectMap, "invitationStatus", i.InvitationStatus)
-	populateTimeRFC3339(objectMap, "respondedAt", i.RespondedAt)
-	populateTimeRFC3339(objectMap, "sentAt", i.SentAt)
-	populate(objectMap, "targetActiveDirectoryId", i.TargetActiveDirectoryID)
-	populate(objectMap, "targetEmail", i.TargetEmail)
-	populate(objectMap, "targetObjectId", i.TargetObjectID)
-	populate(objectMap, "userEmail", i.UserEmail)
-	populate(objectMap, "userName", i.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InvitationProperties.
-func (i *InvitationProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &i.ExpirationDate)
-			delete(rawMsg, key)
-		case "invitationId":
-			err = unpopulate(val, &i.InvitationID)
-			delete(rawMsg, key)
-		case "invitationStatus":
-			err = unpopulate(val, &i.InvitationStatus)
-			delete(rawMsg, key)
-		case "respondedAt":
-			err = unpopulateTimeRFC3339(val, &i.RespondedAt)
-			delete(rawMsg, key)
-		case "sentAt":
-			err = unpopulateTimeRFC3339(val, &i.SentAt)
-			delete(rawMsg, key)
-		case "targetActiveDirectoryId":
-			err = unpopulate(val, &i.TargetActiveDirectoryID)
-			delete(rawMsg, key)
-		case "targetEmail":
-			err = unpopulate(val, &i.TargetEmail)
-			delete(rawMsg, key)
-		case "targetObjectId":
-			err = unpopulate(val, &i.TargetObjectID)
-			delete(rawMsg, key)
-		case "userEmail":
-			err = unpopulate(val, &i.UserEmail)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &i.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InvitationsClientCreateOptions contains the optional parameters for the InvitationsClient.Create method.
@@ -2374,64 +1189,6 @@ type KustoClusterDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type KustoClusterDataSet.
-func (k *KustoClusterDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       k.Kind,
-		ID:         k.ID,
-		Name:       k.Name,
-		SystemData: k.SystemData,
-		Type:       k.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KustoClusterDataSet.
-func (k KustoClusterDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", k.ID)
-	objectMap["kind"] = DataSetKindKustoCluster
-	populate(objectMap, "name", k.Name)
-	populate(objectMap, "properties", k.Properties)
-	populate(objectMap, "systemData", k.SystemData)
-	populate(objectMap, "type", k.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KustoClusterDataSet.
-func (k *KustoClusterDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &k.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &k.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &k.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &k.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &k.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &k.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KustoClusterDataSetMapping - A Kusto cluster data set mapping
 type KustoClusterDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -2451,64 +1208,6 @@ type KustoClusterDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type KustoClusterDataSetMapping.
-func (k *KustoClusterDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       k.Kind,
-		ID:         k.ID,
-		Name:       k.Name,
-		SystemData: k.SystemData,
-		Type:       k.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KustoClusterDataSetMapping.
-func (k KustoClusterDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", k.ID)
-	objectMap["kind"] = DataSetMappingKindKustoCluster
-	populate(objectMap, "name", k.Name)
-	populate(objectMap, "properties", k.Properties)
-	populate(objectMap, "systemData", k.SystemData)
-	populate(objectMap, "type", k.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KustoClusterDataSetMapping.
-func (k *KustoClusterDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &k.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &k.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &k.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &k.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &k.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &k.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KustoClusterDataSetMappingProperties - Properties of the Kusto cluster data set mapping
@@ -2565,64 +1264,6 @@ type KustoDatabaseDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type KustoDatabaseDataSet.
-func (k *KustoDatabaseDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       k.Kind,
-		ID:         k.ID,
-		Name:       k.Name,
-		SystemData: k.SystemData,
-		Type:       k.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KustoDatabaseDataSet.
-func (k KustoDatabaseDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", k.ID)
-	objectMap["kind"] = DataSetKindKustoDatabase
-	populate(objectMap, "name", k.Name)
-	populate(objectMap, "properties", k.Properties)
-	populate(objectMap, "systemData", k.SystemData)
-	populate(objectMap, "type", k.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KustoDatabaseDataSet.
-func (k *KustoDatabaseDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &k.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &k.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &k.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &k.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &k.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &k.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KustoDatabaseDataSetMapping - A Kusto database data set mapping
 type KustoDatabaseDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -2642,64 +1283,6 @@ type KustoDatabaseDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type KustoDatabaseDataSetMapping.
-func (k *KustoDatabaseDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       k.Kind,
-		ID:         k.ID,
-		Name:       k.Name,
-		SystemData: k.SystemData,
-		Type:       k.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KustoDatabaseDataSetMapping.
-func (k KustoDatabaseDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", k.ID)
-	objectMap["kind"] = DataSetMappingKindKustoDatabase
-	populate(objectMap, "name", k.Name)
-	populate(objectMap, "properties", k.Properties)
-	populate(objectMap, "systemData", k.SystemData)
-	populate(objectMap, "type", k.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KustoDatabaseDataSetMapping.
-func (k *KustoDatabaseDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &k.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &k.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &k.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &k.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &k.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &k.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KustoDatabaseDataSetMappingProperties - Properties of the Kusto database data set mapping
@@ -2742,14 +1325,6 @@ type OperationList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationMetaLogSpecification - log specifications for operation api
@@ -2803,24 +1378,6 @@ type OperationMetaMetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaMetricSpecification.
-func (o OperationMetaMetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", o.AggregationType)
-	populate(objectMap, "dimensions", o.Dimensions)
-	populate(objectMap, "displayDescription", o.DisplayDescription)
-	populate(objectMap, "displayName", o.DisplayName)
-	populate(objectMap, "enableRegionalMdmAccount", o.EnableRegionalMdmAccount)
-	populate(objectMap, "fillGapWithZero", o.FillGapWithZero)
-	populate(objectMap, "internalMetricName", o.InternalMetricName)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "resourceIdDimensionNameOverride", o.ResourceIDDimensionNameOverride)
-	populate(objectMap, "supportedAggregationTypes", o.SupportedAggregationTypes)
-	populate(objectMap, "supportedTimeGrainTypes", o.SupportedTimeGrainTypes)
-	populate(objectMap, "unit", o.Unit)
-	return json.Marshal(objectMap)
-}
-
 // OperationMetaPropertyInfo - properties on meta info
 type OperationMetaPropertyInfo struct {
 	// meta service specification
@@ -2834,14 +1391,6 @@ type OperationMetaServiceSpecification struct {
 
 	// metric specifications for the operation
 	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaServiceSpecification.
-func (o OperationMetaServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", o.LogSpecifications)
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // OperationModel - The response model for get operations
@@ -2889,45 +1438,6 @@ type OperationResponse struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResponse.
-func (o OperationResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResponse.
-func (o *OperationResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &o.Error)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &o.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -2958,14 +1468,6 @@ type ProviderShareSubscriptionList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProviderShareSubscriptionList.
-func (p ProviderShareSubscriptionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // ProviderShareSubscriptionProperties - Provider share subscription properties
@@ -3001,69 +1503,6 @@ type ProviderShareSubscriptionProperties struct {
 	SharedAt *time.Time `json:"sharedAt,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProviderShareSubscriptionProperties.
-func (p ProviderShareSubscriptionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "consumerEmail", p.ConsumerEmail)
-	populate(objectMap, "consumerName", p.ConsumerName)
-	populate(objectMap, "consumerTenantName", p.ConsumerTenantName)
-	populateTimeRFC3339(objectMap, "createdAt", p.CreatedAt)
-	populateTimeRFC3339(objectMap, "expirationDate", p.ExpirationDate)
-	populate(objectMap, "providerEmail", p.ProviderEmail)
-	populate(objectMap, "providerName", p.ProviderName)
-	populate(objectMap, "shareSubscriptionObjectId", p.ShareSubscriptionObjectID)
-	populate(objectMap, "shareSubscriptionStatus", p.ShareSubscriptionStatus)
-	populateTimeRFC3339(objectMap, "sharedAt", p.SharedAt)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProviderShareSubscriptionProperties.
-func (p *ProviderShareSubscriptionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "consumerEmail":
-			err = unpopulate(val, &p.ConsumerEmail)
-			delete(rawMsg, key)
-		case "consumerName":
-			err = unpopulate(val, &p.ConsumerName)
-			delete(rawMsg, key)
-		case "consumerTenantName":
-			err = unpopulate(val, &p.ConsumerTenantName)
-			delete(rawMsg, key)
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &p.CreatedAt)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &p.ExpirationDate)
-			delete(rawMsg, key)
-		case "providerEmail":
-			err = unpopulate(val, &p.ProviderEmail)
-			delete(rawMsg, key)
-		case "providerName":
-			err = unpopulate(val, &p.ProviderName)
-			delete(rawMsg, key)
-		case "shareSubscriptionObjectId":
-			err = unpopulate(val, &p.ShareSubscriptionObjectID)
-			delete(rawMsg, key)
-		case "shareSubscriptionStatus":
-			err = unpopulate(val, &p.ShareSubscriptionStatus)
-			delete(rawMsg, key)
-		case "sharedAt":
-			err = unpopulateTimeRFC3339(val, &p.SharedAt)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProviderShareSubscriptionsClientAdjustOptions contains the optional parameters for the ProviderShareSubscriptionsClient.Adjust
 // method.
 type ProviderShareSubscriptionsClientAdjustOptions struct {
@@ -3073,7 +1512,8 @@ type ProviderShareSubscriptionsClientAdjustOptions struct {
 // ProviderShareSubscriptionsClientBeginRevokeOptions contains the optional parameters for the ProviderShareSubscriptionsClient.BeginRevoke
 // method.
 type ProviderShareSubscriptionsClientBeginRevokeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ProviderShareSubscriptionsClientGetByShareOptions contains the optional parameters for the ProviderShareSubscriptionsClient.GetByShare
@@ -3131,64 +1571,6 @@ type SQLDBTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type SQLDBTableDataSet.
-func (s *SQLDBTableDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDBTableDataSet.
-func (s SQLDBTableDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetKindSQLDBTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLDBTableDataSet.
-func (s *SQLDBTableDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SQLDBTableDataSetMapping - A SQL DB Table data set mapping.
 type SQLDBTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -3208,64 +1590,6 @@ type SQLDBTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type SQLDBTableDataSetMapping.
-func (s *SQLDBTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDBTableDataSetMapping.
-func (s SQLDBTableDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetMappingKindSQLDBTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLDBTableDataSetMapping.
-func (s *SQLDBTableDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SQLDBTableDataSetMappingProperties - Properties of the SQL DB table data set mapping.
@@ -3331,64 +1655,6 @@ type SQLDWTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type SQLDWTableDataSet.
-func (s *SQLDWTableDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDWTableDataSet.
-func (s SQLDWTableDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetKindSQLDWTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLDWTableDataSet.
-func (s *SQLDWTableDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SQLDWTableDataSetMapping - A SQL DW Table data set mapping.
 type SQLDWTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -3408,64 +1674,6 @@ type SQLDWTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type SQLDWTableDataSetMapping.
-func (s *SQLDWTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDWTableDataSetMapping.
-func (s SQLDWTableDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetMappingKindSQLDWTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLDWTableDataSetMapping.
-func (s *SQLDWTableDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SQLDWTableDataSetMappingProperties - Properties of the SQL DW table data set mapping.
@@ -3519,37 +1727,6 @@ type ScheduledSourceShareSynchronizationSettingProperties struct {
 	SynchronizationTime *time.Time `json:"synchronizationTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ScheduledSourceShareSynchronizationSettingProperties.
-func (s ScheduledSourceShareSynchronizationSettingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recurrenceInterval", s.RecurrenceInterval)
-	populateTimeRFC3339(objectMap, "synchronizationTime", s.SynchronizationTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledSourceShareSynchronizationSettingProperties.
-func (s *ScheduledSourceShareSynchronizationSettingProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recurrenceInterval":
-			err = unpopulate(val, &s.RecurrenceInterval)
-			delete(rawMsg, key)
-		case "synchronizationTime":
-			err = unpopulateTimeRFC3339(val, &s.SynchronizationTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ScheduledSourceSynchronizationSetting - A type of synchronization setting based on schedule
 type ScheduledSourceSynchronizationSetting struct {
 	// REQUIRED; Kind of synchronization setting on share.
@@ -3557,45 +1734,6 @@ type ScheduledSourceSynchronizationSetting struct {
 
 	// Properties of scheduled synchronization
 	Properties *ScheduledSourceShareSynchronizationSettingProperties `json:"properties,omitempty"`
-}
-
-// GetSourceShareSynchronizationSetting implements the SourceShareSynchronizationSettingClassification interface for type
-// ScheduledSourceSynchronizationSetting.
-func (s *ScheduledSourceSynchronizationSetting) GetSourceShareSynchronizationSetting() *SourceShareSynchronizationSetting {
-	return &SourceShareSynchronizationSetting{
-		Kind: s.Kind,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledSourceSynchronizationSetting.
-func (s ScheduledSourceSynchronizationSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["kind"] = SourceShareSynchronizationSettingKindScheduleBased
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledSourceSynchronizationSetting.
-func (s *ScheduledSourceSynchronizationSetting) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ScheduledSynchronizationSetting - A type of synchronization setting based on schedule
@@ -3619,64 +1757,6 @@ type ScheduledSynchronizationSetting struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetSynchronizationSetting implements the SynchronizationSettingClassification interface for type ScheduledSynchronizationSetting.
-func (s *ScheduledSynchronizationSetting) GetSynchronizationSetting() *SynchronizationSetting {
-	return &SynchronizationSetting{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledSynchronizationSetting.
-func (s ScheduledSynchronizationSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = SynchronizationSettingKindScheduleBased
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledSynchronizationSetting.
-func (s *ScheduledSynchronizationSetting) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ScheduledSynchronizationSettingProperties - A Scheduled synchronization setting data transfer object.
 type ScheduledSynchronizationSettingProperties struct {
 	// REQUIRED; Recurrence Interval
@@ -3693,49 +1773,6 @@ type ScheduledSynchronizationSettingProperties struct {
 
 	// READ-ONLY; Name of the user who created the synchronization setting.
 	UserName *string `json:"userName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledSynchronizationSettingProperties.
-func (s ScheduledSynchronizationSettingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "recurrenceInterval", s.RecurrenceInterval)
-	populateTimeRFC3339(objectMap, "synchronizationTime", s.SynchronizationTime)
-	populate(objectMap, "userName", s.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledSynchronizationSettingProperties.
-func (s *ScheduledSynchronizationSettingProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "recurrenceInterval":
-			err = unpopulate(val, &s.RecurrenceInterval)
-			delete(rawMsg, key)
-		case "synchronizationTime":
-			err = unpopulateTimeRFC3339(val, &s.SynchronizationTime)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &s.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ScheduledTrigger - A type of trigger based on schedule
@@ -3757,64 +1794,6 @@ type ScheduledTrigger struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetTrigger implements the TriggerClassification interface for type ScheduledTrigger.
-func (s *ScheduledTrigger) GetTrigger() *Trigger {
-	return &Trigger{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledTrigger.
-func (s ScheduledTrigger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = TriggerKindScheduleBased
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledTrigger.
-func (s *ScheduledTrigger) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ScheduledTriggerProperties - A Scheduled trigger data transfer object.
@@ -3839,57 +1818,6 @@ type ScheduledTriggerProperties struct {
 
 	// READ-ONLY; Name of the user who created the trigger.
 	UserName *string `json:"userName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScheduledTriggerProperties.
-func (s ScheduledTriggerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "recurrenceInterval", s.RecurrenceInterval)
-	populate(objectMap, "synchronizationMode", s.SynchronizationMode)
-	populateTimeRFC3339(objectMap, "synchronizationTime", s.SynchronizationTime)
-	populate(objectMap, "triggerStatus", s.TriggerStatus)
-	populate(objectMap, "userName", s.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScheduledTriggerProperties.
-func (s *ScheduledTriggerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "recurrenceInterval":
-			err = unpopulate(val, &s.RecurrenceInterval)
-			delete(rawMsg, key)
-		case "synchronizationMode":
-			err = unpopulate(val, &s.SynchronizationMode)
-			delete(rawMsg, key)
-		case "synchronizationTime":
-			err = unpopulateTimeRFC3339(val, &s.SynchronizationTime)
-			delete(rawMsg, key)
-		case "triggerStatus":
-			err = unpopulate(val, &s.TriggerStatus)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &s.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Share - A share data transfer object.
@@ -3919,14 +1847,6 @@ type ShareList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareList.
-func (s ShareList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ShareProperties - Share property bag.
 type ShareProperties struct {
 	// Share description.
@@ -3949,57 +1869,6 @@ type ShareProperties struct {
 
 	// READ-ONLY; Name of the user who created the resource
 	UserName *string `json:"userName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ShareProperties.
-func (s ShareProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "shareKind", s.ShareKind)
-	populate(objectMap, "terms", s.Terms)
-	populate(objectMap, "userEmail", s.UserEmail)
-	populate(objectMap, "userName", s.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ShareProperties.
-func (s *ShareProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &s.Description)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "shareKind":
-			err = unpopulate(val, &s.ShareKind)
-			delete(rawMsg, key)
-		case "terms":
-			err = unpopulate(val, &s.Terms)
-			delete(rawMsg, key)
-		case "userEmail":
-			err = unpopulate(val, &s.UserEmail)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &s.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ShareSubscription - A share subscription data transfer object.
@@ -4027,14 +1896,6 @@ type ShareSubscriptionList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ShareSubscriptionList.
-func (s ShareSubscriptionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ShareSubscriptionProperties - Share subscription property bag.
@@ -4085,89 +1946,6 @@ type ShareSubscriptionProperties struct {
 	UserName *string `json:"userName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareSubscriptionProperties.
-func (s ShareSubscriptionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populateTimeRFC3339(objectMap, "expirationDate", s.ExpirationDate)
-	populate(objectMap, "invitationId", s.InvitationID)
-	populate(objectMap, "providerEmail", s.ProviderEmail)
-	populate(objectMap, "providerName", s.ProviderName)
-	populate(objectMap, "providerTenantName", s.ProviderTenantName)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "shareDescription", s.ShareDescription)
-	populate(objectMap, "shareKind", s.ShareKind)
-	populate(objectMap, "shareName", s.ShareName)
-	populate(objectMap, "shareSubscriptionStatus", s.ShareSubscriptionStatus)
-	populate(objectMap, "shareTerms", s.ShareTerms)
-	populate(objectMap, "sourceShareLocation", s.SourceShareLocation)
-	populate(objectMap, "userEmail", s.UserEmail)
-	populate(objectMap, "userName", s.UserName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ShareSubscriptionProperties.
-func (s *ShareSubscriptionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &s.ExpirationDate)
-			delete(rawMsg, key)
-		case "invitationId":
-			err = unpopulate(val, &s.InvitationID)
-			delete(rawMsg, key)
-		case "providerEmail":
-			err = unpopulate(val, &s.ProviderEmail)
-			delete(rawMsg, key)
-		case "providerName":
-			err = unpopulate(val, &s.ProviderName)
-			delete(rawMsg, key)
-		case "providerTenantName":
-			err = unpopulate(val, &s.ProviderTenantName)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
-			delete(rawMsg, key)
-		case "shareDescription":
-			err = unpopulate(val, &s.ShareDescription)
-			delete(rawMsg, key)
-		case "shareKind":
-			err = unpopulate(val, &s.ShareKind)
-			delete(rawMsg, key)
-		case "shareName":
-			err = unpopulate(val, &s.ShareName)
-			delete(rawMsg, key)
-		case "shareSubscriptionStatus":
-			err = unpopulate(val, &s.ShareSubscriptionStatus)
-			delete(rawMsg, key)
-		case "shareTerms":
-			err = unpopulate(val, &s.ShareTerms)
-			delete(rawMsg, key)
-		case "sourceShareLocation":
-			err = unpopulate(val, &s.SourceShareLocation)
-			delete(rawMsg, key)
-		case "userEmail":
-			err = unpopulate(val, &s.UserEmail)
-			delete(rawMsg, key)
-		case "userName":
-			err = unpopulate(val, &s.UserName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ShareSubscriptionSynchronization - A ShareSubscriptionSynchronization data transfer object.
 type ShareSubscriptionSynchronization struct {
 	// REQUIRED; Synchronization id
@@ -4192,57 +1970,6 @@ type ShareSubscriptionSynchronization struct {
 	SynchronizationMode *SynchronizationMode `json:"synchronizationMode,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareSubscriptionSynchronization.
-func (s ShareSubscriptionSynchronization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "durationMs", s.DurationMs)
-	populateTimeRFC3339(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "message", s.Message)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "synchronizationId", s.SynchronizationID)
-	populate(objectMap, "synchronizationMode", s.SynchronizationMode)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ShareSubscriptionSynchronization.
-func (s *ShareSubscriptionSynchronization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "durationMs":
-			err = unpopulate(val, &s.DurationMs)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &s.EndTime)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "synchronizationId":
-			err = unpopulate(val, &s.SynchronizationID)
-			delete(rawMsg, key)
-		case "synchronizationMode":
-			err = unpopulate(val, &s.SynchronizationMode)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ShareSubscriptionSynchronizationList - A consumer side list of share subscription synchronizations
 type ShareSubscriptionSynchronizationList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -4252,30 +1979,25 @@ type ShareSubscriptionSynchronizationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareSubscriptionSynchronizationList.
-func (s ShareSubscriptionSynchronizationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ShareSubscriptionsClientBeginCancelSynchronizationOptions contains the optional parameters for the ShareSubscriptionsClient.BeginCancelSynchronization
 // method.
 type ShareSubscriptionsClientBeginCancelSynchronizationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ShareSubscriptionsClientBeginDeleteOptions contains the optional parameters for the ShareSubscriptionsClient.BeginDelete
 // method.
 type ShareSubscriptionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ShareSubscriptionsClientBeginSynchronizeOptions contains the optional parameters for the ShareSubscriptionsClient.BeginSynchronize
 // method.
 type ShareSubscriptionsClientBeginSynchronizeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ShareSubscriptionsClientCreateOptions contains the optional parameters for the ShareSubscriptionsClient.Create method.
@@ -4361,69 +2083,6 @@ type ShareSynchronization struct {
 	SynchronizationMode *SynchronizationMode `json:"synchronizationMode,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareSynchronization.
-func (s ShareSynchronization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "consumerEmail", s.ConsumerEmail)
-	populate(objectMap, "consumerName", s.ConsumerName)
-	populate(objectMap, "consumerTenantName", s.ConsumerTenantName)
-	populate(objectMap, "durationMs", s.DurationMs)
-	populateTimeRFC3339(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "message", s.Message)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "synchronizationId", s.SynchronizationID)
-	populate(objectMap, "synchronizationMode", s.SynchronizationMode)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ShareSynchronization.
-func (s *ShareSynchronization) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "consumerEmail":
-			err = unpopulate(val, &s.ConsumerEmail)
-			delete(rawMsg, key)
-		case "consumerName":
-			err = unpopulate(val, &s.ConsumerName)
-			delete(rawMsg, key)
-		case "consumerTenantName":
-			err = unpopulate(val, &s.ConsumerTenantName)
-			delete(rawMsg, key)
-		case "durationMs":
-			err = unpopulate(val, &s.DurationMs)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &s.EndTime)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "synchronizationId":
-			err = unpopulate(val, &s.SynchronizationID)
-			delete(rawMsg, key)
-		case "synchronizationMode":
-			err = unpopulate(val, &s.SynchronizationMode)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ShareSynchronizationList - List response for get ShareSynchronization.
 type ShareSynchronizationList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -4433,17 +2092,10 @@ type ShareSynchronizationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ShareSynchronizationList.
-func (s ShareSynchronizationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
 type SharesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SharesClientCreateOptions contains the optional parameters for the SharesClient.Create method.
@@ -4502,12 +2154,6 @@ type SourceShareSynchronizationSetting struct {
 	Kind *SourceShareSynchronizationSettingKind `json:"kind,omitempty"`
 }
 
-// GetSourceShareSynchronizationSetting implements the SourceShareSynchronizationSettingClassification interface for type
-// SourceShareSynchronizationSetting.
-func (s *SourceShareSynchronizationSetting) GetSourceShareSynchronizationSetting() *SourceShareSynchronizationSetting {
-	return s
-}
-
 // SourceShareSynchronizationSettingList - List response for get source share Synchronization settings
 type SourceShareSynchronizationSettingList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -4515,37 +2161,6 @@ type SourceShareSynchronizationSettingList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SourceShareSynchronizationSettingList.
-func (s SourceShareSynchronizationSettingList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SourceShareSynchronizationSettingList.
-func (s *SourceShareSynchronizationSettingList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &s.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			s.Value, err = unmarshalSourceShareSynchronizationSettingClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SynapseWorkspaceSQLPoolTableDataSet - A Synapse Workspace Sql Pool Table data set.
@@ -4569,64 +2184,6 @@ type SynapseWorkspaceSQLPoolTableDataSet struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetDataSet implements the DataSetClassification interface for type SynapseWorkspaceSQLPoolTableDataSet.
-func (s *SynapseWorkspaceSQLPoolTableDataSet) GetDataSet() *DataSet {
-	return &DataSet{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SynapseWorkspaceSQLPoolTableDataSet.
-func (s SynapseWorkspaceSQLPoolTableDataSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetKindSynapseWorkspaceSQLPoolTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynapseWorkspaceSQLPoolTableDataSet.
-func (s *SynapseWorkspaceSQLPoolTableDataSet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SynapseWorkspaceSQLPoolTableDataSetMapping - A Synapse Workspace Sql Pool Table data set mapping
 type SynapseWorkspaceSQLPoolTableDataSetMapping struct {
 	// REQUIRED; Kind of data set mapping.
@@ -4646,64 +2203,6 @@ type SynapseWorkspaceSQLPoolTableDataSetMapping struct {
 
 	// READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// GetDataSetMapping implements the DataSetMappingClassification interface for type SynapseWorkspaceSQLPoolTableDataSetMapping.
-func (s *SynapseWorkspaceSQLPoolTableDataSetMapping) GetDataSetMapping() *DataSetMapping {
-	return &DataSetMapping{
-		Kind:       s.Kind,
-		ID:         s.ID,
-		Name:       s.Name,
-		SystemData: s.SystemData,
-		Type:       s.Type,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SynapseWorkspaceSQLPoolTableDataSetMapping.
-func (s SynapseWorkspaceSQLPoolTableDataSetMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	objectMap["kind"] = DataSetMappingKindSynapseWorkspaceSQLPoolTable
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynapseWorkspaceSQLPoolTableDataSetMapping.
-func (s *SynapseWorkspaceSQLPoolTableDataSetMapping) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &s.ID)
-			delete(rawMsg, key)
-		case "kind":
-			err = unpopulate(val, &s.Kind)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SynapseWorkspaceSQLPoolTableDataSetMappingProperties - Properties of the Synapse Workspace SQL Pool Table data set mapping
@@ -4778,89 +2277,6 @@ type SynchronizationDetails struct {
 	VCore *int64 `json:"vCore,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SynchronizationDetails.
-func (s SynchronizationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSetId", s.DataSetID)
-	populate(objectMap, "dataSetType", s.DataSetType)
-	populate(objectMap, "durationMs", s.DurationMs)
-	populateTimeRFC3339(objectMap, "endTime", s.EndTime)
-	populate(objectMap, "filesRead", s.FilesRead)
-	populate(objectMap, "filesWritten", s.FilesWritten)
-	populate(objectMap, "message", s.Message)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "rowsCopied", s.RowsCopied)
-	populate(objectMap, "rowsRead", s.RowsRead)
-	populate(objectMap, "sizeRead", s.SizeRead)
-	populate(objectMap, "sizeWritten", s.SizeWritten)
-	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
-	populate(objectMap, "status", s.Status)
-	populate(objectMap, "vCore", s.VCore)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationDetails.
-func (s *SynchronizationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataSetId":
-			err = unpopulate(val, &s.DataSetID)
-			delete(rawMsg, key)
-		case "dataSetType":
-			err = unpopulate(val, &s.DataSetType)
-			delete(rawMsg, key)
-		case "durationMs":
-			err = unpopulate(val, &s.DurationMs)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &s.EndTime)
-			delete(rawMsg, key)
-		case "filesRead":
-			err = unpopulate(val, &s.FilesRead)
-			delete(rawMsg, key)
-		case "filesWritten":
-			err = unpopulate(val, &s.FilesWritten)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "rowsCopied":
-			err = unpopulate(val, &s.RowsCopied)
-			delete(rawMsg, key)
-		case "rowsRead":
-			err = unpopulate(val, &s.RowsRead)
-			delete(rawMsg, key)
-		case "sizeRead":
-			err = unpopulate(val, &s.SizeRead)
-			delete(rawMsg, key)
-		case "sizeWritten":
-			err = unpopulate(val, &s.SizeWritten)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		case "vCore":
-			err = unpopulate(val, &s.VCore)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SynchronizationDetailsList - details of synchronization
 type SynchronizationDetailsList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -4868,14 +2284,6 @@ type SynchronizationDetailsList struct {
 
 	// The Url of next result page.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SynchronizationDetailsList.
-func (s SynchronizationDetailsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SynchronizationSettingClassification provides polymorphic access to related types.
@@ -4905,9 +2313,6 @@ type SynchronizationSetting struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetSynchronizationSetting implements the SynchronizationSettingClassification interface for type SynchronizationSetting.
-func (s *SynchronizationSetting) GetSynchronizationSetting() *SynchronizationSetting { return s }
-
 // SynchronizationSettingList - List response for get Synchronization settings
 type SynchronizationSettingList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -4917,41 +2322,11 @@ type SynchronizationSettingList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SynchronizationSettingList.
-func (s SynchronizationSettingList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SynchronizationSettingList.
-func (s *SynchronizationSettingList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &s.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			s.Value, err = unmarshalSynchronizationSettingClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SynchronizationSettingsClientBeginDeleteOptions contains the optional parameters for the SynchronizationSettingsClient.BeginDelete
 // method.
 type SynchronizationSettingsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // SynchronizationSettingsClientCreateOptions contains the optional parameters for the SynchronizationSettingsClient.Create
@@ -4999,53 +2374,6 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TriggerClassification provides polymorphic access to related types.
 // Call the interface's GetTrigger() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5073,9 +2401,6 @@ type Trigger struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// GetTrigger implements the TriggerClassification interface for type Trigger.
-func (t *Trigger) GetTrigger() *Trigger { return t }
-
 // TriggerList - List response for get triggers
 type TriggerList struct {
 	// REQUIRED; Collection of items of type DataTransferObjects.
@@ -5085,45 +2410,16 @@ type TriggerList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TriggerList.
-func (t TriggerList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggerList.
-func (t *TriggerList) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, &t.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			t.Value, err = unmarshalTriggerClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TriggersClientBeginCreateOptions contains the optional parameters for the TriggersClient.BeginCreate method.
 type TriggersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
 type TriggersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TriggersClientGetOptions contains the optional parameters for the TriggersClient.Get method.
@@ -5136,21 +2432,4 @@ type TriggersClientGetOptions struct {
 type TriggersClientListByShareSubscriptionOptions struct {
 	// Continuation token
 	SkipToken *string
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -17,96 +17,124 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesPatch.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Patch(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		armnetwork.SignaturesOverrides{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
-			ID:   to.StringPtr("<id>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
+			ID:   to.Ptr("<id>"),
 			Properties: &armnetwork.SignaturesOverridesProperties{
 				Signatures: map[string]*string{
-					"2000105": to.StringPtr("Off"),
-					"2000106": to.StringPtr("Deny"),
+					"2000105": to.Ptr("Off"),
+					"2000106": to.Ptr("Deny"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyIdpsSignaturesOverridesClientPatchResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesPut.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Put(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		armnetwork.SignaturesOverrides{
-			Name: to.StringPtr("<name>"),
-			Type: to.StringPtr("<type>"),
-			ID:   to.StringPtr("<id>"),
+			Name: to.Ptr("<name>"),
+			Type: to.Ptr("<type>"),
+			ID:   to.Ptr("<id>"),
 			Properties: &armnetwork.SignaturesOverridesProperties{
 				Signatures: map[string]*string{
-					"2000105": to.StringPtr("Off"),
-					"2000106": to.StringPtr("Deny"),
+					"2000105": to.Ptr("Off"),
+					"2000106": to.Ptr("Deny"),
 				},
 			},
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyIdpsSignaturesOverridesClientPutResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesGet.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyIdpsSignaturesOverridesClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicySignatureOverridesList.json
 func ExampleFirewallPolicyIdpsSignaturesOverridesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<firewall-policy-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.FirewallPolicyIdpsSignaturesOverridesClientListResult)
+	// TODO: use response item
+	_ = res
 }

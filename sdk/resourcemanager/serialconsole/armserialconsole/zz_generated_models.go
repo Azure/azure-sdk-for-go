@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armserialconsole
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // CloudError - An error response from the service.
 type CloudError struct {
@@ -33,16 +27,6 @@ type CloudErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // DisableSerialConsoleResult - Returns whether or not Serial Console is disabled.
@@ -94,13 +78,6 @@ type MicrosoftSerialConsoleClientListOperationsOptions struct {
 type Operations struct {
 	// A list of Serial Console operations
 	Value []*OperationsValueItem `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Operations.
-func (o Operations) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 type OperationsValueItem struct {
@@ -168,13 +145,6 @@ type SerialPortListResult struct {
 	Value []*SerialPort `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SerialPortListResult.
-func (s SerialPortListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SerialPortProperties - The properties of the serial port.
 type SerialPortProperties struct {
 	// Specifies whether the port is enabled for a serial console connection.
@@ -216,14 +186,4 @@ type SerialPortsClientListOptions struct {
 type Status struct {
 	// Whether or not Serial Console is disabled.
 	Disabled *bool `json:"disabled,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

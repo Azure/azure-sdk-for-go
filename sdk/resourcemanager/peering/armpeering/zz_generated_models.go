@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armpeering
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // BandwidthOffer - The properties that define a peering bandwidth offer.
 type BandwidthOffer struct {
@@ -84,14 +79,6 @@ type CdnPeeringPrefixListResult struct {
 	Value []*CdnPeeringPrefix `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CdnPeeringPrefixListResult.
-func (c CdnPeeringPrefixListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CdnPeeringPrefixProperties - The properties that define a CDN peering prefix
 type CdnPeeringPrefixProperties struct {
 	// READ-ONLY; The Azure region.
@@ -148,14 +135,6 @@ type ConnectionMonitorTestListResult struct {
 	Value []*ConnectionMonitorTest `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectionMonitorTestListResult.
-func (c ConnectionMonitorTestListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConnectionMonitorTestProperties - The properties that define a Connection Monitor Test.
 type ConnectionMonitorTestProperties struct {
 	// The Connection Monitor test destination
@@ -178,19 +157,6 @@ type ConnectionMonitorTestProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConnectionMonitorTestProperties.
-func (c ConnectionMonitorTestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "destination", c.Destination)
-	populate(objectMap, "destinationPort", c.DestinationPort)
-	populate(objectMap, "isTestSuccessful", c.IsTestSuccessful)
-	populate(objectMap, "path", c.Path)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "sourceAgent", c.SourceAgent)
-	populate(objectMap, "testFrequencyInSec", c.TestFrequencyInSec)
-	return json.Marshal(objectMap)
 }
 
 // ConnectionMonitorTestsClientCreateOrUpdateOptions contains the optional parameters for the ConnectionMonitorTestsClient.CreateOrUpdate
@@ -276,6 +242,21 @@ type DirectPeeringFacility struct {
 	PeeringDBFacilityLink *string `json:"peeringDBFacilityLink,omitempty"`
 }
 
+// ErrorDetail - The error detail that describes why an operation has failed.
+type ErrorDetail struct {
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - The error response that indicates why an operation has failed.
+type ErrorResponse struct {
+	// The error detail that describes why an operation has failed.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
 // ExchangeConnection - The properties that define an exchange connection.
 type ExchangeConnection struct {
 	// The BGP session associated with the connection.
@@ -336,14 +317,6 @@ type ListResult struct {
 	Value []*Peering `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListResult.
-func (l ListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // Location - Peering location is where connectivity could be established to the Microsoft Cloud Edge.
 type Location struct {
 	// The kind of peering that the peering location supports.
@@ -369,14 +342,6 @@ type LocationListResult struct {
 
 	// The list of peering locations.
 	Value []*Location `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationListResult.
-func (l LocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
 }
 
 // LocationProperties - The properties that define a peering location.
@@ -406,25 +371,10 @@ type LocationPropertiesDirect struct {
 	PeeringFacilities []*DirectPeeringFacility `json:"peeringFacilities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationPropertiesDirect.
-func (l LocationPropertiesDirect) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bandwidthOffers", l.BandwidthOffers)
-	populate(objectMap, "peeringFacilities", l.PeeringFacilities)
-	return json.Marshal(objectMap)
-}
-
 // LocationPropertiesExchange - The properties that define an exchange peering location.
 type LocationPropertiesExchange struct {
 	// The list of exchange peering facilities at the peering location.
 	PeeringFacilities []*ExchangePeeringFacility `json:"peeringFacilities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LocationPropertiesExchange.
-func (l LocationPropertiesExchange) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "peeringFacilities", l.PeeringFacilities)
-	return json.Marshal(objectMap)
 }
 
 // LocationsClientListOptions contains the optional parameters for the LocationsClient.List method.
@@ -443,15 +393,6 @@ type LogAnalyticsWorkspaceProperties struct {
 
 	// READ-ONLY; The Workspace ID.
 	WorkspaceID *string `json:"workspaceID,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LogAnalyticsWorkspaceProperties.
-func (l LogAnalyticsWorkspaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectedAgents", l.ConnectedAgents)
-	populate(objectMap, "key", l.Key)
-	populate(objectMap, "workspaceID", l.WorkspaceID)
-	return json.Marshal(objectMap)
 }
 
 // LookingGlassClientInvokeOptions contains the optional parameters for the LookingGlassClient.Invoke method.
@@ -507,19 +448,6 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "supportedTimeGrainTypes", m.SupportedTimeGrainTypes)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // Operation - The peering API operation.
 type Operation struct {
 	// READ-ONLY; The information related to the operation.
@@ -559,14 +487,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - The properties of the operation.
 type OperationProperties struct {
 	// READ-ONLY; Service specification payload.
@@ -602,14 +522,6 @@ type PeerAsnListResult struct {
 	Value []*PeerAsn `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PeerAsnListResult.
-func (p PeerAsnListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PeerAsnProperties - The properties that define a peer's ASN.
 type PeerAsnProperties struct {
 	// The Autonomous System Number (ASN) of the peer.
@@ -626,17 +538,6 @@ type PeerAsnProperties struct {
 
 	// READ-ONLY; The validation state of the ASN associated with the peer.
 	ValidationState *ValidationState `json:"validationState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PeerAsnProperties.
-func (p PeerAsnProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorMessage", p.ErrorMessage)
-	populate(objectMap, "peerAsn", p.PeerAsn)
-	populate(objectMap, "peerContactDetail", p.PeerContactDetail)
-	populate(objectMap, "peerName", p.PeerName)
-	populate(objectMap, "validationState", p.ValidationState)
-	return json.Marshal(objectMap)
 }
 
 // PeerAsnsClientCreateOrUpdateOptions contains the optional parameters for the PeerAsnsClient.CreateOrUpdate method.
@@ -684,20 +585,6 @@ type Peering struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Peering.
-func (p Peering) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "kind", p.Kind)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "sku", p.SKU)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
 }
 
 // PeeringsClientCreateOrUpdateOptions contains the optional parameters for the PeeringsClient.CreateOrUpdate method.
@@ -783,16 +670,6 @@ type PropertiesDirect struct {
 	UseForPeeringService *bool `json:"useForPeeringService,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PropertiesDirect.
-func (p PropertiesDirect) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connections", p.Connections)
-	populate(objectMap, "directPeeringType", p.DirectPeeringType)
-	populate(objectMap, "peerAsn", p.PeerAsn)
-	populate(objectMap, "useForPeeringService", p.UseForPeeringService)
-	return json.Marshal(objectMap)
-}
-
 // PropertiesExchange - The properties that define an exchange peering.
 type PropertiesExchange struct {
 	// The set of connections that constitute an exchange peering.
@@ -800,14 +677,6 @@ type PropertiesExchange struct {
 
 	// The reference of the peer ASN.
 	PeerAsn *SubResource `json:"peerAsn,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PropertiesExchange.
-func (p PropertiesExchange) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connections", p.Connections)
-	populate(objectMap, "peerAsn", p.PeerAsn)
-	return json.Marshal(objectMap)
 }
 
 // ReceivedRoute - The properties that define a received route.
@@ -841,14 +710,6 @@ type ReceivedRouteListResult struct {
 
 	// The list of received routes for the peering.
 	Value []*ReceivedRoute `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReceivedRouteListResult.
-func (r ReceivedRouteListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReceivedRoutesClientListByPeeringOptions contains the optional parameters for the ReceivedRoutesClient.ListByPeering method.
@@ -887,14 +748,6 @@ type RegisteredAsnListResult struct {
 
 	// The list of peering registered ASNs.
 	Value []*RegisteredAsn `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegisteredAsnListResult.
-func (r RegisteredAsnListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegisteredAsnProperties - The properties that define a registered ASN.
@@ -952,14 +805,6 @@ type RegisteredPrefixListResult struct {
 
 	// The list of peering registered prefixes.
 	Value []*RegisteredPrefix `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegisteredPrefixListResult.
-func (r RegisteredPrefixListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegisteredPrefixProperties - The properties that define a registered prefix.
@@ -1020,13 +865,6 @@ type ResourceTags struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceTags.
-func (r ResourceTags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
-}
-
 // SKU - The SKU that defines the tier and kind of the peering.
 type SKU struct {
 	// The name of the peering SKU.
@@ -1066,19 +904,6 @@ type Service struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Service.
-func (s Service) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "sku", s.SKU)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
 // ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.List method.
 type ServiceCountriesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1105,14 +930,6 @@ type ServiceCountryListResult struct {
 	Value []*ServiceCountry `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceCountryListResult.
-func (s ServiceCountryListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ServiceListResult - The paginated list of peering services.
 type ServiceListResult struct {
 	// The link to fetch the next page of peering services.
@@ -1120,14 +937,6 @@ type ServiceListResult struct {
 
 	// The list of peering services.
 	Value []*Service `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceListResult.
-func (s ServiceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServiceLocation - The peering service location.
@@ -1152,14 +961,6 @@ type ServiceLocationListResult struct {
 
 	// The list of peering service locations.
 	Value []*ServiceLocation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceLocationListResult.
-func (s ServiceLocationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServiceLocationProperties - The properties that define connectivity to the Peering Service Location.
@@ -1213,49 +1014,6 @@ type ServicePrefixEvent struct {
 	EventType *string `json:"eventType,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServicePrefixEvent.
-func (s ServicePrefixEvent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "eventDescription", s.EventDescription)
-	populate(objectMap, "eventLevel", s.EventLevel)
-	populate(objectMap, "eventSummary", s.EventSummary)
-	populateTimeRFC3339(objectMap, "eventTimestamp", s.EventTimestamp)
-	populate(objectMap, "eventType", s.EventType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServicePrefixEvent.
-func (s *ServicePrefixEvent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "eventDescription":
-			err = unpopulate(val, &s.EventDescription)
-			delete(rawMsg, key)
-		case "eventLevel":
-			err = unpopulate(val, &s.EventLevel)
-			delete(rawMsg, key)
-		case "eventSummary":
-			err = unpopulate(val, &s.EventSummary)
-			delete(rawMsg, key)
-		case "eventTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.EventTimestamp)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &s.EventType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServicePrefixListResult - The paginated list of peering service prefixes.
 type ServicePrefixListResult struct {
 	// The link to fetch the next page of peering service prefixes.
@@ -1263,14 +1021,6 @@ type ServicePrefixListResult struct {
 
 	// The list of peering service prefixes.
 	Value []*ServicePrefix `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServicePrefixListResult.
-func (s ServicePrefixListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServicePrefixProperties - The peering service prefix properties class.
@@ -1295,19 +1045,6 @@ type ServicePrefixProperties struct {
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServicePrefixProperties.
-func (s ServicePrefixProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorMessage", s.ErrorMessage)
-	populate(objectMap, "events", s.Events)
-	populate(objectMap, "learnedType", s.LearnedType)
-	populate(objectMap, "peeringServicePrefixKey", s.PeeringServicePrefixKey)
-	populate(objectMap, "prefix", s.Prefix)
-	populate(objectMap, "prefixValidationState", s.PrefixValidationState)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	return json.Marshal(objectMap)
 }
 
 // ServiceProperties - The properties that define connectivity to the Peering Service.
@@ -1355,14 +1092,6 @@ type ServiceProviderListResult struct {
 	Value []*ServiceProvider `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceProviderListResult.
-func (s ServiceProviderListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // ServiceProviderProperties - The properties that define connectivity to the Peering Service Provider.
 type ServiceProviderProperties struct {
 	// The list of locations at which the service provider peers with Microsoft.
@@ -1370,14 +1099,6 @@ type ServiceProviderProperties struct {
 
 	// The name of the service provider.
 	ServiceProviderName *string `json:"serviceProviderName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceProviderProperties.
-func (s ServiceProviderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "peeringLocations", s.PeeringLocations)
-	populate(objectMap, "serviceProviderName", s.ServiceProviderName)
-	return json.Marshal(objectMap)
 }
 
 // ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.List method.
@@ -1395,13 +1116,6 @@ type ServiceSKU struct {
 type ServiceSpecification struct {
 	// READ-ONLY; Specifications of the Metrics for Azure Monitoring.
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // ServicesClientCreateOrUpdateOptions contains the optional parameters for the ServicesClient.CreateOrUpdate method.
@@ -1444,21 +1158,4 @@ type ServicesClientUpdateOptions struct {
 type SubResource struct {
 	// The identifier of the referenced resource.
 	ID *string `json:"id,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

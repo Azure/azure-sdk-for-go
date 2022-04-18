@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,6 @@
 
 package armdevops
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
-
 // Authorization info used to access a resource (like code repository).
 type Authorization struct {
 	// REQUIRED; Type of authorization.
@@ -21,14 +15,6 @@ type Authorization struct {
 
 	// Authorization parameters corresponding to the authorization type.
 	Parameters map[string]*string `json:"parameters,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Authorization.
-func (a Authorization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizationType", a.AuthorizationType)
-	populate(objectMap, "parameters", a.Parameters)
-	return json.Marshal(objectMap)
 }
 
 // BootstrapConfiguration - Configuration used to bootstrap a Pipeline.
@@ -61,16 +47,6 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
-}
-
 // CodeRepository - Repository containing the source code for a pipeline.
 type CodeRepository struct {
 	// REQUIRED; Default branch used to configure Continuous Integration (CI) in the pipeline.
@@ -89,17 +65,6 @@ type CodeRepository struct {
 	Properties map[string]*string `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CodeRepository.
-func (c CodeRepository) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorization", c.Authorization)
-	populate(objectMap, "defaultBranch", c.DefaultBranch)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "repositoryType", c.RepositoryType)
-	return json.Marshal(objectMap)
-}
-
 // InputDescriptor - Representation of a pipeline template input parameter.
 type InputDescriptor struct {
 	// REQUIRED; Identifier of the input parameter.
@@ -113,16 +78,6 @@ type InputDescriptor struct {
 
 	// List of possible values for the input parameter.
 	PossibleValues []*InputValue `json:"possibleValues,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InputDescriptor.
-func (i InputDescriptor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", i.Description)
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "possibleValues", i.PossibleValues)
-	populate(objectMap, "type", i.Type)
-	return json.Marshal(objectMap)
 }
 
 // InputValue - Representation of a pipeline template input parameter value.
@@ -170,14 +125,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -213,18 +160,6 @@ type Pipeline struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Pipeline.
-func (p Pipeline) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // PipelineListResult - Result of a request to list all Azure Pipelines under a given scope.
 type PipelineListResult struct {
 	// URL to get the next set of Pipelines, if there are any.
@@ -232,14 +167,6 @@ type PipelineListResult struct {
 
 	// List of pipelines.
 	Value []*Pipeline `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PipelineListResult.
-func (p PipelineListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PipelineProperties - Custom properties of a Pipeline.
@@ -266,14 +193,6 @@ type PipelineTemplate struct {
 	Parameters map[string]*string `json:"parameters,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineTemplate.
-func (p PipelineTemplate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "parameters", p.Parameters)
-	return json.Marshal(objectMap)
-}
-
 // PipelineTemplateDefinition - Definition of a pipeline template.
 type PipelineTemplateDefinition struct {
 	// REQUIRED; Unique identifier of the pipeline template.
@@ -286,15 +205,6 @@ type PipelineTemplateDefinition struct {
 	Inputs []*InputDescriptor `json:"inputs,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineTemplateDefinition.
-func (p PipelineTemplateDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "inputs", p.Inputs)
-	return json.Marshal(objectMap)
-}
-
 // PipelineTemplateDefinitionListResult - Result of a request to list all pipeline template definitions.
 type PipelineTemplateDefinitionListResult struct {
 	// The URL to get the next set of pipeline template definitions, if there are any.
@@ -302,14 +212,6 @@ type PipelineTemplateDefinitionListResult struct {
 
 	// List of pipeline template definitions.
 	Value []*PipelineTemplateDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PipelineTemplateDefinitionListResult.
-func (p PipelineTemplateDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PipelineTemplateDefinitionsClientListOptions contains the optional parameters for the PipelineTemplateDefinitionsClient.List
@@ -324,17 +226,11 @@ type PipelineUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PipelineUpdateParameters.
-func (p PipelineUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
-}
-
 // PipelinesClientBeginCreateOrUpdateOptions contains the optional parameters for the PipelinesClient.BeginCreateOrUpdate
 // method.
 type PipelinesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PipelinesClientDeleteOptions contains the optional parameters for the PipelinesClient.Delete method.
@@ -388,25 +284,4 @@ type Resource struct {
 
 	// READ-ONLY; Resource Type
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

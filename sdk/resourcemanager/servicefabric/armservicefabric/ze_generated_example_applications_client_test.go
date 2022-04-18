@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,33 +19,45 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
 )
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationGetOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationGetOperation_example.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<application-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ApplicationsClientGetResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationPutOperation_example_max.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationPutOperation_example_max.json
 func ExampleApplicationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
@@ -53,128 +65,151 @@ func ExampleApplicationsClient_BeginCreateOrUpdate() {
 		armservicefabric.ApplicationResource{
 			Tags: map[string]*string{},
 			Properties: &armservicefabric.ApplicationResourceProperties{
-				MaximumNodes: to.Int64Ptr(3),
+				MaximumNodes: to.Ptr[int64](3),
 				Metrics: []*armservicefabric.ApplicationMetricDescription{
 					{
-						Name:                     to.StringPtr("<name>"),
-						MaximumCapacity:          to.Int64Ptr(3),
-						ReservationCapacity:      to.Int64Ptr(1),
-						TotalApplicationCapacity: to.Int64Ptr(5),
+						Name:                     to.Ptr("<name>"),
+						MaximumCapacity:          to.Ptr[int64](3),
+						ReservationCapacity:      to.Ptr[int64](1),
+						TotalApplicationCapacity: to.Ptr[int64](5),
 					}},
-				MinimumNodes: to.Int64Ptr(1),
+				MinimumNodes: to.Ptr[int64](1),
 				Parameters: map[string]*string{
-					"param1": to.StringPtr("value1"),
+					"param1": to.Ptr("value1"),
 				},
-				RemoveApplicationCapacity: to.BoolPtr(false),
-				TypeVersion:               to.StringPtr("<type-version>"),
+				RemoveApplicationCapacity: to.Ptr(false),
+				TypeVersion:               to.Ptr("<type-version>"),
 				UpgradePolicy: &armservicefabric.ApplicationUpgradePolicy{
 					ApplicationHealthPolicy: &armservicefabric.ArmApplicationHealthPolicy{
-						ConsiderWarningAsError: to.BoolPtr(true),
+						ConsiderWarningAsError: to.Ptr(true),
 						DefaultServiceTypeHealthPolicy: &armservicefabric.ArmServiceTypeHealthPolicy{
-							MaxPercentUnhealthyPartitionsPerService: to.Int32Ptr(0),
-							MaxPercentUnhealthyReplicasPerPartition: to.Int32Ptr(0),
-							MaxPercentUnhealthyServices:             to.Int32Ptr(0),
+							MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](0),
+							MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](0),
+							MaxPercentUnhealthyServices:             to.Ptr[int32](0),
 						},
-						MaxPercentUnhealthyDeployedApplications: to.Int32Ptr(0),
+						MaxPercentUnhealthyDeployedApplications: to.Ptr[int32](0),
 					},
-					ForceRestart: to.BoolPtr(false),
+					ForceRestart: to.Ptr(false),
 					RollingUpgradeMonitoringPolicy: &armservicefabric.ArmRollingUpgradeMonitoringPolicy{
-						FailureAction:             armservicefabric.ArmUpgradeFailureAction("Rollback").ToPtr(),
-						HealthCheckRetryTimeout:   to.StringPtr("<health-check-retry-timeout>"),
-						HealthCheckStableDuration: to.StringPtr("<health-check-stable-duration>"),
-						HealthCheckWaitDuration:   to.StringPtr("<health-check-wait-duration>"),
-						UpgradeDomainTimeout:      to.StringPtr("<upgrade-domain-timeout>"),
-						UpgradeTimeout:            to.StringPtr("<upgrade-timeout>"),
+						FailureAction:             to.Ptr(armservicefabric.ArmUpgradeFailureActionRollback),
+						HealthCheckRetryTimeout:   to.Ptr("<health-check-retry-timeout>"),
+						HealthCheckStableDuration: to.Ptr("<health-check-stable-duration>"),
+						HealthCheckWaitDuration:   to.Ptr("<health-check-wait-duration>"),
+						UpgradeDomainTimeout:      to.Ptr("<upgrade-domain-timeout>"),
+						UpgradeTimeout:            to.Ptr("<upgrade-timeout>"),
 					},
-					UpgradeMode:                   armservicefabric.RollingUpgradeMode("Monitored").ToPtr(),
-					UpgradeReplicaSetCheckTimeout: to.StringPtr("<upgrade-replica-set-check-timeout>"),
+					UpgradeMode:                   to.Ptr(armservicefabric.RollingUpgradeModeMonitored),
+					UpgradeReplicaSetCheckTimeout: to.Ptr("<upgrade-replica-set-check-timeout>"),
 				},
-				TypeName: to.StringPtr("<type-name>"),
+				TypeName: to.Ptr("<type-name>"),
 			},
 		},
-		nil)
+		&armservicefabric.ApplicationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationPatchOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationPatchOperation_example.json
 func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<application-name>",
 		armservicefabric.ApplicationResourceUpdate{
-			Location: to.StringPtr("<location>"),
+			Location: to.Ptr("<location>"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabric.ApplicationResourceUpdateProperties{
 				Metrics: []*armservicefabric.ApplicationMetricDescription{
 					{
-						Name:                     to.StringPtr("<name>"),
-						MaximumCapacity:          to.Int64Ptr(3),
-						ReservationCapacity:      to.Int64Ptr(1),
-						TotalApplicationCapacity: to.Int64Ptr(5),
+						Name:                     to.Ptr("<name>"),
+						MaximumCapacity:          to.Ptr[int64](3),
+						ReservationCapacity:      to.Ptr[int64](1),
+						TotalApplicationCapacity: to.Ptr[int64](5),
 					}},
-				RemoveApplicationCapacity: to.BoolPtr(false),
-				TypeVersion:               to.StringPtr("<type-version>"),
+				RemoveApplicationCapacity: to.Ptr(false),
+				TypeVersion:               to.Ptr("<type-version>"),
 			},
 		},
-		nil)
+		&armservicefabric.ApplicationsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationDeleteOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationDeleteOperation_example.json
 func ExampleApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		"<application-name>",
-		nil)
+		&armservicefabric.ApplicationsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
+		return
 	}
 }
 
-// x-ms-original-file: specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationListOperation_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ApplicationListOperation_example.json
 func ExampleApplicationsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
+		return
 	}
 	ctx := context.Background()
-	client := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+		return
+	}
 	res, err := client.List(ctx,
 		"<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
+		return
 	}
-	log.Printf("Response result: %#v\n", res.ApplicationsClientListResult)
+	// TODO: use response item
+	_ = res
 }

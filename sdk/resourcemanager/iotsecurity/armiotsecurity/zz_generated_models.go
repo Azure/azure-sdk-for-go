@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,212 +8,7 @@
 
 package armiotsecurity
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
-
-// AlertListModel - List of IoT alerts
-type AlertListModel struct {
-	// READ-ONLY; When available, follow the URI to get the next page of data
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; List data
-	Value []*AlertModel `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertListModel.
-func (a AlertListModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AlertModel - IoT alert
-type AlertModel struct {
-	// Alert properties
-	Properties *AlertPropertiesModel `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// AlertPatchPropertiesModel - IoT alert properties
-type AlertPatchPropertiesModel struct {
-	// IoT alert properties
-	Properties *AlertPatchPropertiesModelProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertPatchPropertiesModel.
-func (a AlertPatchPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AlertPatchPropertiesModelProperties - IoT alert properties
-type AlertPatchPropertiesModelProperties struct {
-	// The severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// The status of the alert
-	Status *AlertStatus `json:"status,omitempty"`
-}
-
-// AlertPropertiesModel - IoT alert properties
-type AlertPropertiesModel struct {
-	// A list of entities related to the alert
-	Entities []map[string]interface{} `json:"entities,omitempty"`
-
-	// A bag of fields which extends the alert information
-	ExtendedProperties map[string]interface{} `json:"extendedProperties,omitempty"`
-
-	// The severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty"`
-
-	// The status of the alert
-	Status *AlertStatus `json:"status,omitempty"`
-
-	// READ-ONLY; The type name of the alert
-	AlertType *string `json:"alertType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Display name of the device entity being reported on
-	AzureResourceID *string `json:"azureResourceId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The impact end time of the alert (the time of the last event or activity included in the alert)
-	EndTimeUTC *string `json:"endTimeUtc,omitempty" azure:"ro"`
-
-	// READ-ONLY; Kill chain related intent behind the alert. Could contain multiple enum values (separated by commas)
-	Intent *AlertIntent `json:"intent,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of a component inside the product which generated the alert
-	ProductComponentName *string `json:"productComponentName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The impact start time of the alert (the time of the first event or activity included in the alert)
-	StartTimeUTC *string `json:"startTimeUtc,omitempty" azure:"ro"`
-
-	// READ-ONLY; Holds the product canonical identifier of the alert within the scope of a product
-	SystemAlertID *string `json:"systemAlertId,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of of techniques that lead up to the intent/tactic
-	Techniques []*TechniqueModel `json:"techniques,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertPropertiesModel.
-func (a AlertPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertType", a.AlertType)
-	populate(objectMap, "azureResourceId", a.AzureResourceID)
-	populate(objectMap, "endTimeUtc", a.EndTimeUTC)
-	populate(objectMap, "entities", a.Entities)
-	populate(objectMap, "extendedProperties", a.ExtendedProperties)
-	populate(objectMap, "intent", a.Intent)
-	populate(objectMap, "productComponentName", a.ProductComponentName)
-	populate(objectMap, "severity", a.Severity)
-	populate(objectMap, "startTimeUtc", a.StartTimeUTC)
-	populate(objectMap, "status", a.Status)
-	populate(objectMap, "systemAlertId", a.SystemAlertID)
-	populate(objectMap, "techniques", a.Techniques)
-	return json.Marshal(objectMap)
-}
-
-// AlertType - IoT alert type.
-type AlertType struct {
-	// Alert type properties
-	Properties *AlertTypeProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// AlertTypeList - List of alert types
-type AlertTypeList struct {
-	// List data
-	Value []*AlertType `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertTypeList.
-func (a AlertTypeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// AlertTypeProperties - IoT alert type information.
-type AlertTypeProperties struct {
-	// READ-ONLY; The display name of the alert
-	AlertDisplayName *string `json:"alertDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Description of the suspected vulnerability and meaning.
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; Kill chain related intent behind the alert. Could contain multiple enum values (separated by commas)
-	Intent *AlertIntent `json:"intent,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of a component inside the product which generated the alert
-	ProductComponentName *string `json:"productComponentName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the product which published this alert
-	ProductName *string `json:"productName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the alert provider or internal partner
-	ProviderName *string `json:"providerName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Manual action items to take to remediate the alert
-	RemediationSteps []*string `json:"remediationSteps,omitempty" azure:"ro"`
-
-	// READ-ONLY; The severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the vendor that raise the alert
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertTypeProperties.
-func (a AlertTypeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alertDisplayName", a.AlertDisplayName)
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "intent", a.Intent)
-	populate(objectMap, "productComponentName", a.ProductComponentName)
-	populate(objectMap, "productName", a.ProductName)
-	populate(objectMap, "providerName", a.ProviderName)
-	populate(objectMap, "remediationSteps", a.RemediationSteps)
-	populate(objectMap, "severity", a.Severity)
-	populate(objectMap, "vendorName", a.VendorName)
-	return json.Marshal(objectMap)
-}
-
-// AlertTypesClientGetOptions contains the optional parameters for the AlertTypesClient.Get method.
-type AlertTypesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AlertTypesClientListOptions contains the optional parameters for the AlertTypesClient.List method.
-type AlertTypesClientListOptions struct {
-	// placeholder for future optional parameters
-}
+import "time"
 
 // DefenderSettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderSettingsClient.CreateOrUpdate
 // method.
@@ -254,13 +49,6 @@ type DefenderSettingsList struct {
 	Value []*DefenderSettingsModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DefenderSettingsList.
-func (d DefenderSettingsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DefenderSettingsModel - IoT Defender settings
 type DefenderSettingsModel struct {
 	// IoT Defender settings properties
@@ -294,49 +82,6 @@ type DefenderSettingsProperties struct {
 	EvaluationEndTime *time.Time `json:"evaluationEndTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DefenderSettingsProperties.
-func (d DefenderSettingsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "deviceQuota", d.DeviceQuota)
-	populateTimeRFC3339(objectMap, "evaluationEndTime", d.EvaluationEndTime)
-	populate(objectMap, "mdeIntegration", d.MdeIntegration)
-	populate(objectMap, "onboardingKind", d.OnboardingKind)
-	populate(objectMap, "sentinelWorkspaceResourceIds", d.SentinelWorkspaceResourceIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DefenderSettingsProperties.
-func (d *DefenderSettingsProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deviceQuota":
-			err = unpopulate(val, &d.DeviceQuota)
-			delete(rawMsg, key)
-		case "evaluationEndTime":
-			err = unpopulateTimeRFC3339(val, &d.EvaluationEndTime)
-			delete(rawMsg, key)
-		case "mdeIntegration":
-			err = unpopulate(val, &d.MdeIntegration)
-			delete(rawMsg, key)
-		case "onboardingKind":
-			err = unpopulate(val, &d.OnboardingKind)
-			delete(rawMsg, key)
-		case "sentinelWorkspaceResourceIds":
-			err = unpopulate(val, &d.SentinelWorkspaceResourceIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DefenderSettingsPropertiesMdeIntegration - MDE integration configuration
 type DefenderSettingsPropertiesMdeIntegration struct {
 	// REQUIRED; Integration status
@@ -352,18 +97,10 @@ type DeviceGroupList struct {
 	Value []*DeviceGroupModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeviceGroupList.
-func (d DeviceGroupList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DeviceGroupModel - Device group
 type DeviceGroupModel struct {
 	// Device group properties
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -407,14 +144,6 @@ type DeviceList struct {
 	Value []*DeviceModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeviceList.
-func (d DeviceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DeviceModel - Device
 type DeviceModel struct {
 	// Device properties
@@ -436,7 +165,7 @@ type DeviceModel struct {
 // DeviceProperties - Device properties
 type DeviceProperties struct {
 	// A bag of fields which extends the device information.
-	AdditionalFields map[string]interface{} `json:"additionalFields,omitempty"`
+	AdditionalFields interface{} `json:"additionalFields,omitempty"`
 
 	// Authorized state of the device.
 	AuthorizedState *AuthorizedState `json:"authorizedState,omitempty"`
@@ -547,245 +276,6 @@ type DeviceProperties struct {
 	Slots []*Slot `json:"slots,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeviceProperties.
-func (d DeviceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalFields", d.AdditionalFields)
-	populate(objectMap, "authorizedState", d.AuthorizedState)
-	populate(objectMap, "businessFunction", d.BusinessFunction)
-	populate(objectMap, "cpes", d.Cpes)
-	populate(objectMap, "criticality", d.Criticality)
-	populate(objectMap, "deviceCategoryDisplayName", d.DeviceCategoryDisplayName)
-	populate(objectMap, "deviceCategoryId", d.DeviceCategoryID)
-	populate(objectMap, "deviceDataSource", d.DeviceDataSource)
-	populate(objectMap, "deviceName", d.DeviceName)
-	populate(objectMap, "deviceStatus", d.DeviceStatus)
-	populate(objectMap, "deviceSubTypeDisplayName", d.DeviceSubTypeDisplayName)
-	populate(objectMap, "deviceSubTypeId", d.DeviceSubTypeID)
-	populate(objectMap, "deviceTags", d.DeviceTags)
-	populate(objectMap, "deviceTypeDisplayName", d.DeviceTypeDisplayName)
-	populate(objectMap, "deviceTypeId", d.DeviceTypeID)
-	populate(objectMap, "firmwares", d.Firmwares)
-	populateTimeRFC3339(objectMap, "firstSeen", d.FirstSeen)
-	populate(objectMap, "hardware", d.Hardware)
-	populateTimeRFC3339(objectMap, "lastProgrammingTime", d.LastProgrammingTime)
-	populateTimeRFC3339(objectMap, "lastSeen", d.LastSeen)
-	populateTimeRFC3339(objectMap, "lastUpdated", d.LastUpdated)
-	populate(objectMap, "mergedDevices", d.MergedDevices)
-	populate(objectMap, "mergedToDeviceId", d.MergedToDeviceID)
-	populate(objectMap, "nics", d.Nics)
-	populate(objectMap, "onboardingStatus", d.OnboardingStatus)
-	populate(objectMap, "operatingSystem", d.OperatingSystem)
-	populate(objectMap, "packages", d.Packages)
-	populate(objectMap, "parentDeviceId", d.ParentDeviceID)
-	populate(objectMap, "parentRackNumber", d.ParentRackNumber)
-	populate(objectMap, "parentSlotNumber", d.ParentSlotNumber)
-	populate(objectMap, "profilingConfidence", d.ProfilingConfidence)
-	populate(objectMap, "programmingState", d.ProgrammingState)
-	populate(objectMap, "purdueLevel", d.PurdueLevel)
-	populate(objectMap, "riskScore", d.RiskScore)
-	populate(objectMap, "schemaVersion", d.SchemaVersion)
-	populate(objectMap, "sensor", d.Sensor)
-	populate(objectMap, "slots", d.Slots)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeviceProperties.
-func (d *DeviceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "additionalFields":
-			err = unpopulate(val, &d.AdditionalFields)
-			delete(rawMsg, key)
-		case "authorizedState":
-			err = unpopulate(val, &d.AuthorizedState)
-			delete(rawMsg, key)
-		case "businessFunction":
-			err = unpopulate(val, &d.BusinessFunction)
-			delete(rawMsg, key)
-		case "cpes":
-			err = unpopulate(val, &d.Cpes)
-			delete(rawMsg, key)
-		case "criticality":
-			err = unpopulate(val, &d.Criticality)
-			delete(rawMsg, key)
-		case "deviceCategoryDisplayName":
-			err = unpopulate(val, &d.DeviceCategoryDisplayName)
-			delete(rawMsg, key)
-		case "deviceCategoryId":
-			err = unpopulate(val, &d.DeviceCategoryID)
-			delete(rawMsg, key)
-		case "deviceDataSource":
-			err = unpopulate(val, &d.DeviceDataSource)
-			delete(rawMsg, key)
-		case "deviceName":
-			err = unpopulate(val, &d.DeviceName)
-			delete(rawMsg, key)
-		case "deviceStatus":
-			err = unpopulate(val, &d.DeviceStatus)
-			delete(rawMsg, key)
-		case "deviceSubTypeDisplayName":
-			err = unpopulate(val, &d.DeviceSubTypeDisplayName)
-			delete(rawMsg, key)
-		case "deviceSubTypeId":
-			err = unpopulate(val, &d.DeviceSubTypeID)
-			delete(rawMsg, key)
-		case "deviceTags":
-			err = unpopulate(val, &d.DeviceTags)
-			delete(rawMsg, key)
-		case "deviceTypeDisplayName":
-			err = unpopulate(val, &d.DeviceTypeDisplayName)
-			delete(rawMsg, key)
-		case "deviceTypeId":
-			err = unpopulate(val, &d.DeviceTypeID)
-			delete(rawMsg, key)
-		case "firmwares":
-			err = unpopulate(val, &d.Firmwares)
-			delete(rawMsg, key)
-		case "firstSeen":
-			err = unpopulateTimeRFC3339(val, &d.FirstSeen)
-			delete(rawMsg, key)
-		case "hardware":
-			err = unpopulate(val, &d.Hardware)
-			delete(rawMsg, key)
-		case "lastProgrammingTime":
-			err = unpopulateTimeRFC3339(val, &d.LastProgrammingTime)
-			delete(rawMsg, key)
-		case "lastSeen":
-			err = unpopulateTimeRFC3339(val, &d.LastSeen)
-			delete(rawMsg, key)
-		case "lastUpdated":
-			err = unpopulateTimeRFC3339(val, &d.LastUpdated)
-			delete(rawMsg, key)
-		case "mergedDevices":
-			err = unpopulate(val, &d.MergedDevices)
-			delete(rawMsg, key)
-		case "mergedToDeviceId":
-			err = unpopulate(val, &d.MergedToDeviceID)
-			delete(rawMsg, key)
-		case "nics":
-			err = unpopulate(val, &d.Nics)
-			delete(rawMsg, key)
-		case "onboardingStatus":
-			err = unpopulate(val, &d.OnboardingStatus)
-			delete(rawMsg, key)
-		case "operatingSystem":
-			err = unpopulate(val, &d.OperatingSystem)
-			delete(rawMsg, key)
-		case "packages":
-			err = unpopulate(val, &d.Packages)
-			delete(rawMsg, key)
-		case "parentDeviceId":
-			err = unpopulate(val, &d.ParentDeviceID)
-			delete(rawMsg, key)
-		case "parentRackNumber":
-			err = unpopulate(val, &d.ParentRackNumber)
-			delete(rawMsg, key)
-		case "parentSlotNumber":
-			err = unpopulate(val, &d.ParentSlotNumber)
-			delete(rawMsg, key)
-		case "profilingConfidence":
-			err = unpopulate(val, &d.ProfilingConfidence)
-			delete(rawMsg, key)
-		case "programmingState":
-			err = unpopulate(val, &d.ProgrammingState)
-			delete(rawMsg, key)
-		case "purdueLevel":
-			err = unpopulate(val, &d.PurdueLevel)
-			delete(rawMsg, key)
-		case "riskScore":
-			err = unpopulate(val, &d.RiskScore)
-			delete(rawMsg, key)
-		case "schemaVersion":
-			err = unpopulate(val, &d.SchemaVersion)
-			delete(rawMsg, key)
-		case "sensor":
-			err = unpopulate(val, &d.Sensor)
-			delete(rawMsg, key)
-		case "slots":
-			err = unpopulate(val, &d.Slots)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// DeviceVulnerabilityListModel - List of IoT Device Vulnerabilities
-type DeviceVulnerabilityListModel struct {
-	// READ-ONLY; When available, follow the URI to get the next page of data
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; List data
-	Value []*DeviceVulnerabilityModel `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeviceVulnerabilityListModel.
-func (d DeviceVulnerabilityListModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// DeviceVulnerabilityModel - IoT Device Vulnerability
-type DeviceVulnerabilityModel struct {
-	// Device Vulnerability properties
-	Properties *DeviceVulnerabilityPropertiesModel `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DeviceVulnerabilityPropertiesModel - IoT Device Vulnerability properties
-type DeviceVulnerabilityPropertiesModel struct {
-	// READ-ONLY; The vulnerability affected versions
-	AffectedVersions []*string `json:"affectedVersions,omitempty" azure:"ro"`
-
-	// READ-ONLY; The vulnerability description
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; The exploit type of the vulnerability
-	ExploitType *string `json:"exploitType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The score of the vulnerability
-	Score *float64 `json:"score,omitempty" azure:"ro"`
-
-	// READ-ONLY; The severity score of the vulnerability
-	SeverityScore *SeverityScore `json:"severityScore,omitempty" azure:"ro"`
-
-	// READ-ONLY; The sources of the vulnerability
-	Sources []*string `json:"sources,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeviceVulnerabilityPropertiesModel.
-func (d DeviceVulnerabilityPropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedVersions", d.AffectedVersions)
-	populate(objectMap, "description", d.Description)
-	populate(objectMap, "exploitType", d.ExploitType)
-	populate(objectMap, "score", d.Score)
-	populate(objectMap, "severityScore", d.SeverityScore)
-	populate(objectMap, "sources", d.Sources)
-	return json.Marshal(objectMap)
-}
-
 // DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
 type DevicesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -812,7 +302,7 @@ type DimensionProperties struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -836,17 +326,6 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ErrorModel - Default error model
 type ErrorModel struct {
 	// READ-ONLY; Gets or sets the code.
@@ -860,16 +339,6 @@ type ErrorModel struct {
 
 	// READ-ONLY; Gets or sets the target.
 	Target *string `json:"target,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorModel.
-func (e ErrorModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
@@ -900,20 +369,10 @@ type ErrorResponseModelError struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseModelError.
-func (e ErrorResponseModelError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // Firmware - Device firmware data
 type Firmware struct {
 	// A bag of fields which extends the firmware information.
-	AdditionalFields map[string]interface{} `json:"additionalFields,omitempty"`
+	AdditionalFields interface{} `json:"additionalFields,omitempty"`
 
 	// Firmware module address.
 	ModuleAddress *string `json:"moduleAddress,omitempty"`
@@ -943,46 +402,6 @@ type Hardware struct {
 	Vendor *string `json:"vendor,omitempty"`
 }
 
-// IotAlertsClientGetOptions contains the optional parameters for the IotAlertsClient.Get method.
-type IotAlertsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotAlertsClientListOptions contains the optional parameters for the IotAlertsClient.List method.
-type IotAlertsClientListOptions struct {
-	// Skip token used for pagination
-	SkipToken *string
-}
-
-// IotAlertsClientPatchOptions contains the optional parameters for the IotAlertsClient.Patch method.
-type IotAlertsClientPatchOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDeviceVulnerabilityClientGetOptions contains the optional parameters for the IotDeviceVulnerabilityClient.Get method.
-type IotDeviceVulnerabilityClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotDeviceVulnerabilityClientListOptions contains the optional parameters for the IotDeviceVulnerabilityClient.List method.
-type IotDeviceVulnerabilityClientListOptions struct {
-	// Device ID filter
-	DeviceID *string
-	// Skip token used for pagination
-	SkipToken *string
-}
-
-// IotRecommendationsClientGetOptions contains the optional parameters for the IotRecommendationsClient.Get method.
-type IotRecommendationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// IotRecommendationsClientListOptions contains the optional parameters for the IotRecommendationsClient.List method.
-type IotRecommendationsClientListOptions struct {
-	// Skip token used for pagination
-	SkipToken *string
-}
-
 // LocationList - List of Defender for IoT locations
 type LocationList struct {
 	// READ-ONLY; Link to next page of resources.
@@ -992,18 +411,10 @@ type LocationList struct {
 	Value []*LocationModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationList.
-func (l LocationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // LocationModel - IoT Defender location
 type LocationModel struct {
 	// IoT Defender location properties
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1064,61 +475,10 @@ type Nic struct {
 	Vlans []*string `json:"vlans,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Nic.
-func (n Nic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipv4Address", n.IPv4Address)
-	populate(objectMap, "ipv6Address", n.IPv6Address)
-	populateTimeRFC3339(objectMap, "lastSeen", n.LastSeen)
-	populate(objectMap, "macAddress", n.MacAddress)
-	populate(objectMap, "macCertainty", n.MacCertainty)
-	populate(objectMap, "networkAdapterVendor", n.NetworkAdapterVendor)
-	populate(objectMap, "vlans", n.Vlans)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Nic.
-func (n *Nic) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "ipv4Address":
-			err = unpopulate(val, &n.IPv4Address)
-			delete(rawMsg, key)
-		case "ipv6Address":
-			err = unpopulate(val, &n.IPv6Address)
-			delete(rawMsg, key)
-		case "lastSeen":
-			err = unpopulateTimeRFC3339(val, &n.LastSeen)
-			delete(rawMsg, key)
-		case "macAddress":
-			err = unpopulate(val, &n.MacAddress)
-			delete(rawMsg, key)
-		case "macCertainty":
-			err = unpopulate(val, &n.MacCertainty)
-			delete(rawMsg, key)
-		case "networkAdapterVendor":
-			err = unpopulate(val, &n.NetworkAdapterVendor)
-			delete(rawMsg, key)
-		case "vlans":
-			err = unpopulate(val, &n.Vlans)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OnPremiseSensor - On-premise IoT sensor
 type OnPremiseSensor struct {
 	// On-premise IoT sensor properties
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1170,13 +530,6 @@ type OnPremiseSensorsClientListOptions struct {
 type OnPremiseSensorsList struct {
 	// READ-ONLY; List data
 	Value []*OnPremiseSensor `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OnPremiseSensorsList.
-func (o OnPremiseSensorsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperatingSystem - Device operating system data
@@ -1242,15 +595,6 @@ type OperationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", o.Count)
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationMetaLogSpecification - log specifications for operation api
 type OperationMetaLogSpecification struct {
 	// blob duration of the log
@@ -1303,24 +647,6 @@ type OperationMetaMetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaMetricSpecification.
-func (o OperationMetaMetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", o.AggregationType)
-	populate(objectMap, "dimensions", o.Dimensions)
-	populate(objectMap, "displayDescription", o.DisplayDescription)
-	populate(objectMap, "displayName", o.DisplayName)
-	populate(objectMap, "enableRegionalMdmAccount", o.EnableRegionalMdmAccount)
-	populate(objectMap, "internalMetricName", o.InternalMetricName)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "resourceIdDimensionNameOverride", o.ResourceIDDimensionNameOverride)
-	populate(objectMap, "sourceMdmNamespace", o.SourceMdmNamespace)
-	populate(objectMap, "supportedAggregationTypes", o.SupportedAggregationTypes)
-	populate(objectMap, "supportedTimeGrainTypes", o.SupportedTimeGrainTypes)
-	populate(objectMap, "unit", o.Unit)
-	return json.Marshal(objectMap)
-}
-
 // OperationMetaServiceSpecification - The operation meta service specification
 type OperationMetaServiceSpecification struct {
 	// log specifications for the operation
@@ -1328,14 +654,6 @@ type OperationMetaServiceSpecification struct {
 
 	// metric specifications for the operation
 	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaServiceSpecification.
-func (o OperationMetaServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", o.LogSpecifications)
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // OperationProperties - properties on meta info
@@ -1394,19 +712,6 @@ type PackageDownloads struct {
 	WmiTool []*PackageDownloadInfo `json:"wmiTool,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloads.
-func (p PackageDownloads) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizedDevicesImportTemplate", p.AuthorizedDevicesImportTemplate)
-	populate(objectMap, "centralManager", p.CentralManager)
-	populate(objectMap, "deviceInformationUpdateImportTemplate", p.DeviceInformationUpdateImportTemplate)
-	populate(objectMap, "sensor", p.Sensor)
-	populate(objectMap, "snmp", p.Snmp)
-	populate(objectMap, "threatIntelligence", p.ThreatIntelligence)
-	populate(objectMap, "wmiTool", p.WmiTool)
-	return json.Marshal(objectMap)
-}
-
 // PackageDownloadsCentralManager - All downloads for Central Manager
 type PackageDownloadsCentralManager struct {
 	// READ-ONLY; Contains full package downloads
@@ -1416,14 +721,6 @@ type PackageDownloadsCentralManager struct {
 	Upgrade []*UpgradePackageDownloadInfo `json:"upgrade,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsCentralManager.
-func (p PackageDownloadsCentralManager) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "full", p.Full)
-	populate(objectMap, "upgrade", p.Upgrade)
-	return json.Marshal(objectMap)
-}
-
 // PackageDownloadsCentralManagerFull - Contains full package downloads
 type PackageDownloadsCentralManagerFull struct {
 	// READ-ONLY; Contains all ISO full versions of the Central Manager
@@ -1431,14 +728,6 @@ type PackageDownloadsCentralManagerFull struct {
 
 	// READ-ONLY; Contains all OVF (virtual machine) full versions of the Central Manager
 	Ovf *PackageDownloadsCentralManagerFullOvf `json:"ovf,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsCentralManagerFull.
-func (p PackageDownloadsCentralManagerFull) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "iso", p.Iso)
-	populate(objectMap, "ovf", p.Ovf)
-	return json.Marshal(objectMap)
 }
 
 // PackageDownloadsCentralManagerFullOvf - Contains all OVF (virtual machine) full versions of the Central Manager
@@ -1456,16 +745,6 @@ type PackageDownloadsCentralManagerFullOvf struct {
 	MediumHighAvailability []*PackageDownloadInfo `json:"mediumHighAvailability,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsCentralManagerFullOvf.
-func (p PackageDownloadsCentralManagerFullOvf) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enterprise", p.Enterprise)
-	populate(objectMap, "enterpriseHighAvailability", p.EnterpriseHighAvailability)
-	populate(objectMap, "medium", p.Medium)
-	populate(objectMap, "mediumHighAvailability", p.MediumHighAvailability)
-	return json.Marshal(objectMap)
-}
-
 // PackageDownloadsSensor - Contains all Sensor binary downloads
 type PackageDownloadsSensor struct {
 	// Sensor upgrade package downloads (on existing installations)
@@ -1475,14 +754,6 @@ type PackageDownloadsSensor struct {
 	Full *PackageDownloadsSensorFull `json:"full,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsSensor.
-func (p PackageDownloadsSensor) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "full", p.Full)
-	populate(objectMap, "upgrade", p.Upgrade)
-	return json.Marshal(objectMap)
-}
-
 // PackageDownloadsSensorFull - Contains full package downloads
 type PackageDownloadsSensorFull struct {
 	// Contains all OVF (virtual machine) full versions for the sensor
@@ -1490,14 +761,6 @@ type PackageDownloadsSensorFull struct {
 
 	// READ-ONLY; Contains all ISO full versions for the sensor
 	Iso []*PackageDownloadInfo `json:"iso,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsSensorFull.
-func (p PackageDownloadsSensorFull) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "iso", p.Iso)
-	populate(objectMap, "ovf", p.Ovf)
-	return json.Marshal(objectMap)
 }
 
 // PackageDownloadsSensorFullOvf - Contains all OVF (virtual machine) full versions for the sensor
@@ -1512,15 +775,6 @@ type PackageDownloadsSensorFullOvf struct {
 	Medium []*PackageDownloadInfo `json:"medium,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PackageDownloadsSensorFullOvf.
-func (p PackageDownloadsSensorFullOvf) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enterprise", p.Enterprise)
-	populate(objectMap, "line", p.Line)
-	populate(objectMap, "medium", p.Medium)
-	return json.Marshal(objectMap)
-}
-
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
@@ -1532,151 +786,6 @@ type ProxyResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RecommendationListModel - List of IoT recommendations
-type RecommendationListModel struct {
-	// READ-ONLY; When available, follow the URI to get the next page of data
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; List data
-	Value []*RecommendationModel `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecommendationListModel.
-func (r RecommendationListModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RecommendationModel - IoT recommendation
-type RecommendationModel struct {
-	// Recommendation properties
-	Properties *RecommendationPropertiesModel `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RecommendationPropertiesModel - IoT recommendation properties
-type RecommendationPropertiesModel struct {
-	// A bag of fields which extends the recommendation information
-	RecommendationAdditionalData map[string]interface{} `json:"recommendationAdditionalData,omitempty"`
-
-	// READ-ONLY; Azure Resource Identifier of the device being reported on
-	AzureResourceID *string `json:"azureResourceId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the recommendation's control category
-	Control *string `json:"control,omitempty" azure:"ro"`
-
-	// READ-ONLY; The discovery time of the recommendation
-	DiscoveredTimeUTC *string `json:"discoveredTimeUtc,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of a component inside the product which generated the recommendation
-	ProductComponentName *string `json:"productComponentName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type name of the recommendation
-	RecommendationType *string `json:"recommendationType,omitempty" azure:"ro"`
-
-	// READ-ONLY; The severity of the recommendation
-	Severity *RecommendationSeverity `json:"severity,omitempty" azure:"ro"`
-}
-
-// RecommendationType - IoT recommendation type.
-type RecommendationType struct {
-	// Recommendation type properties
-	Properties *RecommendationTypeProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RecommendationTypeList - List of recommendation types
-type RecommendationTypeList struct {
-	// List data
-	Value []*RecommendationType `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecommendationTypeList.
-func (r RecommendationTypeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RecommendationTypeProperties - IoT recommendation type information.
-type RecommendationTypeProperties struct {
-	// READ-ONLY; The name of the recommendation's control category
-	Control *string `json:"control,omitempty" azure:"ro"`
-
-	// READ-ONLY; The alert's data source
-	DataSource *string `json:"dataSource,omitempty" azure:"ro"`
-
-	// READ-ONLY; Description of the suspected vulnerability and meaning.
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of a component inside the product which generated the recommendation
-	ProductComponentName *string `json:"productComponentName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the product which published this recommendation
-	ProductName *string `json:"productName,omitempty" azure:"ro"`
-
-	// READ-ONLY; The display name of the recommendation
-	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Manual action items to take to resolve the recommendation
-	RemediationSteps []*string `json:"remediationSteps,omitempty" azure:"ro"`
-
-	// READ-ONLY; The severity of the recommendation
-	Severity *RecommendationSeverity `json:"severity,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the vendor that raised the recommendation
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecommendationTypeProperties.
-func (r RecommendationTypeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "control", r.Control)
-	populate(objectMap, "dataSource", r.DataSource)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "productComponentName", r.ProductComponentName)
-	populate(objectMap, "productName", r.ProductName)
-	populate(objectMap, "recommendationDisplayName", r.RecommendationDisplayName)
-	populate(objectMap, "remediationSteps", r.RemediationSteps)
-	populate(objectMap, "severity", r.Severity)
-	populate(objectMap, "vendorName", r.VendorName)
-	return json.Marshal(objectMap)
-}
-
-// RecommendationTypesClientGetOptions contains the optional parameters for the RecommendationTypesClient.Get method.
-type RecommendationTypesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RecommendationTypesClientListOptions contains the optional parameters for the RecommendationTypesClient.List method.
-type RecommendationTypesClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ResetPasswordInput - Reset password input.
@@ -1806,13 +915,6 @@ type SensorsList struct {
 	Value []*SensorModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SensorsList.
-func (s SensorsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SiteModel - IoT site model
 type SiteModel struct {
 	// IoT site properties
@@ -1838,14 +940,6 @@ type SiteProperties struct {
 
 	// Tags of the IoT site
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SiteProperties.
-func (s SiteProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
 }
 
 // SitesClientCreateOrUpdateOptions contains the optional parameters for the SitesClient.CreateOrUpdate method.
@@ -1874,17 +968,10 @@ type SitesList struct {
 	Value []*SiteModel `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SitesList.
-func (s SitesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // Slot data in PLC backplane
 type Slot struct {
 	// A bag of fields which extends the slot information.
-	AdditionalData map[string]interface{} `json:"additionalData,omitempty"`
+	AdditionalData interface{} `json:"additionalData,omitempty"`
 
 	// Firmware revision of the slot.
 	FirmwareVersion *string `json:"firmwareVersion,omitempty"`
@@ -1920,24 +1007,6 @@ type Slot struct {
 	SlotNumber *int32 `json:"slotNumber,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Slot.
-func (s Slot) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalData", s.AdditionalData)
-	populate(objectMap, "cpes", s.Cpes)
-	populate(objectMap, "firmwareVersion", s.FirmwareVersion)
-	populate(objectMap, "hardwareRevision", s.HardwareRevision)
-	populate(objectMap, "hardwareVendor", s.HardwareVendor)
-	populate(objectMap, "model", s.Model)
-	populate(objectMap, "moduleVersion", s.ModuleVersion)
-	populate(objectMap, "productCode", s.ProductCode)
-	populate(objectMap, "rackNumber", s.RackNumber)
-	populate(objectMap, "serialNumber", s.SerialNumber)
-	populate(objectMap, "slotNumber", s.SlotNumber)
-	populate(objectMap, "slotType", s.SlotType)
-	return json.Marshal(objectMap)
-}
-
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1959,68 +1028,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// TechniqueModel - Technique properties
-type TechniqueModel struct {
-	// READ-ONLY; Technique description
-	Description *string `json:"description,omitempty" azure:"ro"`
-
-	// READ-ONLY; Technique id
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Link to the technique in MITRE portal
-	Link *string `json:"link,omitempty" azure:"ro"`
-
-	// READ-ONLY; Technique display name
-	Name *string `json:"name,omitempty" azure:"ro"`
-}
-
 // UpgradePackageDownloadInfo - Information on a specific package upgrade download
 type UpgradePackageDownloadInfo struct {
 	// READ-ONLY; Minimum base version for upgrade
@@ -2034,21 +1041,4 @@ type UpgradePackageDownloadInfo struct {
 
 	// READ-ONLY; Kind of the version
 	VersionKind *VersionKind `json:"versionKind,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

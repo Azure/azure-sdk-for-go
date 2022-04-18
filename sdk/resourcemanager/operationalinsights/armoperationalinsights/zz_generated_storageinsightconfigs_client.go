@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type StorageInsightConfigsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StorageInsightConfigsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageInsightConfigsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &StorageInsightConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update a storage insight.
@@ -104,7 +109,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx conte
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (StorageInsightConfigsClientCreateOrUpdateResponse, error) {
-	result := StorageInsightConfigsClientCreateOrUpdateResponse{RawResponse: resp}
+	result := StorageInsightConfigsClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsight); err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,7 +135,7 @@ func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceG
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return StorageInsightConfigsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return StorageInsightConfigsClientDeleteResponse{RawResponse: resp}, nil
+	return StorageInsightConfigsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -216,29 +221,45 @@ func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context,
 
 // getHandleResponse handles the Get response.
 func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response) (StorageInsightConfigsClientGetResponse, error) {
-	result := StorageInsightConfigsClientGetResponse{RawResponse: resp}
+	result := StorageInsightConfigsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsight); err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// ListByWorkspace - Lists the storage insight instances within a workspace
+// NewListByWorkspacePager - Lists the storage insight instances within a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
 // method.
-func (client *StorageInsightConfigsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *StorageInsightConfigsClientListByWorkspacePager {
-	return &StorageInsightConfigsClientListByWorkspacePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[StorageInsightConfigsClientListByWorkspaceResponse]{
+		More: func(page StorageInsightConfigsClientListByWorkspaceResponse) bool {
+			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp StorageInsightConfigsClientListByWorkspaceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageInsightListResult.ODataNextLink)
+		Fetcher: func(ctx context.Context, page *StorageInsightConfigsClientListByWorkspaceResponse) (StorageInsightConfigsClientListByWorkspaceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.ODataNextLink)
+			}
+			if err != nil {
+				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return StorageInsightConfigsClientListByWorkspaceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByWorkspaceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -269,7 +290,7 @@ func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx cont
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
 func (client *StorageInsightConfigsClient) listByWorkspaceHandleResponse(resp *http.Response) (StorageInsightConfigsClientListByWorkspaceResponse, error) {
-	result := StorageInsightConfigsClientListByWorkspaceResponse{RawResponse: resp}
+	result := StorageInsightConfigsClientListByWorkspaceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageInsightListResult); err != nil {
 		return StorageInsightConfigsClientListByWorkspaceResponse{}, err
 	}

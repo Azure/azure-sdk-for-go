@@ -78,22 +78,22 @@ func (w *AMQPClientWrapper) NewSession(opts ...amqp.SessionOption) (AMQPSession,
 	}
 
 	return &AMQPSessionWrapper{
-		inner: sess,
+		Inner: sess,
 	}, nil
 }
 
 type AMQPSessionWrapper struct {
-	inner *amqp.Session
+	Inner *amqp.Session
 }
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
-	return w.inner.Close(ctx)
+	return w.Inner.Close(ctx)
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	return w.inner.NewReceiver(opts...)
+	return w.Inner.NewReceiver(opts...)
 }
 
 func (w *AMQPSessionWrapper) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
-	return w.inner.NewSender(opts...)
+	return w.Inner.NewSender(opts...)
 }

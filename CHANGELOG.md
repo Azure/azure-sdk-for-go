@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v63.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2022-04-02-preview/kubernetesconfiguration`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
+
+## `v63.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization`
+- `github.com/Azure/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities`
+- `github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise`
+
 ## `v63.1.0`
 
 ### New Packages

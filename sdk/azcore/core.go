@@ -7,17 +7,25 @@
 package azcore
 
 import (
+	"context"
 	"reflect"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // AccessToken represents an Azure service bearer access token with expiry information.
-type AccessToken = shared.AccessToken
+type AccessToken struct {
+	Token     string
+	ExpiresOn time.Time
+}
 
 // TokenCredential represents a credential capable of providing an OAuth token.
-type TokenCredential = shared.TokenCredential
+type TokenCredential interface {
+	// GetToken requests an access token for the specified set of scopes.
+	GetToken(ctx context.Context, options policy.TokenRequestOptions) (*AccessToken, error)
+}
 
 // holds sentinel values used to send nulls
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}

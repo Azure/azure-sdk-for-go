@@ -215,13 +215,13 @@ func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response) (Aut
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the auto scale v-cores for the given resource group.
+// NewListByResourceGroupPager - Gets all the auto scale v-cores for the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Azure Resource group of which a given PowerBIDedicated capacity is part. This name
 // must be at least 1 character in length, and no more than 90.
 // options - AutoScaleVCoresClientListByResourceGroupOptions contains the optional parameters for the AutoScaleVCoresClient.ListByResourceGroup
 // method.
-func (client *AutoScaleVCoresClient) ListByResourceGroup(resourceGroupName string, options *AutoScaleVCoresClientListByResourceGroupOptions) *runtime.Pager[AutoScaleVCoresClientListByResourceGroupResponse] {
+func (client *AutoScaleVCoresClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoScaleVCoresClientListByResourceGroupOptions) *runtime.Pager[AutoScaleVCoresClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutoScaleVCoresClientListByResourceGroupResponse]{
 		More: func(page AutoScaleVCoresClientListByResourceGroupResponse) bool {
 			return false
@@ -274,11 +274,11 @@ func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListBySubscription - Lists all the auto scale v-cores for the given subscription.
+// NewListBySubscriptionPager - Lists all the auto scale v-cores for the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutoScaleVCoresClientListBySubscriptionOptions contains the optional parameters for the AutoScaleVCoresClient.ListBySubscription
 // method.
-func (client *AutoScaleVCoresClient) ListBySubscription(options *AutoScaleVCoresClientListBySubscriptionOptions) *runtime.Pager[AutoScaleVCoresClientListBySubscriptionResponse] {
+func (client *AutoScaleVCoresClient) NewListBySubscriptionPager(options *AutoScaleVCoresClientListBySubscriptionOptions) *runtime.Pager[AutoScaleVCoresClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutoScaleVCoresClientListBySubscriptionResponse]{
 		More: func(page AutoScaleVCoresClientListBySubscriptionResponse) bool {
 			return false

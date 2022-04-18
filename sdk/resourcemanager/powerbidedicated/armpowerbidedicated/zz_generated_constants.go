@@ -10,7 +10,7 @@ package armpowerbidedicated
 
 const (
 	moduleName    = "armpowerbidedicated"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // CapacityProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate

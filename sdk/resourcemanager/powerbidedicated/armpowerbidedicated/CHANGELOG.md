@@ -1,5 +1,23 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CapacitiesClient.List` has been removed
+- Function `*AutoScaleVCoresClient.ListBySubscription` has been removed
+- Function `*AutoScaleVCoresClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*CapacitiesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*AutoScaleVCoresClient.NewListByResourceGroupPager(string, *AutoScaleVCoresClientListByResourceGroupOptions) *runtime.Pager[AutoScaleVCoresClientListByResourceGroupResponse]`
+- New function `*CapacitiesClient.NewListByResourceGroupPager(string, *CapacitiesClientListByResourceGroupOptions) *runtime.Pager[CapacitiesClientListByResourceGroupResponse]`
+- New function `*CapacitiesClient.NewListPager(*CapacitiesClientListOptions) *runtime.Pager[CapacitiesClientListResponse]`
+- New function `*AutoScaleVCoresClient.NewListBySubscriptionPager(*AutoScaleVCoresClientListBySubscriptionOptions) *runtime.Pager[AutoScaleVCoresClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

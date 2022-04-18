@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoDatabasesListByKustoPool.json
-func ExampleKustoPoolDatabasesClient_ListByKustoPool() {
+func ExampleKustoPoolDatabasesClient_NewListByKustoPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleKustoPoolDatabasesClient_ListByKustoPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByKustoPool("<resource-group-name>",
+	pager := client.NewListByKustoPoolPager("<resource-group-name>",
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		nil)

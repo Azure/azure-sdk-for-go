@@ -182,13 +182,13 @@ func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) getHandleRespo
 	return result, nil
 }
 
-// List - Get list of encryption protectors for workspace managed sql server.
+// NewListPager - Get list of encryption protectors for workspace managed sql server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerEncryptionProtectorClientListOptions contains the optional parameters for the WorkspaceManagedSQLServerEncryptionProtectorClient.List
 // method.
-func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) List(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse] {
+func (client *WorkspaceManagedSQLServerEncryptionProtectorClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerEncryptionProtectorClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerEncryptionProtectorClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerEncryptionProtectorClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

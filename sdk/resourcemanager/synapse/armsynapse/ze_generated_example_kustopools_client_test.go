@@ -278,7 +278,7 @@ func ExampleKustoPoolsClient_BeginStart() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsList.json
-func ExampleKustoPoolsClient_ListLanguageExtensions() {
+func ExampleKustoPoolsClient_NewListLanguageExtensionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -290,7 +290,7 @@ func ExampleKustoPoolsClient_ListLanguageExtensions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLanguageExtensions("<workspace-name>",
+	pager := client.NewListLanguageExtensionsPager("<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
 		nil)
@@ -384,7 +384,7 @@ func ExampleKustoPoolsClient_BeginRemoveLanguageExtensions() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesList.json
-func ExampleKustoPoolsClient_ListFollowerDatabases() {
+func ExampleKustoPoolsClient_NewListFollowerDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -396,7 +396,7 @@ func ExampleKustoPoolsClient_ListFollowerDatabases() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListFollowerDatabases("<workspace-name>",
+	pager := client.NewListFollowerDatabasesPager("<workspace-name>",
 		"<kusto-pool-name>",
 		"<resource-group-name>",
 		nil)

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsSensitivityLabelsWithSourceCurrent.json
-func ExampleSQLPoolSensitivityLabelsClient_ListCurrent() {
+func ExampleSQLPoolSensitivityLabelsClient_NewListCurrentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleSQLPoolSensitivityLabelsClient_ListCurrent() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCurrent("<resource-group-name>",
+	pager := client.NewListCurrentPager("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
 		&armsynapse.SQLPoolSensitivityLabelsClientListCurrentOptions{Filter: nil})
@@ -117,7 +117,7 @@ func ExampleSQLPoolSensitivityLabelsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolSensitivityLabelsWithSourceRecommended.json
-func ExampleSQLPoolSensitivityLabelsClient_ListRecommended() {
+func ExampleSQLPoolSensitivityLabelsClient_NewListRecommendedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -129,7 +129,7 @@ func ExampleSQLPoolSensitivityLabelsClient_ListRecommended() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRecommended("<resource-group-name>",
+	pager := client.NewListRecommendedPager("<resource-group-name>",
 		"<workspace-name>",
 		"<sql-pool-name>",
 		&armsynapse.SQLPoolSensitivityLabelsClientListRecommendedOptions{IncludeDisabledRecommendations: nil,

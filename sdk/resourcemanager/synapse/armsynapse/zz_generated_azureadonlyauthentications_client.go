@@ -184,13 +184,13 @@ func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Gets a list of Azure Active Directory only authentication property for a workspace
+// NewListPager - Gets a list of Azure Active Directory only authentication property for a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AzureADOnlyAuthenticationsClientListOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.List
 // method.
-func (client *AzureADOnlyAuthenticationsClient) List(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *runtime.Pager[AzureADOnlyAuthenticationsClientListResponse] {
+func (client *AzureADOnlyAuthenticationsClient) NewListPager(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *runtime.Pager[AzureADOnlyAuthenticationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AzureADOnlyAuthenticationsClientListResponse]{
 		More: func(page AzureADOnlyAuthenticationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

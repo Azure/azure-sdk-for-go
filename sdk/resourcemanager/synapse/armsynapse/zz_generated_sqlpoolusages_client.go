@@ -54,13 +54,13 @@ func NewSQLPoolUsagesClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// List - Gets SQL pool usages.
+// NewListPager - Gets SQL pool usages.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolUsagesClientListOptions contains the optional parameters for the SQLPoolUsagesClient.List method.
-func (client *SQLPoolUsagesClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolUsagesClientListOptions) *runtime.Pager[SQLPoolUsagesClientListResponse] {
+func (client *SQLPoolUsagesClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolUsagesClientListOptions) *runtime.Pager[SQLPoolUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolUsagesClientListResponse]{
 		More: func(page SQLPoolUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

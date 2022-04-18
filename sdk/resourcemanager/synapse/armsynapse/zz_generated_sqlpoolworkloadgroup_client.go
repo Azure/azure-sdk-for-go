@@ -262,14 +262,14 @@ func (client *SQLPoolWorkloadGroupClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Get list of Sql pool's workload groups.
+// NewListPager - Get list of Sql pool's workload groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolWorkloadGroupClientListOptions contains the optional parameters for the SQLPoolWorkloadGroupClient.List
 // method.
-func (client *SQLPoolWorkloadGroupClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolWorkloadGroupClientListOptions) *runtime.Pager[SQLPoolWorkloadGroupClientListResponse] {
+func (client *SQLPoolWorkloadGroupClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolWorkloadGroupClientListOptions) *runtime.Pager[SQLPoolWorkloadGroupClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolWorkloadGroupClientListResponse]{
 		More: func(page SQLPoolWorkloadGroupClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

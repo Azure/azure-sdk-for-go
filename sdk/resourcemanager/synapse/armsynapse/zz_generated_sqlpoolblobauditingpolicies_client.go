@@ -179,14 +179,14 @@ func (client *SQLPoolBlobAuditingPoliciesClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListBySQLPool - Lists auditing settings of a Sql pool.
+// NewListBySQLPoolPager - Lists auditing settings of a Sql pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions contains the optional parameters for the SQLPoolBlobAuditingPoliciesClient.ListBySQLPool
 // method.
-func (client *SQLPoolBlobAuditingPoliciesClient) ListBySQLPool(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse] {
+func (client *SQLPoolBlobAuditingPoliciesClient) NewListBySQLPoolPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]{
 		More: func(page SQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

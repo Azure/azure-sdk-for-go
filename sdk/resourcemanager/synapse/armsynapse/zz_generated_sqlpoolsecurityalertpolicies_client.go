@@ -187,14 +187,14 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Get a list of Sql pool's security alert policies.
+// NewListPager - Get a list of Sql pool's security alert policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSecurityAlertPoliciesClientListOptions contains the optional parameters for the SQLPoolSecurityAlertPoliciesClient.List
 // method.
-func (client *SQLPoolSecurityAlertPoliciesClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesClientListOptions) *runtime.Pager[SQLPoolSecurityAlertPoliciesClientListResponse] {
+func (client *SQLPoolSecurityAlertPoliciesClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSecurityAlertPoliciesClientListOptions) *runtime.Pager[SQLPoolSecurityAlertPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolSecurityAlertPoliciesClientListResponse]{
 		More: func(page SQLPoolSecurityAlertPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

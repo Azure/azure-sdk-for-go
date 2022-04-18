@@ -235,10 +235,10 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 	return result, nil
 }
 
-// List - Returns a list of workspaces in a subscription
+// NewListPager - Returns a list of workspaces in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
-func (client *WorkspacesClient) List(options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
+func (client *WorkspacesClient) NewListPager(options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListResponse]{
 		More: func(page WorkspacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -293,12 +293,12 @@ func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (Workspa
 	return result, nil
 }
 
-// ListByResourceGroup - Returns a list of workspaces in a resource group
+// NewListByResourceGroupPager - Returns a list of workspaces in a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
 // method.
-func (client *WorkspacesClient) ListByResourceGroup(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
+func (client *WorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListByResourceGroupResponse]{
 		More: func(page WorkspacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

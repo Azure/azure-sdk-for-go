@@ -385,13 +385,13 @@ func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByWorkspace - List all integration runtimes
+// NewListByWorkspacePager - List all integration runtimes
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - IntegrationRuntimesClientListByWorkspaceOptions contains the optional parameters for the IntegrationRuntimesClient.ListByWorkspace
 // method.
-func (client *IntegrationRuntimesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *IntegrationRuntimesClientListByWorkspaceOptions) *runtime.Pager[IntegrationRuntimesClientListByWorkspaceResponse] {
+func (client *IntegrationRuntimesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *IntegrationRuntimesClientListByWorkspaceOptions) *runtime.Pager[IntegrationRuntimesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IntegrationRuntimesClientListByWorkspaceResponse]{
 		More: func(page IntegrationRuntimesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

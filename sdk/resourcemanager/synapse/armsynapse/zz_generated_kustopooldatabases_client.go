@@ -262,14 +262,14 @@ func (client *KustoPoolDatabasesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByKustoPool - Returns the list of databases of the given Kusto pool.
+// NewListByKustoPoolPager - Returns the list of databases of the given Kusto pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // kustoPoolName - The name of the Kusto pool.
 // options - KustoPoolDatabasesClientListByKustoPoolOptions contains the optional parameters for the KustoPoolDatabasesClient.ListByKustoPool
 // method.
-func (client *KustoPoolDatabasesClient) ListByKustoPool(resourceGroupName string, workspaceName string, kustoPoolName string, options *KustoPoolDatabasesClientListByKustoPoolOptions) *runtime.Pager[KustoPoolDatabasesClientListByKustoPoolResponse] {
+func (client *KustoPoolDatabasesClient) NewListByKustoPoolPager(resourceGroupName string, workspaceName string, kustoPoolName string, options *KustoPoolDatabasesClientListByKustoPoolOptions) *runtime.Pager[KustoPoolDatabasesClientListByKustoPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[KustoPoolDatabasesClientListByKustoPoolResponse]{
 		More: func(page KustoPoolDatabasesClientListByKustoPoolResponse) bool {
 			return false

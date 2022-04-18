@@ -187,14 +187,14 @@ func (client *SQLPoolGeoBackupPoliciesClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Get list of SQL pool geo backup policies
+// NewListPager - Get list of SQL pool geo backup policies
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolGeoBackupPoliciesClientListOptions contains the optional parameters for the SQLPoolGeoBackupPoliciesClient.List
 // method.
-func (client *SQLPoolGeoBackupPoliciesClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesClientListOptions) *runtime.Pager[SQLPoolGeoBackupPoliciesClientListResponse] {
+func (client *SQLPoolGeoBackupPoliciesClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolGeoBackupPoliciesClientListOptions) *runtime.Pager[SQLPoolGeoBackupPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolGeoBackupPoliciesClientListResponse]{
 		More: func(page SQLPoolGeoBackupPoliciesClientListResponse) bool {
 			return false

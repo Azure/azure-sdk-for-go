@@ -89,7 +89,7 @@ func ExampleKustoPoolDataConnectionsClient_BeginDataConnectionValidation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsListByDatabase.json
-func ExampleKustoPoolDataConnectionsClient_ListByDatabase() {
+func ExampleKustoPoolDataConnectionsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -101,7 +101,7 @@ func ExampleKustoPoolDataConnectionsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<workspace-name>",
 		"<kusto-pool-name>",
 		"<database-name>",

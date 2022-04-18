@@ -245,14 +245,14 @@ func (client *SQLPoolRestorePointsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Get SQL pool backup information
+// NewListPager - Get SQL pool backup information
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolRestorePointsClientListOptions contains the optional parameters for the SQLPoolRestorePointsClient.List
 // method.
-func (client *SQLPoolRestorePointsClient) List(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsClientListOptions) *runtime.Pager[SQLPoolRestorePointsClientListResponse] {
+func (client *SQLPoolRestorePointsClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsClientListOptions) *runtime.Pager[SQLPoolRestorePointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolRestorePointsClientListResponse]{
 		More: func(page SQLPoolRestorePointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

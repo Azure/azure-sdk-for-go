@@ -416,14 +416,14 @@ func (client *SQLPoolSensitivityLabelsClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListCurrent - Gets SQL pool sensitivity labels.
+// NewListCurrentPager - Gets SQL pool sensitivity labels.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListCurrentOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListCurrent
 // method.
-func (client *SQLPoolSensitivityLabelsClient) ListCurrent(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListCurrentOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListCurrentResponse] {
+func (client *SQLPoolSensitivityLabelsClient) NewListCurrentPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListCurrentOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListCurrentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListCurrentResponse]{
 		More: func(page SQLPoolSensitivityLabelsClientListCurrentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -493,14 +493,14 @@ func (client *SQLPoolSensitivityLabelsClient) listCurrentHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListRecommended - Gets sensitivity labels of a given SQL pool.
+// NewListRecommendedPager - Gets sensitivity labels of a given SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolSensitivityLabelsClientListRecommendedOptions contains the optional parameters for the SQLPoolSensitivityLabelsClient.ListRecommended
 // method.
-func (client *SQLPoolSensitivityLabelsClient) ListRecommended(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListRecommendedOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListRecommendedResponse] {
+func (client *SQLPoolSensitivityLabelsClient) NewListRecommendedPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolSensitivityLabelsClientListRecommendedOptions) *runtime.Pager[SQLPoolSensitivityLabelsClientListRecommendedResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLPoolSensitivityLabelsClientListRecommendedResponse]{
 		More: func(page SQLPoolSensitivityLabelsClientListRecommendedResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

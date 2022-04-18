@@ -115,13 +115,13 @@ func (client *RestorableDroppedSQLPoolsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByWorkspace - Gets a list of deleted Sql pools that can be restored
+// NewListByWorkspacePager - Gets a list of deleted Sql pools that can be restored
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - RestorableDroppedSQLPoolsClientListByWorkspaceOptions contains the optional parameters for the RestorableDroppedSQLPoolsClient.ListByWorkspace
 // method.
-func (client *RestorableDroppedSQLPoolsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) *runtime.Pager[RestorableDroppedSQLPoolsClientListByWorkspaceResponse] {
+func (client *RestorableDroppedSQLPoolsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) *runtime.Pager[RestorableDroppedSQLPoolsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedSQLPoolsClientListByWorkspaceResponse]{
 		More: func(page RestorableDroppedSQLPoolsClientListByWorkspaceResponse) bool {
 			return false

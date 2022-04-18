@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ContactProfilesClient.ListBySubscription` has been removed
+- Function `*ContactProfilesClient.List` has been removed
+- Function `*SpacecraftsClient.ListBySubscription` has been removed
+- Function `*ContactsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SpacecraftsClient.List` has been removed
+- Function `*AvailableGroundStationsClient.ListByCapability` has been removed
+
+### Features Added
+
+- New function `*ContactProfilesClient.NewListBySubscriptionPager(*ContactProfilesClientListBySubscriptionOptions) *runtime.Pager[ContactProfilesClientListBySubscriptionResponse]`
+- New function `*SpacecraftsClient.NewListBySubscriptionPager(*SpacecraftsClientListBySubscriptionOptions) *runtime.Pager[SpacecraftsClientListBySubscriptionResponse]`
+- New function `*SpacecraftsClient.NewListPager(string, *SpacecraftsClientListOptions) *runtime.Pager[SpacecraftsClientListResponse]`
+- New function `*ContactProfilesClient.NewListPager(string, *ContactProfilesClientListOptions) *runtime.Pager[ContactProfilesClientListResponse]`
+- New function `*AvailableGroundStationsClient.NewListByCapabilityPager(CapabilityType, *AvailableGroundStationsClientListByCapabilityOptions) *runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ContactsClient.NewListPager(string, string, *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

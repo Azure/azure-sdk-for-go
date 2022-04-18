@@ -236,11 +236,11 @@ func (client *ContactProfilesClient) getHandleResponse(resp *http.Response) (Con
 	return result, nil
 }
 
-// List - Returns list of contact profiles
+// NewListPager - Returns list of contact profiles
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ContactProfilesClientListOptions contains the optional parameters for the ContactProfilesClient.List method.
-func (client *ContactProfilesClient) List(resourceGroupName string, options *ContactProfilesClientListOptions) *runtime.Pager[ContactProfilesClientListResponse] {
+func (client *ContactProfilesClient) NewListPager(resourceGroupName string, options *ContactProfilesClientListOptions) *runtime.Pager[ContactProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContactProfilesClientListResponse]{
 		More: func(page ContactProfilesClientListResponse) bool {
 			return false
@@ -293,11 +293,11 @@ func (client *ContactProfilesClient) listHandleResponse(resp *http.Response) (Co
 	return result, nil
 }
 
-// ListBySubscription - Returns list of contact profiles
+// NewListBySubscriptionPager - Returns list of contact profiles
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ContactProfilesClientListBySubscriptionOptions contains the optional parameters for the ContactProfilesClient.ListBySubscription
 // method.
-func (client *ContactProfilesClient) ListBySubscription(options *ContactProfilesClientListBySubscriptionOptions) *runtime.Pager[ContactProfilesClientListBySubscriptionResponse] {
+func (client *ContactProfilesClient) NewListBySubscriptionPager(options *ContactProfilesClientListBySubscriptionOptions) *runtime.Pager[ContactProfilesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContactProfilesClientListBySubscriptionResponse]{
 		More: func(page ContactProfilesClientListBySubscriptionResponse) bool {
 			return false

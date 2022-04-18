@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/preview/2021-04-04-preview/examples/AvailableGroundStationsByCapabilityList.json
-func ExampleAvailableGroundStationsClient_ListByCapability() {
+func ExampleAvailableGroundStationsClient_NewListByCapabilityPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleAvailableGroundStationsClient_ListByCapability() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCapability(armorbital.CapabilityTypeEarthObservation,
+	pager := client.NewListByCapabilityPager(armorbital.CapabilityTypeEarthObservation,
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListInstancePoolUsageExpanded.json
-func ExampleUsagesClient_ListByInstancePool() {
+func ExampleUsagesClient_NewListByInstancePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleUsagesClient_ListByInstancePool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInstancePool("<resource-group-name>",
+	pager := client.NewListByInstancePoolPager("<resource-group-name>",
 		"<instance-pool-name>",
 		&armsql.UsagesClientListByInstancePoolOptions{ExpandChildren: to.Ptr(true)})
 	for pager.More() {

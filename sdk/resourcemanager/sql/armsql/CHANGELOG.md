@@ -1,5 +1,305 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*DatabaseSecurityAlertPoliciesClient.ListByDatabase` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClient.ListByDatabase` has been removed
+- Function `*ServerSecurityAlertPoliciesClient.ListByServer` has been removed
+- Function `*ManagedInstancePrivateEndpointConnectionsClient.ListByManagedInstance` has been removed
+- Function `*IPv6FirewallRulesClient.ListByServer` has been removed
+- Function `*TransparentDataEncryptionsClient.ListByDatabase` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupServer` has been removed
+- Function `*ManagedInstanceLongTermRetentionPoliciesClient.ListByDatabase` has been removed
+- Function `*JobTargetGroupsClient.ListByAgent` has been removed
+- Function `*DeletedServersClient.ListByLocation` has been removed
+- Function `*InstanceFailoverGroupsClient.ListByLocation` has been removed
+- Function `*DatabasesClient.ListByElasticPool` has been removed
+- Function `*ElasticPoolDatabaseActivitiesClient.ListByElasticPool` has been removed
+- Function `*ElasticPoolActivitiesClient.ListByElasticPool` has been removed
+- Function `*SensitivityLabelsClient.ListRecommendedByDatabase` has been removed
+- Function `*ManagedDatabaseQueriesClient.ListByQuery` has been removed
+- Function `*ElasticPoolsClient.ListByServer` has been removed
+- Function `*FailoverGroupsClient.ListByServer` has been removed
+- Function `*ManagedInstancesClient.ListByResourceGroup` has been removed
+- Function `*ExtendedServerBlobAuditingPoliciesClient.ListByServer` has been removed
+- Function `*ReplicationLinksClient.ListByDatabase` has been removed
+- Function `*LongTermRetentionPoliciesClient.ListByDatabase` has been removed
+- Function `*ManagedDatabasesClient.ListInaccessibleByInstance` has been removed
+- Function `*ServerDevOpsAuditSettingsClient.ListByServer` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentScansClient.ListByDatabase` has been removed
+- Function `*ExtendedDatabaseBlobAuditingPoliciesClient.ListByDatabase` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SubscriptionUsagesClient.ListByLocation` has been removed
+- Function `*ServerOperationsClient.ListByServer` has been removed
+- Function `*ManagedDatabasesClient.ListByInstance` has been removed
+- Function `*ElasticPoolOperationsClient.ListByElasticPool` has been removed
+- Function `*DatabasesClient.ListMetrics` has been removed
+- Function `*ServersClient.List` has been removed
+- Function `*DatabaseBlobAuditingPoliciesClient.ListByDatabase` has been removed
+- Function `*ServiceObjectivesClient.ListByServer` has been removed
+- Function `*JobAgentsClient.ListByServer` has been removed
+- Function `*DistributedAvailabilityGroupsClient.ListByInstance` has been removed
+- Function `*DeletedServersClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByServer` has been removed
+- Function `*SensitivityLabelsClient.ListByDatabase` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupLocation` has been removed
+- Function `*SyncGroupsClient.ListLogs` has been removed
+- Function `*PrivateLinkResourcesClient.ListByServer` has been removed
+- Function `*ManagedInstancePrivateLinkResourcesClient.ListByManagedInstance` has been removed
+- Function `*ManagedDatabaseSecurityAlertPoliciesClient.ListByDatabase` has been removed
+- Function `*ManagedServerSecurityAlertPoliciesClient.ListByInstance` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByInstance` has been removed
+- Function `*DatabaseColumnsClient.ListByTable` has been removed
+- Function `*ManagedInstancesClient.ListByInstancePool` has been removed
+- Function `*DatabasesClient.ListMetricDefinitions` has been removed
+- Function `*WorkloadGroupsClient.ListByDatabase` has been removed
+- Function `*ServerAzureADOnlyAuthenticationsClient.ListByServer` has been removed
+- Function `*ServerUsagesClient.ListByServer` has been removed
+- Function `*VirtualClustersClient.ListByResourceGroup` has been removed
+- Function `*ServerKeysClient.ListByServer` has been removed
+- Function `*LedgerDigestUploadsClient.ListByDatabase` has been removed
+- Function `*ManagedInstanceOperationsClient.ListByManagedInstance` has been removed
+- Function `*JobStepsClient.ListByVersion` has been removed
+- Function `*ManagedDatabaseTablesClient.ListBySchema` has been removed
+- Function `*JobExecutionsClient.ListByAgent` has been removed
+- Function `*ManagedInstanceEncryptionProtectorsClient.ListByInstance` has been removed
+- Function `*ServerAzureADAdministratorsClient.ListByServer` has been removed
+- Function `*ManagedInstancesClient.ListByManagedInstance` has been removed
+- Function `*ManagedDatabaseColumnsClient.ListByTable` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase` has been removed
+- Function `*OutboundFirewallRulesClient.ListByServer` has been removed
+- Function `*SyncAgentsClient.ListLinkedDatabases` has been removed
+- Function `*ManagedInstanceVulnerabilityAssessmentsClient.ListByInstance` has been removed
+- Function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.ListByRestorableDroppedDatabase` has been removed
+- Function `*InstancePoolsClient.List` has been removed
+- Function `*ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance` has been removed
+- Function `*JobVersionsClient.ListByJob` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByDatabase` has been removed
+- Function `*RestorableDroppedDatabasesClient.ListByServer` has been removed
+- Function `*SyncAgentsClient.ListByServer` has been removed
+- Function `*BackupShortTermRetentionPoliciesClient.ListByDatabase` has been removed
+- Function `*InstancePoolsClient.ListByResourceGroup` has been removed
+- Function `*EncryptionProtectorsClient.ListByServer` has been removed
+- Function `*JobStepExecutionsClient.ListByJobExecution` has been removed
+- Function `*DatabaseTablesClient.ListBySchema` has been removed
+- Function `*ServerTrustCertificatesClient.ListByInstance` has been removed
+- Function `*SensitivityLabelsClient.ListCurrentByDatabase` has been removed
+- Function `*FirewallRulesClient.ListByServer` has been removed
+- Function `*ManagedInstanceKeysClient.ListByInstance` has been removed
+- Function `*SyncMembersClient.ListMemberSchemas` has been removed
+- Function `*DatabasesClient.ListInaccessibleByServer` has been removed
+- Function `*DatabasesClient.ListByServer` has been removed
+- Function `*ManagedBackupShortTermRetentionPoliciesClient.ListByDatabase` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByResourceGroupDatabase` has been removed
+- Function `*ElasticPoolsClient.ListMetricDefinitions` has been removed
+- Function `*UsagesClient.ListByInstancePool` has been removed
+- Function `*DataWarehouseUserActivitiesClient.ListByDatabase` has been removed
+- Function `*ManagedInstanceAdministratorsClient.ListByInstance` has been removed
+- Function `*DatabaseUsagesClient.ListByDatabase` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation` has been removed
+- Function `*ManagedInstancesClient.List` has been removed
+- Function `*WorkloadClassifiersClient.ListByWorkloadGroup` has been removed
+- Function `*DatabaseExtensionsClient.ListByDatabase` has been removed
+- Function `*VirtualClustersClient.List` has been removed
+- Function `*RecoverableManagedDatabasesClient.ListByInstance` has been removed
+- Function `*ServerDNSAliasesClient.ListByServer` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByDatabase` has been removed
+- Function `*ManagedDatabaseSchemasClient.ListByDatabase` has been removed
+- Function `*DatabaseOperationsClient.ListByDatabase` has been removed
+- Function `*ServerTrustGroupsClient.ListByInstance` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance` has been removed
+- Function `*ReplicationLinksClient.ListByServer` has been removed
+- Function `*RestorableDroppedManagedDatabasesClient.ListByInstance` has been removed
+- Function `*ServerBlobAuditingPoliciesClient.ListByServer` has been removed
+- Function `*JobTargetExecutionsClient.ListByStep` has been removed
+- Function `*DatabaseVulnerabilityAssessmentsClient.ListByDatabase` has been removed
+- Function `*ServersClient.ListByResourceGroup` has been removed
+- Function `*ManagedDatabaseTransparentDataEncryptionClient.ListByDatabase` has been removed
+- Function `*ManagedDatabaseVulnerabilityAssessmentsClient.ListByDatabase` has been removed
+- Function `*ServerTrustGroupsClient.ListByLocation` has been removed
+- Function `*GeoBackupPoliciesClient.ListByDatabase` has been removed
+- Function `*ServerCommunicationLinksClient.ListByServer` has been removed
+- Function `*JobTargetExecutionsClient.ListByJobExecution` has been removed
+- Function `*SyncGroupsClient.ListSyncDatabaseIDs` has been removed
+- Function `*DataMaskingRulesClient.ListByDatabase` has been removed
+- Function `*DatabaseColumnsClient.ListByDatabase` has been removed
+- Function `*TimeZonesClient.ListByLocation` has been removed
+- Function `*JobStepsClient.ListByJob` has been removed
+- Function `*DatabaseSchemasClient.ListByDatabase` has been removed
+- Function `*JobExecutionsClient.ListByJob` has been removed
+- Function `*DatabaseVulnerabilityAssessmentScansClient.ListByDatabase` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClient.ListCurrentByDatabase` has been removed
+- Function `*ElasticPoolsClient.ListMetrics` has been removed
+- Function `*JobsClient.ListByAgent` has been removed
+- Function `*ServerVulnerabilityAssessmentsClient.ListByServer` has been removed
+- Function `*ManagedDatabaseSensitivityLabelsClient.ListRecommendedByDatabase` has been removed
+- Function `*VirtualNetworkRulesClient.ListByServer` has been removed
+- Function `*SyncGroupsClient.ListHubSchemas` has been removed
+- Function `*SyncGroupsClient.ListByDatabase` has been removed
+- Function `*RestorePointsClient.ListByDatabase` has been removed
+- Function `*ManagedDatabaseColumnsClient.ListByDatabase` has been removed
+- Function `*JobCredentialsClient.ListByAgent` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByServer` has been removed
+- Function `*ManagedServerDNSAliasesClient.ListByManagedInstance` has been removed
+- Function `*LongTermRetentionBackupsClient.ListByLocation` has been removed
+- Function `*SyncMembersClient.ListBySyncGroup` has been removed
+- Function `*EndpointCertificatesClient.ListByInstance` has been removed
+- Function `*RecoverableDatabasesClient.ListByServer` has been removed
+- Function `*LongTermRetentionManagedInstanceBackupsClient.ListByLocation` has been removed
+- Function `*ServerConnectionPoliciesClient.ListByServer` has been removed
+- Function `*ManagedDatabaseSecurityEventsClient.ListByDatabase` has been removed
+
+### Features Added
+
+- New function `*ServerAzureADOnlyAuthenticationsClient.NewListByServerPager(string, string, *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse]`
+- New function `*DistributedAvailabilityGroupsClient.NewListByInstancePager(string, string, *DistributedAvailabilityGroupsClientListByInstanceOptions) *runtime.Pager[DistributedAvailabilityGroupsClientListByInstanceResponse]`
+- New function `*TimeZonesClient.NewListByLocationPager(string, *TimeZonesClientListByLocationOptions) *runtime.Pager[TimeZonesClientListByLocationResponse]`
+- New function `*ManagedDatabaseSecurityEventsClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]`
+- New function `*DeletedServersClient.NewListByLocationPager(string, *DeletedServersClientListByLocationOptions) *runtime.Pager[DeletedServersClientListByLocationResponse]`
+- New function `*GeoBackupPoliciesClient.NewListByDatabasePager(string, string, string, *GeoBackupPoliciesClientListByDatabaseOptions) *runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse]`
+- New function `*ManagedBackupShortTermRetentionPoliciesClient.NewListByDatabasePager(string, string, string, *ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]`
+- New function `*DatabasesClient.NewListInaccessibleByServerPager(string, string, *DatabasesClientListInaccessibleByServerOptions) *runtime.Pager[DatabasesClientListInaccessibleByServerResponse]`
+- New function `*VirtualClustersClient.NewListPager(*VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse]`
+- New function `*ManagedDatabaseVulnerabilityAssessmentsClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseVulnerabilityAssessmentsClientListByDatabaseResponse]`
+- New function `*UsagesClient.NewListByInstancePoolPager(string, string, *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse]`
+- New function `*ManagedInstanceAzureADOnlyAuthenticationsClient.NewListByInstancePager(string, string, *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]`
+- New function `*DatabaseTablesClient.NewListBySchemaPager(string, string, string, string, *DatabaseTablesClientListBySchemaOptions) *runtime.Pager[DatabaseTablesClientListBySchemaResponse]`
+- New function `*SyncGroupsClient.NewListByDatabasePager(string, string, string, *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse]`
+- New function `*ServerBlobAuditingPoliciesClient.NewListByServerPager(string, string, *ServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse]`
+- New function `*SensitivityLabelsClient.NewListRecommendedByDatabasePager(string, string, string, *SensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListRecommendedByDatabaseResponse]`
+- New function `*DatabasesClient.NewListByElasticPoolPager(string, string, string, *DatabasesClientListByElasticPoolOptions) *runtime.Pager[DatabasesClientListByElasticPoolResponse]`
+- New function `*InstanceFailoverGroupsClient.NewListByLocationPager(string, string, *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse]`
+- New function `*DatabaseBlobAuditingPoliciesClient.NewListByDatabasePager(string, string, string, *DatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[DatabaseBlobAuditingPoliciesClientListByDatabaseResponse]`
+- New function `*DatabaseColumnsClient.NewListByTablePager(string, string, string, string, string, *DatabaseColumnsClientListByTableOptions) *runtime.Pager[DatabaseColumnsClientListByTableResponse]`
+- New function `*SyncAgentsClient.NewListLinkedDatabasesPager(string, string, string, *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse]`
+- New function `*JobTargetExecutionsClient.NewListByStepPager(string, string, string, string, string, string, *JobTargetExecutionsClientListByStepOptions) *runtime.Pager[JobTargetExecutionsClientListByStepResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByLocationPager(string, *LongTermRetentionBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionBackupsClientListByLocationResponse]`
+- New function `*SyncGroupsClient.NewListLogsPager(string, string, string, string, string, string, SyncGroupsType, *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse]`
+- New function `*JobExecutionsClient.NewListByJobPager(string, string, string, string, *JobExecutionsClientListByJobOptions) *runtime.Pager[JobExecutionsClientListByJobResponse]`
+- New function `*ManagedInstancesClient.NewListByManagedInstancePager(string, string, *ManagedInstancesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse]`
+- New function `*ManagedDatabaseVulnerabilityAssessmentScansClient.NewListByDatabasePager(string, string, string, VulnerabilityAssessmentName, *ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse]`
+- New function `*ServiceObjectivesClient.NewListByServerPager(string, string, *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse]`
+- New function `*ElasticPoolsClient.NewListMetricsPager(string, string, string, string, *ElasticPoolsClientListMetricsOptions) *runtime.Pager[ElasticPoolsClientListMetricsResponse]`
+- New function `*TransparentDataEncryptionsClient.NewListByDatabasePager(string, string, string, *TransparentDataEncryptionsClientListByDatabaseOptions) *runtime.Pager[TransparentDataEncryptionsClientListByDatabaseResponse]`
+- New function `*ManagedInstanceOperationsClient.NewListByManagedInstancePager(string, string, *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse]`
+- New function `*ManagedInstancePrivateEndpointConnectionsClient.NewListByManagedInstancePager(string, string, *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]`
+- New function `*JobStepsClient.NewListByVersionPager(string, string, string, string, int32, *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse]`
+- New function `*JobCredentialsClient.NewListByAgentPager(string, string, string, *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse]`
+- New function `*DatabasesClient.NewListMetricDefinitionsPager(string, string, string, *DatabasesClientListMetricDefinitionsOptions) *runtime.Pager[DatabasesClientListMetricDefinitionsResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupDatabasePager(string, string, string, string, *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]`
+- New function `*SyncGroupsClient.NewListSyncDatabaseIDsPager(string, *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse]`
+- New function `*JobExecutionsClient.NewListByAgentPager(string, string, string, *JobExecutionsClientListByAgentOptions) *runtime.Pager[JobExecutionsClientListByAgentResponse]`
+- New function `*SubscriptionUsagesClient.NewListByLocationPager(string, *SubscriptionUsagesClientListByLocationOptions) *runtime.Pager[SubscriptionUsagesClientListByLocationResponse]`
+- New function `*JobVersionsClient.NewListByJobPager(string, string, string, string, *JobVersionsClientListByJobOptions) *runtime.Pager[JobVersionsClientListByJobResponse]`
+- New function `*ManagedInstanceLongTermRetentionPoliciesClient.NewListByDatabasePager(string, string, string, *ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedInstanceLongTermRetentionPoliciesClientListByDatabaseResponse]`
+- New function `*ServerDNSAliasesClient.NewListByServerPager(string, string, *ServerDNSAliasesClientListByServerOptions) *runtime.Pager[ServerDNSAliasesClientListByServerResponse]`
+- New function `*ServerUsagesClient.NewListByServerPager(string, string, *ServerUsagesClientListByServerOptions) *runtime.Pager[ServerUsagesClientListByServerResponse]`
+- New function `*ServerKeysClient.NewListByServerPager(string, string, *ServerKeysClientListByServerOptions) *runtime.Pager[ServerKeysClientListByServerResponse]`
+- New function `*FailoverGroupsClient.NewListByServerPager(string, string, *FailoverGroupsClientListByServerOptions) *runtime.Pager[FailoverGroupsClientListByServerResponse]`
+- New function `*JobsClient.NewListByAgentPager(string, string, string, *JobsClientListByAgentOptions) *runtime.Pager[JobsClientListByAgentResponse]`
+- New function `*DataMaskingRulesClient.NewListByDatabasePager(string, string, string, *DataMaskingRulesClientListByDatabaseOptions) *runtime.Pager[DataMaskingRulesClientListByDatabaseResponse]`
+- New function `*DatabaseSecurityAlertPoliciesClient.NewListByDatabasePager(string, string, string, *DatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[DatabaseSecurityAlertPoliciesClientListByDatabaseResponse]`
+- New function `*VirtualNetworkRulesClient.NewListByServerPager(string, string, *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse]`
+- New function `*RestorableDroppedManagedDatabasesClient.NewListByInstancePager(string, string, *RestorableDroppedManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RestorableDroppedManagedDatabasesClientListByInstanceResponse]`
+- New function `*ManagedInstanceKeysClient.NewListByInstancePager(string, string, *ManagedInstanceKeysClientListByInstanceOptions) *runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse]`
+- New function `*ServerTrustGroupsClient.NewListByInstancePager(string, string, *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByResourceGroupServerPager(string, string, string, *LongTermRetentionBackupsClientListByResourceGroupServerOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupServerResponse]`
+- New function `*ManagedDatabasesClient.NewListByInstancePager(string, string, *ManagedDatabasesClientListByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListByInstanceResponse]`
+- New function `*ServerDevOpsAuditSettingsClient.NewListByServerPager(string, string, *ServerDevOpsAuditSettingsClientListByServerOptions) *runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse]`
+- New function `*JobAgentsClient.NewListByServerPager(string, string, *JobAgentsClientListByServerOptions) *runtime.Pager[JobAgentsClientListByServerResponse]`
+- New function `*ServerSecurityAlertPoliciesClient.NewListByServerPager(string, string, *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse]`
+- New function `*RestorableDroppedDatabasesClient.NewListByServerPager(string, string, *RestorableDroppedDatabasesClientListByServerOptions) *runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByResourceGroupLocationPager(string, string, *LongTermRetentionBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupLocationResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByServerPager(string, string, *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse]`
+- New function `*ServerOperationsClient.NewListByServerPager(string, string, *ServerOperationsClientListByServerOptions) *runtime.Pager[ServerOperationsClientListByServerResponse]`
+- New function `*ServerVulnerabilityAssessmentsClient.NewListByServerPager(string, string, *ServerVulnerabilityAssessmentsClientListByServerOptions) *runtime.Pager[ServerVulnerabilityAssessmentsClientListByServerResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByLocationPager(string, *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByDatabasePager(string, string, string, *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]`
+- New function `*LedgerDigestUploadsClient.NewListByDatabasePager(string, string, string, *LedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse]`
+- New function `*ExtendedServerBlobAuditingPoliciesClient.NewListByServerPager(string, string, *ExtendedServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ExtendedServerBlobAuditingPoliciesClientListByServerResponse]`
+- New function `*DatabasesClient.NewListMetricsPager(string, string, string, string, *DatabasesClientListMetricsOptions) *runtime.Pager[DatabasesClientListMetricsResponse]`
+- New function `*EndpointCertificatesClient.NewListByInstancePager(string, string, *EndpointCertificatesClientListByInstanceOptions) *runtime.Pager[EndpointCertificatesClientListByInstanceResponse]`
+- New function `*ManagedDatabaseColumnsClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse]`
+- New function `*IPv6FirewallRulesClient.NewListByServerPager(string, string, *IPv6FirewallRulesClientListByServerOptions) *runtime.Pager[IPv6FirewallRulesClientListByServerResponse]`
+- New function `*LongTermRetentionPoliciesClient.NewListByDatabasePager(string, string, string, *LongTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionPoliciesClientListByDatabaseResponse]`
+- New function `*WorkloadClassifiersClient.NewListByWorkloadGroupPager(string, string, string, string, *WorkloadClassifiersClientListByWorkloadGroupOptions) *runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse]`
+- New function `*ManagedDatabaseQueriesClient.NewListByQueryPager(string, string, string, string, *ManagedDatabaseQueriesClientListByQueryOptions) *runtime.Pager[ManagedDatabaseQueriesClientListByQueryResponse]`
+- New function `*JobStepsClient.NewListByJobPager(string, string, string, string, *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse]`
+- New function `*DatabaseVulnerabilityAssessmentScansClient.NewListByDatabasePager(string, string, string, VulnerabilityAssessmentName, *DatabaseVulnerabilityAssessmentScansClientListByDatabaseOptions) *runtime.Pager[DatabaseVulnerabilityAssessmentScansClientListByDatabaseResponse]`
+- New function `*ManagedInstancesClient.NewListPager(*ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse]`
+- New function `*ManagedServerSecurityAlertPoliciesClient.NewListByInstancePager(string, string, *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByServerPager(string, string, *LongTermRetentionBackupsClientListByServerOptions) *runtime.Pager[LongTermRetentionBackupsClientListByServerResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByResourceGroupDatabasePager(string, string, string, string, *LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse]`
+- New function `*SensitivityLabelsClient.NewListByDatabasePager(string, string, string, *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse]`
+- New function `*RecoverableManagedDatabasesClient.NewListByInstancePager(string, string, *RecoverableManagedDatabasesClientListByInstanceOptions) *runtime.Pager[RecoverableManagedDatabasesClientListByInstanceResponse]`
+- New function `*ManagedInstanceEncryptionProtectorsClient.NewListByInstancePager(string, string, *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]`
+- New function `*OutboundFirewallRulesClient.NewListByServerPager(string, string, *OutboundFirewallRulesClientListByServerOptions) *runtime.Pager[OutboundFirewallRulesClientListByServerResponse]`
+- New function `*ReplicationLinksClient.NewListByServerPager(string, string, *ReplicationLinksClientListByServerOptions) *runtime.Pager[ReplicationLinksClientListByServerResponse]`
+- New function `*InstancePoolsClient.NewListPager(*InstancePoolsClientListOptions) *runtime.Pager[InstancePoolsClientListResponse]`
+- New function `*JobTargetExecutionsClient.NewListByJobExecutionPager(string, string, string, string, string, *JobTargetExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse]`
+- New function `*DatabasesClient.NewListByServerPager(string, string, *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse]`
+- New function `*ElasticPoolActivitiesClient.NewListByElasticPoolPager(string, string, string, *ElasticPoolActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolActivitiesClientListByElasticPoolResponse]`
+- New function `*SyncGroupsClient.NewListHubSchemasPager(string, string, string, string, *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse]`
+- New function `*ManagedInstanceVulnerabilityAssessmentsClient.NewListByInstancePager(string, string, *ManagedInstanceVulnerabilityAssessmentsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceVulnerabilityAssessmentsClientListByInstanceResponse]`
+- New function `*ReplicationLinksClient.NewListByDatabasePager(string, string, string, *ReplicationLinksClientListByDatabaseOptions) *runtime.Pager[ReplicationLinksClientListByDatabaseResponse]`
+- New function `*BackupShortTermRetentionPoliciesClient.NewListByDatabasePager(string, string, string, *BackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[BackupShortTermRetentionPoliciesClientListByDatabaseResponse]`
+- New function `*ServersClient.NewListPager(*ServersClientListOptions) *runtime.Pager[ServersClientListResponse]`
+- New function `*ManagedInstancesClient.NewListByResourceGroupPager(string, *ManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[ManagedInstancesClientListByResourceGroupResponse]`
+- New function `*ManagedDatabaseSensitivityLabelsClient.NewListRecommendedByDatabasePager(string, string, string, *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupInstancePager(string, string, string, *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]`
+- New function `*JobTargetGroupsClient.NewListByAgentPager(string, string, string, *JobTargetGroupsClientListByAgentOptions) *runtime.Pager[JobTargetGroupsClientListByAgentResponse]`
+- New function `*ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.NewListByRestorableDroppedDatabasePager(string, string, string, *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseOptions) *runtime.Pager[ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseResponse]`
+- New function `*DataWarehouseUserActivitiesClient.NewListByDatabasePager(string, string, string, *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse]`
+- New function `*ServerCommunicationLinksClient.NewListByServerPager(string, string, *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse]`
+- New function `*ManagedDatabaseSensitivityLabelsClient.NewListCurrentByDatabasePager(string, string, string, *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse]`
+- New function `*SensitivityLabelsClient.NewListCurrentByDatabasePager(string, string, string, *SensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListCurrentByDatabaseResponse]`
+- New function `*ServerTrustCertificatesClient.NewListByInstancePager(string, string, *ServerTrustCertificatesClientListByInstanceOptions) *runtime.Pager[ServerTrustCertificatesClientListByInstanceResponse]`
+- New function `*ServersClient.NewListByResourceGroupPager(string, *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse]`
+- New function `*ElasticPoolsClient.NewListByServerPager(string, string, *ElasticPoolsClientListByServerOptions) *runtime.Pager[ElasticPoolsClientListByServerResponse]`
+- New function `*DatabaseExtensionsClient.NewListByDatabasePager(string, string, string, *DatabaseExtensionsClientListByDatabaseOptions) *runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse]`
+- New function `*ElasticPoolOperationsClient.NewListByElasticPoolPager(string, string, string, *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse]`
+- New function `*DatabaseVulnerabilityAssessmentsClient.NewListByDatabasePager(string, string, string, *DatabaseVulnerabilityAssessmentsClientListByDatabaseOptions) *runtime.Pager[DatabaseVulnerabilityAssessmentsClientListByDatabaseResponse]`
+- New function `*ElasticPoolDatabaseActivitiesClient.NewListByElasticPoolPager(string, string, string, *ElasticPoolDatabaseActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolDatabaseActivitiesClientListByElasticPoolResponse]`
+- New function `*SyncMembersClient.NewListMemberSchemasPager(string, string, string, string, string, *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse]`
+- New function `*DatabaseOperationsClient.NewListByDatabasePager(string, string, string, *DatabaseOperationsClientListByDatabaseOptions) *runtime.Pager[DatabaseOperationsClientListByDatabaseResponse]`
+- New function `*RestorePointsClient.NewListByDatabasePager(string, string, string, *RestorePointsClientListByDatabaseOptions) *runtime.Pager[RestorePointsClientListByDatabaseResponse]`
+- New function `*ManagedDatabasesClient.NewListInaccessibleByInstancePager(string, string, *ManagedDatabasesClientListInaccessibleByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse]`
+- New function `*SyncMembersClient.NewListBySyncGroupPager(string, string, string, string, *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse]`
+- New function `*DeletedServersClient.NewListPager(*DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse]`
+- New function `*DatabaseColumnsClient.NewListByDatabasePager(string, string, string, *DatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[DatabaseColumnsClientListByDatabaseResponse]`
+- New function `*DatabaseUsagesClient.NewListByDatabasePager(string, string, string, *DatabaseUsagesClientListByDatabaseOptions) *runtime.Pager[DatabaseUsagesClientListByDatabaseResponse]`
+- New function `*ManagedInstancesClient.NewListByInstancePoolPager(string, string, *ManagedInstancesClientListByInstancePoolOptions) *runtime.Pager[ManagedInstancesClientListByInstancePoolResponse]`
+- New function `*InstancePoolsClient.NewListByResourceGroupPager(string, *InstancePoolsClientListByResourceGroupOptions) *runtime.Pager[InstancePoolsClientListByResourceGroupResponse]`
+- New function `*FirewallRulesClient.NewListByServerPager(string, string, *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse]`
+- New function `*ExtendedDatabaseBlobAuditingPoliciesClient.NewListByDatabasePager(string, string, string, *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse]`
+- New function `*ManagedDatabaseTransparentDataEncryptionClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse]`
+- New function `*ServerConnectionPoliciesClient.NewListByServerPager(string, string, *ServerConnectionPoliciesClientListByServerOptions) *runtime.Pager[ServerConnectionPoliciesClientListByServerResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByInstancePager(string, string, *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]`
+- New function `*ManagedDatabaseSensitivityLabelsClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse]`
+- New function `*LongTermRetentionBackupsClient.NewListByDatabasePager(string, string, string, *LongTermRetentionBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionBackupsClientListByDatabaseResponse]`
+- New function `*ManagedServerDNSAliasesClient.NewListByManagedInstancePager(string, string, *ManagedServerDNSAliasesClientListByManagedInstanceOptions) *runtime.Pager[ManagedServerDNSAliasesClientListByManagedInstanceResponse]`
+- New function `*ElasticPoolsClient.NewListMetricDefinitionsPager(string, string, string, *ElasticPoolsClientListMetricDefinitionsOptions) *runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByServerPager(string, string, *PrivateEndpointConnectionsClientListByServerOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServerResponse]`
+- New function `*ManagedInstanceAdministratorsClient.NewListByInstancePager(string, string, *ManagedInstanceAdministratorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*DatabaseSchemasClient.NewListByDatabasePager(string, string, string, *DatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[DatabaseSchemasClientListByDatabaseResponse]`
+- New function `*ManagedInstancePrivateLinkResourcesClient.NewListByManagedInstancePager(string, string, *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse]`
+- New function `*ServerAzureADAdministratorsClient.NewListByServerPager(string, string, *ServerAzureADAdministratorsClientListByServerOptions) *runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse]`
+- New function `*ManagedDatabaseSecurityAlertPoliciesClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse]`
+- New function `*WorkloadGroupsClient.NewListByDatabasePager(string, string, string, *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse]`
+- New function `*LongTermRetentionManagedInstanceBackupsClient.NewListByResourceGroupLocationPager(string, string, *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]`
+- New function `*ManagedDatabaseTablesClient.NewListBySchemaPager(string, string, string, string, *ManagedDatabaseTablesClientListBySchemaOptions) *runtime.Pager[ManagedDatabaseTablesClientListBySchemaResponse]`
+- New function `*VirtualClustersClient.NewListByResourceGroupPager(string, *VirtualClustersClientListByResourceGroupOptions) *runtime.Pager[VirtualClustersClientListByResourceGroupResponse]`
+- New function `*ManagedDatabaseSchemasClient.NewListByDatabasePager(string, string, string, *ManagedDatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse]`
+- New function `*ServerTrustGroupsClient.NewListByLocationPager(string, string, *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse]`
+- New function `*RecoverableDatabasesClient.NewListByServerPager(string, string, *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse]`
+- New function `*ManagedDatabaseColumnsClient.NewListByTablePager(string, string, string, string, string, *ManagedDatabaseColumnsClientListByTableOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse]`
+- New function `*EncryptionProtectorsClient.NewListByServerPager(string, string, *EncryptionProtectorsClientListByServerOptions) *runtime.Pager[EncryptionProtectorsClientListByServerResponse]`
+- New function `*JobStepExecutionsClient.NewListByJobExecutionPager(string, string, string, string, string, *JobStepExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobStepExecutionsClientListByJobExecutionResponse]`
+- New function `*SyncAgentsClient.NewListByServerPager(string, string, *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

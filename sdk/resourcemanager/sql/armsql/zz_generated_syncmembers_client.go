@@ -278,7 +278,7 @@ func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMem
 	return result, nil
 }
 
-// ListBySyncGroup - Lists sync members in the given sync group.
+// NewListBySyncGroupPager - Lists sync members in the given sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -287,7 +287,7 @@ func (client *SyncMembersClient) getHandleResponse(resp *http.Response) (SyncMem
 // syncGroupName - The name of the sync group.
 // options - SyncMembersClientListBySyncGroupOptions contains the optional parameters for the SyncMembersClient.ListBySyncGroup
 // method.
-func (client *SyncMembersClient) ListBySyncGroup(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse] {
+func (client *SyncMembersClient) NewListBySyncGroupPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncMembersClientListBySyncGroupOptions) *runtime.Pager[SyncMembersClientListBySyncGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncMembersClientListBySyncGroupResponse]{
 		More: func(page SyncMembersClientListBySyncGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -358,7 +358,7 @@ func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListMemberSchemas - Gets a sync member database schema.
+// NewListMemberSchemasPager - Gets a sync member database schema.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -368,7 +368,7 @@ func (client *SyncMembersClient) listBySyncGroupHandleResponse(resp *http.Respon
 // syncMemberName - The name of the sync member.
 // options - SyncMembersClientListMemberSchemasOptions contains the optional parameters for the SyncMembersClient.ListMemberSchemas
 // method.
-func (client *SyncMembersClient) ListMemberSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse] {
+func (client *SyncMembersClient) NewListMemberSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, syncMemberName string, options *SyncMembersClientListMemberSchemasOptions) *runtime.Pager[SyncMembersClientListMemberSchemasResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncMembersClientListMemberSchemasResponse]{
 		More: func(page SyncMembersClientListMemberSchemasResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

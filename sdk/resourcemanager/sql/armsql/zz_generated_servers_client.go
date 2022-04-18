@@ -346,10 +346,10 @@ func (client *ServersClient) importDatabaseCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// List - Gets a list of all servers in the subscription.
+// NewListPager - Gets a list of all servers in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
-func (client *ServersClient) List(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
+func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListResponse]{
 		More: func(page ServersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -407,13 +407,13 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of servers in a resource groups.
+// NewListByResourceGroupPager - Gets a list of servers in a resource groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup
 // method.
-func (client *ServersClient) ListByResourceGroup(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
+func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServersClientListByResourceGroupResponse]{
 		More: func(page ServersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

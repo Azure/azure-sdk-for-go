@@ -54,7 +54,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// ListByDatabase - Gets database usages.
+// NewListByDatabasePager - Gets database usages.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -62,7 +62,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 // databaseName - The name of the database.
 // options - DatabaseUsagesClientListByDatabaseOptions contains the optional parameters for the DatabaseUsagesClient.ListByDatabase
 // method.
-func (client *DatabaseUsagesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) *runtime.Pager[DatabaseUsagesClientListByDatabaseResponse] {
+func (client *DatabaseUsagesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) *runtime.Pager[DatabaseUsagesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseUsagesClientListByDatabaseResponse]{
 		More: func(page DatabaseUsagesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

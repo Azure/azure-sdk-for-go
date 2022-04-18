@@ -184,14 +184,14 @@ func (client *ServerConnectionPoliciesClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByServer - Lists connection policy
+// NewListByServerPager - Lists connection policy
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerConnectionPoliciesClientListByServerOptions contains the optional parameters for the ServerConnectionPoliciesClient.ListByServer
 // method.
-func (client *ServerConnectionPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerConnectionPoliciesClientListByServerOptions) *runtime.Pager[ServerConnectionPoliciesClientListByServerResponse] {
+func (client *ServerConnectionPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerConnectionPoliciesClientListByServerOptions) *runtime.Pager[ServerConnectionPoliciesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerConnectionPoliciesClientListByServerResponse]{
 		More: func(page ServerConnectionPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

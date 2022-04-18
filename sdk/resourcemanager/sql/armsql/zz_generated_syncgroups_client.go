@@ -319,7 +319,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 	return result, nil
 }
 
-// ListByDatabase - Lists sync groups under a hub database.
+// NewListByDatabasePager - Lists sync groups under a hub database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -327,7 +327,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 // databaseName - The name of the database on which the sync group is hosted.
 // options - SyncGroupsClientListByDatabaseOptions contains the optional parameters for the SyncGroupsClient.ListByDatabase
 // method.
-func (client *SyncGroupsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse] {
+func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListByDatabaseResponse]{
 		More: func(page SyncGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -394,7 +394,7 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListHubSchemas - Gets a collection of hub database schemas.
+// NewListHubSchemasPager - Gets a collection of hub database schemas.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -403,7 +403,7 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 // syncGroupName - The name of the sync group.
 // options - SyncGroupsClientListHubSchemasOptions contains the optional parameters for the SyncGroupsClient.ListHubSchemas
 // method.
-func (client *SyncGroupsClient) ListHubSchemas(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse] {
+func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListHubSchemasResponse]{
 		More: func(page SyncGroupsClientListHubSchemasResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -474,7 +474,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListLogs - Gets a collection of sync group logs.
+// NewListLogsPager - Gets a collection of sync group logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -485,7 +485,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 // endTime - Get logs generated before this time.
 // typeParam - The types of logs to retrieve.
 // options - SyncGroupsClientListLogsOptions contains the optional parameters for the SyncGroupsClient.ListLogs method.
-func (client *SyncGroupsClient) ListLogs(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse] {
+func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListLogsResponse]{
 		More: func(page SyncGroupsClientListLogsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -562,12 +562,12 @@ func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (Syn
 	return result, nil
 }
 
-// ListSyncDatabaseIDs - Gets a collection of sync database ids.
+// NewListSyncDatabaseIDsPager - Gets a collection of sync database ids.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The name of the region where the resource is located.
 // options - SyncGroupsClientListSyncDatabaseIDsOptions contains the optional parameters for the SyncGroupsClient.ListSyncDatabaseIDs
 // method.
-func (client *SyncGroupsClient) ListSyncDatabaseIDs(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse] {
+func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListSyncDatabaseIDsResponse]{
 		More: func(page SyncGroupsClientListSyncDatabaseIDsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

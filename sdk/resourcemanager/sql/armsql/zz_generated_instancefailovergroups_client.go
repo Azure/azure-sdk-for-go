@@ -386,14 +386,14 @@ func (client *InstanceFailoverGroupsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByLocation - Lists the failover groups in a location.
+// NewListByLocationPager - Lists the failover groups in a location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // options - InstanceFailoverGroupsClientListByLocationOptions contains the optional parameters for the InstanceFailoverGroupsClient.ListByLocation
 // method.
-func (client *InstanceFailoverGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse] {
+func (client *InstanceFailoverGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *InstanceFailoverGroupsClientListByLocationOptions) *runtime.Pager[InstanceFailoverGroupsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InstanceFailoverGroupsClientListByLocationResponse]{
 		More: func(page InstanceFailoverGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

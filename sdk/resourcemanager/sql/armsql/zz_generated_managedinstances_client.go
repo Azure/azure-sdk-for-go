@@ -302,10 +302,10 @@ func (client *ManagedInstancesClient) getHandleResponse(resp *http.Response) (Ma
 	return result, nil
 }
 
-// List - Gets a list of all managed instances in the subscription.
+// NewListPager - Gets a list of all managed instances in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ManagedInstancesClientListOptions contains the optional parameters for the ManagedInstancesClient.List method.
-func (client *ManagedInstancesClient) List(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
+func (client *ManagedInstancesClient) NewListPager(options *ManagedInstancesClientListOptions) *runtime.Pager[ManagedInstancesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancesClientListResponse]{
 		More: func(page ManagedInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,14 +363,14 @@ func (client *ManagedInstancesClient) listHandleResponse(resp *http.Response) (M
 	return result, nil
 }
 
-// ListByInstancePool - Gets a list of all managed instances in an instance pool.
+// NewListByInstancePoolPager - Gets a list of all managed instances in an instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // instancePoolName - The instance pool name.
 // options - ManagedInstancesClientListByInstancePoolOptions contains the optional parameters for the ManagedInstancesClient.ListByInstancePool
 // method.
-func (client *ManagedInstancesClient) ListByInstancePool(resourceGroupName string, instancePoolName string, options *ManagedInstancesClientListByInstancePoolOptions) *runtime.Pager[ManagedInstancesClientListByInstancePoolResponse] {
+func (client *ManagedInstancesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *ManagedInstancesClientListByInstancePoolOptions) *runtime.Pager[ManagedInstancesClientListByInstancePoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancesClientListByInstancePoolResponse]{
 		More: func(page ManagedInstancesClientListByInstancePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -436,14 +436,14 @@ func (client *ManagedInstancesClient) listByInstancePoolHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListByManagedInstance - Get top resource consuming queries of a managed instance.
+// NewListByManagedInstancePager - Get top resource consuming queries of a managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancesClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstancesClient.ListByManagedInstance
 // method.
-func (client *ManagedInstancesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse] {
+func (client *ManagedInstancesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancesClientListByManagedInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancesClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -527,13 +527,13 @@ func (client *ManagedInstancesClient) listByManagedInstanceHandleResponse(resp *
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of managed instances in a resource group.
+// NewListByResourceGroupPager - Gets a list of managed instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - ManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the ManagedInstancesClient.ListByResourceGroup
 // method.
-func (client *ManagedInstancesClient) ListByResourceGroup(resourceGroupName string, options *ManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[ManagedInstancesClientListByResourceGroupResponse] {
+func (client *ManagedInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *ManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[ManagedInstancesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancesClientListByResourceGroupResponse]{
 		More: func(page ManagedInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

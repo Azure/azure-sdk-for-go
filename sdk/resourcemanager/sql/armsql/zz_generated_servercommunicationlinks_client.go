@@ -236,14 +236,14 @@ func (client *ServerCommunicationLinksClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByServer - Gets a list of server communication links.
+// NewListByServerPager - Gets a list of server communication links.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerCommunicationLinksClientListByServerOptions contains the optional parameters for the ServerCommunicationLinksClient.ListByServer
 // method.
-func (client *ServerCommunicationLinksClient) ListByServer(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse] {
+func (client *ServerCommunicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerCommunicationLinksClientListByServerOptions) *runtime.Pager[ServerCommunicationLinksClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerCommunicationLinksClientListByServerResponse]{
 		More: func(page ServerCommunicationLinksClientListByServerResponse) bool {
 			return false

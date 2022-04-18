@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByAgentWithFilter.json
-func ExampleJobExecutionsClient_ListByAgent() {
+func ExampleJobExecutionsClient_NewListByAgentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleJobExecutionsClient_ListByAgent() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAgent("<resource-group-name>",
+	pager := client.NewListByAgentPager("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		&armsql.JobExecutionsClientListByAgentOptions{CreateTimeMin: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-21T19:00:00Z"); return t }()),
@@ -115,7 +115,7 @@ func ExampleJobExecutionsClient_BeginCreate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionsByJob.json
-func ExampleJobExecutionsClient_ListByJob() {
+func ExampleJobExecutionsClient_NewListByJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +127,7 @@ func ExampleJobExecutionsClient_ListByJob() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByJob("<resource-group-name>",
+	pager := client.NewListByJobPager("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		"<job-name>",

@@ -171,10 +171,10 @@ func (client *VirtualClustersClient) getHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// List - Gets a list of all virtualClusters in the subscription.
+// NewListPager - Gets a list of all virtualClusters in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualClustersClientListOptions contains the optional parameters for the VirtualClustersClient.List method.
-func (client *VirtualClustersClient) List(options *VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse] {
+func (client *VirtualClustersClient) NewListPager(options *VirtualClustersClientListOptions) *runtime.Pager[VirtualClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualClustersClientListResponse]{
 		More: func(page VirtualClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -229,13 +229,13 @@ func (client *VirtualClustersClient) listHandleResponse(resp *http.Response) (Vi
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of virtual clusters in a resource group.
+// NewListByResourceGroupPager - Gets a list of virtual clusters in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - VirtualClustersClientListByResourceGroupOptions contains the optional parameters for the VirtualClustersClient.ListByResourceGroup
 // method.
-func (client *VirtualClustersClient) ListByResourceGroup(resourceGroupName string, options *VirtualClustersClientListByResourceGroupOptions) *runtime.Pager[VirtualClustersClientListByResourceGroupResponse] {
+func (client *VirtualClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualClustersClientListByResourceGroupOptions) *runtime.Pager[VirtualClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualClustersClientListByResourceGroupResponse]{
 		More: func(page VirtualClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

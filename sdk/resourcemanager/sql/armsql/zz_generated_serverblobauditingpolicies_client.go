@@ -176,14 +176,14 @@ func (client *ServerBlobAuditingPoliciesClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByServer - Lists auditing settings of a server.
+// NewListByServerPager - Lists auditing settings of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerBlobAuditingPoliciesClientListByServerOptions contains the optional parameters for the ServerBlobAuditingPoliciesClient.ListByServer
 // method.
-func (client *ServerBlobAuditingPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse] {
+func (client *ServerBlobAuditingPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerBlobAuditingPoliciesClientListByServerOptions) *runtime.Pager[ServerBlobAuditingPoliciesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerBlobAuditingPoliciesClientListByServerResponse]{
 		More: func(page ServerBlobAuditingPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

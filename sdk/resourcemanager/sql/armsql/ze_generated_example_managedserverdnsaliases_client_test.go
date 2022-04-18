@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedServerDnsAliasList.json
-func ExampleManagedServerDNSAliasesClient_ListByManagedInstance() {
+func ExampleManagedServerDNSAliasesClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleManagedServerDNSAliasesClient_ListByManagedInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByManagedInstance("<resource-group-name>",
+	pager := client.NewListByManagedInstancePager("<resource-group-name>",
 		"<managed-instance-name>",
 		nil)
 	for pager.More() {

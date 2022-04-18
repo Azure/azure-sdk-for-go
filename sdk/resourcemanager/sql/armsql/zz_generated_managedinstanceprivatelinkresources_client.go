@@ -116,14 +116,14 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// ListByManagedInstance - Gets the private link resources for SQL server.
+// NewListByManagedInstancePager - Gets the private link resources for SQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions contains the optional parameters for the
 // ManagedInstancePrivateLinkResourcesClient.ListByManagedInstance method.
-func (client *ManagedInstancePrivateLinkResourcesClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse] {
+func (client *ManagedInstancePrivateLinkResourcesClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancePrivateLinkResourcesClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

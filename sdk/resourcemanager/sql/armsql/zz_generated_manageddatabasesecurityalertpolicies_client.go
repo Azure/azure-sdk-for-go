@@ -189,7 +189,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp
 	return result, nil
 }
 
-// ListByDatabase - Gets a list of managed database's security alert policies.
+// NewListByDatabasePager - Gets a list of managed database's security alert policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -197,7 +197,7 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) getHandleResponse(resp
 // databaseName - The name of the managed database for which the security alert policies are defined.
 // options - ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityAlertPoliciesClient.ListByDatabase
 // method.
-func (client *ManagedDatabaseSecurityAlertPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSecurityAlertPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSecurityAlertPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

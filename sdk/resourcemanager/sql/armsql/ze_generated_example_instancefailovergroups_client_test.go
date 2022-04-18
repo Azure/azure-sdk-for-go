@@ -126,7 +126,7 @@ func ExampleInstanceFailoverGroupsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/InstanceFailoverGroupList.json
-func ExampleInstanceFailoverGroupsClient_ListByLocation() {
+func ExampleInstanceFailoverGroupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -138,7 +138,7 @@ func ExampleInstanceFailoverGroupsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<resource-group-name>",
+	pager := client.NewListByLocationPager("<resource-group-name>",
 		"<location-name>",
 		nil)
 	for pager.More() {

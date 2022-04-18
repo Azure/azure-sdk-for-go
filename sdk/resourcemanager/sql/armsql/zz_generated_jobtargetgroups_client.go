@@ -244,7 +244,7 @@ func (client *JobTargetGroupsClient) getHandleResponse(resp *http.Response) (Job
 	return result, nil
 }
 
-// ListByAgent - Gets all target groups in an agent.
+// NewListByAgentPager - Gets all target groups in an agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -252,7 +252,7 @@ func (client *JobTargetGroupsClient) getHandleResponse(resp *http.Response) (Job
 // jobAgentName - The name of the job agent.
 // options - JobTargetGroupsClientListByAgentOptions contains the optional parameters for the JobTargetGroupsClient.ListByAgent
 // method.
-func (client *JobTargetGroupsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsClientListByAgentOptions) *runtime.Pager[JobTargetGroupsClientListByAgentResponse] {
+func (client *JobTargetGroupsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobTargetGroupsClientListByAgentOptions) *runtime.Pager[JobTargetGroupsClientListByAgentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobTargetGroupsClientListByAgentResponse]{
 		More: func(page JobTargetGroupsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

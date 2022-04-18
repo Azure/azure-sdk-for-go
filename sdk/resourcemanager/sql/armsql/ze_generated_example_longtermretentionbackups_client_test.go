@@ -153,7 +153,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/LongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionBackupsClient_ListByDatabase() {
+func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -165,7 +165,7 @@ func ExampleLongTermRetentionBackupsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<location-name>",
+	pager := client.NewListByDatabasePager("<location-name>",
 		"<long-term-retention-server-name>",
 		"<long-term-retention-database-name>",
 		&armsql.LongTermRetentionBackupsClientListByDatabaseOptions{OnlyLatestPerDatabase: nil,
@@ -185,7 +185,7 @@ func ExampleLongTermRetentionBackupsClient_ListByDatabase() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/LongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionBackupsClient_ListByLocation() {
+func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -197,7 +197,7 @@ func ExampleLongTermRetentionBackupsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<location-name>",
+	pager := client.NewListByLocationPager("<location-name>",
 		&armsql.LongTermRetentionBackupsClientListByLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -215,7 +215,7 @@ func ExampleLongTermRetentionBackupsClient_ListByLocation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/LongTermRetentionBackupListByServer.json
-func ExampleLongTermRetentionBackupsClient_ListByServer() {
+func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -227,7 +227,7 @@ func ExampleLongTermRetentionBackupsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<location-name>",
+	pager := client.NewListByServerPager("<location-name>",
 		"<long-term-retention-server-name>",
 		&armsql.LongTermRetentionBackupsClientListByServerOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
@@ -383,7 +383,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionBackupsClient_ListByResourceGroupDatabase() {
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -395,7 +395,7 @@ func ExampleLongTermRetentionBackupsClient_ListByResourceGroupDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupDatabase("<resource-group-name>",
+	pager := client.NewListByResourceGroupDatabasePager("<resource-group-name>",
 		"<location-name>",
 		"<long-term-retention-server-name>",
 		"<long-term-retention-database-name>",
@@ -416,7 +416,7 @@ func ExampleLongTermRetentionBackupsClient_ListByResourceGroupDatabase() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionBackupsClient_ListByResourceGroupLocation() {
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,7 +428,7 @@ func ExampleLongTermRetentionBackupsClient_ListByResourceGroupLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupLocation("<resource-group-name>",
+	pager := client.NewListByResourceGroupLocationPager("<resource-group-name>",
 		"<location-name>",
 		&armsql.LongTermRetentionBackupsClientListByResourceGroupLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
@@ -447,7 +447,7 @@ func ExampleLongTermRetentionBackupsClient_ListByResourceGroupLocation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedLongTermRetentionBackupListByServer.json
-func ExampleLongTermRetentionBackupsClient_ListByResourceGroupServer() {
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -459,7 +459,7 @@ func ExampleLongTermRetentionBackupsClient_ListByResourceGroupServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupServer("<resource-group-name>",
+	pager := client.NewListByResourceGroupServerPager("<resource-group-name>",
 		"<location-name>",
 		"<long-term-retention-server-name>",
 		&armsql.LongTermRetentionBackupsClientListByResourceGroupServerOptions{OnlyLatestPerDatabase: nil,

@@ -252,14 +252,14 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getHandleResponse
 	return result, nil
 }
 
-// ListByInstance - Gets a list of server Azure Active Directory only authentications.
+// NewListByInstancePager - Gets a list of server Azure Active Directory only authentications.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions contains the optional parameters for the
 // ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance method.
-func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse] {
+func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

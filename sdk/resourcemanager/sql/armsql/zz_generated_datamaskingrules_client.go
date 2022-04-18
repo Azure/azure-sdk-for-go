@@ -123,7 +123,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByDatabase - Gets a list of database data masking rules.
+// NewListByDatabasePager - Gets a list of database data masking rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -131,7 +131,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 // databaseName - The name of the database.
 // options - DataMaskingRulesClientListByDatabaseOptions contains the optional parameters for the DataMaskingRulesClient.ListByDatabase
 // method.
-func (client *DataMaskingRulesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions) *runtime.Pager[DataMaskingRulesClientListByDatabaseResponse] {
+func (client *DataMaskingRulesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataMaskingRulesClientListByDatabaseOptions) *runtime.Pager[DataMaskingRulesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataMaskingRulesClientListByDatabaseResponse]{
 		More: func(page DataMaskingRulesClientListByDatabaseResponse) bool {
 			return false

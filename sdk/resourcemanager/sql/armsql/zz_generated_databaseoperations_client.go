@@ -108,7 +108,7 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// ListByDatabase - Gets a list of operations performed on the database.
+// NewListByDatabasePager - Gets a list of operations performed on the database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -116,7 +116,7 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 // databaseName - The name of the database.
 // options - DatabaseOperationsClientListByDatabaseOptions contains the optional parameters for the DatabaseOperationsClient.ListByDatabase
 // method.
-func (client *DatabaseOperationsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseOperationsClientListByDatabaseOptions) *runtime.Pager[DatabaseOperationsClientListByDatabaseResponse] {
+func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseOperationsClientListByDatabaseOptions) *runtime.Pager[DatabaseOperationsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseOperationsClientListByDatabaseResponse]{
 		More: func(page DatabaseOperationsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

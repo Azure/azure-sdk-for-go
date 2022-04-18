@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseSecurityEventsGetMax.json
-func ExampleManagedDatabaseSecurityEventsClient_ListByDatabase() {
+func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleManagedDatabaseSecurityEventsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.ManagedDatabaseSecurityEventsClientListByDatabaseOptions{Filter: to.Ptr("<filter>"),

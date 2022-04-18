@@ -316,14 +316,14 @@ func (client *ElasticPoolsClient) getHandleResponse(resp *http.Response) (Elasti
 	return result, nil
 }
 
-// ListByServer - Gets all elastic pools in a server.
+// NewListByServerPager - Gets all elastic pools in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ElasticPoolsClientListByServerOptions contains the optional parameters for the ElasticPoolsClient.ListByServer
 // method.
-func (client *ElasticPoolsClient) ListByServer(resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) *runtime.Pager[ElasticPoolsClientListByServerResponse] {
+func (client *ElasticPoolsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ElasticPoolsClientListByServerOptions) *runtime.Pager[ElasticPoolsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ElasticPoolsClientListByServerResponse]{
 		More: func(page ElasticPoolsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -389,7 +389,7 @@ func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListMetricDefinitions - Returns elastic pool metric definitions.
+// NewListMetricDefinitionsPager - Returns elastic pool metric definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -397,7 +397,7 @@ func (client *ElasticPoolsClient) listByServerHandleResponse(resp *http.Response
 // elasticPoolName - The name of the elastic pool.
 // options - ElasticPoolsClientListMetricDefinitionsOptions contains the optional parameters for the ElasticPoolsClient.ListMetricDefinitions
 // method.
-func (client *ElasticPoolsClient) ListMetricDefinitions(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) *runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse] {
+func (client *ElasticPoolsClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolsClientListMetricDefinitionsOptions) *runtime.Pager[ElasticPoolsClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ElasticPoolsClientListMetricDefinitionsResponse]{
 		More: func(page ElasticPoolsClientListMetricDefinitionsResponse) bool {
 			return false
@@ -458,7 +458,7 @@ func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http
 	return result, nil
 }
 
-// ListMetrics - Returns elastic pool metrics.
+// NewListMetricsPager - Returns elastic pool metrics.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -467,7 +467,7 @@ func (client *ElasticPoolsClient) listMetricDefinitionsHandleResponse(resp *http
 // filter - An OData filter expression that describes a subset of metrics to return.
 // options - ElasticPoolsClientListMetricsOptions contains the optional parameters for the ElasticPoolsClient.ListMetrics
 // method.
-func (client *ElasticPoolsClient) ListMetrics(resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) *runtime.Pager[ElasticPoolsClientListMetricsResponse] {
+func (client *ElasticPoolsClient) NewListMetricsPager(resourceGroupName string, serverName string, elasticPoolName string, filter string, options *ElasticPoolsClientListMetricsOptions) *runtime.Pager[ElasticPoolsClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ElasticPoolsClientListMetricsResponse]{
 		More: func(page ElasticPoolsClientListMetricsResponse) bool {
 			return false

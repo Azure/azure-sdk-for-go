@@ -115,14 +115,14 @@ func (client *ServiceObjectivesClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// ListByServer - Returns database service objectives.
+// NewListByServerPager - Returns database service objectives.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServiceObjectivesClientListByServerOptions contains the optional parameters for the ServiceObjectivesClient.ListByServer
 // method.
-func (client *ServiceObjectivesClient) ListByServer(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
+func (client *ServiceObjectivesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServiceObjectivesClientListByServerOptions) *runtime.Pager[ServiceObjectivesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceObjectivesClientListByServerResponse]{
 		More: func(page ServiceObjectivesClientListByServerResponse) bool {
 			return false

@@ -54,7 +54,7 @@ func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
-// ListByElasticPool - Returns elastic pool activities.
+// NewListByElasticPoolPager - Returns elastic pool activities.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -62,7 +62,7 @@ func NewElasticPoolActivitiesClient(subscriptionID string, credential azcore.Tok
 // elasticPoolName - The name of the elastic pool for which to get the current activity.
 // options - ElasticPoolActivitiesClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolActivitiesClient.ListByElasticPool
 // method.
-func (client *ElasticPoolActivitiesClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolActivitiesClientListByElasticPoolResponse] {
+func (client *ElasticPoolActivitiesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolActivitiesClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolActivitiesClientListByElasticPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ElasticPoolActivitiesClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolActivitiesClientListByElasticPoolResponse) bool {
 			return false

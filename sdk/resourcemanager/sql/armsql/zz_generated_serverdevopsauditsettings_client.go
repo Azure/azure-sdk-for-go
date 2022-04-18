@@ -186,14 +186,14 @@ func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByServer - Lists DevOps audit settings of a server.
+// NewListByServerPager - Lists DevOps audit settings of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerDevOpsAuditSettingsClientListByServerOptions contains the optional parameters for the ServerDevOpsAuditSettingsClient.ListByServer
 // method.
-func (client *ServerDevOpsAuditSettingsClient) ListByServer(resourceGroupName string, serverName string, options *ServerDevOpsAuditSettingsClientListByServerOptions) *runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse] {
+func (client *ServerDevOpsAuditSettingsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerDevOpsAuditSettingsClientListByServerOptions) *runtime.Pager[ServerDevOpsAuditSettingsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerDevOpsAuditSettingsClientListByServerResponse]{
 		More: func(page ServerDevOpsAuditSettingsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

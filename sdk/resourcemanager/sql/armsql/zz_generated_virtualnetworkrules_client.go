@@ -249,14 +249,14 @@ func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByServer - Gets a list of virtual network rules in a server.
+// NewListByServerPager - Gets a list of virtual network rules in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - VirtualNetworkRulesClientListByServerOptions contains the optional parameters for the VirtualNetworkRulesClient.ListByServer
 // method.
-func (client *VirtualNetworkRulesClient) ListByServer(resourceGroupName string, serverName string, options *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse] {
+func (client *VirtualNetworkRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkRulesClientListByServerResponse]{
 		More: func(page VirtualNetworkRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

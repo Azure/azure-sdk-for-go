@@ -328,7 +328,7 @@ func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobEx
 	return result, nil
 }
 
-// ListByAgent - Lists all executions in a job agent.
+// NewListByAgentPager - Lists all executions in a job agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -336,7 +336,7 @@ func (client *JobExecutionsClient) getHandleResponse(resp *http.Response) (JobEx
 // jobAgentName - The name of the job agent.
 // options - JobExecutionsClientListByAgentOptions contains the optional parameters for the JobExecutionsClient.ListByAgent
 // method.
-func (client *JobExecutionsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobExecutionsClientListByAgentOptions) *runtime.Pager[JobExecutionsClientListByAgentResponse] {
+func (client *JobExecutionsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobExecutionsClientListByAgentOptions) *runtime.Pager[JobExecutionsClientListByAgentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobExecutionsClientListByAgentResponse]{
 		More: func(page JobExecutionsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -424,7 +424,7 @@ func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByJob - Lists a job's executions.
+// NewListByJobPager - Lists a job's executions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -432,7 +432,7 @@ func (client *JobExecutionsClient) listByAgentHandleResponse(resp *http.Response
 // jobAgentName - The name of the job agent.
 // jobName - The name of the job to get.
 // options - JobExecutionsClientListByJobOptions contains the optional parameters for the JobExecutionsClient.ListByJob method.
-func (client *JobExecutionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientListByJobOptions) *runtime.Pager[JobExecutionsClientListByJobResponse] {
+func (client *JobExecutionsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientListByJobOptions) *runtime.Pager[JobExecutionsClientListByJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobExecutionsClientListByJobResponse]{
 		More: func(page JobExecutionsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

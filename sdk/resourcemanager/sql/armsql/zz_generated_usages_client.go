@@ -55,14 +55,14 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByInstancePool - Gets all instance pool usage metrics
+// NewListByInstancePoolPager - Gets all instance pool usage metrics
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // instancePoolName - The name of the instance pool to be retrieved.
 // options - UsagesClientListByInstancePoolOptions contains the optional parameters for the UsagesClient.ListByInstancePool
 // method.
-func (client *UsagesClient) ListByInstancePool(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse] {
+func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) *runtime.Pager[UsagesClientListByInstancePoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByInstancePoolResponse]{
 		More: func(page UsagesClientListByInstancePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

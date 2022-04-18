@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01-legacy/examples/ElasticPoolDatabaseActivityList.json
-func ExampleElasticPoolDatabaseActivitiesClient_ListByElasticPool() {
+func ExampleElasticPoolDatabaseActivitiesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleElasticPoolDatabaseActivitiesClient_ListByElasticPool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByElasticPool("<resource-group-name>",
+	pager := client.NewListByElasticPoolPager("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		nil)

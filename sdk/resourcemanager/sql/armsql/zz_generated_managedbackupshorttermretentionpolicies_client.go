@@ -194,7 +194,7 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) getHandleResponse(r
 	return result, nil
 }
 
-// ListByDatabase - Gets a managed database's short term retention policy list.
+// NewListByDatabasePager - Gets a managed database's short term retention policy list.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -202,7 +202,7 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) getHandleResponse(r
 // databaseName - The name of the database.
 // options - ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions contains the optional parameters for the ManagedBackupShortTermRetentionPoliciesClient.ListByDatabase
 // method.
-func (client *ManagedBackupShortTermRetentionPoliciesClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse] {
+func (client *ManagedBackupShortTermRetentionPoliciesClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedBackupShortTermRetentionPoliciesClientListByDatabaseOptions) *runtime.Pager[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse]{
 		More: func(page ManagedBackupShortTermRetentionPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

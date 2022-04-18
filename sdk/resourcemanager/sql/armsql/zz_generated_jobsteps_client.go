@@ -332,7 +332,7 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 	return result, nil
 }
 
-// ListByJob - Gets all job steps for a job's current version.
+// NewListByJobPager - Gets all job steps for a job's current version.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -340,7 +340,7 @@ func (client *JobStepsClient) getByVersionHandleResponse(resp *http.Response) (J
 // jobAgentName - The name of the job agent.
 // jobName - The name of the job to get.
 // options - JobStepsClientListByJobOptions contains the optional parameters for the JobStepsClient.ListByJob method.
-func (client *JobStepsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse] {
+func (client *JobStepsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobStepsClientListByJobOptions) *runtime.Pager[JobStepsClientListByJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByJobResponse]{
 		More: func(page JobStepsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -411,7 +411,7 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 	return result, nil
 }
 
-// ListByVersion - Gets all job steps in the specified job version.
+// NewListByVersionPager - Gets all job steps in the specified job version.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -420,7 +420,7 @@ func (client *JobStepsClient) listByJobHandleResponse(resp *http.Response) (JobS
 // jobName - The name of the job to get.
 // jobVersion - The version of the job to get.
 // options - JobStepsClientListByVersionOptions contains the optional parameters for the JobStepsClient.ListByVersion method.
-func (client *JobStepsClient) ListByVersion(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse] {
+func (client *JobStepsClient) NewListByVersionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobVersion int32, options *JobStepsClientListByVersionOptions) *runtime.Pager[JobStepsClientListByVersionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobStepsClientListByVersionResponse]{
 		More: func(page JobStepsClientListByVersionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

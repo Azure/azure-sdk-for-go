@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceListByInstancePool.json
-func ExampleManagedInstancesClient_ListByInstancePool() {
+func ExampleManagedInstancesClient_NewListByInstancePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleManagedInstancesClient_ListByInstancePool() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInstancePool("<resource-group-name>",
+	pager := client.NewListByInstancePoolPager("<resource-group-name>",
 		"<instance-pool-name>",
 		&armsql.ManagedInstancesClientListByInstancePoolOptions{Expand: nil})
 	for pager.More() {
@@ -49,7 +49,7 @@ func ExampleManagedInstancesClient_ListByInstancePool() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceList.json
-func ExampleManagedInstancesClient_List() {
+func ExampleManagedInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExampleManagedInstancesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armsql.ManagedInstancesClientListOptions{Expand: nil})
+	pager := client.NewListPager(&armsql.ManagedInstancesClientListOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -76,7 +76,7 @@ func ExampleManagedInstancesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceListByResourceGroup.json
-func ExampleManagedInstancesClient_ListByResourceGroup() {
+func ExampleManagedInstancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleManagedInstancesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armsql.ManagedInstancesClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -259,7 +259,7 @@ func ExampleManagedInstancesClient_BeginUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceTopQueriesList.json
-func ExampleManagedInstancesClient_ListByManagedInstance() {
+func ExampleManagedInstancesClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -271,7 +271,7 @@ func ExampleManagedInstancesClient_ListByManagedInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByManagedInstance("<resource-group-name>",
+	pager := client.NewListByManagedInstancePager("<resource-group-name>",
 		"<managed-instance-name>",
 		&armsql.ManagedInstancesClientListByManagedInstanceOptions{NumberOfQueries: nil,
 			Databases:           nil,

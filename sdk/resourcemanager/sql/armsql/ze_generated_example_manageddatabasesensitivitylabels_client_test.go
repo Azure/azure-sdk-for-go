@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedDatabaseSensitivityLabelsListByDatabaseCurrent.json
-func ExampleManagedDatabaseSensitivityLabelsClient_ListCurrentByDatabase() {
+func ExampleManagedDatabaseSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_ListCurrentByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCurrentByDatabase("<resource-group-name>",
+	pager := client.NewListCurrentByDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions{SkipToken: nil,
@@ -118,7 +118,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
-func ExampleManagedDatabaseSensitivityLabelsClient_ListRecommendedByDatabase() {
+func ExampleManagedDatabaseSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -130,7 +130,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_ListRecommendedByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRecommendedByDatabase("<resource-group-name>",
+	pager := client.NewListRecommendedByDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions{SkipToken: nil,
@@ -300,7 +300,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_EnableRecommendation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ManagedDatabaseSensitivityLabelsListByDatabase.json
-func ExampleManagedDatabaseSensitivityLabelsClient_ListByDatabase() {
+func ExampleManagedDatabaseSensitivityLabelsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -312,7 +312,7 @@ func ExampleManagedDatabaseSensitivityLabelsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions{Filter: nil})

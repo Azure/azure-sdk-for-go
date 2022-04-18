@@ -230,14 +230,14 @@ func (client *IPv6FirewallRulesClient) getHandleResponse(resp *http.Response) (I
 	return result, nil
 }
 
-// ListByServer - Gets a list of IPv6 firewall rules.
+// NewListByServerPager - Gets a list of IPv6 firewall rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - IPv6FirewallRulesClientListByServerOptions contains the optional parameters for the IPv6FirewallRulesClient.ListByServer
 // method.
-func (client *IPv6FirewallRulesClient) ListByServer(resourceGroupName string, serverName string, options *IPv6FirewallRulesClientListByServerOptions) *runtime.Pager[IPv6FirewallRulesClientListByServerResponse] {
+func (client *IPv6FirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *IPv6FirewallRulesClientListByServerOptions) *runtime.Pager[IPv6FirewallRulesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPv6FirewallRulesClientListByServerResponse]{
 		More: func(page IPv6FirewallRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -184,14 +184,14 @@ func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// ListByInstance - Gets a list of managed instance encryption protectors
+// NewListByInstancePager - Gets a list of managed instance encryption protectors
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceEncryptionProtectorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceEncryptionProtectorsClient.ListByInstance
 // method.
-func (client *ManagedInstanceEncryptionProtectorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse] {
+func (client *ManagedInstanceEncryptionProtectorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceEncryptionProtectorsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceEncryptionProtectorsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

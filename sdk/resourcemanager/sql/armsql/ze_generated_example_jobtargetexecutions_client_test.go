@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByExecution.json
-func ExampleJobTargetExecutionsClient_ListByJobExecution() {
+func ExampleJobTargetExecutionsClient_NewListByJobExecutionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleJobTargetExecutionsClient_ListByJobExecution() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByJobExecution("<resource-group-name>",
+	pager := client.NewListByJobExecutionPager("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		"<job-name>",
@@ -56,7 +56,7 @@ func ExampleJobTargetExecutionsClient_ListByJobExecution() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListJobExecutionTargetsByStep.json
-func ExampleJobTargetExecutionsClient_ListByStep() {
+func ExampleJobTargetExecutionsClient_NewListByStepPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,7 +68,7 @@ func ExampleJobTargetExecutionsClient_ListByStep() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByStep("<resource-group-name>",
+	pager := client.NewListByStepPager("<resource-group-name>",
 		"<server-name>",
 		"<job-agent-name>",
 		"<job-name>",

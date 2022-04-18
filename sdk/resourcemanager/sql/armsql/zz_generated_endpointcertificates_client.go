@@ -116,14 +116,14 @@ func (client *EndpointCertificatesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByInstance - List certificates used on endpoints on the target instance.
+// NewListByInstancePager - List certificates used on endpoints on the target instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - EndpointCertificatesClientListByInstanceOptions contains the optional parameters for the EndpointCertificatesClient.ListByInstance
 // method.
-func (client *EndpointCertificatesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *EndpointCertificatesClientListByInstanceOptions) *runtime.Pager[EndpointCertificatesClientListByInstanceResponse] {
+func (client *EndpointCertificatesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *EndpointCertificatesClientListByInstanceOptions) *runtime.Pager[EndpointCertificatesClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EndpointCertificatesClientListByInstanceResponse]{
 		More: func(page EndpointCertificatesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -316,14 +316,14 @@ func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (Ma
 	return result, nil
 }
 
-// ListByInstance - Gets a list of managed databases.
+// NewListByInstancePager - Gets a list of managed databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedDatabasesClientListByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.ListByInstance
 // method.
-func (client *ManagedDatabasesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListByInstanceResponse] {
+func (client *ManagedDatabasesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabasesClientListByInstanceResponse]{
 		More: func(page ManagedDatabasesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -386,14 +386,14 @@ func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListInaccessibleByInstance - Gets a list of inaccessible managed databases in a managed instance
+// NewListInaccessibleByInstancePager - Gets a list of inaccessible managed databases in a managed instance
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedDatabasesClientListInaccessibleByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.ListInaccessibleByInstance
 // method.
-func (client *ManagedDatabasesClient) ListInaccessibleByInstance(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse] {
+func (client *ManagedDatabasesClient) NewListInaccessibleByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedDatabasesClientListInaccessibleByInstanceOptions) *runtime.Pager[ManagedDatabasesClientListInaccessibleByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabasesClientListInaccessibleByInstanceResponse]{
 		More: func(page ManagedDatabasesClientListInaccessibleByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -121,7 +121,7 @@ func (client *ManagedDatabaseSchemasClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByDatabase - List managed database schemas
+// NewListByDatabasePager - List managed database schemas
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -129,7 +129,7 @@ func (client *ManagedDatabaseSchemasClient) getHandleResponse(resp *http.Respons
 // databaseName - The name of the database.
 // options - ManagedDatabaseSchemasClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSchemasClient.ListByDatabase
 // method.
-func (client *ManagedDatabaseSchemasClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSchemasClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSchemasClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSchemasClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseSchemasClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSchemasClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

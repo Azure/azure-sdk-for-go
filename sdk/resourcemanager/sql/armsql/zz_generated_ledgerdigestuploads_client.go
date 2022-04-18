@@ -261,7 +261,7 @@ func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByDatabase - Gets all ledger digest upload settings on a database.
+// NewListByDatabasePager - Gets all ledger digest upload settings on a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -269,7 +269,7 @@ func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) 
 // databaseName - The name of the database.
 // options - LedgerDigestUploadsClientListByDatabaseOptions contains the optional parameters for the LedgerDigestUploadsClient.ListByDatabase
 // method.
-func (client *LedgerDigestUploadsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse] {
+func (client *LedgerDigestUploadsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *LedgerDigestUploadsClientListByDatabaseOptions) *runtime.Pager[LedgerDigestUploadsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LedgerDigestUploadsClientListByDatabaseResponse]{
 		More: func(page LedgerDigestUploadsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

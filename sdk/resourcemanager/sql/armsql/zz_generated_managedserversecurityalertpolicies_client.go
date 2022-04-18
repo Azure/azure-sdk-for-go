@@ -184,14 +184,14 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *
 	return result, nil
 }
 
-// ListByInstance - Get the managed server's threat detection policies.
+// NewListByInstancePager - Get the managed server's threat detection policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedServerSecurityAlertPoliciesClientListByInstanceOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.ListByInstance
 // method.
-func (client *ManagedServerSecurityAlertPoliciesClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse] {
+func (client *ManagedServerSecurityAlertPoliciesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]{
 		More: func(page ManagedServerSecurityAlertPoliciesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -420,7 +420,7 @@ func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// ListByDatabase - Gets the sensitivity labels of a given database
+// NewListByDatabasePager - Gets the sensitivity labels of a given database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -428,7 +428,7 @@ func (client *SensitivityLabelsClient) getHandleResponse(resp *http.Response) (S
 // databaseName - The name of the database.
 // options - SensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListByDatabase
 // method.
-func (client *SensitivityLabelsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse] {
+func (client *SensitivityLabelsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListByDatabaseResponse]{
 		More: func(page SensitivityLabelsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -498,7 +498,7 @@ func (client *SensitivityLabelsClient) listByDatabaseHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListCurrentByDatabase - Gets the sensitivity labels of a given database
+// NewListCurrentByDatabasePager - Gets the sensitivity labels of a given database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -506,7 +506,7 @@ func (client *SensitivityLabelsClient) listByDatabaseHandleResponse(resp *http.R
 // databaseName - The name of the database.
 // options - SensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListCurrentByDatabase
 // method.
-func (client *SensitivityLabelsClient) ListCurrentByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListCurrentByDatabaseResponse] {
+func (client *SensitivityLabelsClient) NewListCurrentByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListCurrentByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListCurrentByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListCurrentByDatabaseResponse]{
 		More: func(page SensitivityLabelsClientListCurrentByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -582,7 +582,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp 
 	return result, nil
 }
 
-// ListRecommendedByDatabase - Gets the sensitivity labels of a given database
+// NewListRecommendedByDatabasePager - Gets the sensitivity labels of a given database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -590,7 +590,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp 
 // databaseName - The name of the database.
 // options - SensitivityLabelsClientListRecommendedByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListRecommendedByDatabase
 // method.
-func (client *SensitivityLabelsClient) ListRecommendedByDatabase(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListRecommendedByDatabaseResponse] {
+func (client *SensitivityLabelsClient) NewListRecommendedByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SensitivityLabelsClientListRecommendedByDatabaseOptions) *runtime.Pager[SensitivityLabelsClientListRecommendedByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SensitivityLabelsClientListRecommendedByDatabaseResponse]{
 		More: func(page SensitivityLabelsClientListRecommendedByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

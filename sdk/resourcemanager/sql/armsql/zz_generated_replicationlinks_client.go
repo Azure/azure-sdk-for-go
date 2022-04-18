@@ -319,7 +319,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 	return result, nil
 }
 
-// ListByDatabase - Gets a list of replication links on database.
+// NewListByDatabasePager - Gets a list of replication links on database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -327,7 +327,7 @@ func (client *ReplicationLinksClient) getHandleResponse(resp *http.Response) (Re
 // databaseName - The name of the database.
 // options - ReplicationLinksClientListByDatabaseOptions contains the optional parameters for the ReplicationLinksClient.ListByDatabase
 // method.
-func (client *ReplicationLinksClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksClientListByDatabaseOptions) *runtime.Pager[ReplicationLinksClientListByDatabaseResponse] {
+func (client *ReplicationLinksClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ReplicationLinksClientListByDatabaseOptions) *runtime.Pager[ReplicationLinksClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationLinksClientListByDatabaseResponse]{
 		More: func(page ReplicationLinksClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -394,14 +394,14 @@ func (client *ReplicationLinksClient) listByDatabaseHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByServer - Gets a list of replication links.
+// NewListByServerPager - Gets a list of replication links.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ReplicationLinksClientListByServerOptions contains the optional parameters for the ReplicationLinksClient.ListByServer
 // method.
-func (client *ReplicationLinksClient) ListByServer(resourceGroupName string, serverName string, options *ReplicationLinksClientListByServerOptions) *runtime.Pager[ReplicationLinksClientListByServerResponse] {
+func (client *ReplicationLinksClient) NewListByServerPager(resourceGroupName string, serverName string, options *ReplicationLinksClientListByServerOptions) *runtime.Pager[ReplicationLinksClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationLinksClientListByServerResponse]{
 		More: func(page ReplicationLinksClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

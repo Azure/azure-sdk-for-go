@@ -385,14 +385,14 @@ func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (Fail
 	return result, nil
 }
 
-// ListByServer - Lists the failover groups in a server.
+// NewListByServerPager - Lists the failover groups in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server containing the failover group.
 // options - FailoverGroupsClientListByServerOptions contains the optional parameters for the FailoverGroupsClient.ListByServer
 // method.
-func (client *FailoverGroupsClient) ListByServer(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *runtime.Pager[FailoverGroupsClientListByServerResponse] {
+func (client *FailoverGroupsClient) NewListByServerPager(resourceGroupName string, serverName string, options *FailoverGroupsClientListByServerOptions) *runtime.Pager[FailoverGroupsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FailoverGroupsClientListByServerResponse]{
 		More: func(page FailoverGroupsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

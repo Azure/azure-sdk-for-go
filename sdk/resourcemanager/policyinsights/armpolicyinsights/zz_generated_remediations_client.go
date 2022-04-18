@@ -895,7 +895,7 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListDeploymentsAtManagementGroup - Gets all deployments for a remediation at management group scope.
+// NewListDeploymentsAtManagementGroupPager - Gets all deployments for a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
@@ -903,7 +903,7 @@ func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 // method.
 // options - RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtManagementGroup(managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse] {
+func (client *RemediationsClient) NewListDeploymentsAtManagementGroupPager(managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtManagementGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -966,7 +966,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse
 	return result, nil
 }
 
-// ListDeploymentsAtResource - Gets all deployments for a remediation at resource scope.
+// NewListDeploymentsAtResourcePager - Gets all deployments for a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
@@ -974,7 +974,7 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse
 // method.
 // options - RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
 // method.
-func (client *RemediationsClient) ListDeploymentsAtResource(resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse] {
+func (client *RemediationsClient) NewListDeploymentsAtResourcePager(resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1033,7 +1033,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *
 	return result, nil
 }
 
-// ListDeploymentsAtResourceGroup - Gets all deployments for a remediation at resource group scope.
+// NewListDeploymentsAtResourceGroupPager - Gets all deployments for a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
@@ -1041,7 +1041,7 @@ func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *
 // method.
 // options - RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtResourceGroup(resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse] {
+func (client *RemediationsClient) NewListDeploymentsAtResourceGroupPager(resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceGroupResponse]{
 		More: func(page RemediationsClientListDeploymentsAtResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1107,14 +1107,14 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupHandleResponse(r
 	return result, nil
 }
 
-// ListDeploymentsAtSubscription - Gets all deployments for a remediation at subscription scope.
+// NewListDeploymentsAtSubscriptionPager - Gets all deployments for a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // remediationName - The name of the remediation.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
 // method.
-func (client *RemediationsClient) ListDeploymentsAtSubscription(remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse] {
+func (client *RemediationsClient) NewListDeploymentsAtSubscriptionPager(remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtSubscriptionResponse]{
 		More: func(page RemediationsClientListDeploymentsAtSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1176,14 +1176,14 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionHandleResponse(re
 	return result, nil
 }
 
-// ListForManagementGroup - Gets all remediations for the management group.
+// NewListForManagementGroupPager - Gets all remediations for the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // managementGroupID - Management group ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
 // method.
-func (client *RemediationsClient) ListForManagementGroup(managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse] {
+func (client *RemediationsClient) NewListForManagementGroupPager(managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForManagementGroupResponse]{
 		More: func(page RemediationsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1245,14 +1245,14 @@ func (client *RemediationsClient) listForManagementGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListForResource - Gets all remediations for a resource.
+// NewListForResourcePager - Gets all remediations for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource
 // method.
-func (client *RemediationsClient) ListForResource(resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse] {
+func (client *RemediationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceResponse]{
 		More: func(page RemediationsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1310,14 +1310,14 @@ func (client *RemediationsClient) listForResourceHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListForResourceGroup - Gets all remediations for the subscription.
+// NewListForResourceGroupPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
 // method.
-func (client *RemediationsClient) ListForResourceGroup(resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse] {
+func (client *RemediationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceGroupResponse]{
 		More: func(page RemediationsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1382,13 +1382,13 @@ func (client *RemediationsClient) listForResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListForSubscription - Gets all remediations for the subscription.
+// NewListForSubscriptionPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
 // method.
-func (client *RemediationsClient) ListForSubscription(queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse] {
+func (client *RemediationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForSubscriptionResponse]{
 		More: func(page RemediationsClientListForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

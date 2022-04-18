@@ -41,7 +41,7 @@ func ExamplePolicyMetadataClient_GetResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyMetadata_List.json
-func ExamplePolicyMetadataClient_List() {
+func ExamplePolicyMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExamplePolicyMetadataClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armpolicyinsights.QueryOptions{Top: nil,
+	pager := client.NewListPager(&armpolicyinsights.QueryOptions{Top: nil,
 		Filter:    nil,
 		OrderBy:   nil,
 		Select:    nil,

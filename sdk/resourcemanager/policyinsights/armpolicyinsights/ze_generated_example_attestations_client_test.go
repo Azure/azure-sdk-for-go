@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListSubscriptionScope.json
-func ExampleAttestationsClient_ListForSubscription() {
+func ExampleAttestationsClient_NewListForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleAttestationsClient_ListForSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForSubscription(&armpolicyinsights.QueryOptions{Top: nil,
+	pager := client.NewListForSubscriptionPager(&armpolicyinsights.QueryOptions{Top: nil,
 		Filter:    nil,
 		OrderBy:   nil,
 		Select:    nil,
@@ -138,7 +138,7 @@ func ExampleAttestationsClient_DeleteAtSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceGroupScope.json
-func ExampleAttestationsClient_ListForResourceGroup() {
+func ExampleAttestationsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -150,7 +150,7 @@ func ExampleAttestationsClient_ListForResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResourceGroup("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -269,7 +269,7 @@ func ExampleAttestationsClient_DeleteAtResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceScope.json
-func ExampleAttestationsClient_ListForResource() {
+func ExampleAttestationsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -281,7 +281,7 @@ func ExampleAttestationsClient_ListForResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResource("<resource-id>",
+	pager := client.NewListForResourcePager("<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,

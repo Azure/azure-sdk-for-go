@@ -514,14 +514,14 @@ func (client *AttestationsClient) getAtSubscriptionHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListForResource - Gets all attestations for a resource.
+// NewListForResourcePager - Gets all attestations for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForResourceOptions contains the optional parameters for the AttestationsClient.ListForResource
 // method.
-func (client *AttestationsClient) ListForResource(resourceID string, queryOptions *QueryOptions, options *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse] {
+func (client *AttestationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *AttestationsClientListForResourceOptions) *runtime.Pager[AttestationsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForResourceResponse]{
 		More: func(page AttestationsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -579,14 +579,14 @@ func (client *AttestationsClient) listForResourceHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListForResourceGroup - Gets all attestations for the resource group.
+// NewListForResourceGroupPager - Gets all attestations for the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForResourceGroupOptions contains the optional parameters for the AttestationsClient.ListForResourceGroup
 // method.
-func (client *AttestationsClient) ListForResourceGroup(resourceGroupName string, queryOptions *QueryOptions, options *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse] {
+func (client *AttestationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *AttestationsClientListForResourceGroupOptions) *runtime.Pager[AttestationsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForResourceGroupResponse]{
 		More: func(page AttestationsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -651,13 +651,13 @@ func (client *AttestationsClient) listForResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListForSubscription - Gets all attestations for the subscription.
+// NewListForSubscriptionPager - Gets all attestations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - AttestationsClientListForSubscriptionOptions contains the optional parameters for the AttestationsClient.ListForSubscription
 // method.
-func (client *AttestationsClient) ListForSubscription(queryOptions *QueryOptions, options *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse] {
+func (client *AttestationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *AttestationsClientListForSubscriptionOptions) *runtime.Pager[AttestationsClientListForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AttestationsClientListForSubscriptionResponse]{
 		More: func(page AttestationsClientListForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

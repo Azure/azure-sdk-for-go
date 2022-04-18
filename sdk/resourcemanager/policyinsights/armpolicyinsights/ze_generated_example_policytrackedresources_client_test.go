@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QueryManagementGroupScope.json
-func ExamplePolicyTrackedResourcesClient_ListQueryResultsForManagementGroup() {
+func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListQueryResultsForManagementGroup("<management-group-name>",
+	pager := client.NewListQueryResultsForManagementGroupPager("<management-group-name>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -56,7 +56,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForManagementGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QuerySubscriptionScope.json
-func ExamplePolicyTrackedResourcesClient_ListQueryResultsForSubscription() {
+func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,7 +68,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
+	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -94,7 +94,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QueryResourceGroupScope.json
-func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResourceGroup() {
+func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -106,7 +106,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListQueryResultsForResourceGroup("<resource-group-name>",
+	pager := client.NewListQueryResultsForResourceGroupPager("<resource-group-name>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -133,7 +133,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/preview/2018-07-01-preview/examples/PolicyTrackedResources_QueryResourceScope.json
-func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResource() {
+func ExamplePolicyTrackedResourcesClient_NewListQueryResultsForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -145,7 +145,7 @@ func ExamplePolicyTrackedResourcesClient_ListQueryResultsForResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListQueryResultsForResource("<resource-id>",
+	pager := client.NewListQueryResultsForResourcePager("<resource-id>",
 		armpolicyinsights.PolicyTrackedResourcesResourceTypeDefault,
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListDeploymentsManagementGroupScope.json
-func ExampleRemediationsClient_ListDeploymentsAtManagementGroup() {
+func ExampleRemediationsClient_NewListDeploymentsAtManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleRemediationsClient_ListDeploymentsAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeploymentsAtManagementGroup("<management-group-id>",
+	pager := client.NewListDeploymentsAtManagementGroupPager("<management-group-id>",
 		"<remediation-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -82,7 +82,7 @@ func ExampleRemediationsClient_CancelAtManagementGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListManagementGroupScope.json
-func ExampleRemediationsClient_ListForManagementGroup() {
+func ExampleRemediationsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -94,7 +94,7 @@ func ExampleRemediationsClient_ListForManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForManagementGroup("<management-group-id>",
+	pager := client.NewListForManagementGroupPager("<management-group-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -200,7 +200,7 @@ func ExampleRemediationsClient_DeleteAtManagementGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListDeploymentsSubscriptionScope.json
-func ExampleRemediationsClient_ListDeploymentsAtSubscription() {
+func ExampleRemediationsClient_NewListDeploymentsAtSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -212,7 +212,7 @@ func ExampleRemediationsClient_ListDeploymentsAtSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeploymentsAtSubscription("<remediation-name>",
+	pager := client.NewListDeploymentsAtSubscriptionPager("<remediation-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -262,7 +262,7 @@ func ExampleRemediationsClient_CancelAtSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListSubscriptionScope.json
-func ExampleRemediationsClient_ListForSubscription() {
+func ExampleRemediationsClient_NewListForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -274,7 +274,7 @@ func ExampleRemediationsClient_ListForSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForSubscription(&armpolicyinsights.QueryOptions{Top: nil,
+	pager := client.NewListForSubscriptionPager(&armpolicyinsights.QueryOptions{Top: nil,
 		Filter:    nil,
 		OrderBy:   nil,
 		Select:    nil,
@@ -376,7 +376,7 @@ func ExampleRemediationsClient_DeleteAtSubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListDeploymentsResourceGroupScope.json
-func ExampleRemediationsClient_ListDeploymentsAtResourceGroup() {
+func ExampleRemediationsClient_NewListDeploymentsAtResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -388,7 +388,7 @@ func ExampleRemediationsClient_ListDeploymentsAtResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeploymentsAtResourceGroup("<resource-group-name>",
+	pager := client.NewListDeploymentsAtResourceGroupPager("<resource-group-name>",
 		"<remediation-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -440,7 +440,7 @@ func ExampleRemediationsClient_CancelAtResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListResourceGroupScope.json
-func ExampleRemediationsClient_ListForResourceGroup() {
+func ExampleRemediationsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -452,7 +452,7 @@ func ExampleRemediationsClient_ListForResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResourceGroup("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -558,7 +558,7 @@ func ExampleRemediationsClient_DeleteAtResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListDeploymentsResourceScope.json
-func ExampleRemediationsClient_ListDeploymentsAtResource() {
+func ExampleRemediationsClient_NewListDeploymentsAtResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -570,7 +570,7 @@ func ExampleRemediationsClient_ListDeploymentsAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListDeploymentsAtResource("<resource-id>",
+	pager := client.NewListDeploymentsAtResourcePager("<resource-id>",
 		"<remediation-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -622,7 +622,7 @@ func ExampleRemediationsClient_CancelAtResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/Remediations_ListResourceScope.json
-func ExampleRemediationsClient_ListForResource() {
+func ExampleRemediationsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -634,7 +634,7 @@ func ExampleRemediationsClient_ListForResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListForResource("<resource-id>",
+	pager := client.NewListForResourcePager("<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,

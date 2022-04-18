@@ -94,12 +94,12 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Get a list of the policy metadata resources.
+// NewListPager - Get a list of the policy metadata resources.
 // If the operation fails it returns an *azcore.ResponseError type.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
-func (client *PolicyMetadataClient) List(queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
+func (client *PolicyMetadataClient) NewListPager(queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyMetadataClientListResponse]{
 		More: func(page PolicyMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

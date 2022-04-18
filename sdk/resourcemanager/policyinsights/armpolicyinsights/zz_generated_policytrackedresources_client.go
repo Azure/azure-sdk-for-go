@@ -55,7 +55,7 @@ func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// ListQueryResultsForManagementGroup - Queries policy tracked resources under the management group.
+// NewListQueryResultsForManagementGroupPager - Queries policy tracked resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // managementGroupName - Management group name.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
@@ -64,7 +64,7 @@ func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.To
 // method.
 // options - PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the
 // PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForManagementGroup(managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse] {
+func (client *PolicyTrackedResourcesClient) NewListQueryResultsForManagementGroupPager(managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -130,7 +130,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 	return result, nil
 }
 
-// ListQueryResultsForResource - Queries policy tracked resources under the resource.
+// NewListQueryResultsForResourcePager - Queries policy tracked resources under the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
@@ -139,7 +139,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 // method.
 // options - PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResource
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForResource(resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceResponse] {
+func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourcePager(resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -201,7 +201,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 	return result, nil
 }
 
-// ListQueryResultsForResourceGroup - Queries policy tracked resources under the resource group.
+// NewListQueryResultsForResourceGroupPager - Queries policy tracked resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
@@ -210,7 +210,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 // method.
 // options - PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the
 // PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForResourceGroup(resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse] {
+func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourceGroupPager(resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -279,7 +279,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 	return result, nil
 }
 
-// ListQueryResultsForSubscription - Queries policy tracked resources under the subscription.
+// NewListQueryResultsForSubscriptionPager - Queries policy tracked resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
@@ -287,7 +287,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 // method.
 // options - PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForSubscription
 // method.
-func (client *PolicyTrackedResourcesClient) ListQueryResultsForSubscription(policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse] {
+func (client *PolicyTrackedResourcesClient) NewListQueryResultsForSubscriptionPager(policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

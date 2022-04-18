@@ -236,13 +236,13 @@ func (client *CustomCertificatesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - List all custom certificates.
+// NewListPager - List all custom certificates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
-func (client *CustomCertificatesClient) List(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse] {
+func (client *CustomCertificatesClient) NewListPager(resourceGroupName string, resourceName string, options *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomCertificatesClientListResponse]{
 		More: func(page CustomCertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

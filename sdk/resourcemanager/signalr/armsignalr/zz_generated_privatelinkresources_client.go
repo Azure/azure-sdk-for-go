@@ -55,14 +55,14 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// List - Get the private link resources that need to be created for a resource.
+// NewListPager - Get the private link resources that need to be created for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // resourceName - The name of the resource.
 // options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
 // method.
-func (client *PrivateLinkResourcesClient) List(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
+func (client *PrivateLinkResourcesClient) NewListPager(resourceGroupName string, resourceName string, options *PrivateLinkResourcesClientListOptions) *runtime.Pager[PrivateLinkResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListResponse]{
 		More: func(page PrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

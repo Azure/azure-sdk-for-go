@@ -55,11 +55,11 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - List resource usage quotas by location.
+// NewListPager - List resource usage quotas by location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - the location like "eastus"
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

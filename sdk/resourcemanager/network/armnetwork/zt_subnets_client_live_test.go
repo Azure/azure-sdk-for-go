@@ -103,7 +103,7 @@ func (testsuite *SubnetsClientTestSuite) TestSubnetsCRUD() {
 	testsuite.Require().Equal(subName, *getResp.Name)
 
 	// list subnet
-	listPager := subClient.List(testsuite.resourceGroupName, vnName, nil)
+	listPager := subClient.NewListPager(testsuite.resourceGroupName, vnName, nil)
 	testsuite.Require().Equal(true, listPager.More())
 
 	// delete subnet

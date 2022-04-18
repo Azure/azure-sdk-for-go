@@ -98,7 +98,7 @@ func (testsuite *VirtualNetworksClientTestSuite) TestVirtualMachineCRUD() {
 	testsuite.Require().Equal(vnName, *vnResp2.Name)
 
 	//virtual network list
-	listPager := vnClient.List(testsuite.resourceGroupName, nil)
+	listPager := vnClient.NewListPager(testsuite.resourceGroupName, nil)
 	testsuite.Require().Equal(true, listPager.More())
 
 	//virtual network delete

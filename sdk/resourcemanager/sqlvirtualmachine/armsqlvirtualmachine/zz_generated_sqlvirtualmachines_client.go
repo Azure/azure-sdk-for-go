@@ -237,10 +237,10 @@ func (client *SQLVirtualMachinesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets all SQL virtual machines in a subscription.
+// NewListPager - Gets all SQL virtual machines in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.List method.
-func (client *SQLVirtualMachinesClient) List(options *SQLVirtualMachinesClientListOptions) *runtime.Pager[SQLVirtualMachinesClientListResponse] {
+func (client *SQLVirtualMachinesClient) NewListPager(options *SQLVirtualMachinesClientListOptions) *runtime.Pager[SQLVirtualMachinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLVirtualMachinesClientListResponse]{
 		More: func(page SQLVirtualMachinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,13 +295,13 @@ func (client *SQLVirtualMachinesClient) listHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all SQL virtual machines in a resource group.
+// NewListByResourceGroupPager - Gets all SQL virtual machines in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // options - SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListByResourceGroup
 // method.
-func (client *SQLVirtualMachinesClient) ListByResourceGroup(resourceGroupName string, options *SQLVirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListByResourceGroupResponse] {
+func (client *SQLVirtualMachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLVirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLVirtualMachinesClientListByResourceGroupResponse]{
 		More: func(page SQLVirtualMachinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -360,14 +360,14 @@ func (client *SQLVirtualMachinesClient) listByResourceGroupHandleResponse(resp *
 	return result, nil
 }
 
-// ListBySQLVMGroup - Gets the list of sql virtual machines in a SQL virtual machine group.
+// NewListBySQLVMGroupPager - Gets the list of sql virtual machines in a SQL virtual machine group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 // options - SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.ListBySQLVMGroup
 // method.
-func (client *SQLVirtualMachinesClient) ListBySQLVMGroup(resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesClientListBySQLVMGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListBySQLVMGroupResponse] {
+func (client *SQLVirtualMachinesClient) NewListBySQLVMGroupPager(resourceGroupName string, sqlVirtualMachineGroupName string, options *SQLVirtualMachinesClientListBySQLVMGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListBySQLVMGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SQLVirtualMachinesClientListBySQLVMGroupResponse]{
 		More: func(page SQLVirtualMachinesClientListBySQLVMGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,27 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SQLVirtualMachinesClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*GroupsClient.ListByResourceGroup` has been removed
+- Function `*SQLVirtualMachinesClient.List` has been removed
+- Function `*GroupsClient.List` has been removed
+- Function `*AvailabilityGroupListenersClient.ListByGroup` has been removed
+- Function `*SQLVirtualMachinesClient.ListBySQLVMGroup` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*GroupsClient.NewListByResourceGroupPager(string, *GroupsClientListByResourceGroupOptions) *runtime.Pager[GroupsClientListByResourceGroupResponse]`
+- New function `*SQLVirtualMachinesClient.NewListByResourceGroupPager(string, *SQLVirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListByResourceGroupResponse]`
+- New function `*SQLVirtualMachinesClient.NewListBySQLVMGroupPager(string, string, *SQLVirtualMachinesClientListBySQLVMGroupOptions) *runtime.Pager[SQLVirtualMachinesClientListBySQLVMGroupResponse]`
+- New function `*SQLVirtualMachinesClient.NewListPager(*SQLVirtualMachinesClientListOptions) *runtime.Pager[SQLVirtualMachinesClientListResponse]`
+- New function `*GroupsClient.NewListPager(*GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse]`
+- New function `*AvailabilityGroupListenersClient.NewListByGroupPager(string, string, *AvailabilityGroupListenersClientListByGroupOptions) *runtime.Pager[AvailabilityGroupListenersClientListByGroupResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

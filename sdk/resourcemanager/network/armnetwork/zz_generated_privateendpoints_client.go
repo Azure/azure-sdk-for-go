@@ -240,11 +240,11 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (Pr
 	return result, nil
 }
 
-// List - Gets all private endpoints in a resource group.
+// NewListPager - Gets all private endpoints in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PrivateEndpointsClientListOptions contains the optional parameters for the PrivateEndpointsClient.List method.
-func (client *PrivateEndpointsClient) List(resourceGroupName string, options *PrivateEndpointsClientListOptions) *runtime.Pager[PrivateEndpointsClientListResponse] {
+func (client *PrivateEndpointsClient) NewListPager(resourceGroupName string, options *PrivateEndpointsClientListOptions) *runtime.Pager[PrivateEndpointsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointsClientListResponse]{
 		More: func(page PrivateEndpointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,11 +303,11 @@ func (client *PrivateEndpointsClient) listHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// ListBySubscription - Gets all private endpoints in a subscription.
+// NewListBySubscriptionPager - Gets all private endpoints in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateEndpointsClientListBySubscriptionOptions contains the optional parameters for the PrivateEndpointsClient.ListBySubscription
 // method.
-func (client *PrivateEndpointsClient) ListBySubscription(options *PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse] {
+func (client *PrivateEndpointsClient) NewListBySubscriptionPager(options *PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointsClientListBySubscriptionResponse]{
 		More: func(page PrivateEndpointsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

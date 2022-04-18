@@ -184,13 +184,13 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleRespo
 	return result, nil
 }
 
-// List - Lists all private endpoint connections on an application gateway.
+// NewListPager - Lists all private endpoint connections on an application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // applicationGatewayName - The name of the application gateway.
 // options - ApplicationGatewayPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ApplicationGatewayPrivateEndpointConnectionsClient.List
 // method.
-func (client *ApplicationGatewayPrivateEndpointConnectionsClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse] {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGatewayPrivateEndpointConnectionsClientListResponse]{
 		More: func(page ApplicationGatewayPrivateEndpointConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

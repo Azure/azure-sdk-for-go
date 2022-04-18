@@ -253,13 +253,13 @@ func (client *VirtualRouterPeeringsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Lists all Virtual Router Peerings in a Virtual Router resource.
+// NewListPager - Lists all Virtual Router Peerings in a Virtual Router resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // virtualRouterName - The name of the Virtual Router.
 // options - VirtualRouterPeeringsClientListOptions contains the optional parameters for the VirtualRouterPeeringsClient.List
 // method.
-func (client *VirtualRouterPeeringsClient) List(resourceGroupName string, virtualRouterName string, options *VirtualRouterPeeringsClientListOptions) *runtime.Pager[VirtualRouterPeeringsClientListResponse] {
+func (client *VirtualRouterPeeringsClient) NewListPager(resourceGroupName string, virtualRouterName string, options *VirtualRouterPeeringsClientListOptions) *runtime.Pager[VirtualRouterPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualRouterPeeringsClientListResponse]{
 		More: func(page VirtualRouterPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

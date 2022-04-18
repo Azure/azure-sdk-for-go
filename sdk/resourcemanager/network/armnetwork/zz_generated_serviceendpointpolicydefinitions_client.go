@@ -253,13 +253,13 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all service endpoint policy definitions in a service end point policy.
+// NewListByResourceGroupPager - Gets all service endpoint policy definitions in a service end point policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceEndpointPolicyName - The name of the service endpoint policy name.
 // options - ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.ListByResourceGroup
 // method.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse] {
+func (client *ServiceEndpointPolicyDefinitionsClient) NewListByResourceGroupPager(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]{
 		More: func(page ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

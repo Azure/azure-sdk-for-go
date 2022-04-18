@@ -55,13 +55,13 @@ func NewVirtualHubBgpConnectionsClient(subscriptionID string, credential azcore.
 	return client, nil
 }
 
-// List - Retrieves the details of all VirtualHubBgpConnections.
+// NewListPager - Retrieves the details of all VirtualHubBgpConnections.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - VirtualHubBgpConnectionsClientListOptions contains the optional parameters for the VirtualHubBgpConnectionsClient.List
 // method.
-func (client *VirtualHubBgpConnectionsClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) *runtime.Pager[VirtualHubBgpConnectionsClientListResponse] {
+func (client *VirtualHubBgpConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsClientListOptions) *runtime.Pager[VirtualHubBgpConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualHubBgpConnectionsClientListResponse]{
 		More: func(page VirtualHubBgpConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

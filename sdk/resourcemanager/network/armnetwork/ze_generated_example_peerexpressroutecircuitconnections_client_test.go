@@ -44,7 +44,7 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PeerExpressRouteCircuitConnectionList.json
-func ExamplePeerExpressRouteCircuitConnectionsClient_List() {
+func ExamplePeerExpressRouteCircuitConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<circuit-name>",
 		"<peering-name>",
 		nil)

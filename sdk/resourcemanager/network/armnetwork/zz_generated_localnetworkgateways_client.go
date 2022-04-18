@@ -238,12 +238,12 @@ func (client *LocalNetworkGatewaysClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Gets all the local network gateways in a resource group.
+// NewListPager - Gets all the local network gateways in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - LocalNetworkGatewaysClientListOptions contains the optional parameters for the LocalNetworkGatewaysClient.List
 // method.
-func (client *LocalNetworkGatewaysClient) List(resourceGroupName string, options *LocalNetworkGatewaysClientListOptions) *runtime.Pager[LocalNetworkGatewaysClientListResponse] {
+func (client *LocalNetworkGatewaysClient) NewListPager(resourceGroupName string, options *LocalNetworkGatewaysClientListOptions) *runtime.Pager[LocalNetworkGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocalNetworkGatewaysClientListResponse]{
 		More: func(page LocalNetworkGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

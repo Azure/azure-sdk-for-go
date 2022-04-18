@@ -55,12 +55,12 @@ func NewAvailableDelegationsClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// List - Gets all of the available subnet delegations for this subscription in this region.
+// NewListPager - Gets all of the available subnet delegations for this subscription in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the subnet.
 // options - AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.List
 // method.
-func (client *AvailableDelegationsClient) List(location string, options *AvailableDelegationsClientListOptions) *runtime.Pager[AvailableDelegationsClientListResponse] {
+func (client *AvailableDelegationsClient) NewListPager(location string, options *AvailableDelegationsClientListOptions) *runtime.Pager[AvailableDelegationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableDelegationsClientListResponse]{
 		More: func(page AvailableDelegationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

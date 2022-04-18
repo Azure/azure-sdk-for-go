@@ -55,13 +55,13 @@ func NewApplicationGatewayPrivateLinkResourcesClient(subscriptionID string, cred
 	return client, nil
 }
 
-// List - Lists all private link resources on an application gateway.
+// NewListPager - Lists all private link resources on an application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // applicationGatewayName - The name of the application gateway.
 // options - ApplicationGatewayPrivateLinkResourcesClientListOptions contains the optional parameters for the ApplicationGatewayPrivateLinkResourcesClient.List
 // method.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) *runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse] {
+func (client *ApplicationGatewayPrivateLinkResourcesClient) NewListPager(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesClientListOptions) *runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGatewayPrivateLinkResourcesClientListResponse]{
 		More: func(page ApplicationGatewayPrivateLinkResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

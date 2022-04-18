@@ -253,13 +253,13 @@ func (client *PrivateDNSZoneGroupsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Gets all private dns zone groups in a private endpoint.
+// NewListPager - Gets all private dns zone groups in a private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // privateEndpointName - The name of the private endpoint.
 // resourceGroupName - The name of the resource group.
 // options - PrivateDNSZoneGroupsClientListOptions contains the optional parameters for the PrivateDNSZoneGroupsClient.List
 // method.
-func (client *PrivateDNSZoneGroupsClient) List(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions) *runtime.Pager[PrivateDNSZoneGroupsClientListResponse] {
+func (client *PrivateDNSZoneGroupsClient) NewListPager(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions) *runtime.Pager[PrivateDNSZoneGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateDNSZoneGroupsClientListResponse]{
 		More: func(page PrivateDNSZoneGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

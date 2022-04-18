@@ -108,11 +108,11 @@ func (client *WebCategoriesClient) getHandleResponse(resp *http.Response) (WebCa
 	return result, nil
 }
 
-// ListBySubscription - Gets all the Azure Web Categories in a subscription.
+// NewListBySubscriptionPager - Gets all the Azure Web Categories in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebCategoriesClientListBySubscriptionOptions contains the optional parameters for the WebCategoriesClient.ListBySubscription
 // method.
-func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse] {
+func (client *WebCategoriesClient) NewListBySubscriptionPager(options *WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebCategoriesClientListBySubscriptionResponse]{
 		More: func(page WebCategoriesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

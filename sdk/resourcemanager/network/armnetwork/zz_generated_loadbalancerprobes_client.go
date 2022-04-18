@@ -115,12 +115,12 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Gets all the load balancer probes.
+// NewListPager - Gets all the load balancer probes.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - LoadBalancerProbesClientListOptions contains the optional parameters for the LoadBalancerProbesClient.List method.
-func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesClientListOptions) *runtime.Pager[LoadBalancerProbesClientListResponse] {
+func (client *LoadBalancerProbesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesClientListOptions) *runtime.Pager[LoadBalancerProbesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadBalancerProbesClientListResponse]{
 		More: func(page LoadBalancerProbesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

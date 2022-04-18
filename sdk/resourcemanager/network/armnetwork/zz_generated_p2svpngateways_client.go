@@ -498,10 +498,10 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedCreateReque
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// List - Lists all the P2SVpnGateways in a subscription.
+// NewListPager - Lists all the P2SVpnGateways in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - P2SVPNGatewaysClientListOptions contains the optional parameters for the P2SVPNGatewaysClient.List method.
-func (client *P2SVPNGatewaysClient) List(options *P2SVPNGatewaysClientListOptions) *runtime.Pager[P2SVPNGatewaysClientListResponse] {
+func (client *P2SVPNGatewaysClient) NewListPager(options *P2SVPNGatewaysClientListOptions) *runtime.Pager[P2SVPNGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[P2SVPNGatewaysClientListResponse]{
 		More: func(page P2SVPNGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -556,12 +556,12 @@ func (client *P2SVPNGatewaysClient) listHandleResponse(resp *http.Response) (P2S
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the P2SVpnGateways in a resource group.
+// NewListByResourceGroupPager - Lists all the P2SVpnGateways in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the P2SVpnGateway.
 // options - P2SVPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the P2SVPNGatewaysClient.ListByResourceGroup
 // method.
-func (client *P2SVPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *P2SVPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse] {
+func (client *P2SVPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *P2SVPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[P2SVPNGatewaysClientListByResourceGroupResponse]{
 		More: func(page P2SVPNGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -128,14 +128,14 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// ListByVPNConnection - Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
+// NewListByVPNConnectionPager - Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the vpn gateway.
 // gatewayName - The name of the gateway.
 // connectionName - The name of the vpn connection.
 // options - VPNLinkConnectionsClientListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnectionsClient.ListByVPNConnection
 // method.
-func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) *runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse] {
+func (client *VPNLinkConnectionsClient) NewListByVPNConnectionPager(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsClientListByVPNConnectionOptions) *runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNLinkConnectionsClientListByVPNConnectionResponse]{
 		More: func(page VPNLinkConnectionsClientListByVPNConnectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

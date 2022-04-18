@@ -239,11 +239,11 @@ func (client *RouteTablesClient) getHandleResponse(resp *http.Response) (RouteTa
 	return result, nil
 }
 
-// List - Gets all route tables in a resource group.
+// NewListPager - Gets all route tables in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - RouteTablesClientListOptions contains the optional parameters for the RouteTablesClient.List method.
-func (client *RouteTablesClient) List(resourceGroupName string, options *RouteTablesClientListOptions) *runtime.Pager[RouteTablesClientListResponse] {
+func (client *RouteTablesClient) NewListPager(resourceGroupName string, options *RouteTablesClientListOptions) *runtime.Pager[RouteTablesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RouteTablesClientListResponse]{
 		More: func(page RouteTablesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,10 +302,10 @@ func (client *RouteTablesClient) listHandleResponse(resp *http.Response) (RouteT
 	return result, nil
 }
 
-// ListAll - Gets all route tables in a subscription.
+// NewListAllPager - Gets all route tables in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RouteTablesClientListAllOptions contains the optional parameters for the RouteTablesClient.ListAll method.
-func (client *RouteTablesClient) ListAll(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {
+func (client *RouteTablesClient) NewListAllPager(options *RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RouteTablesClientListAllResponse]{
 		More: func(page RouteTablesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

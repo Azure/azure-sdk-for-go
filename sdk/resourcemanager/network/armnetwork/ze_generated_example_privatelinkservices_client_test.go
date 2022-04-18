@@ -139,7 +139,7 @@ func ExamplePrivateLinkServicesClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceList.json
-func ExamplePrivateLinkServicesClient_List() {
+func ExamplePrivateLinkServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -151,7 +151,7 @@ func ExamplePrivateLinkServicesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -167,7 +167,7 @@ func ExamplePrivateLinkServicesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListAll.json
-func ExamplePrivateLinkServicesClient_ListBySubscription() {
+func ExamplePrivateLinkServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExamplePrivateLinkServicesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -287,7 +287,7 @@ func ExamplePrivateLinkServicesClient_BeginDeletePrivateEndpointConnection() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PrivateLinkServiceListPrivateEndpointConnection.json
-func ExamplePrivateLinkServicesClient_ListPrivateEndpointConnections() {
+func ExamplePrivateLinkServicesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -299,7 +299,7 @@ func ExamplePrivateLinkServicesClient_ListPrivateEndpointConnections() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListPrivateEndpointConnections("<resource-group-name>",
+	pager := client.NewListPrivateEndpointConnectionsPager("<resource-group-name>",
 		"<service-name>",
 		nil)
 	for pager.More() {
@@ -381,7 +381,7 @@ func ExamplePrivateLinkServicesClient_BeginCheckPrivateLinkServiceVisibilityByRe
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesGet.json
-func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServices() {
+func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -393,7 +393,7 @@ func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServices() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAutoApprovedPrivateLinkServices("<location>",
+	pager := client.NewListAutoApprovedPrivateLinkServicesPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -409,7 +409,7 @@ func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServices() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AutoApprovedPrivateLinkServicesResourceGroupGet.json
-func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServicesByResourceGroup() {
+func ExamplePrivateLinkServicesClient_NewListAutoApprovedPrivateLinkServicesByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -421,7 +421,7 @@ func ExamplePrivateLinkServicesClient_ListAutoApprovedPrivateLinkServicesByResou
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAutoApprovedPrivateLinkServicesByResourceGroup("<location>",
+	pager := client.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager("<location>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

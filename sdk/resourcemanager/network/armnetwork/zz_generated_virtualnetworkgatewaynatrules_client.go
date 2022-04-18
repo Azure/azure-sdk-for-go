@@ -255,13 +255,13 @@ func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByVirtualNetworkGateway - Retrieves all nat rules for a particular virtual network gateway.
+// NewListByVirtualNetworkGatewayPager - Retrieves all nat rules for a particular virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the virtual network gateway.
 // virtualNetworkGatewayName - The name of the gateway.
 // options - VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions contains the optional parameters for the
 // VirtualNetworkGatewayNatRulesClient.ListByVirtualNetworkGateway method.
-func (client *VirtualNetworkGatewayNatRulesClient) ListByVirtualNetworkGateway(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) *runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse] {
+func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewayPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) *runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]{
 		More: func(page VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -240,11 +240,11 @@ func (client *CustomIPPrefixesClient) getHandleResponse(resp *http.Response) (Cu
 	return result, nil
 }
 
-// List - Gets all custom IP prefixes in a resource group.
+// NewListPager - Gets all custom IP prefixes in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - CustomIPPrefixesClientListOptions contains the optional parameters for the CustomIPPrefixesClient.List method.
-func (client *CustomIPPrefixesClient) List(resourceGroupName string, options *CustomIPPrefixesClientListOptions) *runtime.Pager[CustomIPPrefixesClientListResponse] {
+func (client *CustomIPPrefixesClient) NewListPager(resourceGroupName string, options *CustomIPPrefixesClientListOptions) *runtime.Pager[CustomIPPrefixesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomIPPrefixesClientListResponse]{
 		More: func(page CustomIPPrefixesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,11 +303,11 @@ func (client *CustomIPPrefixesClient) listHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// ListAll - Gets all the custom IP prefixes in a subscription.
+// NewListAllPager - Gets all the custom IP prefixes in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CustomIPPrefixesClientListAllOptions contains the optional parameters for the CustomIPPrefixesClient.ListAll
 // method.
-func (client *CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesClientListAllOptions) *runtime.Pager[CustomIPPrefixesClientListAllResponse] {
+func (client *CustomIPPrefixesClient) NewListAllPager(options *CustomIPPrefixesClientListAllOptions) *runtime.Pager[CustomIPPrefixesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomIPPrefixesClientListAllResponse]{
 		More: func(page CustomIPPrefixesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

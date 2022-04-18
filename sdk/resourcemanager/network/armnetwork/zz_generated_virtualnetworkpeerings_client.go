@@ -256,13 +256,13 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// List - Gets all virtual network peerings in a virtual network.
+// NewListPager - Gets all virtual network peerings in a virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // virtualNetworkName - The name of the virtual network.
 // options - VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.List
 // method.
-func (client *VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsClientListOptions) *runtime.Pager[VirtualNetworkPeeringsClientListResponse] {
+func (client *VirtualNetworkPeeringsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsClientListOptions) *runtime.Pager[VirtualNetworkPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkPeeringsClientListResponse]{
 		More: func(page VirtualNetworkPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -423,12 +423,12 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleResponse(re
 	return result, nil
 }
 
-// List - Lists all application gateways in a resource group.
+// NewListPager - Lists all application gateways in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ApplicationGatewaysClientListOptions contains the optional parameters for the ApplicationGatewaysClient.List
 // method.
-func (client *ApplicationGatewaysClient) List(resourceGroupName string, options *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse] {
+func (client *ApplicationGatewaysClient) NewListPager(resourceGroupName string, options *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGatewaysClientListResponse]{
 		More: func(page ApplicationGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -487,11 +487,11 @@ func (client *ApplicationGatewaysClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListAll - Gets all the application gateways in a subscription.
+// NewListAllPager - Gets all the application gateways in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationGatewaysClientListAllOptions contains the optional parameters for the ApplicationGatewaysClient.ListAll
 // method.
-func (client *ApplicationGatewaysClient) ListAll(options *ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse] {
+func (client *ApplicationGatewaysClient) NewListAllPager(options *ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGatewaysClientListAllResponse]{
 		More: func(page ApplicationGatewaysClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -684,11 +684,11 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleResponse(r
 	return result, nil
 }
 
-// ListAvailableSSLPredefinedPolicies - Lists all SSL predefined policies for configuring Ssl policy.
+// NewListAvailableSSLPredefinedPoliciesPager - Lists all SSL predefined policies for configuring Ssl policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions contains the optional parameters for the ApplicationGatewaysClient.ListAvailableSSLPredefinedPolicies
 // method.
-func (client *ApplicationGatewaysClient) ListAvailableSSLPredefinedPolicies(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse] {
+func (client *ApplicationGatewaysClient) NewListAvailableSSLPredefinedPoliciesPager(options *ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]{
 		More: func(page ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

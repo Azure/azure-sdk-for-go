@@ -55,13 +55,13 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 	return client, nil
 }
 
-// List - Gets all of the available subnet delegations for this resource group in this region.
+// NewListPager - Gets all of the available subnet delegations for this resource group in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the domain name.
 // resourceGroupName - The name of the resource group.
 // options - AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.List
 // method.
-func (client *AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions) *runtime.Pager[AvailableResourceGroupDelegationsClientListResponse] {
+func (client *AvailableResourceGroupDelegationsClient) NewListPager(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions) *runtime.Pager[AvailableResourceGroupDelegationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableResourceGroupDelegationsClientListResponse]{
 		More: func(page AvailableResourceGroupDelegationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

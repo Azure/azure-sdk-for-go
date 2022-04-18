@@ -498,12 +498,12 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleRespo
 	return result, nil
 }
 
-// List - Gets all private link services in a resource group.
+// NewListPager - Gets all private link services in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PrivateLinkServicesClientListOptions contains the optional parameters for the PrivateLinkServicesClient.List
 // method.
-func (client *PrivateLinkServicesClient) List(resourceGroupName string, options *PrivateLinkServicesClientListOptions) *runtime.Pager[PrivateLinkServicesClientListResponse] {
+func (client *PrivateLinkServicesClient) NewListPager(resourceGroupName string, options *PrivateLinkServicesClientListOptions) *runtime.Pager[PrivateLinkServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListResponse]{
 		More: func(page PrivateLinkServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -562,13 +562,13 @@ func (client *PrivateLinkServicesClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListAutoApprovedPrivateLinkServices - Returns all of the private link service ids that can be linked to a Private Endpoint
-// with auto approved in this subscription in this region.
+// NewListAutoApprovedPrivateLinkServicesPager - Returns all of the private link service ids that can be linked to a Private
+// Endpoint with auto approved in this subscription in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the domain name.
 // options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions contains the optional parameters for the
 // PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices method.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse] {
+func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesPager(location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]{
 		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -627,14 +627,14 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 	return result, nil
 }
 
-// ListAutoApprovedPrivateLinkServicesByResourceGroup - Returns all of the private link service ids that can be linked to
-// a Private Endpoint with auto approved in this subscription in this region.
+// NewListAutoApprovedPrivateLinkServicesByResourceGroupPager - Returns all of the private link service ids that can be linked
+// to a Private Endpoint with auto approved in this subscription in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the domain name.
 // resourceGroupName - The name of the resource group.
 // options - PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions contains the optional parameters
 // for the PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup method.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse] {
+func (client *PrivateLinkServicesClient) NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -697,11 +697,11 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 	return result, nil
 }
 
-// ListBySubscription - Gets all private link service in a subscription.
+// NewListBySubscriptionPager - Gets all private link service in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkServicesClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkServicesClient.ListBySubscription
 // method.
-func (client *PrivateLinkServicesClient) ListBySubscription(options *PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse] {
+func (client *PrivateLinkServicesClient) NewListBySubscriptionPager(options *PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListBySubscriptionResponse]{
 		More: func(page PrivateLinkServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -756,13 +756,13 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *
 	return result, nil
 }
 
-// ListPrivateEndpointConnections - Gets all private end point connections for a specific private link service.
+// NewListPrivateEndpointConnectionsPager - Gets all private end point connections for a specific private link service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the private link service.
 // options - PrivateLinkServicesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateLinkServicesClient.ListPrivateEndpointConnections
 // method.
-func (client *PrivateLinkServicesClient) ListPrivateEndpointConnections(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse] {
+func (client *PrivateLinkServicesClient) NewListPrivateEndpointConnectionsPager(resourceGroupName string, serviceName string, options *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]{
 		More: func(page PrivateLinkServicesClientListPrivateEndpointConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

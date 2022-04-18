@@ -237,10 +237,10 @@ func (client *BastionHostsClient) getHandleResponse(resp *http.Response) (Bastio
 	return result, nil
 }
 
-// List - Lists all Bastion Hosts in a subscription.
+// NewListPager - Lists all Bastion Hosts in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - BastionHostsClientListOptions contains the optional parameters for the BastionHostsClient.List method.
-func (client *BastionHostsClient) List(options *BastionHostsClientListOptions) *runtime.Pager[BastionHostsClientListResponse] {
+func (client *BastionHostsClient) NewListPager(options *BastionHostsClientListOptions) *runtime.Pager[BastionHostsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BastionHostsClientListResponse]{
 		More: func(page BastionHostsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,12 +295,12 @@ func (client *BastionHostsClient) listHandleResponse(resp *http.Response) (Basti
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Bastion Hosts in a resource group.
+// NewListByResourceGroupPager - Lists all Bastion Hosts in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - BastionHostsClientListByResourceGroupOptions contains the optional parameters for the BastionHostsClient.ListByResourceGroup
 // method.
-func (client *BastionHostsClient) ListByResourceGroup(resourceGroupName string, options *BastionHostsClientListByResourceGroupOptions) *runtime.Pager[BastionHostsClientListByResourceGroupResponse] {
+func (client *BastionHostsClient) NewListByResourceGroupPager(resourceGroupName string, options *BastionHostsClientListByResourceGroupOptions) *runtime.Pager[BastionHostsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BastionHostsClientListByResourceGroupResponse]{
 		More: func(page BastionHostsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

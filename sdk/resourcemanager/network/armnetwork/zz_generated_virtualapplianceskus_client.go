@@ -106,11 +106,11 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List all SKUs available for a virtual appliance.
+// NewListPager - List all SKUs available for a virtual appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.List
 // method.
-func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse] {
+func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualApplianceSKUsClientListResponse]{
 		More: func(page VirtualApplianceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

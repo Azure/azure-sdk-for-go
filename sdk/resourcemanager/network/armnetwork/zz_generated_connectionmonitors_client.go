@@ -255,12 +255,12 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// List - Lists all connection monitors for the specified Network Watcher.
+// NewListPager - Lists all connection monitors for the specified Network Watcher.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing Network Watcher.
 // networkWatcherName - The name of the Network Watcher resource.
 // options - ConnectionMonitorsClientListOptions contains the optional parameters for the ConnectionMonitorsClient.List method.
-func (client *ConnectionMonitorsClient) List(resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsClientListOptions) *runtime.Pager[ConnectionMonitorsClientListResponse] {
+func (client *ConnectionMonitorsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsClientListOptions) *runtime.Pager[ConnectionMonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ConnectionMonitorsClientListResponse]{
 		More: func(page ConnectionMonitorsClientListResponse) bool {
 			return false

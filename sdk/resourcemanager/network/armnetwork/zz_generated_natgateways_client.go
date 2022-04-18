@@ -239,11 +239,11 @@ func (client *NatGatewaysClient) getHandleResponse(resp *http.Response) (NatGate
 	return result, nil
 }
 
-// List - Gets all nat gateways in a resource group.
+// NewListPager - Gets all nat gateways in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - NatGatewaysClientListOptions contains the optional parameters for the NatGatewaysClient.List method.
-func (client *NatGatewaysClient) List(resourceGroupName string, options *NatGatewaysClientListOptions) *runtime.Pager[NatGatewaysClientListResponse] {
+func (client *NatGatewaysClient) NewListPager(resourceGroupName string, options *NatGatewaysClientListOptions) *runtime.Pager[NatGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NatGatewaysClientListResponse]{
 		More: func(page NatGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,10 +302,10 @@ func (client *NatGatewaysClient) listHandleResponse(resp *http.Response) (NatGat
 	return result, nil
 }
 
-// ListAll - Gets all the Nat Gateways in a subscription.
+// NewListAllPager - Gets all the Nat Gateways in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NatGatewaysClientListAllOptions contains the optional parameters for the NatGatewaysClient.ListAll method.
-func (client *NatGatewaysClient) ListAll(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse] {
+func (client *NatGatewaysClient) NewListAllPager(options *NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NatGatewaysClientListAllResponse]{
 		More: func(page NatGatewaysClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

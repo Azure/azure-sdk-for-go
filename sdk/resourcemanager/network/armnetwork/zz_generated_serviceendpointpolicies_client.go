@@ -241,11 +241,11 @@ func (client *ServiceEndpointPoliciesClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Gets all the service endpoint policies in a subscription.
+// NewListPager - Gets all the service endpoint policies in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ServiceEndpointPoliciesClientListOptions contains the optional parameters for the ServiceEndpointPoliciesClient.List
 // method.
-func (client *ServiceEndpointPoliciesClient) List(options *ServiceEndpointPoliciesClientListOptions) *runtime.Pager[ServiceEndpointPoliciesClientListResponse] {
+func (client *ServiceEndpointPoliciesClient) NewListPager(options *ServiceEndpointPoliciesClientListOptions) *runtime.Pager[ServiceEndpointPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceEndpointPoliciesClientListResponse]{
 		More: func(page ServiceEndpointPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,12 +300,12 @@ func (client *ServiceEndpointPoliciesClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all service endpoint Policies in a resource group.
+// NewListByResourceGroupPager - Gets all service endpoint Policies in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ServiceEndpointPoliciesClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPoliciesClient.ListByResourceGroup
 // method.
-func (client *ServiceEndpointPoliciesClient) ListByResourceGroup(resourceGroupName string, options *ServiceEndpointPoliciesClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse] {
+func (client *ServiceEndpointPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceEndpointPoliciesClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceEndpointPoliciesClientListByResourceGroupResponse]{
 		More: func(page ServiceEndpointPoliciesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

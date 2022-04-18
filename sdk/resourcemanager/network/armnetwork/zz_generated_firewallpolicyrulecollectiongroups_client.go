@@ -253,13 +253,13 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 	return result, nil
 }
 
-// List - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
+// NewListPager - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // firewallPolicyName - The name of the Firewall Policy.
 // options - FirewallPolicyRuleCollectionGroupsClientListOptions contains the optional parameters for the FirewallPolicyRuleCollectionGroupsClient.List
 // method.
-func (client *FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsClientListOptions) *runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse] {
+func (client *FirewallPolicyRuleCollectionGroupsClient) NewListPager(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsClientListOptions) *runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallPolicyRuleCollectionGroupsClientListResponse]{
 		More: func(page FirewallPolicyRuleCollectionGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

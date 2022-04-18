@@ -238,12 +238,12 @@ func (client *ApplicationSecurityGroupsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets all the application security groups in a resource group.
+// NewListPager - Gets all the application security groups in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ApplicationSecurityGroupsClientListOptions contains the optional parameters for the ApplicationSecurityGroupsClient.List
 // method.
-func (client *ApplicationSecurityGroupsClient) List(resourceGroupName string, options *ApplicationSecurityGroupsClientListOptions) *runtime.Pager[ApplicationSecurityGroupsClientListResponse] {
+func (client *ApplicationSecurityGroupsClient) NewListPager(resourceGroupName string, options *ApplicationSecurityGroupsClientListOptions) *runtime.Pager[ApplicationSecurityGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationSecurityGroupsClientListResponse]{
 		More: func(page ApplicationSecurityGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -302,11 +302,11 @@ func (client *ApplicationSecurityGroupsClient) listHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListAll - Gets all application security groups in a subscription.
+// NewListAllPager - Gets all application security groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ApplicationSecurityGroupsClientListAllOptions contains the optional parameters for the ApplicationSecurityGroupsClient.ListAll
 // method.
-func (client *ApplicationSecurityGroupsClient) ListAll(options *ApplicationSecurityGroupsClientListAllOptions) *runtime.Pager[ApplicationSecurityGroupsClientListAllResponse] {
+func (client *ApplicationSecurityGroupsClient) NewListAllPager(options *ApplicationSecurityGroupsClientListAllOptions) *runtime.Pager[ApplicationSecurityGroupsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationSecurityGroupsClientListAllResponse]{
 		More: func(page ApplicationSecurityGroupsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

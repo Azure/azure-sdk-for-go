@@ -252,12 +252,12 @@ func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubR
 	return result, nil
 }
 
-// List - Retrieves the details of all RouteTables.
+// NewListPager - Retrieves the details of all RouteTables.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.List method.
-func (client *HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse] {
+func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HubRouteTablesClientListResponse]{
 		More: func(page HubRouteTablesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

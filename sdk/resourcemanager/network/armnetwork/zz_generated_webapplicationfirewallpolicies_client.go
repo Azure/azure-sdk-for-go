@@ -231,12 +231,12 @@ func (client *WebApplicationFirewallPoliciesClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// List - Lists all of the protection policies within a resource group.
+// NewListPager - Lists all of the protection policies within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - WebApplicationFirewallPoliciesClientListOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.List
 // method.
-func (client *WebApplicationFirewallPoliciesClient) List(resourceGroupName string, options *WebApplicationFirewallPoliciesClientListOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListResponse] {
+func (client *WebApplicationFirewallPoliciesClient) NewListPager(resourceGroupName string, options *WebApplicationFirewallPoliciesClientListOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebApplicationFirewallPoliciesClientListResponse]{
 		More: func(page WebApplicationFirewallPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -295,11 +295,11 @@ func (client *WebApplicationFirewallPoliciesClient) listHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListAll - Gets all the WAF policies in a subscription.
+// NewListAllPager - Gets all the WAF policies in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebApplicationFirewallPoliciesClientListAllOptions contains the optional parameters for the WebApplicationFirewallPoliciesClient.ListAll
 // method.
-func (client *WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicationFirewallPoliciesClientListAllOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse] {
+func (client *WebApplicationFirewallPoliciesClient) NewListAllPager(options *WebApplicationFirewallPoliciesClientListAllOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WebApplicationFirewallPoliciesClientListAllResponse]{
 		More: func(page WebApplicationFirewallPoliciesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

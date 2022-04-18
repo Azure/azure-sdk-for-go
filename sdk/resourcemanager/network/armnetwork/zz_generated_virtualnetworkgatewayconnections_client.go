@@ -358,12 +358,13 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 	return result, nil
 }
 
-// List - The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
+// NewListPager - The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
+// created.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkGatewayConnectionsClientListOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.List
 // method.
-func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse] {
+func (client *VirtualNetworkGatewayConnectionsClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewayConnectionsClientListOptions) *runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkGatewayConnectionsClientListResponse]{
 		More: func(page VirtualNetworkGatewayConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

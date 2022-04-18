@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AvailablePrivateEndpointTypesGet.json
-func ExampleAvailablePrivateEndpointTypesClient_List() {
+func ExampleAvailablePrivateEndpointTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleAvailablePrivateEndpointTypesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location>",
+	pager := client.NewListPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -45,7 +45,7 @@ func ExampleAvailablePrivateEndpointTypesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AvailablePrivateEndpointTypesResourceGroupGet.json
-func ExampleAvailablePrivateEndpointTypesClient_ListByResourceGroup() {
+func ExampleAvailablePrivateEndpointTypesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleAvailablePrivateEndpointTypesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<location>",
+	pager := client.NewListByResourceGroupPager("<location>",
 		"<resource-group-name>",
 		nil)
 	for pager.More() {

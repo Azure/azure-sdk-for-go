@@ -55,12 +55,12 @@ func NewAvailableServiceAliasesClient(subscriptionID string, credential azcore.T
 	return client, nil
 }
 
-// List - Gets all available service aliases for this subscription in this region.
+// NewListPager - Gets all available service aliases for this subscription in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location.
 // options - AvailableServiceAliasesClientListOptions contains the optional parameters for the AvailableServiceAliasesClient.List
 // method.
-func (client *AvailableServiceAliasesClient) List(location string, options *AvailableServiceAliasesClientListOptions) *runtime.Pager[AvailableServiceAliasesClientListResponse] {
+func (client *AvailableServiceAliasesClient) NewListPager(location string, options *AvailableServiceAliasesClientListOptions) *runtime.Pager[AvailableServiceAliasesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableServiceAliasesClientListResponse]{
 		More: func(page AvailableServiceAliasesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -119,13 +119,13 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all available service aliases for this resource group in this region.
+// NewListByResourceGroupPager - Gets all available service aliases for this resource group in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // location - The location.
 // options - AvailableServiceAliasesClientListByResourceGroupOptions contains the optional parameters for the AvailableServiceAliasesClient.ListByResourceGroup
 // method.
-func (client *AvailableServiceAliasesClient) ListByResourceGroup(resourceGroupName string, location string, options *AvailableServiceAliasesClientListByResourceGroupOptions) *runtime.Pager[AvailableServiceAliasesClientListByResourceGroupResponse] {
+func (client *AvailableServiceAliasesClient) NewListByResourceGroupPager(resourceGroupName string, location string, options *AvailableServiceAliasesClientListByResourceGroupOptions) *runtime.Pager[AvailableServiceAliasesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableServiceAliasesClientListByResourceGroupResponse]{
 		More: func(page AvailableServiceAliasesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

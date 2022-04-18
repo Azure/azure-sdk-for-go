@@ -175,11 +175,11 @@ func (client *ExpressRouteCrossConnectionsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Retrieves all the ExpressRouteCrossConnections in a subscription.
+// NewListPager - Retrieves all the ExpressRouteCrossConnections in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRouteCrossConnectionsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.List
 // method.
-func (client *ExpressRouteCrossConnectionsClient) List(options *ExpressRouteCrossConnectionsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListResponse] {
+func (client *ExpressRouteCrossConnectionsClient) NewListPager(options *ExpressRouteCrossConnectionsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCrossConnectionsClientListResponse]{
 		More: func(page ExpressRouteCrossConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -309,12 +309,12 @@ func (client *ExpressRouteCrossConnectionsClient) listArpTableCreateRequest(ctx 
 	return req, nil
 }
 
-// ListByResourceGroup - Retrieves all the ExpressRouteCrossConnections in a resource group.
+// NewListByResourceGroupPager - Retrieves all the ExpressRouteCrossConnections in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ExpressRouteCrossConnectionsClientListByResourceGroupOptions contains the optional parameters for the ExpressRouteCrossConnectionsClient.ListByResourceGroup
 // method.
-func (client *ExpressRouteCrossConnectionsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRouteCrossConnectionsClientListByResourceGroupOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse] {
+func (client *ExpressRouteCrossConnectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRouteCrossConnectionsClientListByResourceGroupOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCrossConnectionsClientListByResourceGroupResponse]{
 		More: func(page ExpressRouteCrossConnectionsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

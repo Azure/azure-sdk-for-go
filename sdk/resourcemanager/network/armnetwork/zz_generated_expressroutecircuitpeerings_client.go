@@ -253,13 +253,13 @@ func (client *ExpressRouteCircuitPeeringsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Gets all peerings in a specified express route circuit.
+// NewListPager - Gets all peerings in a specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // circuitName - The name of the express route circuit.
 // options - ExpressRouteCircuitPeeringsClientListOptions contains the optional parameters for the ExpressRouteCircuitPeeringsClient.List
 // method.
-func (client *ExpressRouteCircuitPeeringsClient) List(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsClientListOptions) *runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse] {
+func (client *ExpressRouteCircuitPeeringsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsClientListOptions) *runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCircuitPeeringsClientListResponse]{
 		More: func(page ExpressRouteCircuitPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -808,11 +808,11 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// List - Gets all network watchers by resource group.
+// NewListPager - Gets all network watchers by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - WatchersClientListOptions contains the optional parameters for the WatchersClient.List method.
-func (client *WatchersClient) List(resourceGroupName string, options *WatchersClientListOptions) *runtime.Pager[WatchersClientListResponse] {
+func (client *WatchersClient) NewListPager(resourceGroupName string, options *WatchersClientListOptions) *runtime.Pager[WatchersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WatchersClientListResponse]{
 		More: func(page WatchersClientListResponse) bool {
 			return false
@@ -865,10 +865,10 @@ func (client *WatchersClient) listHandleResponse(resp *http.Response) (WatchersC
 	return result, nil
 }
 
-// ListAll - Gets all network watchers by subscription.
+// NewListAllPager - Gets all network watchers by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WatchersClientListAllOptions contains the optional parameters for the WatchersClient.ListAll method.
-func (client *WatchersClient) ListAll(options *WatchersClientListAllOptions) *runtime.Pager[WatchersClientListAllResponse] {
+func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOptions) *runtime.Pager[WatchersClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WatchersClientListAllResponse]{
 		More: func(page WatchersClientListAllResponse) bool {
 			return false

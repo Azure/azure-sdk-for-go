@@ -240,11 +240,11 @@ func (client *SecurityGroupsClient) getHandleResponse(resp *http.Response) (Secu
 	return result, nil
 }
 
-// List - Gets all network security groups in a resource group.
+// NewListPager - Gets all network security groups in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - SecurityGroupsClientListOptions contains the optional parameters for the SecurityGroupsClient.List method.
-func (client *SecurityGroupsClient) List(resourceGroupName string, options *SecurityGroupsClientListOptions) *runtime.Pager[SecurityGroupsClientListResponse] {
+func (client *SecurityGroupsClient) NewListPager(resourceGroupName string, options *SecurityGroupsClientListOptions) *runtime.Pager[SecurityGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityGroupsClientListResponse]{
 		More: func(page SecurityGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,10 +303,10 @@ func (client *SecurityGroupsClient) listHandleResponse(resp *http.Response) (Sec
 	return result, nil
 }
 
-// ListAll - Gets all network security groups in a subscription.
+// NewListAllPager - Gets all network security groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecurityGroupsClientListAllOptions contains the optional parameters for the SecurityGroupsClient.ListAll method.
-func (client *SecurityGroupsClient) ListAll(options *SecurityGroupsClientListAllOptions) *runtime.Pager[SecurityGroupsClientListAllResponse] {
+func (client *SecurityGroupsClient) NewListAllPager(options *SecurityGroupsClientListAllOptions) *runtime.Pager[SecurityGroupsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityGroupsClientListAllResponse]{
 		More: func(page SecurityGroupsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

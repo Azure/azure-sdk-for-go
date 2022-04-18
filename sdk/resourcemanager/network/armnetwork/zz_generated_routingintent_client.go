@@ -252,12 +252,12 @@ func (client *RoutingIntentClient) getHandleResponse(resp *http.Response) (Routi
 	return result, nil
 }
 
-// List - Retrieves the details of all RoutingIntent child resources of the VirtualHub.
+// NewListPager - Retrieves the details of all RoutingIntent child resources of the VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - RoutingIntentClientListOptions contains the optional parameters for the RoutingIntentClient.List method.
-func (client *RoutingIntentClient) List(resourceGroupName string, virtualHubName string, options *RoutingIntentClientListOptions) *runtime.Pager[RoutingIntentClientListResponse] {
+func (client *RoutingIntentClient) NewListPager(resourceGroupName string, virtualHubName string, options *RoutingIntentClientListOptions) *runtime.Pager[RoutingIntentClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoutingIntentClientListResponse]{
 		More: func(page RoutingIntentClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

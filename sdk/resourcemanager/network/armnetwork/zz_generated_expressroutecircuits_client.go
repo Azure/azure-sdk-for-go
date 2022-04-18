@@ -355,12 +355,12 @@ func (client *ExpressRouteCircuitsClient) getStatsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Gets all the express route circuits in a resource group.
+// NewListPager - Gets all the express route circuits in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ExpressRouteCircuitsClientListOptions contains the optional parameters for the ExpressRouteCircuitsClient.List
 // method.
-func (client *ExpressRouteCircuitsClient) List(resourceGroupName string, options *ExpressRouteCircuitsClientListOptions) *runtime.Pager[ExpressRouteCircuitsClientListResponse] {
+func (client *ExpressRouteCircuitsClient) NewListPager(resourceGroupName string, options *ExpressRouteCircuitsClientListOptions) *runtime.Pager[ExpressRouteCircuitsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCircuitsClientListResponse]{
 		More: func(page ExpressRouteCircuitsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -419,11 +419,11 @@ func (client *ExpressRouteCircuitsClient) listHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListAll - Gets all the express route circuits in a subscription.
+// NewListAllPager - Gets all the express route circuits in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRouteCircuitsClientListAllOptions contains the optional parameters for the ExpressRouteCircuitsClient.ListAll
 // method.
-func (client *ExpressRouteCircuitsClient) ListAll(options *ExpressRouteCircuitsClientListAllOptions) *runtime.Pager[ExpressRouteCircuitsClientListAllResponse] {
+func (client *ExpressRouteCircuitsClient) NewListAllPager(options *ExpressRouteCircuitsClientListAllOptions) *runtime.Pager[ExpressRouteCircuitsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCircuitsClientListAllResponse]{
 		More: func(page ExpressRouteCircuitsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

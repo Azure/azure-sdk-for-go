@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CloudServicePublicIpListAll.json
-func ExamplePublicIPAddressesClient_ListCloudServicePublicIPAddresses() {
+func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExamplePublicIPAddressesClient_ListCloudServicePublicIPAddresses() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCloudServicePublicIPAddresses("<resource-group-name>",
+	pager := client.NewListCloudServicePublicIPAddressesPager("<resource-group-name>",
 		"<cloud-service-name>",
 		nil)
 	for pager.More() {
@@ -49,7 +49,7 @@ func ExamplePublicIPAddressesClient_ListCloudServicePublicIPAddresses() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CloudServiceRoleInstancePublicIpList.json
-func ExamplePublicIPAddressesClient_ListCloudServiceRoleInstancePublicIPAddresses() {
+func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExamplePublicIPAddressesClient_ListCloudServiceRoleInstancePublicIPAddresse
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCloudServiceRoleInstancePublicIPAddresses("<resource-group-name>",
+	pager := client.NewListCloudServiceRoleInstancePublicIPAddressesPager("<resource-group-name>",
 		"<cloud-service-name>",
 		"<role-instance-name>",
 		"<network-interface-name>",
@@ -232,7 +232,7 @@ func ExamplePublicIPAddressesClient_UpdateTags() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressListAll.json
-func ExamplePublicIPAddressesClient_ListAll() {
+func ExamplePublicIPAddressesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -244,7 +244,7 @@ func ExamplePublicIPAddressesClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(nil)
+	pager := client.NewListAllPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -259,7 +259,7 @@ func ExamplePublicIPAddressesClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/PublicIpAddressList.json
-func ExamplePublicIPAddressesClient_List() {
+func ExamplePublicIPAddressesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -271,7 +271,7 @@ func ExamplePublicIPAddressesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -287,7 +287,7 @@ func ExamplePublicIPAddressesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssPublicIpListAll.json
-func ExamplePublicIPAddressesClient_ListVirtualMachineScaleSetPublicIPAddresses() {
+func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetPublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -299,7 +299,7 @@ func ExamplePublicIPAddressesClient_ListVirtualMachineScaleSetPublicIPAddresses(
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVirtualMachineScaleSetPublicIPAddresses("<resource-group-name>",
+	pager := client.NewListVirtualMachineScaleSetPublicIPAddressesPager("<resource-group-name>",
 		"<virtual-machine-scale-set-name>",
 		nil)
 	for pager.More() {
@@ -316,7 +316,7 @@ func ExamplePublicIPAddressesClient_ListVirtualMachineScaleSetPublicIPAddresses(
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssVmPublicIpList.json
-func ExamplePublicIPAddressesClient_ListVirtualMachineScaleSetVMPublicIPAddresses() {
+func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetVMPublicIPAddressesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -328,7 +328,7 @@ func ExamplePublicIPAddressesClient_ListVirtualMachineScaleSetVMPublicIPAddresse
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVirtualMachineScaleSetVMPublicIPAddresses("<resource-group-name>",
+	pager := client.NewListVirtualMachineScaleSetVMPublicIPAddressesPager("<resource-group-name>",
 		"<virtual-machine-scale-set-name>",
 		"<virtualmachine-index>",
 		"<network-interface-name>",

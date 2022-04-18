@@ -253,13 +253,13 @@ func (client *VPNConnectionsClient) getHandleResponse(resp *http.Response) (VPNC
 	return result, nil
 }
 
-// ListByVPNGateway - Retrieves all vpn connections for a particular virtual wan vpn gateway.
+// NewListByVPNGatewayPager - Retrieves all vpn connections for a particular virtual wan vpn gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VpnGateway.
 // gatewayName - The name of the gateway.
 // options - VPNConnectionsClientListByVPNGatewayOptions contains the optional parameters for the VPNConnectionsClient.ListByVPNGateway
 // method.
-func (client *VPNConnectionsClient) ListByVPNGateway(resourceGroupName string, gatewayName string, options *VPNConnectionsClientListByVPNGatewayOptions) *runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse] {
+func (client *VPNConnectionsClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *VPNConnectionsClientListByVPNGatewayOptions) *runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNConnectionsClientListByVPNGatewayResponse]{
 		More: func(page VPNConnectionsClientListByVPNGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

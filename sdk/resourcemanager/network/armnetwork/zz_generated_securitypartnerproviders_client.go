@@ -238,11 +238,11 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Gets all the Security Partner Providers in a subscription.
+// NewListPager - Gets all the Security Partner Providers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecurityPartnerProvidersClientListOptions contains the optional parameters for the SecurityPartnerProvidersClient.List
 // method.
-func (client *SecurityPartnerProvidersClient) List(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
+func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityPartnerProvidersClientListResponse]{
 		More: func(page SecurityPartnerProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,12 +297,12 @@ func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Security Partner Providers in a resource group.
+// NewListByResourceGroupPager - Lists all Security Partner Providers in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - SecurityPartnerProvidersClientListByResourceGroupOptions contains the optional parameters for the SecurityPartnerProvidersClient.ListByResourceGroup
 // method.
-func (client *SecurityPartnerProvidersClient) ListByResourceGroup(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) *runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse] {
+func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resourceGroupName string, options *SecurityPartnerProvidersClientListByResourceGroupOptions) *runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityPartnerProvidersClientListByResourceGroupResponse]{
 		More: func(page SecurityPartnerProvidersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

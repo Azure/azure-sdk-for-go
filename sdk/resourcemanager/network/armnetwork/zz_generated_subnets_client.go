@@ -254,12 +254,12 @@ func (client *SubnetsClient) getHandleResponse(resp *http.Response) (SubnetsClie
 	return result, nil
 }
 
-// List - Gets all subnets in a virtual network.
+// NewListPager - Gets all subnets in a virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // virtualNetworkName - The name of the virtual network.
 // options - SubnetsClientListOptions contains the optional parameters for the SubnetsClient.List method.
-func (client *SubnetsClient) List(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse] {
+func (client *SubnetsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubnetsClientListResponse]{
 		More: func(page SubnetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

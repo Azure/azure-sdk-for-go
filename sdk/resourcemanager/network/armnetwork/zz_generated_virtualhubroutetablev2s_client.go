@@ -253,13 +253,13 @@ func (client *VirtualHubRouteTableV2SClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Retrieves the details of all VirtualHubRouteTableV2s.
+// NewListPager - Retrieves the details of all VirtualHubRouteTableV2s.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - VirtualHubRouteTableV2SClientListOptions contains the optional parameters for the VirtualHubRouteTableV2SClient.List
 // method.
-func (client *VirtualHubRouteTableV2SClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SClientListOptions) *runtime.Pager[VirtualHubRouteTableV2SClientListResponse] {
+func (client *VirtualHubRouteTableV2SClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SClientListOptions) *runtime.Pager[VirtualHubRouteTableV2SClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualHubRouteTableV2SClientListResponse]{
 		More: func(page VirtualHubRouteTableV2SClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

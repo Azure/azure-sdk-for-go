@@ -1,5 +1,323 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*IPGroupsClient.ListByResourceGroup` has been removed
+- Function `*ApplicationGatewaysClient.ListAll` has been removed
+- Function `*VirtualHubIPConfigurationClient.List` has been removed
+- Function `*CustomIPPrefixesClient.ListAll` has been removed
+- Function `*RoutesClient.List` has been removed
+- Function `*VPNSitesClient.List` has been removed
+- Function `*LoadBalancerLoadBalancingRulesClient.List` has been removed
+- Function `*IPAllocationsClient.List` has been removed
+- Function `*RouteTablesClient.List` has been removed
+- Function `*DscpConfigurationClient.ListAll` has been removed
+- Function `*SubnetsClient.List` has been removed
+- Function `*AzureFirewallsClient.List` has been removed
+- Function `*RouteTablesClient.ListAll` has been removed
+- Function `*VirtualNetworkGatewayNatRulesClient.ListByVirtualNetworkGateway` has been removed
+- Function `*ExpressRoutePortsLocationsClient.List` has been removed
+- Function `*AvailableServiceAliasesClient.List` has been removed
+- Function `*DdosProtectionPlansClient.List` has been removed
+- Function `*InterfacesClient.List` has been removed
+- Function `*VPNSitesClient.ListByResourceGroup` has been removed
+- Function `*ServiceEndpointPoliciesClient.ListByResourceGroup` has been removed
+- Function `*P2SVPNGatewaysClient.List` has been removed
+- Function `*LocalNetworkGatewaysClient.List` has been removed
+- Function `*AvailableEndpointServicesClient.List` has been removed
+- Function `*PacketCapturesClient.List` has been removed
+- Function `*LoadBalancerFrontendIPConfigurationsClient.List` has been removed
+- Function `*VPNConnectionsClient.ListByVPNGateway` has been removed
+- Function `*InterfaceTapConfigurationsClient.List` has been removed
+- Function `*AvailableResourceGroupDelegationsClient.List` has been removed
+- Function `*IPAllocationsClient.ListByResourceGroup` has been removed
+- Function `*WebApplicationFirewallPoliciesClient.List` has been removed
+- Function `*ServiceTagInformationClient.List` has been removed
+- Function `*InterfacesClient.ListCloudServiceRoleInstanceNetworkInterfaces` has been removed
+- Function `*AzureFirewallsClient.ListAll` has been removed
+- Function `*LoadBalancersClient.ListAll` has been removed
+- Function `*VirtualHubRouteTableV2SClient.List` has been removed
+- Function `*P2SVPNGatewaysClient.ListByResourceGroup` has been removed
+- Function `*InterfacesClient.ListVirtualMachineScaleSetVMNetworkInterfaces` has been removed
+- Function `*FirewallPolicyRuleCollectionGroupsClient.List` has been removed
+- Function `*ExpressRouteServiceProvidersClient.List` has been removed
+- Function `*ManagementClient.DisconnectActiveSessions` has been removed
+- Function `*ExpressRouteLinksClient.List` has been removed
+- Function `*NatGatewaysClient.ListAll` has been removed
+- Function `*SecurityGroupsClient.ListAll` has been removed
+- Function `*VirtualApplianceSitesClient.List` has been removed
+- Function `*PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup` has been removed
+- Function `*BastionHostsClient.List` has been removed
+- Function `*VirtualHubsClient.List` has been removed
+- Function `*ApplicationGatewaysClient.List` has been removed
+- Function `*VirtualNetworkGatewaysClient.ListConnections` has been removed
+- Function `*UsagesClient.List` has been removed
+- Function `*ExpressRouteCrossConnectionsClient.List` has been removed
+- Function `*InterfacesClient.ListVirtualMachineScaleSetIPConfigurations` has been removed
+- Function `*PrivateLinkServicesClient.ListBySubscription` has been removed
+- Function `*RouteFiltersClient.ListByResourceGroup` has been removed
+- Function `*WatchersClient.ListAll` has been removed
+- Function `*PublicIPAddressesClient.ListAll` has been removed
+- Function `*SecurityPartnerProvidersClient.ListByResourceGroup` has been removed
+- Function `*VirtualNetworksClient.ListAll` has been removed
+- Function `*DefaultSecurityRulesClient.List` has been removed
+- Function `*RouteFilterRulesClient.ListByRouteFilter` has been removed
+- Function `*PrivateDNSZoneGroupsClient.List` has been removed
+- Function `*VPNLinkConnectionsClient.ListByVPNConnection` has been removed
+- Function `*VirtualRouterPeeringsClient.List` has been removed
+- Function `*ExpressRouteCircuitPeeringsClient.List` has been removed
+- Function `*VirtualRoutersClient.List` has been removed
+- Function `*RoutingIntentClient.List` has been removed
+- Function `*BgpServiceCommunitiesClient.List` has been removed
+- Function `*InterfacesClient.ListCloudServiceNetworkInterfaces` has been removed
+- Function `*ProfilesClient.List` has been removed
+- Function `*ApplicationSecurityGroupsClient.ListAll` has been removed
+- Function `*VirtualHubBgpConnectionsClient.List` has been removed
+- Function `*WebApplicationFirewallPoliciesClient.ListAll` has been removed
+- Function `*WebCategoriesClient.ListBySubscription` has been removed
+- Function `*VirtualNetworksClient.ListUsage` has been removed
+- Function `*WatchersClient.List` has been removed
+- Function `*InterfaceLoadBalancersClient.List` has been removed
+- Function `*HubVirtualNetworkConnectionsClient.List` has been removed
+- Function `*FirewallPoliciesClient.ListAll` has been removed
+- Function `*SecurityPartnerProvidersClient.List` has been removed
+- Function `*VPNServerConfigurationsClient.List` has been removed
+- Function `*ApplicationGatewayPrivateLinkResourcesClient.List` has been removed
+- Function `*VPNServerConfigurationsClient.ListByResourceGroup` has been removed
+- Function `*PrivateEndpointsClient.List` has been removed
+- Function `*VirtualAppliancesClient.List` has been removed
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.List` has been removed
+- Function `*ExpressRoutePortsClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkServicesClient.List` has been removed
+- Function `*DscpConfigurationClient.List` has been removed
+- Function `*FirewallPoliciesClient.List` has been removed
+- Function `*VirtualNetworkPeeringsClient.List` has been removed
+- Function `*BastionHostsClient.ListByResourceGroup` has been removed
+- Function `*PublicIPAddressesClient.ListVirtualMachineScaleSetPublicIPAddresses` has been removed
+- Function `*AvailablePrivateEndpointTypesClient.ListByResourceGroup` has been removed
+- Function `*InterfaceIPConfigurationsClient.List` has been removed
+- Function `*VirtualApplianceSKUsClient.List` has been removed
+- Function `*ExpressRouteCircuitConnectionsClient.List` has been removed
+- Function `*FlowLogsClient.List` has been removed
+- Function `*VirtualRoutersClient.ListByResourceGroup` has been removed
+- Function `*VirtualNetworksClient.List` has been removed
+- Function `*NatRulesClient.ListByVPNGateway` has been removed
+- Function `*ManagementClient.GetBastionShareableLink` has been removed
+- Function `*PublicIPPrefixesClient.ListAll` has been removed
+- Function `*VirtualNetworkTapsClient.ListAll` has been removed
+- Function `*PrivateEndpointsClient.ListBySubscription` has been removed
+- Function `*RouteFiltersClient.List` has been removed
+- Function `*VPNGatewaysClient.List` has been removed
+- Function `*ExpressRoutePortsClient.List` has been removed
+- Function `*LoadBalancersClient.List` has been removed
+- Function `*LoadBalancerBackendAddressPoolsClient.List` has been removed
+- Function `*PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices` has been removed
+- Function `*PublicIPAddressesClient.ListCloudServicePublicIPAddresses` has been removed
+- Function `*VirtualNetworkGatewayConnectionsClient.List` has been removed
+- Function `*InterfacesClient.ListAll` has been removed
+- Function `*PublicIPAddressesClient.ListVirtualMachineScaleSetVMPublicIPAddresses` has been removed
+- Function `*ExpressRouteCircuitsClient.ListAll` has been removed
+- Function `*ExpressRouteCrossConnectionsClient.ListByResourceGroup` has been removed
+- Function `*AvailableDelegationsClient.List` has been removed
+- Function `*AvailableServiceAliasesClient.ListByResourceGroup` has been removed
+- Function `*ExpressRouteCrossConnectionPeeringsClient.List` has been removed
+- Function `*ServiceEndpointPoliciesClient.List` has been removed
+- Function `*PrivateLinkServicesClient.ListPrivateEndpointConnections` has been removed
+- Function `*LoadBalancerProbesClient.List` has been removed
+- Function `*VirtualAppliancesClient.ListByResourceGroup` has been removed
+- Function `*PublicIPAddressesClient.List` has been removed
+- Function `*NatGatewaysClient.List` has been removed
+- Function `*AvailablePrivateEndpointTypesClient.List` has been removed
+- Function `*ApplicationGatewaysClient.ListAvailableSSLPredefinedPolicies` has been removed
+- Function `*InterfacesClient.ListVirtualMachineScaleSetNetworkInterfaces` has been removed
+- Function `*LoadBalancerOutboundRulesClient.List` has been removed
+- Function `*AzureFirewallFqdnTagsClient.ListAll` has been removed
+- Function `*VirtualHubsClient.ListByResourceGroup` has been removed
+- Function `*SecurityRulesClient.List` has been removed
+- Function `*PeerExpressRouteCircuitConnectionsClient.List` has been removed
+- Function `*ProfilesClient.ListAll` has been removed
+- Function `*IPGroupsClient.List` has been removed
+- Function `*ExpressRouteCircuitAuthorizationsClient.List` has been removed
+- Function `*VirtualNetworkTapsClient.ListByResourceGroup` has been removed
+- Function `*VirtualWansClient.ListByResourceGroup` has been removed
+- Function `*HubRouteTablesClient.List` has been removed
+- Function `*InboundNatRulesClient.List` has been removed
+- Function `*ConnectionMonitorsClient.List` has been removed
+- Function `*VirtualNetworkGatewaysClient.List` has been removed
+- Function `*DdosProtectionPlansClient.ListByResourceGroup` has been removed
+- Function `*ApplicationSecurityGroupsClient.List` has been removed
+- Function `*PublicIPPrefixesClient.List` has been removed
+- Function `*LoadBalancerNetworkInterfacesClient.List` has been removed
+- Function `*ServiceEndpointPolicyDefinitionsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*VirtualWansClient.List` has been removed
+- Function `*SecurityGroupsClient.List` has been removed
+- Function `*VPNSiteLinksClient.ListByVPNSite` has been removed
+- Function `*VPNGatewaysClient.ListByResourceGroup` has been removed
+- Function `*ExpressRouteCircuitsClient.List` has been removed
+- Function `*PublicIPAddressesClient.ListCloudServiceRoleInstancePublicIPAddresses` has been removed
+- Function `*CustomIPPrefixesClient.List` has been removed
+
+### Features Added
+
+- New function `*InboundNatRulesClient.NewListPager(string, string, *InboundNatRulesClientListOptions) *runtime.Pager[InboundNatRulesClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ApplicationSecurityGroupsClient.NewListAllPager(*ApplicationSecurityGroupsClientListAllOptions) *runtime.Pager[ApplicationSecurityGroupsClientListAllResponse]`
+- New function `*LoadBalancerProbesClient.NewListPager(string, string, *LoadBalancerProbesClientListOptions) *runtime.Pager[LoadBalancerProbesClientListResponse]`
+- New function `*VirtualNetworkGatewayNatRulesClient.NewListByVirtualNetworkGatewayPager(string, string, *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) *runtime.Pager[VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse]`
+- New function `*VirtualAppliancesClient.NewListPager(*VirtualAppliancesClientListOptions) *runtime.Pager[VirtualAppliancesClientListResponse]`
+- New function `*DdosProtectionPlansClient.NewListPager(*DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse]`
+- New function `*VirtualHubsClient.NewListByResourceGroupPager(string, *VirtualHubsClientListByResourceGroupOptions) *runtime.Pager[VirtualHubsClientListByResourceGroupResponse]`
+- New function `*InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager(string, string, *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse]`
+- New function `*WebApplicationFirewallPoliciesClient.NewListAllPager(*WebApplicationFirewallPoliciesClientListAllOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListAllResponse]`
+- New function `*RouteFiltersClient.NewListPager(*RouteFiltersClientListOptions) *runtime.Pager[RouteFiltersClientListResponse]`
+- New function `*DdosProtectionPlansClient.NewListByResourceGroupPager(string, *DdosProtectionPlansClientListByResourceGroupOptions) *runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse]`
+- New function `*ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager(string, string, *ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse]`
+- New function `*VirtualApplianceSitesClient.NewListPager(string, string, *VirtualApplianceSitesClientListOptions) *runtime.Pager[VirtualApplianceSitesClientListResponse]`
+- New function `*ServiceEndpointPoliciesClient.NewListByResourceGroupPager(string, *ServiceEndpointPoliciesClientListByResourceGroupOptions) *runtime.Pager[ServiceEndpointPoliciesClientListByResourceGroupResponse]`
+- New function `*PrivateLinkServicesClient.NewListPrivateEndpointConnectionsPager(string, string, *PrivateLinkServicesClientListPrivateEndpointConnectionsOptions) *runtime.Pager[PrivateLinkServicesClientListPrivateEndpointConnectionsResponse]`
+- New function `*VirtualRouterPeeringsClient.NewListPager(string, string, *VirtualRouterPeeringsClientListOptions) *runtime.Pager[VirtualRouterPeeringsClientListResponse]`
+- New function `*SubnetsClient.NewListPager(string, string, *SubnetsClientListOptions) *runtime.Pager[SubnetsClientListResponse]`
+- New function `*VPNSitesClient.NewListByResourceGroupPager(string, *VPNSitesClientListByResourceGroupOptions) *runtime.Pager[VPNSitesClientListByResourceGroupResponse]`
+- New function `*ServiceEndpointPoliciesClient.NewListPager(*ServiceEndpointPoliciesClientListOptions) *runtime.Pager[ServiceEndpointPoliciesClientListResponse]`
+- New function `*AvailableDelegationsClient.NewListPager(string, *AvailableDelegationsClientListOptions) *runtime.Pager[AvailableDelegationsClientListResponse]`
+- New function `*ApplicationSecurityGroupsClient.NewListPager(string, *ApplicationSecurityGroupsClientListOptions) *runtime.Pager[ApplicationSecurityGroupsClientListResponse]`
+- New function `*AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager(string, string, *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]`
+- New function `*ExpressRoutePortsClient.NewListByResourceGroupPager(string, *ExpressRoutePortsClientListByResourceGroupOptions) *runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse]`
+- New function `*VirtualRoutersClient.NewListByResourceGroupPager(string, *VirtualRoutersClientListByResourceGroupOptions) *runtime.Pager[VirtualRoutersClientListByResourceGroupResponse]`
+- New function `*FirewallPoliciesClient.NewListAllPager(*FirewallPoliciesClientListAllOptions) *runtime.Pager[FirewallPoliciesClientListAllResponse]`
+- New function `*InterfacesClient.NewListCloudServiceNetworkInterfacesPager(string, string, *InterfacesClientListCloudServiceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceNetworkInterfacesResponse]`
+- New function `*IPGroupsClient.NewListPager(*IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse]`
+- New function `*HubRouteTablesClient.NewListPager(string, string, *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse]`
+- New function `*ExpressRouteLinksClient.NewListPager(string, string, *ExpressRouteLinksClientListOptions) *runtime.Pager[ExpressRouteLinksClientListResponse]`
+- New function `*ManagementClient.NewDisconnectActiveSessionsPager(string, string, SessionIDs, *ManagementClientDisconnectActiveSessionsOptions) *runtime.Pager[ManagementClientDisconnectActiveSessionsResponse]`
+- New function `*ConnectionMonitorsClient.NewListPager(string, string, *ConnectionMonitorsClientListOptions) *runtime.Pager[ConnectionMonitorsClientListResponse]`
+- New function `*VPNServerConfigurationsClient.NewListPager(*VPNServerConfigurationsClientListOptions) *runtime.Pager[VPNServerConfigurationsClientListResponse]`
+- New function `*VirtualHubBgpConnectionsClient.NewListPager(string, string, *VirtualHubBgpConnectionsClientListOptions) *runtime.Pager[VirtualHubBgpConnectionsClientListResponse]`
+- New function `*ExpressRouteCrossConnectionPeeringsClient.NewListPager(string, string, *ExpressRouteCrossConnectionPeeringsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse]`
+- New function `*ServiceTagInformationClient.NewListPager(string, *ServiceTagInformationClientListOptions) *runtime.Pager[ServiceTagInformationClientListResponse]`
+- New function `*LoadBalancerBackendAddressPoolsClient.NewListPager(string, string, *LoadBalancerBackendAddressPoolsClientListOptions) *runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse]`
+- New function `*AvailableEndpointServicesClient.NewListPager(string, *AvailableEndpointServicesClientListOptions) *runtime.Pager[AvailableEndpointServicesClientListResponse]`
+- New function `*RouteTablesClient.NewListPager(string, *RouteTablesClientListOptions) *runtime.Pager[RouteTablesClientListResponse]`
+- New function `*PublicIPPrefixesClient.NewListPager(string, *PublicIPPrefixesClientListOptions) *runtime.Pager[PublicIPPrefixesClientListResponse]`
+- New function `*VPNSiteLinksClient.NewListByVPNSitePager(string, string, *VPNSiteLinksClientListByVPNSiteOptions) *runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse]`
+- New function `*PacketCapturesClient.NewListPager(string, string, *PacketCapturesClientListOptions) *runtime.Pager[PacketCapturesClientListResponse]`
+- New function `*VirtualHubsClient.NewListPager(*VirtualHubsClientListOptions) *runtime.Pager[VirtualHubsClientListResponse]`
+- New function `*SecurityPartnerProvidersClient.NewListPager(*SecurityPartnerProvidersClientListOptions) *runtime.Pager[SecurityPartnerProvidersClientListResponse]`
+- New function `*VirtualNetworkGatewayConnectionsClient.NewListPager(string, *VirtualNetworkGatewayConnectionsClientListOptions) *runtime.Pager[VirtualNetworkGatewayConnectionsClientListResponse]`
+- New function `*PublicIPPrefixesClient.NewListAllPager(*PublicIPPrefixesClientListAllOptions) *runtime.Pager[PublicIPPrefixesClientListAllResponse]`
+- New function `*ApplicationGatewayPrivateEndpointConnectionsClient.NewListPager(string, string, *ApplicationGatewayPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ApplicationGatewayPrivateEndpointConnectionsClientListResponse]`
+- New function `*ExpressRouteCircuitsClient.NewListAllPager(*ExpressRouteCircuitsClientListAllOptions) *runtime.Pager[ExpressRouteCircuitsClientListAllResponse]`
+- New function `*ApplicationGatewayPrivateLinkResourcesClient.NewListPager(string, string, *ApplicationGatewayPrivateLinkResourcesClientListOptions) *runtime.Pager[ApplicationGatewayPrivateLinkResourcesClientListResponse]`
+- New function `*VirtualRoutersClient.NewListPager(*VirtualRoutersClientListOptions) *runtime.Pager[VirtualRoutersClientListResponse]`
+- New function `*InterfacesClient.NewListPager(string, *InterfacesClientListOptions) *runtime.Pager[InterfacesClientListResponse]`
+- New function `*VPNConnectionsClient.NewListByVPNGatewayPager(string, string, *VPNConnectionsClientListByVPNGatewayOptions) *runtime.Pager[VPNConnectionsClientListByVPNGatewayResponse]`
+- New function `*InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager(string, string, string, *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse]`
+- New function `*VirtualHubRouteTableV2SClient.NewListPager(string, string, *VirtualHubRouteTableV2SClientListOptions) *runtime.Pager[VirtualHubRouteTableV2SClientListResponse]`
+- New function `*P2SVPNGatewaysClient.NewListPager(*P2SVPNGatewaysClientListOptions) *runtime.Pager[P2SVPNGatewaysClientListResponse]`
+- New function `*VPNServerConfigurationsClient.NewListByResourceGroupPager(string, *VPNServerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse]`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New function `*ExpressRouteCircuitAuthorizationsClient.NewListPager(string, string, *ExpressRouteCircuitAuthorizationsClientListOptions) *runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse]`
+- New function `*LoadBalancerFrontendIPConfigurationsClient.NewListPager(string, string, *LoadBalancerFrontendIPConfigurationsClientListOptions) *runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse]`
+- New function `*PrivateLinkServicesClient.NewListBySubscriptionPager(*PrivateLinkServicesClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkServicesClientListBySubscriptionResponse]`
+- New function `*PublicIPAddressesClient.NewListAllPager(*PublicIPAddressesClientListAllOptions) *runtime.Pager[PublicIPAddressesClientListAllResponse]`
+- New function `*FlowLogsClient.NewListPager(string, string, *FlowLogsClientListOptions) *runtime.Pager[FlowLogsClientListResponse]`
+- New function `*ApplicationGatewaysClient.NewListPager(string, *ApplicationGatewaysClientListOptions) *runtime.Pager[ApplicationGatewaysClientListResponse]`
+- New function `*PrivateLinkServicesClient.NewListPager(string, *PrivateLinkServicesClientListOptions) *runtime.Pager[PrivateLinkServicesClientListResponse]`
+- New function `*DscpConfigurationClient.NewListAllPager(*DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse]`
+- New function `*VirtualApplianceSKUsClient.NewListPager(*VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse]`
+- New function `*VPNLinkConnectionsClient.NewListByVPNConnectionPager(string, string, string, *VPNLinkConnectionsClientListByVPNConnectionOptions) *runtime.Pager[VPNLinkConnectionsClientListByVPNConnectionResponse]`
+- New function `*VPNGatewaysClient.NewListByResourceGroupPager(string, *VPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[VPNGatewaysClientListByResourceGroupResponse]`
+- New function `*NatRulesClient.NewListByVPNGatewayPager(string, string, *NatRulesClientListByVPNGatewayOptions) *runtime.Pager[NatRulesClientListByVPNGatewayResponse]`
+- New function `*WebCategoriesClient.NewListBySubscriptionPager(*WebCategoriesClientListBySubscriptionOptions) *runtime.Pager[WebCategoriesClientListBySubscriptionResponse]`
+- New function `*PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager(string, string, *PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]`
+- New function `*DefaultSecurityRulesClient.NewListPager(string, string, *DefaultSecurityRulesClientListOptions) *runtime.Pager[DefaultSecurityRulesClientListResponse]`
+- New function `*PeerExpressRouteCircuitConnectionsClient.NewListPager(string, string, string, *PeerExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[PeerExpressRouteCircuitConnectionsClientListResponse]`
+- New function `*ExpressRoutePortsClient.NewListPager(*ExpressRoutePortsClientListOptions) *runtime.Pager[ExpressRoutePortsClientListResponse]`
+- New function `*VPNSitesClient.NewListPager(*VPNSitesClientListOptions) *runtime.Pager[VPNSitesClientListResponse]`
+- New function `*BastionHostsClient.NewListPager(*BastionHostsClientListOptions) *runtime.Pager[BastionHostsClientListResponse]`
+- New function `*RouteFiltersClient.NewListByResourceGroupPager(string, *RouteFiltersClientListByResourceGroupOptions) *runtime.Pager[RouteFiltersClientListByResourceGroupResponse]`
+- New function `*VirtualNetworksClient.NewListPager(string, *VirtualNetworksClientListOptions) *runtime.Pager[VirtualNetworksClientListResponse]`
+- New function `*ExpressRouteCircuitConnectionsClient.NewListPager(string, string, string, *ExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[ExpressRouteCircuitConnectionsClientListResponse]`
+- New function `*ProfilesClient.NewListAllPager(*ProfilesClientListAllOptions) *runtime.Pager[ProfilesClientListAllResponse]`
+- New function `*VirtualAppliancesClient.NewListByResourceGroupPager(string, *VirtualAppliancesClientListByResourceGroupOptions) *runtime.Pager[VirtualAppliancesClientListByResourceGroupResponse]`
+- New function `*VirtualWansClient.NewListByResourceGroupPager(string, *VirtualWansClientListByResourceGroupOptions) *runtime.Pager[VirtualWansClientListByResourceGroupResponse]`
+- New function `*VirtualHubIPConfigurationClient.NewListPager(string, string, *VirtualHubIPConfigurationClientListOptions) *runtime.Pager[VirtualHubIPConfigurationClientListResponse]`
+- New function `*PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager(string, string, *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupResponse]`
+- New function `*IPGroupsClient.NewListByResourceGroupPager(string, *IPGroupsClientListByResourceGroupOptions) *runtime.Pager[IPGroupsClientListByResourceGroupResponse]`
+- New function `*RoutingIntentClient.NewListPager(string, string, *RoutingIntentClientListOptions) *runtime.Pager[RoutingIntentClientListResponse]`
+- New function `*VirtualNetworksClient.NewListAllPager(*VirtualNetworksClientListAllOptions) *runtime.Pager[VirtualNetworksClientListAllResponse]`
+- New function `*LoadBalancerOutboundRulesClient.NewListPager(string, string, *LoadBalancerOutboundRulesClientListOptions) *runtime.Pager[LoadBalancerOutboundRulesClientListResponse]`
+- New function `*PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager(string, string, string, string, string, *PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]`
+- New function `*DscpConfigurationClient.NewListPager(string, *DscpConfigurationClientListOptions) *runtime.Pager[DscpConfigurationClientListResponse]`
+- New function `*LocalNetworkGatewaysClient.NewListPager(string, *LocalNetworkGatewaysClientListOptions) *runtime.Pager[LocalNetworkGatewaysClientListResponse]`
+- New function `*LoadBalancerNetworkInterfacesClient.NewListPager(string, string, *LoadBalancerNetworkInterfacesClientListOptions) *runtime.Pager[LoadBalancerNetworkInterfacesClientListResponse]`
+- New function `*InterfacesClient.NewListCloudServiceRoleInstanceNetworkInterfacesPager(string, string, string, *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) *runtime.Pager[InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse]`
+- New function `*ProfilesClient.NewListPager(string, *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse]`
+- New function `*InterfacesClient.NewListAllPager(*InterfacesClientListAllOptions) *runtime.Pager[InterfacesClientListAllResponse]`
+- New function `*WatchersClient.NewListAllPager(*WatchersClientListAllOptions) *runtime.Pager[WatchersClientListAllResponse]`
+- New function `*SecurityPartnerProvidersClient.NewListByResourceGroupPager(string, *SecurityPartnerProvidersClientListByResourceGroupOptions) *runtime.Pager[SecurityPartnerProvidersClientListByResourceGroupResponse]`
+- New function `*BgpServiceCommunitiesClient.NewListPager(*BgpServiceCommunitiesClientListOptions) *runtime.Pager[BgpServiceCommunitiesClientListResponse]`
+- New function `*PrivateEndpointsClient.NewListPager(string, *PrivateEndpointsClientListOptions) *runtime.Pager[PrivateEndpointsClientListResponse]`
+- New function `*SecurityRulesClient.NewListPager(string, string, *SecurityRulesClientListOptions) *runtime.Pager[SecurityRulesClientListResponse]`
+- New function `*VirtualNetworkGatewaysClient.NewListPager(string, *VirtualNetworkGatewaysClientListOptions) *runtime.Pager[VirtualNetworkGatewaysClientListResponse]`
+- New function `*ExpressRoutePortsLocationsClient.NewListPager(*ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse]`
+- New function `*SecurityGroupsClient.NewListPager(string, *SecurityGroupsClientListOptions) *runtime.Pager[SecurityGroupsClientListResponse]`
+- New function `*ApplicationGatewaysClient.NewListAvailableSSLPredefinedPoliciesPager(*ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesOptions) *runtime.Pager[ApplicationGatewaysClientListAvailableSSLPredefinedPoliciesResponse]`
+- New function `*VirtualWansClient.NewListPager(*VirtualWansClientListOptions) *runtime.Pager[VirtualWansClientListResponse]`
+- New function `*VirtualNetworkGatewaysClient.NewListConnectionsPager(string, string, *VirtualNetworkGatewaysClientListConnectionsOptions) *runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse]`
+- New function `*PublicIPAddressesClient.NewListCloudServiceRoleInstancePublicIPAddressesPager(string, string, string, string, string, *PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]`
+- New function `*SecurityGroupsClient.NewListAllPager(*SecurityGroupsClientListAllOptions) *runtime.Pager[SecurityGroupsClientListAllResponse]`
+- New function `*ManagementClient.NewGetBastionShareableLinkPager(string, string, BastionShareableLinkListRequest, *ManagementClientGetBastionShareableLinkOptions) *runtime.Pager[ManagementClientGetBastionShareableLinkResponse]`
+- New function `*PublicIPAddressesClient.NewListCloudServicePublicIPAddressesPager(string, string, *PublicIPAddressesClientListCloudServicePublicIPAddressesOptions) *runtime.Pager[PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]`
+- New function `*InterfaceLoadBalancersClient.NewListPager(string, string, *InterfaceLoadBalancersClientListOptions) *runtime.Pager[InterfaceLoadBalancersClientListResponse]`
+- New function `*FirewallPolicyRuleCollectionGroupsClient.NewListPager(string, string, *FirewallPolicyRuleCollectionGroupsClientListOptions) *runtime.Pager[FirewallPolicyRuleCollectionGroupsClientListResponse]`
+- New function `*InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager(string, string, string, string, *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) *runtime.Pager[InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse]`
+- New function `*AzureFirewallFqdnTagsClient.NewListAllPager(*AzureFirewallFqdnTagsClientListAllOptions) *runtime.Pager[AzureFirewallFqdnTagsClientListAllResponse]`
+- New function `*VPNGatewaysClient.NewListPager(*VPNGatewaysClientListOptions) *runtime.Pager[VPNGatewaysClientListResponse]`
+- New function `*BastionHostsClient.NewListByResourceGroupPager(string, *BastionHostsClientListByResourceGroupOptions) *runtime.Pager[BastionHostsClientListByResourceGroupResponse]`
+- New function `*AvailableResourceGroupDelegationsClient.NewListPager(string, string, *AvailableResourceGroupDelegationsClientListOptions) *runtime.Pager[AvailableResourceGroupDelegationsClientListResponse]`
+- New function `*HubVirtualNetworkConnectionsClient.NewListPager(string, string, *HubVirtualNetworkConnectionsClientListOptions) *runtime.Pager[HubVirtualNetworkConnectionsClientListResponse]`
+- New function `*ExpressRouteCircuitsClient.NewListPager(string, *ExpressRouteCircuitsClientListOptions) *runtime.Pager[ExpressRouteCircuitsClientListResponse]`
+- New function `*ApplicationGatewaysClient.NewListAllPager(*ApplicationGatewaysClientListAllOptions) *runtime.Pager[ApplicationGatewaysClientListAllResponse]`
+- New function `*RoutesClient.NewListPager(string, string, *RoutesClientListOptions) *runtime.Pager[RoutesClientListResponse]`
+- New function `*FirewallPoliciesClient.NewListPager(string, *FirewallPoliciesClientListOptions) *runtime.Pager[FirewallPoliciesClientListResponse]`
+- New function `*WatchersClient.NewListPager(string, *WatchersClientListOptions) *runtime.Pager[WatchersClientListResponse]`
+- New function `*PrivateEndpointsClient.NewListBySubscriptionPager(*PrivateEndpointsClientListBySubscriptionOptions) *runtime.Pager[PrivateEndpointsClientListBySubscriptionResponse]`
+- New function `*AvailableServiceAliasesClient.NewListByResourceGroupPager(string, string, *AvailableServiceAliasesClientListByResourceGroupOptions) *runtime.Pager[AvailableServiceAliasesClientListByResourceGroupResponse]`
+- New function `*ExpressRouteServiceProvidersClient.NewListPager(*ExpressRouteServiceProvidersClientListOptions) *runtime.Pager[ExpressRouteServiceProvidersClientListResponse]`
+- New function `*RouteFilterRulesClient.NewListByRouteFilterPager(string, string, *RouteFilterRulesClientListByRouteFilterOptions) *runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse]`
+- New function `*VirtualNetworkTapsClient.NewListAllPager(*VirtualNetworkTapsClientListAllOptions) *runtime.Pager[VirtualNetworkTapsClientListAllResponse]`
+- New function `*WebApplicationFirewallPoliciesClient.NewListPager(string, *WebApplicationFirewallPoliciesClientListOptions) *runtime.Pager[WebApplicationFirewallPoliciesClientListResponse]`
+- New function `*VirtualNetworkPeeringsClient.NewListPager(string, string, *VirtualNetworkPeeringsClientListOptions) *runtime.Pager[VirtualNetworkPeeringsClientListResponse]`
+- New function `*PrivateDNSZoneGroupsClient.NewListPager(string, string, *PrivateDNSZoneGroupsClientListOptions) *runtime.Pager[PrivateDNSZoneGroupsClientListResponse]`
+- New function `*IPAllocationsClient.NewListByResourceGroupPager(string, *IPAllocationsClientListByResourceGroupOptions) *runtime.Pager[IPAllocationsClientListByResourceGroupResponse]`
+- New function `*InterfaceTapConfigurationsClient.NewListPager(string, string, *InterfaceTapConfigurationsClientListOptions) *runtime.Pager[InterfaceTapConfigurationsClientListResponse]`
+- New function `*CustomIPPrefixesClient.NewListPager(string, *CustomIPPrefixesClientListOptions) *runtime.Pager[CustomIPPrefixesClientListResponse]`
+- New function `*PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesPager(string, *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesOptions) *runtime.Pager[PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesResponse]`
+- New function `*LoadBalancersClient.NewListPager(string, *LoadBalancersClientListOptions) *runtime.Pager[LoadBalancersClientListResponse]`
+- New function `*InterfaceIPConfigurationsClient.NewListPager(string, string, *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse]`
+- New function `*CustomIPPrefixesClient.NewListAllPager(*CustomIPPrefixesClientListAllOptions) *runtime.Pager[CustomIPPrefixesClientListAllResponse]`
+- New function `*NatGatewaysClient.NewListPager(string, *NatGatewaysClientListOptions) *runtime.Pager[NatGatewaysClientListResponse]`
+- New function `*LoadBalancerLoadBalancingRulesClient.NewListPager(string, string, *LoadBalancerLoadBalancingRulesClientListOptions) *runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse]`
+- New function `*VirtualNetworksClient.NewListUsagePager(string, string, *VirtualNetworksClientListUsageOptions) *runtime.Pager[VirtualNetworksClientListUsageResponse]`
+- New function `*AzureFirewallsClient.NewListAllPager(*AzureFirewallsClientListAllOptions) *runtime.Pager[AzureFirewallsClientListAllResponse]`
+- New function `*AzureFirewallsClient.NewListPager(string, *AzureFirewallsClientListOptions) *runtime.Pager[AzureFirewallsClientListResponse]`
+- New function `*LoadBalancersClient.NewListAllPager(*LoadBalancersClientListAllOptions) *runtime.Pager[LoadBalancersClientListAllResponse]`
+- New function `*RouteTablesClient.NewListAllPager(*RouteTablesClientListAllOptions) *runtime.Pager[RouteTablesClientListAllResponse]`
+- New function `*AvailablePrivateEndpointTypesClient.NewListPager(string, *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse]`
+- New function `*AvailableServiceAliasesClient.NewListPager(string, *AvailableServiceAliasesClientListOptions) *runtime.Pager[AvailableServiceAliasesClientListResponse]`
+- New function `*ExpressRouteCrossConnectionsClient.NewListPager(*ExpressRouteCrossConnectionsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListResponse]`
+- New function `*ExpressRouteCircuitPeeringsClient.NewListPager(string, string, *ExpressRouteCircuitPeeringsClientListOptions) *runtime.Pager[ExpressRouteCircuitPeeringsClientListResponse]`
+- New function `*NatGatewaysClient.NewListAllPager(*NatGatewaysClientListAllOptions) *runtime.Pager[NatGatewaysClientListAllResponse]`
+- New function `*IPAllocationsClient.NewListPager(*IPAllocationsClientListOptions) *runtime.Pager[IPAllocationsClientListResponse]`
+- New function `*PublicIPAddressesClient.NewListPager(string, *PublicIPAddressesClientListOptions) *runtime.Pager[PublicIPAddressesClientListResponse]`
+- New function `*P2SVPNGatewaysClient.NewListByResourceGroupPager(string, *P2SVPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[P2SVPNGatewaysClientListByResourceGroupResponse]`
+- New function `*VirtualNetworkTapsClient.NewListByResourceGroupPager(string, *VirtualNetworkTapsClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse]`
+- New function `*ExpressRouteCrossConnectionsClient.NewListByResourceGroupPager(string, *ExpressRouteCrossConnectionsClientListByResourceGroupOptions) *runtime.Pager[ExpressRouteCrossConnectionsClientListByResourceGroupResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

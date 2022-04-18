@@ -236,10 +236,10 @@ func (client *VPNGatewaysClient) getHandleResponse(resp *http.Response) (VPNGate
 	return result, nil
 }
 
-// List - Lists all the VpnGateways in a subscription.
+// NewListPager - Lists all the VpnGateways in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VPNGatewaysClientListOptions contains the optional parameters for the VPNGatewaysClient.List method.
-func (client *VPNGatewaysClient) List(options *VPNGatewaysClientListOptions) *runtime.Pager[VPNGatewaysClientListResponse] {
+func (client *VPNGatewaysClient) NewListPager(options *VPNGatewaysClientListOptions) *runtime.Pager[VPNGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNGatewaysClientListResponse]{
 		More: func(page VPNGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,12 +294,12 @@ func (client *VPNGatewaysClient) listHandleResponse(resp *http.Response) (VPNGat
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the VpnGateways in a resource group.
+// NewListByResourceGroupPager - Lists all the VpnGateways in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VpnGateway.
 // options - VPNGatewaysClientListByResourceGroupOptions contains the optional parameters for the VPNGatewaysClient.ListByResourceGroup
 // method.
-func (client *VPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *VPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[VPNGatewaysClientListByResourceGroupResponse] {
+func (client *VPNGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNGatewaysClientListByResourceGroupOptions) *runtime.Pager[VPNGatewaysClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNGatewaysClientListByResourceGroupResponse]{
 		More: func(page VPNGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

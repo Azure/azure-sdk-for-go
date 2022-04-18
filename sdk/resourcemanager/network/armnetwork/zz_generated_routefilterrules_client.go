@@ -252,13 +252,13 @@ func (client *RouteFilterRulesClient) getHandleResponse(resp *http.Response) (Ro
 	return result, nil
 }
 
-// ListByRouteFilter - Gets all RouteFilterRules in a route filter.
+// NewListByRouteFilterPager - Gets all RouteFilterRules in a route filter.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // routeFilterName - The name of the route filter.
 // options - RouteFilterRulesClientListByRouteFilterOptions contains the optional parameters for the RouteFilterRulesClient.ListByRouteFilter
 // method.
-func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) *runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse] {
+func (client *RouteFilterRulesClient) NewListByRouteFilterPager(resourceGroupName string, routeFilterName string, options *RouteFilterRulesClientListByRouteFilterOptions) *runtime.Pager[RouteFilterRulesClientListByRouteFilterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RouteFilterRulesClientListByRouteFilterResponse]{
 		More: func(page RouteFilterRulesClientListByRouteFilterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

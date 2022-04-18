@@ -56,14 +56,14 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
-// List - Gets a list of service tag information resources with pagination.
+// NewListPager - Gets a list of service tag information resources with pagination.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location that will be used as a reference for cloud (not as a filter based on location, you will get the
 // list of service tags with prefix details across all regions but limited to the cloud that
 // your subscription belongs to).
 // options - ServiceTagInformationClientListOptions contains the optional parameters for the ServiceTagInformationClient.List
 // method.
-func (client *ServiceTagInformationClient) List(location string, options *ServiceTagInformationClientListOptions) *runtime.Pager[ServiceTagInformationClientListResponse] {
+func (client *ServiceTagInformationClient) NewListPager(location string, options *ServiceTagInformationClientListOptions) *runtime.Pager[ServiceTagInformationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceTagInformationClientListResponse]{
 		More: func(page ServiceTagInformationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

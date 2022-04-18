@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectableContainers_List.json
-func ExampleProtectableContainersClient_List() {
+func ExampleProtectableContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleProtectableContainersClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<vault-name>",
+	pager := client.NewListPager("<vault-name>",
 		"<resource-group-name>",
 		"<fabric-name>",
 		&armrecoveryservicesbackup.ProtectableContainersClientListOptions{Filter: to.Ptr("<filter>")})

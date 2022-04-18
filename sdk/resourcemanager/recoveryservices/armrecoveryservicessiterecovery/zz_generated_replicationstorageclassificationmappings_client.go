@@ -277,11 +277,11 @@ func (client *ReplicationStorageClassificationMappingsClient) getHandleResponse(
 	return result, nil
 }
 
-// List - Lists the storage classification mappings in the vault.
+// NewListPager - Lists the storage classification mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationStorageClassificationMappingsClientListOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.List
 // method.
-func (client *ReplicationStorageClassificationMappingsClient) List(options *ReplicationStorageClassificationMappingsClientListOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListResponse] {
+func (client *ReplicationStorageClassificationMappingsClient) NewListPager(options *ReplicationStorageClassificationMappingsClientListOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationStorageClassificationMappingsClientListResponse]{
 		More: func(page ReplicationStorageClassificationMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -344,13 +344,13 @@ func (client *ReplicationStorageClassificationMappingsClient) listHandleResponse
 	return result, nil
 }
 
-// ListByReplicationStorageClassifications - Lists the storage classification mappings for the fabric.
+// NewListByReplicationStorageClassificationsPager - Lists the storage classification mappings for the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // options - ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions contains the optional
 // parameters for the ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications method.
-func (client *ReplicationStorageClassificationMappingsClient) ListByReplicationStorageClassifications(fabricName string, storageClassificationName string, options *ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse] {
+func (client *ReplicationStorageClassificationMappingsClient) NewListByReplicationStorageClassificationsPager(fabricName string, storageClassificationName string, options *ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse]{
 		More: func(page ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

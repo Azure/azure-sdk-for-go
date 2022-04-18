@@ -134,14 +134,14 @@ func (client *MigrationRecoveryPointsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByReplicationMigrationItems - Gets the recovery points for a migration item.
+// NewListByReplicationMigrationItemsPager - Gets the recovery points for a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
 // options - MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions contains the optional parameters for the
 // MigrationRecoveryPointsClient.ListByReplicationMigrationItems method.
-func (client *MigrationRecoveryPointsClient) ListByReplicationMigrationItems(fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) *runtime.Pager[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse] {
+func (client *MigrationRecoveryPointsClient) NewListByReplicationMigrationItemsPager(fabricName string, protectionContainerName string, migrationItemName string, options *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) *runtime.Pager[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse]{
 		More: func(page MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -419,14 +419,14 @@ func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *
 	return result, nil
 }
 
-// ListAuthorizationRules - Authorization rules for a hybrid connection.
+// NewListAuthorizationRulesPager - Authorization rules for a hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // hybridConnectionName - The hybrid connection name.
 // options - HybridConnectionsClientListAuthorizationRulesOptions contains the optional parameters for the HybridConnectionsClient.ListAuthorizationRules
 // method.
-func (client *HybridConnectionsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, hybridConnectionName string, options *HybridConnectionsClientListAuthorizationRulesOptions) *runtime.Pager[HybridConnectionsClientListAuthorizationRulesResponse] {
+func (client *HybridConnectionsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, hybridConnectionName string, options *HybridConnectionsClientListAuthorizationRulesOptions) *runtime.Pager[HybridConnectionsClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HybridConnectionsClientListAuthorizationRulesResponse]{
 		More: func(page HybridConnectionsClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -493,13 +493,13 @@ func (client *HybridConnectionsClient) listAuthorizationRulesHandleResponse(resp
 	return result, nil
 }
 
-// ListByNamespace - Lists the hybrid connection within the namespace.
+// NewListByNamespacePager - Lists the hybrid connection within the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - HybridConnectionsClientListByNamespaceOptions contains the optional parameters for the HybridConnectionsClient.ListByNamespace
 // method.
-func (client *HybridConnectionsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *HybridConnectionsClientListByNamespaceOptions) *runtime.Pager[HybridConnectionsClientListByNamespaceResponse] {
+func (client *HybridConnectionsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *HybridConnectionsClientListByNamespaceOptions) *runtime.Pager[HybridConnectionsClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HybridConnectionsClientListByNamespaceResponse]{
 		More: func(page HybridConnectionsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

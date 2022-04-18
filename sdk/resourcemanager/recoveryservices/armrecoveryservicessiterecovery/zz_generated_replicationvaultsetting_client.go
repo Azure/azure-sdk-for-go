@@ -184,11 +184,11 @@ func (client *ReplicationVaultSettingClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Gets the list of vault setting. This includes the Migration Hub connection settings.
+// NewListPager - Gets the list of vault setting. This includes the Migration Hub connection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.List
 // method.
-func (client *ReplicationVaultSettingClient) List(options *ReplicationVaultSettingClientListOptions) *runtime.Pager[ReplicationVaultSettingClientListResponse] {
+func (client *ReplicationVaultSettingClient) NewListPager(options *ReplicationVaultSettingClientListOptions) *runtime.Pager[ReplicationVaultSettingClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationVaultSettingClientListResponse]{
 		More: func(page ReplicationVaultSettingClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -221,12 +221,12 @@ func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByProviderRegistration - Gets the list of the resource types for the given provider.
+// NewListByProviderRegistrationPager - Gets the list of the resource types for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - ResourceTypeRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the ResourceTypeRegistrationsClient.ListByProviderRegistration
 // method.
-func (client *ResourceTypeRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[ResourceTypeRegistrationsClientListByProviderRegistrationResponse] {
+func (client *ResourceTypeRegistrationsClient) NewListByProviderRegistrationPager(providerNamespace string, options *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[ResourceTypeRegistrationsClientListByProviderRegistrationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceTypeRegistrationsClientListByProviderRegistrationResponse]{
 		More: func(page ResourceTypeRegistrationsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

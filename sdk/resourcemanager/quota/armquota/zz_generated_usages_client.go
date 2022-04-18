@@ -107,14 +107,14 @@ func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClient
 	return result, nil
 }
 
-// List - Get a list of current usage for all resources for the scope specified.
+// NewListPager - Get a list of current usage for all resources for the scope specified.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(scope string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+func (client *UsagesClient) NewListPager(scope string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

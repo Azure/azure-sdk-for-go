@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OpenShiftClustersClient.List` has been removed
+- Function `*OpenShiftClustersClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*OpenShiftClustersClient.NewListByResourceGroupPager(string, *OpenShiftClustersClientListByResourceGroupOptions) *runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*OpenShiftClustersClient.NewListPager(*OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

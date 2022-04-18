@@ -418,14 +418,14 @@ func (client *WCFRelaysClient) getAuthorizationRuleHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListAuthorizationRules - Authorization rules for a WCF relay.
+// NewListAuthorizationRulesPager - Authorization rules for a WCF relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // relayName - The relay name.
 // options - WCFRelaysClientListAuthorizationRulesOptions contains the optional parameters for the WCFRelaysClient.ListAuthorizationRules
 // method.
-func (client *WCFRelaysClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse] {
+func (client *WCFRelaysClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, relayName string, options *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListAuthorizationRulesResponse]{
 		More: func(page WCFRelaysClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -492,13 +492,13 @@ func (client *WCFRelaysClient) listAuthorizationRulesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByNamespace - Lists the WCF relays within the namespace.
+// NewListByNamespacePager - Lists the WCF relays within the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - WCFRelaysClientListByNamespaceOptions contains the optional parameters for the WCFRelaysClient.ListByNamespace
 // method.
-func (client *WCFRelaysClient) ListByNamespace(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse] {
+func (client *WCFRelaysClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WCFRelaysClientListByNamespaceResponse]{
 		More: func(page WCFRelaysClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

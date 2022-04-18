@@ -375,11 +375,11 @@ func (client *ReplicationRecoveryPlansClient) getHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// List - Lists the recovery plans in the vault.
+// NewListPager - Lists the recovery plans in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationRecoveryPlansClientListOptions contains the optional parameters for the ReplicationRecoveryPlansClient.List
 // method.
-func (client *ReplicationRecoveryPlansClient) List(options *ReplicationRecoveryPlansClientListOptions) *runtime.Pager[ReplicationRecoveryPlansClientListResponse] {
+func (client *ReplicationRecoveryPlansClient) NewListPager(options *ReplicationRecoveryPlansClientListOptions) *runtime.Pager[ReplicationRecoveryPlansClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryPlansClientListResponse]{
 		More: func(page ReplicationRecoveryPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

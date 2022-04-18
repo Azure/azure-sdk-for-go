@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationStorageClassificationMappings_ListByReplicationStorageClassifications.json
-func ExampleReplicationStorageClassificationMappingsClient_ListByReplicationStorageClassifications() {
+func ExampleReplicationStorageClassificationMappingsClient_NewListByReplicationStorageClassificationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,7 +34,7 @@ func ExampleReplicationStorageClassificationMappingsClient_ListByReplicationStor
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationStorageClassifications("<fabric-name>",
+	pager := client.NewListByReplicationStorageClassificationsPager("<fabric-name>",
 		"<storage-classification-name>",
 		nil)
 	for pager.More() {
@@ -148,7 +148,7 @@ func ExampleReplicationStorageClassificationMappingsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationStorageClassificationMappings_List.json
-func ExampleReplicationStorageClassificationMappingsClient_List() {
+func ExampleReplicationStorageClassificationMappingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,7 +162,7 @@ func ExampleReplicationStorageClassificationMappingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

@@ -228,12 +228,12 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 	return result, nil
 }
 
-// List - Gets all firewall rules in the specified redis cache.
+// NewListPager - Gets all firewall rules in the specified redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.List method.
-func (client *FirewallRulesClient) List(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
+func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cacheName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallRulesClientListResponse]{
 		More: func(page FirewallRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

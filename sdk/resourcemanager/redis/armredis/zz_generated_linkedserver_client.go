@@ -233,12 +233,12 @@ func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (Linked
 	return result, nil
 }
 
-// List - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
+// NewListPager - Gets the list of linked servers associated with this redis cache (requires Premium SKU).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // options - LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
-func (client *LinkedServerClient) List(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
+func (client *LinkedServerClient) NewListPager(resourceGroupName string, name string, options *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LinkedServerClientListResponse]{
 		More: func(page LinkedServerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

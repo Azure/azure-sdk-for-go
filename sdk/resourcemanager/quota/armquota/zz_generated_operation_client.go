@@ -48,10 +48,10 @@ func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// List - List all the operations supported by the Microsoft.Quota resource provider.
+// NewListPager - List all the operations supported by the Microsoft.Quota resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationClientListOptions contains the optional parameters for the OperationClient.List method.
-func (client *OperationClient) List(options *OperationClientListOptions) *runtime.Pager[OperationClientListResponse] {
+func (client *OperationClient) NewListPager(options *OperationClientListOptions) *runtime.Pager[OperationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationClientListResponse]{
 		More: func(page OperationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

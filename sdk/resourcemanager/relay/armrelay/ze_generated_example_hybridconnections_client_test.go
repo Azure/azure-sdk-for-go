@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionListAll.json
-func ExampleHybridConnectionsClient_ListByNamespace() {
+func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleHybridConnectionsClient_ListByNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNamespace("<resource-group-name>",
+	pager := client.NewListByNamespacePager("<resource-group-name>",
 		"<namespace-name>",
 		nil)
 	for pager.More() {
@@ -128,7 +128,7 @@ func ExampleHybridConnectionsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAutorizationRuleListAll.json
-func ExampleHybridConnectionsClient_ListAuthorizationRules() {
+func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -140,7 +140,7 @@ func ExampleHybridConnectionsClient_ListAuthorizationRules() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAuthorizationRules("<resource-group-name>",
+	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
 		"<namespace-name>",
 		"<hybrid-connection-name>",
 		nil)

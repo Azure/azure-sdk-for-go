@@ -262,11 +262,11 @@ func (client *ReplicationRecoveryServicesProvidersClient) getHandleResponse(resp
 	return result, nil
 }
 
-// List - Lists the registered recovery services providers in the vault.
+// NewListPager - Lists the registered recovery services providers in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationRecoveryServicesProvidersClientListOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.List
 // method.
-func (client *ReplicationRecoveryServicesProvidersClient) List(options *ReplicationRecoveryServicesProvidersClientListOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListResponse] {
+func (client *ReplicationRecoveryServicesProvidersClient) NewListPager(options *ReplicationRecoveryServicesProvidersClientListOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryServicesProvidersClientListResponse]{
 		More: func(page ReplicationRecoveryServicesProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -329,12 +329,12 @@ func (client *ReplicationRecoveryServicesProvidersClient) listHandleResponse(res
 	return result, nil
 }
 
-// ListByReplicationFabrics - Lists the registered recovery services providers for the specified fabric.
+// NewListByReplicationFabricsPager - Lists the registered recovery services providers for the specified fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // options - ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions contains the optional parameters for
 // the ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics method.
-func (client *ReplicationRecoveryServicesProvidersClient) ListByReplicationFabrics(fabricName string, options *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse] {
+func (client *ReplicationRecoveryServicesProvidersClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

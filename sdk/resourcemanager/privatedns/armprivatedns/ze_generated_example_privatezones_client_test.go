@@ -151,7 +151,7 @@ func ExamplePrivateZonesClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZoneListInSubscription.json
-func ExamplePrivateZonesClient_List() {
+func ExamplePrivateZonesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -163,7 +163,7 @@ func ExamplePrivateZonesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armprivatedns.PrivateZonesClientListOptions{Top: nil})
+	pager := client.NewListPager(&armprivatedns.PrivateZonesClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -178,7 +178,7 @@ func ExamplePrivateZonesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZoneListInResourceGroup.json
-func ExamplePrivateZonesClient_ListByResourceGroup() {
+func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -190,7 +190,7 @@ func ExamplePrivateZonesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armprivatedns.PrivateZonesClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

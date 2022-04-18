@@ -1,5 +1,23 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*RecordSetsClient.ListByType` has been removed
+- Function `*VirtualNetworkLinksClient.List` has been removed
+- Function `*PrivateZonesClient.List` has been removed
+- Function `*RecordSetsClient.List` has been removed
+- Function `*PrivateZonesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*PrivateZonesClient.NewListPager(*PrivateZonesClientListOptions) *runtime.Pager[PrivateZonesClientListResponse]`
+- New function `*RecordSetsClient.NewListByTypePager(string, string, RecordType, *RecordSetsClientListByTypeOptions) *runtime.Pager[RecordSetsClientListByTypeResponse]`
+- New function `*PrivateZonesClient.NewListByResourceGroupPager(string, *PrivateZonesClientListByResourceGroupOptions) *runtime.Pager[PrivateZonesClientListByResourceGroupResponse]`
+- New function `*RecordSetsClient.NewListPager(string, string, *RecordSetsClientListOptions) *runtime.Pager[RecordSetsClientListResponse]`
+- New function `*VirtualNetworkLinksClient.NewListPager(string, string, *VirtualNetworkLinksClientListOptions) *runtime.Pager[VirtualNetworkLinksClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

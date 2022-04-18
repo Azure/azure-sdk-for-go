@@ -841,13 +841,13 @@ func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByResourceTypeRegistrations - Gets the list of skus for the given resource type.
+// NewListByResourceTypeRegistrationsPager - Gets the list of skus for the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
 // options - SKUsClientListByResourceTypeRegistrationsOptions contains the optional parameters for the SKUsClient.ListByResourceTypeRegistrations
 // method.
-func (client *SKUsClient) ListByResourceTypeRegistrations(providerNamespace string, resourceType string, options *SKUsClientListByResourceTypeRegistrationsOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsResponse] {
+func (client *SKUsClient) NewListByResourceTypeRegistrationsPager(providerNamespace string, resourceType string, options *SKUsClientListByResourceTypeRegistrationsOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsClientListByResourceTypeRegistrationsResponse]{
 		More: func(page SKUsClientListByResourceTypeRegistrationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -910,14 +910,14 @@ func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByResourceTypeRegistrationsNestedResourceTypeFirst - Gets the list of skus for the given resource type.
+// NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager - Gets the list of skus for the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
 // nestedResourceTypeFirst - The first child resource type.
 // options - SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions contains the optional parameters for
 // the SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst method.
-func (client *SKUsClient) ListByResourceTypeRegistrationsNestedResourceTypeFirst(providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse] {
+func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse]{
 		More: func(page SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -984,7 +984,7 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirst
 	return result, nil
 }
 
-// ListByResourceTypeRegistrationsNestedResourceTypeSecond - Gets the list of skus for the given resource type.
+// NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager - Gets the list of skus for the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
@@ -992,7 +992,7 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirst
 // nestedResourceTypeSecond - The second child resource type.
 // options - SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions contains the optional parameters for
 // the SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond method.
-func (client *SKUsClient) ListByResourceTypeRegistrationsNestedResourceTypeSecond(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse] {
+func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse]{
 		More: func(page SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1063,7 +1063,7 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecon
 	return result, nil
 }
 
-// ListByResourceTypeRegistrationsNestedResourceTypeThird - Gets the list of skus for the given resource type.
+// NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager - Gets the list of skus for the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // resourceType - The resource type.
@@ -1072,7 +1072,7 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecon
 // nestedResourceTypeThird - The third child resource type.
 // options - SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions contains the optional parameters for
 // the SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird method.
-func (client *SKUsClient) ListByResourceTypeRegistrationsNestedResourceTypeThird(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse] {
+func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager(providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, options *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse]{
 		More: func(page SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

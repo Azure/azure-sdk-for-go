@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectableItems_ListByReplicationProtectionContainers.json
-func ExampleReplicationProtectableItemsClient_ListByReplicationProtectionContainers() {
+func ExampleReplicationProtectableItemsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleReplicationProtectableItemsClient_ListByReplicationProtectionContain
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
 		"<protection-container-name>",
 		&armrecoveryservicessiterecovery.ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions{Filter: nil,
 			Take:      nil,

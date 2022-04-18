@@ -54,13 +54,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// ListByCluster - Gets the private link resources that need to be created for a RedisEnterprise cluster.
+// NewListByClusterPager - Gets the private link resources that need to be created for a RedisEnterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // options - PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByCluster
 // method.
-func (client *PrivateLinkResourcesClient) ListByCluster(resourceGroupName string, clusterName string, options *PrivateLinkResourcesClientListByClusterOptions) *runtime.Pager[PrivateLinkResourcesClientListByClusterResponse] {
+func (client *PrivateLinkResourcesClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateLinkResourcesClientListByClusterOptions) *runtime.Pager[PrivateLinkResourcesClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByClusterResponse]{
 		More: func(page PrivateLinkResourcesClientListByClusterResponse) bool {
 			return false

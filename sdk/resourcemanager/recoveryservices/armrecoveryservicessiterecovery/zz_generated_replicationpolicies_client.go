@@ -246,11 +246,11 @@ func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Lists the replication policies for a vault.
+// NewListPager - Lists the replication policies for a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.List
 // method.
-func (client *ReplicationPoliciesClient) List(options *ReplicationPoliciesClientListOptions) *runtime.Pager[ReplicationPoliciesClientListResponse] {
+func (client *ReplicationPoliciesClient) NewListPager(options *ReplicationPoliciesClientListOptions) *runtime.Pager[ReplicationPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationPoliciesClientListResponse]{
 		More: func(page ReplicationPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

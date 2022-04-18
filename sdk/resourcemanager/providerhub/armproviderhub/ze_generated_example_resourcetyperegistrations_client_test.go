@@ -121,7 +121,7 @@ func ExampleResourceTypeRegistrationsClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/ResourceTypeRegistrations_ListByProviderRegistration.json
-func ExampleResourceTypeRegistrationsClient_ListByProviderRegistration() {
+func ExampleResourceTypeRegistrationsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,7 +133,7 @@ func ExampleResourceTypeRegistrationsClient_ListByProviderRegistration() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByProviderRegistration("<provider-namespace>",
+	pager := client.NewListByProviderRegistrationPager("<provider-namespace>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

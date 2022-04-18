@@ -54,11 +54,11 @@ func NewOfferingsClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// List - Returns the list of all provider offerings available for the given location.
+// NewListPager - Returns the list of all provider offerings available for the given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - Location.
 // options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.List method.
-func (client *OfferingsClient) List(locationName string, options *OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse] {
+func (client *OfferingsClient) NewListPager(locationName string, options *OfferingsClientListOptions) *runtime.Pager[OfferingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OfferingsClientListResponse]{
 		More: func(page OfferingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

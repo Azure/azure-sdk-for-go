@@ -114,10 +114,10 @@ func (client *OperationsClient) getOperationResultHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Returns the list of available operations.
+// NewListPager - Returns the list of available operations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
-func (client *OperationsClient) List(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
+func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

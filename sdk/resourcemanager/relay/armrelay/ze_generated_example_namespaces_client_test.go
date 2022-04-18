@@ -46,7 +46,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceListBySubscription.json
-func ExampleNamespacesClient_List() {
+func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleNamespacesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -73,7 +73,7 @@ func ExampleNamespacesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceListByResourceGroup.json
-func ExampleNamespacesClient_ListByResourceGroup() {
+func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleNamespacesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -228,7 +228,7 @@ func ExampleNamespacesClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/NameSpaces/RelayNameSpaceAutorizationRuleListAll.json
-func ExampleNamespacesClient_ListAuthorizationRules() {
+func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -240,7 +240,7 @@ func ExampleNamespacesClient_ListAuthorizationRules() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAuthorizationRules("<resource-group-name>",
+	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
 		"<namespace-name>",
 		nil)
 	for pager.More() {

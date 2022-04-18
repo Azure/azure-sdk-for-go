@@ -250,10 +250,10 @@ func (client *PrivateZonesClient) getHandleResponse(resp *http.Response) (Privat
 	return result, nil
 }
 
-// List - Lists the Private DNS zones in all resource groups in a subscription.
+// NewListPager - Lists the Private DNS zones in all resource groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateZonesClientListOptions contains the optional parameters for the PrivateZonesClient.List method.
-func (client *PrivateZonesClient) List(options *PrivateZonesClientListOptions) *runtime.Pager[PrivateZonesClientListResponse] {
+func (client *PrivateZonesClient) NewListPager(options *PrivateZonesClientListOptions) *runtime.Pager[PrivateZonesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateZonesClientListResponse]{
 		More: func(page PrivateZonesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -311,12 +311,12 @@ func (client *PrivateZonesClient) listHandleResponse(resp *http.Response) (Priva
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the Private DNS zones within a resource group.
+// NewListByResourceGroupPager - Lists the Private DNS zones within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PrivateZonesClientListByResourceGroupOptions contains the optional parameters for the PrivateZonesClient.ListByResourceGroup
 // method.
-func (client *PrivateZonesClient) ListByResourceGroup(resourceGroupName string, options *PrivateZonesClientListByResourceGroupOptions) *runtime.Pager[PrivateZonesClientListByResourceGroupResponse] {
+func (client *PrivateZonesClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateZonesClientListByResourceGroupOptions) *runtime.Pager[PrivateZonesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateZonesClientListByResourceGroupResponse]{
 		More: func(page PrivateZonesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

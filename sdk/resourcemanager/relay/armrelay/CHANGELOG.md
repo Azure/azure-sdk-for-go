@@ -1,5 +1,29 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*NamespacesClient.List` has been removed
+- Function `*WCFRelaysClient.ListAuthorizationRules` has been removed
+- Function `*WCFRelaysClient.ListByNamespace` has been removed
+- Function `*HybridConnectionsClient.ListByNamespace` has been removed
+- Function `*NamespacesClient.ListAuthorizationRules` has been removed
+- Function `*HybridConnectionsClient.ListAuthorizationRules` has been removed
+- Function `*NamespacesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*HybridConnectionsClient.NewListAuthorizationRulesPager(string, string, string, *HybridConnectionsClientListAuthorizationRulesOptions) *runtime.Pager[HybridConnectionsClientListAuthorizationRulesResponse]`
+- New function `*WCFRelaysClient.NewListByNamespacePager(string, string, *WCFRelaysClientListByNamespaceOptions) *runtime.Pager[WCFRelaysClientListByNamespaceResponse]`
+- New function `*NamespacesClient.NewListByResourceGroupPager(string, *NamespacesClientListByResourceGroupOptions) *runtime.Pager[NamespacesClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*WCFRelaysClient.NewListAuthorizationRulesPager(string, string, string, *WCFRelaysClientListAuthorizationRulesOptions) *runtime.Pager[WCFRelaysClientListAuthorizationRulesResponse]`
+- New function `*HybridConnectionsClient.NewListByNamespacePager(string, string, *HybridConnectionsClientListByNamespaceOptions) *runtime.Pager[HybridConnectionsClientListByNamespaceResponse]`
+- New function `*NamespacesClient.NewListPager(*NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse]`
+- New function `*NamespacesClient.NewListAuthorizationRulesPager(string, string, *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

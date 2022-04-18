@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*OperationsClient.List` has been removed
+- Function `*Client.List` has been removed
+- Function `*DatabasesClient.ListByCluster` has been removed
+- Function `*Client.ListByResourceGroup` has been removed
+- Function `*PrivateLinkResourcesClient.ListByCluster` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+
+### Features Added
+
+- New function `*DatabasesClient.NewListByClusterPager(string, string, *DatabasesClientListByClusterOptions) *runtime.Pager[DatabasesClientListByClusterResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByClusterPager(string, string, *PrivateLinkResourcesClientListByClusterOptions) *runtime.Pager[PrivateLinkResourcesClientListByClusterResponse]`
+- New function `*Client.NewListPager(*ClientListOptions) *runtime.Pager[ClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

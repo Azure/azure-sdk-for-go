@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/BackupPolicies_List.json
-func ExampleBackupPoliciesClient_List() {
+func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleBackupPoliciesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<vault-name>",
+	pager := client.NewListPager("<vault-name>",
 		"<resource-group-name>",
 		&armrecoveryservicesbackup.BackupPoliciesClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {

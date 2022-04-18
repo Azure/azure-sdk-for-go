@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ListUsages.json
-func ExampleUsagesClient_ListByVaults() {
+func ExampleUsagesClient_NewListByVaultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleUsagesClient_ListByVaults() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByVaults("<resource-group-name>",
+	pager := client.NewListByVaultsPager("<resource-group-name>",
 		"<vault-name>",
 		nil)
 	for pager.More() {

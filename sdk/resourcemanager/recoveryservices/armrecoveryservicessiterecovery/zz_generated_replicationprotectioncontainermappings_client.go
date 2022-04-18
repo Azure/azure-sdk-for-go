@@ -278,11 +278,11 @@ func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(re
 	return result, nil
 }
 
-// List - Lists the protection container mappings in the vault.
+// NewListPager - Lists the protection container mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
 // method.
-func (client *ReplicationProtectionContainerMappingsClient) List(options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
+func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionContainerMappingsClientListResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -345,13 +345,13 @@ func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(r
 	return result, nil
 }
 
-// ListByReplicationProtectionContainers - Lists the protection container mappings for a protection container.
+// NewListByReplicationProtectionContainersPager - Lists the protection container mappings for a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
 // parameters for the ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers method.
-func (client *ReplicationProtectionContainerMappingsClient) ListByReplicationProtectionContainers(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse] {
+func (client *ReplicationProtectionContainerMappingsClient) NewListByReplicationProtectionContainersPager(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

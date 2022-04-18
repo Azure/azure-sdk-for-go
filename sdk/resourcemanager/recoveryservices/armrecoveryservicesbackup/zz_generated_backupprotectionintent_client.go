@@ -54,13 +54,13 @@ func NewBackupProtectionIntentClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - Provides a pageable list of all intents that are present within a vault.
+// NewListPager - Provides a pageable list of all intents that are present within a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupProtectionIntentClientListOptions contains the optional parameters for the BackupProtectionIntentClient.List
 // method.
-func (client *BackupProtectionIntentClient) List(vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) *runtime.Pager[BackupProtectionIntentClientListResponse] {
+func (client *BackupProtectionIntentClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionIntentClientListOptions) *runtime.Pager[BackupProtectionIntentClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupProtectionIntentClientListResponse]{
 		More: func(page BackupProtectionIntentClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

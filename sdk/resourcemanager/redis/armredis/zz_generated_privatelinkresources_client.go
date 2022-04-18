@@ -55,13 +55,13 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// ListByRedisCache - Gets the private link resources that need to be created for a redis cache.
+// NewListByRedisCachePager - Gets the private link resources that need to be created for a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
 // method.
-func (client *PrivateLinkResourcesClient) ListByRedisCache(resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) *runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse] {
+func (client *PrivateLinkResourcesClient) NewListByRedisCachePager(resourceGroupName string, cacheName string, options *PrivateLinkResourcesClientListByRedisCacheOptions) *runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByRedisCacheResponse]{
 		More: func(page PrivateLinkResourcesClientListByRedisCacheResponse) bool {
 			return false

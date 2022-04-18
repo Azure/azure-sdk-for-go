@@ -1,5 +1,41 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*RecoveryPointsRecommendedForMoveClient.List` has been removed
+- Function `*ProtectableContainersClient.List` has been removed
+- Function `*BackupProtectionIntentClient.List` has been removed
+- Function `*BackupWorkloadItemsClient.List` has been removed
+- Function `*BackupUsageSummariesClient.List` has been removed
+- Function `*RecoveryPointsClient.List` has been removed
+- Function `*BackupProtectedItemsClient.List` has been removed
+- Function `*BackupProtectionContainersClient.List` has been removed
+- Function `*BackupProtectableItemsClient.List` has been removed
+- Function `*BackupJobsClient.List` has been removed
+- Function `*BackupPoliciesClient.List` has been removed
+- Function `*ResourceGuardProxiesClient.Get` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*BackupEnginesClient.List` has been removed
+
+### Features Added
+
+- New function `*BackupUsageSummariesClient.NewListPager(string, string, *BackupUsageSummariesClientListOptions) *runtime.Pager[BackupUsageSummariesClientListResponse]`
+- New function `*BackupProtectionIntentClient.NewListPager(string, string, *BackupProtectionIntentClientListOptions) *runtime.Pager[BackupProtectionIntentClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*BackupProtectableItemsClient.NewListPager(string, string, *BackupProtectableItemsClientListOptions) *runtime.Pager[BackupProtectableItemsClientListResponse]`
+- New function `*BackupProtectionContainersClient.NewListPager(string, string, *BackupProtectionContainersClientListOptions) *runtime.Pager[BackupProtectionContainersClientListResponse]`
+- New function `*RecoveryPointsRecommendedForMoveClient.NewListPager(string, string, string, string, string, ListRecoveryPointsRecommendedForMoveRequest, *RecoveryPointsRecommendedForMoveClientListOptions) *runtime.Pager[RecoveryPointsRecommendedForMoveClientListResponse]`
+- New function `*BackupProtectedItemsClient.NewListPager(string, string, *BackupProtectedItemsClientListOptions) *runtime.Pager[BackupProtectedItemsClientListResponse]`
+- New function `*ProtectableContainersClient.NewListPager(string, string, string, *ProtectableContainersClientListOptions) *runtime.Pager[ProtectableContainersClientListResponse]`
+- New function `*ResourceGuardProxiesClient.NewGetPager(string, string, *ResourceGuardProxiesClientGetOptions) *runtime.Pager[ResourceGuardProxiesClientGetResponse]`
+- New function `*RecoveryPointsClient.NewListPager(string, string, string, string, string, *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse]`
+- New function `*BackupEnginesClient.NewListPager(string, string, *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse]`
+- New function `*BackupPoliciesClient.NewListPager(string, string, *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse]`
+- New function `*BackupWorkloadItemsClient.NewListPager(string, string, string, string, *BackupWorkloadItemsClientListOptions) *runtime.Pager[BackupWorkloadItemsClientListResponse]`
+- New function `*BackupJobsClient.NewListPager(string, string, *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseListPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_ListByCluster() {
+func ExamplePrivateLinkResourcesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListByCluster() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByCluster("<resource-group-name>",
+	pager := client.NewListByClusterPager("<resource-group-name>",
 		"<cluster-name>",
 		nil)
 	for pager.More() {

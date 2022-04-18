@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheListPrivateLinkResources.json
-func ExamplePrivateLinkResourcesClient_ListByRedisCache() {
+func ExamplePrivateLinkResourcesClient_NewListByRedisCachePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExamplePrivateLinkResourcesClient_ListByRedisCache() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRedisCache("<resource-group-name>",
+	pager := client.NewListByRedisCachePager("<resource-group-name>",
 		"<cache-name>",
 		nil)
 	for pager.More() {

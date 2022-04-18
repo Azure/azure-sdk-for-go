@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionContainerMappings_ListByReplicationProtectionContainers.json
-func ExampleReplicationProtectionContainerMappingsClient_ListByReplicationProtectionContainers() {
+func ExampleReplicationProtectionContainerMappingsClient_NewListByReplicationProtectionContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -34,7 +34,7 @@ func ExampleReplicationProtectionContainerMappingsClient_ListByReplicationProtec
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationProtectionContainers("<fabric-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
 		"<protection-container-name>",
 		nil)
 	for pager.More() {
@@ -230,7 +230,7 @@ func ExampleReplicationProtectionContainerMappingsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionContainerMappings_List.json
-func ExampleReplicationProtectionContainerMappingsClient_List() {
+func ExampleReplicationProtectionContainerMappingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -244,7 +244,7 @@ func ExampleReplicationProtectionContainerMappingsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(nil)
+	pager := client.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

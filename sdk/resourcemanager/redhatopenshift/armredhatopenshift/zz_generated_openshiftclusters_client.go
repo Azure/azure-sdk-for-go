@@ -232,10 +232,10 @@ func (client *OpenShiftClustersClient) getHandleResponse(resp *http.Response) (O
 	return result, nil
 }
 
-// List - The operation returns properties of each OpenShift cluster.
+// NewListPager - The operation returns properties of each OpenShift cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - OpenShiftClustersClientListOptions contains the optional parameters for the OpenShiftClustersClient.List method.
-func (client *OpenShiftClustersClient) List(options *OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse] {
+func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersClientListOptions) *runtime.Pager[OpenShiftClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OpenShiftClustersClientListResponse]{
 		More: func(page OpenShiftClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -290,12 +290,12 @@ func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - The operation returns properties of each OpenShift cluster.
+// NewListByResourceGroupPager - The operation returns properties of each OpenShift cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - OpenShiftClustersClientListByResourceGroupOptions contains the optional parameters for the OpenShiftClustersClient.ListByResourceGroup
 // method.
-func (client *OpenShiftClustersClient) ListByResourceGroup(resourceGroupName string, options *OpenShiftClustersClientListByResourceGroupOptions) *runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse] {
+func (client *OpenShiftClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *OpenShiftClustersClientListByResourceGroupOptions) *runtime.Pager[OpenShiftClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OpenShiftClustersClientListByResourceGroupResponse]{
 		More: func(page OpenShiftClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

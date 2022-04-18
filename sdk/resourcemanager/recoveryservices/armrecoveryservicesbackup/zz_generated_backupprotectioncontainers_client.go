@@ -54,13 +54,13 @@ func NewBackupProtectionContainersClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - Lists the containers registered to Recovery Services Vault.
+// NewListPager - Lists the containers registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupProtectionContainersClientListOptions contains the optional parameters for the BackupProtectionContainersClient.List
 // method.
-func (client *BackupProtectionContainersClient) List(vaultName string, resourceGroupName string, options *BackupProtectionContainersClientListOptions) *runtime.Pager[BackupProtectionContainersClientListResponse] {
+func (client *BackupProtectionContainersClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectionContainersClientListOptions) *runtime.Pager[BackupProtectionContainersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupProtectionContainersClientListResponse]{
 		More: func(page BackupProtectionContainersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

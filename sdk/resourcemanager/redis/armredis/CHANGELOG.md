@@ -1,5 +1,31 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*LinkedServerClient.List` has been removed
+- Function `*PatchSchedulesClient.ListByRedisResource` has been removed
+- Function `*Client.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*Client.ListUpgradeNotifications` has been removed
+- Function `*PrivateLinkResourcesClient.ListByRedisCache` has been removed
+- Function `*FirewallRulesClient.List` has been removed
+- Function `*Client.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*PrivateLinkResourcesClient.NewListByRedisCachePager(string, string, *PrivateLinkResourcesClientListByRedisCacheOptions) *runtime.Pager[PrivateLinkResourcesClientListByRedisCacheResponse]`
+- New function `*PatchSchedulesClient.NewListByRedisResourcePager(string, string, *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse]`
+- New function `*LinkedServerClient.NewListPager(string, string, *LinkedServerClientListOptions) *runtime.Pager[LinkedServerClientListResponse]`
+- New function `*Client.NewListBySubscriptionPager(*ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse]`
+- New function `*Client.NewListByResourceGroupPager(string, *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*FirewallRulesClient.NewListPager(string, string, *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*Client.NewListUpgradeNotificationsPager(string, string, float64, *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

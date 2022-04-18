@@ -181,15 +181,15 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 	return result, nil
 }
 
-// List - Get a list of current quota limits of all resources for the specified scope. The response from this GET operation
-// can be leveraged to submit requests to update a quota.
+// NewListPager - Get a list of current quota limits of all resources for the specified scope. The response from this GET
+// operation can be leveraged to submit requests to update a quota.
 // If the operation fails it returns an *azcore.ResponseError type.
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
-func (client *Client) List(scope string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
+func (client *Client) NewListPager(scope string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

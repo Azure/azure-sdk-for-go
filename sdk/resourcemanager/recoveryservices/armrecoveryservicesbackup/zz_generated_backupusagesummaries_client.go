@@ -54,13 +54,13 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// List - Fetches the backup management usage summaries of the vault.
+// NewListPager - Fetches the backup management usage summaries of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.List
 // method.
-func (client *BackupUsageSummariesClient) List(vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) *runtime.Pager[BackupUsageSummariesClientListResponse] {
+func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) *runtime.Pager[BackupUsageSummariesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupUsageSummariesClientListResponse]{
 		More: func(page BackupUsageSummariesClientListResponse) bool {
 			return false

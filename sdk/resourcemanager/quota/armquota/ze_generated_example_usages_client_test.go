@@ -42,7 +42,7 @@ func ExampleUsagesClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeUsages.json
-func ExampleUsagesClient_List() {
+func ExampleUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,7 +54,7 @@ func ExampleUsagesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<scope>",
+	pager := client.NewListPager("<scope>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

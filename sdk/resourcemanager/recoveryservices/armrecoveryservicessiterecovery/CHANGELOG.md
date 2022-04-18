@@ -1,5 +1,83 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ReplicationProtectedItemsClient.ListByReplicationProtectionContainers` has been removed
+- Function `*ReplicationProtectionContainersClient.List` has been removed
+- Function `*RecoveryPointsClient.ListByReplicationProtectedItems` has been removed
+- Function `*ReplicationMigrationItemsClient.ListByReplicationProtectionContainers` has been removed
+- Function `*ReplicationRecoveryPlansClient.List` has been removed
+- Function `*ReplicationStorageClassificationsClient.List` has been removed
+- Function `*MigrationRecoveryPointsClient.ListByReplicationMigrationItems` has been removed
+- Function `*ReplicationProtectionIntentsClient.List` has been removed
+- Function `*ReplicationAlertSettingsClient.List` has been removed
+- Function `*ReplicationStorageClassificationsClient.ListByReplicationFabrics` has been removed
+- Function `*TargetComputeSizesClient.ListByReplicationProtectedItems` has been removed
+- Function `*ReplicationProtectableItemsClient.ListByReplicationProtectionContainers` has been removed
+- Function `*ReplicationvCentersClient.List` has been removed
+- Function `*ReplicationvCentersClient.ListByReplicationFabrics` has been removed
+- Function `*ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers` has been removed
+- Function `*ReplicationVaultSettingClient.List` has been removed
+- Function `*ReplicationEventsClient.List` has been removed
+- Function `*ReplicationProtectionContainersClient.ListByReplicationFabrics` has been removed
+- Function `*ReplicationStorageClassificationMappingsClient.List` has been removed
+- Function `*ReplicationMigrationItemsClient.List` has been removed
+- Function `*ReplicationFabricsClient.List` has been removed
+- Function `*ReplicationPoliciesClient.List` has been removed
+- Function `*ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications` has been removed
+- Function `*ReplicationProtectionContainerMappingsClient.List` has been removed
+- Function `*ReplicationLogicalNetworksClient.ListByReplicationFabrics` has been removed
+- Function `*ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics` has been removed
+- Function `*ReplicationAppliancesClient.List` has been removed
+- Function `*ReplicationNetworksClient.ListByReplicationFabrics` has been removed
+- Function `*ReplicationRecoveryServicesProvidersClient.List` has been removed
+- Function `*ReplicationJobsClient.List` has been removed
+- Function `*ReplicationNetworksClient.List` has been removed
+- Function `*ReplicationNetworkMappingsClient.ListByReplicationNetworks` has been removed
+- Function `*ReplicationProtectedItemsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*ReplicationNetworkMappingsClient.List` has been removed
+
+### Features Added
+
+- New function `*ReplicationNetworksClient.NewListByReplicationFabricsPager(string, *ReplicationNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationNetworksClientListByReplicationFabricsResponse]`
+- New function `*ReplicationMigrationItemsClient.NewListPager(*ReplicationMigrationItemsClientListOptions) *runtime.Pager[ReplicationMigrationItemsClientListResponse]`
+- New function `*ReplicationVaultSettingClient.NewListPager(*ReplicationVaultSettingClientListOptions) *runtime.Pager[ReplicationVaultSettingClientListResponse]`
+- New function `*ReplicationFabricsClient.NewListPager(*ReplicationFabricsClientListOptions) *runtime.Pager[ReplicationFabricsClientListResponse]`
+- New function `*ReplicationProtectionContainersClient.NewListByReplicationFabricsPager(string, *ReplicationProtectionContainersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationProtectionContainersClientListByReplicationFabricsResponse]`
+- New function `*ReplicationJobsClient.NewListPager(*ReplicationJobsClientListOptions) *runtime.Pager[ReplicationJobsClientListResponse]`
+- New function `*ReplicationRecoveryPlansClient.NewListPager(*ReplicationRecoveryPlansClientListOptions) *runtime.Pager[ReplicationRecoveryPlansClientListResponse]`
+- New function `*RecoveryPointsClient.NewListByReplicationProtectedItemsPager(string, string, string, *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse]`
+- New function `*ReplicationProtectedItemsClient.NewListByReplicationProtectionContainersPager(string, string, *ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse]`
+- New function `*ReplicationProtectionContainerMappingsClient.NewListByReplicationProtectionContainersPager(string, string, *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse]`
+- New function `*ReplicationStorageClassificationsClient.NewListPager(*ReplicationStorageClassificationsClientListOptions) *runtime.Pager[ReplicationStorageClassificationsClientListResponse]`
+- New function `*ReplicationPoliciesClient.NewListPager(*ReplicationPoliciesClientListOptions) *runtime.Pager[ReplicationPoliciesClientListResponse]`
+- New function `*ReplicationStorageClassificationMappingsClient.NewListByReplicationStorageClassificationsPager(string, string, *ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse]`
+- New function `*ReplicationLogicalNetworksClient.NewListByReplicationFabricsPager(string, *ReplicationLogicalNetworksClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationLogicalNetworksClientListByReplicationFabricsResponse]`
+- New function `*ReplicationProtectionIntentsClient.NewListPager(*ReplicationProtectionIntentsClientListOptions) *runtime.Pager[ReplicationProtectionIntentsClientListResponse]`
+- New function `*ReplicationProtectionContainersClient.NewListPager(*ReplicationProtectionContainersClientListOptions) *runtime.Pager[ReplicationProtectionContainersClientListResponse]`
+- New function `*ReplicationStorageClassificationMappingsClient.NewListPager(*ReplicationStorageClassificationMappingsClientListOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListResponse]`
+- New function `*ReplicationAlertSettingsClient.NewListPager(*ReplicationAlertSettingsClientListOptions) *runtime.Pager[ReplicationAlertSettingsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ReplicationNetworkMappingsClient.NewListPager(*ReplicationNetworkMappingsClientListOptions) *runtime.Pager[ReplicationNetworkMappingsClientListResponse]`
+- New function `*ReplicationProtectionContainerMappingsClient.NewListPager(*ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse]`
+- New function `*ReplicationProtectedItemsClient.NewListPager(*ReplicationProtectedItemsClientListOptions) *runtime.Pager[ReplicationProtectedItemsClientListResponse]`
+- New function `*ReplicationAppliancesClient.NewListPager(*ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse]`
+- New function `*ReplicationProtectableItemsClient.NewListByReplicationProtectionContainersPager(string, string, *ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse]`
+- New function `*ReplicationvCentersClient.NewListPager(*ReplicationvCentersClientListOptions) *runtime.Pager[ReplicationvCentersClientListResponse]`
+- New function `*TargetComputeSizesClient.NewListByReplicationProtectedItemsPager(string, string, string, *TargetComputeSizesClientListByReplicationProtectedItemsOptions) *runtime.Pager[TargetComputeSizesClientListByReplicationProtectedItemsResponse]`
+- New function `*MigrationRecoveryPointsClient.NewListByReplicationMigrationItemsPager(string, string, string, *MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions) *runtime.Pager[MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse]`
+- New function `*ReplicationNetworkMappingsClient.NewListByReplicationNetworksPager(string, string, *ReplicationNetworkMappingsClientListByReplicationNetworksOptions) *runtime.Pager[ReplicationNetworkMappingsClientListByReplicationNetworksResponse]`
+- New function `*ReplicationNetworksClient.NewListPager(*ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse]`
+- New function `*ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager(string, *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationStorageClassificationsClientListByReplicationFabricsResponse]`
+- New function `*ReplicationRecoveryServicesProvidersClient.NewListPager(*ReplicationRecoveryServicesProvidersClientListOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListResponse]`
+- New function `*ReplicationvCentersClient.NewListByReplicationFabricsPager(string, *ReplicationvCentersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationvCentersClientListByReplicationFabricsResponse]`
+- New function `*ReplicationMigrationItemsClient.NewListByReplicationProtectionContainersPager(string, string, *ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse]`
+- New function `*ReplicationEventsClient.NewListPager(*ReplicationEventsClientListOptions) *runtime.Pager[ReplicationEventsClientListResponse]`
+- New function `*ReplicationRecoveryServicesProvidersClient.NewListByReplicationFabricsPager(string, *ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

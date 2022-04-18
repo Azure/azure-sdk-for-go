@@ -54,12 +54,12 @@ func NewBackupJobsClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// List - Provides a pageable list of jobs.
+// NewListPager - Provides a pageable list of jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupJobsClientListOptions contains the optional parameters for the BackupJobsClient.List method.
-func (client *BackupJobsClient) List(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse] {
+func (client *BackupJobsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupJobsClientListResponse]{
 		More: func(page BackupJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

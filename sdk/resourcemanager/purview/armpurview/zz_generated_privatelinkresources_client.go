@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getByGroupIDHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByAccount - Gets a list of privately linkable resources for an account
+// NewListByAccountPager - Gets a list of privately linkable resources for an account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name.
 // accountName - The name of the account.
 // options - PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
 // method.
-func (client *PrivateLinkResourcesClient) ListByAccount(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
+func (client *PrivateLinkResourcesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByAccountResponse]{
 		More: func(page PrivateLinkResourcesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

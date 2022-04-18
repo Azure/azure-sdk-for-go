@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
-func ExampleReplicationLogicalNetworksClient_ListByReplicationFabrics() {
+func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleReplicationLogicalNetworksClient_ListByReplicationFabrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByReplicationFabrics("<fabric-name>",
+	pager := client.NewListByReplicationFabricsPager("<fabric-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

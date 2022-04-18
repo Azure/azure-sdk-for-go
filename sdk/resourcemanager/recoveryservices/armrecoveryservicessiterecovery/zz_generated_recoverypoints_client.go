@@ -133,14 +133,14 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 	return result, nil
 }
 
-// ListByReplicationProtectedItems - Lists the available recovery points for a replication protected item.
+// NewListByReplicationProtectedItemsPager - Lists the available recovery points for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 // fabricName - The fabric name.
 // protectionContainerName - The protection container name.
 // replicatedProtectedItemName - The replication protected item name.
 // options - RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.ListByReplicationProtectedItems
 // method.
-func (client *RecoveryPointsClient) ListByReplicationProtectedItems(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse] {
+func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsClientListByReplicationProtectedItemsResponse]{
 		More: func(page RecoveryPointsClientListByReplicationProtectedItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

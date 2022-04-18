@@ -54,14 +54,14 @@ func NewRecoveryPointsRecommendedForMoveClient(subscriptionID string, credential
 	return client, nil
 }
 
-// List - Lists the recovery points recommended for move to another tier
+// NewListPager - Lists the recovery points recommended for move to another tier
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // parameters - List Recovery points Recommended for Move Request
 // options - RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.List
 // method.
-func (client *RecoveryPointsRecommendedForMoveClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) *runtime.Pager[RecoveryPointsRecommendedForMoveClientListResponse] {
+func (client *RecoveryPointsRecommendedForMoveClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ListRecoveryPointsRecommendedForMoveRequest, options *RecoveryPointsRecommendedForMoveClientListOptions) *runtime.Pager[RecoveryPointsRecommendedForMoveClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsRecommendedForMoveClientListResponse]{
 		More: func(page RecoveryPointsRecommendedForMoveClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

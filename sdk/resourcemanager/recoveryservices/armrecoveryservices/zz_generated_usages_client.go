@@ -54,12 +54,12 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// ListByVaults - Fetches the usages of the vault.
+// NewListByVaultsPager - Fetches the usages of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // vaultName - The name of the recovery services vault.
 // options - UsagesClientListByVaultsOptions contains the optional parameters for the UsagesClient.ListByVaults method.
-func (client *UsagesClient) ListByVaults(resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) *runtime.Pager[UsagesClientListByVaultsResponse] {
+func (client *UsagesClient) NewListByVaultsPager(resourceGroupName string, vaultName string, options *UsagesClientListByVaultsOptions) *runtime.Pager[UsagesClientListByVaultsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListByVaultsResponse]{
 		More: func(page UsagesClientListByVaultsResponse) bool {
 			return false

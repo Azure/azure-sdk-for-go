@@ -54,8 +54,8 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
-// List - Provides a pageable list of workload item of a specific container according to the query filter and the pagination
-// parameters.
+// NewListPager - Provides a pageable list of workload item of a specific container according to the query filter and the
+// pagination parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
@@ -63,7 +63,7 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 // containerName - Name of the container.
 // options - BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.List
 // method.
-func (client *BackupWorkloadItemsClient) List(vaultName string, resourceGroupName string, fabricName string, containerName string, options *BackupWorkloadItemsClientListOptions) *runtime.Pager[BackupWorkloadItemsClientListResponse] {
+func (client *BackupWorkloadItemsClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, containerName string, options *BackupWorkloadItemsClientListOptions) *runtime.Pager[BackupWorkloadItemsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupWorkloadItemsClientListResponse]{
 		More: func(page BackupWorkloadItemsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

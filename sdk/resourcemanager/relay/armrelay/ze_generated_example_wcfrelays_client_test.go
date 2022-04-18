@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayListAll.json
-func ExampleWCFRelaysClient_ListByNamespace() {
+func ExampleWCFRelaysClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleWCFRelaysClient_ListByNamespace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNamespace("<resource-group-name>",
+	pager := client.NewListByNamespacePager("<resource-group-name>",
 		"<namespace-name>",
 		nil)
 	for pager.More() {
@@ -130,7 +130,7 @@ func ExampleWCFRelaysClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/Relay/RelayAutorizationRuleListAll.json
-func ExampleWCFRelaysClient_ListAuthorizationRules() {
+func ExampleWCFRelaysClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -142,7 +142,7 @@ func ExampleWCFRelaysClient_ListAuthorizationRules() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAuthorizationRules("<resource-group-name>",
+	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
 		"<namespace-name>",
 		"<relay-name>",
 		nil)

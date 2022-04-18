@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/ReplicationProtectionIntents_List.json
-func ExampleReplicationProtectionIntentsClient_List() {
+func ExampleReplicationProtectionIntentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleReplicationProtectionIntentsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsClientListOptions{SkipToken: nil,
+	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationProtectionIntentsClientListOptions{SkipToken: nil,
 		TakeToken: nil,
 	})
 	for pager.More() {

@@ -227,12 +227,12 @@ func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsCl
 	return result, nil
 }
 
-// ListByAccount - Get all Creator instances for an Azure Maps Account
+// NewListByAccountPager - Get all Creator instances for an Azure Maps Account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // options - CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.ListByAccount method.
-func (client *CreatorsClient) ListByAccount(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *runtime.Pager[CreatorsClientListByAccountResponse] {
+func (client *CreatorsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *CreatorsClientListByAccountOptions) *runtime.Pager[CreatorsClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CreatorsClientListByAccountResponse]{
 		More: func(page CreatorsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

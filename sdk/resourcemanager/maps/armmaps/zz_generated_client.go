@@ -54,10 +54,10 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	return client, nil
 }
 
-// ListOperations - List operations available for the Maps Resource Provider
+// NewListOperationsPager - List operations available for the Maps Resource Provider
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListOperationsOptions contains the optional parameters for the Client.ListOperations method.
-func (client *Client) ListOperations(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
+func (client *Client) NewListOperationsPager(options *ClientListOperationsOptions) *runtime.Pager[ClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListOperationsResponse]{
 		More: func(page ClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -108,11 +108,11 @@ func (client *Client) listOperationsHandleResponse(resp *http.Response) (ClientL
 	return result, nil
 }
 
-// ListSubscriptionOperations - List operations available for the Maps Resource Provider
+// NewListSubscriptionOperationsPager - List operations available for the Maps Resource Provider
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.ListSubscriptionOperations
 // method.
-func (client *Client) ListSubscriptionOperations(options *ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse] {
+func (client *Client) NewListSubscriptionOperationsPager(options *ClientListSubscriptionOperationsOptions) *runtime.Pager[ClientListSubscriptionOperationsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClientListSubscriptionOperationsResponse]{
 		More: func(page ClientListSubscriptionOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

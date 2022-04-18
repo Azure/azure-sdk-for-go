@@ -258,7 +258,7 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 	return result, nil
 }
 
-// ListBySubscriptions - List all the rules within given topic-subscription
+// NewListBySubscriptionsPager - List all the rules within given topic-subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
@@ -266,7 +266,7 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 // subscriptionName - The subscription name.
 // options - RulesClientListBySubscriptionsOptions contains the optional parameters for the RulesClient.ListBySubscriptions
 // method.
-func (client *RulesClient) ListBySubscriptions(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *runtime.Pager[RulesClientListBySubscriptionsResponse] {
+func (client *RulesClient) NewListBySubscriptionsPager(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *runtime.Pager[RulesClientListBySubscriptionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RulesClientListBySubscriptionsResponse]{
 		More: func(page RulesClientListBySubscriptionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

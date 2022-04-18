@@ -250,12 +250,12 @@ func (client *TablesClient) getHandleResponse(resp *http.Response) (TablesClient
 	return result, nil
 }
 
-// ListByWorkspace - Gets all the tables for the specified Log Analytics workspace.
+// NewListByWorkspacePager - Gets all the tables for the specified Log Analytics workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - TablesClientListByWorkspaceOptions contains the optional parameters for the TablesClient.ListByWorkspace method.
-func (client *TablesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *TablesClientListByWorkspaceOptions) *runtime.Pager[TablesClientListByWorkspaceResponse] {
+func (client *TablesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *TablesClientListByWorkspaceOptions) *runtime.Pager[TablesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TablesClientListByWorkspaceResponse]{
 		More: func(page TablesClientListByWorkspaceResponse) bool {
 			return false

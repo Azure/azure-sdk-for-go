@@ -54,10 +54,10 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// List - Gets recently deleted workspaces in a subscription, available for recovery.
+// NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
-func (client *DeletedWorkspacesClient) List(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
+func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListResponse]{
 		More: func(page DeletedWorkspacesClientListResponse) bool {
 			return false
@@ -106,12 +106,12 @@ func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Gets recently deleted workspaces in a resource group, available for recovery.
+// NewListByResourceGroupPager - Gets recently deleted workspaces in a resource group, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
 // method.
-func (client *DeletedWorkspacesClient) ListByResourceGroup(resourceGroupName string, options *DeletedWorkspacesClientListByResourceGroupOptions) *runtime.Pager[DeletedWorkspacesClientListByResourceGroupResponse] {
+func (client *DeletedWorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *DeletedWorkspacesClientListByResourceGroupOptions) *runtime.Pager[DeletedWorkspacesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListByResourceGroupResponse]{
 		More: func(page DeletedWorkspacesClientListByResourceGroupResponse) bool {
 			return false

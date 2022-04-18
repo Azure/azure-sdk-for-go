@@ -227,13 +227,13 @@ func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExp
 	return result, nil
 }
 
-// ListByWorkspace - Lists the data export instances within a workspace.
+// NewListByWorkspacePager - Lists the data export instances within a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace
 // method.
-func (client *DataExportsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) *runtime.Pager[DataExportsClientListByWorkspaceResponse] {
+func (client *DataExportsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) *runtime.Pager[DataExportsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataExportsClientListByWorkspaceResponse]{
 		More: func(page DataExportsClientListByWorkspaceResponse) bool {
 			return false

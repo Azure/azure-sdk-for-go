@@ -1,5 +1,51 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*DeletedWorkspacesClient.ListByResourceGroup` has been removed
+- Function `*DeletedWorkspacesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*TablesClient.ListByWorkspace` has been removed
+- Function `*LinkedStorageAccountsClient.ListByWorkspace` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*DataExportsClient.ListByWorkspace` has been removed
+- Function `*QueriesClient.List` has been removed
+- Function `*ClustersClient.List` has been removed
+- Function `*QueriesClient.Search` has been removed
+- Function `*UsagesClient.List` has been removed
+- Function `*ManagementGroupsClient.List` has been removed
+- Function `*StorageInsightConfigsClient.ListByWorkspace` has been removed
+- Function `*QueryPacksClient.ListByResourceGroup` has been removed
+- Function `*LinkedServicesClient.ListByWorkspace` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `*WorkspacesClient.List` has been removed
+- Function `*DataSourcesClient.ListByWorkspace` has been removed
+- Function `*QueryPacksClient.List` has been removed
+
+### Features Added
+
+- New function `*DeletedWorkspacesClient.NewListByResourceGroupPager(string, *DeletedWorkspacesClientListByResourceGroupOptions) *runtime.Pager[DeletedWorkspacesClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*QueryPacksClient.NewListPager(*QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse]`
+- New function `*QueriesClient.NewSearchPager(string, string, LogAnalyticsQueryPackQuerySearchProperties, *QueriesClientSearchOptions) *runtime.Pager[QueriesClientSearchResponse]`
+- New function `*ManagementGroupsClient.NewListPager(string, string, *ManagementGroupsClientListOptions) *runtime.Pager[ManagementGroupsClientListResponse]`
+- New function `*LinkedServicesClient.NewListByWorkspacePager(string, string, *LinkedServicesClientListByWorkspaceOptions) *runtime.Pager[LinkedServicesClientListByWorkspaceResponse]`
+- New function `*QueryPacksClient.NewListByResourceGroupPager(string, *QueryPacksClientListByResourceGroupOptions) *runtime.Pager[QueryPacksClientListByResourceGroupResponse]`
+- New function `*LinkedStorageAccountsClient.NewListByWorkspacePager(string, string, *LinkedStorageAccountsClientListByWorkspaceOptions) *runtime.Pager[LinkedStorageAccountsClientListByWorkspaceResponse]`
+- New function `*TablesClient.NewListByWorkspacePager(string, string, *TablesClientListByWorkspaceOptions) *runtime.Pager[TablesClientListByWorkspaceResponse]`
+- New function `*ClustersClient.NewListPager(*ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse]`
+- New function `*DataSourcesClient.NewListByWorkspacePager(string, string, string, *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse]`
+- New function `*UsagesClient.NewListPager(string, string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New function `*DataExportsClient.NewListByWorkspacePager(string, string, *DataExportsClientListByWorkspaceOptions) *runtime.Pager[DataExportsClientListByWorkspaceResponse]`
+- New function `*StorageInsightConfigsClient.NewListByWorkspacePager(string, string, *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse]`
+- New function `*DeletedWorkspacesClient.NewListPager(*DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse]`
+- New function `*WorkspacesClient.NewListPager(*WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*QueriesClient.NewListPager(string, string, *QueriesClientListOptions) *runtime.Pager[QueriesClientListResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

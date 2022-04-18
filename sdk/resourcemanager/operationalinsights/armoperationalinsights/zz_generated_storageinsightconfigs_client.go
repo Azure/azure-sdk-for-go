@@ -228,13 +228,13 @@ func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByWorkspace - Lists the storage insight instances within a workspace
+// NewListByWorkspacePager - Lists the storage insight instances within a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
 // method.
-func (client *StorageInsightConfigsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse] {
+func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StorageInsightConfigsClientListByWorkspaceResponse]{
 		More: func(page StorageInsightConfigsClientListByWorkspaceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0

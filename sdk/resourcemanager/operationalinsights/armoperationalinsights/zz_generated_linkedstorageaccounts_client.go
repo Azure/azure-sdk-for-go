@@ -229,14 +229,14 @@ func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByWorkspace - Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted
-// by their data source type.
+// NewListByWorkspacePager - Gets all linked storage accounts associated with the specified workspace, storage accounts will
+// be sorted by their data source type.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.ListByWorkspace
 // method.
-func (client *LinkedStorageAccountsClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LinkedStorageAccountsClientListByWorkspaceOptions) *runtime.Pager[LinkedStorageAccountsClientListByWorkspaceResponse] {
+func (client *LinkedStorageAccountsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *LinkedStorageAccountsClientListByWorkspaceOptions) *runtime.Pager[LinkedStorageAccountsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LinkedStorageAccountsClientListByWorkspaceResponse]{
 		More: func(page LinkedStorageAccountsClientListByWorkspaceResponse) bool {
 			return false

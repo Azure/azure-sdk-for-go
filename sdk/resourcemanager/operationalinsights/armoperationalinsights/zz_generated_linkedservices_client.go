@@ -247,13 +247,13 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 	return result, nil
 }
 
-// ListByWorkspace - Gets the linked services instances in a workspace.
+// NewListByWorkspacePager - Gets the linked services instances in a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
 // method.
-func (client *LinkedServicesClient) ListByWorkspace(resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) *runtime.Pager[LinkedServicesClientListByWorkspaceResponse] {
+func (client *LinkedServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) *runtime.Pager[LinkedServicesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LinkedServicesClientListByWorkspaceResponse]{
 		More: func(page LinkedServicesClientListByWorkspaceResponse) bool {
 			return false

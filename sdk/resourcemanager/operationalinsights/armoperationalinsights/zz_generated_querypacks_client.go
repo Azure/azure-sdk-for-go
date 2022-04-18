@@ -213,10 +213,10 @@ func (client *QueryPacksClient) getHandleResponse(resp *http.Response) (QueryPac
 	return result, nil
 }
 
-// List - Gets a list of all Log Analytics QueryPacks within a subscription.
+// NewListPager - Gets a list of all Log Analytics QueryPacks within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
-func (client *QueryPacksClient) List(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
+func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOptions) *runtime.Pager[QueryPacksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueryPacksClientListResponse]{
 		More: func(page QueryPacksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -271,12 +271,12 @@ func (client *QueryPacksClient) listHandleResponse(resp *http.Response) (QueryPa
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of Log Analytics QueryPacks within a resource group.
+// NewListByResourceGroupPager - Gets a list of Log Analytics QueryPacks within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup
 // method.
-func (client *QueryPacksClient) ListByResourceGroup(resourceGroupName string, options *QueryPacksClientListByResourceGroupOptions) *runtime.Pager[QueryPacksClientListByResourceGroupResponse] {
+func (client *QueryPacksClient) NewListByResourceGroupPager(resourceGroupName string, options *QueryPacksClientListByResourceGroupOptions) *runtime.Pager[QueryPacksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueryPacksClientListByResourceGroupResponse]{
 		More: func(page QueryPacksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

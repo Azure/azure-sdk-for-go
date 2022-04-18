@@ -54,12 +54,12 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - Gets a list of usage metrics for a workspace.
+// NewListPager - Gets a list of usage metrics for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(resourceGroupName string, workspaceName string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+func (client *UsagesClient) NewListPager(resourceGroupName string, workspaceName string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return false

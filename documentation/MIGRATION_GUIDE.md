@@ -62,7 +62,7 @@ There are some minor changes in the error handling.
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters)
 if err != nil {
-	log.Fatalf("Status code: %d", resp.Response.Response.StatusCode)
+    log.Fatalf("Status code: %d", resp.Response.Response.StatusCode)
 }
 ```
 
@@ -94,14 +94,14 @@ In the latest version, if a request is a long-running operation, the function na
 ```go
 future, err := virtualMachinesClient.CreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param)
 if err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 if err := future.WaitForCompletionRef(context.Background(), virtualMachinesClient.Client); err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 vm, err := future.Result(virtualMachinesClient)
 if err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 log.Printf("virtual machine ID: %v", *vm.ID)
 ```
@@ -111,7 +111,7 @@ log.Printf("virtual machine ID: %v", *vm.ID)
 ```go
 poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
 if err != nil {
-	log.Fatal(err)
+    log.Fatal(err)
 }
 resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 if err != nil {

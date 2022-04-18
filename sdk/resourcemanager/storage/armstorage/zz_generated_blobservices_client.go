@@ -113,13 +113,13 @@ func (client *BlobServicesClient) getServicePropertiesHandleResponse(resp *http.
 	return result, nil
 }
 
-// List - List blob services of storage account. It returns a collection of one object named default.
+// NewListPager - List blob services of storage account. It returns a collection of one object named default.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - BlobServicesClientListOptions contains the optional parameters for the BlobServicesClient.List method.
-func (client *BlobServicesClient) List(resourceGroupName string, accountName string, options *BlobServicesClientListOptions) *runtime.Pager[BlobServicesClientListResponse] {
+func (client *BlobServicesClient) NewListPager(resourceGroupName string, accountName string, options *BlobServicesClientListOptions) *runtime.Pager[BlobServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BlobServicesClientListResponse]{
 		More: func(page BlobServicesClientListResponse) bool {
 			return false

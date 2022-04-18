@@ -234,13 +234,13 @@ func (client *TableClient) getHandleResponse(resp *http.Response) (TableClientGe
 	return result, nil
 }
 
-// List - Gets a list of all the tables under the specified storage account
+// NewListPager - Gets a list of all the tables under the specified storage account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - TableClientListOptions contains the optional parameters for the TableClient.List method.
-func (client *TableClient) List(resourceGroupName string, accountName string, options *TableClientListOptions) *runtime.Pager[TableClientListResponse] {
+func (client *TableClient) NewListPager(resourceGroupName string, accountName string, options *TableClientListOptions) *runtime.Pager[TableClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TableClientListResponse]{
 		More: func(page TableClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

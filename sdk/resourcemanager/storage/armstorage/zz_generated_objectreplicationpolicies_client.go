@@ -238,14 +238,14 @@ func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - List the object replication policies associated with the storage account.
+// NewListPager - List the object replication policies associated with the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - ObjectReplicationPoliciesClientListOptions contains the optional parameters for the ObjectReplicationPoliciesClient.List
 // method.
-func (client *ObjectReplicationPoliciesClient) List(resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) *runtime.Pager[ObjectReplicationPoliciesClientListResponse] {
+func (client *ObjectReplicationPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ObjectReplicationPoliciesClientListOptions) *runtime.Pager[ObjectReplicationPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ObjectReplicationPoliciesClientListResponse]{
 		More: func(page ObjectReplicationPoliciesClientListResponse) bool {
 			return false

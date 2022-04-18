@@ -233,13 +233,13 @@ func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUse
 	return result, nil
 }
 
-// List - List the local users associated with the storage account.
+// NewListPager - List the local users associated with the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - LocalUsersClientListOptions contains the optional parameters for the LocalUsersClient.List method.
-func (client *LocalUsersClient) List(resourceGroupName string, accountName string, options *LocalUsersClientListOptions) *runtime.Pager[LocalUsersClientListResponse] {
+func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountName string, options *LocalUsersClientListOptions) *runtime.Pager[LocalUsersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocalUsersClientListResponse]{
 		More: func(page LocalUsersClientListResponse) bool {
 			return false

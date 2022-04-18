@@ -235,13 +235,13 @@ func (client *QueueClient) getHandleResponse(resp *http.Response) (QueueClientGe
 	return result, nil
 }
 
-// List - Gets a list of all the queues under the specified storage account
+// NewListPager - Gets a list of all the queues under the specified storage account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - QueueClientListOptions contains the optional parameters for the QueueClient.List method.
-func (client *QueueClient) List(resourceGroupName string, accountName string, options *QueueClientListOptions) *runtime.Pager[QueueClientListResponse] {
+func (client *QueueClient) NewListPager(resourceGroupName string, accountName string, options *QueueClientListOptions) *runtime.Pager[QueueClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueueClientListResponse]{
 		More: func(page QueueClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

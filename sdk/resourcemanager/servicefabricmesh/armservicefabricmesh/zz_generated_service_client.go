@@ -109,13 +109,13 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 	return result, nil
 }
 
-// List - Gets the information about all services of an application resource. The information include the description and
-// other properties of the Service.
+// NewListPager - Gets the information about all services of an application resource. The information include the description
+// and other properties of the Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
-func (client *ServiceClient) List(resourceGroupName string, applicationResourceName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
+func (client *ServiceClient) NewListPager(resourceGroupName string, applicationResourceName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

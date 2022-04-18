@@ -204,13 +204,13 @@ func (client *NetworkClient) getHandleResponse(resp *http.Response) (NetworkClie
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the information about all network resources in a given resource group. The information include
-// the description and other properties of the Network.
+// NewListByResourceGroupPager - Gets the information about all network resources in a given resource group. The information
+// include the description and other properties of the Network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // options - NetworkClientListByResourceGroupOptions contains the optional parameters for the NetworkClient.ListByResourceGroup
 // method.
-func (client *NetworkClient) ListByResourceGroup(resourceGroupName string, options *NetworkClientListByResourceGroupOptions) *runtime.Pager[NetworkClientListByResourceGroupResponse] {
+func (client *NetworkClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkClientListByResourceGroupOptions) *runtime.Pager[NetworkClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkClientListByResourceGroupResponse]{
 		More: func(page NetworkClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -269,12 +269,12 @@ func (client *NetworkClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListBySubscription - Gets the information about all network resources in a given resource group. The information include
-// the description and other properties of the network.
+// NewListBySubscriptionPager - Gets the information about all network resources in a given resource group. The information
+// include the description and other properties of the network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NetworkClientListBySubscriptionOptions contains the optional parameters for the NetworkClient.ListBySubscription
 // method.
-func (client *NetworkClient) ListBySubscription(options *NetworkClientListBySubscriptionOptions) *runtime.Pager[NetworkClientListBySubscriptionResponse] {
+func (client *NetworkClient) NewListBySubscriptionPager(options *NetworkClientListBySubscriptionOptions) *runtime.Pager[NetworkClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NetworkClientListBySubscriptionResponse]{
 		More: func(page NetworkClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

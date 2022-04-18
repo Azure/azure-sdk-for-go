@@ -227,12 +227,12 @@ func (client *EntityQueriesClient) getHandleResponse(resp *http.Response) (Entit
 	return result, nil
 }
 
-// List - Gets all entity queries.
+// NewListPager - Gets all entity queries.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - EntityQueriesClientListOptions contains the optional parameters for the EntityQueriesClient.List method.
-func (client *EntityQueriesClient) List(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse] {
+func (client *EntityQueriesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntityQueriesClientListOptions) *runtime.Pager[EntityQueriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EntityQueriesClientListResponse]{
 		More: func(page EntityQueriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

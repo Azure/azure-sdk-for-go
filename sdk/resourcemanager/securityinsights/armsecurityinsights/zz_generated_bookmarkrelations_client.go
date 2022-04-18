@@ -244,13 +244,13 @@ func (client *BookmarkRelationsClient) getHandleResponse(resp *http.Response) (B
 	return result, nil
 }
 
-// List - Gets all bookmark relations.
+// NewListPager - Gets all bookmark relations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // bookmarkID - Bookmark ID
 // options - BookmarkRelationsClientListOptions contains the optional parameters for the BookmarkRelationsClient.List method.
-func (client *BookmarkRelationsClient) List(resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarkRelationsClientListOptions) *runtime.Pager[BookmarkRelationsClientListResponse] {
+func (client *BookmarkRelationsClient) NewListPager(resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarkRelationsClientListOptions) *runtime.Pager[BookmarkRelationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BookmarkRelationsClientListResponse]{
 		More: func(page BookmarkRelationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

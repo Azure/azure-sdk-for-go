@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/entityQueryTemplates/GetEntityQueryTemplates.json
-func ExampleEntityQueryTemplatesClient_List() {
+func ExampleEntityQueryTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleEntityQueryTemplatesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<workspace-name>",
 		&armsecurityinsights.EntityQueryTemplatesClientListOptions{Kind: to.Ptr(armsecurityinsights.Enum15Activity)})
 	for pager.More() {

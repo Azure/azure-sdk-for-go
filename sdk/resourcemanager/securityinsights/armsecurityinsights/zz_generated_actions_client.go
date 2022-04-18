@@ -241,13 +241,13 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 	return result, nil
 }
 
-// ListByAlertRule - Gets all actions of alert rule.
+// NewListByAlertRulePager - Gets all actions of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // ruleID - Alert rule ID
 // options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.ListByAlertRule method.
-func (client *ActionsClient) ListByAlertRule(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *runtime.Pager[ActionsClientListByAlertRuleResponse] {
+func (client *ActionsClient) NewListByAlertRulePager(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *runtime.Pager[ActionsClientListByAlertRuleResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActionsClientListByAlertRuleResponse]{
 		More: func(page ActionsClientListByAlertRuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

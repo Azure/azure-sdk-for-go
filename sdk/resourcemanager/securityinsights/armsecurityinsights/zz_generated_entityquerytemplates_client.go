@@ -115,13 +115,13 @@ func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Gets all entity query templates.
+// NewListPager - Gets all entity query templates.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - EntityQueryTemplatesClientListOptions contains the optional parameters for the EntityQueryTemplatesClient.List
 // method.
-func (client *EntityQueryTemplatesClient) List(resourceGroupName string, workspaceName string, options *EntityQueryTemplatesClientListOptions) *runtime.Pager[EntityQueryTemplatesClientListResponse] {
+func (client *EntityQueryTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntityQueryTemplatesClientListOptions) *runtime.Pager[EntityQueryTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EntityQueryTemplatesClientListResponse]{
 		More: func(page EntityQueryTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

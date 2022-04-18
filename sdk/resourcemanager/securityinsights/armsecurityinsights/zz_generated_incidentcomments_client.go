@@ -243,13 +243,13 @@ func (client *IncidentCommentsClient) getHandleResponse(resp *http.Response) (In
 	return result, nil
 }
 
-// List - Gets all incident comments.
+// NewListPager - Gets all incident comments.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
 // options - IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.List method.
-func (client *IncidentCommentsClient) List(resourceGroupName string, workspaceName string, incidentID string, options *IncidentCommentsClientListOptions) *runtime.Pager[IncidentCommentsClientListResponse] {
+func (client *IncidentCommentsClient) NewListPager(resourceGroupName string, workspaceName string, incidentID string, options *IncidentCommentsClientListOptions) *runtime.Pager[IncidentCommentsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IncidentCommentsClientListResponse]{
 		More: func(page IncidentCommentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

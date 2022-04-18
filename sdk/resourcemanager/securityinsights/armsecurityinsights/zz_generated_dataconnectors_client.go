@@ -331,12 +331,12 @@ func (client *DataConnectorsClient) getHandleResponse(resp *http.Response) (Data
 	return result, nil
 }
 
-// List - Gets all data connectors.
+// NewListPager - Gets all data connectors.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.List method.
-func (client *DataConnectorsClient) List(resourceGroupName string, workspaceName string, options *DataConnectorsClientListOptions) *runtime.Pager[DataConnectorsClientListResponse] {
+func (client *DataConnectorsClient) NewListPager(resourceGroupName string, workspaceName string, options *DataConnectorsClientListOptions) *runtime.Pager[DataConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataConnectorsClientListResponse]{
 		More: func(page DataConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

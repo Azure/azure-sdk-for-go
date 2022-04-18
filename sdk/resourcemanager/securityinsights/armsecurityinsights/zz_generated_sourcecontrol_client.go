@@ -54,14 +54,14 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// ListRepositories - Gets a list of repositories metadata.
+// NewListRepositoriesPager - Gets a list of repositories metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // repoType - The repo type.
 // options - SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.ListRepositories
 // method.
-func (client *SourceControlClient) ListRepositories(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse] {
+func (client *SourceControlClient) NewListRepositoriesPager(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SourceControlClientListRepositoriesResponse]{
 		More: func(page SourceControlClientListRepositoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

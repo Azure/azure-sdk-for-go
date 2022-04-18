@@ -236,12 +236,12 @@ func (client *EntitiesClient) getInsightsHandleResponse(resp *http.Response) (En
 	return result, nil
 }
 
-// List - Gets all entities.
+// NewListPager - Gets all entities.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.List method.
-func (client *EntitiesClient) List(resourceGroupName string, workspaceName string, options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
+func (client *EntitiesClient) NewListPager(resourceGroupName string, workspaceName string, options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EntitiesClientListResponse]{
 		More: func(page EntitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

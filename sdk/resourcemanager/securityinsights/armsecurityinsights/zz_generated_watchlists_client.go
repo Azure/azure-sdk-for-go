@@ -244,12 +244,12 @@ func (client *WatchlistsClient) getHandleResponse(resp *http.Response) (Watchlis
 	return result, nil
 }
 
-// List - Gets all watchlists, without watchlist items.
+// NewListPager - Gets all watchlists, without watchlist items.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.List method.
-func (client *WatchlistsClient) List(resourceGroupName string, workspaceName string, options *WatchlistsClientListOptions) *runtime.Pager[WatchlistsClientListResponse] {
+func (client *WatchlistsClient) NewListPager(resourceGroupName string, workspaceName string, options *WatchlistsClientListOptions) *runtime.Pager[WatchlistsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WatchlistsClientListResponse]{
 		More: func(page WatchlistsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

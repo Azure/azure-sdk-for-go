@@ -196,10 +196,10 @@ func (client *LogProfilesClient) getHandleResponse(resp *http.Response) (LogProf
 	return result, nil
 }
 
-// List - List the log profiles.
+// NewListPager - List the log profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.List method.
-func (client *LogProfilesClient) List(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
+func (client *LogProfilesClient) NewListPager(options *LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LogProfilesClientListResponse]{
 		More: func(page LogProfilesClientListResponse) bool {
 			return false

@@ -213,12 +213,12 @@ func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListByResourceGroup - Lists the autoscale settings for a resource group
+// NewListByResourceGroupPager - Lists the autoscale settings for a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.ListByResourceGroup
 // method.
-func (client *AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse] {
+func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutoscaleSettingsClientListByResourceGroupResponse]{
 		More: func(page AutoscaleSettingsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -277,11 +277,11 @@ func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListBySubscription - Lists the autoscale settings for a subscription
+// NewListBySubscriptionPager - Lists the autoscale settings for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.ListBySubscription
 // method.
-func (client *AutoscaleSettingsClient) ListBySubscription(options *AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse] {
+func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AutoscaleSettingsClientListBySubscriptionResponse]{
 		More: func(page AutoscaleSettingsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

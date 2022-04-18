@@ -114,13 +114,13 @@ func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByAlertRule - Gets a list of incidents associated to an alert rule
+// NewListByAlertRulePager - Gets a list of incidents associated to an alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.ListByAlertRule
 // method.
-func (client *AlertRuleIncidentsClient) ListByAlertRule(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse] {
+func (client *AlertRuleIncidentsClient) NewListByAlertRulePager(resourceGroupName string, ruleName string, options *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertRuleIncidentsClientListByAlertRuleResponse]{
 		More: func(page AlertRuleIncidentsClientListByAlertRuleResponse) bool {
 			return false

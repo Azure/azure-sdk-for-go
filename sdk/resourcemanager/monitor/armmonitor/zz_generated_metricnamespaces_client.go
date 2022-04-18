@@ -49,11 +49,11 @@ func NewMetricNamespacesClient(credential azcore.TokenCredential, options *arm.C
 	return client, nil
 }
 
-// List - Lists the metric namespaces for the resource.
+// NewListPager - Lists the metric namespaces for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The identifier of the resource.
 // options - MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.List method.
-func (client *MetricNamespacesClient) List(resourceURI string, options *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse] {
+func (client *MetricNamespacesClient) NewListPager(resourceURI string, options *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MetricNamespacesClientListResponse]{
 		More: func(page MetricNamespacesClientListResponse) bool {
 			return false

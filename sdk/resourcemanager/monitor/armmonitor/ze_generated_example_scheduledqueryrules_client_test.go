@@ -157,7 +157,7 @@ func ExampleScheduledQueryRulesClient_Delete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
-func ExampleScheduledQueryRulesClient_ListBySubscription() {
+func ExampleScheduledQueryRulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -169,7 +169,7 @@ func ExampleScheduledQueryRulesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(&armmonitor.ScheduledQueryRulesClientListBySubscriptionOptions{Filter: nil})
+	pager := client.NewListBySubscriptionPager(&armmonitor.ScheduledQueryRulesClientListBySubscriptionOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -184,7 +184,7 @@ func ExampleScheduledQueryRulesClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
-func ExampleScheduledQueryRulesClient_ListByResourceGroup() {
+func ExampleScheduledQueryRulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -196,7 +196,7 @@ func ExampleScheduledQueryRulesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armmonitor.ScheduledQueryRulesClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

@@ -215,12 +215,12 @@ func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all data collection rules in the specified resource group.
+// NewListByResourceGroupPager - Lists all data collection rules in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.ListByResourceGroup
 // method.
-func (client *DataCollectionRulesClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse] {
+func (client *DataCollectionRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListByResourceGroupResponse]{
 		More: func(page DataCollectionRulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -279,11 +279,11 @@ func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListBySubscription - Lists all data collection rules in the specified subscription.
+// NewListBySubscriptionPager - Lists all data collection rules in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.ListBySubscription
 // method.
-func (client *DataCollectionRulesClient) ListBySubscription(options *DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse] {
+func (client *DataCollectionRulesClient) NewListBySubscriptionPager(options *DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListBySubscriptionResponse]{
 		More: func(page DataCollectionRulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -212,12 +212,12 @@ func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRul
 	return result, nil
 }
 
-// ListByResourceGroup - List the classic metric alert rules within a resource group.
+// NewListByResourceGroupPager - List the classic metric alert rules within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.ListByResourceGroup
 // method.
-func (client *AlertRulesClient) ListByResourceGroup(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse] {
+func (client *AlertRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertRulesClientListByResourceGroupResponse]{
 		More: func(page AlertRulesClientListByResourceGroupResponse) bool {
 			return false
@@ -270,11 +270,11 @@ func (client *AlertRulesClient) listByResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListBySubscription - List the classic metric alert rules within a subscription.
+// NewListBySubscriptionPager - List the classic metric alert rules within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.ListBySubscription
 // method.
-func (client *AlertRulesClient) ListBySubscription(options *AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse] {
+func (client *AlertRulesClient) NewListBySubscriptionPager(options *AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AlertRulesClientListBySubscriptionResponse]{
 		More: func(page AlertRulesClientListBySubscriptionResponse) bool {
 			return false

@@ -195,13 +195,13 @@ func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByDataCollectionEndpoint - Lists associations for the specified data collection endpoint.
+// NewListByDataCollectionEndpointPager - Lists associations for the specified data collection endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for
 // the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint method.
-func (client *DataCollectionRuleAssociationsClient) ListByDataCollectionEndpoint(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByDataCollectionEndpointPager(resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -264,12 +264,12 @@ func (client *DataCollectionRuleAssociationsClient) listByDataCollectionEndpoint
 	return result, nil
 }
 
-// ListByResource - Lists associations for the specified resource.
+// NewListByResourcePager - Lists associations for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The identifier of the resource.
 // options - DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
 // method.
-func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByResourcePager(resourceURI string, options *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByResourceResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -321,13 +321,13 @@ func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse
 	return result, nil
 }
 
-// ListByRule - Lists associations for the specified data collection rule.
+// NewListByRulePager - Lists associations for the specified data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
 // method.
-func (client *DataCollectionRuleAssociationsClient) ListByRule(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
+func (client *DataCollectionRuleAssociationsClient) NewListByRulePager(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionRuleAssociationsClientListByRuleResponse]{
 		More: func(page DataCollectionRuleAssociationsClientListByRuleResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

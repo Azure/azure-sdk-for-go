@@ -312,12 +312,12 @@ func (client *ActionGroupsClient) getTestNotificationsHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByResourceGroup - Get a list of all action groups in a resource group.
+// NewListByResourceGroupPager - Get a list of all action groups in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ActionGroupsClientListByResourceGroupOptions contains the optional parameters for the ActionGroupsClient.ListByResourceGroup
 // method.
-func (client *ActionGroupsClient) ListByResourceGroup(resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) *runtime.Pager[ActionGroupsClientListByResourceGroupResponse] {
+func (client *ActionGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActionGroupsClientListByResourceGroupOptions) *runtime.Pager[ActionGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActionGroupsClientListByResourceGroupResponse]{
 		More: func(page ActionGroupsClientListByResourceGroupResponse) bool {
 			return false
@@ -370,11 +370,11 @@ func (client *ActionGroupsClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListBySubscriptionID - Get a list of all action groups in a subscription.
+// NewListBySubscriptionIDPager - Get a list of all action groups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ActionGroupsClientListBySubscriptionIDOptions contains the optional parameters for the ActionGroupsClient.ListBySubscriptionID
 // method.
-func (client *ActionGroupsClient) ListBySubscriptionID(options *ActionGroupsClientListBySubscriptionIDOptions) *runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse] {
+func (client *ActionGroupsClient) NewListBySubscriptionIDPager(options *ActionGroupsClientListBySubscriptionIDOptions) *runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActionGroupsClientListBySubscriptionIDResponse]{
 		More: func(page ActionGroupsClientListBySubscriptionIDResponse) bool {
 			return false

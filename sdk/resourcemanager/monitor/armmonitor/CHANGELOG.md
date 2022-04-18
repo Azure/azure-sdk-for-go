@@ -1,5 +1,77 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*AlertRulesClient.ListByResourceGroup` has been removed
+- Function `*EventCategoriesClient.List` has been removed
+- Function `*ActivityLogAlertsClient.ListBySubscriptionID` has been removed
+- Function `*AutoscaleSettingsClient.ListBySubscription` has been removed
+- Function `*MetricDefinitionsClient.List` has been removed
+- Function `*AlertRulesClient.ListBySubscription` has been removed
+- Function `*LogProfilesClient.List` has been removed
+- Function `*DataCollectionRuleAssociationsClient.ListByResource` has been removed
+- Function `*MetricAlertsClient.ListBySubscription` has been removed
+- Function `*AlertRuleIncidentsClient.ListByAlertRule` has been removed
+- Function `*MetricAlertsClient.ListByResourceGroup` has been removed
+- Function `*TenantActivityLogsClient.List` has been removed
+- Function `*ActionGroupsClient.ListByResourceGroup` has been removed
+- Function `*ActionGroupsClient.ListBySubscriptionID` has been removed
+- Function `*ActivityLogsClient.List` has been removed
+- Function `*DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint` has been removed
+- Function `*ScheduledQueryRulesClient.ListByResourceGroup` has been removed
+- Function `*ScheduledQueryRulesClient.ListBySubscription` has been removed
+- Function `*PrivateLinkScopesClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByPrivateLinkScope` has been removed
+- Function `*MetricNamespacesClient.List` has been removed
+- Function `*DataCollectionRulesClient.ListBySubscription` has been removed
+- Function `*DataCollectionEndpointsClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkResourcesClient.ListByPrivateLinkScope` has been removed
+- Function `*DataCollectionRuleAssociationsClient.ListByRule` has been removed
+- Function `*PrivateLinkScopedResourcesClient.ListByPrivateLinkScope` has been removed
+- Function `*BaselinesClient.List` has been removed
+- Function `*DataCollectionEndpointsClient.ListBySubscription` has been removed
+- Function `*ActivityLogAlertsClient.ListByResourceGroup` has been removed
+- Function `*PrivateLinkScopesClient.ListByResourceGroup` has been removed
+- Function `*AutoscaleSettingsClient.ListByResourceGroup` has been removed
+- Function `*DataCollectionRulesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*LogProfilesClient.NewListPager(*LogProfilesClientListOptions) *runtime.Pager[LogProfilesClientListResponse]`
+- New function `*DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager(string, string, *DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByDataCollectionEndpointResponse]`
+- New function `*DataCollectionRulesClient.NewListByResourceGroupPager(string, *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse]`
+- New function `*TenantActivityLogsClient.NewListPager(*TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse]`
+- New function `*ActionGroupsClient.NewListByResourceGroupPager(string, *ActionGroupsClientListByResourceGroupOptions) *runtime.Pager[ActionGroupsClientListByResourceGroupResponse]`
+- New function `*ActivityLogAlertsClient.NewListByResourceGroupPager(string, *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse]`
+- New function `*PrivateLinkScopesClient.NewListPager(*PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse]`
+- New function `*ScheduledQueryRulesClient.NewListBySubscriptionPager(*ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse]`
+- New function `*MetricDefinitionsClient.NewListPager(string, *MetricDefinitionsClientListOptions) *runtime.Pager[MetricDefinitionsClientListResponse]`
+- New function `*ActivityLogsClient.NewListPager(string, *ActivityLogsClientListOptions) *runtime.Pager[ActivityLogsClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByPrivateLinkScopePager(string, string, *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkScopeResponse]`
+- New function `*MetricNamespacesClient.NewListPager(string, *MetricNamespacesClientListOptions) *runtime.Pager[MetricNamespacesClientListResponse]`
+- New function `*PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager(string, string, *PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkScopedResourcesClientListByPrivateLinkScopeResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByPrivateLinkScopePager(string, string, *PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse]`
+- New function `*ActivityLogAlertsClient.NewListBySubscriptionIDPager(*ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse]`
+- New function `*DataCollectionRuleAssociationsClient.NewListByRulePager(string, string, *DataCollectionRuleAssociationsClientListByRuleOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByRuleResponse]`
+- New function `*PrivateLinkScopesClient.NewListByResourceGroupPager(string, *PrivateLinkScopesClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse]`
+- New function `*EventCategoriesClient.NewListPager(*EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse]`
+- New function `*MetricAlertsClient.NewListByResourceGroupPager(string, *MetricAlertsClientListByResourceGroupOptions) *runtime.Pager[MetricAlertsClientListByResourceGroupResponse]`
+- New function `*DataCollectionEndpointsClient.NewListByResourceGroupPager(string, *DataCollectionEndpointsClientListByResourceGroupOptions) *runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse]`
+- New function `*ScheduledQueryRulesClient.NewListByResourceGroupPager(string, *ScheduledQueryRulesClientListByResourceGroupOptions) *runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse]`
+- New function `*ActionGroupsClient.NewListBySubscriptionIDPager(*ActionGroupsClientListBySubscriptionIDOptions) *runtime.Pager[ActionGroupsClientListBySubscriptionIDResponse]`
+- New function `*DataCollectionRuleAssociationsClient.NewListByResourcePager(string, *DataCollectionRuleAssociationsClientListByResourceOptions) *runtime.Pager[DataCollectionRuleAssociationsClientListByResourceResponse]`
+- New function `*DataCollectionEndpointsClient.NewListBySubscriptionPager(*DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse]`
+- New function `*DataCollectionRulesClient.NewListBySubscriptionPager(*DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse]`
+- New function `*BaselinesClient.NewListPager(string, *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse]`
+- New function `*MetricAlertsClient.NewListBySubscriptionPager(*MetricAlertsClientListBySubscriptionOptions) *runtime.Pager[MetricAlertsClientListBySubscriptionResponse]`
+- New function `*AutoscaleSettingsClient.NewListByResourceGroupPager(string, *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse]`
+- New function `*AutoscaleSettingsClient.NewListBySubscriptionPager(*AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse]`
+- New function `*AlertRuleIncidentsClient.NewListByAlertRulePager(string, string, *AlertRuleIncidentsClientListByAlertRuleOptions) *runtime.Pager[AlertRuleIncidentsClientListByAlertRuleResponse]`
+- New function `*AlertRulesClient.NewListByResourceGroupPager(string, *AlertRulesClientListByResourceGroupOptions) *runtime.Pager[AlertRulesClientListByResourceGroupResponse]`
+- New function `*AlertRulesClient.NewListBySubscriptionPager(*AlertRulesClientListBySubscriptionOptions) *runtime.Pager[AlertRulesClientListBySubscriptionResponse]`
+
+
 ## 0.5.0 (2022-04-12)
 ### Breaking Changes
 

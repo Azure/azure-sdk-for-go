@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2015-04-01/examples/GetTenantActivityLogsFiltered.json
-func ExampleTenantActivityLogsClient_List() {
+func ExampleTenantActivityLogsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleTenantActivityLogsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armmonitor.TenantActivityLogsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armmonitor.TenantActivityLogsClientListOptions{Filter: to.Ptr("<filter>"),
 		Select: nil,
 	})
 	for pager.More() {

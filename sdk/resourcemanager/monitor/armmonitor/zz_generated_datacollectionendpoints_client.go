@@ -216,12 +216,12 @@ func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all data collection endpoints in the specified resource group.
+// NewListByResourceGroupPager - Lists all data collection endpoints in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.ListByResourceGroup
 // method.
-func (client *DataCollectionEndpointsClient) ListByResourceGroup(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) *runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse] {
+func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionEndpointsClientListByResourceGroupOptions) *runtime.Pager[DataCollectionEndpointsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionEndpointsClientListByResourceGroupResponse]{
 		More: func(page DataCollectionEndpointsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -280,11 +280,11 @@ func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(r
 	return result, nil
 }
 
-// ListBySubscription - Lists all data collection endpoints in the specified subscription
+// NewListBySubscriptionPager - Lists all data collection endpoints in the specified subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.ListBySubscription
 // method.
-func (client *DataCollectionEndpointsClient) ListBySubscription(options *DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse] {
+func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options *DataCollectionEndpointsClientListBySubscriptionOptions) *runtime.Pager[DataCollectionEndpointsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataCollectionEndpointsClientListBySubscriptionResponse]{
 		More: func(page DataCollectionEndpointsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

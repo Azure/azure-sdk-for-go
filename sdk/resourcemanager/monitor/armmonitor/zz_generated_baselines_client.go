@@ -49,11 +49,11 @@ func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// List - Lists the metric baseline values for a resource.
+// NewListPager - Lists the metric baseline values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The identifier of the resource.
 // options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
-func (client *BaselinesClient) List(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
+func (client *BaselinesClient) NewListPager(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BaselinesClientListResponse]{
 		More: func(page BaselinesClientListResponse) bool {
 			return false

@@ -115,13 +115,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByPrivateLinkScope - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
+// NewListByPrivateLinkScopePager - Gets the private link resources that need to be created for a Azure Monitor PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // scopeName - The name of the Azure Monitor PrivateLinkScope resource.
 // options - PrivateLinkResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByPrivateLinkScope
 // method.
-func (client *PrivateLinkResourcesClient) ListByPrivateLinkScope(resourceGroupName string, scopeName string, options *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkScopeResponse] {
+func (client *PrivateLinkResourcesClient) NewListByPrivateLinkScopePager(resourceGroupName string, scopeName string, options *PrivateLinkResourcesClientListByPrivateLinkScopeOptions) *runtime.Pager[PrivateLinkResourcesClientListByPrivateLinkScopeResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByPrivateLinkScopeResponse]{
 		More: func(page PrivateLinkResourcesClientListByPrivateLinkScopeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

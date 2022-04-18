@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2017-12-01-preview/examples/GetMetricNamespaces.json
-func ExampleMetricNamespacesClient_List() {
+func ExampleMetricNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleMetricNamespacesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-uri>",
+	pager := client.NewListPager("<resource-uri>",
 		&armmonitor.MetricNamespacesClientListOptions{StartTime: to.Ptr("<start-time>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

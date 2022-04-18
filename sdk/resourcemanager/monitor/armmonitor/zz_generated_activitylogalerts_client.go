@@ -213,12 +213,12 @@ func (client *ActivityLogAlertsClient) getHandleResponse(resp *http.Response) (A
 	return result, nil
 }
 
-// ListByResourceGroup - Get a list of all Activity Log Alert rules in a resource group.
+// NewListByResourceGroupPager - Get a list of all Activity Log Alert rules in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.ListByResourceGroup
 // method.
-func (client *ActivityLogAlertsClient) ListByResourceGroup(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
+func (client *ActivityLogAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *ActivityLogAlertsClientListByResourceGroupOptions) *runtime.Pager[ActivityLogAlertsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActivityLogAlertsClientListByResourceGroupResponse]{
 		More: func(page ActivityLogAlertsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -277,11 +277,11 @@ func (client *ActivityLogAlertsClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// ListBySubscriptionID - Get a list of all Activity Log Alert rules in a subscription.
+// NewListBySubscriptionIDPager - Get a list of all Activity Log Alert rules in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.ListBySubscriptionID
 // method.
-func (client *ActivityLogAlertsClient) ListBySubscriptionID(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
+func (client *ActivityLogAlertsClient) NewListBySubscriptionIDPager(options *ActivityLogAlertsClientListBySubscriptionIDOptions) *runtime.Pager[ActivityLogAlertsClientListBySubscriptionIDResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActivityLogAlertsClientListBySubscriptionIDResponse]{
 		More: func(page ActivityLogAlertsClientListBySubscriptionIDResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

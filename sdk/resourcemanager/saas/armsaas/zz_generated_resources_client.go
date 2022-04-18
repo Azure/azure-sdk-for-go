@@ -51,10 +51,10 @@ func NewResourcesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	return client, nil
 }
 
-// List - Get All Resources
+// NewListPager - Get All Resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourcesClientListOptions contains the optional parameters for the ResourcesClient.List method.
-func (client *ResourcesClient) List(options *ResourcesClientListOptions) *runtime.Pager[ResourcesClientListResponse] {
+func (client *ResourcesClient) NewListPager(options *ResourcesClientListOptions) *runtime.Pager[ResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourcesClientListResponse]{
 		More: func(page ResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

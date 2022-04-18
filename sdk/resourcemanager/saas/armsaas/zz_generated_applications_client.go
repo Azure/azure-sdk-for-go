@@ -54,11 +54,11 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// List - Gets all SaaS resources by subscription id and resource group name.
+// NewListPager - Gets all SaaS resources by subscription id and resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.List method.
-func (client *ApplicationsClient) List(resourceGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
+func (client *ApplicationsClient) NewListPager(resourceGroupName string, options *ApplicationsClientListOptions) *runtime.Pager[ApplicationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListResponse]{
 		More: func(page ApplicationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

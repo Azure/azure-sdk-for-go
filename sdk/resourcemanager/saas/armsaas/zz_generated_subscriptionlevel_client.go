@@ -292,11 +292,11 @@ func (client *SubscriptionLevelClient) listAccessTokenHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByAzureSubscription - Gets information about all the Subscription Level SaaS in a certain Azure subscription.
+// NewListByAzureSubscriptionPager - Gets information about all the Subscription Level SaaS in a certain Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SubscriptionLevelClientListByAzureSubscriptionOptions contains the optional parameters for the SubscriptionLevelClient.ListByAzureSubscription
 // method.
-func (client *SubscriptionLevelClient) ListByAzureSubscription(options *SubscriptionLevelClientListByAzureSubscriptionOptions) *runtime.Pager[SubscriptionLevelClientListByAzureSubscriptionResponse] {
+func (client *SubscriptionLevelClient) NewListByAzureSubscriptionPager(options *SubscriptionLevelClientListByAzureSubscriptionOptions) *runtime.Pager[SubscriptionLevelClientListByAzureSubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionLevelClientListByAzureSubscriptionResponse]{
 		More: func(page SubscriptionLevelClientListByAzureSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -351,12 +351,12 @@ func (client *SubscriptionLevelClient) listByAzureSubscriptionHandleResponse(res
 	return result, nil
 }
 
-// ListByResourceGroup - Gets information about all the Subscription Level SaaS in a certain resource group.
+// NewListByResourceGroupPager - Gets information about all the Subscription Level SaaS in a certain resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - SubscriptionLevelClientListByResourceGroupOptions contains the optional parameters for the SubscriptionLevelClient.ListByResourceGroup
 // method.
-func (client *SubscriptionLevelClient) ListByResourceGroup(resourceGroupName string, options *SubscriptionLevelClientListByResourceGroupOptions) *runtime.Pager[SubscriptionLevelClientListByResourceGroupResponse] {
+func (client *SubscriptionLevelClient) NewListByResourceGroupPager(resourceGroupName string, options *SubscriptionLevelClientListByResourceGroupOptions) *runtime.Pager[SubscriptionLevelClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionLevelClientListByResourceGroupResponse]{
 		More: func(page SubscriptionLevelClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

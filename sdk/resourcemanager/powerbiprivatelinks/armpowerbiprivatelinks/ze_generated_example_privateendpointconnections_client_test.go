@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/powerbiprivatelinks/resource-manager/Microsoft.PowerBI/stable/2020-06-01/examples/PrivateEndpointConnections_ListByResource.json
-func ExamplePrivateEndpointConnectionsClient_ListByResource() {
+func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -35,7 +35,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-group-name>",
+	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<azure-resource-name>",
 		nil)
 	for pager.More() {

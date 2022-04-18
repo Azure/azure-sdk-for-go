@@ -119,11 +119,11 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResource - List private link resources under a specific Power BI resource.
+// NewListByResourcePager - List private link resources under a specific Power BI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
 // method.
-func (client *PrivateLinkResourcesClient) ListByResource(options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
+func (client *PrivateLinkResourcesClient) NewListByResourcePager(options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByResourceResponse]{
 		More: func(page PrivateLinkResourcesClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

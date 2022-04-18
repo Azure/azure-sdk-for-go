@@ -245,13 +245,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByResource - Gets private endpoint connection for Power BI.
+// NewListByResourcePager - Gets private endpoint connection for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription.
 // azureResourceName - The name of the powerbi resource.
 // options - PrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByResource
 // method.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
+func (client *PrivateEndpointConnectionsClient) NewListByResourcePager(resourceGroupName string, azureResourceName string, options *PrivateEndpointConnectionsClientListByResourceOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByResourceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByResourceResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

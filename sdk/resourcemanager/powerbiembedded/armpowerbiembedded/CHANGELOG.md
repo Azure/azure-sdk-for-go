@@ -1,5 +1,19 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*WorkspacesClient.List` has been removed
+- Function `*WorkspaceCollectionsClient.ListByResourceGroup` has been removed
+- Function `*WorkspaceCollectionsClient.ListBySubscription` has been removed
+
+### Features Added
+
+- New function `*WorkspacesClient.NewListPager(string, string, *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse]`
+- New function `*WorkspaceCollectionsClient.NewListByResourceGroupPager(string, *WorkspaceCollectionsClientListByResourceGroupOptions) *runtime.Pager[WorkspaceCollectionsClientListByResourceGroupResponse]`
+- New function `*WorkspaceCollectionsClient.NewListBySubscriptionPager(*WorkspaceCollectionsClientListBySubscriptionOptions) *runtime.Pager[WorkspaceCollectionsClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

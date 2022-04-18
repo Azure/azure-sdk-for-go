@@ -55,12 +55,12 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// List - Retrieves all existing Power BI workspaces in the specified workspace collection.
+// NewListPager - Retrieves all existing Power BI workspaces in the specified workspace collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
-func (client *WorkspacesClient) List(resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
+func (client *WorkspacesClient) NewListPager(resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListResponse]{
 		More: func(page WorkspacesClientListResponse) bool {
 			return false

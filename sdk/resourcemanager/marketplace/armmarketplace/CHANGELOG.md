@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*PrivateStoreCollectionOfferClient.List` has been removed
+- Function `*PrivateStoreClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateStoreClient.NewListPager(*PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse]`
+- New function `*PrivateStoreCollectionOfferClient.NewListPager(string, string, *PrivateStoreCollectionOfferClientListOptions) *runtime.Pager[PrivateStoreCollectionOfferClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

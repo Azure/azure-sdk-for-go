@@ -10,7 +10,7 @@ package armservicefabric
 
 const (
 	moduleName    = "armservicefabric"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // AddOnFeatures - Available cluster add-on features

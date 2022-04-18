@@ -46,7 +46,7 @@ func ExampleTopQueryStatisticsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2018-06-01/examples/TopQueryStatisticsListByServer.json
-func ExampleTopQueryStatisticsClient_ListByServer() {
+func ExampleTopQueryStatisticsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleTopQueryStatisticsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		armmysql.TopQueryStatisticsInput{
 			Properties: &armmysql.TopQueryStatisticsInputProperties{

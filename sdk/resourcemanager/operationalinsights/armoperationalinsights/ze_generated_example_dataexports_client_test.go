@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportListByWorkspace.json
-func ExampleDataExportsClient_ListByWorkspace() {
+func ExampleDataExportsClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleDataExportsClient_ListByWorkspace() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByWorkspace("<resource-group-name>",
+	pager := client.NewListByWorkspacePager("<resource-group-name>",
 		"<workspace-name>",
 		nil)
 	for pager.More() {

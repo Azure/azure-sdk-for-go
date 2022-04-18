@@ -166,12 +166,12 @@ func (client *QueriesClient) getHandleResponse(resp *http.Response) (QueriesClie
 	return result, nil
 }
 
-// List - Gets a list of Queries defined within a Log Analytics QueryPack.
+// NewListPager - Gets a list of Queries defined within a Log Analytics QueryPack.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // queryPackName - The name of the Log Analytics QueryPack resource.
 // options - QueriesClientListOptions contains the optional parameters for the QueriesClient.List method.
-func (client *QueriesClient) List(resourceGroupName string, queryPackName string, options *QueriesClientListOptions) *runtime.Pager[QueriesClientListResponse] {
+func (client *QueriesClient) NewListPager(resourceGroupName string, queryPackName string, options *QueriesClientListOptions) *runtime.Pager[QueriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueriesClientListResponse]{
 		More: func(page QueriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -304,13 +304,13 @@ func (client *QueriesClient) putHandleResponse(resp *http.Response) (QueriesClie
 	return result, nil
 }
 
-// Search - Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
+// NewSearchPager - Search a list of Queries defined within a Log Analytics QueryPack according to given search properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // queryPackName - The name of the Log Analytics QueryPack resource.
 // querySearchProperties - Properties by which to search queries in the given Log Analytics QueryPack.
 // options - QueriesClientSearchOptions contains the optional parameters for the QueriesClient.Search method.
-func (client *QueriesClient) Search(resourceGroupName string, queryPackName string, querySearchProperties LogAnalyticsQueryPackQuerySearchProperties, options *QueriesClientSearchOptions) *runtime.Pager[QueriesClientSearchResponse] {
+func (client *QueriesClient) NewSearchPager(resourceGroupName string, queryPackName string, querySearchProperties LogAnalyticsQueryPackQuerySearchProperties, options *QueriesClientSearchOptions) *runtime.Pager[QueriesClientSearchResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueriesClientSearchResponse]{
 		More: func(page QueriesClientSearchResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

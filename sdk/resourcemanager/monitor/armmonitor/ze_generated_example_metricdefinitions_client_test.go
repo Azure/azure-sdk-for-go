@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricDefinitionsApplicationInsights.json
-func ExampleMetricDefinitionsClient_List() {
+func ExampleMetricDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleMetricDefinitionsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-uri>",
+	pager := client.NewListPager("<resource-uri>",
 		&armmonitor.MetricDefinitionsClientListOptions{Metricnamespace: to.Ptr("<metricnamespace>")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

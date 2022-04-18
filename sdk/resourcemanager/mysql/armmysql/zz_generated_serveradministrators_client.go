@@ -235,13 +235,13 @@ func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - Returns a list of server Administrators.
+// NewListPager - Returns a list of server Administrators.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerAdministratorsClientListOptions contains the optional parameters for the ServerAdministratorsClient.List
 // method.
-func (client *ServerAdministratorsClient) List(resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse] {
+func (client *ServerAdministratorsClient) NewListPager(resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerAdministratorsClientListResponse]{
 		More: func(page ServerAdministratorsClientListResponse) bool {
 			return false

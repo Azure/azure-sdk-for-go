@@ -1,5 +1,55 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ServerAdministratorsClient.List` has been removed
+- Function `*ServersClient.ListByResourceGroup` has been removed
+- Function `*ServerKeysClient.List` has been removed
+- Function `*ConfigurationsClient.ListByServer` has been removed
+- Function `*QueryTextsClient.ListByServer` has been removed
+- Function `*ServerSecurityAlertPoliciesClient.ListByServer` has been removed
+- Function `*ServersClient.List` has been removed
+- Function `*LocationBasedPerformanceTierClient.List` has been removed
+- Function `*PrivateLinkResourcesClient.ListByServer` has been removed
+- Function `*PrivateEndpointConnectionsClient.ListByServer` has been removed
+- Function `*WaitStatisticsClient.ListByServer` has been removed
+- Function `*LogFilesClient.ListByServer` has been removed
+- Function `*TopQueryStatisticsClient.ListByServer` has been removed
+- Function `*RecommendedActionsClient.ListByServer` has been removed
+- Function `*LocationBasedRecommendedActionSessionsResultClient.List` has been removed
+- Function `*FirewallRulesClient.ListByServer` has been removed
+- Function `*ServerBasedPerformanceTierClient.List` has been removed
+- Function `*VirtualNetworkRulesClient.ListByServer` has been removed
+- Function `*AdvisorsClient.ListByServer` has been removed
+- Function `*DatabasesClient.ListByServer` has been removed
+- Function `*ReplicasClient.ListByServer` has been removed
+
+### Features Added
+
+- New function `*DatabasesClient.NewListByServerPager(string, string, *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse]`
+- New function `*QueryTextsClient.NewListByServerPager(string, string, []string, *QueryTextsClientListByServerOptions) *runtime.Pager[QueryTextsClientListByServerResponse]`
+- New function `*ServersClient.NewListPager(*ServersClientListOptions) *runtime.Pager[ServersClientListResponse]`
+- New function `*ServerAdministratorsClient.NewListPager(string, string, *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse]`
+- New function `*PrivateLinkResourcesClient.NewListByServerPager(string, string, *PrivateLinkResourcesClientListByServerOptions) *runtime.Pager[PrivateLinkResourcesClientListByServerResponse]`
+- New function `*ServerBasedPerformanceTierClient.NewListPager(string, string, *ServerBasedPerformanceTierClientListOptions) *runtime.Pager[ServerBasedPerformanceTierClientListResponse]`
+- New function `*ServersClient.NewListByResourceGroupPager(string, *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse]`
+- New function `*LocationBasedPerformanceTierClient.NewListPager(string, *LocationBasedPerformanceTierClientListOptions) *runtime.Pager[LocationBasedPerformanceTierClientListResponse]`
+- New function `*LogFilesClient.NewListByServerPager(string, string, *LogFilesClientListByServerOptions) *runtime.Pager[LogFilesClientListByServerResponse]`
+- New function `*FirewallRulesClient.NewListByServerPager(string, string, *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse]`
+- New function `*RecommendedActionsClient.NewListByServerPager(string, string, string, *RecommendedActionsClientListByServerOptions) *runtime.Pager[RecommendedActionsClientListByServerResponse]`
+- New function `*AdvisorsClient.NewListByServerPager(string, string, *AdvisorsClientListByServerOptions) *runtime.Pager[AdvisorsClientListByServerResponse]`
+- New function `*TopQueryStatisticsClient.NewListByServerPager(string, string, TopQueryStatisticsInput, *TopQueryStatisticsClientListByServerOptions) *runtime.Pager[TopQueryStatisticsClientListByServerResponse]`
+- New function `*VirtualNetworkRulesClient.NewListByServerPager(string, string, *VirtualNetworkRulesClientListByServerOptions) *runtime.Pager[VirtualNetworkRulesClientListByServerResponse]`
+- New function `*ReplicasClient.NewListByServerPager(string, string, *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse]`
+- New function `*WaitStatisticsClient.NewListByServerPager(string, string, WaitStatisticsInput, *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse]`
+- New function `*ServerKeysClient.NewListPager(string, string, *ServerKeysClientListOptions) *runtime.Pager[ServerKeysClientListResponse]`
+- New function `*LocationBasedRecommendedActionSessionsResultClient.NewListPager(string, string, *LocationBasedRecommendedActionSessionsResultClientListOptions) *runtime.Pager[LocationBasedRecommendedActionSessionsResultClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListByServerPager(string, string, *PrivateEndpointConnectionsClientListByServerOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByServerResponse]`
+- New function `*ServerSecurityAlertPoliciesClient.NewListByServerPager(string, string, *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse]`
+- New function `*ConfigurationsClient.NewListByServerPager(string, string, *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

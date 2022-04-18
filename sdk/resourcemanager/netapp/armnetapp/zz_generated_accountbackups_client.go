@@ -182,12 +182,12 @@ func (client *AccountBackupsClient) getHandleResponse(resp *http.Response) (Acco
 	return result, nil
 }
 
-// List - List all Backups for a Netapp Account
+// NewListPager - List all Backups for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
-func (client *AccountBackupsClient) List(resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) *runtime.Pager[AccountBackupsClientListResponse] {
+func (client *AccountBackupsClient) NewListPager(resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) *runtime.Pager[AccountBackupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountBackupsClientListResponse]{
 		More: func(page AccountBackupsClientListResponse) bool {
 			return false

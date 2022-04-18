@@ -251,13 +251,13 @@ func (client *NatRulesClient) getHandleResponse(resp *http.Response) (NatRulesCl
 	return result, nil
 }
 
-// ListByVPNGateway - Retrieves all nat rules for a particular virtual wan vpn gateway.
+// NewListByVPNGatewayPager - Retrieves all nat rules for a particular virtual wan vpn gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VpnGateway.
 // gatewayName - The name of the gateway.
 // options - NatRulesClientListByVPNGatewayOptions contains the optional parameters for the NatRulesClient.ListByVPNGateway
 // method.
-func (client *NatRulesClient) ListByVPNGateway(resourceGroupName string, gatewayName string, options *NatRulesClientListByVPNGatewayOptions) *runtime.Pager[NatRulesClientListByVPNGatewayResponse] {
+func (client *NatRulesClient) NewListByVPNGatewayPager(resourceGroupName string, gatewayName string, options *NatRulesClientListByVPNGatewayOptions) *runtime.Pager[NatRulesClientListByVPNGatewayResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NatRulesClientListByVPNGatewayResponse]{
 		More: func(page NatRulesClientListByVPNGatewayResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

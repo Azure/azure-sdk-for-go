@@ -255,12 +255,12 @@ func (client *InboundNatRulesClient) getHandleResponse(resp *http.Response) (Inb
 	return result, nil
 }
 
-// List - Gets all the inbound NAT rules in a load balancer.
+// NewListPager - Gets all the inbound NAT rules in a load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - InboundNatRulesClientListOptions contains the optional parameters for the InboundNatRulesClient.List method.
-func (client *InboundNatRulesClient) List(resourceGroupName string, loadBalancerName string, options *InboundNatRulesClientListOptions) *runtime.Pager[InboundNatRulesClientListResponse] {
+func (client *InboundNatRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *InboundNatRulesClientListOptions) *runtime.Pager[InboundNatRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InboundNatRulesClientListResponse]{
 		More: func(page InboundNatRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

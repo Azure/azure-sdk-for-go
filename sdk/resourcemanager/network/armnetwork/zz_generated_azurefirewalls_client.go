@@ -237,11 +237,11 @@ func (client *AzureFirewallsClient) getHandleResponse(resp *http.Response) (Azur
 	return result, nil
 }
 
-// List - Lists all Azure Firewalls in a resource group.
+// NewListPager - Lists all Azure Firewalls in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - AzureFirewallsClientListOptions contains the optional parameters for the AzureFirewallsClient.List method.
-func (client *AzureFirewallsClient) List(resourceGroupName string, options *AzureFirewallsClientListOptions) *runtime.Pager[AzureFirewallsClientListResponse] {
+func (client *AzureFirewallsClient) NewListPager(resourceGroupName string, options *AzureFirewallsClientListOptions) *runtime.Pager[AzureFirewallsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AzureFirewallsClientListResponse]{
 		More: func(page AzureFirewallsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,10 +300,10 @@ func (client *AzureFirewallsClient) listHandleResponse(resp *http.Response) (Azu
 	return result, nil
 }
 
-// ListAll - Gets all the Azure Firewalls in a subscription.
+// NewListAllPager - Gets all the Azure Firewalls in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureFirewallsClientListAllOptions contains the optional parameters for the AzureFirewallsClient.ListAll method.
-func (client *AzureFirewallsClient) ListAll(options *AzureFirewallsClientListAllOptions) *runtime.Pager[AzureFirewallsClientListAllResponse] {
+func (client *AzureFirewallsClient) NewListAllPager(options *AzureFirewallsClientListAllOptions) *runtime.Pager[AzureFirewallsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AzureFirewallsClientListAllResponse]{
 		More: func(page AzureFirewallsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

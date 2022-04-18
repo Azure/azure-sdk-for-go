@@ -48,11 +48,11 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 	return client, nil
 }
 
-// List - Get the list of available event categories supported in the Activity Logs Service. The current list includes the
-// following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
+// NewListPager - Get the list of available event categories supported in the Activity Logs Service. The current list includes
+// the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
-func (client *EventCategoriesClient) List(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
+func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EventCategoriesClientListResponse]{
 		More: func(page EventCategoriesClientListResponse) bool {
 			return false

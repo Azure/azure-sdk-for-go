@@ -239,10 +239,10 @@ func (client *IPGroupsClient) getHandleResponse(resp *http.Response) (IPGroupsCl
 	return result, nil
 }
 
-// List - Gets all IpGroups in a subscription.
+// NewListPager - Gets all IpGroups in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.List method.
-func (client *IPGroupsClient) List(options *IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse] {
+func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPGroupsClientListResponse]{
 		More: func(page IPGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,12 +297,12 @@ func (client *IPGroupsClient) listHandleResponse(resp *http.Response) (IPGroupsC
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all IpGroups in a resource group.
+// NewListByResourceGroupPager - Gets all IpGroups in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.ListByResourceGroup
 // method.
-func (client *IPGroupsClient) ListByResourceGroup(resourceGroupName string, options *IPGroupsClientListByResourceGroupOptions) *runtime.Pager[IPGroupsClientListByResourceGroupResponse] {
+func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPGroupsClientListByResourceGroupOptions) *runtime.Pager[IPGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPGroupsClientListByResourceGroupResponse]{
 		More: func(page IPGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -128,7 +128,7 @@ func ExampleConfigurationsClient_BeginBatchUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ConfigurationsListByServer.json
-func ExampleConfigurationsClient_ListByServer() {
+func ExampleConfigurationsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -140,7 +140,7 @@ func ExampleConfigurationsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

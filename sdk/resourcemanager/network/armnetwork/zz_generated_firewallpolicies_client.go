@@ -240,11 +240,11 @@ func (client *FirewallPoliciesClient) getHandleResponse(resp *http.Response) (Fi
 	return result, nil
 }
 
-// List - Lists all Firewall Policies in a resource group.
+// NewListPager - Lists all Firewall Policies in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - FirewallPoliciesClientListOptions contains the optional parameters for the FirewallPoliciesClient.List method.
-func (client *FirewallPoliciesClient) List(resourceGroupName string, options *FirewallPoliciesClientListOptions) *runtime.Pager[FirewallPoliciesClientListResponse] {
+func (client *FirewallPoliciesClient) NewListPager(resourceGroupName string, options *FirewallPoliciesClientListOptions) *runtime.Pager[FirewallPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallPoliciesClientListResponse]{
 		More: func(page FirewallPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,11 +303,11 @@ func (client *FirewallPoliciesClient) listHandleResponse(resp *http.Response) (F
 	return result, nil
 }
 
-// ListAll - Gets all the Firewall Policies in a subscription.
+// NewListAllPager - Gets all the Firewall Policies in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - FirewallPoliciesClientListAllOptions contains the optional parameters for the FirewallPoliciesClient.ListAll
 // method.
-func (client *FirewallPoliciesClient) ListAll(options *FirewallPoliciesClientListAllOptions) *runtime.Pager[FirewallPoliciesClientListAllResponse] {
+func (client *FirewallPoliciesClient) NewListAllPager(options *FirewallPoliciesClientListAllOptions) *runtime.Pager[FirewallPoliciesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FirewallPoliciesClientListAllResponse]{
 		More: func(page FirewallPoliciesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

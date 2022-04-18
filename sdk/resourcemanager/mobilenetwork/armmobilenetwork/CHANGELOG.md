@@ -1,5 +1,41 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*PacketCoreControlPlanesClient.ListBySubscription` has been removed
+- Function `*SimPoliciesClient.ListByMobileNetwork` has been removed
+- Function `*SitesClient.ListByMobileNetwork` has been removed
+- Function `*PacketCoreDataPlanesClient.ListByPacketCoreControlPlane` has been removed
+- Function `*DataNetworksClient.ListByMobileNetwork` has been removed
+- Function `*AttachedDataNetworksClient.ListByPacketCoreDataPlane` has been removed
+- Function `*PacketCoreControlPlanesClient.ListByResourceGroup` has been removed
+- Function `*ServicesClient.ListByMobileNetwork` has been removed
+- Function `*MobileNetworksClient.ListByResourceGroup` has been removed
+- Function `*SlicesClient.ListByMobileNetwork` has been removed
+- Function `*SimsClient.ListBySubscription` has been removed
+- Function `*MobileNetworksClient.ListBySubscription` has been removed
+- Function `*SimsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+
+### Features Added
+
+- New function `*PacketCoreDataPlanesClient.NewListByPacketCoreControlPlanePager(string, string, *PacketCoreDataPlanesClientListByPacketCoreControlPlaneOptions) *runtime.Pager[PacketCoreDataPlanesClientListByPacketCoreControlPlaneResponse]`
+- New function `*PacketCoreControlPlanesClient.NewListBySubscriptionPager(*PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse]`
+- New function `*DataNetworksClient.NewListByMobileNetworkPager(string, string, *DataNetworksClientListByMobileNetworkOptions) *runtime.Pager[DataNetworksClientListByMobileNetworkResponse]`
+- New function `*SimsClient.NewListByResourceGroupPager(string, *SimsClientListByResourceGroupOptions) *runtime.Pager[SimsClientListByResourceGroupResponse]`
+- New function `*MobileNetworksClient.NewListByResourceGroupPager(string, *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*PacketCoreControlPlanesClient.NewListByResourceGroupPager(string, *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse]`
+- New function `*SlicesClient.NewListByMobileNetworkPager(string, string, *SlicesClientListByMobileNetworkOptions) *runtime.Pager[SlicesClientListByMobileNetworkResponse]`
+- New function `*ServicesClient.NewListByMobileNetworkPager(string, string, *ServicesClientListByMobileNetworkOptions) *runtime.Pager[ServicesClientListByMobileNetworkResponse]`
+- New function `*SitesClient.NewListByMobileNetworkPager(string, string, *SitesClientListByMobileNetworkOptions) *runtime.Pager[SitesClientListByMobileNetworkResponse]`
+- New function `*SimPoliciesClient.NewListByMobileNetworkPager(string, string, *SimPoliciesClientListByMobileNetworkOptions) *runtime.Pager[SimPoliciesClientListByMobileNetworkResponse]`
+- New function `*AttachedDataNetworksClient.NewListByPacketCoreDataPlanePager(string, string, string, *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]`
+- New function `*SimsClient.NewListBySubscriptionPager(*SimsClientListBySubscriptionOptions) *runtime.Pager[SimsClientListBySubscriptionResponse]`
+- New function `*MobileNetworksClient.NewListBySubscriptionPager(*MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

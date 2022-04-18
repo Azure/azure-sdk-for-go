@@ -151,7 +151,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdateTags() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2018-06-01/examples/PrivateEndpointConnectionList.json
-func ExamplePrivateEndpointConnectionsClient_ListByServer() {
+func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -163,7 +163,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

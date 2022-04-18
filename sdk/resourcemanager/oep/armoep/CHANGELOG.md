@@ -1,5 +1,17 @@
 # Release History
 
+## 0.3.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*EnergyServicesClient.ListBySubscription` has been removed
+- Function `*EnergyServicesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*EnergyServicesClient.NewListByResourceGroupPager(string, *EnergyServicesClientListByResourceGroupOptions) *runtime.Pager[EnergyServicesClientListByResourceGroupResponse]`
+- New function `*EnergyServicesClient.NewListBySubscriptionPager(*EnergyServicesClientListBySubscriptionOptions) *runtime.Pager[EnergyServicesClientListBySubscriptionResponse]`
+
+
 ## 0.2.0 (2022-04-12)
 ### Breaking Changes
 

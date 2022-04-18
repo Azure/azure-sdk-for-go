@@ -226,14 +226,14 @@ func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSou
 	return result, nil
 }
 
-// ListByWorkspace - Gets the first page of data source instances in a workspace with the link to the next page.
+// NewListByWorkspacePager - Gets the first page of data source instances in a workspace with the link to the next page.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // filter - The filter to apply on the operation.
 // options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace
 // method.
-func (client *DataSourcesClient) ListByWorkspace(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse] {
+func (client *DataSourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataSourcesClientListByWorkspaceResponse]{
 		More: func(page DataSourcesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

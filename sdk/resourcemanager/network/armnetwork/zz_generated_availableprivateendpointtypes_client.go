@@ -55,12 +55,13 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 	return client, nil
 }
 
-// List - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
+// NewListPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this
+// region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the domain name.
 // options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.List
 // method.
-func (client *AvailablePrivateEndpointTypesClient) List(location string, options *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse] {
+func (client *AvailablePrivateEndpointTypesClient) NewListPager(location string, options *AvailablePrivateEndpointTypesClientListOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailablePrivateEndpointTypesClientListResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -119,14 +120,14 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 	return result, nil
 }
 
-// ListByResourceGroup - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in
-// this region.
+// NewListByResourceGroupPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription
+// in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the domain name.
 // resourceGroupName - The name of the resource group.
 // options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.ListByResourceGroup
 // method.
-func (client *AvailablePrivateEndpointTypesClient) ListByResourceGroup(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse] {
+func (client *AvailablePrivateEndpointTypesClient) NewListByResourceGroupPager(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions) *runtime.Pager[AvailablePrivateEndpointTypesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailablePrivateEndpointTypesClientListByResourceGroupResponse]{
 		More: func(page AvailablePrivateEndpointTypesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

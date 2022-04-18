@@ -251,13 +251,13 @@ func (client *DataNetworksClient) getHandleResponse(resp *http.Response) (DataNe
 	return result, nil
 }
 
-// ListByMobileNetwork - Lists all dataNetworks in the mobile network.
+// NewListByMobileNetworkPager - Lists all dataNetworks in the mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - DataNetworksClientListByMobileNetworkOptions contains the optional parameters for the DataNetworksClient.ListByMobileNetwork
 // method.
-func (client *DataNetworksClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) *runtime.Pager[DataNetworksClientListByMobileNetworkResponse] {
+func (client *DataNetworksClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *DataNetworksClientListByMobileNetworkOptions) *runtime.Pager[DataNetworksClientListByMobileNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DataNetworksClientListByMobileNetworkResponse]{
 		More: func(page DataNetworksClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -116,13 +116,13 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp
 	return result, nil
 }
 
-// List - Gets all the load balancer frontend IP configurations.
+// NewListPager - Gets all the load balancer frontend IP configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - LoadBalancerFrontendIPConfigurationsClientListOptions contains the optional parameters for the LoadBalancerFrontendIPConfigurationsClient.List
 // method.
-func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsClientListOptions) *runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse] {
+func (client *LoadBalancerFrontendIPConfigurationsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsClientListOptions) *runtime.Pager[LoadBalancerFrontendIPConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadBalancerFrontendIPConfigurationsClientListResponse]{
 		More: func(page LoadBalancerFrontendIPConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

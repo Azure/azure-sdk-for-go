@@ -250,13 +250,13 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 	return result, nil
 }
 
-// ListByMobileNetwork - Gets all the services in a mobile network.
+// NewListByMobileNetworkPager - Gets all the services in a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // mobileNetworkName - The name of the mobile network.
 // options - ServicesClientListByMobileNetworkOptions contains the optional parameters for the ServicesClient.ListByMobileNetwork
 // method.
-func (client *ServicesClient) ListByMobileNetwork(resourceGroupName string, mobileNetworkName string, options *ServicesClientListByMobileNetworkOptions) *runtime.Pager[ServicesClientListByMobileNetworkResponse] {
+func (client *ServicesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *ServicesClientListByMobileNetworkOptions) *runtime.Pager[ServicesClientListByMobileNetworkResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServicesClientListByMobileNetworkResponse]{
 		More: func(page ServicesClientListByMobileNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

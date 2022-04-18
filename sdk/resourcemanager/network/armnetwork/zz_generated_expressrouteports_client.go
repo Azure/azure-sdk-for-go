@@ -294,10 +294,10 @@ func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response) (E
 	return result, nil
 }
 
-// List - List all the ExpressRoutePort resources in the specified subscription.
+// NewListPager - List all the ExpressRoutePort resources in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRoutePortsClientListOptions contains the optional parameters for the ExpressRoutePortsClient.List method.
-func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsClientListOptions) *runtime.Pager[ExpressRoutePortsClientListResponse] {
+func (client *ExpressRoutePortsClient) NewListPager(options *ExpressRoutePortsClientListOptions) *runtime.Pager[ExpressRoutePortsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRoutePortsClientListResponse]{
 		More: func(page ExpressRoutePortsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -352,12 +352,12 @@ func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - List all the ExpressRoutePort resources in the specified resource group.
+// NewListByResourceGroupPager - List all the ExpressRoutePort resources in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ExpressRoutePortsClientListByResourceGroupOptions contains the optional parameters for the ExpressRoutePortsClient.ListByResourceGroup
 // method.
-func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) *runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse] {
+func (client *ExpressRoutePortsClient) NewListByResourceGroupPager(resourceGroupName string, options *ExpressRoutePortsClientListByResourceGroupOptions) *runtime.Pager[ExpressRoutePortsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRoutePortsClientListByResourceGroupResponse]{
 		More: func(page ExpressRoutePortsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

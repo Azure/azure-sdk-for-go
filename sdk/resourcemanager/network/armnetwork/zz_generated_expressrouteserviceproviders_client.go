@@ -55,11 +55,11 @@ func NewExpressRouteServiceProvidersClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// List - Gets all the available express route service providers.
+// NewListPager - Gets all the available express route service providers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRouteServiceProvidersClientListOptions contains the optional parameters for the ExpressRouteServiceProvidersClient.List
 // method.
-func (client *ExpressRouteServiceProvidersClient) List(options *ExpressRouteServiceProvidersClientListOptions) *runtime.Pager[ExpressRouteServiceProvidersClientListResponse] {
+func (client *ExpressRouteServiceProvidersClient) NewListPager(options *ExpressRouteServiceProvidersClientListOptions) *runtime.Pager[ExpressRouteServiceProvidersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteServiceProvidersClientListResponse]{
 		More: func(page ExpressRouteServiceProvidersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

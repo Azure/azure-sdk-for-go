@@ -253,13 +253,13 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *htt
 	return result, nil
 }
 
-// List - Gets all the load balancer backed address pools.
+// NewListPager - Gets all the load balancer backed address pools.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - LoadBalancerBackendAddressPoolsClientListOptions contains the optional parameters for the LoadBalancerBackendAddressPoolsClient.List
 // method.
-func (client *LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsClientListOptions) *runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse] {
+func (client *LoadBalancerBackendAddressPoolsClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsClientListOptions) *runtime.Pager[LoadBalancerBackendAddressPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadBalancerBackendAddressPoolsClientListResponse]{
 		More: func(page LoadBalancerBackendAddressPoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

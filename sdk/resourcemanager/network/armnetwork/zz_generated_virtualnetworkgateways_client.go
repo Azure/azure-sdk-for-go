@@ -831,12 +831,12 @@ func (client *VirtualNetworkGatewaysClient) getVpnclientIPSecParametersCreateReq
 	return req, nil
 }
 
-// List - Gets all virtual network gateways by resource group.
+// NewListPager - Gets all virtual network gateways by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.List
 // method.
-func (client *VirtualNetworkGatewaysClient) List(resourceGroupName string, options *VirtualNetworkGatewaysClientListOptions) *runtime.Pager[VirtualNetworkGatewaysClientListResponse] {
+func (client *VirtualNetworkGatewaysClient) NewListPager(resourceGroupName string, options *VirtualNetworkGatewaysClientListOptions) *runtime.Pager[VirtualNetworkGatewaysClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkGatewaysClientListResponse]{
 		More: func(page VirtualNetworkGatewaysClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -895,13 +895,13 @@ func (client *VirtualNetworkGatewaysClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListConnections - Gets all the connections in a virtual network gateway.
+// NewListConnectionsPager - Gets all the connections in a virtual network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // virtualNetworkGatewayName - The name of the virtual network gateway.
 // options - VirtualNetworkGatewaysClientListConnectionsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.ListConnections
 // method.
-func (client *VirtualNetworkGatewaysClient) ListConnections(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientListConnectionsOptions) *runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse] {
+func (client *VirtualNetworkGatewaysClient) NewListConnectionsPager(resourceGroupName string, virtualNetworkGatewayName string, options *VirtualNetworkGatewaysClientListConnectionsOptions) *runtime.Pager[VirtualNetworkGatewaysClientListConnectionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkGatewaysClientListConnectionsResponse]{
 		More: func(page VirtualNetworkGatewaysClientListConnectionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -97,7 +97,7 @@ func (testsuite *IPGroupsClientTestSuite) TestIPGroupsCRUD() {
 	testsuite.Require().Equal(ipgName, *getResp.Name)
 
 	// list ip group
-	listPager := ipgClient.List(nil)
+	listPager := ipgClient.NewListPager(nil)
 	testsuite.Require().True(listPager.More())
 
 	// delete ip group

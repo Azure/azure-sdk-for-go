@@ -237,11 +237,11 @@ func (client *VirtualNetworkTapsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListAll - Gets all the VirtualNetworkTaps in a subscription.
+// NewListAllPager - Gets all the VirtualNetworkTaps in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualNetworkTapsClientListAllOptions contains the optional parameters for the VirtualNetworkTapsClient.ListAll
 // method.
-func (client *VirtualNetworkTapsClient) ListAll(options *VirtualNetworkTapsClientListAllOptions) *runtime.Pager[VirtualNetworkTapsClientListAllResponse] {
+func (client *VirtualNetworkTapsClient) NewListAllPager(options *VirtualNetworkTapsClientListAllOptions) *runtime.Pager[VirtualNetworkTapsClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkTapsClientListAllResponse]{
 		More: func(page VirtualNetworkTapsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *VirtualNetworkTapsClient) listAllHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the VirtualNetworkTaps in a subscription.
+// NewListByResourceGroupPager - Gets all the VirtualNetworkTaps in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualNetworkTapsClientListByResourceGroupOptions contains the optional parameters for the VirtualNetworkTapsClient.ListByResourceGroup
 // method.
-func (client *VirtualNetworkTapsClient) ListByResourceGroup(resourceGroupName string, options *VirtualNetworkTapsClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse] {
+func (client *VirtualNetworkTapsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualNetworkTapsClientListByResourceGroupOptions) *runtime.Pager[VirtualNetworkTapsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualNetworkTapsClientListByResourceGroupResponse]{
 		More: func(page VirtualNetworkTapsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

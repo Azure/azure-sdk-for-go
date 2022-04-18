@@ -253,13 +253,13 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *http.R
 	return result, nil
 }
 
-// List - Retrieves the details of all HubVirtualNetworkConnections.
+// NewListPager - Retrieves the details of all HubVirtualNetworkConnections.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - HubVirtualNetworkConnectionsClientListOptions contains the optional parameters for the HubVirtualNetworkConnectionsClient.List
 // method.
-func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsClientListOptions) *runtime.Pager[HubVirtualNetworkConnectionsClientListResponse] {
+func (client *HubVirtualNetworkConnectionsClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsClientListOptions) *runtime.Pager[HubVirtualNetworkConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[HubVirtualNetworkConnectionsClientListResponse]{
 		More: func(page HubVirtualNetworkConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

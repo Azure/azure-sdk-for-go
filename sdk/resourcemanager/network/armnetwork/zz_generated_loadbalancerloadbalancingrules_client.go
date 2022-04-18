@@ -116,13 +116,13 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *http
 	return result, nil
 }
 
-// List - Gets all the load balancing rules in a load balancer.
+// NewListPager - Gets all the load balancing rules in a load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.List
 // method.
-func (client *LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesClientListOptions) *runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse] {
+func (client *LoadBalancerLoadBalancingRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesClientListOptions) *runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LoadBalancerLoadBalancingRulesClientListResponse]{
 		More: func(page LoadBalancerLoadBalancingRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

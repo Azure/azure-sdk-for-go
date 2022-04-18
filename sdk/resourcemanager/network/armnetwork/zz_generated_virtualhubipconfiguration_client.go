@@ -253,13 +253,13 @@ func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Retrieves the details of all VirtualHubIpConfigurations.
+// NewListPager - Retrieves the details of all VirtualHubIpConfigurations.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // virtualHubName - The name of the VirtualHub.
 // options - VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.List
 // method.
-func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationClientListOptions) *runtime.Pager[VirtualHubIPConfigurationClientListResponse] {
+func (client *VirtualHubIPConfigurationClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationClientListOptions) *runtime.Pager[VirtualHubIPConfigurationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualHubIPConfigurationClientListResponse]{
 		More: func(page VirtualHubIPConfigurationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

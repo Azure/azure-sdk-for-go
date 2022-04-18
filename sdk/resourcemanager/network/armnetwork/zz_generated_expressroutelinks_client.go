@@ -115,12 +115,12 @@ func (client *ExpressRouteLinksClient) getHandleResponse(resp *http.Response) (E
 	return result, nil
 }
 
-// List - Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
+// NewListPager - Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // expressRoutePortName - The name of the ExpressRoutePort resource.
 // options - ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.List method.
-func (client *ExpressRouteLinksClient) List(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksClientListOptions) *runtime.Pager[ExpressRouteLinksClientListResponse] {
+func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksClientListOptions) *runtime.Pager[ExpressRouteLinksClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteLinksClientListResponse]{
 		More: func(page ExpressRouteLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

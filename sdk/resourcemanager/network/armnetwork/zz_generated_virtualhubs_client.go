@@ -304,10 +304,10 @@ func (client *VirtualHubsClient) getEffectiveVirtualHubRoutesCreateRequest(ctx c
 	return req, nil
 }
 
-// List - Lists all the VirtualHubs in a subscription.
+// NewListPager - Lists all the VirtualHubs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.List method.
-func (client *VirtualHubsClient) List(options *VirtualHubsClientListOptions) *runtime.Pager[VirtualHubsClientListResponse] {
+func (client *VirtualHubsClient) NewListPager(options *VirtualHubsClientListOptions) *runtime.Pager[VirtualHubsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualHubsClientListResponse]{
 		More: func(page VirtualHubsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -362,12 +362,12 @@ func (client *VirtualHubsClient) listHandleResponse(resp *http.Response) (Virtua
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the VirtualHubs in a resource group.
+// NewListByResourceGroupPager - Lists all the VirtualHubs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VirtualHub.
 // options - VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.ListByResourceGroup
 // method.
-func (client *VirtualHubsClient) ListByResourceGroup(resourceGroupName string, options *VirtualHubsClientListByResourceGroupOptions) *runtime.Pager[VirtualHubsClientListByResourceGroupResponse] {
+func (client *VirtualHubsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualHubsClientListByResourceGroupOptions) *runtime.Pager[VirtualHubsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualHubsClientListByResourceGroupResponse]{
 		More: func(page VirtualHubsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

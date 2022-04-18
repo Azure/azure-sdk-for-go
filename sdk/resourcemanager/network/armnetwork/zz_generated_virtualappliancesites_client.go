@@ -253,13 +253,13 @@ func (client *VirtualApplianceSitesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
+// NewListPager - Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkVirtualApplianceName - The name of the Network Virtual Appliance.
 // options - VirtualApplianceSitesClientListOptions contains the optional parameters for the VirtualApplianceSitesClient.List
 // method.
-func (client *VirtualApplianceSitesClient) List(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesClientListOptions) *runtime.Pager[VirtualApplianceSitesClientListResponse] {
+func (client *VirtualApplianceSitesClient) NewListPager(resourceGroupName string, networkVirtualApplianceName string, options *VirtualApplianceSitesClientListOptions) *runtime.Pager[VirtualApplianceSitesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualApplianceSitesClientListResponse]{
 		More: func(page VirtualApplianceSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

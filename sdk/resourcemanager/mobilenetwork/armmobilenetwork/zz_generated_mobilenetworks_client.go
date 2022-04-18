@@ -236,12 +236,12 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the mobile networks in a resource group.
+// NewListByResourceGroupPager - Lists all the mobile networks in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
 // method.
-func (client *MobileNetworksClient) ListByResourceGroup(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse] {
+func (client *MobileNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MobileNetworksClientListByResourceGroupResponse]{
 		More: func(page MobileNetworksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,11 +300,11 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 	return result, nil
 }
 
-// ListBySubscription - Lists all the mobile networks in a subscription.
+// NewListBySubscriptionPager - Lists all the mobile networks in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
 // method.
-func (client *MobileNetworksClient) ListBySubscription(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
+func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MobileNetworksClientListBySubscriptionResponse]{
 		More: func(page MobileNetworksClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

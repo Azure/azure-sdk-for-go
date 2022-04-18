@@ -253,13 +253,13 @@ func (client *ExpressRouteCircuitAuthorizationsClient) getHandleResponse(resp *h
 	return result, nil
 }
 
-// List - Gets all authorizations in an express route circuit.
+// NewListPager - Gets all authorizations in an express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // circuitName - The name of the circuit.
 // options - ExpressRouteCircuitAuthorizationsClientListOptions contains the optional parameters for the ExpressRouteCircuitAuthorizationsClient.List
 // method.
-func (client *ExpressRouteCircuitAuthorizationsClient) List(resourceGroupName string, circuitName string, options *ExpressRouteCircuitAuthorizationsClientListOptions) *runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse] {
+func (client *ExpressRouteCircuitAuthorizationsClient) NewListPager(resourceGroupName string, circuitName string, options *ExpressRouteCircuitAuthorizationsClientListOptions) *runtime.Pager[ExpressRouteCircuitAuthorizationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCircuitAuthorizationsClientListResponse]{
 		More: func(page ExpressRouteCircuitAuthorizationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -251,12 +251,12 @@ func (client *BackupPoliciesClient) getHandleResponse(resp *http.Response) (Back
 	return result, nil
 }
 
-// List - List backup policies for Netapp Account
+// NewListPager - List backup policies for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
-func (client *BackupPoliciesClient) List(resourceGroupName string, accountName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
+func (client *BackupPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return false

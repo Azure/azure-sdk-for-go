@@ -54,13 +54,13 @@ func NewServerBasedPerformanceTierClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// List - List all the performance tiers for a MySQL server.
+// NewListPager - List all the performance tiers for a MySQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerBasedPerformanceTierClientListOptions contains the optional parameters for the ServerBasedPerformanceTierClient.List
 // method.
-func (client *ServerBasedPerformanceTierClient) List(resourceGroupName string, serverName string, options *ServerBasedPerformanceTierClientListOptions) *runtime.Pager[ServerBasedPerformanceTierClientListResponse] {
+func (client *ServerBasedPerformanceTierClient) NewListPager(resourceGroupName string, serverName string, options *ServerBasedPerformanceTierClientListOptions) *runtime.Pager[ServerBasedPerformanceTierClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerBasedPerformanceTierClientListResponse]{
 		More: func(page ServerBasedPerformanceTierClientListResponse) bool {
 			return false

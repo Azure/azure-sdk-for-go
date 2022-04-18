@@ -231,10 +231,10 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// List - Gets the Log Analytics clusters in a subscription.
+// NewListPager - Gets the Log Analytics clusters in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
-func (client *ClustersClient) List(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
+func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -289,12 +289,12 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 	return result, nil
 }
 
-// ListByResourceGroup - Gets Log Analytics clusters in a resource group.
+// NewListByResourceGroupPager - Gets Log Analytics clusters in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

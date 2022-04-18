@@ -252,12 +252,12 @@ func (client *SecurityRulesClient) getHandleResponse(resp *http.Response) (Secur
 	return result, nil
 }
 
-// List - Gets all security rules in a network security group.
+// NewListPager - Gets all security rules in a network security group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkSecurityGroupName - The name of the network security group.
 // options - SecurityRulesClientListOptions contains the optional parameters for the SecurityRulesClient.List method.
-func (client *SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesClientListOptions) *runtime.Pager[SecurityRulesClientListResponse] {
+func (client *SecurityRulesClient) NewListPager(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesClientListOptions) *runtime.Pager[SecurityRulesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecurityRulesClientListResponse]{
 		More: func(page SecurityRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

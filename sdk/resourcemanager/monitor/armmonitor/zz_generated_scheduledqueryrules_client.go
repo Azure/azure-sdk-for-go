@@ -213,12 +213,12 @@ func (client *ScheduledQueryRulesClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByResourceGroup - List the Log Search rules within a resource group.
+// NewListByResourceGroupPager - List the Log Search rules within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.ListByResourceGroup
 // method.
-func (client *ScheduledQueryRulesClient) ListByResourceGroup(resourceGroupName string, options *ScheduledQueryRulesClientListByResourceGroupOptions) *runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse] {
+func (client *ScheduledQueryRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *ScheduledQueryRulesClientListByResourceGroupOptions) *runtime.Pager[ScheduledQueryRulesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScheduledQueryRulesClientListByResourceGroupResponse]{
 		More: func(page ScheduledQueryRulesClientListByResourceGroupResponse) bool {
 			return false
@@ -274,11 +274,11 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupHandleResponse(resp 
 	return result, nil
 }
 
-// ListBySubscription - List the Log Search rules within a subscription group.
+// NewListBySubscriptionPager - List the Log Search rules within a subscription group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.ListBySubscription
 // method.
-func (client *ScheduledQueryRulesClient) ListBySubscription(options *ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse] {
+func (client *ScheduledQueryRulesClient) NewListBySubscriptionPager(options *ScheduledQueryRulesClientListBySubscriptionOptions) *runtime.Pager[ScheduledQueryRulesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ScheduledQueryRulesClientListBySubscriptionResponse]{
 		More: func(page ScheduledQueryRulesClientListBySubscriptionResponse) bool {
 			return false

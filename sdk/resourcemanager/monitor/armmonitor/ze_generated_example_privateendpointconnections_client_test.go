@@ -114,7 +114,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2019-10-17-preview/examples/PrivateEndpointConnectionList.json
-func ExamplePrivateEndpointConnectionsClient_ListByPrivateLinkScope() {
+func ExamplePrivateEndpointConnectionsClient_NewListByPrivateLinkScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -126,7 +126,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByPrivateLinkScope() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByPrivateLinkScope("<resource-group-name>",
+	pager := client.NewListByPrivateLinkScopePager("<resource-group-name>",
 		"<scope-name>",
 		nil)
 	for pager.More() {

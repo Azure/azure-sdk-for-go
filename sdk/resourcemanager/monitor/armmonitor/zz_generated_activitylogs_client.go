@@ -54,7 +54,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// List - Provides the list of records from the activity logs.
+// NewListPager - Provides the list of records from the activity logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // filter - Reduces the set of data collected.
 // This argument is required and it also requires at least the start date/time.
@@ -71,7 +71,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 // and correlationId eq 'correlationID'.
 // NOTE: No other syntax is allowed.
 // options - ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.List method.
-func (client *ActivityLogsClient) List(filter string, options *ActivityLogsClientListOptions) *runtime.Pager[ActivityLogsClientListResponse] {
+func (client *ActivityLogsClient) NewListPager(filter string, options *ActivityLogsClientListOptions) *runtime.Pager[ActivityLogsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ActivityLogsClientListResponse]{
 		More: func(page ActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

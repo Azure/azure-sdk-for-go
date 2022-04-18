@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesList.json
-func ExampleQueriesClient_List() {
+func ExampleQueriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleQueriesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		"<query-pack-name>",
 		&armoperationalinsights.QueriesClientListOptions{Top: nil,
 			IncludeBody: to.Ptr(true),
@@ -50,7 +50,7 @@ func ExampleQueriesClient_List() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesSearch.json
-func ExampleQueriesClient_Search() {
+func ExampleQueriesClient_NewSearchPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleQueriesClient_Search() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.Search("<resource-group-name>",
+	pager := client.NewSearchPager("<resource-group-name>",
 		"<query-pack-name>",
 		armoperationalinsights.LogAnalyticsQueryPackQuerySearchProperties{
 			Related: &armoperationalinsights.LogAnalyticsQueryPackQuerySearchPropertiesRelated{

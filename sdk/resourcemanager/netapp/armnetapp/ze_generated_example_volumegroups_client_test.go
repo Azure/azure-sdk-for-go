@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/VolumeGroups_List.json
-func ExampleVolumeGroupsClient_ListByNetAppAccount() {
+func ExampleVolumeGroupsClient_NewListByNetAppAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleVolumeGroupsClient_ListByNetAppAccount() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByNetAppAccount("<resource-group-name>",
+	pager := client.NewListByNetAppAccountPager("<resource-group-name>",
 		"<account-name>",
 		nil)
 	for pager.More() {

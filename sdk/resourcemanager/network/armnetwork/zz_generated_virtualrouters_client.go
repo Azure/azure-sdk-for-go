@@ -240,10 +240,10 @@ func (client *VirtualRoutersClient) getHandleResponse(resp *http.Response) (Virt
 	return result, nil
 }
 
-// List - Gets all the Virtual Routers in a subscription.
+// NewListPager - Gets all the Virtual Routers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VirtualRoutersClientListOptions contains the optional parameters for the VirtualRoutersClient.List method.
-func (client *VirtualRoutersClient) List(options *VirtualRoutersClientListOptions) *runtime.Pager[VirtualRoutersClientListResponse] {
+func (client *VirtualRoutersClient) NewListPager(options *VirtualRoutersClientListOptions) *runtime.Pager[VirtualRoutersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualRoutersClientListResponse]{
 		More: func(page VirtualRoutersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -298,12 +298,12 @@ func (client *VirtualRoutersClient) listHandleResponse(resp *http.Response) (Vir
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all Virtual Routers in a resource group.
+// NewListByResourceGroupPager - Lists all Virtual Routers in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - VirtualRoutersClientListByResourceGroupOptions contains the optional parameters for the VirtualRoutersClient.ListByResourceGroup
 // method.
-func (client *VirtualRoutersClient) ListByResourceGroup(resourceGroupName string, options *VirtualRoutersClientListByResourceGroupOptions) *runtime.Pager[VirtualRoutersClientListByResourceGroupResponse] {
+func (client *VirtualRoutersClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualRoutersClientListByResourceGroupOptions) *runtime.Pager[VirtualRoutersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VirtualRoutersClientListByResourceGroupResponse]{
 		More: func(page VirtualRoutersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -253,13 +253,13 @@ func (client *InterfaceTapConfigurationsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Get all Tap configurations in a network interface.
+// NewListPager - Get all Tap configurations in a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkInterfaceName - The name of the network interface.
 // options - InterfaceTapConfigurationsClientListOptions contains the optional parameters for the InterfaceTapConfigurationsClient.List
 // method.
-func (client *InterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) *runtime.Pager[InterfaceTapConfigurationsClientListResponse] {
+func (client *InterfaceTapConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceTapConfigurationsClientListOptions) *runtime.Pager[InterfaceTapConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InterfaceTapConfigurationsClientListResponse]{
 		More: func(page InterfaceTapConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

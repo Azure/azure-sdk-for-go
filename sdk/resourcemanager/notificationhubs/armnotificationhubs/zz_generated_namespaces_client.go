@@ -449,12 +449,12 @@ func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Lists the available namespaces within a resourceGroup.
+// NewListPager - Lists the available namespaces within a resourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. If resourceGroupName value is null the method lists all the namespaces
 // within subscription
 // options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.List method.
-func (client *NamespacesClient) List(resourceGroupName string, options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
+func (client *NamespacesClient) NewListPager(resourceGroupName string, options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListResponse]{
 		More: func(page NamespacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -513,10 +513,10 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 	return result, nil
 }
 
-// ListAll - Lists all the available namespaces within the subscription irrespective of the resourceGroups.
+// NewListAllPager - Lists all the available namespaces within the subscription irrespective of the resourceGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - NamespacesClientListAllOptions contains the optional parameters for the NamespacesClient.ListAll method.
-func (client *NamespacesClient) ListAll(options *NamespacesClientListAllOptions) *runtime.Pager[NamespacesClientListAllResponse] {
+func (client *NamespacesClient) NewListAllPager(options *NamespacesClientListAllOptions) *runtime.Pager[NamespacesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListAllResponse]{
 		More: func(page NamespacesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -571,13 +571,13 @@ func (client *NamespacesClient) listAllHandleResponse(resp *http.Response) (Name
 	return result, nil
 }
 
-// ListAuthorizationRules - Gets the authorization rules for a namespace.
+// NewListAuthorizationRulesPager - Gets the authorization rules for a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name
 // options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.ListAuthorizationRules
 // method.
-func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse] {
+func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, options *NamespacesClientListAuthorizationRulesOptions) *runtime.Pager[NamespacesClientListAuthorizationRulesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NamespacesClientListAuthorizationRulesResponse]{
 		More: func(page NamespacesClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

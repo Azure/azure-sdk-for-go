@@ -1,5 +1,41 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SnapshotPoliciesClient.List` has been removed
+- Function `*AccountBackupsClient.List` has been removed
+- Function `*VolumeGroupsClient.ListByNetAppAccount` has been removed
+- Function `*VolumesClient.List` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*BackupsClient.List` has been removed
+- Function `*ResourceQuotaLimitsClient.List` has been removed
+- Function `*SnapshotsClient.List` has been removed
+- Function `*AccountsClient.ListBySubscription` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PoolsClient.List` has been removed
+- Function `*BackupPoliciesClient.List` has been removed
+- Function `*SubvolumesClient.ListByVolume` has been removed
+- Function `*VaultsClient.List` has been removed
+
+### Features Added
+
+- New function `*SnapshotPoliciesClient.NewListPager(string, string, *SnapshotPoliciesClientListOptions) *runtime.Pager[SnapshotPoliciesClientListResponse]`
+- New function `*SnapshotsClient.NewListPager(string, string, string, string, *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse]`
+- New function `*AccountsClient.NewListBySubscriptionPager(*AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse]`
+- New function `*VaultsClient.NewListPager(string, string, *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse]`
+- New function `*VolumesClient.NewListPager(string, string, string, *VolumesClientListOptions) *runtime.Pager[VolumesClientListResponse]`
+- New function `*BackupsClient.NewListPager(string, string, string, string, *BackupsClientListOptions) *runtime.Pager[BackupsClientListResponse]`
+- New function `*SubvolumesClient.NewListByVolumePager(string, string, string, string, *SubvolumesClientListByVolumeOptions) *runtime.Pager[SubvolumesClientListByVolumeResponse]`
+- New function `*ResourceQuotaLimitsClient.NewListPager(string, *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse]`
+- New function `*AccountsClient.NewListPager(string, *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+- New function `*PoolsClient.NewListPager(string, string, *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*VolumeGroupsClient.NewListByNetAppAccountPager(string, string, *VolumeGroupsClientListByNetAppAccountOptions) *runtime.Pager[VolumeGroupsClientListByNetAppAccountResponse]`
+- New function `*BackupPoliciesClient.NewListPager(string, string, *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse]`
+- New function `*AccountBackupsClient.NewListPager(string, string, *AccountBackupsClientListOptions) *runtime.Pager[AccountBackupsClientListResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

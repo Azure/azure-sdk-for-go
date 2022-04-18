@@ -227,10 +227,10 @@ func (client *PrivateLinkScopesClient) getHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// List - Gets a list of all Azure Monitor PrivateLinkScopes within a subscription.
+// NewListPager - Gets a list of all Azure Monitor PrivateLinkScopes within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.List method.
-func (client *PrivateLinkScopesClient) List(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
+func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkScopesClientListResponse]{
 		More: func(page PrivateLinkScopesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -285,12 +285,12 @@ func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of Azure Monitor PrivateLinkScopes within a resource group.
+// NewListByResourceGroupPager - Gets a list of Azure Monitor PrivateLinkScopes within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.ListByResourceGroup
 // method.
-func (client *PrivateLinkScopesClient) ListByResourceGroup(resourceGroupName string, options *PrivateLinkScopesClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse] {
+func (client *PrivateLinkScopesClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkScopesClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkScopesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateLinkScopesClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkScopesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -267,14 +267,14 @@ func (client *AttachedDataNetworksClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByPacketCoreDataPlane - Gets all the data networks associated with a packet core data plane.
+// NewListByPacketCoreDataPlanePager - Gets all the data networks associated with a packet core data plane.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // packetCoreControlPlaneName - The name of the packet core control plane.
 // packetCoreDataPlaneName - The name of the packet core data plane.
 // options - AttachedDataNetworksClientListByPacketCoreDataPlaneOptions contains the optional parameters for the AttachedDataNetworksClient.ListByPacketCoreDataPlane
 // method.
-func (client *AttachedDataNetworksClient) ListByPacketCoreDataPlane(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse] {
+func (client *AttachedDataNetworksClient) NewListByPacketCoreDataPlanePager(resourceGroupName string, packetCoreControlPlaneName string, packetCoreDataPlaneName string, options *AttachedDataNetworksClientListByPacketCoreDataPlaneOptions) *runtime.Pager[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AttachedDataNetworksClientListByPacketCoreDataPlaneResponse]{
 		More: func(page AttachedDataNetworksClientListByPacketCoreDataPlaneResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

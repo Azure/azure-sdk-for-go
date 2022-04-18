@@ -43,7 +43,7 @@ func ExampleAlertRuleIncidentsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2016-03-01/examples/listAlertRuleIncidents.json
-func ExampleAlertRuleIncidentsClient_ListByAlertRule() {
+func ExampleAlertRuleIncidentsClient_NewListByAlertRulePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -55,7 +55,7 @@ func ExampleAlertRuleIncidentsClient_ListByAlertRule() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByAlertRule("<resource-group-name>",
+	pager := client.NewListByAlertRulePager("<resource-group-name>",
 		"<rule-name>",
 		nil)
 	for pager.More() {

@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRuleAssociationsListByResource.json
-func ExampleDataCollectionRuleAssociationsClient_ListByResource() {
+func ExampleDataCollectionRuleAssociationsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleDataCollectionRuleAssociationsClient_ListByResource() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResource("<resource-uri>",
+	pager := client.NewListByResourcePager("<resource-uri>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -46,7 +46,7 @@ func ExampleDataCollectionRuleAssociationsClient_ListByResource() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRuleAssociationsListByRule.json
-func ExampleDataCollectionRuleAssociationsClient_ListByRule() {
+func ExampleDataCollectionRuleAssociationsClient_NewListByRulePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -58,7 +58,7 @@ func ExampleDataCollectionRuleAssociationsClient_ListByRule() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRule("<resource-group-name>",
+	pager := client.NewListByRulePager("<resource-group-name>",
 		"<data-collection-rule-name>",
 		nil)
 	for pager.More() {
@@ -75,7 +75,7 @@ func ExampleDataCollectionRuleAssociationsClient_ListByRule() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-09-01-preview/examples/DataCollectionRuleAssociationsListByDataCollectionEndpoint.json
-func ExampleDataCollectionRuleAssociationsClient_ListByDataCollectionEndpoint() {
+func ExampleDataCollectionRuleAssociationsClient_NewListByDataCollectionEndpointPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -87,7 +87,7 @@ func ExampleDataCollectionRuleAssociationsClient_ListByDataCollectionEndpoint() 
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDataCollectionEndpoint("<resource-group-name>",
+	pager := client.NewListByDataCollectionEndpointPager("<resource-group-name>",
 		"<data-collection-endpoint-name>",
 		nil)
 	for pager.More() {

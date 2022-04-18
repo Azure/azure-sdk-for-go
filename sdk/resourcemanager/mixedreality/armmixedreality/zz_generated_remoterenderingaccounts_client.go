@@ -214,12 +214,12 @@ func (client *RemoteRenderingAccountsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByResourceGroup - List Resources by Resource Group
+// NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of an Azure resource group.
 // options - RemoteRenderingAccountsClientListByResourceGroupOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListByResourceGroup
 // method.
-func (client *RemoteRenderingAccountsClient) ListByResourceGroup(resourceGroupName string, options *RemoteRenderingAccountsClientListByResourceGroupOptions) *runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse] {
+func (client *RemoteRenderingAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *RemoteRenderingAccountsClientListByResourceGroupOptions) *runtime.Pager[RemoteRenderingAccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListByResourceGroupResponse]{
 		More: func(page RemoteRenderingAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -278,11 +278,11 @@ func (client *RemoteRenderingAccountsClient) listByResourceGroupHandleResponse(r
 	return result, nil
 }
 
-// ListBySubscription - List Remote Rendering Accounts by Subscription
+// NewListBySubscriptionPager - List Remote Rendering Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RemoteRenderingAccountsClientListBySubscriptionOptions contains the optional parameters for the RemoteRenderingAccountsClient.ListBySubscription
 // method.
-func (client *RemoteRenderingAccountsClient) ListBySubscription(options *RemoteRenderingAccountsClientListBySubscriptionOptions) *runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse] {
+func (client *RemoteRenderingAccountsClient) NewListBySubscriptionPager(options *RemoteRenderingAccountsClientListBySubscriptionOptions) *runtime.Pager[RemoteRenderingAccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RemoteRenderingAccountsClientListBySubscriptionResponse]{
 		More: func(page RemoteRenderingAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

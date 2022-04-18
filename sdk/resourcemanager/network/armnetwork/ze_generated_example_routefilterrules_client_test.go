@@ -115,7 +115,7 @@ func ExampleRouteFilterRulesClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/RouteFilterRuleListByRouteFilter.json
-func ExampleRouteFilterRulesClient_ListByRouteFilter() {
+func ExampleRouteFilterRulesClient_NewListByRouteFilterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -127,7 +127,7 @@ func ExampleRouteFilterRulesClient_ListByRouteFilter() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByRouteFilter("<resource-group-name>",
+	pager := client.NewListByRouteFilterPager("<resource-group-name>",
 		"<route-filter-name>",
 		nil)
 	for pager.More() {

@@ -110,12 +110,12 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Get the default and current limits for quotas
+// NewListPager - Get the default and current limits for quotas
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location
 // options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.List
 // method.
-func (client *ResourceQuotaLimitsClient) List(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
+func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceQuotaLimitsClientListResponse]{
 		More: func(page ResourceQuotaLimitsClientListResponse) bool {
 			return false

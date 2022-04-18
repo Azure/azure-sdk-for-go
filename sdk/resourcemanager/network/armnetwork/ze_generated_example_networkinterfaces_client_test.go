@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CloudServiceRoleInstanceNetworkInterfaceList.json
-func ExampleInterfacesClient_ListCloudServiceRoleInstanceNetworkInterfaces() {
+func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleInterfacesClient_ListCloudServiceRoleInstanceNetworkInterfaces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCloudServiceRoleInstanceNetworkInterfaces("<resource-group-name>",
+	pager := client.NewListCloudServiceRoleInstanceNetworkInterfacesPager("<resource-group-name>",
 		"<cloud-service-name>",
 		"<role-instance-name>",
 		nil)
@@ -50,7 +50,7 @@ func ExampleInterfacesClient_ListCloudServiceRoleInstanceNetworkInterfaces() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/CloudServiceNetworkInterfaceList.json
-func ExampleInterfacesClient_ListCloudServiceNetworkInterfaces() {
+func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -62,7 +62,7 @@ func ExampleInterfacesClient_ListCloudServiceNetworkInterfaces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCloudServiceNetworkInterfaces("<resource-group-name>",
+	pager := client.NewListCloudServiceNetworkInterfacesPager("<resource-group-name>",
 		"<cloud-service-name>",
 		nil)
 	for pager.More() {
@@ -238,7 +238,7 @@ func ExampleInterfacesClient_UpdateTags() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkInterfaceListAll.json
-func ExampleInterfacesClient_ListAll() {
+func ExampleInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -250,7 +250,7 @@ func ExampleInterfacesClient_ListAll() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAll(nil)
+	pager := client.NewListAllPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -265,7 +265,7 @@ func ExampleInterfacesClient_ListAll() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkInterfaceList.json
-func ExampleInterfacesClient_List() {
+func ExampleInterfacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -277,7 +277,7 @@ func ExampleInterfacesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-group-name>",
+	pager := client.NewListPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -353,7 +353,7 @@ func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssVmNetworkInterfaceList.json
-func ExampleInterfacesClient_ListVirtualMachineScaleSetVMNetworkInterfaces() {
+func ExampleInterfacesClient_NewListVirtualMachineScaleSetVMNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -365,7 +365,7 @@ func ExampleInterfacesClient_ListVirtualMachineScaleSetVMNetworkInterfaces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVirtualMachineScaleSetVMNetworkInterfaces("<resource-group-name>",
+	pager := client.NewListVirtualMachineScaleSetVMNetworkInterfacesPager("<resource-group-name>",
 		"<virtual-machine-scale-set-name>",
 		"<virtualmachine-index>",
 		nil)
@@ -383,7 +383,7 @@ func ExampleInterfacesClient_ListVirtualMachineScaleSetVMNetworkInterfaces() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VmssNetworkInterfaceList.json
-func ExampleInterfacesClient_ListVirtualMachineScaleSetNetworkInterfaces() {
+func ExampleInterfacesClient_NewListVirtualMachineScaleSetNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -395,7 +395,7 @@ func ExampleInterfacesClient_ListVirtualMachineScaleSetNetworkInterfaces() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListVirtualMachineScaleSetNetworkInterfaces("<resource-group-name>",
+	pager := client.NewListVirtualMachineScaleSetNetworkInterfacesPager("<resource-group-name>",
 		"<virtual-machine-scale-set-name>",
 		nil)
 	for pager.More() {

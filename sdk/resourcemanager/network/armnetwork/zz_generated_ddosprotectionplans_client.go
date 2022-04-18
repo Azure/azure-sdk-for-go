@@ -237,11 +237,11 @@ func (client *DdosProtectionPlansClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// List - Gets all DDoS protection plans in a subscription.
+// NewListPager - Gets all DDoS protection plans in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DdosProtectionPlansClientListOptions contains the optional parameters for the DdosProtectionPlansClient.List
 // method.
-func (client *DdosProtectionPlansClient) List(options *DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse] {
+func (client *DdosProtectionPlansClient) NewListPager(options *DdosProtectionPlansClientListOptions) *runtime.Pager[DdosProtectionPlansClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DdosProtectionPlansClientListResponse]{
 		More: func(page DdosProtectionPlansClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,12 +296,12 @@ func (client *DdosProtectionPlansClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all the DDoS protection plans in a resource group.
+// NewListByResourceGroupPager - Gets all the DDoS protection plans in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DdosProtectionPlansClientListByResourceGroupOptions contains the optional parameters for the DdosProtectionPlansClient.ListByResourceGroup
 // method.
-func (client *DdosProtectionPlansClient) ListByResourceGroup(resourceGroupName string, options *DdosProtectionPlansClientListByResourceGroupOptions) *runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse] {
+func (client *DdosProtectionPlansClient) NewListByResourceGroupPager(resourceGroupName string, options *DdosProtectionPlansClientListByResourceGroupOptions) *runtime.Pager[DdosProtectionPlansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DdosProtectionPlansClientListByResourceGroupResponse]{
 		More: func(page DdosProtectionPlansClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -238,11 +238,11 @@ func (client *VPNServerConfigurationsClient) getHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// List - Lists all the VpnServerConfigurations in a subscription.
+// NewListPager - Lists all the VpnServerConfigurations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VPNServerConfigurationsClientListOptions contains the optional parameters for the VPNServerConfigurationsClient.List
 // method.
-func (client *VPNServerConfigurationsClient) List(options *VPNServerConfigurationsClientListOptions) *runtime.Pager[VPNServerConfigurationsClientListResponse] {
+func (client *VPNServerConfigurationsClient) NewListPager(options *VPNServerConfigurationsClientListOptions) *runtime.Pager[VPNServerConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNServerConfigurationsClientListResponse]{
 		More: func(page VPNServerConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,12 +297,12 @@ func (client *VPNServerConfigurationsClient) listHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the vpnServerConfigurations in a resource group.
+// NewListByResourceGroupPager - Lists all the vpnServerConfigurations in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VpnServerConfiguration.
 // options - VPNServerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the VPNServerConfigurationsClient.ListByResourceGroup
 // method.
-func (client *VPNServerConfigurationsClient) ListByResourceGroup(resourceGroupName string, options *VPNServerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse] {
+func (client *VPNServerConfigurationsClient) NewListByResourceGroupPager(resourceGroupName string, options *VPNServerConfigurationsClientListByResourceGroupOptions) *runtime.Pager[VPNServerConfigurationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNServerConfigurationsClientListByResourceGroupResponse]{
 		More: func(page VPNServerConfigurationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

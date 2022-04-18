@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/EndpointServicesList.json
-func ExampleAvailableEndpointServicesClient_List() {
+func ExampleAvailableEndpointServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleAvailableEndpointServicesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location>",
+	pager := client.NewListPager("<location>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

@@ -115,13 +115,13 @@ func (client *VPNSiteLinksClient) getHandleResponse(resp *http.Response) (VPNSit
 	return result, nil
 }
 
-// ListByVPNSite - Lists all the vpnSiteLinks in a resource group for a vpn site.
+// NewListByVPNSitePager - Lists all the vpnSiteLinks in a resource group for a vpn site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The resource group name of the VpnSite.
 // vpnSiteName - The name of the VpnSite.
 // options - VPNSiteLinksClientListByVPNSiteOptions contains the optional parameters for the VPNSiteLinksClient.ListByVPNSite
 // method.
-func (client *VPNSiteLinksClient) ListByVPNSite(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksClientListByVPNSiteOptions) *runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse] {
+func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksClientListByVPNSiteOptions) *runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VPNSiteLinksClientListByVPNSiteResponse]{
 		More: func(page VPNSiteLinksClientListByVPNSiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

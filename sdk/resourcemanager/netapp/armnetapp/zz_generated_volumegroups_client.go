@@ -247,13 +247,13 @@ func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (Volume
 	return result, nil
 }
 
-// ListByNetAppAccount - List all volume groups for given account
+// NewListByNetAppAccountPager - List all volume groups for given account
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
 // method.
-func (client *VolumeGroupsClient) ListByNetAppAccount(resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) *runtime.Pager[VolumeGroupsClientListByNetAppAccountResponse] {
+func (client *VolumeGroupsClient) NewListByNetAppAccountPager(resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) *runtime.Pager[VolumeGroupsClientListByNetAppAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VolumeGroupsClientListByNetAppAccountResponse]{
 		More: func(page VolumeGroupsClientListByNetAppAccountResponse) bool {
 			return false

@@ -55,11 +55,11 @@ func NewBgpServiceCommunitiesClient(subscriptionID string, credential azcore.Tok
 	return client, nil
 }
 
-// List - Gets all the available bgp service communities.
+// NewListPager - Gets all the available bgp service communities.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - BgpServiceCommunitiesClientListOptions contains the optional parameters for the BgpServiceCommunitiesClient.List
 // method.
-func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesClientListOptions) *runtime.Pager[BgpServiceCommunitiesClientListResponse] {
+func (client *BgpServiceCommunitiesClient) NewListPager(options *BgpServiceCommunitiesClientListOptions) *runtime.Pager[BgpServiceCommunitiesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[BgpServiceCommunitiesClientListResponse]{
 		More: func(page BgpServiceCommunitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

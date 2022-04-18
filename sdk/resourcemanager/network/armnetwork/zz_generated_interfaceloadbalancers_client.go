@@ -55,13 +55,13 @@ func NewInterfaceLoadBalancersClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// List - List all load balancers in a network interface.
+// NewListPager - List all load balancers in a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkInterfaceName - The name of the network interface.
 // options - InterfaceLoadBalancersClientListOptions contains the optional parameters for the InterfaceLoadBalancersClient.List
 // method.
-func (client *InterfaceLoadBalancersClient) List(resourceGroupName string, networkInterfaceName string, options *InterfaceLoadBalancersClientListOptions) *runtime.Pager[InterfaceLoadBalancersClientListResponse] {
+func (client *InterfaceLoadBalancersClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceLoadBalancersClientListOptions) *runtime.Pager[InterfaceLoadBalancersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InterfaceLoadBalancersClientListResponse]{
 		More: func(page InterfaceLoadBalancersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

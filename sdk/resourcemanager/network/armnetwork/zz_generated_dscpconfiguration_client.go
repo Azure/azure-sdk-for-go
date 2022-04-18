@@ -237,11 +237,11 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (D
 	return result, nil
 }
 
-// List - Gets a DSCP Configuration.
+// NewListPager - Gets a DSCP Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - DscpConfigurationClientListOptions contains the optional parameters for the DscpConfigurationClient.List method.
-func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationClientListOptions) *runtime.Pager[DscpConfigurationClientListResponse] {
+func (client *DscpConfigurationClient) NewListPager(resourceGroupName string, options *DscpConfigurationClientListOptions) *runtime.Pager[DscpConfigurationClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DscpConfigurationClientListResponse]{
 		More: func(page DscpConfigurationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -300,11 +300,11 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListAll - Gets all dscp configurations in a subscription.
+// NewListAllPager - Gets all dscp configurations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DscpConfigurationClientListAllOptions contains the optional parameters for the DscpConfigurationClient.ListAll
 // method.
-func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
+func (client *DscpConfigurationClient) NewListAllPager(options *DscpConfigurationClientListAllOptions) *runtime.Pager[DscpConfigurationClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DscpConfigurationClientListAllResponse]{
 		More: func(page DscpConfigurationClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

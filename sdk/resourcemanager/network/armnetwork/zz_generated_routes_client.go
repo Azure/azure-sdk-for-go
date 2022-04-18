@@ -251,12 +251,12 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 	return result, nil
 }
 
-// List - Gets all routes in a route table.
+// NewListPager - Gets all routes in a route table.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // routeTableName - The name of the route table.
 // options - RoutesClientListOptions contains the optional parameters for the RoutesClient.List method.
-func (client *RoutesClient) List(resourceGroupName string, routeTableName string, options *RoutesClientListOptions) *runtime.Pager[RoutesClientListResponse] {
+func (client *RoutesClient) NewListPager(resourceGroupName string, routeTableName string, options *RoutesClientListOptions) *runtime.Pager[RoutesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RoutesClientListResponse]{
 		More: func(page RoutesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -113,7 +113,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionShareableLinkGet.json
-func ExampleManagementClient_GetBastionShareableLink() {
+func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -125,7 +125,7 @@ func ExampleManagementClient_GetBastionShareableLink() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.GetBastionShareableLink("<resource-group-name>",
+	pager := client.NewGetBastionShareableLinkPager("<resource-group-name>",
 		"<bastion-host-name>",
 		armnetwork.BastionShareableLinkListRequest{
 			VMs: []*armnetwork.BastionShareableLink{
@@ -194,7 +194,7 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionSessionDelete.json
-func ExampleManagementClient_DisconnectActiveSessions() {
+func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -206,7 +206,7 @@ func ExampleManagementClient_DisconnectActiveSessions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.DisconnectActiveSessions("<resource-group-name>",
+	pager := client.NewDisconnectActiveSessionsPager("<resource-group-name>",
 		"<bastion-host-name>",
 		armnetwork.SessionIDs{},
 		nil)

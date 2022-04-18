@@ -48,13 +48,13 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 	return client, nil
 }
 
-// List - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs for the
-// subscription is applicable to this API (the parameters, $filter, etc.). One thing to
+// NewListPager - Gets the Activity Logs for the Tenant. Everything that is applicable to the API to get the Activity Logs
+// for the subscription is applicable to this API (the parameters, $filter, etc.). One thing to
 // point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
 // the logs that were generated at the tenant level.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
-func (client *TenantActivityLogsClient) List(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
+func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TenantActivityLogsClientListResponse]{
 		More: func(page TenantActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

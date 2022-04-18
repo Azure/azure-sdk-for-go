@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2019-03-01/examples/metricBaselines.json
-func ExampleBaselinesClient_List() {
+func ExampleBaselinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleBaselinesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<resource-uri>",
+	pager := client.NewListPager("<resource-uri>",
 		&armmonitor.BaselinesClientListOptions{Metricnames: nil,
 			Metricnamespace: nil,
 			Timespan:        to.Ptr("<timespan>"),

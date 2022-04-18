@@ -215,13 +215,13 @@ func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListAssociatedResources - Lists the associated resources for this identity.
+// NewListAssociatedResourcesPager - Lists the associated resources for this identity.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // options - UserAssignedIdentitiesClientListAssociatedResourcesOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListAssociatedResources
 // method.
-func (client *UserAssignedIdentitiesClient) ListAssociatedResources(resourceGroupName string, resourceName string, options *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse] {
+func (client *UserAssignedIdentitiesClient) NewListAssociatedResourcesPager(resourceGroupName string, resourceName string, options *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListAssociatedResourcesResponse]{
 		More: func(page UserAssignedIdentitiesClientListAssociatedResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -299,12 +299,12 @@ func (client *UserAssignedIdentitiesClient) listAssociatedResourcesHandleRespons
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the userAssignedIdentities available under the specified ResourceGroup.
+// NewListByResourceGroupPager - Lists all the userAssignedIdentities available under the specified ResourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // options - UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListByResourceGroup
 // method.
-func (client *UserAssignedIdentitiesClient) ListByResourceGroup(resourceGroupName string, options *UserAssignedIdentitiesClientListByResourceGroupOptions) *runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse] {
+func (client *UserAssignedIdentitiesClient) NewListByResourceGroupPager(resourceGroupName string, options *UserAssignedIdentitiesClientListByResourceGroupOptions) *runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListByResourceGroupResponse]{
 		More: func(page UserAssignedIdentitiesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -363,11 +363,11 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// ListBySubscription - Lists all the userAssignedIdentities available under the specified subscription.
+// NewListBySubscriptionPager - Lists all the userAssignedIdentities available under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListBySubscription
 // method.
-func (client *UserAssignedIdentitiesClient) ListBySubscription(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse] {
+func (client *UserAssignedIdentitiesClient) NewListBySubscriptionPager(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListBySubscriptionResponse]{
 		More: func(page UserAssignedIdentitiesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

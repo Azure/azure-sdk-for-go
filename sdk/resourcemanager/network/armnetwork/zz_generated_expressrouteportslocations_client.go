@@ -107,12 +107,12 @@ func (client *ExpressRoutePortsLocationsClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// List - Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location. Available
-// bandwidths can only be obtained when retrieving a specific peering location.
+// NewListPager - Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
+// Available bandwidths can only be obtained when retrieving a specific peering location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.List
 // method.
-func (client *ExpressRoutePortsLocationsClient) List(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
+func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRoutePortsLocationsClientListResponse]{
 		More: func(page ExpressRoutePortsLocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

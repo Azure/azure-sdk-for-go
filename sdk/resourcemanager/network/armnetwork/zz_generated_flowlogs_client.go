@@ -251,12 +251,12 @@ func (client *FlowLogsClient) getHandleResponse(resp *http.Response) (FlowLogsCl
 	return result, nil
 }
 
-// List - Lists all flow log resources for the specified Network Watcher.
+// NewListPager - Lists all flow log resources for the specified Network Watcher.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group containing Network Watcher.
 // networkWatcherName - The name of the Network Watcher resource.
 // options - FlowLogsClientListOptions contains the optional parameters for the FlowLogsClient.List method.
-func (client *FlowLogsClient) List(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) *runtime.Pager[FlowLogsClientListResponse] {
+func (client *FlowLogsClient) NewListPager(resourceGroupName string, networkWatcherName string, options *FlowLogsClientListOptions) *runtime.Pager[FlowLogsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FlowLogsClientListResponse]{
 		More: func(page FlowLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

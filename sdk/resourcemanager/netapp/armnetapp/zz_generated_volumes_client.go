@@ -489,13 +489,13 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 	return result, nil
 }
 
-// List - List all volumes within the capacity pool
+// NewListPager - List all volumes within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // options - VolumesClientListOptions contains the optional parameters for the VolumesClient.List method.
-func (client *VolumesClient) List(resourceGroupName string, accountName string, poolName string, options *VolumesClientListOptions) *runtime.Pager[VolumesClientListResponse] {
+func (client *VolumesClient) NewListPager(resourceGroupName string, accountName string, poolName string, options *VolumesClientListOptions) *runtime.Pager[VolumesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VolumesClientListResponse]{
 		More: func(page VolumesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

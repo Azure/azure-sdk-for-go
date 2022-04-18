@@ -1,5 +1,31 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ServersClient.ListByResourceGroup` has been removed
+- Function `*ServersClient.List` has been removed
+- Function `*DatabasesClient.ListByServer` has been removed
+- Function `*ConfigurationsClient.ListByServer` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*FirewallRulesClient.ListByServer` has been removed
+- Function `*ReplicasClient.ListByServer` has been removed
+- Function `*LocationBasedCapabilitiesClient.List` has been removed
+- Function `*BackupsClient.ListByServer` has been removed
+
+### Features Added
+
+- New function `*LocationBasedCapabilitiesClient.NewListPager(string, *LocationBasedCapabilitiesClientListOptions) *runtime.Pager[LocationBasedCapabilitiesClientListResponse]`
+- New function `*BackupsClient.NewListByServerPager(string, string, *BackupsClientListByServerOptions) *runtime.Pager[BackupsClientListByServerResponse]`
+- New function `*ConfigurationsClient.NewListByServerPager(string, string, *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse]`
+- New function `*FirewallRulesClient.NewListByServerPager(string, string, *FirewallRulesClientListByServerOptions) *runtime.Pager[FirewallRulesClientListByServerResponse]`
+- New function `*ServersClient.NewListByResourceGroupPager(string, *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse]`
+- New function `*DatabasesClient.NewListByServerPager(string, string, *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*ReplicasClient.NewListByServerPager(string, string, *ReplicasClientListByServerOptions) *runtime.Pager[ReplicasClientListByServerResponse]`
+- New function `*ServersClient.NewListPager(*ServersClientListOptions) *runtime.Pager[ServersClientListResponse]`
+
+
 ## 0.5.0 (2022-04-12)
 ### Breaking Changes
 

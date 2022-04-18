@@ -116,7 +116,7 @@ func ExampleServiceEndpointPolicyDefinitionsClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionList.json
-func ExampleServiceEndpointPolicyDefinitionsClient_ListByResourceGroup() {
+func ExampleServiceEndpointPolicyDefinitionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleServiceEndpointPolicyDefinitionsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		"<service-endpoint-policy-name>",
 		nil)
 	for pager.More() {

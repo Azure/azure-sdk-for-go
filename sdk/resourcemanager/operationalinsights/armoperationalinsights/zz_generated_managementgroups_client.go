@@ -54,12 +54,12 @@ func NewManagementGroupsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// List - Gets a list of management groups connected to a workspace.
+// NewListPager - Gets a list of management groups connected to a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - ManagementGroupsClientListOptions contains the optional parameters for the ManagementGroupsClient.List method.
-func (client *ManagementGroupsClient) List(resourceGroupName string, workspaceName string, options *ManagementGroupsClientListOptions) *runtime.Pager[ManagementGroupsClientListResponse] {
+func (client *ManagementGroupsClient) NewListPager(resourceGroupName string, workspaceName string, options *ManagementGroupsClientListOptions) *runtime.Pager[ManagementGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagementGroupsClientListResponse]{
 		More: func(page ManagementGroupsClientListResponse) bool {
 			return false

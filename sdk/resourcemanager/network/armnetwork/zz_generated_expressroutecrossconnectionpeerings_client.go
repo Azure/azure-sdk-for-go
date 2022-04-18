@@ -253,13 +253,13 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleResponse(resp 
 	return result, nil
 }
 
-// List - Gets all peerings in a specified ExpressRouteCrossConnection.
+// NewListPager - Gets all peerings in a specified ExpressRouteCrossConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // crossConnectionName - The name of the ExpressRouteCrossConnection.
 // options - ExpressRouteCrossConnectionPeeringsClientListOptions contains the optional parameters for the ExpressRouteCrossConnectionPeeringsClient.List
 // method.
-func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse] {
+func (client *ExpressRouteCrossConnectionPeeringsClient) NewListPager(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsClientListOptions) *runtime.Pager[ExpressRouteCrossConnectionPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExpressRouteCrossConnectionPeeringsClientListResponse]{
 		More: func(page ExpressRouteCrossConnectionPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

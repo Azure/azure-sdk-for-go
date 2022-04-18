@@ -231,11 +231,11 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 	return result, nil
 }
 
-// List - Gets all network profiles in a resource group.
+// NewListPager - Gets all network profiles in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - ProfilesClientListOptions contains the optional parameters for the ProfilesClient.List method.
-func (client *ProfilesClient) List(resourceGroupName string, options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
+func (client *ProfilesClient) NewListPager(resourceGroupName string, options *ProfilesClientListOptions) *runtime.Pager[ProfilesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListResponse]{
 		More: func(page ProfilesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -294,10 +294,10 @@ func (client *ProfilesClient) listHandleResponse(resp *http.Response) (ProfilesC
 	return result, nil
 }
 
-// ListAll - Gets all the network profiles in a subscription.
+// NewListAllPager - Gets all the network profiles in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProfilesClientListAllOptions contains the optional parameters for the ProfilesClient.ListAll method.
-func (client *ProfilesClient) ListAll(options *ProfilesClientListAllOptions) *runtime.Pager[ProfilesClientListAllResponse] {
+func (client *ProfilesClient) NewListAllPager(options *ProfilesClientListAllOptions) *runtime.Pager[ProfilesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListAllResponse]{
 		More: func(page ProfilesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

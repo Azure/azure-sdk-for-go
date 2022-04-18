@@ -232,12 +232,12 @@ func (client *EnergyServicesClient) getHandleResponse(resp *http.Response) (Ener
 	return result, nil
 }
 
-// ListByResourceGroup - Returns list of oep resources..
+// NewListByResourceGroupPager - Returns list of oep resources..
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - EnergyServicesClientListByResourceGroupOptions contains the optional parameters for the EnergyServicesClient.ListByResourceGroup
 // method.
-func (client *EnergyServicesClient) ListByResourceGroup(resourceGroupName string, options *EnergyServicesClientListByResourceGroupOptions) *runtime.Pager[EnergyServicesClientListByResourceGroupResponse] {
+func (client *EnergyServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *EnergyServicesClientListByResourceGroupOptions) *runtime.Pager[EnergyServicesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListByResourceGroupResponse]{
 		More: func(page EnergyServicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -296,11 +296,11 @@ func (client *EnergyServicesClient) listByResourceGroupHandleResponse(resp *http
 	return result, nil
 }
 
-// ListBySubscription - Lists a collection of oep resources under the given Azure Subscription ID.
+// NewListBySubscriptionPager - Lists a collection of oep resources under the given Azure Subscription ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EnergyServicesClientListBySubscriptionOptions contains the optional parameters for the EnergyServicesClient.ListBySubscription
 // method.
-func (client *EnergyServicesClient) ListBySubscription(options *EnergyServicesClientListBySubscriptionOptions) *runtime.Pager[EnergyServicesClientListBySubscriptionResponse] {
+func (client *EnergyServicesClient) NewListBySubscriptionPager(options *EnergyServicesClientListBySubscriptionOptions) *runtime.Pager[EnergyServicesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EnergyServicesClientListBySubscriptionResponse]{
 		More: func(page EnergyServicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -55,12 +55,12 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// List - List what values of endpoint services are available for use.
+// NewListPager - List what values of endpoint services are available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location to check available endpoint services.
 // options - AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.List
 // method.
-func (client *AvailableEndpointServicesClient) List(location string, options *AvailableEndpointServicesClientListOptions) *runtime.Pager[AvailableEndpointServicesClientListResponse] {
+func (client *AvailableEndpointServicesClient) NewListPager(location string, options *AvailableEndpointServicesClientListOptions) *runtime.Pager[AvailableEndpointServicesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AvailableEndpointServicesClientListResponse]{
 		More: func(page AvailableEndpointServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

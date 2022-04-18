@@ -320,12 +320,12 @@ func (client *PacketCapturesClient) getStatusCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// List - Lists all packet capture sessions within the specified resource group.
+// NewListPager - Lists all packet capture sessions within the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkWatcherName - The name of the Network Watcher resource.
 // options - PacketCapturesClientListOptions contains the optional parameters for the PacketCapturesClient.List method.
-func (client *PacketCapturesClient) List(resourceGroupName string, networkWatcherName string, options *PacketCapturesClientListOptions) *runtime.Pager[PacketCapturesClientListResponse] {
+func (client *PacketCapturesClient) NewListPager(resourceGroupName string, networkWatcherName string, options *PacketCapturesClientListOptions) *runtime.Pager[PacketCapturesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PacketCapturesClientListResponse]{
 		More: func(page PacketCapturesClientListResponse) bool {
 			return false

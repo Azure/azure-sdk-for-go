@@ -116,13 +116,13 @@ func (client *InterfaceIPConfigurationsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// List - Get all ip configurations in a network interface.
+// NewListPager - Get all ip configurations in a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // networkInterfaceName - The name of the network interface.
 // options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.List
 // method.
-func (client *InterfaceIPConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse] {
+func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InterfaceIPConfigurationsClientListResponse]{
 		More: func(page InterfaceIPConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

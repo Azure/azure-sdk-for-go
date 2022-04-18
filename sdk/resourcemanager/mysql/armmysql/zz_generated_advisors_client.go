@@ -114,12 +114,12 @@ func (client *AdvisorsClient) getHandleResponse(resp *http.Response) (AdvisorsCl
 	return result, nil
 }
 
-// ListByServer - List recommendation action advisors.
+// NewListByServerPager - List recommendation action advisors.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - AdvisorsClientListByServerOptions contains the optional parameters for the AdvisorsClient.ListByServer method.
-func (client *AdvisorsClient) ListByServer(resourceGroupName string, serverName string, options *AdvisorsClientListByServerOptions) *runtime.Pager[AdvisorsClientListByServerResponse] {
+func (client *AdvisorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *AdvisorsClientListByServerOptions) *runtime.Pager[AdvisorsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AdvisorsClientListByServerResponse]{
 		More: func(page AdvisorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

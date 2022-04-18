@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2021-09-30-preview/examples/IdentityListBySubscription.json
-func ExampleUserAssignedIdentitiesClient_ListBySubscription() {
+func ExampleUserAssignedIdentitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleUserAssignedIdentitiesClient_ListBySubscription() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListBySubscription(nil)
+	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
@@ -45,7 +45,7 @@ func ExampleUserAssignedIdentitiesClient_ListBySubscription() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2021-09-30-preview/examples/IdentityListByResourceGroup.json
-func ExampleUserAssignedIdentitiesClient_ListByResourceGroup() {
+func ExampleUserAssignedIdentitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -57,7 +57,7 @@ func ExampleUserAssignedIdentitiesClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -73,7 +73,7 @@ func ExampleUserAssignedIdentitiesClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/msi/resource-manager/Microsoft.ManagedIdentity/preview/2021-09-30-preview/examples/IdentityListAssociatedResources.json
-func ExampleUserAssignedIdentitiesClient_ListAssociatedResources() {
+func ExampleUserAssignedIdentitiesClient_NewListAssociatedResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -85,7 +85,7 @@ func ExampleUserAssignedIdentitiesClient_ListAssociatedResources() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListAssociatedResources("<resource-group-name>",
+	pager := client.NewListAssociatedResourcesPager("<resource-group-name>",
 		"<resource-name>",
 		&armmsi.UserAssignedIdentitiesClientListAssociatedResourcesOptions{Filter: to.Ptr("<filter>"),
 			Orderby:   to.Ptr("<orderby>"),

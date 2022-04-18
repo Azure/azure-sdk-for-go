@@ -240,11 +240,11 @@ func (client *PublicIPPrefixesClient) getHandleResponse(resp *http.Response) (Pu
 	return result, nil
 }
 
-// List - Gets all public IP prefixes in a resource group.
+// NewListPager - Gets all public IP prefixes in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - PublicIPPrefixesClientListOptions contains the optional parameters for the PublicIPPrefixesClient.List method.
-func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesClientListOptions) *runtime.Pager[PublicIPPrefixesClientListResponse] {
+func (client *PublicIPPrefixesClient) NewListPager(resourceGroupName string, options *PublicIPPrefixesClientListOptions) *runtime.Pager[PublicIPPrefixesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublicIPPrefixesClientListResponse]{
 		More: func(page PublicIPPrefixesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -303,11 +303,11 @@ func (client *PublicIPPrefixesClient) listHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// ListAll - Gets all the public IP prefixes in a subscription.
+// NewListAllPager - Gets all the public IP prefixes in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PublicIPPrefixesClientListAllOptions contains the optional parameters for the PublicIPPrefixesClient.ListAll
 // method.
-func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesClientListAllOptions) *runtime.Pager[PublicIPPrefixesClientListAllResponse] {
+func (client *PublicIPPrefixesClient) NewListAllPager(options *PublicIPPrefixesClientListAllOptions) *runtime.Pager[PublicIPPrefixesClientListAllResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PublicIPPrefixesClientListAllResponse]{
 		More: func(page PublicIPPrefixesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

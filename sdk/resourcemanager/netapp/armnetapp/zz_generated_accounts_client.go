@@ -235,11 +235,11 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 	return result, nil
 }
 
-// List - List and describe all NetApp accounts in the resource group.
+// NewListPager - List and describe all NetApp accounts in the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
-func (client *AccountsClient) List(resourceGroupName string, options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
+func (client *AccountsClient) NewListPager(resourceGroupName string, options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -298,11 +298,11 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 	return result, nil
 }
 
-// ListBySubscription - List and describe all NetApp accounts in the subscription.
+// NewListBySubscriptionPager - List and describe all NetApp accounts in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
-func (client *AccountsClient) ListBySubscription(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
+func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -240,10 +240,10 @@ func (client *IPAllocationsClient) getHandleResponse(resp *http.Response) (IPAll
 	return result, nil
 }
 
-// List - Gets all IpAllocations in a subscription.
+// NewListPager - Gets all IpAllocations in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - IPAllocationsClientListOptions contains the optional parameters for the IPAllocationsClient.List method.
-func (client *IPAllocationsClient) List(options *IPAllocationsClientListOptions) *runtime.Pager[IPAllocationsClientListResponse] {
+func (client *IPAllocationsClient) NewListPager(options *IPAllocationsClientListOptions) *runtime.Pager[IPAllocationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPAllocationsClientListResponse]{
 		More: func(page IPAllocationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -298,12 +298,12 @@ func (client *IPAllocationsClient) listHandleResponse(resp *http.Response) (IPAl
 	return result, nil
 }
 
-// ListByResourceGroup - Gets all IpAllocations in a resource group.
+// NewListByResourceGroupPager - Gets all IpAllocations in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // options - IPAllocationsClientListByResourceGroupOptions contains the optional parameters for the IPAllocationsClient.ListByResourceGroup
 // method.
-func (client *IPAllocationsClient) ListByResourceGroup(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) *runtime.Pager[IPAllocationsClientListByResourceGroupResponse] {
+func (client *IPAllocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPAllocationsClientListByResourceGroupOptions) *runtime.Pager[IPAllocationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[IPAllocationsClientListByResourceGroupResponse]{
 		More: func(page IPAllocationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -54,13 +54,13 @@ func NewLocationBasedRecommendedActionSessionsResultClient(subscriptionID string
 	return client, nil
 }
 
-// List - Recommendation action session operation result.
+// NewListPager - Recommendation action session operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The name of the location.
 // operationID - The operation identifier.
 // options - LocationBasedRecommendedActionSessionsResultClientListOptions contains the optional parameters for the LocationBasedRecommendedActionSessionsResultClient.List
 // method.
-func (client *LocationBasedRecommendedActionSessionsResultClient) List(locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultClientListOptions) *runtime.Pager[LocationBasedRecommendedActionSessionsResultClientListResponse] {
+func (client *LocationBasedRecommendedActionSessionsResultClient) NewListPager(locationName string, operationID string, options *LocationBasedRecommendedActionSessionsResultClientListOptions) *runtime.Pager[LocationBasedRecommendedActionSessionsResultClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LocationBasedRecommendedActionSessionsResultClientListResponse]{
 		More: func(page LocationBasedRecommendedActionSessionsResultClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

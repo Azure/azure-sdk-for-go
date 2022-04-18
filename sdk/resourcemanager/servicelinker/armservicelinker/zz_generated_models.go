@@ -493,7 +493,7 @@ type ValidationResultItem struct {
 	Name *string `json:"name,omitempty"`
 
 	// The result of validation
-	Result *ValidationItemResult `json:"result,omitempty"`
+	Result *ValidationResultStatus `json:"result,omitempty"`
 }
 
 // ValueSecretInfo - The secret info when type is rawValue. It's for scenarios that user input the secret.

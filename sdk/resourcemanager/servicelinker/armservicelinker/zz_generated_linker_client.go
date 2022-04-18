@@ -211,11 +211,11 @@ func (client *LinkerClient) getHandleResponse(resp *http.Response) (LinkerClient
 	return result, nil
 }
 
-// List - Returns list of Linkers which connects to the resource.
+// NewListPager - Returns list of Linkers which connects to the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // options - LinkerClientListOptions contains the optional parameters for the LinkerClient.List method.
-func (client *LinkerClient) List(resourceURI string, options *LinkerClientListOptions) *runtime.Pager[LinkerClientListResponse] {
+func (client *LinkerClient) NewListPager(resourceURI string, options *LinkerClientListOptions) *runtime.Pager[LinkerClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LinkerClientListResponse]{
 		More: func(page LinkerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

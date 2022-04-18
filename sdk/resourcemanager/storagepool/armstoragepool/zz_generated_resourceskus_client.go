@@ -54,11 +54,11 @@ func NewResourceSKUsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// List - Lists available StoragePool resources and skus in an Azure location.
+// NewListPager - Lists available StoragePool resources and skus in an Azure location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location of the resource.
 // options - ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.List method.
-func (client *ResourceSKUsClient) List(location string, options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
+func (client *ResourceSKUsClient) NewListPager(location string, options *ResourceSKUsClientListOptions) *runtime.Pager[ResourceSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ResourceSKUsClientListResponse]{
 		More: func(page ResourceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

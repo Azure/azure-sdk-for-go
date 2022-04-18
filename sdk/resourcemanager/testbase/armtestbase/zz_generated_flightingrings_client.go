@@ -114,12 +114,12 @@ func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (Flig
 	return result, nil
 }
 
-// List - Lists all the flighting rings of a Test Base Account.
+// NewListPager - Lists all the flighting rings of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - FlightingRingsClientListOptions contains the optional parameters for the FlightingRingsClient.List method.
-func (client *FlightingRingsClient) List(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *runtime.Pager[FlightingRingsClientListResponse] {
+func (client *FlightingRingsClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *runtime.Pager[FlightingRingsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FlightingRingsClientListResponse]{
 		More: func(page FlightingRingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

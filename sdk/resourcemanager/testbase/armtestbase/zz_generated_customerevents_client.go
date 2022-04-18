@@ -251,13 +251,13 @@ func (client *CustomerEventsClient) getHandleResponse(resp *http.Response) (Cust
 	return result, nil
 }
 
-// ListByTestBaseAccount - Lists all notification events subscribed under a Test Base Account.
+// NewListByTestBaseAccountPager - Lists all notification events subscribed under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - CustomerEventsClientListByTestBaseAccountOptions contains the optional parameters for the CustomerEventsClient.ListByTestBaseAccount
 // method.
-func (client *CustomerEventsClient) ListByTestBaseAccount(resourceGroupName string, testBaseAccountName string, options *CustomerEventsClientListByTestBaseAccountOptions) *runtime.Pager[CustomerEventsClientListByTestBaseAccountResponse] {
+func (client *CustomerEventsClient) NewListByTestBaseAccountPager(resourceGroupName string, testBaseAccountName string, options *CustomerEventsClientListByTestBaseAccountOptions) *runtime.Pager[CustomerEventsClientListByTestBaseAccountResponse] {
 	return runtime.NewPager(runtime.PageProcessor[CustomerEventsClientListByTestBaseAccountResponse]{
 		More: func(page CustomerEventsClientListByTestBaseAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

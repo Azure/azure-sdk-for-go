@@ -124,8 +124,8 @@ func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (Ana
 	return result, nil
 }
 
-// List - Lists the Analysis Results of a Test Result. The result collection will only contain one element as all the data
-// will be nested in a singleton object.
+// NewListPager - Lists the Analysis Results of a Test Result. The result collection will only contain one element as all
+// the data will be nested in a singleton object.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
@@ -133,7 +133,7 @@ func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (Ana
 // testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
 // analysisResultType - The type of the Analysis Result of a Test Result.
 // options - AnalysisResultsClientListOptions contains the optional parameters for the AnalysisResultsClient.List method.
-func (client *AnalysisResultsClient) List(resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) *runtime.Pager[AnalysisResultsClientListResponse] {
+func (client *AnalysisResultsClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) *runtime.Pager[AnalysisResultsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AnalysisResultsClientListResponse]{
 		More: func(page AnalysisResultsClientListResponse) bool {
 			return false

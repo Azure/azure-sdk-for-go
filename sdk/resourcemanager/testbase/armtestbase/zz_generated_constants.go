@@ -10,7 +10,7 @@ package armtestbase
 
 const (
 	moduleName    = "armtestbase"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // Action - The action of the command.

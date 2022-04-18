@@ -114,12 +114,12 @@ func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestS
 	return result, nil
 }
 
-// List - Lists the Test Summaries of all the packages under a Test Base Account.
+// NewListPager - Lists the Test Summaries of all the packages under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
-func (client *TestSummariesClient) List(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse] {
+func (client *TestSummariesClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TestSummariesClientListResponse]{
 		More: func(page TestSummariesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

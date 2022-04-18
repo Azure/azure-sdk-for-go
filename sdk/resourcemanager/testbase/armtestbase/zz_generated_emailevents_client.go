@@ -114,12 +114,12 @@ func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEv
 	return result, nil
 }
 
-// List - Lists all the email events of a Test Base Account.
+// NewListPager - Lists all the email events of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
-func (client *EmailEventsClient) List(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse] {
+func (client *EmailEventsClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EmailEventsClientListResponse]{
 		More: func(page EmailEventsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

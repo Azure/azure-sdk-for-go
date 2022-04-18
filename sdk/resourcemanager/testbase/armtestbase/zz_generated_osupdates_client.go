@@ -119,14 +119,14 @@ func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdates
 	return result, nil
 }
 
-// List - Lists the OS Updates in which the package were tested before.
+// NewListPager - Lists the OS Updates in which the package were tested before.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // osUpdateType - The type of the OS Update.
 // options - OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
-func (client *OSUpdatesClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse] {
+func (client *OSUpdatesClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OSUpdatesClientListResponse]{
 		More: func(page OSUpdatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

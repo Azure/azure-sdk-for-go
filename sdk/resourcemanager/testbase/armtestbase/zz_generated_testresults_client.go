@@ -251,15 +251,15 @@ func (client *TestResultsClient) getVideoDownloadURLHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// List - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName, releaseName,
-// flightingRing, buildVersion, buildRevision.
+// NewListPager - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName,
+// releaseName, flightingRing, buildVersion, buildRevision.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // osUpdateType - The type of the OS Update.
 // options - TestResultsClientListOptions contains the optional parameters for the TestResultsClient.List method.
-func (client *TestResultsClient) List(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsClientListOptions) *runtime.Pager[TestResultsClientListResponse] {
+func (client *TestResultsClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *TestResultsClientListOptions) *runtime.Pager[TestResultsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TestResultsClientListResponse]{
 		More: func(page TestResultsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

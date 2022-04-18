@@ -354,12 +354,12 @@ func (client *AccountsClient) getFileUploadURLHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the Test Base Accounts in a resource group.
+// NewListByResourceGroupPager - Lists all the Test Base Accounts in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
-func (client *AccountsClient) ListByResourceGroup(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
+func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -421,11 +421,11 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists all the Test Base Accounts in a subscription. This API is required by ARM guidelines.
+// NewListBySubscriptionPager - Lists all the Test Base Accounts in a subscription. This API is required by ARM guidelines.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
-func (client *AccountsClient) ListBySubscription(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
+func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

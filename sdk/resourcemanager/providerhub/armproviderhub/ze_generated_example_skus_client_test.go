@@ -416,7 +416,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_ListByResourceTypeRegistrations.json
-func ExampleSKUsClient_ListByResourceTypeRegistrations() {
+func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -428,7 +428,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrations() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceTypeRegistrations("<provider-namespace>",
+	pager := client.NewListByResourceTypeRegistrationsPager("<provider-namespace>",
 		"<resource-type>",
 		nil)
 	for pager.More() {
@@ -445,7 +445,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrations() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
-func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeFirst() {
+func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -457,7 +457,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeFirst() 
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceTypeRegistrationsNestedResourceTypeFirst("<provider-namespace>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager("<provider-namespace>",
 		"<resource-type>",
 		"<nested-resource-type-first>",
 		nil)
@@ -475,7 +475,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeFirst() 
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
-func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeSecond() {
+func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -487,7 +487,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeSecond()
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceTypeRegistrationsNestedResourceTypeSecond("<provider-namespace>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager("<provider-namespace>",
 		"<resource-type>",
 		"<nested-resource-type-first>",
 		"<nested-resource-type-second>",
@@ -506,7 +506,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeSecond()
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
-func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeThird() {
+func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -518,7 +518,7 @@ func ExampleSKUsClient_ListByResourceTypeRegistrationsNestedResourceTypeThird() 
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceTypeRegistrationsNestedResourceTypeThird("<provider-namespace>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager("<provider-namespace>",
 		"<resource-type>",
 		"<nested-resource-type-first>",
 		"<nested-resource-type-second>",

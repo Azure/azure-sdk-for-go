@@ -214,12 +214,12 @@ func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByProviderRegistration - Gets the list of the notification registrations for the given provider.
+// NewListByProviderRegistrationPager - Gets the list of the notification registrations for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.ListByProviderRegistration
 // method.
-func (client *NotificationRegistrationsClient) ListByProviderRegistration(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[NotificationRegistrationsClientListByProviderRegistrationResponse] {
+func (client *NotificationRegistrationsClient) NewListByProviderRegistrationPager(providerNamespace string, options *NotificationRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[NotificationRegistrationsClientListByProviderRegistrationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[NotificationRegistrationsClientListByProviderRegistrationResponse]{
 		More: func(page NotificationRegistrationsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -1,5 +1,33 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CustomRolloutsClient.ListByProviderRegistration` has been removed
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeSecond` has been removed
+- Function `*ProviderRegistrationsClient.List` has been removed
+- Function `*SKUsClient.ListByResourceTypeRegistrations` has been removed
+- Function `*ResourceTypeRegistrationsClient.ListByProviderRegistration` has been removed
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeThird` has been removed
+- Function `*DefaultRolloutsClient.ListByProviderRegistration` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SKUsClient.ListByResourceTypeRegistrationsNestedResourceTypeFirst` has been removed
+- Function `*NotificationRegistrationsClient.ListByProviderRegistration` has been removed
+
+### Features Added
+
+- New function `*SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager(string, string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager(string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse]`
+- New function `*SKUsClient.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager(string, string, string, string, string, *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse]`
+- New function `*ProviderRegistrationsClient.NewListPager(*ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse]`
+- New function `*NotificationRegistrationsClient.NewListByProviderRegistrationPager(string, *NotificationRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[NotificationRegistrationsClientListByProviderRegistrationResponse]`
+- New function `*SKUsClient.NewListByResourceTypeRegistrationsPager(string, string, *SKUsClientListByResourceTypeRegistrationsOptions) *runtime.Pager[SKUsClientListByResourceTypeRegistrationsResponse]`
+- New function `*ResourceTypeRegistrationsClient.NewListByProviderRegistrationPager(string, *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) *runtime.Pager[ResourceTypeRegistrationsClientListByProviderRegistrationResponse]`
+- New function `*DefaultRolloutsClient.NewListByProviderRegistrationPager(string, *DefaultRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[DefaultRolloutsClientListByProviderRegistrationResponse]`
+- New function `*CustomRolloutsClient.NewListByProviderRegistrationPager(string, *CustomRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[CustomRolloutsClientListByProviderRegistrationResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

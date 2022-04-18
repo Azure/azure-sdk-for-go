@@ -219,12 +219,12 @@ func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (Def
 	return result, nil
 }
 
-// ListByProviderRegistration - Gets the list of the rollouts for the given provider.
+// NewListByProviderRegistrationPager - Gets the list of the rollouts for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.ListByProviderRegistration
 // method.
-func (client *DefaultRolloutsClient) ListByProviderRegistration(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[DefaultRolloutsClientListByProviderRegistrationResponse] {
+func (client *DefaultRolloutsClient) NewListByProviderRegistrationPager(providerNamespace string, options *DefaultRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[DefaultRolloutsClientListByProviderRegistrationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DefaultRolloutsClientListByProviderRegistrationResponse]{
 		More: func(page DefaultRolloutsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

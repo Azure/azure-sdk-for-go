@@ -257,11 +257,11 @@ func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// List - Gets the list of the provider registrations in the subscription.
+// NewListPager - Gets the list of the provider registrations in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderRegistrationsClientListOptions contains the optional parameters for the ProviderRegistrationsClient.List
 // method.
-func (client *ProviderRegistrationsClient) List(options *ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse] {
+func (client *ProviderRegistrationsClient) NewListPager(options *ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ProviderRegistrationsClientListResponse]{
 		More: func(page ProviderRegistrationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

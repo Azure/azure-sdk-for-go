@@ -181,7 +181,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp
 	return result, nil
 }
 
-// ListByDatabase - Lists extended auditing settings of a database.
+// NewListByDatabasePager - Lists extended auditing settings of a database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -189,7 +189,7 @@ func (client *ExtendedDatabaseBlobAuditingPoliciesClient) getHandleResponse(resp
 // databaseName - The name of the database.
 // options - ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions contains the optional parameters for the ExtendedDatabaseBlobAuditingPoliciesClient.ListByDatabase
 // method.
-func (client *ExtendedDatabaseBlobAuditingPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse] {
+func (client *ExtendedDatabaseBlobAuditingPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseOptions) *runtime.Pager[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse]{
 		More: func(page ExtendedDatabaseBlobAuditingPoliciesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -85,7 +85,7 @@ func ExampleDatabaseExtensionsClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-02-01-preview/examples/ListDatabaseExtensions.json
-func ExampleDatabaseExtensionsClient_ListByDatabase() {
+func ExampleDatabaseExtensionsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -97,7 +97,7 @@ func ExampleDatabaseExtensionsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		nil)

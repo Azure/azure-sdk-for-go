@@ -123,7 +123,7 @@ func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVers
 	return result, nil
 }
 
-// ListByJob - Gets all versions of a job.
+// NewListByJobPager - Gets all versions of a job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -131,7 +131,7 @@ func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVers
 // jobAgentName - The name of the job agent.
 // jobName - The name of the job to get.
 // options - JobVersionsClientListByJobOptions contains the optional parameters for the JobVersionsClient.ListByJob method.
-func (client *JobVersionsClient) ListByJob(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) *runtime.Pager[JobVersionsClientListByJobResponse] {
+func (client *JobVersionsClient) NewListByJobPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobVersionsClientListByJobOptions) *runtime.Pager[JobVersionsClientListByJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobVersionsClientListByJobResponse]{
 		More: func(page JobVersionsClientListByJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

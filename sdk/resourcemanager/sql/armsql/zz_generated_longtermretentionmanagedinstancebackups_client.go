@@ -339,14 +339,14 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupH
 	return result, nil
 }
 
-// ListByDatabase - Lists all long term retention backups for a managed database.
+// NewListByDatabasePager - Lists all long term retention backups for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The location of the database.
 // managedInstanceName - The name of the managed instance.
 // databaseName - The name of the managed database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByDatabase
 // method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByDatabasePager(locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -419,13 +419,13 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandl
 	return result, nil
 }
 
-// ListByInstance - Lists the long term retention backups for a given managed instance.
+// NewListByInstancePager - Lists the long term retention backups for a given managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The location of the database
 // managedInstanceName - The name of the managed instance.
 // options - LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByInstance
 // method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByInstance(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByInstancePager(locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -494,12 +494,12 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandl
 	return result, nil
 }
 
-// ListByLocation - Lists the long term retention backups for managed databases in a given location.
+// NewListByLocationPager - Lists the long term retention backups for managed databases in a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The location of the database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByLocationOptions contains the optional parameters for the LongTermRetentionManagedInstanceBackupsClient.ListByLocation
 // method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByLocation(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByLocationPager(locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -564,7 +564,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandl
 	return result, nil
 }
 
-// ListByResourceGroupDatabase - Lists all long term retention backups for a managed database.
+// NewListByResourceGroupDatabasePager - Lists all long term retention backups for a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -573,7 +573,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandl
 // databaseName - The name of the managed database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabase(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupDatabasePager(resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -650,7 +650,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	return result, nil
 }
 
-// ListByResourceGroupInstance - Lists the long term retention backups for a given managed instance.
+// NewListByResourceGroupInstancePager - Lists the long term retention backups for a given managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -658,7 +658,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 // managedInstanceName - The name of the managed instance.
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstance(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupInstancePager(resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -731,14 +731,14 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	return result, nil
 }
 
-// ListByResourceGroupLocation - Lists the long term retention backups for managed databases in a given location.
+// NewListByResourceGroupLocationPager - Lists the long term retention backups for managed databases in a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The location of the database.
 // options - LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions contains the optional parameters
 // for the LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation method.
-func (client *LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocation(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse] {
+func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGroupLocationPager(resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) *runtime.Pager[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse]{
 		More: func(page LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

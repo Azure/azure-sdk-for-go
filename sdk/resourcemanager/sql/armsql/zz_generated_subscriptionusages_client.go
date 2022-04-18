@@ -109,12 +109,12 @@ func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByLocation - Gets all subscription usage metrics in a given location.
+// NewListByLocationPager - Gets all subscription usage metrics in a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The name of the region where the resource is located.
 // options - SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.ListByLocation
 // method.
-func (client *SubscriptionUsagesClient) ListByLocation(locationName string, options *SubscriptionUsagesClientListByLocationOptions) *runtime.Pager[SubscriptionUsagesClientListByLocationResponse] {
+func (client *SubscriptionUsagesClient) NewListByLocationPager(locationName string, options *SubscriptionUsagesClientListByLocationOptions) *runtime.Pager[SubscriptionUsagesClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SubscriptionUsagesClientListByLocationResponse]{
 		More: func(page SubscriptionUsagesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

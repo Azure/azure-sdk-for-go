@@ -181,7 +181,7 @@ func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// ListByDatabase - List database extension. This will return an empty list as it is not supported.
+// NewListByDatabasePager - List database extension. This will return an empty list as it is not supported.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -189,7 +189,7 @@ func (client *DatabaseExtensionsClient) getCreateRequest(ctx context.Context, re
 // databaseName - The name of the database.
 // options - DatabaseExtensionsClientListByDatabaseOptions contains the optional parameters for the DatabaseExtensionsClient.ListByDatabase
 // method.
-func (client *DatabaseExtensionsClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsClientListByDatabaseOptions) *runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse] {
+func (client *DatabaseExtensionsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseExtensionsClientListByDatabaseOptions) *runtime.Pager[DatabaseExtensionsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabaseExtensionsClientListByDatabaseResponse]{
 		More: func(page DatabaseExtensionsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

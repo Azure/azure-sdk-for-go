@@ -115,14 +115,14 @@ func (client *RestorableDroppedDatabasesClient) getHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListByServer - Gets a list of restorable dropped databases.
+// NewListByServerPager - Gets a list of restorable dropped databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - RestorableDroppedDatabasesClientListByServerOptions contains the optional parameters for the RestorableDroppedDatabasesClient.ListByServer
 // method.
-func (client *RestorableDroppedDatabasesClient) ListByServer(resourceGroupName string, serverName string, options *RestorableDroppedDatabasesClientListByServerOptions) *runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse] {
+func (client *RestorableDroppedDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RestorableDroppedDatabasesClientListByServerOptions) *runtime.Pager[RestorableDroppedDatabasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedDatabasesClientListByServerResponse]{
 		More: func(page RestorableDroppedDatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

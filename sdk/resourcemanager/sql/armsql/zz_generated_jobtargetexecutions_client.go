@@ -131,7 +131,7 @@ func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByJobExecution - Lists target executions for all steps of a job execution.
+// NewListByJobExecutionPager - Lists target executions for all steps of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -141,7 +141,7 @@ func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) 
 // jobExecutionID - The id of the job execution
 // options - JobTargetExecutionsClientListByJobExecutionOptions contains the optional parameters for the JobTargetExecutionsClient.ListByJobExecution
 // method.
-func (client *JobTargetExecutionsClient) ListByJobExecution(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse] {
+func (client *JobTargetExecutionsClient) NewListByJobExecutionPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) *runtime.Pager[JobTargetExecutionsClientListByJobExecutionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobTargetExecutionsClientListByJobExecutionResponse]{
 		More: func(page JobTargetExecutionsClientListByJobExecutionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -234,7 +234,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *
 	return result, nil
 }
 
-// ListByStep - Lists the target executions of a job step execution.
+// NewListByStepPager - Lists the target executions of a job step execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -245,7 +245,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *
 // stepName - The name of the step.
 // options - JobTargetExecutionsClientListByStepOptions contains the optional parameters for the JobTargetExecutionsClient.ListByStep
 // method.
-func (client *JobTargetExecutionsClient) ListByStep(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) *runtime.Pager[JobTargetExecutionsClientListByStepResponse] {
+func (client *JobTargetExecutionsClient) NewListByStepPager(resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) *runtime.Pager[JobTargetExecutionsClientListByStepResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobTargetExecutionsClientListByStepResponse]{
 		More: func(page JobTargetExecutionsClientListByStepResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -184,14 +184,14 @@ func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByServer - Get the server's threat detection policies.
+// NewListByServerPager - Get the server's threat detection policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerSecurityAlertPoliciesClientListByServerOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.ListByServer
 // method.
-func (client *ServerSecurityAlertPoliciesClient) ListByServer(resourceGroupName string, serverName string, options *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse] {
+func (client *ServerSecurityAlertPoliciesClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerSecurityAlertPoliciesClientListByServerOptions) *runtime.Pager[ServerSecurityAlertPoliciesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerSecurityAlertPoliciesClientListByServerResponse]{
 		More: func(page ServerSecurityAlertPoliciesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

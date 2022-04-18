@@ -309,13 +309,13 @@ func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgen
 	return result, nil
 }
 
-// ListByServer - Lists sync agents in a server.
+// NewListByServerPager - Lists sync agents in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server on which the sync agent is hosted.
 // options - SyncAgentsClientListByServerOptions contains the optional parameters for the SyncAgentsClient.ListByServer method.
-func (client *SyncAgentsClient) ListByServer(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse] {
+func (client *SyncAgentsClient) NewListByServerPager(resourceGroupName string, serverName string, options *SyncAgentsClientListByServerOptions) *runtime.Pager[SyncAgentsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListByServerResponse]{
 		More: func(page SyncAgentsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -378,7 +378,7 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListLinkedDatabases - Lists databases linked to a sync agent.
+// NewListLinkedDatabasesPager - Lists databases linked to a sync agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -386,7 +386,7 @@ func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) 
 // syncAgentName - The name of the sync agent.
 // options - SyncAgentsClientListLinkedDatabasesOptions contains the optional parameters for the SyncAgentsClient.ListLinkedDatabases
 // method.
-func (client *SyncAgentsClient) ListLinkedDatabases(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse] {
+func (client *SyncAgentsClient) NewListLinkedDatabasesPager(resourceGroupName string, serverName string, syncAgentName string, options *SyncAgentsClientListLinkedDatabasesOptions) *runtime.Pager[SyncAgentsClientListLinkedDatabasesResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SyncAgentsClientListLinkedDatabasesResponse]{
 		More: func(page SyncAgentsClientListLinkedDatabasesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

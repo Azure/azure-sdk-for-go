@@ -184,14 +184,14 @@ func (client *EncryptionProtectorsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByServer - Gets a list of server encryption protectors
+// NewListByServerPager - Gets a list of server encryption protectors
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - EncryptionProtectorsClientListByServerOptions contains the optional parameters for the EncryptionProtectorsClient.ListByServer
 // method.
-func (client *EncryptionProtectorsClient) ListByServer(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) *runtime.Pager[EncryptionProtectorsClientListByServerResponse] {
+func (client *EncryptionProtectorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *EncryptionProtectorsClientListByServerOptions) *runtime.Pager[EncryptionProtectorsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EncryptionProtectorsClientListByServerResponse]{
 		More: func(page EncryptionProtectorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

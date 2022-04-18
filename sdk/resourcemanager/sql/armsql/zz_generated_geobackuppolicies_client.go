@@ -188,7 +188,7 @@ func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (G
 	return result, nil
 }
 
-// ListByDatabase - Returns a list of geo backup policies.
+// NewListByDatabasePager - Returns a list of geo backup policies.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -196,7 +196,7 @@ func (client *GeoBackupPoliciesClient) getHandleResponse(resp *http.Response) (G
 // databaseName - The name of the database.
 // options - GeoBackupPoliciesClientListByDatabaseOptions contains the optional parameters for the GeoBackupPoliciesClient.ListByDatabase
 // method.
-func (client *GeoBackupPoliciesClient) ListByDatabase(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListByDatabaseOptions) *runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse] {
+func (client *GeoBackupPoliciesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *GeoBackupPoliciesClientListByDatabaseOptions) *runtime.Pager[GeoBackupPoliciesClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GeoBackupPoliciesClientListByDatabaseResponse]{
 		More: func(page GeoBackupPoliciesClientListByDatabaseResponse) bool {
 			return false

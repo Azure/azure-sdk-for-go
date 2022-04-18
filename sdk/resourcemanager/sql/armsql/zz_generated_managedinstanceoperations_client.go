@@ -160,14 +160,14 @@ func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListByManagedInstance - Gets a list of operations performed on the managed instance.
+// NewListByManagedInstancePager - Gets a list of operations performed on the managed instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceOperationsClientListByManagedInstanceOptions contains the optional parameters for the ManagedInstanceOperationsClient.ListByManagedInstance
 // method.
-func (client *ManagedInstanceOperationsClient) ListByManagedInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse] {
+func (client *ManagedInstanceOperationsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceOperationsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstanceOperationsClientListByManagedInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceOperationsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstanceOperationsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -250,14 +250,14 @@ func (client *ServerAzureADAdministratorsClient) getHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListByServer - Gets a list of Azure Active Directory administrators in a server.
+// NewListByServerPager - Gets a list of Azure Active Directory administrators in a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerAzureADAdministratorsClientListByServerOptions contains the optional parameters for the ServerAzureADAdministratorsClient.ListByServer
 // method.
-func (client *ServerAzureADAdministratorsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) *runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse] {
+func (client *ServerAzureADAdministratorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADAdministratorsClientListByServerOptions) *runtime.Pager[ServerAzureADAdministratorsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerAzureADAdministratorsClientListByServerResponse]{
 		More: func(page ServerAzureADAdministratorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

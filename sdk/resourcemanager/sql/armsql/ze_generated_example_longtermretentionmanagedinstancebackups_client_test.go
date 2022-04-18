@@ -76,7 +76,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceLongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByDatabase() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<location-name>",
+	pager := client.NewListByDatabasePager("<location-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions{OnlyLatestPerDatabase: nil,
@@ -108,7 +108,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByDatabase() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceLongTermRetentionBackupListByInstance.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByInstance() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -120,7 +120,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInstance("<location-name>",
+	pager := client.NewListByInstancePager("<location-name>",
 		"<managed-instance-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
@@ -139,7 +139,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByInstance() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ManagedInstanceLongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByLocation() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -151,7 +151,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<location-name>",
+	pager := client.NewListByLocationPager("<location-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,
 		})
@@ -228,7 +228,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupDatabase() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -240,7 +240,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupDat
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupDatabase("<resource-group-name>",
+	pager := client.NewListByResourceGroupDatabasePager("<resource-group-name>",
 		"<location-name>",
 		"<managed-instance-name>",
 		"<database-name>",
@@ -261,7 +261,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupDat
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByInstance.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupInstance() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -273,7 +273,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupIns
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupInstance("<resource-group-name>",
+	pager := client.NewListByResourceGroupInstancePager("<resource-group-name>",
 		"<location-name>",
 		"<managed-instance-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions{OnlyLatestPerDatabase: nil,
@@ -293,7 +293,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupIns
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/ResourceGroupBasedManagedInstanceLongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupLocation() {
+func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroupLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -305,7 +305,7 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_ListByResourceGroupLoc
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroupLocation("<resource-group-name>",
+	pager := client.NewListByResourceGroupLocationPager("<resource-group-name>",
 		"<location-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions{OnlyLatestPerDatabase: nil,
 			DatabaseState: nil,

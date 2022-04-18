@@ -246,14 +246,14 @@ func (client *OutboundFirewallRulesClient) getHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListByServer - Gets all outbound firewall rules on a server.
+// NewListByServerPager - Gets all outbound firewall rules on a server.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - OutboundFirewallRulesClientListByServerOptions contains the optional parameters for the OutboundFirewallRulesClient.ListByServer
 // method.
-func (client *OutboundFirewallRulesClient) ListByServer(resourceGroupName string, serverName string, options *OutboundFirewallRulesClientListByServerOptions) *runtime.Pager[OutboundFirewallRulesClientListByServerResponse] {
+func (client *OutboundFirewallRulesClient) NewListByServerPager(resourceGroupName string, serverName string, options *OutboundFirewallRulesClientListByServerOptions) *runtime.Pager[OutboundFirewallRulesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[OutboundFirewallRulesClientListByServerResponse]{
 		More: func(page OutboundFirewallRulesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

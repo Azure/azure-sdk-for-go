@@ -111,7 +111,7 @@ func ExampleSyncAgentsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentListByServer.json
-func ExampleSyncAgentsClient_ListByServer() {
+func ExampleSyncAgentsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -123,7 +123,7 @@ func ExampleSyncAgentsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {
@@ -166,7 +166,7 @@ func ExampleSyncAgentsClient_GenerateKey() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SyncAgentGetLinkedDatabases.json
-func ExampleSyncAgentsClient_ListLinkedDatabases() {
+func ExampleSyncAgentsClient_NewListLinkedDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -178,7 +178,7 @@ func ExampleSyncAgentsClient_ListLinkedDatabases() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListLinkedDatabases("<resource-group-name>",
+	pager := client.NewListLinkedDatabasesPager("<resource-group-name>",
 		"<server-name>",
 		"<sync-agent-name>",
 		nil)

@@ -107,11 +107,11 @@ func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZones
 	return result, nil
 }
 
-// ListByLocation - Gets a list of managed instance time zones by location.
+// NewListByLocationPager - Gets a list of managed instance time zones by location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TimeZonesClientListByLocationOptions contains the optional parameters for the TimeZonesClient.ListByLocation
 // method.
-func (client *TimeZonesClient) ListByLocation(locationName string, options *TimeZonesClientListByLocationOptions) *runtime.Pager[TimeZonesClientListByLocationResponse] {
+func (client *TimeZonesClient) NewListByLocationPager(locationName string, options *TimeZonesClientListByLocationOptions) *runtime.Pager[TimeZonesClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TimeZonesClientListByLocationResponse]{
 		More: func(page TimeZonesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

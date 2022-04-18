@@ -55,7 +55,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 	return client, nil
 }
 
-// ListByDatabase - Gets a list of security events.
+// NewListByDatabasePager - Gets a list of security events.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -63,7 +63,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 // databaseName - The name of the managed database for which the security events are retrieved.
 // options - ManagedDatabaseSecurityEventsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityEventsClient.ListByDatabase
 // method.
-func (client *ManagedDatabaseSecurityEventsClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse] {
+func (client *ManagedDatabaseSecurityEventsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSecurityEventsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

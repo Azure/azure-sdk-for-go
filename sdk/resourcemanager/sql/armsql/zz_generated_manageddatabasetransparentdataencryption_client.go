@@ -189,7 +189,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(
 	return result, nil
 }
 
-// ListByDatabase - Gets a list of managed database's transparent data encryptions.
+// NewListByDatabasePager - Gets a list of managed database's transparent data encryptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -197,7 +197,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(
 // databaseName - The name of the managed database for which the transparent data encryption is defined.
 // options - ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions contains the optional parameters for the
 // ManagedDatabaseTransparentDataEncryptionClient.ListByDatabase method.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse] {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

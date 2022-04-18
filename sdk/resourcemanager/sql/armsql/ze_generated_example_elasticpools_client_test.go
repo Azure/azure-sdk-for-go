@@ -20,7 +20,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsListWithFilter.json
-func ExampleElasticPoolsClient_ListMetrics() {
+func ExampleElasticPoolsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleElasticPoolsClient_ListMetrics() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetrics("<resource-group-name>",
+	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		"<filter>",
@@ -51,7 +51,7 @@ func ExampleElasticPoolsClient_ListMetrics() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ElasticPoolMetricsDefinitionsList.json
-func ExampleElasticPoolsClient_ListMetricDefinitions() {
+func ExampleElasticPoolsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -63,7 +63,7 @@ func ExampleElasticPoolsClient_ListMetricDefinitions() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListMetricDefinitions("<resource-group-name>",
+	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
 		"<server-name>",
 		"<elastic-pool-name>",
 		nil)
@@ -81,7 +81,7 @@ func ExampleElasticPoolsClient_ListMetricDefinitions() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-08-01-preview/examples/ElasticPoolListByServer.json
-func ExampleElasticPoolsClient_ListByServer() {
+func ExampleElasticPoolsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -93,7 +93,7 @@ func ExampleElasticPoolsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		&armsql.ElasticPoolsClientListByServerOptions{Skip: nil})
 	for pager.More() {

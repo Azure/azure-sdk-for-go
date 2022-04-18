@@ -18,7 +18,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceCurrent.json
-func ExampleSensitivityLabelsClient_ListCurrentByDatabase() {
+func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,7 +30,7 @@ func ExampleSensitivityLabelsClient_ListCurrentByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListCurrentByDatabase("<resource-group-name>",
+	pager := client.NewListCurrentByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		&armsql.SensitivityLabelsClientListCurrentByDatabaseOptions{SkipToken: nil,
@@ -120,7 +120,7 @@ func ExampleSensitivityLabelsClient_Update() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceRecommended.json
-func ExampleSensitivityLabelsClient_ListRecommendedByDatabase() {
+func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +132,7 @@ func ExampleSensitivityLabelsClient_ListRecommendedByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListRecommendedByDatabase("<resource-group-name>",
+	pager := client.NewListRecommendedByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		&armsql.SensitivityLabelsClientListRecommendedByDatabaseOptions{SkipToken: nil,
@@ -302,7 +302,7 @@ func ExampleSensitivityLabelsClient_EnableRecommendation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabase.json
-func ExampleSensitivityLabelsClient_ListByDatabase() {
+func ExampleSensitivityLabelsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -314,7 +314,7 @@ func ExampleSensitivityLabelsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		&armsql.SensitivityLabelsClientListByDatabaseOptions{Filter: nil})

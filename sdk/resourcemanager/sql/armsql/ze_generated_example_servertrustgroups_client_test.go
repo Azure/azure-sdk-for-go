@@ -120,7 +120,7 @@ func ExampleServerTrustGroupsClient_BeginDelete() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupList.json
-func ExampleServerTrustGroupsClient_ListByLocation() {
+func ExampleServerTrustGroupsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +132,7 @@ func ExampleServerTrustGroupsClient_ListByLocation() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByLocation("<resource-group-name>",
+	pager := client.NewListByLocationPager("<resource-group-name>",
 		"<location-name>",
 		nil)
 	for pager.More() {
@@ -149,7 +149,7 @@ func ExampleServerTrustGroupsClient_ListByLocation() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ServerTrustGroupListByManagedInstance.json
-func ExampleServerTrustGroupsClient_ListByInstance() {
+func ExampleServerTrustGroupsClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -161,7 +161,7 @@ func ExampleServerTrustGroupsClient_ListByInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInstance("<resource-group-name>",
+	pager := client.NewListByInstancePager("<resource-group-name>",
 		"<managed-instance-name>",
 		nil)
 	for pager.More() {

@@ -279,7 +279,7 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListByWorkloadGroup - Gets the list of workload classifiers for a workload group
+// NewListByWorkloadGroupPager - Gets the list of workload classifiers for a workload group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -288,7 +288,7 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 // workloadGroupName - The name of the workload group from which to receive the classifiers from.
 // options - WorkloadClassifiersClientListByWorkloadGroupOptions contains the optional parameters for the WorkloadClassifiersClient.ListByWorkloadGroup
 // method.
-func (client *WorkloadClassifiersClient) ListByWorkloadGroup(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersClientListByWorkloadGroupOptions) *runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse] {
+func (client *WorkloadClassifiersClient) NewListByWorkloadGroupPager(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersClientListByWorkloadGroupOptions) *runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkloadClassifiersClientListByWorkloadGroupResponse]{
 		More: func(page WorkloadClassifiersClientListByWorkloadGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

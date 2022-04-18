@@ -244,7 +244,7 @@ func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobC
 	return result, nil
 }
 
-// ListByAgent - Gets a list of jobs credentials.
+// NewListByAgentPager - Gets a list of jobs credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -252,7 +252,7 @@ func (client *JobCredentialsClient) getHandleResponse(resp *http.Response) (JobC
 // jobAgentName - The name of the job agent.
 // options - JobCredentialsClientListByAgentOptions contains the optional parameters for the JobCredentialsClient.ListByAgent
 // method.
-func (client *JobCredentialsClient) ListByAgent(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse] {
+func (client *JobCredentialsClient) NewListByAgentPager(resourceGroupName string, serverName string, jobAgentName string, options *JobCredentialsClientListByAgentOptions) *runtime.Pager[JobCredentialsClientListByAgentResponse] {
 	return runtime.NewPager(runtime.PageProcessor[JobCredentialsClientListByAgentResponse]{
 		More: func(page JobCredentialsClientListByAgentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

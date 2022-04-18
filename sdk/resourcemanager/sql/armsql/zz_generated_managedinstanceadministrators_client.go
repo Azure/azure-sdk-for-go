@@ -247,14 +247,14 @@ func (client *ManagedInstanceAdministratorsClient) getHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListByInstance - Gets a list of managed instance administrators.
+// NewListByInstancePager - Gets a list of managed instance administrators.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceAdministratorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceAdministratorsClient.ListByInstance
 // method.
-func (client *ManagedInstanceAdministratorsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse] {
+func (client *ManagedInstanceAdministratorsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAdministratorsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAdministratorsClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceAdministratorsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAdministratorsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedColumnsListByDatabaseMax.json
-func ExampleManagedDatabaseColumnsClient_ListByDatabase() {
+func ExampleManagedDatabaseColumnsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleManagedDatabaseColumnsClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		&armsql.ManagedDatabaseColumnsClientListByDatabaseOptions{Schema: []string{
@@ -59,7 +59,7 @@ func ExampleManagedDatabaseColumnsClient_ListByDatabase() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ManagedDatabaseColumnListByTable.json
-func ExampleManagedDatabaseColumnsClient_ListByTable() {
+func ExampleManagedDatabaseColumnsClient_NewListByTablePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -71,7 +71,7 @@ func ExampleManagedDatabaseColumnsClient_ListByTable() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByTable("<resource-group-name>",
+	pager := client.NewListByTablePager("<resource-group-name>",
 		"<managed-instance-name>",
 		"<database-name>",
 		"<schema-name>",

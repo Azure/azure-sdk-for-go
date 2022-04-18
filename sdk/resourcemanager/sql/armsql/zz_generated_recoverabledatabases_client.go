@@ -116,14 +116,14 @@ func (client *RecoverableDatabasesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListByServer - Gets a list of recoverable databases
+// NewListByServerPager - Gets a list of recoverable databases
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - RecoverableDatabasesClientListByServerOptions contains the optional parameters for the RecoverableDatabasesClient.ListByServer
 // method.
-func (client *RecoverableDatabasesClient) ListByServer(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
+func (client *RecoverableDatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *RecoverableDatabasesClientListByServerOptions) *runtime.Pager[RecoverableDatabasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[RecoverableDatabasesClientListByServerResponse]{
 		More: func(page RecoverableDatabasesClientListByServerResponse) bool {
 			return false

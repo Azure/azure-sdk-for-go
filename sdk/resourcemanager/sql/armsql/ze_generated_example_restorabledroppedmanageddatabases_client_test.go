@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-05-01-preview/examples/RestorableDroppedManagedDatabaseListByManagedInstance.json
-func ExampleRestorableDroppedManagedDatabasesClient_ListByInstance() {
+func ExampleRestorableDroppedManagedDatabasesClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleRestorableDroppedManagedDatabasesClient_ListByInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByInstance("<resource-group-name>",
+	pager := client.NewListByInstancePager("<resource-group-name>",
 		"<managed-instance-name>",
 		nil)
 	for pager.More() {

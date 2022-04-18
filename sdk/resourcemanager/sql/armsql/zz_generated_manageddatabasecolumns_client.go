@@ -131,7 +131,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListByDatabase - List managed database columns
+// NewListByDatabasePager - List managed database columns
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -139,7 +139,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 // databaseName - The name of the database.
 // options - ManagedDatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseColumnsClient.ListByDatabase
 // method.
-func (client *ManagedDatabaseColumnsClient) ListByDatabase(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse] {
+func (client *ManagedDatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -229,7 +229,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 	return result, nil
 }
 
-// ListByTable - List managed database columns
+// NewListByTablePager - List managed database columns
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -239,7 +239,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 // tableName - The name of the table.
 // options - ManagedDatabaseColumnsClientListByTableOptions contains the optional parameters for the ManagedDatabaseColumnsClient.ListByTable
 // method.
-func (client *ManagedDatabaseColumnsClient) ListByTable(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse] {
+func (client *ManagedDatabaseColumnsClient) NewListByTablePager(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseColumnsClientListByTableResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

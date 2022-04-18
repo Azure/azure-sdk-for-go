@@ -109,10 +109,10 @@ func (client *DeletedServersClient) getHandleResponse(resp *http.Response) (Dele
 	return result, nil
 }
 
-// List - Gets a list of all deleted servers in a subscription.
+// NewListPager - Gets a list of all deleted servers in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedServersClientListOptions contains the optional parameters for the DeletedServersClient.List method.
-func (client *DeletedServersClient) List(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
+func (client *DeletedServersClient) NewListPager(options *DeletedServersClientListOptions) *runtime.Pager[DeletedServersClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedServersClientListResponse]{
 		More: func(page DeletedServersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -167,12 +167,12 @@ func (client *DeletedServersClient) listHandleResponse(resp *http.Response) (Del
 	return result, nil
 }
 
-// ListByLocation - Gets a list of deleted servers for a location.
+// NewListByLocationPager - Gets a list of deleted servers for a location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // locationName - The name of the region where the resource is located.
 // options - DeletedServersClientListByLocationOptions contains the optional parameters for the DeletedServersClient.ListByLocation
 // method.
-func (client *DeletedServersClient) ListByLocation(locationName string, options *DeletedServersClientListByLocationOptions) *runtime.Pager[DeletedServersClientListByLocationResponse] {
+func (client *DeletedServersClient) NewListByLocationPager(locationName string, options *DeletedServersClientListByLocationOptions) *runtime.Pager[DeletedServersClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DeletedServersClientListByLocationResponse]{
 		More: func(page DeletedServersClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

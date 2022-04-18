@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ListManagedInstanceOperations.json
-func ExampleManagedInstanceOperationsClient_ListByManagedInstance() {
+func ExampleManagedInstanceOperationsClient_NewListByManagedInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleManagedInstanceOperationsClient_ListByManagedInstance() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByManagedInstance("<resource-group-name>",
+	pager := client.NewListByManagedInstancePager("<resource-group-name>",
 		"<managed-instance-name>",
 		nil)
 	for pager.More() {

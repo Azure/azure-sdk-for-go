@@ -450,7 +450,7 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// ListByElasticPool - Gets a list of databases in an elastic pool.
+// NewListByElasticPoolPager - Gets a list of databases in an elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -458,7 +458,7 @@ func (client *DatabasesClient) importCreateRequest(ctx context.Context, resource
 // elasticPoolName - The name of the elastic pool.
 // options - DatabasesClientListByElasticPoolOptions contains the optional parameters for the DatabasesClient.ListByElasticPool
 // method.
-func (client *DatabasesClient) ListByElasticPool(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesClientListByElasticPoolOptions) *runtime.Pager[DatabasesClientListByElasticPoolResponse] {
+func (client *DatabasesClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *DatabasesClientListByElasticPoolOptions) *runtime.Pager[DatabasesClientListByElasticPoolResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByElasticPoolResponse]{
 		More: func(page DatabasesClientListByElasticPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -525,13 +525,13 @@ func (client *DatabasesClient) listByElasticPoolHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListByServer - Gets a list of databases.
+// NewListByServerPager - Gets a list of databases.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.ListByServer method.
-func (client *DatabasesClient) ListByServer(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
+func (client *DatabasesClient) NewListByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListByServerOptions) *runtime.Pager[DatabasesClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListByServerResponse]{
 		More: func(page DatabasesClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -597,14 +597,14 @@ func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListInaccessibleByServer - Gets a list of inaccessible databases in a logical server
+// NewListInaccessibleByServerPager - Gets a list of inaccessible databases in a logical server
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - DatabasesClientListInaccessibleByServerOptions contains the optional parameters for the DatabasesClient.ListInaccessibleByServer
 // method.
-func (client *DatabasesClient) ListInaccessibleByServer(resourceGroupName string, serverName string, options *DatabasesClientListInaccessibleByServerOptions) *runtime.Pager[DatabasesClientListInaccessibleByServerResponse] {
+func (client *DatabasesClient) NewListInaccessibleByServerPager(resourceGroupName string, serverName string, options *DatabasesClientListInaccessibleByServerOptions) *runtime.Pager[DatabasesClientListInaccessibleByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListInaccessibleByServerResponse]{
 		More: func(page DatabasesClientListInaccessibleByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -667,7 +667,7 @@ func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http
 	return result, nil
 }
 
-// ListMetricDefinitions - Returns database metric definitions.
+// NewListMetricDefinitionsPager - Returns database metric definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -675,7 +675,7 @@ func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http
 // databaseName - The name of the database.
 // options - DatabasesClientListMetricDefinitionsOptions contains the optional parameters for the DatabasesClient.ListMetricDefinitions
 // method.
-func (client *DatabasesClient) ListMetricDefinitions(resourceGroupName string, serverName string, databaseName string, options *DatabasesClientListMetricDefinitionsOptions) *runtime.Pager[DatabasesClientListMetricDefinitionsResponse] {
+func (client *DatabasesClient) NewListMetricDefinitionsPager(resourceGroupName string, serverName string, databaseName string, options *DatabasesClientListMetricDefinitionsOptions) *runtime.Pager[DatabasesClientListMetricDefinitionsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListMetricDefinitionsResponse]{
 		More: func(page DatabasesClientListMetricDefinitionsResponse) bool {
 			return false
@@ -736,7 +736,7 @@ func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListMetrics - Returns database metrics.
+// NewListMetricsPager - Returns database metrics.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -744,7 +744,7 @@ func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *http.Re
 // databaseName - The name of the database.
 // filter - An OData filter expression that describes a subset of metrics to return.
 // options - DatabasesClientListMetricsOptions contains the optional parameters for the DatabasesClient.ListMetrics method.
-func (client *DatabasesClient) ListMetrics(resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesClientListMetricsOptions) *runtime.Pager[DatabasesClientListMetricsResponse] {
+func (client *DatabasesClient) NewListMetricsPager(resourceGroupName string, serverName string, databaseName string, filter string, options *DatabasesClientListMetricsOptions) *runtime.Pager[DatabasesClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[DatabasesClientListMetricsResponse]{
 		More: func(page DatabasesClientListMetricsResponse) bool {
 			return false

@@ -19,7 +19,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ReplicationLinkListByDatabase.json
-func ExampleReplicationLinksClient_ListByDatabase() {
+func ExampleReplicationLinksClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -31,7 +31,7 @@ func ExampleReplicationLinksClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		nil)
@@ -165,7 +165,7 @@ func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ReplicationLinkListByServer.json
-func ExampleReplicationLinksClient_ListByServer() {
+func ExampleReplicationLinksClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,7 +177,7 @@ func ExampleReplicationLinksClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

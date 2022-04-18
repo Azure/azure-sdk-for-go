@@ -249,14 +249,14 @@ func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (S
 	return result, nil
 }
 
-// ListByInstance - Gets a server trust groups by instance name.
+// NewListByInstancePager - Gets a server trust groups by instance name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ServerTrustGroupsClientListByInstanceOptions contains the optional parameters for the ServerTrustGroupsClient.ListByInstance
 // method.
-func (client *ServerTrustGroupsClient) ListByInstance(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse] {
+func (client *ServerTrustGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByInstanceResponse]{
 		More: func(page ServerTrustGroupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -319,14 +319,14 @@ func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListByLocation - Lists a server trust group.
+// NewListByLocationPager - Lists a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // options - ServerTrustGroupsClientListByLocationOptions contains the optional parameters for the ServerTrustGroupsClient.ListByLocation
 // method.
-func (client *ServerTrustGroupsClient) ListByLocation(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse] {
+func (client *ServerTrustGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByLocationResponse]{
 		More: func(page ServerTrustGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

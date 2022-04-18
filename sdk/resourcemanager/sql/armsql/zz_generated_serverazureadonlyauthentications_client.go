@@ -252,14 +252,14 @@ func (client *ServerAzureADOnlyAuthenticationsClient) getHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListByServer - Gets a list of server Azure Active Directory only authentications.
+// NewListByServerPager - Gets a list of server Azure Active Directory only authentications.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerAzureADOnlyAuthenticationsClientListByServerOptions contains the optional parameters for the ServerAzureADOnlyAuthenticationsClient.ListByServer
 // method.
-func (client *ServerAzureADOnlyAuthenticationsClient) ListByServer(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse] {
+func (client *ServerAzureADOnlyAuthenticationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerAzureADOnlyAuthenticationsClientListByServerOptions) *runtime.Pager[ServerAzureADOnlyAuthenticationsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServerAzureADOnlyAuthenticationsClientListByServerResponse]{
 		More: func(page ServerAzureADOnlyAuthenticationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

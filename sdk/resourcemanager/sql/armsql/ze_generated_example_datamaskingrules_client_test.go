@@ -55,7 +55,7 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/DataMaskingRuleList.json
-func ExampleDataMaskingRulesClient_ListByDatabase() {
+func ExampleDataMaskingRulesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -67,7 +67,7 @@ func ExampleDataMaskingRulesClient_ListByDatabase() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByDatabase("<resource-group-name>",
+	pager := client.NewListByDatabasePager("<resource-group-name>",
 		"<server-name>",
 		"<database-name>",
 		nil)

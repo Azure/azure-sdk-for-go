@@ -234,10 +234,10 @@ func (client *InstancePoolsClient) getHandleResponse(resp *http.Response) (Insta
 	return result, nil
 }
 
-// List - Gets a list of all instance pools in the subscription.
+// NewListPager - Gets a list of all instance pools in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - InstancePoolsClientListOptions contains the optional parameters for the InstancePoolsClient.List method.
-func (client *InstancePoolsClient) List(options *InstancePoolsClientListOptions) *runtime.Pager[InstancePoolsClientListResponse] {
+func (client *InstancePoolsClient) NewListPager(options *InstancePoolsClientListOptions) *runtime.Pager[InstancePoolsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InstancePoolsClientListResponse]{
 		More: func(page InstancePoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -292,13 +292,13 @@ func (client *InstancePoolsClient) listHandleResponse(resp *http.Response) (Inst
 	return result, nil
 }
 
-// ListByResourceGroup - Gets a list of instance pools in the resource group
+// NewListByResourceGroupPager - Gets a list of instance pools in the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - InstancePoolsClientListByResourceGroupOptions contains the optional parameters for the InstancePoolsClient.ListByResourceGroup
 // method.
-func (client *InstancePoolsClient) ListByResourceGroup(resourceGroupName string, options *InstancePoolsClientListByResourceGroupOptions) *runtime.Pager[InstancePoolsClientListByResourceGroupResponse] {
+func (client *InstancePoolsClient) NewListByResourceGroupPager(resourceGroupName string, options *InstancePoolsClientListByResourceGroupOptions) *runtime.Pager[InstancePoolsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[InstancePoolsClientListByResourceGroupResponse]{
 		More: func(page InstancePoolsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

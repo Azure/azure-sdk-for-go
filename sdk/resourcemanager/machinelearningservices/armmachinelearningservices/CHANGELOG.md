@@ -1,5 +1,35 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*QuotasClient.List` has been removed
+- Function `*UsagesClient.List` has been removed
+- Function `*WorkspaceConnectionsClient.List` has been removed
+- Function `*WorkspacesClient.ListByResourceGroup` has been removed
+- Function `*ComputeClient.List` has been removed
+- Function `*WorkspacesClient.ListBySubscription` has been removed
+- Function `*ComputeClient.ListNodes` has been removed
+- Function `*WorkspaceSKUsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*WorkspaceFeaturesClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+
+### Features Added
+
+- New function `*QuotasClient.NewListPager(string, *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse]`
+- New function `*UsagesClient.NewListPager(string, *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse]`
+- New function `*WorkspaceSKUsClient.NewListPager(*WorkspaceSKUsClientListOptions) *runtime.Pager[WorkspaceSKUsClientListResponse]`
+- New function `*WorkspaceConnectionsClient.NewListPager(string, string, *WorkspaceConnectionsClientListOptions) *runtime.Pager[WorkspaceConnectionsClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*ComputeClient.NewListPager(string, string, *ComputeClientListOptions) *runtime.Pager[ComputeClientListResponse]`
+- New function `*WorkspaceFeaturesClient.NewListPager(string, string, *WorkspaceFeaturesClientListOptions) *runtime.Pager[WorkspaceFeaturesClientListResponse]`
+- New function `*ComputeClient.NewListNodesPager(string, string, string, *ComputeClientListNodesOptions) *runtime.Pager[ComputeClientListNodesResponse]`
+- New function `*WorkspacesClient.NewListByResourceGroupPager(string, *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*WorkspacesClient.NewListBySubscriptionPager(*WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse]`
+
+
 ## 0.3.0 (2022-04-12)
 ### Breaking Changes
 

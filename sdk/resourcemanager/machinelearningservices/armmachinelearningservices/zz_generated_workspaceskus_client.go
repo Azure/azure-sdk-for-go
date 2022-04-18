@@ -54,10 +54,10 @@ func NewWorkspaceSKUsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// List - Lists all skus with associated features
+// NewListPager - Lists all skus with associated features
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkspaceSKUsClientListOptions contains the optional parameters for the WorkspaceSKUsClient.List method.
-func (client *WorkspaceSKUsClient) List(options *WorkspaceSKUsClientListOptions) *runtime.Pager[WorkspaceSKUsClientListResponse] {
+func (client *WorkspaceSKUsClient) NewListPager(options *WorkspaceSKUsClientListOptions) *runtime.Pager[WorkspaceSKUsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceSKUsClientListResponse]{
 		More: func(page WorkspaceSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

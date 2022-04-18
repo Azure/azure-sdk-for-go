@@ -54,11 +54,11 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// List - Gets the current usage information as well as limits for AML resources for given subscription and location.
+// NewListPager - Gets the current usage information as well as limits for AML resources for given subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - The location for which resource usage is queried.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
-func (client *UsagesClient) List(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
+func (client *UsagesClient) NewListPager(location string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -297,12 +297,12 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all the available machine learning workspaces under the specified resource group.
+// NewListByResourceGroupPager - Lists all the available machine learning workspaces under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
 // method.
-func (client *WorkspacesClient) ListByResourceGroup(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
+func (client *WorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListByResourceGroupResponse]{
 		More: func(page WorkspacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -364,11 +364,11 @@ func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListBySubscription - Lists all the available machine learning workspaces under the specified subscription.
+// NewListBySubscriptionPager - Lists all the available machine learning workspaces under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
 // method.
-func (client *WorkspacesClient) ListBySubscription(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
+func (client *WorkspacesClient) NewListBySubscriptionPager(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListBySubscriptionResponse]{
 		More: func(page WorkspacesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

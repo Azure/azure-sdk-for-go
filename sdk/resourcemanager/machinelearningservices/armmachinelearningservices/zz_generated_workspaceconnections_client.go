@@ -229,13 +229,13 @@ func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// List - List all connections under a AML workspace.
+// NewListPager - List all connections under a AML workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.List
 // method.
-func (client *WorkspaceConnectionsClient) List(resourceGroupName string, workspaceName string, options *WorkspaceConnectionsClientListOptions) *runtime.Pager[WorkspaceConnectionsClientListResponse] {
+func (client *WorkspaceConnectionsClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceConnectionsClientListOptions) *runtime.Pager[WorkspaceConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[WorkspaceConnectionsClientListResponse]{
 		More: func(page WorkspaceConnectionsClientListResponse) bool {
 			return false

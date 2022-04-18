@@ -240,13 +240,13 @@ func (client *FunctionsClient) getHandleResponse(resp *http.Response) (Functions
 	return result, nil
 }
 
-// ListByStreamingJob - Lists all of the functions under the specified streaming job.
+// NewListByStreamingJobPager - Lists all of the functions under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - FunctionsClientListByStreamingJobOptions contains the optional parameters for the FunctionsClient.ListByStreamingJob
 // method.
-func (client *FunctionsClient) ListByStreamingJob(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *runtime.Pager[FunctionsClientListByStreamingJobResponse] {
+func (client *FunctionsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *runtime.Pager[FunctionsClientListByStreamingJobResponse] {
 	return runtime.NewPager(runtime.PageProcessor[FunctionsClientListByStreamingJobResponse]{
 		More: func(page FunctionsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -249,13 +249,13 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *http.Response) (Pr
 	return result, nil
 }
 
-// ListByCluster - Lists the private endpoints in the cluster.
+// NewListByClusterPager - Lists the private endpoints in the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - PrivateEndpointsClientListByClusterOptions contains the optional parameters for the PrivateEndpointsClient.ListByCluster
 // method.
-func (client *PrivateEndpointsClient) ListByCluster(resourceGroupName string, clusterName string, options *PrivateEndpointsClientListByClusterOptions) *runtime.Pager[PrivateEndpointsClientListByClusterResponse] {
+func (client *PrivateEndpointsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *PrivateEndpointsClientListByClusterOptions) *runtime.Pager[PrivateEndpointsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointsClientListByClusterResponse]{
 		More: func(page PrivateEndpointsClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

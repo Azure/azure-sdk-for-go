@@ -1,5 +1,33 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*ClustersClient.ListBySubscription` has been removed
+- Function `*ClustersClient.ListStreamingJobs` has been removed
+- Function `*StreamingJobsClient.ListByResourceGroup` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*PrivateEndpointsClient.ListByCluster` has been removed
+- Function `*FunctionsClient.ListByStreamingJob` has been removed
+- Function `*OutputsClient.ListByStreamingJob` has been removed
+- Function `*ClustersClient.ListByResourceGroup` has been removed
+- Function `*InputsClient.ListByStreamingJob` has been removed
+- Function `*StreamingJobsClient.List` has been removed
+
+### Features Added
+
+- New function `*PrivateEndpointsClient.NewListByClusterPager(string, string, *PrivateEndpointsClientListByClusterOptions) *runtime.Pager[PrivateEndpointsClientListByClusterResponse]`
+- New function `*ClustersClient.NewListBySubscriptionPager(*ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*StreamingJobsClient.NewListByResourceGroupPager(string, *StreamingJobsClientListByResourceGroupOptions) *runtime.Pager[StreamingJobsClientListByResourceGroupResponse]`
+- New function `*FunctionsClient.NewListByStreamingJobPager(string, string, *FunctionsClientListByStreamingJobOptions) *runtime.Pager[FunctionsClientListByStreamingJobResponse]`
+- New function `*InputsClient.NewListByStreamingJobPager(string, string, *InputsClientListByStreamingJobOptions) *runtime.Pager[InputsClientListByStreamingJobResponse]`
+- New function `*ClustersClient.NewListStreamingJobsPager(string, string, *ClustersClientListStreamingJobsOptions) *runtime.Pager[ClustersClientListStreamingJobsResponse]`
+- New function `*ClustersClient.NewListByResourceGroupPager(string, *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse]`
+- New function `*StreamingJobsClient.NewListPager(*StreamingJobsClientListOptions) *runtime.Pager[StreamingJobsClientListResponse]`
+- New function `*OutputsClient.NewListByStreamingJobPager(string, string, *OutputsClientListByStreamingJobOptions) *runtime.Pager[OutputsClientListByStreamingJobResponse]`
+
+
 ## 0.4.0 (2022-04-13)
 ### Breaking Changes
 

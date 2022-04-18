@@ -245,10 +245,10 @@ func (client *StreamingJobsClient) getHandleResponse(resp *http.Response) (Strea
 	return result, nil
 }
 
-// List - Lists all of the streaming jobs in the given subscription.
+// NewListPager - Lists all of the streaming jobs in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - StreamingJobsClientListOptions contains the optional parameters for the StreamingJobsClient.List method.
-func (client *StreamingJobsClient) List(options *StreamingJobsClientListOptions) *runtime.Pager[StreamingJobsClientListResponse] {
+func (client *StreamingJobsClient) NewListPager(options *StreamingJobsClientListOptions) *runtime.Pager[StreamingJobsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StreamingJobsClientListResponse]{
 		More: func(page StreamingJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -306,12 +306,12 @@ func (client *StreamingJobsClient) listHandleResponse(resp *http.Response) (Stre
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the streaming jobs in the specified resource group.
+// NewListByResourceGroupPager - Lists all of the streaming jobs in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - StreamingJobsClientListByResourceGroupOptions contains the optional parameters for the StreamingJobsClient.ListByResourceGroup
 // method.
-func (client *StreamingJobsClient) ListByResourceGroup(resourceGroupName string, options *StreamingJobsClientListByResourceGroupOptions) *runtime.Pager[StreamingJobsClientListByResourceGroupResponse] {
+func (client *StreamingJobsClient) NewListByResourceGroupPager(resourceGroupName string, options *StreamingJobsClientListByResourceGroupOptions) *runtime.Pager[StreamingJobsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[StreamingJobsClientListByResourceGroupResponse]{
 		More: func(page StreamingJobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

@@ -168,7 +168,7 @@ func ExampleInputsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Input_ListByStreamingJob.json
-func ExampleInputsClient_ListByStreamingJob() {
+func ExampleInputsClient_NewListByStreamingJobPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -180,7 +180,7 @@ func ExampleInputsClient_ListByStreamingJob() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByStreamingJob("<resource-group-name>",
+	pager := client.NewListByStreamingJobPager("<resource-group-name>",
 		"<job-name>",
 		&armstreamanalytics.InputsClientListByStreamingJobOptions{Select: nil})
 	for pager.More() {

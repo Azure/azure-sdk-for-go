@@ -205,7 +205,7 @@ func ExampleStreamingJobsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_List_ByResourceGroup_NoExpand.json
-func ExampleStreamingJobsClient_ListByResourceGroup() {
+func ExampleStreamingJobsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -217,7 +217,7 @@ func ExampleStreamingJobsClient_ListByResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByResourceGroup("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armstreamanalytics.StreamingJobsClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -233,7 +233,7 @@ func ExampleStreamingJobsClient_ListByResourceGroup() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_List_BySubscription_NoExpand.json
-func ExampleStreamingJobsClient_List() {
+func ExampleStreamingJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -245,7 +245,7 @@ func ExampleStreamingJobsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List(&armstreamanalytics.StreamingJobsClientListOptions{Expand: nil})
+	pager := client.NewListPager(&armstreamanalytics.StreamingJobsClientListOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

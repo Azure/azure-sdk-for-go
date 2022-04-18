@@ -237,12 +237,12 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 	return result, nil
 }
 
-// ListByResourceGroup - Lists all of the clusters in the given resource group.
+// NewListByResourceGroupPager - Lists all of the clusters in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
-func (client *ClustersClient) ListByResourceGroup(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
+func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -301,11 +301,11 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListBySubscription - Lists all of the clusters in the given subscription.
+// NewListBySubscriptionPager - Lists all of the clusters in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription
 // method.
-func (client *ClustersClient) ListBySubscription(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
+func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListBySubscriptionResponse]{
 		More: func(page ClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -360,13 +360,13 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListStreamingJobs - Lists all of the streaming jobs in the given cluster.
+// NewListStreamingJobsPager - Lists all of the streaming jobs in the given cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ClustersClientListStreamingJobsOptions contains the optional parameters for the ClustersClient.ListStreamingJobs
 // method.
-func (client *ClustersClient) ListStreamingJobs(resourceGroupName string, clusterName string, options *ClustersClientListStreamingJobsOptions) *runtime.Pager[ClustersClientListStreamingJobsResponse] {
+func (client *ClustersClient) NewListStreamingJobsPager(resourceGroupName string, clusterName string, options *ClustersClientListStreamingJobsOptions) *runtime.Pager[ClustersClientListStreamingJobsResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ClustersClientListStreamingJobsResponse]{
 		More: func(page ClustersClientListStreamingJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

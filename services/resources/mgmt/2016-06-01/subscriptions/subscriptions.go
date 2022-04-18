@@ -32,6 +32,82 @@ func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
 
+// CheckZonePeers compares a subscriptions logical zone mapping
+// Parameters:
+// subscriptionID - the ID of the target subscription.
+// parameters - parameters for checking zone peers.
+func (client Client) CheckZonePeers(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest) (result CheckZonePeersResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CheckZonePeers")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckZonePeersPreparer(ctx, subscriptionID, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscriptions.Client", "CheckZonePeers", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckZonePeersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "subscriptions.Client", "CheckZonePeers", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckZonePeersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscriptions.Client", "CheckZonePeers", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// CheckZonePeersPreparer prepares the CheckZonePeers request.
+func (client Client) CheckZonePeersPreparer(ctx context.Context, subscriptionID string, parameters CheckZonePeersRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", subscriptionID),
+	}
+
+	const APIVersion = "2016-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/checkZonePeers/", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckZonePeersSender sends the CheckZonePeers request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) CheckZonePeersSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CheckZonePeersResponder handles the response to the CheckZonePeers request. The method always
+// closes the http.Response Body.
+func (client Client) CheckZonePeersResponder(resp *http.Response) (result CheckZonePeersResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get gets details about a specified subscription.
 // Parameters:
 // subscriptionID - the ID of the target subscription.

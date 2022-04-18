@@ -694,6 +694,8 @@ type DeploymentPropertiesExtended struct {
 	Mode DeploymentMode `json:"mode,omitempty"`
 	// DebugSetting - The debug setting of the deployment.
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+	// Error - READ-ONLY; The deployment error.
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DeploymentPropertiesExtended.
@@ -1780,7 +1782,8 @@ type ProviderResourceType struct {
 	// Aliases - The aliases that are supported by this resource type.
 	Aliases *[]AliasType `json:"aliases,omitempty"`
 	// APIVersions - The API version.
-	APIVersions *[]string `json:"apiVersions,omitempty"`
+	APIVersions  *[]string      `json:"apiVersions,omitempty"`
+	ZoneMappings *[]ZoneMapping `json:"zoneMappings,omitempty"`
 	// Properties - The properties.
 	Properties map[string]*string `json:"properties"`
 }
@@ -1799,6 +1802,9 @@ func (prt ProviderResourceType) MarshalJSON() ([]byte, error) {
 	}
 	if prt.APIVersions != nil {
 		objectMap["apiVersions"] = prt.APIVersions
+	}
+	if prt.ZoneMappings != nil {
+		objectMap["zoneMappings"] = prt.ZoneMappings
 	}
 	if prt.Properties != nil {
 		objectMap["properties"] = prt.Properties
@@ -2228,4 +2234,11 @@ func (future *ValidateMoveResourcesFuture) result(client Client) (ar autorest.Re
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ZoneMapping ...
+type ZoneMapping struct {
+	// Location - The location of the zone mapping.
+	Location *string   `json:"location,omitempty"`
+	Zones    *[]string `json:"zones,omitempty"`
 }

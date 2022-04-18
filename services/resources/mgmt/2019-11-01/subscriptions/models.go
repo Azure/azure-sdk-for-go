@@ -18,6 +18,23 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/subscriptions"
 
+// AvailabilityZonePeers list of availability zones shared by the subscriptions.
+type AvailabilityZonePeers struct {
+	// AvailabilityZone - READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+	// Peers - Details of shared availability zone.
+	Peers *[]Peers `json:"peers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AvailabilityZonePeers.
+func (azp AvailabilityZonePeers) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if azp.Peers != nil {
+		objectMap["peers"] = azp.Peers
+	}
+	return json.Marshal(objectMap)
+}
+
 // CheckResourceNameResult resource Name valid if not a reserved word, does not contain a reserved word and
 // does not start with a reserved word
 type CheckResourceNameResult struct {
@@ -28,6 +45,37 @@ type CheckResourceNameResult struct {
 	Type *string `json:"type,omitempty"`
 	// Status - Is the resource name Allowed or Reserved. Possible values include: 'Allowed', 'Reserved'
 	Status ResourceNameStatus `json:"status,omitempty"`
+}
+
+// CheckZonePeersRequest check zone peers request parameters.
+type CheckZonePeersRequest struct {
+	// Location - The Microsoft location.
+	Location *string `json:"location,omitempty"`
+	// SubscriptionIds - The peer Microsoft Azure subscription ID.
+	SubscriptionIds *[]string `json:"subscriptionIds,omitempty"`
+}
+
+// CheckZonePeersResult result of the Check zone peers operation.
+type CheckZonePeersResult struct {
+	autorest.Response `json:"-"`
+	// SubscriptionID - READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// Location - the location of the subscription.
+	Location *string `json:"location,omitempty"`
+	// AvailabilityZonePeers - The Availability Zones shared by the subscriptions.
+	AvailabilityZonePeers *[]AvailabilityZonePeers `json:"availabilityZonePeers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckZonePeersResult.
+func (czpr CheckZonePeersResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if czpr.Location != nil {
+		objectMap["location"] = czpr.Location
+	}
+	if czpr.AvailabilityZonePeers != nil {
+		objectMap["availabilityZonePeers"] = czpr.AvailabilityZonePeers
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorDefinition error description and code explaining why resource name is invalid.
@@ -466,6 +514,20 @@ type PairedRegion struct {
 
 // MarshalJSON is the custom marshaler for PairedRegion.
 func (pr PairedRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// Peers information about shared availability zone.
+type Peers struct {
+	// SubscriptionID - READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// AvailabilityZone - READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Peers.
+func (p Peers) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

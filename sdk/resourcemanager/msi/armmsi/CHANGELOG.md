@@ -1,5 +1,21 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*UserAssignedIdentitiesClient.ListBySubscription` has been removed
+- Function `*UserAssignedIdentitiesClient.ListAssociatedResources` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*UserAssignedIdentitiesClient.ListByResourceGroup` has been removed
+
+### Features Added
+
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*UserAssignedIdentitiesClient.NewListAssociatedResourcesPager(string, string, *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse]`
+- New function `*UserAssignedIdentitiesClient.NewListByResourceGroupPager(string, *UserAssignedIdentitiesClientListByResourceGroupOptions) *runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse]`
+- New function `*UserAssignedIdentitiesClient.NewListBySubscriptionPager(*UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse]`
+
+
 ## 0.4.0 (2022-04-12)
 ### Breaking Changes
 

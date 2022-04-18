@@ -17,7 +17,7 @@ import (
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/PerformanceTiersListByLocation.json
-func ExampleLocationBasedPerformanceTierClient_List() {
+func ExampleLocationBasedPerformanceTierClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleLocationBasedPerformanceTierClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.List("<location-name>",
+	pager := client.NewListPager("<location-name>",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

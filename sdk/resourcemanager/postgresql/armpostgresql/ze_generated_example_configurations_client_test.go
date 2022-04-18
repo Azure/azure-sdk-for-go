@@ -83,7 +83,7 @@ func ExampleConfigurationsClient_Get() {
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ConfigurationListByServer.json
-func ExampleConfigurationsClient_ListByServer() {
+func ExampleConfigurationsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -95,7 +95,7 @@ func ExampleConfigurationsClient_ListByServer() {
 		log.Fatalf("failed to create client: %v", err)
 		return
 	}
-	pager := client.ListByServer("<resource-group-name>",
+	pager := client.NewListByServerPager("<resource-group-name>",
 		"<server-name>",
 		nil)
 	for pager.More() {

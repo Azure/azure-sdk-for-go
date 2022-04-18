@@ -1,5 +1,45 @@
 # Release History
 
+## 0.6.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*EncryptionScopesClient.List` has been removed
+- Function `*TableClient.List` has been removed
+- Function `*AccountsClient.ListByResourceGroup` has been removed
+- Function `*FileSharesClient.List` has been removed
+- Function `*LocalUsersClient.List` has been removed
+- Function `*BlobInventoryPoliciesClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*BlobContainersClient.List` has been removed
+- Function `*BlobServicesClient.List` has been removed
+- Function `*DeletedAccountsClient.List` has been removed
+- Function `*UsagesClient.ListByLocation` has been removed
+- Function `*ObjectReplicationPoliciesClient.List` has been removed
+- Function `*QueueClient.List` has been removed
+- Function `*AccountsClient.List` has been removed
+- Function `*PrivateEndpointConnectionsClient.List` has been removed
+- Function `*SKUsClient.List` has been removed
+
+### Features Added
+
+- New function `*UsagesClient.NewListByLocationPager(string, *UsagesClientListByLocationOptions) *runtime.Pager[UsagesClientListByLocationResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*BlobContainersClient.NewListPager(string, string, *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse]`
+- New function `*ObjectReplicationPoliciesClient.NewListPager(string, string, *ObjectReplicationPoliciesClientListOptions) *runtime.Pager[ObjectReplicationPoliciesClientListResponse]`
+- New function `*AccountsClient.NewListPager(*AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse]`
+- New function `*LocalUsersClient.NewListPager(string, string, *LocalUsersClientListOptions) *runtime.Pager[LocalUsersClientListResponse]`
+- New function `*SKUsClient.NewListPager(*SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse]`
+- New function `*AccountsClient.NewListByResourceGroupPager(string, *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse]`
+- New function `*QueueClient.NewListPager(string, string, *QueueClientListOptions) *runtime.Pager[QueueClientListResponse]`
+- New function `*FileSharesClient.NewListPager(string, string, *FileSharesClientListOptions) *runtime.Pager[FileSharesClientListResponse]`
+- New function `*PrivateEndpointConnectionsClient.NewListPager(string, string, *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse]`
+- New function `*BlobInventoryPoliciesClient.NewListPager(string, string, *BlobInventoryPoliciesClientListOptions) *runtime.Pager[BlobInventoryPoliciesClientListResponse]`
+- New function `*TableClient.NewListPager(string, string, *TableClientListOptions) *runtime.Pager[TableClientListResponse]`
+- New function `*EncryptionScopesClient.NewListPager(string, string, *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse]`
+- New function `*BlobServicesClient.NewListPager(string, string, *BlobServicesClientListOptions) *runtime.Pager[BlobServicesClientListResponse]`
+- New function `*DeletedAccountsClient.NewListPager(*DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse]`
+
+
 ## 0.5.0 (2022-04-14)
 ### Breaking Changes
 

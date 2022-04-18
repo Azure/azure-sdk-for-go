@@ -117,13 +117,13 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 	return result, nil
 }
 
-// List - Lists all the encryption scopes available under the specified storage account.
+// NewListPager - Lists all the encryption scopes available under the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
-func (client *EncryptionScopesClient) List(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse] {
+func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[EncryptionScopesClientListResponse]{
 		More: func(page EncryptionScopesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

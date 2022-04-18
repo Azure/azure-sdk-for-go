@@ -253,12 +253,12 @@ func (client *MoveResourcesClient) getHandleResponse(resp *http.Response) (MoveR
 	return result, nil
 }
 
-// List - Lists the Move Resources in the move collection.
+// NewListPager - Lists the Move Resources in the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // options - MoveResourcesClientListOptions contains the optional parameters for the MoveResourcesClient.List method.
-func (client *MoveResourcesClient) List(resourceGroupName string, moveCollectionName string, options *MoveResourcesClientListOptions) *runtime.Pager[MoveResourcesClientListResponse] {
+func (client *MoveResourcesClient) NewListPager(resourceGroupName string, moveCollectionName string, options *MoveResourcesClientListOptions) *runtime.Pager[MoveResourcesClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MoveResourcesClientListResponse]{
 		More: func(page MoveResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

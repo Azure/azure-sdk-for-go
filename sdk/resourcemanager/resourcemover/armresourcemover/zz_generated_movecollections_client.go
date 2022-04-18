@@ -514,12 +514,12 @@ func (client *MoveCollectionsClient) initiateMoveCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// ListMoveCollectionsByResourceGroup - Get all the Move Collections in the resource group.
+// NewListMoveCollectionsByResourceGroupPager - Get all the Move Collections in the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The Resource Group Name.
 // options - MoveCollectionsClientListMoveCollectionsByResourceGroupOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsByResourceGroup
 // method.
-func (client *MoveCollectionsClient) ListMoveCollectionsByResourceGroup(resourceGroupName string, options *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse] {
+func (client *MoveCollectionsClient) NewListMoveCollectionsByResourceGroupPager(resourceGroupName string, options *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse]{
 		More: func(page MoveCollectionsClientListMoveCollectionsByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -578,11 +578,11 @@ func (client *MoveCollectionsClient) listMoveCollectionsByResourceGroupHandleRes
 	return result, nil
 }
 
-// ListMoveCollectionsBySubscription - Get all the Move Collections in the subscription.
+// NewListMoveCollectionsBySubscriptionPager - Get all the Move Collections in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - MoveCollectionsClientListMoveCollectionsBySubscriptionOptions contains the optional parameters for the MoveCollectionsClient.ListMoveCollectionsBySubscription
 // method.
-func (client *MoveCollectionsClient) ListMoveCollectionsBySubscription(options *MoveCollectionsClientListMoveCollectionsBySubscriptionOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse] {
+func (client *MoveCollectionsClient) NewListMoveCollectionsBySubscriptionPager(options *MoveCollectionsClientListMoveCollectionsBySubscriptionOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse]{
 		More: func(page MoveCollectionsClientListMoveCollectionsBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

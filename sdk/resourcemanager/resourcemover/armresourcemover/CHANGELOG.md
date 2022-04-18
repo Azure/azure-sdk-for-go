@@ -1,5 +1,21 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*MoveCollectionsClient.ListMoveCollectionsBySubscription` has been removed
+- Function `*MoveCollectionsClient.ListMoveCollectionsByResourceGroup` has been removed
+- Function `*UnresolvedDependenciesClient.Get` has been removed
+- Function `*MoveResourcesClient.List` has been removed
+
+### Features Added
+
+- New function `*MoveCollectionsClient.NewListMoveCollectionsBySubscriptionPager(*MoveCollectionsClientListMoveCollectionsBySubscriptionOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsBySubscriptionResponse]`
+- New function `*MoveResourcesClient.NewListPager(string, string, *MoveResourcesClientListOptions) *runtime.Pager[MoveResourcesClientListResponse]`
+- New function `*UnresolvedDependenciesClient.NewGetPager(string, string, *UnresolvedDependenciesClientGetOptions) *runtime.Pager[UnresolvedDependenciesClientGetResponse]`
+- New function `*MoveCollectionsClient.NewListMoveCollectionsByResourceGroupPager(string, *MoveCollectionsClientListMoveCollectionsByResourceGroupOptions) *runtime.Pager[MoveCollectionsClientListMoveCollectionsByResourceGroupResponse]`
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

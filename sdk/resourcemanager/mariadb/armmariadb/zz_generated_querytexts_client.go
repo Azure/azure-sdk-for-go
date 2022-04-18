@@ -114,13 +114,13 @@ func (client *QueryTextsClient) getHandleResponse(resp *http.Response) (QueryTex
 	return result, nil
 }
 
-// ListByServer - Retrieve the Query-Store query texts for specified queryIds.
+// NewListByServerPager - Retrieve the Query-Store query texts for specified queryIds.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // queryIDs - The query identifiers
 // options - QueryTextsClientListByServerOptions contains the optional parameters for the QueryTextsClient.ListByServer method.
-func (client *QueryTextsClient) ListByServer(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *runtime.Pager[QueryTextsClientListByServerResponse] {
+func (client *QueryTextsClient) NewListByServerPager(resourceGroupName string, serverName string, queryIDs []string, options *QueryTextsClientListByServerOptions) *runtime.Pager[QueryTextsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[QueryTextsClientListByServerResponse]{
 		More: func(page QueryTextsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

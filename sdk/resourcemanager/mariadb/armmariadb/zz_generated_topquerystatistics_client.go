@@ -114,14 +114,14 @@ func (client *TopQueryStatisticsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListByServer - Retrieve the Query-Store top queries for specified metric and aggregation.
+// NewListByServerPager - Retrieve the Query-Store top queries for specified metric and aggregation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for retrieving top query statistics.
 // options - TopQueryStatisticsClientListByServerOptions contains the optional parameters for the TopQueryStatisticsClient.ListByServer
 // method.
-func (client *TopQueryStatisticsClient) ListByServer(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) *runtime.Pager[TopQueryStatisticsClientListByServerResponse] {
+func (client *TopQueryStatisticsClient) NewListByServerPager(resourceGroupName string, serverName string, parameters TopQueryStatisticsInput, options *TopQueryStatisticsClientListByServerOptions) *runtime.Pager[TopQueryStatisticsClientListByServerResponse] {
 	return runtime.NewPager(runtime.PageProcessor[TopQueryStatisticsClientListByServerResponse]{
 		More: func(page TopQueryStatisticsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

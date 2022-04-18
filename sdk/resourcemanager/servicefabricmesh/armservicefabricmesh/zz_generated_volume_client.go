@@ -204,13 +204,13 @@ func (client *VolumeClient) getHandleResponse(resp *http.Response) (VolumeClient
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the information about all volume resources in a given resource group. The information include
-// the description and other properties of the Volume.
+// NewListByResourceGroupPager - Gets the information about all volume resources in a given resource group. The information
+// include the description and other properties of the Volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // options - VolumeClientListByResourceGroupOptions contains the optional parameters for the VolumeClient.ListByResourceGroup
 // method.
-func (client *VolumeClient) ListByResourceGroup(resourceGroupName string, options *VolumeClientListByResourceGroupOptions) *runtime.Pager[VolumeClientListByResourceGroupResponse] {
+func (client *VolumeClient) NewListByResourceGroupPager(resourceGroupName string, options *VolumeClientListByResourceGroupOptions) *runtime.Pager[VolumeClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VolumeClientListByResourceGroupResponse]{
 		More: func(page VolumeClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -269,12 +269,12 @@ func (client *VolumeClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - Gets the information about all volume resources in a given resource group. The information include
-// the description and other properties of the volume.
+// NewListBySubscriptionPager - Gets the information about all volume resources in a given resource group. The information
+// include the description and other properties of the volume.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - VolumeClientListBySubscriptionOptions contains the optional parameters for the VolumeClient.ListBySubscription
 // method.
-func (client *VolumeClient) ListBySubscription(options *VolumeClientListBySubscriptionOptions) *runtime.Pager[VolumeClientListBySubscriptionResponse] {
+func (client *VolumeClient) NewListBySubscriptionPager(options *VolumeClientListBySubscriptionOptions) *runtime.Pager[VolumeClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[VolumeClientListBySubscriptionResponse]{
 		More: func(page VolumeClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

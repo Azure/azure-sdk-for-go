@@ -111,14 +111,14 @@ func (client *ServiceReplicaClient) getHandleResponse(resp *http.Response) (Serv
 	return result, nil
 }
 
-// List - Gets the information about all replicas of a given service of an application. The information includes the runtime
-// properties of the replica instance.
+// NewListPager - Gets the information about all replicas of a given service of an application. The information includes the
+// runtime properties of the replica instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // serviceResourceName - The identity of the service.
 // options - ServiceReplicaClientListOptions contains the optional parameters for the ServiceReplicaClient.List method.
-func (client *ServiceReplicaClient) List(resourceGroupName string, applicationResourceName string, serviceResourceName string, options *ServiceReplicaClientListOptions) *runtime.Pager[ServiceReplicaClientListResponse] {
+func (client *ServiceReplicaClient) NewListPager(resourceGroupName string, applicationResourceName string, serviceResourceName string, options *ServiceReplicaClientListOptions) *runtime.Pager[ServiceReplicaClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ServiceReplicaClientListResponse]{
 		More: func(page ServiceReplicaClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

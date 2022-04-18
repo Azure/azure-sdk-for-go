@@ -205,13 +205,13 @@ func (client *GatewayClient) getHandleResponse(resp *http.Response) (GatewayClie
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the information about all gateway resources in a given resource group. The information include
-// the description and other properties of the Gateway.
+// NewListByResourceGroupPager - Gets the information about all gateway resources in a given resource group. The information
+// include the description and other properties of the Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // options - GatewayClientListByResourceGroupOptions contains the optional parameters for the GatewayClient.ListByResourceGroup
 // method.
-func (client *GatewayClient) ListByResourceGroup(resourceGroupName string, options *GatewayClientListByResourceGroupOptions) *runtime.Pager[GatewayClientListByResourceGroupResponse] {
+func (client *GatewayClient) NewListByResourceGroupPager(resourceGroupName string, options *GatewayClientListByResourceGroupOptions) *runtime.Pager[GatewayClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayClientListByResourceGroupResponse]{
 		More: func(page GatewayClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -270,12 +270,12 @@ func (client *GatewayClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListBySubscription - Gets the information about all gateway resources in a given resource group. The information include
-// the description and other properties of the gateway.
+// NewListBySubscriptionPager - Gets the information about all gateway resources in a given resource group. The information
+// include the description and other properties of the gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - GatewayClientListBySubscriptionOptions contains the optional parameters for the GatewayClient.ListBySubscription
 // method.
-func (client *GatewayClient) ListBySubscription(options *GatewayClientListBySubscriptionOptions) *runtime.Pager[GatewayClientListBySubscriptionResponse] {
+func (client *GatewayClient) NewListBySubscriptionPager(options *GatewayClientListBySubscriptionOptions) *runtime.Pager[GatewayClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[GatewayClientListBySubscriptionResponse]{
 		More: func(page GatewayClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

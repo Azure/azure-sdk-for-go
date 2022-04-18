@@ -204,13 +204,13 @@ func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretClient
 	return result, nil
 }
 
-// ListByResourceGroup - Gets the information about all secret resources in a given resource group. The information include
-// the description and other properties of the Secret.
+// NewListByResourceGroupPager - Gets the information about all secret resources in a given resource group. The information
+// include the description and other properties of the Secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Azure resource group name
 // options - SecretClientListByResourceGroupOptions contains the optional parameters for the SecretClient.ListByResourceGroup
 // method.
-func (client *SecretClient) ListByResourceGroup(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *runtime.Pager[SecretClientListByResourceGroupResponse] {
+func (client *SecretClient) NewListByResourceGroupPager(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *runtime.Pager[SecretClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretClientListByResourceGroupResponse]{
 		More: func(page SecretClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -269,12 +269,12 @@ func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ListBySubscription - Gets the information about all secret resources in a given resource group. The information include
-// the description and other properties of the secret.
+// NewListBySubscriptionPager - Gets the information about all secret resources in a given resource group. The information
+// include the description and other properties of the secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SecretClientListBySubscriptionOptions contains the optional parameters for the SecretClient.ListBySubscription
 // method.
-func (client *SecretClient) ListBySubscription(options *SecretClientListBySubscriptionOptions) *runtime.Pager[SecretClientListBySubscriptionResponse] {
+func (client *SecretClient) NewListBySubscriptionPager(options *SecretClientListBySubscriptionOptions) *runtime.Pager[SecretClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SecretClientListBySubscriptionResponse]{
 		More: func(page SecretClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

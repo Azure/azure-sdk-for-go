@@ -406,7 +406,8 @@ type ListRevisionsOptions struct {
 	// placeholder for future options
 }
 
-// ListRevisions retrieves the revisions of one or more configuration setting entities that match the specified setting selector.
+// NewListRevisionsPager creates a pager that retrieves the revisions of one or more
+// configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPage] {
 	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGenerated())
 	return runtime.NewPager(runtime.PageProcessor[ListRevisionsPage]{

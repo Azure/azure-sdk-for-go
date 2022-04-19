@@ -6,7 +6,35 @@
 
 package azblob
 
-import "strings"
+import (
+	"net/url"
+	"strings"
+)
+
+func serializeBlobTagsToStrPtr(tagsMap map[string]string) *string {
+	if tagsMap == nil {
+		return nil
+	}
+	tags := make([]string, 0)
+	for key, val := range tagsMap {
+		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
+	}
+	//tags = tags[:len(tags)-1]
+	blobTagsString := strings.Join(tags, "&")
+	return &blobTagsString
+}
+
+func serializeBlobTags(tagsMap map[string]string) *BlobTags {
+	if tagsMap == nil {
+		return nil
+	}
+	blobTagSet := make([]*BlobTag, 0)
+	for key, val := range tagsMap {
+		newKey, newVal := key, val
+		blobTagSet = append(blobTagSet, &BlobTag{Key: &newKey, Value: &newVal})
+	}
+	return &BlobTags{BlobTagSet: blobTagSet}
+}
 
 func deserializeORSPolicies(policies map[string]string) (objectReplicationPolicies []ObjectReplicationPolicy) {
 	if policies == nil {

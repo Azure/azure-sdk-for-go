@@ -66,6 +66,9 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
+	if err == nil {
+		return nil
+	}
 	var respErr *azcore.ResponseError
 	if errors.As(err, &respErr) {
 		return &InternalError{responseErrorToStorageError(respErr)}

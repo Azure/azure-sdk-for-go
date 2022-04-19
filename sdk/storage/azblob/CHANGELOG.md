@@ -1,15 +1,21 @@
 # Release History
 
-## 0.4.0 (Unreleased)
-
-### Features Added
+## 0.4.0 (2022-04-19)
 
 ### Breaking Changes
-* [#17321](https://github.com/Azure/azure-sdk-for-go/pull/17321): Returns all clients by pointers
+* Fixed Issue #17150 : Renaming/refactoring high level methods.
+* Fixed Issue #16972 : Constructors should return clients by reference.
+* Renaming the options bags to match the naming convention same as that of response. The behaviour of options bags remains the same.
 
 ### Bugs Fixed
-
-### Other Changes
+* Fixed Issue #17515 : SetTags options bag missing leaseID.
+* Fixed Issue #17423 : Drop "Type" suffix from `GeoReplicationStatusType`.
+* Fixed Issue #17335 : Nil pointer exception when passing nil options bag in `ListBlobsFlat` API call.
+* Fixed Issue #17188 : `BlobURLParts` not supporting VersionID
+* Fixed Issue #17152 , Issue #17131 , Issue #17061 : `UploadStreamToBlockBlob` / `UploadStreamToBlockBlob` methods ignoring the options bag. 
+* Fixed Issue #16920 : Fixing error handling example.
+* Fixed Issue #16786 : Refactoring of autorest code generation definition and adding necessary transformations.
+* Fixed Issue #16679 : Response parsing issue in List blobs API. 
 
 ## 0.3.0 (2022-02-09)
 

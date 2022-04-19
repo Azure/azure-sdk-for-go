@@ -13,7 +13,7 @@ The Azure Blob SDK can access an Azure Storage account.
 
 ### Prerequisites
 
-* Go versions 1.16 or higher
+* Go versions 1.18 or higher
 * You must have an [Azure storage account][azure_storage_account]. If you need to create one, you can use
   the [Azure Cloud Shell](https://shell.azure.com/bash) to create one with these commands (replace `my-resource-group`
   and `mystorageaccount` with your own unique names):
@@ -205,91 +205,93 @@ Three different clients are provided to interact with the various components of 
 ### Example
 
 ```go
-	// Use your storage account's name and key to create a credential object, used to access your account.
-	// You can obtain these details from the Azure Portal.
-	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
-	if !ok {
-		handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
-	}
+// Use your storage account's name and key to create a credential object, used to access your account.
+// You can obtain these details from the Azure Portal.
+accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+if !ok {
+    handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
+}
 
-	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
-	if !ok {
-		handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
-	}
-	cred, err := NewSharedKeyCredential(accountName, accountKey)
+accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+if !ok {
+    handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
+}
+cred, err := NewSharedKeyCredential(accountName, accountKey)
+handle(err)
+
+// Open up a service client.
+// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
+service, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+handle(err)
+
+// All operations in the Azure Blob Storage SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
+ctx := context.Background() // This example has no expiry.
+
+// This example showcases several common operations to help you get started, such as:
+
+// ===== 1. Creating a container =====
+
+// First, branch off of the service client and create a container client.
+container := service.NewContainerClient("mycontainer")
+
+// Then, fire off a create operation on the container client.
+// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
+// Specifying nil omits all options.
+_, err = container.Create(ctx, nil)
+handle(err)
+
+// ===== 2. Uploading/downloading a block blob =====
+// We'll specify our data up-front, rather than reading a file for simplicity's sake.
+data := "Hello world!"
+
+// Branch off of the container into a block blob client
+blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
+
+// Upload data to the block blob
+_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
+handle(err)
+
+// Download the blob's contents and ensure that the download worked properly
+get, err := blockBlob.Download(ctx, nil)
+handle(err)
+
+// Open a buffer, reader, and then download!
+downloadedData := &bytes.Buffer{}
+// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+reader := get.Body(RetryReaderOptions{})
+_, err = downloadedData.ReadFrom(reader)
+handle(err)
+err = reader.Close()
+handle(err)
+if data != downloadedData.String() {
+    handle(errors.New("downloaded data doesn't match uploaded data"))
+}
+
+// ===== 3. list blobs =====
+// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
+// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
+// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
+pager := container.ListBlobsFlat(nil)
+
+for pager.NextPage(ctx) {
+    resp := pager.PageResponse()
+
+    for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
+        fmt.Println(*v.Name)
+    }
+}
+
+if err = pager.Err(); err != nil {
     handle(err)
+}
 
-	// Open up a service client.
-	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
-	service, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-    handle(err)
+// Delete the blob we created earlier.
+_, err = blockBlob.Delete(ctx, nil)
+handle(err)
 
-	// All operations in the Azure Blob Storage SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
-	ctx := context.Background() // This example has no expiry.
-
-	// This example showcases several common operations to help you get started, such as:
-
-	// ===== 1. Creating a container =====
-
-	// First, branch off of the service client and create a container client.
-	container := service.NewContainerClient("mycontainer")
-	// Then, fire off a create operation on the container client.
-	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
-	// Specifying nil omits all options.
-	_, err = container.Create(ctx, nil)
-    handle(err)
-
-	// ===== 2. Uploading/downloading a block blob =====
-	// We'll specify our data up-front, rather than reading a file for simplicity's sake.
-	data := "Hello world!"
-
-	// Branch off of the container into a block blob client
-	blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
-
-	// Upload data to the block blob
-	_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
-    handle(err)
-
-	// Download the blob's contents and ensure that the download worked properly
-	get, err := blockBlob.Download(ctx, nil)
-    handle(err)
-
-	// Open a buffer, reader, and then download!
-	downloadedData := &bytes.Buffer{}
-	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
-	_, err = downloadedData.ReadFrom(reader)
-    handle(err)
-	err = reader.Close()
-    handle(err)
-	if data != downloadedData.String() {
-		handle(errors.New("downloaded data doesn't match uploaded data"))
-	}
-
-	// ===== 3. list blobs =====
-	// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
-	// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
-	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
-	pager := container.ListBlobsFlat(nil)
-
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
-
-		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-			fmt.Println(*v.Name)
-		}
-	}
-
-	if err = pager.Err(); err != nil {
-		handle(err)
-	}
-
-	// Delete the blob we created earlier.
-	_, err = blockBlob.Delete(ctx, nil)
-	handle(err)
-
-	// Delete the container we created earlier.
-	_, err = container.Delete(ctx, nil)
-	handle(err)
+// Delete the container we created earlier.
+_, err = container.Delete(ctx, nil)
+handle(err)
 ```
 
 ## Troubleshooting
@@ -300,12 +302,10 @@ All I/O operations will return an `error` that can be investigated to discover m
 addition, you can investigate the raw response of any response object:
 
 ```golang
-var errResp azcore.HTTPResponse
+var storageErr *azblob.StorageError
 resp, err := serviceClient.CreateContainer(context.Background(), "testcontainername", nil)
-if err != nil {
-   if errors.As(err, &errResp) {
-        // do something with errResp.RawResponse()
-   }
+if err != nil && errors.As(err, &storageErr) {
+    // do something with storageErr.Response()
 }
 ```
 
@@ -324,8 +324,8 @@ be like the following:
 ```golang
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-azlog.SetListener(func(cls azlog.Classification, msg string) {
-	fmt.Println(msg) // printing log out to the console
+azlog.SetListener(func (cls azlog.Classification, msg string) {
+    fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

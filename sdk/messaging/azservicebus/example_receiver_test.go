@@ -86,3 +86,25 @@ func ExampleReceiver_ReceiveMessages() {
 		fmt.Printf("Received and completed the message\n")
 	}
 }
+
+func ExampleReceiver_DeadLetterMessage() {
+	// DeadLetterMessage settles a message by moving it to the dead letter queue.
+	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
+	defer cancel()
+
+	message, err := receiver.ReceiveMessages(ctx, 1, nil)
+	if err != nil {
+		panic(err)
+	}
+	deadLetterReason := "exampleReason"
+	deadLetterErrorDescription := "exampleErrorDescription"
+
+	deadLetterOptions := &azservicebus.DeadLetterOptions{
+		Reason:           &deadLetterReason,
+		ErrorDescription: &deadLetterErrorDescription,
+	}
+
+	if err := receiver.DeadLetterMessage(ctx, message, deadLetterOptions); err != nil {
+		panic(err)
+	}
+}

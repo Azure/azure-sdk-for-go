@@ -24,7 +24,6 @@ func ExampleReplicationRecoveryPlansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -32,7 +31,6 @@ func ExampleReplicationRecoveryPlansClient_NewListPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(nil)
 	for pager.More() {
@@ -53,7 +51,6 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -61,14 +58,12 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<recovery-plan-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,7 +74,6 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -87,7 +81,6 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreate(ctx,
 		"<recovery-plan-name>",
@@ -112,12 +105,10 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -128,7 +119,6 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -136,19 +126,16 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<recovery-plan-name>",
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -157,7 +144,6 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -165,7 +151,6 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<recovery-plan-name>",
@@ -209,12 +194,10 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -225,7 +208,6 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -233,19 +215,16 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginFailoverCancel(ctx,
 		"<recovery-plan-name>",
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginFailoverCancelOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -256,7 +235,6 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -264,19 +242,16 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginFailoverCommit(ctx,
 		"<recovery-plan-name>",
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginFailoverCommitOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -287,7 +262,6 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -295,7 +269,6 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginPlannedFailover(ctx,
 		"<recovery-plan-name>",
@@ -311,12 +284,10 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginPlannedFailoverOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -327,7 +298,6 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -335,19 +305,16 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginReprotect(ctx,
 		"<recovery-plan-name>",
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginReprotectOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -358,7 +325,6 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -366,7 +332,6 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTestFailover(ctx,
 		"<recovery-plan-name>",
@@ -384,12 +349,10 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginTestFailoverOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -400,7 +363,6 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -408,7 +370,6 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTestFailoverCleanup(ctx,
 		"<recovery-plan-name>",
@@ -420,12 +381,10 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -436,7 +395,6 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationRecoveryPlansClient("<resource-name>",
@@ -444,7 +402,6 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUnplannedFailover(ctx,
 		"<recovery-plan-name>",
@@ -461,12 +418,10 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 		&armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

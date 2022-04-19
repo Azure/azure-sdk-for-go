@@ -24,13 +24,11 @@ func ExampleGlobalSchedulesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBySubscriptionPager(&armdevtestlabs.GlobalSchedulesClientListBySubscriptionOptions{Expand: nil,
 		Filter:  nil,
@@ -55,13 +53,11 @@ func ExampleGlobalSchedulesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		&armdevtestlabs.GlobalSchedulesClientListByResourceGroupOptions{Expand: nil,
@@ -87,13 +83,11 @@ func ExampleGlobalSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -101,7 +95,6 @@ func ExampleGlobalSchedulesClient_Get() {
 		&armdevtestlabs.GlobalSchedulesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -112,13 +105,11 @@ func ExampleGlobalSchedulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdate(ctx,
 		"<resource-group-name>",
@@ -143,7 +134,6 @@ func ExampleGlobalSchedulesClient_CreateOrUpdate() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -154,13 +144,11 @@ func ExampleGlobalSchedulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
@@ -168,7 +156,6 @@ func ExampleGlobalSchedulesClient_Delete() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -177,13 +164,11 @@ func ExampleGlobalSchedulesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
@@ -196,7 +181,6 @@ func ExampleGlobalSchedulesClient_Update() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -207,13 +191,11 @@ func ExampleGlobalSchedulesClient_BeginExecute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginExecute(ctx,
 		"<resource-group-name>",
@@ -221,12 +203,10 @@ func ExampleGlobalSchedulesClient_BeginExecute() {
 		&armdevtestlabs.GlobalSchedulesClientBeginExecuteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -235,13 +215,11 @@ func ExampleGlobalSchedulesClient_BeginRetarget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdevtestlabs.NewGlobalSchedulesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRetarget(ctx,
 		"<resource-group-name>",
@@ -253,11 +231,9 @@ func ExampleGlobalSchedulesClient_BeginRetarget() {
 		&armdevtestlabs.GlobalSchedulesClientBeginRetargetOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

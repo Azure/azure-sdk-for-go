@@ -22,13 +22,11 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Provision(ctx,
 		"<vault-name>",
@@ -49,7 +47,6 @@ func ExampleItemLevelRecoveryConnectionsClient_Provision() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -58,13 +55,11 @@ func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewItemLevelRecoveryConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Revoke(ctx,
 		"<vault-name>",
@@ -76,6 +71,5 @@ func ExampleItemLevelRecoveryConnectionsClient_Revoke() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

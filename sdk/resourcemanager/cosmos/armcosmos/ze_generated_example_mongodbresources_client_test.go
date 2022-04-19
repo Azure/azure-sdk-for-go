@@ -24,13 +24,11 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMongoDBDatabasesPager("<resource-group-name>",
 		"<account-name>",
@@ -53,13 +51,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoDBDatabase(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +74,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateMongoDBDatabase(ctx,
 		"<resource-group-name>",
@@ -104,12 +97,10 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
 		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -120,13 +111,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteMongoDBDatabase(ctx,
 		"<resource-group-name>",
@@ -135,12 +124,10 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 		&armcosmos.MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -149,13 +136,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoDBDatabaseThroughput(ctx,
 		"<resource-group-name>",
@@ -164,7 +149,6 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -175,13 +159,11 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateMongoDBDatabaseThroughput(ctx,
 		"<resource-group-name>",
@@ -199,12 +181,10 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 		&armcosmos.MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -215,13 +195,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateMongoDBDatabaseToAutoscale(ctx,
 		"<resource-group-name>",
@@ -230,12 +208,10 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -246,13 +222,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateMongoDBDatabaseToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -261,12 +235,10 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -277,13 +249,11 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMongoDBCollectionsPager("<resource-group-name>",
 		"<account-name>",
@@ -307,13 +277,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoDBCollection(ctx,
 		"<resource-group-name>",
@@ -323,7 +291,6 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -334,13 +301,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateMongoDBCollection(ctx,
 		"<resource-group-name>",
@@ -381,12 +346,10 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -397,13 +360,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteMongoDBCollection(ctx,
 		"<resource-group-name>",
@@ -413,12 +374,10 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 		&armcosmos.MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -427,13 +386,11 @@ func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginListMongoDBCollectionPartitionMerge(ctx,
 		"<resource-group-name>",
@@ -446,12 +403,10 @@ func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 		&armcosmos.MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -462,13 +417,11 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoDBCollectionThroughput(ctx,
 		"<resource-group-name>",
@@ -478,7 +431,6 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -489,13 +441,11 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateMongoDBCollectionThroughput(ctx,
 		"<resource-group-name>",
@@ -514,12 +464,10 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 		&armcosmos.MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -530,13 +478,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateMongoDBCollectionToAutoscale(ctx,
 		"<resource-group-name>",
@@ -546,12 +492,10 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -562,13 +506,11 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateMongoDBCollectionToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -578,12 +520,10 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 		&armcosmos.MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -594,13 +534,11 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoRoleDefinition(ctx,
 		"<mongo-role-definition-id>",
@@ -609,7 +547,6 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -620,13 +557,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateMongoRoleDefinition(ctx,
 		"<mongo-role-definition-id>",
@@ -656,12 +591,10 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -672,13 +605,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteMongoRoleDefinition(ctx,
 		"<mongo-role-definition-id>",
@@ -687,12 +618,10 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 		&armcosmos.MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -701,13 +630,11 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMongoRoleDefinitionsPager("<resource-group-name>",
 		"<account-name>",
@@ -730,13 +657,11 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetMongoUserDefinition(ctx,
 		"<mongo-user-definition-id>",
@@ -745,7 +670,6 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -756,13 +680,11 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateMongoUserDefinition(ctx,
 		"<mongo-user-definition-id>",
@@ -785,12 +707,10 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 		&armcosmos.MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -801,13 +721,11 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteMongoUserDefinition(ctx,
 		"<mongo-user-definition-id>",
@@ -816,12 +734,10 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 		&armcosmos.MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -830,13 +746,11 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMongoUserDefinitionsPager("<resource-group-name>",
 		"<account-name>",
@@ -859,13 +773,11 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewMongoDBResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
 		"<resource-group-name>",
@@ -878,12 +790,10 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		&armcosmos.MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

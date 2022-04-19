@@ -24,13 +24,11 @@ func ExampleAttestationsClient_NewListForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListForSubscriptionPager(&armpolicyinsights.QueryOptions{Top: nil,
 		Filter:    nil,
@@ -61,13 +59,11 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdateAtSubscription(ctx,
 		"<attestation-name>",
@@ -80,12 +76,10 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtSubscription() {
 		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -96,20 +90,17 @@ func ExampleAttestationsClient_GetAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtSubscription(ctx,
 		"<attestation-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -120,20 +111,17 @@ func ExampleAttestationsClient_DeleteAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtSubscription(ctx,
 		"<attestation-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -142,13 +130,11 @@ func ExampleAttestationsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -180,13 +166,11 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdateAtResourceGroup(ctx,
 		"<resource-group-name>",
@@ -209,12 +193,10 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResourceGroup() {
 		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -225,13 +207,11 @@ func ExampleAttestationsClient_GetAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtResourceGroup(ctx,
 		"<resource-group-name>",
@@ -239,7 +219,6 @@ func ExampleAttestationsClient_GetAtResourceGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -250,13 +229,11 @@ func ExampleAttestationsClient_DeleteAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtResourceGroup(ctx,
 		"<resource-group-name>",
@@ -264,7 +241,6 @@ func ExampleAttestationsClient_DeleteAtResourceGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -273,13 +249,11 @@ func ExampleAttestationsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListForResourcePager("<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -311,13 +285,11 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdateAtResource(ctx,
 		"<resource-id>",
@@ -340,12 +312,10 @@ func ExampleAttestationsClient_BeginCreateOrUpdateAtResource() {
 		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -356,13 +326,11 @@ func ExampleAttestationsClient_GetAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAtResource(ctx,
 		"<resource-id>",
@@ -370,7 +338,6 @@ func ExampleAttestationsClient_GetAtResource() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -381,13 +348,11 @@ func ExampleAttestationsClient_DeleteAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.DeleteAtResource(ctx,
 		"<resource-id>",
@@ -395,6 +360,5 @@ func ExampleAttestationsClient_DeleteAtResource() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

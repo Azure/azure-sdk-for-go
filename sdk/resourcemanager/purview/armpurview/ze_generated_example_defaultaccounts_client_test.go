@@ -22,13 +22,11 @@ func ExampleDefaultAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<scope-tenant-id>",
@@ -36,7 +34,6 @@ func ExampleDefaultAccountsClient_Get() {
 		&armpurview.DefaultAccountsClientGetOptions{Scope: to.Ptr("<scope>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -47,13 +44,11 @@ func ExampleDefaultAccountsClient_Set() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Set(ctx,
 		armpurview.DefaultAccountPayload{
@@ -67,7 +62,6 @@ func ExampleDefaultAccountsClient_Set() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -78,13 +72,11 @@ func ExampleDefaultAccountsClient_Remove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpurview.NewDefaultAccountsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Remove(ctx,
 		"<scope-tenant-id>",
@@ -92,6 +84,5 @@ func ExampleDefaultAccountsClient_Remove() {
 		&armpurview.DefaultAccountsClientRemoveOptions{Scope: to.Ptr("<scope>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

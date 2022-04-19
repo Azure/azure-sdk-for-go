@@ -24,13 +24,11 @@ func ExampleVirtualMachinesClient_ListHosts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armhdinsight.NewVirtualMachinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListHosts(ctx,
 		"<resource-group-name>",
@@ -38,7 +36,6 @@ func ExampleVirtualMachinesClient_ListHosts() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -49,13 +46,11 @@ func ExampleVirtualMachinesClient_BeginRestartHosts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armhdinsight.NewVirtualMachinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRestartHosts(ctx,
 		"<resource-group-name>",
@@ -66,12 +61,10 @@ func ExampleVirtualMachinesClient_BeginRestartHosts() {
 		&armhdinsight.VirtualMachinesClientBeginRestartHostsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -80,13 +73,11 @@ func ExampleVirtualMachinesClient_GetAsyncOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armhdinsight.NewVirtualMachinesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAsyncOperationStatus(ctx,
 		"<resource-group-name>",
@@ -95,7 +86,6 @@ func ExampleVirtualMachinesClient_GetAsyncOperationStatus() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

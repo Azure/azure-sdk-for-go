@@ -22,13 +22,11 @@ func ExampleObjectAnchorsAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
@@ -49,13 +47,11 @@ func ExampleObjectAnchorsAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
@@ -77,13 +73,11 @@ func ExampleObjectAnchorsAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
@@ -91,7 +85,6 @@ func ExampleObjectAnchorsAccountsClient_Delete() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -100,13 +93,11 @@ func ExampleObjectAnchorsAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -114,7 +105,6 @@ func ExampleObjectAnchorsAccountsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -125,13 +115,11 @@ func ExampleObjectAnchorsAccountsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Update(ctx,
 		"<resource-group-name>",
@@ -149,7 +137,6 @@ func ExampleObjectAnchorsAccountsClient_Update() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -160,13 +147,11 @@ func ExampleObjectAnchorsAccountsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Create(ctx,
 		"<resource-group-name>",
@@ -180,7 +165,6 @@ func ExampleObjectAnchorsAccountsClient_Create() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -191,13 +175,11 @@ func ExampleObjectAnchorsAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListKeys(ctx,
 		"<resource-group-name>",
@@ -205,7 +187,6 @@ func ExampleObjectAnchorsAccountsClient_ListKeys() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -216,13 +197,11 @@ func ExampleObjectAnchorsAccountsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.RegenerateKeys(ctx,
 		"<resource-group-name>",
@@ -233,7 +212,6 @@ func ExampleObjectAnchorsAccountsClient_RegenerateKeys() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

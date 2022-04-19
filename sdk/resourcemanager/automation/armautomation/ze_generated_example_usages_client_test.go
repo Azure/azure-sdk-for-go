@@ -21,13 +21,11 @@ func ExampleUsagesClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewUsagesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",

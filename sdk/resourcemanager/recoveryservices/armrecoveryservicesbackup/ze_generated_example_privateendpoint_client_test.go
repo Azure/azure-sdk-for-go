@@ -21,13 +21,11 @@ func ExamplePrivateEndpointClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewPrivateEndpointClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetOperationStatus(ctx,
 		"<vault-name>",
@@ -37,7 +35,6 @@ func ExamplePrivateEndpointClient_GetOperationStatus() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

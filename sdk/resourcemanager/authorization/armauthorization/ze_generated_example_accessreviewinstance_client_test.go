@@ -21,13 +21,11 @@ func ExampleAccessReviewInstanceClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Stop(ctx,
 		"<schedule-definition-id>",
@@ -35,7 +33,6 @@ func ExampleAccessReviewInstanceClient_Stop() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -44,13 +41,11 @@ func ExampleAccessReviewInstanceClient_ResetDecisions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.ResetDecisions(ctx,
 		"<schedule-definition-id>",
@@ -58,7 +53,6 @@ func ExampleAccessReviewInstanceClient_ResetDecisions() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -67,13 +61,11 @@ func ExampleAccessReviewInstanceClient_ApplyDecisions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.ApplyDecisions(ctx,
 		"<schedule-definition-id>",
@@ -81,7 +73,6 @@ func ExampleAccessReviewInstanceClient_ApplyDecisions() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -90,13 +81,11 @@ func ExampleAccessReviewInstanceClient_SendReminders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.SendReminders(ctx,
 		"<schedule-definition-id>",
@@ -104,7 +93,6 @@ func ExampleAccessReviewInstanceClient_SendReminders() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -113,13 +101,11 @@ func ExampleAccessReviewInstanceClient_AcceptRecommendations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.AcceptRecommendations(ctx,
 		"<schedule-definition-id>",
@@ -127,6 +113,5 @@ func ExampleAccessReviewInstanceClient_AcceptRecommendations() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

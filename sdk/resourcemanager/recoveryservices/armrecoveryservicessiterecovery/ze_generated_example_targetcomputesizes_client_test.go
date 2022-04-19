@@ -21,7 +21,6 @@ func ExampleTargetComputeSizesClient_NewListByReplicationProtectedItemsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewTargetComputeSizesClient("<resource-name>",
@@ -29,7 +28,6 @@ func ExampleTargetComputeSizesClient_NewListByReplicationProtectedItemsPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByReplicationProtectedItemsPager("<fabric-name>",
 		"<protection-container-name>",

@@ -21,13 +21,11 @@ func ExampleTasksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armsecurity.TasksClientListOptions{Filter: nil})
 	for pager.More() {
@@ -48,13 +46,11 @@ func ExampleTasksClient_NewListByHomeRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByHomeRegionPager("<asc-location>",
 		&armsecurity.TasksClientListByHomeRegionOptions{Filter: nil})
@@ -76,13 +72,11 @@ func ExampleTasksClient_GetSubscriptionLevelTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSubscriptionLevelTask(ctx,
 		"<asc-location>",
@@ -90,7 +84,6 @@ func ExampleTasksClient_GetSubscriptionLevelTask() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -101,13 +94,11 @@ func ExampleTasksClient_UpdateSubscriptionLevelTaskState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateSubscriptionLevelTaskState(ctx,
 		"<asc-location>",
@@ -116,7 +107,6 @@ func ExampleTasksClient_UpdateSubscriptionLevelTaskState() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -125,13 +115,11 @@ func ExampleTasksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		"<asc-location>",
@@ -154,13 +142,11 @@ func ExampleTasksClient_GetResourceGroupLevelTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetResourceGroupLevelTask(ctx,
 		"<resource-group-name>",
@@ -169,7 +155,6 @@ func ExampleTasksClient_GetResourceGroupLevelTask() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -180,13 +165,11 @@ func ExampleTasksClient_UpdateResourceGroupLevelTaskState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateResourceGroupLevelTaskState(ctx,
 		"<resource-group-name>",
@@ -196,6 +179,5 @@ func ExampleTasksClient_UpdateResourceGroupLevelTaskState() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

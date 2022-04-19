@@ -21,13 +21,11 @@ func ExampleAccessReviewScheduleDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewScheduleDefinitionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armauthorization.AccessReviewScheduleDefinitionsClientListOptions{Filter: nil})
 	for pager.More() {
@@ -48,19 +46,16 @@ func ExampleAccessReviewScheduleDefinitionsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewScheduleDefinitionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Stop(ctx,
 		"<schedule-definition-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

@@ -21,13 +21,11 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewDscCompilationJobStreamClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListByJob(ctx,
 		"<resource-group-name>",
@@ -36,7 +34,6 @@ func ExampleDscCompilationJobStreamClient_ListByJob() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

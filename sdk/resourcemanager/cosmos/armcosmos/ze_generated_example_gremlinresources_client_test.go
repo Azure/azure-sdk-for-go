@@ -24,13 +24,11 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGremlinDatabasesPager("<resource-group-name>",
 		"<account-name>",
@@ -53,13 +51,11 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetGremlinDatabase(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +74,11 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateGremlinDatabase(ctx,
 		"<resource-group-name>",
@@ -104,12 +97,10 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 		&armcosmos.GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -120,13 +111,11 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteGremlinDatabase(ctx,
 		"<resource-group-name>",
@@ -135,12 +124,10 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 		&armcosmos.GremlinResourcesClientBeginDeleteGremlinDatabaseOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -149,13 +136,11 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetGremlinDatabaseThroughput(ctx,
 		"<resource-group-name>",
@@ -164,7 +149,6 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -175,13 +159,11 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateGremlinDatabaseThroughput(ctx,
 		"<resource-group-name>",
@@ -199,12 +181,10 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 		&armcosmos.GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -215,13 +195,11 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateGremlinDatabaseToAutoscale(ctx,
 		"<resource-group-name>",
@@ -230,12 +208,10 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 		&armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -246,13 +222,11 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateGremlinDatabaseToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -261,12 +235,10 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 		&armcosmos.GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -277,13 +249,11 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGremlinGraphsPager("<resource-group-name>",
 		"<account-name>",
@@ -307,13 +277,11 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetGremlinGraph(ctx,
 		"<resource-group-name>",
@@ -323,7 +291,6 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -334,13 +301,11 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateGremlinGraph(ctx,
 		"<resource-group-name>",
@@ -397,12 +362,10 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 		&armcosmos.GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -413,13 +376,11 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteGremlinGraph(ctx,
 		"<resource-group-name>",
@@ -429,12 +390,10 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 		&armcosmos.GremlinResourcesClientBeginDeleteGremlinGraphOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -443,13 +402,11 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetGremlinGraphThroughput(ctx,
 		"<resource-group-name>",
@@ -459,7 +416,6 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -470,13 +426,11 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateGremlinGraphThroughput(ctx,
 		"<resource-group-name>",
@@ -495,12 +449,10 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 		&armcosmos.GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -511,13 +463,11 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateGremlinGraphToAutoscale(ctx,
 		"<resource-group-name>",
@@ -527,12 +477,10 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 		&armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -543,13 +491,11 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateGremlinGraphToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -559,12 +505,10 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 		&armcosmos.GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -575,13 +519,11 @@ func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewGremlinResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx,
 		"<resource-group-name>",
@@ -594,12 +536,10 @@ func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		&armcosmos.GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

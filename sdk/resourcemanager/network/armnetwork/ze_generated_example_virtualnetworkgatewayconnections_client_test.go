@@ -24,13 +24,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
@@ -107,12 +105,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -123,13 +119,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -137,7 +131,6 @@ func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -148,13 +141,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<resource-group-name>",
@@ -162,12 +153,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -176,13 +165,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateTags(ctx,
 		"<resource-group-name>",
@@ -196,12 +183,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginUpdateTagsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -212,13 +197,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginSetSharedKey(ctx,
 		"<resource-group-name>",
@@ -229,12 +212,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginSetSharedKeyOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -245,13 +226,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSharedKey(ctx,
 		"<resource-group-name>",
@@ -259,7 +238,6 @@ func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -270,13 +248,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<resource-group-name>",
 		nil)
@@ -298,13 +274,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginResetSharedKey(ctx,
 		"<resource-group-name>",
@@ -315,12 +289,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginResetSharedKeyOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -331,13 +303,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStartPacketCapture(ctx,
 		"<resource-group-name>",
@@ -349,12 +319,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -365,13 +333,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStopPacketCapture(ctx,
 		"<resource-group-name>",
@@ -382,12 +348,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginStopPacketCaptureOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -398,13 +362,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginGetIkeSas(ctx,
 		"<resource-group-name>",
@@ -412,12 +374,10 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginGetIkeSasOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -428,13 +388,11 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewVirtualNetworkGatewayConnectionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginResetConnection(ctx,
 		"<resource-group-name>",
@@ -442,11 +400,9 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 		&armnetwork.VirtualNetworkGatewayConnectionsClientBeginResetConnectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

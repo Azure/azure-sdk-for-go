@@ -24,13 +24,11 @@ func ExampleAdaptiveNetworkHardeningsClient_NewListByExtendedResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByExtendedResourcePager("<resource-group-name>",
 		"<resource-namespace>",
@@ -55,13 +53,11 @@ func ExampleAdaptiveNetworkHardeningsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -72,7 +68,6 @@ func ExampleAdaptiveNetworkHardeningsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -83,13 +78,11 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAdaptiveNetworkHardeningsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginEnforce(ctx,
 		"<resource-group-name>",
@@ -125,11 +118,9 @@ func ExampleAdaptiveNetworkHardeningsClient_BeginEnforce() {
 		&armsecurity.AdaptiveNetworkHardeningsClientBeginEnforceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

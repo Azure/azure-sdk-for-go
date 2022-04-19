@@ -24,13 +24,11 @@ func ExampleEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<scope>",
@@ -38,7 +36,6 @@ func ExampleEventSubscriptionsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -49,13 +46,11 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<scope>",
@@ -78,12 +73,10 @@ func ExampleEventSubscriptionsClient_BeginCreateOrUpdate() {
 		&armeventgrid.EventSubscriptionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -92,13 +85,11 @@ func ExampleEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<scope>",
@@ -106,12 +97,10 @@ func ExampleEventSubscriptionsClient_BeginDelete() {
 		&armeventgrid.EventSubscriptionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -120,13 +109,11 @@ func ExampleEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<scope>",
@@ -150,12 +137,10 @@ func ExampleEventSubscriptionsClient_BeginUpdate() {
 		&armeventgrid.EventSubscriptionsClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -164,13 +149,11 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGlobalBySubscriptionPager(&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionOptions{Filter: nil,
 		Top: nil,
@@ -193,13 +176,11 @@ func ExampleEventSubscriptionsClient_NewListGlobalBySubscriptionForTopicTypePage
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGlobalBySubscriptionForTopicTypePager("<topic-type-name>",
 		&armeventgrid.EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions{Filter: nil,
@@ -223,13 +204,11 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGlobalByResourceGroupPager("<resource-group-name>",
 		&armeventgrid.EventSubscriptionsClientListGlobalByResourceGroupOptions{Filter: nil,
@@ -253,13 +232,11 @@ func ExampleEventSubscriptionsClient_NewListGlobalByResourceGroupForTopicTypePag
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGlobalByResourceGroupForTopicTypePager("<resource-group-name>",
 		"<topic-type-name>",
@@ -284,13 +261,11 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListRegionalBySubscriptionPager("<location>",
 		&armeventgrid.EventSubscriptionsClientListRegionalBySubscriptionOptions{Filter: nil,
@@ -314,13 +289,11 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListRegionalByResourceGroupPager("<resource-group-name>",
 		"<location>",
@@ -345,13 +318,11 @@ func ExampleEventSubscriptionsClient_NewListRegionalBySubscriptionForTopicTypePa
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListRegionalBySubscriptionForTopicTypePager("<location>",
 		"<topic-type-name>",
@@ -376,13 +347,11 @@ func ExampleEventSubscriptionsClient_NewListRegionalByResourceGroupForTopicTypeP
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListRegionalByResourceGroupForTopicTypePager("<resource-group-name>",
 		"<location>",
@@ -408,13 +377,11 @@ func ExampleEventSubscriptionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<provider-namespace>",
@@ -441,13 +408,11 @@ func ExampleEventSubscriptionsClient_NewListByDomainTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByDomainTopicPager("<resource-group-name>",
 		"<domain-name>",
@@ -473,13 +438,11 @@ func ExampleEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armeventgrid.NewEventSubscriptionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDeliveryAttributes(ctx,
 		"<scope>",
@@ -487,7 +450,6 @@ func ExampleEventSubscriptionsClient_GetDeliveryAttributes() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

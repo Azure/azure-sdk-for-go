@@ -24,7 +24,6 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
@@ -33,7 +32,6 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 		"<private-endpoint-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourcePager("<resource-group-name>",
 		"<azure-resource-name>",
@@ -56,7 +54,6 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
@@ -65,13 +62,11 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		"<private-endpoint-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -82,7 +77,6 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
@@ -91,7 +85,6 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 		"<private-endpoint-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Create(ctx,
 		armpowerbiprivatelinks.PrivateEndpointConnection{
@@ -109,7 +102,6 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -120,7 +112,6 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpowerbiprivatelinks.NewPrivateEndpointConnectionsClient("<subscription-id>",
@@ -129,17 +120,14 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		"<private-endpoint-name>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		&armpowerbiprivatelinks.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

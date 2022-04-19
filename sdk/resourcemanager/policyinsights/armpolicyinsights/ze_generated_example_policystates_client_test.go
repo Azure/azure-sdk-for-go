@@ -24,13 +24,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForManagementGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<management-group-name>",
@@ -63,13 +61,11 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForManagementGroup(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -87,7 +83,6 @@ func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -98,13 +93,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -137,13 +130,11 @@ func ExamplePolicyStatesClient_SummarizeForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForSubscription(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -161,7 +152,6 @@ func ExamplePolicyStatesClient_SummarizeForSubscription() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -172,13 +162,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourceGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -212,13 +200,11 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForResourceGroup(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -237,7 +223,6 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -248,13 +233,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourcePager(armpolicyinsights.PolicyStatesResourceDefault,
 		"<resource-id>",
@@ -287,13 +270,11 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForResource(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -311,7 +292,6 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -322,25 +302,21 @@ func ExamplePolicyStatesClient_BeginTriggerSubscriptionEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTriggerSubscriptionEvaluation(ctx,
 		"<subscription-id>",
 		&armpolicyinsights.PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -349,13 +325,11 @@ func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginTriggerResourceGroupEvaluation(ctx,
 		"<subscription-id>",
@@ -363,12 +337,10 @@ func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 		&armpolicyinsights.PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -377,13 +349,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForPolicySetDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -417,13 +387,11 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForPolicySetDefinition(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -442,7 +410,6 @@ func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -453,13 +420,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForPolicyDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -493,13 +458,11 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForPolicyDefinition(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -518,7 +481,6 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -529,13 +491,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssi
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -569,13 +529,11 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForSubscriptionLevelPolicyAssignment(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -594,7 +552,6 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -605,13 +562,11 @@ func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAss
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
@@ -646,13 +601,11 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SummarizeForResourceGroupLevelPolicyAssignment(ctx,
 		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
@@ -672,7 +625,6 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

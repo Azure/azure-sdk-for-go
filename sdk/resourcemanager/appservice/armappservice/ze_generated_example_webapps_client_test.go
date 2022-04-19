@@ -24,13 +24,11 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBasicPublishingCredentialsPoliciesPager("<resource-group-name>",
 		"<name>",
@@ -53,13 +51,11 @@ func ExampleWebAppsClient_GetFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetFtpAllowed(ctx,
 		"<resource-group-name>",
@@ -67,7 +63,6 @@ func ExampleWebAppsClient_GetFtpAllowed() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -78,13 +73,11 @@ func ExampleWebAppsClient_UpdateFtpAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateFtpAllowed(ctx,
 		"<resource-group-name>",
@@ -97,7 +90,6 @@ func ExampleWebAppsClient_UpdateFtpAllowed() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -108,13 +100,11 @@ func ExampleWebAppsClient_GetScmAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetScmAllowed(ctx,
 		"<resource-group-name>",
@@ -122,7 +112,6 @@ func ExampleWebAppsClient_GetScmAllowed() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -133,13 +122,11 @@ func ExampleWebAppsClient_UpdateScmAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateScmAllowed(ctx,
 		"<resource-group-name>",
@@ -152,7 +139,6 @@ func ExampleWebAppsClient_UpdateScmAllowed() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -163,13 +149,11 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetAppSettingsKeyVaultReferencesPager("<resource-group-name>",
 		"<name>",
@@ -192,13 +176,11 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAppSettingKeyVaultReference(ctx,
 		"<resource-group-name>",
@@ -207,7 +189,6 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -218,13 +199,11 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetInstanceInfo(ctx,
 		"<resource-group-name>",
@@ -233,7 +212,6 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -244,13 +222,11 @@ func ExampleWebAppsClient_NewListSiteBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteBackupsPager("<resource-group-name>",
 		"<name>",
@@ -273,13 +249,11 @@ func ExampleWebAppsClient_GetNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTraceOperation(ctx,
 		"<resource-group-name>",
@@ -288,7 +262,6 @@ func ExampleWebAppsClient_GetNetworkTraceOperation() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -299,13 +272,11 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperation(ctx,
 		"<resource-group-name>",
@@ -317,12 +288,10 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -333,13 +302,11 @@ func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.StopWebSiteNetworkTrace(ctx,
 		"<resource-group-name>",
@@ -347,7 +314,6 @@ func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -356,13 +322,11 @@ func ExampleWebAppsClient_GetNetworkTraces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTraces(ctx,
 		"<resource-group-name>",
@@ -371,7 +335,6 @@ func ExampleWebAppsClient_GetNetworkTraces() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -382,13 +345,11 @@ func ExampleWebAppsClient_GetNetworkTraceOperationV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTraceOperationV2(ctx,
 		"<resource-group-name>",
@@ -397,7 +358,6 @@ func ExampleWebAppsClient_GetNetworkTraceOperationV2() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -408,13 +368,11 @@ func ExampleWebAppsClient_GetNetworkTracesV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTracesV2(ctx,
 		"<resource-group-name>",
@@ -423,7 +381,6 @@ func ExampleWebAppsClient_GetNetworkTracesV2() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -434,13 +391,11 @@ func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -449,7 +404,6 @@ func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -460,13 +414,11 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -484,12 +436,10 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -500,13 +450,11 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeletePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -515,12 +463,10 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -531,13 +477,11 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateLinkResources(ctx,
 		"<resource-group-name>",
@@ -545,7 +489,6 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -556,13 +499,11 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBasicPublishingCredentialsPoliciesSlotPager("<resource-group-name>",
 		"<name>",
@@ -586,13 +527,11 @@ func ExampleWebAppsClient_GetFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetFtpAllowedSlot(ctx,
 		"<resource-group-name>",
@@ -601,7 +540,6 @@ func ExampleWebAppsClient_GetFtpAllowedSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -612,13 +550,11 @@ func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateFtpAllowedSlot(ctx,
 		"<resource-group-name>",
@@ -632,7 +568,6 @@ func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -643,13 +578,11 @@ func ExampleWebAppsClient_GetScmAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetScmAllowedSlot(ctx,
 		"<resource-group-name>",
@@ -658,7 +591,6 @@ func ExampleWebAppsClient_GetScmAllowedSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -669,13 +601,11 @@ func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.UpdateScmAllowedSlot(ctx,
 		"<resource-group-name>",
@@ -689,7 +619,6 @@ func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -700,13 +629,11 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetAppSettingsKeyVaultReferencesSlotPager("<resource-group-name>",
 		"<name>",
@@ -730,13 +657,11 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetAppSettingKeyVaultReferenceSlot(ctx,
 		"<resource-group-name>",
@@ -746,7 +671,6 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -757,13 +681,11 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetInstanceInfoSlot(ctx,
 		"<resource-group-name>",
@@ -773,7 +695,6 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -784,13 +705,11 @@ func ExampleWebAppsClient_NewListSiteBackupsSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSiteBackupsSlotPager("<resource-group-name>",
 		"<name>",
@@ -814,13 +733,11 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTraceOperationSlot(ctx,
 		"<resource-group-name>",
@@ -830,7 +747,6 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -841,13 +757,11 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperationSlot(ctx,
 		"<resource-group-name>",
@@ -860,12 +774,10 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -876,13 +788,11 @@ func ExampleWebAppsClient_StopWebSiteNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.StopWebSiteNetworkTraceSlot(ctx,
 		"<resource-group-name>",
@@ -891,7 +801,6 @@ func ExampleWebAppsClient_StopWebSiteNetworkTraceSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -900,13 +809,11 @@ func ExampleWebAppsClient_GetNetworkTracesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTracesSlot(ctx,
 		"<resource-group-name>",
@@ -916,7 +823,6 @@ func ExampleWebAppsClient_GetNetworkTracesSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -927,13 +833,11 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTraceOperationSlotV2(ctx,
 		"<resource-group-name>",
@@ -943,7 +847,6 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -954,13 +857,11 @@ func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetNetworkTracesSlotV2(ctx,
 		"<resource-group-name>",
@@ -970,7 +871,6 @@ func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -981,13 +881,11 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
@@ -997,7 +895,6 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1008,13 +905,11 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
@@ -1033,12 +928,10 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1049,13 +942,11 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeletePrivateEndpointConnectionSlot(ctx,
 		"<resource-group-name>",
@@ -1065,12 +956,10 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1081,13 +970,11 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateLinkResourcesSlot(ctx,
 		"<resource-group-name>",
@@ -1096,7 +983,6 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1107,13 +993,11 @@ func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStartNetworkTraceSlot(ctx,
 		"<resource-group-name>",
@@ -1126,12 +1010,10 @@ func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1142,13 +1024,11 @@ func ExampleWebAppsClient_StopNetworkTraceSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.StopNetworkTraceSlot(ctx,
 		"<resource-group-name>",
@@ -1157,7 +1037,6 @@ func ExampleWebAppsClient_StopNetworkTraceSlot() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -1166,13 +1045,11 @@ func ExampleWebAppsClient_BeginStartNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginStartNetworkTrace(ctx,
 		"<resource-group-name>",
@@ -1184,12 +1061,10 @@ func ExampleWebAppsClient_BeginStartNetworkTrace() {
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -1200,13 +1075,11 @@ func ExampleWebAppsClient_StopNetworkTrace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.StopNetworkTrace(ctx,
 		"<resource-group-name>",
@@ -1214,6 +1087,5 @@ func ExampleWebAppsClient_StopNetworkTrace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

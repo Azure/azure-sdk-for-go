@@ -24,7 +24,6 @@ func ExampleReplicationFabricsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -32,7 +31,6 @@ func ExampleReplicationFabricsClient_NewListPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(nil)
 	for pager.More() {
@@ -53,7 +51,6 @@ func ExampleReplicationFabricsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -61,14 +58,12 @@ func ExampleReplicationFabricsClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<fabric-name>",
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientGetOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,7 +74,6 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -87,7 +81,6 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreate(ctx,
 		"<fabric-name>",
@@ -101,12 +94,10 @@ func ExampleReplicationFabricsClient_BeginCreate() {
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -117,7 +108,6 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -125,19 +115,16 @@ func ExampleReplicationFabricsClient_BeginPurge() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginPurge(ctx,
 		"<fabric-name>",
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginPurgeOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -146,7 +133,6 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -154,19 +140,16 @@ func ExampleReplicationFabricsClient_BeginCheckConsistency() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCheckConsistency(ctx,
 		"<fabric-name>",
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginCheckConsistencyOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -177,7 +160,6 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -185,7 +167,6 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginReassociateGateway(ctx,
 		"<fabric-name>",
@@ -203,12 +184,10 @@ func ExampleReplicationFabricsClient_BeginReassociateGateway() {
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginReassociateGatewayOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -219,7 +198,6 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -227,19 +205,16 @@ func ExampleReplicationFabricsClient_BeginDelete() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<fabric-name>",
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -248,7 +223,6 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationFabricsClient("<resource-name>",
@@ -256,7 +230,6 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRenewCertificate(ctx,
 		"<fabric-name>",
@@ -268,12 +241,10 @@ func ExampleReplicationFabricsClient_BeginRenewCertificate() {
 		&armrecoveryservicessiterecovery.ReplicationFabricsClientBeginRenewCertificateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

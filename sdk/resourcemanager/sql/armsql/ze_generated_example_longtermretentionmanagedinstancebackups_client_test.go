@@ -23,13 +23,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<location-name>",
@@ -39,7 +37,6 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -50,13 +47,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<location-name>",
@@ -66,12 +61,10 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDelete() {
 		&armsql.LongTermRetentionManagedInstanceBackupsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -80,13 +73,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByDatabasePager
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByDatabasePager("<location-name>",
 		"<managed-instance-name>",
@@ -112,13 +103,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByInstancePager
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByInstancePager("<location-name>",
 		"<managed-instance-name>",
@@ -143,13 +132,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByLocationPager
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByLocationPager("<location-name>",
 		&armsql.LongTermRetentionManagedInstanceBackupsClientListByLocationOptions{OnlyLatestPerDatabase: nil,
@@ -173,13 +160,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetByResourceGroup(ctx,
 		"<resource-group-name>",
@@ -190,7 +175,6 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_GetByResourceGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -201,13 +185,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteByResourceGroup(ctx,
 		"<resource-group-name>",
@@ -218,12 +200,10 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_BeginDeleteByResourceG
 		&armsql.LongTermRetentionManagedInstanceBackupsClientBeginDeleteByResourceGroupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -232,13 +212,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupDatabasePager("<resource-group-name>",
 		"<location-name>",
@@ -265,13 +243,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupInstancePager("<resource-group-name>",
 		"<location-name>",
@@ -297,13 +273,11 @@ func ExampleLongTermRetentionManagedInstanceBackupsClient_NewListByResourceGroup
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsql.NewLongTermRetentionManagedInstanceBackupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupLocationPager("<resource-group-name>",
 		"<location-name>",

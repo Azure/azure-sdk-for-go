@@ -22,13 +22,11 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CheckAtSubscriptionScope(ctx,
 		armpolicyinsights.CheckRestrictionsRequest{
@@ -62,7 +60,6 @@ func ExamplePolicyRestrictionsClient_CheckAtSubscriptionScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -73,13 +70,11 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CheckAtResourceGroupScope(ctx,
 		"<resource-group-name>",
@@ -114,7 +109,6 @@ func ExamplePolicyRestrictionsClient_CheckAtResourceGroupScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -125,13 +119,11 @@ func ExamplePolicyRestrictionsClient_CheckAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpolicyinsights.NewPolicyRestrictionsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CheckAtManagementGroupScope(ctx,
 		"<management-group-id>",
@@ -144,7 +136,6 @@ func ExamplePolicyRestrictionsClient_CheckAtManagementGroupScope() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

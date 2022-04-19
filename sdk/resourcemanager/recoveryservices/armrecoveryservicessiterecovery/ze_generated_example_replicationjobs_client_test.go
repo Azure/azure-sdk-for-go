@@ -24,7 +24,6 @@ func ExampleReplicationJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -32,7 +31,6 @@ func ExampleReplicationJobsClient_NewListPager() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armrecoveryservicessiterecovery.ReplicationJobsClientListOptions{Filter: nil})
 	for pager.More() {
@@ -53,7 +51,6 @@ func ExampleReplicationJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -61,14 +58,12 @@ func ExampleReplicationJobsClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<job-name>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,7 +74,6 @@ func ExampleReplicationJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -87,19 +81,16 @@ func ExampleReplicationJobsClient_BeginCancel() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCancel(ctx,
 		"<job-name>",
 		&armrecoveryservicessiterecovery.ReplicationJobsClientBeginCancelOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -110,7 +101,6 @@ func ExampleReplicationJobsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -118,19 +108,16 @@ func ExampleReplicationJobsClient_BeginRestart() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginRestart(ctx,
 		"<job-name>",
 		&armrecoveryservicessiterecovery.ReplicationJobsClientBeginRestartOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -141,7 +128,6 @@ func ExampleReplicationJobsClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -149,7 +135,6 @@ func ExampleReplicationJobsClient_BeginResume() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginResume(ctx,
 		"<job-name>",
@@ -161,12 +146,10 @@ func ExampleReplicationJobsClient_BeginResume() {
 		&armrecoveryservicessiterecovery.ReplicationJobsClientBeginResumeOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -177,7 +160,6 @@ func ExampleReplicationJobsClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationJobsClient("<resource-name>",
@@ -185,7 +167,6 @@ func ExampleReplicationJobsClient_BeginExport() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginExport(ctx,
 		armrecoveryservicessiterecovery.JobQueryParameter{
@@ -197,12 +178,10 @@ func ExampleReplicationJobsClient_BeginExport() {
 		&armrecoveryservicessiterecovery.ReplicationJobsClientBeginExportOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

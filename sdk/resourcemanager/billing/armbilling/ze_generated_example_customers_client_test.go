@@ -21,13 +21,11 @@ func ExampleCustomersClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewCustomersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",
@@ -52,13 +50,11 @@ func ExampleCustomersClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewCustomersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		&armbilling.CustomersClientListByBillingAccountOptions{Search: nil,
@@ -82,13 +78,11 @@ func ExampleCustomersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewCustomersClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
@@ -96,7 +90,6 @@ func ExampleCustomersClient_Get() {
 		&armbilling.CustomersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

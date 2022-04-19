@@ -21,7 +21,6 @@ func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationLogicalNetworksClient("<resource-name>",
@@ -29,7 +28,6 @@ func ExampleReplicationLogicalNetworksClient_NewListByReplicationFabricsPager() 
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByReplicationFabricsPager("<fabric-name>",
 		nil)
@@ -51,7 +49,6 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicessiterecovery.NewReplicationLogicalNetworksClient("<resource-name>",
@@ -59,7 +56,6 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 		"<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<fabric-name>",
@@ -67,7 +63,6 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

@@ -22,13 +22,11 @@ func ExampleForecastClient_Usage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcostmanagement.NewForecastClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Usage(ctx,
 		"<scope>",
@@ -76,7 +74,6 @@ func ExampleForecastClient_Usage() {
 		&armcostmanagement.ForecastClientUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -87,13 +84,11 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcostmanagement.NewForecastClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ExternalCloudProviderUsage(ctx,
 		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
@@ -140,7 +135,6 @@ func ExampleForecastClient_ExternalCloudProviderUsage() {
 		&armcostmanagement.ForecastClientExternalCloudProviderUsageOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

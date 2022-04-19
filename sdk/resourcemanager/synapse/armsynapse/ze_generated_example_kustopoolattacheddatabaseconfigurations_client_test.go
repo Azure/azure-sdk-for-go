@@ -24,13 +24,11 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_NewListByKustoPoolPage
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByKustoPoolPager("<workspace-name>",
 		"<kusto-pool-name>",
@@ -54,13 +52,11 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<workspace-name>",
@@ -70,7 +66,6 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -81,13 +76,11 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<workspace-name>",
@@ -119,12 +112,10 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() 
 		&armsynapse.KustoPoolAttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -135,13 +126,11 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsynapse.NewKustoPoolAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<workspace-name>",
@@ -151,11 +140,9 @@ func ExampleKustoPoolAttachedDatabaseConfigurationsClient_BeginDelete() {
 		&armsynapse.KustoPoolAttachedDatabaseConfigurationsClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

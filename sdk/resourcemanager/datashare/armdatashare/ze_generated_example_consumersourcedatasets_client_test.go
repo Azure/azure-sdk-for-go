@@ -21,13 +21,11 @@ func ExampleConsumerSourceDataSetsClient_NewListByShareSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdatashare.NewConsumerSourceDataSetsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByShareSubscriptionPager("<resource-group-name>",
 		"<account-name>",

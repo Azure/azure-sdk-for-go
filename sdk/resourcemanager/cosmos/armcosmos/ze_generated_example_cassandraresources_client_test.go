@@ -24,13 +24,11 @@ func ExampleCassandraResourcesClient_NewListCassandraKeyspacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListCassandraKeyspacesPager("<resource-group-name>",
 		"<account-name>",
@@ -53,13 +51,11 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraKeyspace(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspace() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +74,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateCassandraKeyspace(ctx,
 		"<resource-group-name>",
@@ -104,12 +97,10 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraKeyspace() {
 		&armcosmos.CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -120,13 +111,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteCassandraKeyspace(ctx,
 		"<resource-group-name>",
@@ -135,12 +124,10 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraKeyspace() {
 		&armcosmos.CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -149,13 +136,11 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraKeyspaceThroughput(ctx,
 		"<resource-group-name>",
@@ -164,7 +149,6 @@ func ExampleCassandraResourcesClient_GetCassandraKeyspaceThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -175,13 +159,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateCassandraKeyspaceThroughput(ctx,
 		"<resource-group-name>",
@@ -199,12 +181,10 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraKeyspaceThroughput() {
 		&armcosmos.CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -215,13 +195,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraKeyspaceToAutoscale(ctx,
 		"<resource-group-name>",
@@ -230,12 +208,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToAutoscale() 
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -246,13 +222,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraKeyspaceToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -261,12 +235,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraKeyspaceToManualThroug
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -277,13 +249,11 @@ func ExampleCassandraResourcesClient_NewListCassandraTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListCassandraTablesPager("<resource-group-name>",
 		"<account-name>",
@@ -307,13 +277,11 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraTable(ctx,
 		"<resource-group-name>",
@@ -323,7 +291,6 @@ func ExampleCassandraResourcesClient_GetCassandraTable() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -334,13 +301,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateCassandraTable(ctx,
 		"<resource-group-name>",
@@ -378,12 +343,10 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraTable() {
 		&armcosmos.CassandraResourcesClientBeginCreateUpdateCassandraTableOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -394,13 +357,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteCassandraTable(ctx,
 		"<resource-group-name>",
@@ -410,12 +371,10 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraTable() {
 		&armcosmos.CassandraResourcesClientBeginDeleteCassandraTableOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -424,13 +383,11 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraTableThroughput(ctx,
 		"<resource-group-name>",
@@ -440,7 +397,6 @@ func ExampleCassandraResourcesClient_GetCassandraTableThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -451,13 +407,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateCassandraTableThroughput(ctx,
 		"<resource-group-name>",
@@ -476,12 +430,10 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraTableThroughput() {
 		&armcosmos.CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -492,13 +444,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraTableToAutoscale(ctx,
 		"<resource-group-name>",
@@ -508,12 +458,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToAutoscale() {
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -524,13 +472,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraTableToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -540,12 +486,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraTableToManualThroughpu
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -556,13 +500,11 @@ func ExampleCassandraResourcesClient_NewListCassandraViewsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListCassandraViewsPager("<resource-group-name>",
 		"<account-name>",
@@ -586,13 +528,11 @@ func ExampleCassandraResourcesClient_GetCassandraView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraView(ctx,
 		"<resource-group-name>",
@@ -602,7 +542,6 @@ func ExampleCassandraResourcesClient_GetCassandraView() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -613,13 +552,11 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateUpdateCassandraView(ctx,
 		"<resource-group-name>",
@@ -639,12 +576,10 @@ func ExampleCassandraResourcesClient_BeginCreateUpdateCassandraView() {
 		&armcosmos.CassandraResourcesClientBeginCreateUpdateCassandraViewOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -655,13 +590,11 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteCassandraView(ctx,
 		"<resource-group-name>",
@@ -671,12 +604,10 @@ func ExampleCassandraResourcesClient_BeginDeleteCassandraView() {
 		&armcosmos.CassandraResourcesClientBeginDeleteCassandraViewOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -685,13 +616,11 @@ func ExampleCassandraResourcesClient_GetCassandraViewThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetCassandraViewThroughput(ctx,
 		"<resource-group-name>",
@@ -701,7 +630,6 @@ func ExampleCassandraResourcesClient_GetCassandraViewThroughput() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -712,13 +640,11 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraViewThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateCassandraViewThroughput(ctx,
 		"<resource-group-name>",
@@ -736,12 +662,10 @@ func ExampleCassandraResourcesClient_BeginUpdateCassandraViewThroughput() {
 		&armcosmos.CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -752,13 +676,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraViewToAutoscale(ctx,
 		"<resource-group-name>",
@@ -768,12 +690,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToAutoscale() {
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -784,13 +704,11 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToManualThroughput
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewCassandraResourcesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginMigrateCassandraViewToManualThroughput(ctx,
 		"<resource-group-name>",
@@ -800,12 +718,10 @@ func ExampleCassandraResourcesClient_BeginMigrateCassandraViewToManualThroughput
 		&armcosmos.CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

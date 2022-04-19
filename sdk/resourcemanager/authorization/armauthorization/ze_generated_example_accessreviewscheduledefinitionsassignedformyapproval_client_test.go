@@ -22,13 +22,11 @@ func ExampleAccessReviewScheduleDefinitionsAssignedForMyApprovalClient_NewListPa
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armauthorization.NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(&armauthorization.AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions{Filter: to.Ptr("<filter>")})
 	for pager.More() {

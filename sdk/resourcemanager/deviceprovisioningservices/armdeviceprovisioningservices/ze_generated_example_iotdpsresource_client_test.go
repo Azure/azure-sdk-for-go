@@ -24,13 +24,11 @@ func ExampleIotDpsResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<provisioning-service-name>",
@@ -38,7 +36,6 @@ func ExampleIotDpsResourceClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -49,13 +46,11 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"<resource-group-name>",
@@ -74,12 +69,10 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate() {
 		&armdeviceprovisioningservices.IotDpsResourceClientBeginCreateOrUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -90,13 +83,11 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"<resource-group-name>",
@@ -109,12 +100,10 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 		&armdeviceprovisioningservices.IotDpsResourceClientBeginUpdateOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -125,13 +114,11 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDelete(ctx,
 		"<provisioning-service-name>",
@@ -139,12 +126,10 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 		&armdeviceprovisioningservices.IotDpsResourceClientBeginDeleteOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -153,13 +138,11 @@ func ExampleIotDpsResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBySubscriptionPager(nil)
 	for pager.More() {
@@ -180,13 +163,11 @@ func ExampleIotDpsResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
@@ -208,13 +189,11 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetOperationResult(ctx,
 		"<operation-id>",
@@ -224,7 +203,6 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -235,13 +213,11 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CheckProvisioningServiceNameAvailability(ctx,
 		armdeviceprovisioningservices.OperationInputs{
@@ -250,7 +226,6 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -261,13 +236,11 @@ func ExampleIotDpsResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListKeysPager("<provisioning-service-name>",
 		"<resource-group-name>",
@@ -290,13 +263,11 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListKeysForKeyName(ctx,
 		"<provisioning-service-name>",
@@ -305,7 +276,6 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -316,13 +286,11 @@ func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListPrivateLinkResources(ctx,
 		"<resource-group-name>",
@@ -330,7 +298,6 @@ func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -341,13 +308,11 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateLinkResources(ctx,
 		"<resource-group-name>",
@@ -356,7 +321,6 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -367,13 +331,11 @@ func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListPrivateEndpointConnections(ctx,
 		"<resource-group-name>",
@@ -381,7 +343,6 @@ func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -392,13 +353,11 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -407,7 +366,6 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -418,13 +376,11 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateOrUpdatePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -441,12 +397,10 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 		&armdeviceprovisioningservices.IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -457,13 +411,11 @@ func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdeviceprovisioningservices.NewIotDpsResourceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeletePrivateEndpointConnection(ctx,
 		"<resource-group-name>",
@@ -472,12 +424,10 @@ func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 		&armdeviceprovisioningservices.IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

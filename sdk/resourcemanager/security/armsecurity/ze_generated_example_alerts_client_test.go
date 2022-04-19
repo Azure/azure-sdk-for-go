@@ -22,13 +22,11 @@ func ExampleAlertsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(nil)
 	for pager.More() {
@@ -49,13 +47,11 @@ func ExampleAlertsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByResourceGroupPager("<resource-group-name>",
 		nil)
@@ -77,13 +73,11 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSubscriptionLevelByRegionPager("<asc-location>",
 		nil)
@@ -105,13 +99,11 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListResourceGroupLevelByRegionPager("<asc-location>",
 		"<resource-group-name>",
@@ -134,13 +126,11 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSubscriptionLevel(ctx,
 		"<asc-location>",
@@ -148,7 +138,6 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -159,13 +148,11 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetResourceGroupLevel(ctx,
 		"<asc-location>",
@@ -174,7 +161,6 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -185,13 +171,11 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToDismiss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateSubscriptionLevelStateToDismiss(ctx,
 		"<asc-location>",
@@ -199,7 +183,6 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToDismiss() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -208,13 +191,11 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToResolve() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateSubscriptionLevelStateToResolve(ctx,
 		"<asc-location>",
@@ -222,7 +203,6 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToResolve() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -231,13 +211,11 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToActivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateSubscriptionLevelStateToActivate(ctx,
 		"<asc-location>",
@@ -245,7 +223,6 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToActivate() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -254,13 +231,11 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToResolve() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateResourceGroupLevelStateToResolve(ctx,
 		"<asc-location>",
@@ -269,7 +244,6 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToResolve() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -278,13 +252,11 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToDismiss() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateResourceGroupLevelStateToDismiss(ctx,
 		"<asc-location>",
@@ -293,7 +265,6 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToDismiss() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -302,13 +273,11 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToActivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.UpdateResourceGroupLevelStateToActivate(ctx,
 		"<asc-location>",
@@ -317,7 +286,6 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToActivate() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -326,13 +294,11 @@ func ExampleAlertsClient_Simulate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Simulate(ctx,
 		"<asc-location>",
@@ -353,6 +319,5 @@ func ExampleAlertsClient_Simulate() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

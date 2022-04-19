@@ -22,13 +22,11 @@ func ExampleReservationsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewReservationsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		&armbilling.ReservationsClientListByBillingAccountOptions{Filter: to.Ptr("<filter>"),
@@ -54,13 +52,11 @@ func ExampleReservationsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewReservationsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",

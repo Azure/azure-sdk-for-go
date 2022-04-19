@@ -22,13 +22,11 @@ func ExampleProtectionContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<vault-name>",
@@ -38,7 +36,6 @@ func ExampleProtectionContainersClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -49,13 +46,11 @@ func ExampleProtectionContainersClient_Register() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Register(ctx,
 		"<vault-name>",
@@ -74,7 +69,6 @@ func ExampleProtectionContainersClient_Register() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -85,13 +79,11 @@ func ExampleProtectionContainersClient_Unregister() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Unregister(ctx,
 		"<vault-name>",
@@ -101,7 +93,6 @@ func ExampleProtectionContainersClient_Unregister() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -110,13 +101,11 @@ func ExampleProtectionContainersClient_Inquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Inquire(ctx,
 		"<vault-name>",
@@ -126,7 +115,6 @@ func ExampleProtectionContainersClient_Inquire() {
 		&armrecoveryservicesbackup.ProtectionContainersClientInquireOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -135,13 +123,11 @@ func ExampleProtectionContainersClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewProtectionContainersClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Refresh(ctx,
 		"<vault-name>",
@@ -150,6 +136,5 @@ func ExampleProtectionContainersClient_Refresh() {
 		&armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

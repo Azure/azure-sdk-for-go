@@ -21,13 +21,11 @@ func ExampleJobCancellationsClient_Trigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armrecoveryservicesbackup.NewJobCancellationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Trigger(ctx,
 		"<vault-name>",
@@ -36,6 +34,5 @@ func ExampleJobCancellationsClient_Trigger() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

@@ -22,13 +22,11 @@ func ExampleManagementGroupSubscriptionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmanagementgroups.NewManagementGroupSubscriptionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Create(ctx,
 		"<group-id>",
@@ -36,7 +34,6 @@ func ExampleManagementGroupSubscriptionsClient_Create() {
 		&armmanagementgroups.ManagementGroupSubscriptionsClientCreateOptions{CacheControl: to.Ptr("<cache-control>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -47,13 +44,11 @@ func ExampleManagementGroupSubscriptionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmanagementgroups.NewManagementGroupSubscriptionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<group-id>",
@@ -61,7 +56,6 @@ func ExampleManagementGroupSubscriptionsClient_Delete() {
 		&armmanagementgroups.ManagementGroupSubscriptionsClientDeleteOptions{CacheControl: to.Ptr("<cache-control>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -70,13 +64,11 @@ func ExampleManagementGroupSubscriptionsClient_GetSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmanagementgroups.NewManagementGroupSubscriptionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSubscription(ctx,
 		"<group-id>",
@@ -84,7 +76,6 @@ func ExampleManagementGroupSubscriptionsClient_GetSubscription() {
 		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionOptions{CacheControl: to.Ptr("<cache-control>")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -95,13 +86,11 @@ func ExampleManagementGroupSubscriptionsClient_NewGetSubscriptionsUnderManagemen
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmanagementgroups.NewManagementGroupSubscriptionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetSubscriptionsUnderManagementGroupPager("<group-id>",
 		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions{Skiptoken: nil})

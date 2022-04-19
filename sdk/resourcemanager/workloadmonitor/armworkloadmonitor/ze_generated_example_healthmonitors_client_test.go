@@ -24,13 +24,11 @@ func ExampleHealthMonitorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager("<subscription-id>",
 		"<resource-group-name>",
@@ -58,13 +56,11 @@ func ExampleHealthMonitorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<subscription-id>",
@@ -76,7 +72,6 @@ func ExampleHealthMonitorsClient_Get() {
 		&armworkloadmonitor.HealthMonitorsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -87,13 +82,11 @@ func ExampleHealthMonitorsClient_NewListStateChangesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListStateChangesPager("<subscription-id>",
 		"<resource-group-name>",
@@ -124,13 +117,11 @@ func ExampleHealthMonitorsClient_GetStateChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armworkloadmonitor.NewHealthMonitorsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetStateChange(ctx,
 		"<subscription-id>",
@@ -143,7 +134,6 @@ func ExampleHealthMonitorsClient_GetStateChange() {
 		&armworkloadmonitor.HealthMonitorsClientGetStateChangeOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

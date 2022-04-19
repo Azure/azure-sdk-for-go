@@ -22,13 +22,11 @@ func ExampleDatabaseClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMetricsPager("<resource-group-name>",
 		"<account-name>",
@@ -53,13 +51,11 @@ func ExampleDatabaseClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListUsagesPager("<resource-group-name>",
 		"<account-name>",
@@ -83,13 +79,11 @@ func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armcosmos.NewDatabaseClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
 		"<account-name>",

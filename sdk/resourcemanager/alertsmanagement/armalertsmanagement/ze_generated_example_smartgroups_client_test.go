@@ -21,13 +21,11 @@ func ExampleSmartGroupsClient_NewGetAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetAllPager(&armalertsmanagement.SmartGroupsClientGetAllOptions{TargetResource: nil,
 		TargetResourceGroup: nil,
@@ -59,13 +57,11 @@ func ExampleSmartGroupsClient_ChangeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ChangeState(ctx,
 		"<smart-group-id>",
@@ -73,7 +69,6 @@ func ExampleSmartGroupsClient_ChangeState() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -84,20 +79,17 @@ func ExampleSmartGroupsClient_GetHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armalertsmanagement.NewSmartGroupsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetHistory(ctx,
 		"<smart-group-id>",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

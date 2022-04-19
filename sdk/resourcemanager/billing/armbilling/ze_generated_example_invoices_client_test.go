@@ -24,13 +24,11 @@ func ExampleInvoicesClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		"<period-start-date>",
@@ -54,13 +52,11 @@ func ExampleInvoicesClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",
@@ -85,13 +81,11 @@ func ExampleInvoicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<billing-account-name>",
@@ -99,7 +93,6 @@ func ExampleInvoicesClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -110,13 +103,11 @@ func ExampleInvoicesClient_BeginDownloadInvoice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDownloadInvoice(ctx,
 		"<billing-account-name>",
@@ -125,12 +116,10 @@ func ExampleInvoicesClient_BeginDownloadInvoice() {
 		&armbilling.InvoicesClientBeginDownloadInvoiceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -141,13 +130,11 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDownloadMultipleBillingProfileInvoices(ctx,
 		"<billing-account-name>",
@@ -158,12 +145,10 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingProfileInvoices() {
 		&armbilling.InvoicesClientBeginDownloadMultipleBillingProfileInvoicesOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -174,13 +159,11 @@ func ExampleInvoicesClient_NewListByBillingSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingSubscriptionPager("<period-start-date>",
 		"<period-end-date>",
@@ -203,13 +186,11 @@ func ExampleInvoicesClient_BeginDownloadBillingSubscriptionInvoice() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDownloadBillingSubscriptionInvoice(ctx,
 		"<invoice-name>",
@@ -217,12 +198,10 @@ func ExampleInvoicesClient_BeginDownloadBillingSubscriptionInvoice() {
 		&armbilling.InvoicesClientBeginDownloadBillingSubscriptionInvoiceOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -233,13 +212,11 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingSubscriptionInvoices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewInvoicesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDownloadMultipleBillingSubscriptionInvoices(ctx,
 		[]*string{
@@ -249,12 +226,10 @@ func ExampleInvoicesClient_BeginDownloadMultipleBillingSubscriptionInvoices() {
 		&armbilling.InvoicesClientBeginDownloadMultipleBillingSubscriptionInvoicesOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

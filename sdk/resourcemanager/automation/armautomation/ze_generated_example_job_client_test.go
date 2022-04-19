@@ -22,13 +22,11 @@ func ExampleJobClient_GetOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetOutput(ctx,
 		"<resource-group-name>",
@@ -37,7 +35,6 @@ func ExampleJobClient_GetOutput() {
 		&armautomation.JobClientGetOutputOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -48,13 +45,11 @@ func ExampleJobClient_GetRunbookContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetRunbookContent(ctx,
 		"<resource-group-name>",
@@ -63,7 +58,6 @@ func ExampleJobClient_GetRunbookContent() {
 		&armautomation.JobClientGetRunbookContentOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -74,13 +68,11 @@ func ExampleJobClient_Suspend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Suspend(ctx,
 		"<resource-group-name>",
@@ -89,7 +81,6 @@ func ExampleJobClient_Suspend() {
 		&armautomation.JobClientSuspendOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -98,13 +89,11 @@ func ExampleJobClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Stop(ctx,
 		"<resource-group-name>",
@@ -113,7 +102,6 @@ func ExampleJobClient_Stop() {
 		&armautomation.JobClientStopOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -122,13 +110,11 @@ func ExampleJobClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -137,7 +123,6 @@ func ExampleJobClient_Get() {
 		&armautomation.JobClientGetOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -148,13 +133,11 @@ func ExampleJobClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Create(ctx,
 		"<resource-group-name>",
@@ -175,7 +158,6 @@ func ExampleJobClient_Create() {
 		&armautomation.JobClientCreateOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -184,13 +166,11 @@ func ExampleJobClient_NewListByAutomationAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
 		"<automation-account-name>",
@@ -215,13 +195,11 @@ func ExampleJobClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Resume(ctx,
 		"<resource-group-name>",
@@ -230,6 +208,5 @@ func ExampleJobClient_Resume() {
 		&armautomation.JobClientResumeOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

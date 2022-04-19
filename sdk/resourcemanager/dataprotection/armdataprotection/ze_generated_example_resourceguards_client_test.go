@@ -22,13 +22,11 @@ func ExampleResourceGuardsClient_NewGetResourcesInSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetResourcesInSubscriptionPager(nil)
 	for pager.More() {
@@ -49,13 +47,11 @@ func ExampleResourceGuardsClient_NewGetResourcesInResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetResourcesInResourceGroupPager("<resource-group-name>",
 		nil)
@@ -77,13 +73,11 @@ func ExampleResourceGuardsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Put(ctx,
 		"<resource-group-name>",
@@ -97,7 +91,6 @@ func ExampleResourceGuardsClient_Put() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -108,13 +101,11 @@ func ExampleResourceGuardsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Get(ctx,
 		"<resource-group-name>",
@@ -122,7 +113,6 @@ func ExampleResourceGuardsClient_Get() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -133,13 +123,11 @@ func ExampleResourceGuardsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
@@ -147,7 +135,6 @@ func ExampleResourceGuardsClient_Delete() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -156,13 +143,11 @@ func ExampleResourceGuardsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.Patch(ctx,
 		"<resource-group-name>",
@@ -175,7 +160,6 @@ func ExampleResourceGuardsClient_Patch() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -186,13 +170,11 @@ func ExampleResourceGuardsClient_NewGetDisableSoftDeleteRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetDisableSoftDeleteRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -215,13 +197,11 @@ func ExampleResourceGuardsClient_NewGetDeleteResourceGuardProxyRequestsObjectsPa
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetDeleteResourceGuardProxyRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -244,13 +224,11 @@ func ExampleResourceGuardsClient_NewGetBackupSecurityPINRequestsObjectsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetBackupSecurityPINRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -273,13 +251,11 @@ func ExampleResourceGuardsClient_NewGetDeleteProtectedItemRequestsObjectsPager()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetDeleteProtectedItemRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -302,13 +278,11 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectionPolicyRequestsObjectsPage
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetUpdateProtectionPolicyRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -331,13 +305,11 @@ func ExampleResourceGuardsClient_NewGetUpdateProtectedItemRequestsObjectsPager()
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetUpdateProtectedItemRequestsObjectsPager("<resource-group-name>",
 		"<resource-guards-name>",
@@ -360,13 +332,11 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultDisableSoftDeleteRequestsObject(ctx,
 		"<resource-group-name>",
@@ -375,7 +345,6 @@ func ExampleResourceGuardsClient_GetDefaultDisableSoftDeleteRequestsObject() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -386,13 +355,11 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultDeleteResourceGuardProxyRequestsObject(ctx,
 		"<resource-group-name>",
@@ -401,7 +368,6 @@ func ExampleResourceGuardsClient_GetDefaultDeleteResourceGuardProxyRequestsObjec
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -412,13 +378,11 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultBackupSecurityPINRequestsObject(ctx,
 		"<resource-group-name>",
@@ -427,7 +391,6 @@ func ExampleResourceGuardsClient_GetDefaultBackupSecurityPINRequestsObject() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -438,13 +401,11 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultDeleteProtectedItemRequestsObject(ctx,
 		"<resource-group-name>",
@@ -453,7 +414,6 @@ func ExampleResourceGuardsClient_GetDefaultDeleteProtectedItemRequestsObject() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -464,13 +424,11 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultUpdateProtectionPolicyRequestsObject(ctx,
 		"<resource-group-name>",
@@ -479,7 +437,6 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectionPolicyRequestsObject(
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -490,13 +447,11 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataprotection.NewResourceGuardsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDefaultUpdateProtectedItemRequestsObject(ctx,
 		"<resource-group-name>",
@@ -505,7 +460,6 @@ func ExampleResourceGuardsClient_GetDefaultUpdateProtectedItemRequestsObject() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

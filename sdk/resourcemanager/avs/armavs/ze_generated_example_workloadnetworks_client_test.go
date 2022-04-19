@@ -24,13 +24,11 @@ func ExampleWorkloadNetworksClient_NewListSegmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListSegmentsPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -53,13 +51,11 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSegment(ctx,
 		"<resource-group-name>",
@@ -68,7 +64,6 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +74,11 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateSegments(ctx,
 		"<resource-group-name>",
@@ -106,12 +99,10 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 		&armavs.WorkloadNetworksClientBeginCreateSegmentsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -122,13 +113,11 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateSegments(ctx,
 		"<resource-group-name>",
@@ -148,12 +137,10 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 		&armavs.WorkloadNetworksClientBeginUpdateSegmentsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -164,13 +151,11 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteSegment(ctx,
 		"<resource-group-name>",
@@ -179,12 +164,10 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 		&armavs.WorkloadNetworksClientBeginDeleteSegmentOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -193,13 +176,11 @@ func ExampleWorkloadNetworksClient_NewListDhcpPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListDhcpPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -222,13 +203,11 @@ func ExampleWorkloadNetworksClient_GetDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDhcp(ctx,
 		"<resource-group-name>",
@@ -237,7 +216,6 @@ func ExampleWorkloadNetworksClient_GetDhcp() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -248,13 +226,11 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateDhcp(ctx,
 		"<resource-group-name>",
@@ -272,12 +248,10 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 		&armavs.WorkloadNetworksClientBeginCreateDhcpOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -288,13 +262,11 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateDhcp(ctx,
 		"<resource-group-name>",
@@ -311,12 +283,10 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 		&armavs.WorkloadNetworksClientBeginUpdateDhcpOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -327,13 +297,11 @@ func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteDhcp(ctx,
 		"<resource-group-name>",
@@ -342,12 +310,10 @@ func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 		&armavs.WorkloadNetworksClientBeginDeleteDhcpOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -356,13 +322,11 @@ func ExampleWorkloadNetworksClient_NewListGatewaysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListGatewaysPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -385,13 +349,11 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetGateway(ctx,
 		"<resource-group-name>",
@@ -400,7 +362,6 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -411,13 +372,11 @@ func ExampleWorkloadNetworksClient_NewListPortMirroringPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPortMirroringPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -440,13 +399,11 @@ func ExampleWorkloadNetworksClient_GetPortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPortMirroring(ctx,
 		"<resource-group-name>",
@@ -455,7 +412,6 @@ func ExampleWorkloadNetworksClient_GetPortMirroring() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -466,13 +422,11 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreatePortMirroring(ctx,
 		"<resource-group-name>",
@@ -490,12 +444,10 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 		&armavs.WorkloadNetworksClientBeginCreatePortMirroringOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -506,13 +458,11 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdatePortMirroring(ctx,
 		"<resource-group-name>",
@@ -529,12 +479,10 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 		&armavs.WorkloadNetworksClientBeginUpdatePortMirroringOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -545,13 +493,11 @@ func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeletePortMirroring(ctx,
 		"<resource-group-name>",
@@ -560,12 +506,10 @@ func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 		&armavs.WorkloadNetworksClientBeginDeletePortMirroringOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -574,13 +518,11 @@ func ExampleWorkloadNetworksClient_NewListVMGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListVMGroupsPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -603,13 +545,11 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetVMGroup(ctx,
 		"<resource-group-name>",
@@ -618,7 +558,6 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -629,13 +568,11 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateVMGroup(ctx,
 		"<resource-group-name>",
@@ -652,12 +589,10 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 		&armavs.WorkloadNetworksClientBeginCreateVMGroupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -668,13 +603,11 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateVMGroup(ctx,
 		"<resource-group-name>",
@@ -690,12 +623,10 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 		&armavs.WorkloadNetworksClientBeginUpdateVMGroupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -706,13 +637,11 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteVMGroup(ctx,
 		"<resource-group-name>",
@@ -721,12 +650,10 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 		&armavs.WorkloadNetworksClientBeginDeleteVMGroupOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -735,13 +662,11 @@ func ExampleWorkloadNetworksClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListVirtualMachinesPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -764,13 +689,11 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetVirtualMachine(ctx,
 		"<resource-group-name>",
@@ -779,7 +702,6 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -790,13 +712,11 @@ func ExampleWorkloadNetworksClient_NewListPublicIPsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPublicIPsPager("<resource-group-name>",
 		"<private-cloud-name>",
@@ -819,13 +739,11 @@ func ExampleWorkloadNetworksClient_GetPublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetPublicIP(ctx,
 		"<resource-group-name>",
@@ -834,7 +752,6 @@ func ExampleWorkloadNetworksClient_GetPublicIP() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -845,13 +762,11 @@ func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreatePublicIP(ctx,
 		"<resource-group-name>",
@@ -866,12 +781,10 @@ func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 		&armavs.WorkloadNetworksClientBeginCreatePublicIPOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -882,13 +795,11 @@ func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armavs.NewWorkloadNetworksClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeletePublicIP(ctx,
 		"<resource-group-name>",
@@ -897,11 +808,9 @@ func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
 		&armavs.WorkloadNetworksClientBeginDeletePublicIPOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

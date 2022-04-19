@@ -22,13 +22,11 @@ func ExampleExposureControlClient_GetFeatureValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetFeatureValue(ctx,
 		"<location-id>",
@@ -39,7 +37,6 @@ func ExampleExposureControlClient_GetFeatureValue() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -50,13 +47,11 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetFeatureValueByFactory(ctx,
 		"<resource-group-name>",
@@ -68,7 +63,6 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -79,13 +73,11 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.QueryFeatureValuesByFactory(ctx,
 		"<resource-group-name>",
@@ -104,7 +96,6 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

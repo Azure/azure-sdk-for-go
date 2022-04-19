@@ -21,13 +21,11 @@ func ExampleLocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armpeering.NewLocationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListPager(armpeering.PeeringLocationsKindDirect,
 		&armpeering.LocationsClientListOptions{DirectPeeringType: nil})

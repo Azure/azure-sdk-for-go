@@ -22,13 +22,11 @@ func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBuildServicesPager("<resource-group-name>",
 		"<service-name>",
@@ -51,13 +49,11 @@ func ExampleBuildServiceClient_GetBuildService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetBuildService(ctx,
 		"<resource-group-name>",
@@ -66,7 +62,6 @@ func ExampleBuildServiceClient_GetBuildService() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -77,13 +72,11 @@ func ExampleBuildServiceClient_NewListBuildsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBuildsPager("<resource-group-name>",
 		"<service-name>",
@@ -107,13 +100,11 @@ func ExampleBuildServiceClient_GetBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetBuild(ctx,
 		"<resource-group-name>",
@@ -123,7 +114,6 @@ func ExampleBuildServiceClient_GetBuild() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -134,13 +124,11 @@ func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.CreateOrUpdateBuild(ctx,
 		"<resource-group-name>",
@@ -160,7 +148,6 @@ func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -171,13 +158,11 @@ func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListBuildResultsPager("<resource-group-name>",
 		"<service-name>",
@@ -202,13 +187,11 @@ func ExampleBuildServiceClient_GetBuildResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetBuildResult(ctx,
 		"<resource-group-name>",
@@ -219,7 +202,6 @@ func ExampleBuildServiceClient_GetBuildResult() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -230,13 +212,11 @@ func ExampleBuildServiceClient_GetBuildResultLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetBuildResultLog(ctx,
 		"<resource-group-name>",
@@ -247,7 +227,6 @@ func ExampleBuildServiceClient_GetBuildResultLog() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -258,13 +237,11 @@ func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListSupportedBuildpacks(ctx,
 		"<resource-group-name>",
@@ -273,7 +250,6 @@ func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -284,13 +260,11 @@ func ExampleBuildServiceClient_GetSupportedBuildpack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSupportedBuildpack(ctx,
 		"<resource-group-name>",
@@ -300,7 +274,6 @@ func ExampleBuildServiceClient_GetSupportedBuildpack() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -311,13 +284,11 @@ func ExampleBuildServiceClient_ListSupportedStacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ListSupportedStacks(ctx,
 		"<resource-group-name>",
@@ -326,7 +297,6 @@ func ExampleBuildServiceClient_ListSupportedStacks() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -337,13 +307,11 @@ func ExampleBuildServiceClient_GetSupportedStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetSupportedStack(ctx,
 		"<resource-group-name>",
@@ -353,7 +321,6 @@ func ExampleBuildServiceClient_GetSupportedStack() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

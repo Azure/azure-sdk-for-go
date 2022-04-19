@@ -23,13 +23,11 @@ func ExampleManagementClient_ResetQueryPerformanceInsightData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmysql.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.ResetQueryPerformanceInsightData(ctx,
 		"<resource-group-name>",
@@ -37,7 +35,6 @@ func ExampleManagementClient_ResetQueryPerformanceInsightData() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -48,13 +45,11 @@ func ExampleManagementClient_BeginCreateRecommendedActionSession() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armmysql.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginCreateRecommendedActionSession(ctx,
 		"<resource-group-name>",
@@ -64,11 +59,9 @@ func ExampleManagementClient_BeginCreateRecommendedActionSession() {
 		&armmysql.ManagementClientBeginCreateRecommendedActionSessionOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }

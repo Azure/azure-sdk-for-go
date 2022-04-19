@@ -21,13 +21,11 @@ func ExamplePermissionsClient_NewListByCustomerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewPermissionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByCustomerPager("<billing-account-name>",
 		"<customer-name>",
@@ -50,13 +48,11 @@ func ExamplePermissionsClient_NewListByBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewPermissionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingAccountPager("<billing-account-name>",
 		nil)
@@ -78,13 +74,11 @@ func ExamplePermissionsClient_NewListByInvoiceSectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewPermissionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByInvoiceSectionsPager("<billing-account-name>",
 		"<billing-profile-name>",
@@ -108,13 +102,11 @@ func ExamplePermissionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armbilling.NewPermissionsClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListByBillingProfilePager("<billing-account-name>",
 		"<billing-profile-name>",

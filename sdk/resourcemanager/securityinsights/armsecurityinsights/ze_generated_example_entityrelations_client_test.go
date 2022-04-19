@@ -21,13 +21,11 @@ func ExampleEntityRelationsClient_GetRelation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armsecurityinsights.NewEntityRelationsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetRelation(ctx,
 		"<resource-group-name>",
@@ -37,7 +35,6 @@ func ExampleEntityRelationsClient_GetRelation() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

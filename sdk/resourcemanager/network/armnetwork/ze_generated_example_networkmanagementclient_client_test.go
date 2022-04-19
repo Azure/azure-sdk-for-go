@@ -24,13 +24,11 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginPutBastionShareableLink(ctx,
 		"<resource-group-name>",
@@ -51,12 +49,10 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 		&armnetwork.ManagementClientBeginPutBastionShareableLinkOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	for res.More() {
 		nextResult, err := res.NextPage(ctx)
@@ -76,13 +72,11 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginDeleteBastionShareableLink(ctx,
 		"<resource-group-name>",
@@ -103,12 +97,10 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 		&armnetwork.ManagementClientBeginDeleteBastionShareableLinkOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 }
 
@@ -117,13 +109,11 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewGetBastionShareableLinkPager("<resource-group-name>",
 		"<bastion-host-name>",
@@ -159,13 +149,11 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginGetActiveSessions(ctx,
 		"<resource-group-name>",
@@ -173,12 +161,10 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 		&armnetwork.ManagementClientBeginGetActiveSessionsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	for res.More() {
 		nextResult, err := res.NextPage(ctx)
@@ -198,13 +184,11 @@ func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewDisconnectActiveSessionsPager("<resource-group-name>",
 		"<bastion-host-name>",
@@ -228,13 +212,11 @@ func ExampleManagementClient_SupportedSecurityProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.SupportedSecurityProviders(ctx,
 		"<resource-group-name>",
@@ -242,7 +224,6 @@ func ExampleManagementClient_SupportedSecurityProviders() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -253,13 +234,11 @@ func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnpro
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx,
 		"<resource-group-name>",
@@ -271,12 +250,10 @@ func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnpro
 		&armnetwork.ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

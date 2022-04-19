@@ -21,13 +21,11 @@ func ExampleTenantAccessGitClient_RegeneratePrimaryKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armapimanagement.NewTenantAccessGitClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.RegeneratePrimaryKey(ctx,
 		"<resource-group-name>",
@@ -36,7 +34,6 @@ func ExampleTenantAccessGitClient_RegeneratePrimaryKey() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }
 
@@ -45,13 +42,11 @@ func ExampleTenantAccessGitClient_RegenerateSecondaryKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armapimanagement.NewTenantAccessGitClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	_, err = client.RegenerateSecondaryKey(ctx,
 		"<resource-group-name>",
@@ -60,6 +55,5 @@ func ExampleTenantAccessGitClient_RegenerateSecondaryKey() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 }

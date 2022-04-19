@@ -21,13 +21,11 @@ func ExampleObjectDataTypesClient_NewListFieldsByModuleAndTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewObjectDataTypesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListFieldsByModuleAndTypePager("<resource-group-name>",
 		"<automation-account-name>",
@@ -52,13 +50,11 @@ func ExampleObjectDataTypesClient_NewListFieldsByTypePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armautomation.NewObjectDataTypesClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	pager := client.NewListFieldsByTypePager("<resource-group-name>",
 		"<automation-account-name>",

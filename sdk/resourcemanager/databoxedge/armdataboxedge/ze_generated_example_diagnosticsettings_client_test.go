@@ -24,13 +24,11 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticProactiveLogCollectionSettings
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDiagnosticProactiveLogCollectionSettings(ctx,
 		"<device-name>",
@@ -38,7 +36,6 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticProactiveLogCollectionSettings
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -49,13 +46,11 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollection
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateDiagnosticProactiveLogCollectionSettings(ctx,
 		"<device-name>",
@@ -68,12 +63,10 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticProactiveLogCollection
 		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticProactiveLogCollectionSettingsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -84,13 +77,11 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	res, err := client.GetDiagnosticRemoteSupportSettings(ctx,
 		"<device-name>",
@@ -98,7 +89,6 @@ func ExampleDiagnosticSettingsClient_GetDiagnosticRemoteSupportSettings() {
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res
@@ -109,13 +99,11 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
-		return
 	}
 	ctx := context.Background()
 	client, err := armdataboxedge.NewDiagnosticSettingsClient("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
-		return
 	}
 	poller, err := client.BeginUpdateDiagnosticRemoteSupportSettings(ctx,
 		"<device-name>",
@@ -133,12 +121,10 @@ func ExampleDiagnosticSettingsClient_BeginUpdateDiagnosticRemoteSupportSettings(
 		&armdataboxedge.DiagnosticSettingsClientBeginUpdateDiagnosticRemoteSupportSettingsOptions{ResumeToken: ""})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-		return
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
-		return
 	}
 	// TODO: use response item
 	_ = res

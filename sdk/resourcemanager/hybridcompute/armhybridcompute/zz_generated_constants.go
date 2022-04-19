@@ -10,8 +10,24 @@ package armhybridcompute
 
 const (
 	moduleName    = "armhybridcompute"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
+
+// AssessmentModeTypes - Specifies the assessment mode.
+type AssessmentModeTypes string
+
+const (
+	AssessmentModeTypesAutomaticByPlatform AssessmentModeTypes = "AutomaticByPlatform"
+	AssessmentModeTypesImageDefault        AssessmentModeTypes = "ImageDefault"
+)
+
+// PossibleAssessmentModeTypesValues returns the possible values for the AssessmentModeTypes const type.
+func PossibleAssessmentModeTypesValues() []AssessmentModeTypes {
+	return []AssessmentModeTypes{
+		AssessmentModeTypesAutomaticByPlatform,
+		AssessmentModeTypesImageDefault,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -43,6 +59,26 @@ const (
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return []InstanceViewTypes{
 		InstanceViewTypesInstanceView,
+	}
+}
+
+// PatchModeTypes - Specifies the patch mode.
+type PatchModeTypes string
+
+const (
+	PatchModeTypesAutomaticByOS       PatchModeTypes = "AutomaticByOS"
+	PatchModeTypesAutomaticByPlatform PatchModeTypes = "AutomaticByPlatform"
+	PatchModeTypesImageDefault        PatchModeTypes = "ImageDefault"
+	PatchModeTypesManual              PatchModeTypes = "Manual"
+)
+
+// PossiblePatchModeTypesValues returns the possible values for the PatchModeTypes const type.
+func PossiblePatchModeTypesValues() []PatchModeTypes {
+	return []PatchModeTypes{
+		PatchModeTypesAutomaticByOS,
+		PatchModeTypesAutomaticByPlatform,
+		PatchModeTypesImageDefault,
+		PatchModeTypesManual,
 	}
 }
 

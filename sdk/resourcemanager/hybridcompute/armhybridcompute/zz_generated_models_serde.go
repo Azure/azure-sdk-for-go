@@ -17,7 +17,12 @@ import (
 // MarshalJSON implements the json.Marshaller interface for type AgentConfiguration.
 func (a AgentConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "extensionsAllowList", a.ExtensionsAllowList)
+	populate(objectMap, "extensionsBlockList", a.ExtensionsBlockList)
+	populate(objectMap, "extensionsEnabled", a.ExtensionsEnabled)
+	populate(objectMap, "guestConfigurationEnabled", a.GuestConfigurationEnabled)
 	populate(objectMap, "incomingConnectionsPorts", a.IncomingConnectionsPorts)
+	populate(objectMap, "proxyBypass", a.ProxyBypass)
 	populate(objectMap, "proxyUrl", a.ProxyURL)
 	return json.Marshal(objectMap)
 }
@@ -160,6 +165,7 @@ func (m MachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parentClusterResourceId", m.ParentClusterResourceID)
 	populate(objectMap, "privateLinkScopeResourceId", m.PrivateLinkScopeResourceID)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
+	populate(objectMap, "serviceStatuses", m.ServiceStatuses)
 	populate(objectMap, "status", m.Status)
 	populate(objectMap, "vmId", m.VMID)
 	populate(objectMap, "vmUuid", m.VMUUID)
@@ -244,6 +250,9 @@ func (m *MachineProperties) UnmarshalJSON(data []byte) error {
 		case "provisioningState":
 			err = unpopulate(val, &m.ProvisioningState)
 			delete(rawMsg, key)
+		case "serviceStatuses":
+			err = unpopulate(val, &m.ServiceStatuses)
+			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &m.Status)
 			delete(rawMsg, key)
@@ -282,6 +291,16 @@ func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
+func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupIds", p.GroupIDs)
+	populate(objectMap, "privateEndpoint", p.PrivateEndpoint)
+	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
+	populate(objectMap, "provisioningState", p.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 

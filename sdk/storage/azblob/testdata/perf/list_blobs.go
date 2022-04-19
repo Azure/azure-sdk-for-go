@@ -18,7 +18,7 @@ type listTestOptions struct {
 	count int
 }
 
-var listTestOpts listTestOptions = listTestOptions{count: 100}
+var listTestOpts = listTestOptions{count: 100}
 
 // uploadTestRegister is called once per process
 func listTestRegister() {

@@ -1750,8 +1750,8 @@ func ExampleBlobClient_startCopy() {
 //	}
 //
 //	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-//	response, err := UploadFileToBlockBlob(context.TODO(), file, blockBlobURL,
-//		HighLevelUploadToBlockBlobOption{
+//	response, err := UploadFile(context.TODO(), file, blockBlobURL,
+//		UploadOption{
 //			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 //			Progress: func(bytesTransferred int64) {
 //				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
@@ -1774,8 +1774,8 @@ func ExampleBlobClient_startCopy() {
 //	}(destFile)
 //
 //	// Perform download
-//	err = DownloadBlobToFile(context.TODO(), blockBlobURL.blobClient, 0, CountToEnd, destFile,
-//		HighLevelDownloadFromBlobOptions{
+//	err = DownloadToFile(context.TODO(), blockBlobURL.blobClient, 0, CountToEnd, destFile,
+//		DownloadOptions{
 //			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 //			Progress: func(bytesTransferred int64) {
 //				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
@@ -1868,11 +1868,11 @@ func ExampleBlobClient_Download() {
 //		log.Fatal(err)
 //	}
 //
-//	// Perform UploadStreamToBlockBlob
+//	// Perform UploadStream
 //	bufferSize := 2 * 1024 * 1024 // Configure the size of the rotating buffers that are used when uploading
 //	maxBuffers := 3               // Configure the number of rotating buffers that are used when uploading
-//	_, err = UploadStreamToBlockBlob(context.TODO(), bytes.NewReader(data), blockBlobURL,
-//		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+//	_, err = UploadStream(context.TODO(), bytes.NewReader(data), blockBlobURL,
+//		UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 //
 //	// Verify that upload was successful
 //	if err != nil {

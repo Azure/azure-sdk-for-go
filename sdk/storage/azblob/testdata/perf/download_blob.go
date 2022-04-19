@@ -19,7 +19,7 @@ type downloadTestOptions struct {
 	size int
 }
 
-var downloadTestOpts downloadTestOptions = downloadTestOptions{size: 10240}
+var downloadTestOpts = downloadTestOptions{size: 10240}
 
 // downloadTestRegister is called once per process
 func downloadTestRegister() {

@@ -1450,9 +1450,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
 
-	// Perform UploadStreamToBlockBlob
-	uploadResp, err := bbClient.UploadStreamToBlockBlob(ctx, blobContentReader,
-		UploadStreamToBlockBlobOptions{
+	// Perform UploadStream
+	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+		UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
 			Metadata:    basicMetadata,
@@ -1515,9 +1515,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
 
-	// Perform UploadStreamToBlockBlob
-	uploadResp, err := bbClient.UploadStreamToBlockBlob(ctx, blobContentReader,
-		UploadStreamToBlockBlobOptions{
+	// Perform UploadStream
+	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+		UploadStreamOptions{
 			BufferSize:   bufferSize,
 			MaxBuffers:   maxBuffers,
 			Metadata:     basicMetadata,

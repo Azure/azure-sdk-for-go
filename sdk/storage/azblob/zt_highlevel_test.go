@@ -51,9 +51,9 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
 
-	// Perform UploadStreamToBlockBlob
-	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
-		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+	// Perform UploadStream
+	uploadResp, err := blobClient.UploadStream(ctx, blobContentReader,
+		UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
@@ -153,8 +153,8 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Upload the file to a block blob
-	response, err := bbClient.UploadFileToBlockBlob(context.Background(), file,
-		HighLevelUploadToBlockBlobOption{
+	response, err := bbClient.UploadFile(context.Background(), file,
+		UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -179,9 +179,9 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	}(destFileName)
 
 	// Perform download
-	err = bbClient.DownloadBlobToFile(context.Background(), int64(downloadOffset), int64(downloadCount),
+	err = bbClient.DownloadToFile(context.Background(), int64(downloadOffset), int64(downloadCount),
 		destFile,
-		HighLevelDownloadFromBlobOptions{
+		DownloadOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -315,8 +315,8 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := bbClient.UploadBufferToBlockBlob(context.Background(), bytesToUpload,
-		HighLevelUploadToBlockBlobOption{
+	response, err := bbClient.UploadBuffer(context.Background(), bytesToUpload,
+		UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -336,8 +336,8 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 	}
 
 	// Download the blob to a buffer
-	err = bbClient.DownloadBlobToBuffer(context.Background(), int64(downloadOffset), int64(downloadCount),
-		destBuffer, HighLevelDownloadFromBlobOptions{
+	err = bbClient.DownloadToBuffer(context.Background(), int64(downloadOffset), int64(downloadCount),
+		destBuffer, DownloadOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -566,9 +566,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
 
-	// Perform UploadStreamToBlockBlob
-	uploadResp, err := bbClient.UploadStreamToBlockBlob(ctx, blobContentReader,
-		UploadStreamToBlockBlobOptions{
+	// Perform UploadStream
+	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+		UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
 			Metadata:    basicMetadata,

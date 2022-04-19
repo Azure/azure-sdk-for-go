@@ -18,7 +18,7 @@ type uploadTestOptions struct {
 	size int
 }
 
-var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
+var uploadTestOpts = uploadTestOptions{size: 10240}
 
 // uploadTestRegister is called once per process
 func uploadTestRegister() {

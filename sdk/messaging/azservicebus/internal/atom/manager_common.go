@@ -8,8 +8,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-
-	"github.com/devigned/tab"
 )
 
 // CloseRes closes the response (or if it's nil just no-ops)
@@ -19,8 +17,5 @@ func CloseRes(ctx context.Context, res *http.Response) {
 	}
 
 	_, _ = io.Copy(ioutil.Discard, res.Body)
-
-	if err := res.Body.Close(); err != nil {
-		tab.For(ctx).Error(err)
-	}
+	_ = res.Body.Close()
 }

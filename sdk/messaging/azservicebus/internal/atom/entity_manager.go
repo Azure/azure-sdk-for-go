@@ -20,11 +20,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
-	"github.com/devigned/tab"
 )
 
 const (
@@ -113,20 +111,6 @@ var (
 			return next(ctx, req)
 		}
 	}
-
-	applyTracing = func(version string) MiddlewareFunc {
-		return func(next RestHandler) RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				ctx, span := tracing.StartConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing", version)
-				defer span.End()
-
-				tracing.ApplyRequestInfo(span, req)
-				res, err := next(ctx, req)
-				tracing.ApplyResponseInfo(span, res)
-				return res, err
-			}
-		}
-	}
 )
 
 const (
@@ -178,7 +162,6 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 			addAPIVersion201704,
 			addAtomXMLContentType,
 			addAuthorization(provider),
-			applyTracing(version),
 		},
 	}, nil
 }
@@ -193,7 +176,6 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 			addAPIVersion201704,
 			addAtomXMLContentType,
 			addAuthorization(sbauth.NewTokenProvider(tokenCredential)),
-			applyTracing(version),
 		},
 		retryOptions: retryOptions,
 	}, nil
@@ -201,9 +183,6 @@ func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version
 
 // Get performs an HTTP Get for a given entity path, deserializing the returned XML into `respObj`
 func (em *entityManager) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Get")
-	defer span.End()
-
 	resp, err := em.execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
 	defer CloseRes(ctx, resp)
 
@@ -216,9 +195,6 @@ func (em *entityManager) Get(ctx context.Context, entityPath string, respObj int
 
 // Put performs an HTTP PUT for a given entity path and body, deserializing the returned XML into `respObj`
 func (em *entityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Put")
-	defer span.End()
-
 	bodyBytes, err := xml.Marshal(body)
 
 	if err != nil {
@@ -237,9 +213,6 @@ func (em *entityManager) Put(ctx context.Context, entityPath string, body interf
 
 // Delete performs an HTTP DELETE for a given entity path
 func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Delete")
-	defer span.End()
-
 	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
 }
 
@@ -247,12 +220,8 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	var finalResp *http.Response
 
 	err := utils.Retry(ctx, exported.EventAdmin, fmt.Sprintf("%s %s", method, entityPath), func(ctx context.Context, args *utils.RetryFnArgs) error {
-		ctx, span := em.startSpanFromContext(ctx, "sb.ATOM.Execute")
-		defer span.End()
-
 		req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
 		if err != nil {
-			tab.For(ctx).Error(err)
 			return err
 		}
 
@@ -348,13 +317,6 @@ func FormatManagementError(body []byte, origErr error) error {
 	}
 
 	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
-}
-
-func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operationName)
-	tracing.ApplyComponentInfo(span, em.version)
-	span.AddAttributes(tab.StringAttribute("span.kind", "client"))
-	return ctx, span
 }
 
 func addAuthorization(tp auth.TokenProvider) MiddlewareFunc {

@@ -567,7 +567,10 @@ func ExampleContainerClient_QueryItems() {
 
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
-			json.Unmarshal(item, &itemResponseBody)
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)

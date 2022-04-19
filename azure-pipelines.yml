@@ -29,12 +29,19 @@ jobs:
       name: $(pool.name)
 
     variables:
-      GOPATH: '$(system.defaultWorkingDirectory)/work'
-      sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
-      GO111MODULE: 'off'
-      IGNORE_BREAKING_CHANGES: true
-      go.list.filter: 'profiles services storage'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune -o'
+      - template: ../variables/globals.yml
+      - name: GOPATH
+        value: '$(system.defaultWorkingDirectory)/work'
+      - name: sdkPath
+        value: '$(GOPATH)/src/github.com/$(build.repository.name)'
+      - name: GO111MODULE
+        value: 'off'
+      - name: IGNORE_BREAKING_CHANGES
+        value: 'true'
+      - name: go.list.filter
+        value: 'profiles services storage'
+      - name: go.test.filter
+        value: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune -o'
 
     steps:
     - task: GoTool@0

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2022-04-15)
+## 0.4.0 (2022-04-19)
 
 ### Breaking Changes
 * Fixed Issue #17150 : Renaming/refactoring high level methods.

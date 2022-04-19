@@ -47,15 +47,15 @@ Use the key as the credential parameter to authenticate the client:
 		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
 	}
 
-    serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
 	handle(err)
 
-    serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	handle(err)
 
-    fmt.Println(serviceClient.URL())
+	fmt.Println(serviceClient.URL())
 
 Using a Connection String
 

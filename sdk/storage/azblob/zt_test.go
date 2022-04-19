@@ -118,17 +118,6 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
-//// Note that this function is adding to the list of ignored headers not creating from scratch
-//func ignoreHeaders(recording *testframework.Recording, headers []string) {
-//	ignoredHeaders := recording.Matcher.IgnoredHeaders
-//	for _, header := range headers {
-//		// TODO: Mohit Come Here
-//		//ignoredHeaders[header] = nil
-//		_ = header
-//	}
-//	_ = ignoredHeaders
-//}
-
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
 

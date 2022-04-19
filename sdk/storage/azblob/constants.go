@@ -21,6 +21,9 @@ const (
 
 	// PageBlobPageBytes indicates the number of bytes in a page (512).
 	PageBlobPageBytes = 512
+
+	// BlobDefaultDownloadBlockSize is default block size
+	BlobDefaultDownloadBlockSize = int64(4 * 1024 * 1024) // 4MB
 )
 
 const (
@@ -36,17 +39,6 @@ const (
 	headerIfNoneMatch       = "If-None-Match"
 	headerIfUnmodifiedSince = "If-Unmodified-Since"
 	headerRange             = "Range"
-	//headerDate                    = "Date"
-	//headerXmsVersion              = "x-ms-version"
-	//headerAcceptCharset           = "Accept-Charset"
-	//headerDataServiceVersion      = "DataServiceVersion"
-	//headerMaxDataServiceVersion   = "MaxDataServiceVersion"
-	//headerContentTransferEncoding = "Content-Transfer-Encoding"
-	//
-	//etagOData = "odata.etag"
-	//rfc3339   = "2006-01-02T15:04:05.9999999Z"
-	//timestamp = "Timestamp"
-	//etag = "ETag"
 )
 
 const (

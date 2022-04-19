@@ -36,7 +36,7 @@ type blockWriter interface {
 // well, 4 MiB or 8 MiB, and auto-scale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
-func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
@@ -93,7 +93,7 @@ type copier struct {
 	to blockWriter
 
 	// o contains our options for uploading.
-	o UploadStreamToBlockBlobOptions
+	o UploadStreamOptions
 
 	// id provides the ids for each chunk.
 	id *id

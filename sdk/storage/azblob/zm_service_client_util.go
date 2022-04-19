@@ -6,17 +6,6 @@
 
 package azblob
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
-	if options == nil {
-		options = &ClientOptions{}
-	}
-	return options.toPolicyOptions()
-}
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ServiceGetAccountInfoOptions provides set of options for ServiceClient.GetAccountInfo

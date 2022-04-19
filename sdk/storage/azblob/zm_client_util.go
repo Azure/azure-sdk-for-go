@@ -44,3 +44,12 @@ func (c *ClientOptions) toPolicyOptions() *azcore.ClientOptions {
 		PerRetryPolicies: c.PerRetryPolicies,
 	}
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	return options.toPolicyOptions()
+}

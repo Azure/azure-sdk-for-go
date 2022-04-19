@@ -10,7 +10,7 @@ package azblob
 
 const (
 	moduleName    = "azblob"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 // AccessTier enum

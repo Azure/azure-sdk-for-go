@@ -51,11 +51,11 @@ type (
 
 const (
 	// AccessRightManage allows changes to an entity.
-	AccessRightManage = "Manage"
+	AccessRightManage AccessRight = "Manage"
 	// AccessRightSend allows you to send messages to this entity.
-	AccessRightSend = "Send"
+	AccessRightSend AccessRight = "Send"
 	// AccessRightListen allows you to receive messages from this entity.
-	AccessRightListen = "Listen"
+	AccessRightListen AccessRight = "Listen"
 )
 
 func internalAccessRightsToPublic(internalRules []atom.AuthorizationRule) []AuthorizationRule {

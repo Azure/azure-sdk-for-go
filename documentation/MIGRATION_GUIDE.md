@@ -61,9 +61,9 @@ There are some minor changes in the error handling.
 **Previous version (`services/**/mgmt/**`)**
 
 ```go
-resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters)
+resp, err := resourceGroupsClient.CreateOrUpdate(context.TODO(), resourceGroupName, resourceGroupParameters)
 if err != nil {
-    log.Fatalf("Status code: %d", resp.Response.Response.StatusCode)
+    log.Fatalf("Status code: %d", resp.Response().StatusCode)
 }
 ```
 
@@ -71,10 +71,10 @@ if err != nil {
 
 ```go
 var rawResponse *http.Response
-ctxWithResp := runtime.WithCaptureResponse(context.Background(), &rawResponse)
+ctxWithResp := runtime.WithCaptureResponse(context.TODO(), &rawResponse)
 resp, err := resourceGroupsClient.CreateOrUpdate(ctxWithResp, resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-    var respErr azcore.ResponseError
+    var respErr *azcore.ResponseError
     if errors.As(err, &respErr) {
         log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
     } else {
@@ -93,11 +93,11 @@ In the latest version, if a request is a long-running operation, the function na
 **Previous version (`services/**/mgmt/**`)**
 
 ```go
-future, err := virtualMachinesClient.CreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param)
+future, err := virtualMachinesClient.CreateOrUpdate(context.TODO(), "<resource group name>", "<virtual machine name>", param)
 if err != nil {
     log.Fatal(err)
 }
-if err := future.WaitForCompletionRef(context.Background(), virtualMachinesClient.Client); err != nil {
+if err := future.WaitForCompletionRef(context.TODO(), virtualMachinesClient.Client); err != nil {
     log.Fatal(err)
 }
 vm, err := future.Result(virtualMachinesClient)
@@ -110,11 +110,11 @@ log.Printf("virtual machine ID: %v", *vm.ID)
 **Latest version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
-poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
+poller, err := client.BeginCreateOrUpdate(context.TODO(), "<resource group name>", "<virtual machine name>", param, nil)
 if err != nil {
     log.Fatal(err)
 }
-resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
+resp, err := poller.PollUntilDone(context.TODO(), 30*time.Second)
 if err != nil {
     log.Fatal(err)
 }
@@ -130,7 +130,7 @@ In the latest version, if a request is a paginated operation, a struct `**Pager`
 **Previous version (`services/**/mgmt/**`)**
 
 ```go
-pager, err := resourceGroupsClient.List(context.Background(), "", nil)
+pager, err := resourceGroupsClient.List(context.TODO(), "", nil)
 if err != nil {
     log.Fatal(err)
 }
@@ -138,7 +138,7 @@ for p.NotDone() {
     for _, v := range pager.Values() {
         log.Printf("resource group ID: %s\n", *rg.ID)
     }
-    if err := pager.NextWithContext(context.Background()); err != nil   {
+    if err := pager.NextWithContext(context.TODO()); err != nil   {
         log.Fatal(err)
     }
 }

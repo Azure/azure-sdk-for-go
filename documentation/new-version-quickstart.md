@@ -162,7 +162,7 @@ import (
 ***Define some global variables***
 ```go
 var (
-    ctx                 = context.Background()
+    ctx                 = context.TODO()
     subscriptionId      = os.Getenv("AZURE_SUBSCRIPTION_ID")
     location            = "westus2"
     resourceGroupName   = "resourceGroupName"
@@ -173,18 +173,18 @@ var (
 ***Write a function to create a resource group***
 ```go
 func createResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientCreateOrUpdateResponse, error) {
-	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-	if err != nil {
-		return nil, err
-	}
+    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+    if err != nil {
+        return nil, err
+    }
 
-	param := armresources.ResourceGroup{
-		Location: to.Ptr(location),
-	}
+    param := armresources.ResourceGroup{
+        Location: to.Ptr(location),
+    }
 
-	resp, err := rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
+    resp, err := rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
 
-	return &resp, err
+    return &resp, err
 }
 ```
 
@@ -214,9 +214,9 @@ Example: Managing Resource Groups
 ```go
 func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential) (*armresources.ResourceGroupsClientUpdateResponse, error) {
     rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-	if err != nil {
-		return nil, err
-	}
+    if err != nil {
+        return nil, err
+    }
 
     update := armresources.ResourceGroupPatchable{
         Tags: map[string]*string{
@@ -224,8 +224,8 @@ func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential)
         },
     }
 
-	resp,err :=rgClient.Update(ctx, resourceGroupName, update, nil)
-	
+    resp,err :=rgClient.Update(ctx, resourceGroupName, update, nil)
+    
     return  &resp, err
 }
 ```
@@ -234,25 +234,25 @@ func updateResourceGroup(ctx context.Context, credential azcore.TokenCredential)
 
 ```go
 func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) ([]*armresources.ResourceGroup, error) {
-	rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
-	if err != nil {
-		return nil, err
-	}
+    rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
+    if err != nil {
+        return nil, err
+    }
 
-	pager := rgClient.NewListPager(nil)
+    pager := rgClient.NewListPager(nil)
 
-	var resourceGroups []*armresources.ResourceGroup
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-		if nextResult.ResourceGroupListResult.Value != nil {
-			resourceGroups = append(resourceGroups, nextResult.ResourceGroupListResult.Value...)
-		}
-	}
+    var resourceGroups []*armresources.ResourceGroup
+    for pager.More() {
+        nextResult, err := pager.NextPage(ctx)
+        if err != nil {
+            return nil, err
+        }
+        if nextResult.ResourceGroupListResult.Value != nil {
+            resourceGroups = append(resourceGroups, nextResult.ResourceGroupListResult.Value...)
+        }
+    }
 
-	return resourceGroups, nil
+    return resourceGroups, nil
 }
 ```
 
@@ -262,8 +262,8 @@ func listResourceGroups(ctx context.Context, credential azcore.TokenCredential) 
 func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential) error {
     rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential, nil)
     if err != nil {
-		return err
-	}
+        return err
+    }
 
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
     if err != nil {
@@ -277,10 +277,10 @@ func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential)
 ***Invoking the update, list and delete of resource group in the main function***
 ```go
 func main() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("authentication failure: %+v", err)
-	}
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        log.Fatalf("authentication failure: %+v", err)
+    }
 
     resourceGroup, err := createResourceGroup(ctx, cred)
     if err != nil {
@@ -318,11 +318,12 @@ Long Running Operations
 In the samples above, you might notice that some operations have a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (LRO). For resource management libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
 
 ```go
-poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
+ctx := context.TODO()
+poller, err := client.BeginCreate(ctx, "resource_identifier", "additonal_parameter")
 if err != nil {
     // handle error...
 }
-resp, err = poller.PollUntilDone(context.Background(), 5 * time.Second)
+resp, err = poller.PollUntilDone(ctx, 5 * time.Second)
 if err != nil {
     // handle error...
 }

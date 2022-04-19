@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Exported log.Event constants for azservicebus. This will maek them easier to
+- Exported log.Event constants for azservicebus. This will make them easier to
   discover and they are also documented. NOTE: The log messages themselves 
   are not guaranteed to be stable. (#17596)
 - `admin.Client` can now manage authorization rules and subscription filters and 

@@ -17,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-
 func TestContainerRead(t *testing.T) {
 	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
@@ -38,7 +37,7 @@ func TestContainerRead(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	
+
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(
@@ -51,8 +50,8 @@ func TestContainerRead(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	if container.ID() != "containerId" {
 		t.Errorf("Expected container ID to be %s, but got %s", "containerId", container.ID())
@@ -126,8 +125,8 @@ func TestContainerDeleteItem(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	resp, err := container.DeleteItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
 	if err != nil {
@@ -179,8 +178,8 @@ func TestContainerReadItem(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	resp, err := container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
 	if err != nil {
@@ -236,8 +235,8 @@ func TestContainerReplaceItem(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	resp, err := container.ReplaceItem(context.TODO(), NewPartitionKeyString("1"), "doc1", jsonString, nil)
 	if err != nil {
@@ -297,8 +296,8 @@ func TestContainerUpsertItem(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	resp, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, nil)
 	if err != nil {
@@ -362,8 +361,8 @@ func TestContainerCreateItem(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	resp, err := container.UpsertItem(context.TODO(), NewPartitionKeyString("1"), jsonString, nil)
 	if err != nil {
@@ -414,7 +413,7 @@ func TestContainerCreateItem(t *testing.T) {
 func TestContainerQueryItems(t *testing.T) {
 	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1","foo":"bar"},{"id":"doc2","foo":"bar"}]}`)
 	jsonStringpage2 := []byte(`{"Documents":[{"id":"doc3","foo":"bar"},{"id":"doc4","foo":"bar"},{"id":"doc5","foo":"bar"}]}`)
-	
+
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(
@@ -440,8 +439,8 @@ func TestContainerQueryItems(t *testing.T) {
 	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
 	client := &Client{endpoint: srv.URL(), pipeline: pl}
 
-	database, _:=newDatabase("databaseId", client)
-	container, _:= newContainer("containerId",database)
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
 
 	receivedIds := []string{}
 	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), nil)
@@ -453,7 +452,10 @@ func TestContainerQueryItems(t *testing.T) {
 
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
-			json.Unmarshal(item, &itemResponseBody)
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
@@ -479,7 +481,7 @@ func TestContainerQueryItems(t *testing.T) {
 	}
 
 	for i := 0; i < 5; i++ {
-		if receivedIds[i] != "doc" + strconv.Itoa(i+1) {
+		if receivedIds[i] != "doc"+strconv.Itoa(i+1) {
 			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
 		}
 	}
@@ -508,7 +510,7 @@ func TestContainerQueryItems(t *testing.T) {
 		if request.contentType != cosmosHeaderValuesQuery {
 			t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, request.contentType)
 		}
-		
+
 		if index == 0 && request.headers.Get(cosmosHeaderContinuationToken) != "" {
 			t.Errorf("Expected ContinuationToken to be %s, but got %s", "", request.headers.Get(cosmosHeaderContinuationToken))
 		}

@@ -53,7 +53,7 @@ func newQueryResponse(resp *http.Response) (QueryItemsResponse, error) {
 		marshalledValue = append(marshalledValue, m)
 	}
 	response.Items = marshalledValue
-	
+
 	return response, nil
 }
 

@@ -409,7 +409,7 @@ func (c *ContainerClient) DeleteItem(
 func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
-		partitionKey: &partitionKey,
+		partitionKey:         &partitionKey,
 		correlatedActivityId: &correlatedActivityId,
 	}
 
@@ -418,8 +418,8 @@ func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o 
 	}
 
 	operationContext := pipelineRequestOptions{
-		resourceType:    resourceTypeDocument,
-		resourceAddress: c.link,
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
 		headerOptionsOverride: &h,
 	}
 
@@ -435,7 +435,7 @@ func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o 
 					// Use the previous page continuation if available
 					o.ContinuationToken = page.ContinuationToken
 				}
-			} 
+			}
 
 			azResponse, err := c.database.client.sendQueryRequest(
 				path,

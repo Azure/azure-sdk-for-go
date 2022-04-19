@@ -84,9 +84,9 @@ func TestQueryResponseParsing(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to unmarshal item response: %v", err)
 		}
-		
+
 		if itemResponseBody["id"] != ("id" + strconv.Itoa(index+1)) {
-			t.Errorf("Expected id to be %s, but got %s", "id" + strconv.Itoa(index+1), itemResponseBody["id"])
+			t.Errorf("Expected id to be %s, but got %s", "id"+strconv.Itoa(index+1), itemResponseBody["id"])
 		}
 
 		if itemResponseBody["name"] != "name" {

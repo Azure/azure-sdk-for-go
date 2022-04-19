@@ -31,7 +31,7 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 	container, _ := database.NewContainer("aContainer")
 	documentsPerPk := 1
 	createSampleItems(t, container, documentsPerPk)
-	
+
 	receivedIds := []string{}
 	queryPager := container.QueryItems("select * from docs c where c.someProp = '2'", NewPartitionKeyString("1"), &QueryOptions{PopulateIndexMetrics: true})
 	for queryPager.More() {
@@ -42,7 +42,10 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
-			json.Unmarshal(item, &itemResponseBody)
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
@@ -77,7 +80,7 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 
 	if receivedIds[0] != "0" {
 		t.Fatalf("Expected id 0, got %s", receivedIds[0])
-	}	
+	}
 }
 
 func TestSinglePartitionQuery(t *testing.T) {
@@ -101,7 +104,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 	container, _ := database.NewContainer("aContainer")
 	documentsPerPk := 10
 	createSampleItems(t, container, documentsPerPk)
-	
+
 	receivedIds := []string{}
 	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), &QueryOptions{PageSizeHint: 5})
 	for queryPager.More() {
@@ -112,7 +115,10 @@ func TestSinglePartitionQuery(t *testing.T) {
 
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
-			json.Unmarshal(item, &itemResponseBody)
+			err = json.Unmarshal(item, &itemResponseBody)
+			if err != nil {
+				t.Fatalf("Failed to unmarshal: %v", err)
+			}
 			receivedIds = append(receivedIds, itemResponseBody["id"].(string))
 		}
 
@@ -149,38 +155,38 @@ func TestSinglePartitionQuery(t *testing.T) {
 		if receivedIds[i] != strconv.Itoa(i) {
 			t.Fatalf("Expected id %d, got %s", i, receivedIds[i])
 		}
-	}	
+	}
 }
 
-func createSampleItems(t *testing.T, container *ContainerClient, documentsPerPk int){
+func createSampleItems(t *testing.T, container *ContainerClient, documentsPerPk int) {
 	for i := 0; i < documentsPerPk; i++ {
 		item := map[string]string{
-			"id":    strconv.Itoa(i),
-			"pk":   "1",
+			"id":       strconv.Itoa(i),
+			"pk":       "1",
 			"someProp": "2",
 		}
-	
+
 		marshalled, err := json.Marshal(item)
 		if err != nil {
 			t.Fatal(err)
 		}
-	
+
 		_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 		if err != nil {
 			t.Fatalf("Failed to create item: %v", err)
 		}
-	
+
 		item2 := map[string]string{
-			"id":    strconv.Itoa(i),
-			"pk":   "2",
+			"id":       strconv.Itoa(i),
+			"pk":       "2",
 			"someProp": "2",
 		}
-	
+
 		marshalled, err = json.Marshal(item2)
 		if err != nil {
 			t.Fatal(err)
 		}
-	
+
 		_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("2"), marshalled, nil)
 		if err != nil {
 			t.Fatalf("Failed to create item: %v", err)

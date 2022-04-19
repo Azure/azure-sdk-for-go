@@ -19,7 +19,7 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 	if envCheck == "" {
 		t.Skip("set EMULATOR environment variable to run this test")
 	}
-	
+
 	return &emulatorTests{
 		host: "https://localhost:8081/",
 		key:  "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",

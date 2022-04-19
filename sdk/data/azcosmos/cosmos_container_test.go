@@ -411,7 +411,7 @@ func TestContainerCreateItem(t *testing.T) {
 	}
 }
 
-func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
+func TestContainerQueryItems(t *testing.T) {
 	jsonStringpage1 := []byte(`{"Documents":[{"id":"doc1","foo":"bar"},{"id":"doc2","foo":"bar"}]}`)
 	jsonStringpage2 := []byte(`{"Documents":[{"id":"doc3","foo":"bar"},{"id":"doc4","foo":"bar"},{"id":"doc5","foo":"bar"}]}`)
 	
@@ -444,7 +444,7 @@ func TestContainerQueryItemsPerPartitionKey(t *testing.T) {
 	container, _:= newContainer("containerId",database)
 
 	receivedIds := []string{}
-	queryPager := container.QueryItemsByPartitionKey("select * from c", NewPartitionKeyString("1"), nil)
+	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), nil)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {

@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 * Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
+* Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
+* Removed `TokenRequestOptions.TenantID`
 
 ### Bugs Fixed
 

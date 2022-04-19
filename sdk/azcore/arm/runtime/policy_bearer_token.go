@@ -25,10 +25,7 @@ type acquiringResourceState struct {
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
-	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{
-		Scopes:   state.p.options.Scopes,
-		TenantID: state.tenant,
-	})
+	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{Scopes: state.p.options.Scopes})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -57,13 +54,6 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTok
 		cred:         cred,
 		options:      *opts,
 		mainResource: shared.NewExpiringResource(acquire),
-	}
-	if len(opts.AuxiliaryTenants) > 0 {
-		p.auxResources = map[string]*shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]{}
-	}
-	for _, t := range opts.AuxiliaryTenants {
-		p.auxResources[t] = shared.NewExpiringResource(acquire)
-
 	}
 	return p
 }

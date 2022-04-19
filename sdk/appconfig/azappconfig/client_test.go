@@ -85,7 +85,7 @@ func TestClient(t *testing.T) {
 	require.False(t, *roResp2.IsReadOnly)
 
 	any := "*"
-	revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
+	revPgr := client.NewListRevisionsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, revPgr)
 	hasMore := revPgr.More()
 	require.True(t, hasMore)

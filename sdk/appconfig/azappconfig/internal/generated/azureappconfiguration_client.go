@@ -12,12 +12,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AzureAppConfigurationClient contains the methods for the AzureAppConfiguration group.
@@ -26,10 +25,6 @@ type AzureAppConfigurationClient struct {
 	endpoint  string
 	syncToken *string
 	pl        runtime.Pipeline
-}
-
-func (client *AzureAppConfigurationClient) Pl() runtime.Pipeline {
-	return client.pl
 }
 
 // NewAzureAppConfigurationClient creates a new instance of AzureAppConfigurationClient with the specified values.
@@ -775,7 +770,7 @@ func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAp
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.GetRevisionsCreateRequest(ctx, options)
+				req, err = client.getRevisionsCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -789,13 +784,13 @@ func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAp
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return AzureAppConfigurationClientGetRevisionsResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.GetRevisionsHandleResponse(resp)
+			return client.getRevisionsHandleResponse(resp)
 		},
 	})
 }
 
 // getRevisionsCreateRequest creates the GetRevisions request.
-func (client *AzureAppConfigurationClient) GetRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
+func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/revisions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -827,7 +822,7 @@ func (client *AzureAppConfigurationClient) GetRevisionsCreateRequest(ctx context
 }
 
 // getRevisionsHandleResponse handles the GetRevisions response.
-func (client *AzureAppConfigurationClient) GetRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
+func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
 	result := AzureAppConfigurationClientGetRevisionsResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val

@@ -4,6 +4,7 @@
 
 ### Breaking Changes
 * Upgraded to latest `azcore` which requires Go 1.18 or later.
+* Renamed method `ListRevisions` to `NewListRevisionsPager` and removed `ListRevisionsPager` type.
 
 ### Other Changes
 * Regenerated internal code with latest code generator.

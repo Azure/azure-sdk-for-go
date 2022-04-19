@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -432,7 +432,7 @@ func (l *ListRevisionsPager) NextPage(ctx context.Context) (ListRevisionsPage, e
 		if err != nil {
 			return ListRevisionsPage{}, err
 		}
-		resp, err = l.genClient.Pl.Do(req)
+		resp, err = l.genClient.Pl().Do(req)
 		if err != nil {
 			return ListRevisionsPage{}, err
 		}
@@ -441,7 +441,7 @@ func (l *ListRevisionsPager) NextPage(ctx context.Context) (ListRevisionsPage, e
 		if err != nil {
 			return ListRevisionsPage{}, err
 		}
-		resp, err = l.genClient.Pl.Do(req)
+		resp, err = l.genClient.Pl().Do(req)
 		if err != nil {
 			return ListRevisionsPage{}, err
 		}
@@ -455,7 +455,7 @@ func (l *ListRevisionsPager) NextPage(ctx context.Context) (ListRevisionsPage, e
 	}
 	if result.NextLink == nil {
 		// Set it to the zero value
-		result.NextLink = to.StringPtr("")
+		result.NextLink = to.Ptr("")
 	}
 	l.nextLink = result.NextLink
 	return fromGeneratedGetRevisionsPage(result), nil

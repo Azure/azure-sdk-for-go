@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,17 +8,8 @@
 
 package generated
 
-import "net/http"
-
 // AzureAppConfigurationClientCheckKeyValueResponse contains the response from method AzureAppConfigurationClient.CheckKeyValue.
 type AzureAppConfigurationClientCheckKeyValueResponse struct {
-	AzureAppConfigurationClientCheckKeyValueResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientCheckKeyValueResult contains the result from method AzureAppConfigurationClient.CheckKeyValue.
-type AzureAppConfigurationClientCheckKeyValueResult struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
 
@@ -31,65 +22,30 @@ type AzureAppConfigurationClientCheckKeyValueResult struct {
 
 // AzureAppConfigurationClientCheckKeyValuesResponse contains the response from method AzureAppConfigurationClient.CheckKeyValues.
 type AzureAppConfigurationClientCheckKeyValuesResponse struct {
-	AzureAppConfigurationClientCheckKeyValuesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientCheckKeyValuesResult contains the result from method AzureAppConfigurationClient.CheckKeyValues.
-type AzureAppConfigurationClientCheckKeyValuesResult struct {
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientCheckKeysResponse contains the response from method AzureAppConfigurationClient.CheckKeys.
 type AzureAppConfigurationClientCheckKeysResponse struct {
-	AzureAppConfigurationClientCheckKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientCheckKeysResult contains the result from method AzureAppConfigurationClient.CheckKeys.
-type AzureAppConfigurationClientCheckKeysResult struct {
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientCheckLabelsResponse contains the response from method AzureAppConfigurationClient.CheckLabels.
 type AzureAppConfigurationClientCheckLabelsResponse struct {
-	AzureAppConfigurationClientCheckLabelsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientCheckLabelsResult contains the result from method AzureAppConfigurationClient.CheckLabels.
-type AzureAppConfigurationClientCheckLabelsResult struct {
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientCheckRevisionsResponse contains the response from method AzureAppConfigurationClient.CheckRevisions.
 type AzureAppConfigurationClientCheckRevisionsResponse struct {
-	AzureAppConfigurationClientCheckRevisionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientCheckRevisionsResult contains the result from method AzureAppConfigurationClient.CheckRevisions.
-type AzureAppConfigurationClientCheckRevisionsResult struct {
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
 }
 
 // AzureAppConfigurationClientDeleteKeyValueResponse contains the response from method AzureAppConfigurationClient.DeleteKeyValue.
 type AzureAppConfigurationClientDeleteKeyValueResponse struct {
-	AzureAppConfigurationClientDeleteKeyValueResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientDeleteKeyValueResult contains the result from method AzureAppConfigurationClient.DeleteKeyValue.
-type AzureAppConfigurationClientDeleteKeyValueResult struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
@@ -100,13 +56,6 @@ type AzureAppConfigurationClientDeleteKeyValueResult struct {
 
 // AzureAppConfigurationClientDeleteLockResponse contains the response from method AzureAppConfigurationClient.DeleteLock.
 type AzureAppConfigurationClientDeleteLockResponse struct {
-	AzureAppConfigurationClientDeleteLockResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientDeleteLockResult contains the result from method AzureAppConfigurationClient.DeleteLock.
-type AzureAppConfigurationClientDeleteLockResult struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
@@ -117,13 +66,6 @@ type AzureAppConfigurationClientDeleteLockResult struct {
 
 // AzureAppConfigurationClientGetKeyValueResponse contains the response from method AzureAppConfigurationClient.GetKeyValue.
 type AzureAppConfigurationClientGetKeyValueResponse struct {
-	AzureAppConfigurationClientGetKeyValueResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientGetKeyValueResult contains the result from method AzureAppConfigurationClient.GetKeyValue.
-type AzureAppConfigurationClientGetKeyValueResult struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
@@ -137,13 +79,6 @@ type AzureAppConfigurationClientGetKeyValueResult struct {
 
 // AzureAppConfigurationClientGetKeyValuesResponse contains the response from method AzureAppConfigurationClient.GetKeyValues.
 type AzureAppConfigurationClientGetKeyValuesResponse struct {
-	AzureAppConfigurationClientGetKeyValuesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientGetKeyValuesResult contains the result from method AzureAppConfigurationClient.GetKeyValues.
-type AzureAppConfigurationClientGetKeyValuesResult struct {
 	KeyValueListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
@@ -151,13 +86,6 @@ type AzureAppConfigurationClientGetKeyValuesResult struct {
 
 // AzureAppConfigurationClientGetKeysResponse contains the response from method AzureAppConfigurationClient.GetKeys.
 type AzureAppConfigurationClientGetKeysResponse struct {
-	AzureAppConfigurationClientGetKeysResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientGetKeysResult contains the result from method AzureAppConfigurationClient.GetKeys.
-type AzureAppConfigurationClientGetKeysResult struct {
 	KeyListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
@@ -165,13 +93,6 @@ type AzureAppConfigurationClientGetKeysResult struct {
 
 // AzureAppConfigurationClientGetLabelsResponse contains the response from method AzureAppConfigurationClient.GetLabels.
 type AzureAppConfigurationClientGetLabelsResponse struct {
-	AzureAppConfigurationClientGetLabelsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientGetLabelsResult contains the result from method AzureAppConfigurationClient.GetLabels.
-type AzureAppConfigurationClientGetLabelsResult struct {
 	LabelListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
@@ -179,13 +100,6 @@ type AzureAppConfigurationClientGetLabelsResult struct {
 
 // AzureAppConfigurationClientGetRevisionsResponse contains the response from method AzureAppConfigurationClient.GetRevisions.
 type AzureAppConfigurationClientGetRevisionsResponse struct {
-	AzureAppConfigurationClientGetRevisionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientGetRevisionsResult contains the result from method AzureAppConfigurationClient.GetRevisions.
-type AzureAppConfigurationClientGetRevisionsResult struct {
 	KeyValueListResult
 	// SyncToken contains the information returned from the Sync-Token header response.
 	SyncToken *string
@@ -193,13 +107,6 @@ type AzureAppConfigurationClientGetRevisionsResult struct {
 
 // AzureAppConfigurationClientPutKeyValueResponse contains the response from method AzureAppConfigurationClient.PutKeyValue.
 type AzureAppConfigurationClientPutKeyValueResponse struct {
-	AzureAppConfigurationClientPutKeyValueResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientPutKeyValueResult contains the result from method AzureAppConfigurationClient.PutKeyValue.
-type AzureAppConfigurationClientPutKeyValueResult struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
@@ -210,13 +117,6 @@ type AzureAppConfigurationClientPutKeyValueResult struct {
 
 // AzureAppConfigurationClientPutLockResponse contains the response from method AzureAppConfigurationClient.PutLock.
 type AzureAppConfigurationClientPutLockResponse struct {
-	AzureAppConfigurationClientPutLockResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// AzureAppConfigurationClientPutLockResult contains the result from method AzureAppConfigurationClient.PutLock.
-type AzureAppConfigurationClientPutLockResult struct {
 	KeyValue
 	// ETag contains the information returned from the ETag header response.
 	ETag *string

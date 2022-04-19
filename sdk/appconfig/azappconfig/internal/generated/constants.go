@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,8 +9,8 @@
 package generated
 
 const (
-	ModuleName    = "azappconfiguration"
-	ModuleVersion = "v0.1.1"
+	ModuleName    = "azappconfig"
+	ModuleVersion = "v0.2.0"
 )
 
 type Enum6 string
@@ -40,11 +40,6 @@ func PossibleEnum6Values() []Enum6 {
 	}
 }
 
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
-	return &c
-}
-
 type Enum7 string
 
 const (
@@ -72,11 +67,6 @@ func PossibleEnum7Values() []Enum7 {
 	}
 }
 
-// ToPtr returns a *Enum7 pointing to the current value.
-func (c Enum7) ToPtr() *Enum7 {
-	return &c
-}
-
 type Get5ItemsItem string
 
 const (
@@ -88,11 +78,6 @@ func PossibleGet5ItemsItemValues() []Get5ItemsItem {
 	return []Get5ItemsItem{
 		Get5ItemsItemName,
 	}
-}
-
-// ToPtr returns a *Get5ItemsItem pointing to the current value.
-func (c Get5ItemsItem) ToPtr() *Get5ItemsItem {
-	return &c
 }
 
 type Get6ItemsItem string
@@ -122,11 +107,6 @@ func PossibleGet6ItemsItemValues() []Get6ItemsItem {
 	}
 }
 
-// ToPtr returns a *Get6ItemsItem pointing to the current value.
-func (c Get6ItemsItem) ToPtr() *Get6ItemsItem {
-	return &c
-}
-
 type Get7ItemsItem string
 
 const (
@@ -154,11 +134,6 @@ func PossibleGet7ItemsItemValues() []Get7ItemsItem {
 	}
 }
 
-// ToPtr returns a *Get7ItemsItem pointing to the current value.
-func (c Get7ItemsItem) ToPtr() *Get7ItemsItem {
-	return &c
-}
-
 type Head5ItemsItem string
 
 const (
@@ -170,11 +145,6 @@ func PossibleHead5ItemsItemValues() []Head5ItemsItem {
 	return []Head5ItemsItem{
 		Head5ItemsItemName,
 	}
-}
-
-// ToPtr returns a *Head5ItemsItem pointing to the current value.
-func (c Head5ItemsItem) ToPtr() *Head5ItemsItem {
-	return &c
 }
 
 type Head6ItemsItem string
@@ -204,11 +174,6 @@ func PossibleHead6ItemsItemValues() []Head6ItemsItem {
 	}
 }
 
-// ToPtr returns a *Head6ItemsItem pointing to the current value.
-func (c Head6ItemsItem) ToPtr() *Head6ItemsItem {
-	return &c
-}
-
 type Head7ItemsItem string
 
 const (
@@ -234,9 +199,4 @@ func PossibleHead7ItemsItemValues() []Head7ItemsItem {
 		Head7ItemsItemTags,
 		Head7ItemsItemValue,
 	}
-}
-
-// ToPtr returns a *Head7ItemsItem pointing to the current value.
-func (c Head7ItemsItem) ToPtr() *Head7ItemsItem {
-	return &c
 }

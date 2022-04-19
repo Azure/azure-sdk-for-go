@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"os"
 	"testing"
 )
 
@@ -21,6 +22,11 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 }
 
 func (e *emulatorTests) getClient(t *testing.T) *Client {
+	envCheck := os.Getenv("EMULATOR")
+	if envCheck == "" {
+		t.Skip("set EMULATOR environment variable to run this test")
+	}
+	
 	cred, _ := NewKeyCredential(e.key)
 	client, err := NewClientWithKey(e.host, cred, nil)
 	if err != nil {

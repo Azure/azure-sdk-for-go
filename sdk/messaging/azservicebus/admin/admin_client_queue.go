@@ -258,8 +258,8 @@ type QueueItem struct {
 	QueueProperties
 }
 
-// ListQueues lists queues.
-func (ac *Client) ListQueues(options *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
+// NewListQueuesPager creates a pager that can be used to list queues.
+func (ac *Client) NewListQueuesPager(options *ListQueuesOptions) *runtime.Pager[ListQueuesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -308,8 +308,8 @@ type QueueRuntimePropertiesItem struct {
 	QueueRuntimeProperties
 }
 
-// ListQueuesRuntimeProperties lists runtime properties for queues.
-func (ac *Client) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) *runtime.Pager[ListQueuesRuntimePropertiesResponse] {
+// NewListQueuesRuntimePropertiesPager creates a pager that lists the runtime properties for queues.
+func (ac *Client) NewListQueuesRuntimePropertiesPager(options *ListQueuesRuntimePropertiesOptions) *runtime.Pager[ListQueuesRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {

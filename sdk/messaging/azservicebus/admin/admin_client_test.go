@@ -250,7 +250,7 @@ func TestAdminClient_ListQueues(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueues(nil)
+	pager := adminClient.NewListQueuesPager(nil)
 	all := map[string]QueueItem{}
 
 	for pager.More() {
@@ -292,7 +292,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
-	pager := adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
+	pager := adminClient.NewListQueuesRuntimePropertiesPager(&ListQueuesRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]QueueRuntimePropertiesItem{}
@@ -807,7 +807,7 @@ func TestAdminClient_LackPermissions_Queue(t *testing.T) {
 	require.ErrorAs(t, err, &re)
 	require.EqualValues(t, 401, re.StatusCode)
 
-	pager := testData.Client.ListQueues(nil)
+	pager := testData.Client.NewListQueuesPager(nil)
 	page, err := pager.NextPage(context.Background())
 	require.Empty(t, page.Queues)
 	require.Contains(t, err.Error(), "Manage,EntityRead claims required for this operation")

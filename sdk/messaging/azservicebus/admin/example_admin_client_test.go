@@ -58,7 +58,7 @@ func ExampleClient_CreateQueue_usingproperties() {
 }
 
 func ExampleClient_ListQueues() {
-	queuePager := adminClient.ListQueues(nil)
+	queuePager := adminClient.NewListQueuesPager(nil)
 
 	for queuePager.More() {
 		page, err := queuePager.NextPage(context.TODO())
@@ -74,7 +74,7 @@ func ExampleClient_ListQueues() {
 }
 
 func ExampleClient_ListQueuesRuntimeProperties() {
-	queuePager := adminClient.ListQueuesRuntimeProperties(nil)
+	queuePager := adminClient.NewListQueuesRuntimePropertiesPager(nil)
 
 	for queuePager.More() {
 		page, err := queuePager.NextPage(context.TODO())

@@ -50,7 +50,7 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 
 	switch entityType {
 	case "queue":
-		pager := adminClient.ListQueues(nil)
+		pager := adminClient.NewListQueuesPager(nil)
 
 		var queuesToDelete []string
 

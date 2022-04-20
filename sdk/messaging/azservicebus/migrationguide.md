@@ -206,7 +206,7 @@ Administration features, like creating queues, topics and subscriptions, has bee
 adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
 
 // create a queue with default properties
-resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil, nil)
+resp, err := adminClient.CreateQueue(context.TODO(), "queue-name", nil)
 
 // or create a queue and configure some properties
 ```

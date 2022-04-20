@@ -57,7 +57,7 @@ func ExampleClient_CreateQueue_usingproperties() {
 	fmt.Printf("Lock duration: %s\n", *resp.LockDuration)
 }
 
-func ExampleClient_ListQueues() {
+func ExampleClient_NewListQueuesPager() {
 	queuePager := adminClient.NewListQueuesPager(nil)
 
 	for queuePager.More() {
@@ -73,7 +73,7 @@ func ExampleClient_ListQueues() {
 	}
 }
 
-func ExampleClient_ListQueuesRuntimeProperties() {
+func ExampleClient_NewListQueuesRuntimePropertiesPager() {
 	queuePager := adminClient.NewListQueuesRuntimePropertiesPager(nil)
 
 	for queuePager.More() {

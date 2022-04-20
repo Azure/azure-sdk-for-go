@@ -52,12 +52,6 @@ options := arm.ClientOptions {
 client, err := armauthorization.NewAccessReviewInstancesClient(<subscription ID>, cred, &options)
 ```
 
-## More sample code
-
-- [Permissions](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/permissions)
-- [Role Assignment](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/role_assignment)
-- [Role Definition](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/authorization/role_definition)
-
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please

@@ -1,5 +1,18 @@
 # Release History
 
+## 0.5.0 (2022-04-20)
+### Features Added
+
+- New function `*EndpointsClient.ListManagedProxyDetails(context.Context, string, string, ManagedProxyRequest, *EndpointsClientListManagedProxyDetailsOptions) (EndpointsClientListManagedProxyDetailsResponse, error)`
+- New struct `AADProfileProperties`
+- New struct `EndpointsClientListManagedProxyDetailsOptions`
+- New struct `EndpointsClientListManagedProxyDetailsResponse`
+- New struct `IngressGatewayResource`
+- New struct `IngressProfileProperties`
+- New struct `ManagedProxyRequest`
+- New struct `ManagedProxyResource`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

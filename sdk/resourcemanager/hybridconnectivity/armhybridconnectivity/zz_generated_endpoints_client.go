@@ -82,7 +82,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, endpointResource)
@@ -127,7 +127,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -163,7 +163,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -219,7 +219,7 @@ func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceUR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -265,7 +265,7 @@ func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	if options != nil && options.Expiresin != nil {
 		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
 	}
@@ -279,6 +279,53 @@ func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response
 	result := EndpointsClientListCredentialsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAccessResource); err != nil {
 		return EndpointsClientListCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListManagedProxyDetails - Fetches the managed proxy details
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
+// endpointName - The endpoint name.
+// managedProxyRequest - Object of type ManagedProxyRequest
+// options - EndpointsClientListManagedProxyDetailsOptions contains the optional parameters for the EndpointsClient.ListManagedProxyDetails
+// method.
+func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, options *EndpointsClientListManagedProxyDetailsOptions) (EndpointsClientListManagedProxyDetailsResponse, error) {
+	req, err := client.listManagedProxyDetailsCreateRequest(ctx, resourceURI, endpointName, managedProxyRequest, options)
+	if err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return EndpointsClientListManagedProxyDetailsResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listManagedProxyDetailsHandleResponse(resp)
+}
+
+// listManagedProxyDetailsCreateRequest creates the ListManagedProxyDetails request.
+func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, options *EndpointsClientListManagedProxyDetailsOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, managedProxyRequest)
+}
+
+// listManagedProxyDetailsHandleResponse handles the ListManagedProxyDetails response.
+func (client *EndpointsClient) listManagedProxyDetailsHandleResponse(resp *http.Response) (EndpointsClientListManagedProxyDetailsResponse, error) {
+	result := EndpointsClientListManagedProxyDetailsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedProxyResource); err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
 	}
 	return result, nil
 }
@@ -314,7 +361,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-06-preview")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, endpointResource)

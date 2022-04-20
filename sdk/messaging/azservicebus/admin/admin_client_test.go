@@ -1132,7 +1132,7 @@ func TestAdminClient_ListRulesWithOnlyDefault(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	rulesPager := adminClient.ListRules(topicName, "sub", nil)
+	rulesPager := adminClient.NewListRulesPager(topicName, "sub", nil)
 	require.True(t, rulesPager.More())
 	resp, err := rulesPager.NextPage(context.Background())
 	require.NoError(t, err)
@@ -1177,7 +1177,7 @@ func TestAdminClient_ListRules_MaxPageSize(t *testing.T) {
 		}(rule)
 	}
 
-	rulesPager := adminClient.ListRules(topicName, "sub", &ListRulesOptions{
+	rulesPager := adminClient.NewListRulesPager(topicName, "sub", &ListRulesOptions{
 		// there are actually 4 rules on the subscription right now - the 3 I just added
 		// _and_ the $Default rule, which was auto-generated when the subscription
 		// was created.

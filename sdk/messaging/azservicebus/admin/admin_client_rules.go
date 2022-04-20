@@ -198,8 +198,8 @@ type ListRulesOptions struct {
 	MaxPageSize int32
 }
 
-// ListRules creates a pager that can list rules for a subscription.
-func (ac *Client) ListRules(topicName string, subscriptionName string, options *ListRulesOptions) *runtime.Pager[ListRulesResponse] {
+// NewListRulesPager creates a pager that can list rules for a subscription.
+func (ac *Client) NewListRulesPager(topicName string, subscriptionName string, options *ListRulesOptions) *runtime.Pager[ListRulesResponse] {
 	var pageSize int32
 
 	if options != nil {

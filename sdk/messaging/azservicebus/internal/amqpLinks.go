@@ -13,9 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/devigned/tab"
 )
 
 type LinksWithID struct {
@@ -140,16 +138,12 @@ func (links *AMQPLinksImpl) ManagementPath() string {
 func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision LinkID) error {
 	log.Writef(exported.EventConn, "Recovering link only")
 
-	ctx, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
-	defer span.End()
-
 	links.mu.RLock()
 	closedPermanently := links.closedPermanently
 	ourLinkRevision := links.id
 	links.mu.RUnlock()
 
 	if closedPermanently {
-		span.AddAttributes(tab.StringAttribute("outcome", "was_closed_permanently"))
 		return NewErrNonRetriable("link was closed by user")
 	}
 
@@ -172,23 +166,15 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 	err := links.initWithoutLocking(ctx)
 
 	if err != nil {
-		span.AddAttributes(tab.StringAttribute("init_error", err.Error()))
 		return err
 	}
 
-	span.AddAttributes(
-		tab.StringAttribute("outcome", "recovered"),
-		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.id)),
-	)
 	return nil
 }
 
 // Recover will recover the links or the connection, depending
 // on the severity of the error.
 func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID, origErr error) error {
-	ctx, span := tab.StartSpan(ctx, tracing.SpanRecover)
-	defer span.End()
-
 	if origErr == nil || IsCancelError(origErr) {
 		return nil
 	}

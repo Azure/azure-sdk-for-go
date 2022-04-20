@@ -9,10 +9,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 type (
@@ -23,12 +21,6 @@ type (
 		links          internal.AMQPLinks
 		retryOptions   RetryOptions
 	}
-)
-
-// tracing
-const (
-	spanNameSendMessage string = "sb.sender.SendMessage"
-	spanNameSendBatch   string = "sb.sender.SendBatch"
 )
 
 // MessageBatchOptions contains options for the `Sender.NewMessageBatch` function.
@@ -70,9 +62,6 @@ type SendMessageOptions struct {
 // SendMessage sends a Message to a queue or topic.
 func (s *Sender) SendMessage(ctx context.Context, message *Message, options *SendMessageOptions) error {
 	return s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendMessage)
-		defer span.End()
-
 		return lwid.Sender.Send(ctx, message.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))
 }
@@ -86,9 +75,6 @@ type SendMessageBatchOptions struct {
 // Message batches can be created using `Sender.NewMessageBatch`.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
 	return s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		ctx, span := s.startProducerSpanFromContext(ctx, spanNameSendBatch)
-		defer span.End()
-
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))
 }
@@ -154,7 +140,6 @@ func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQ
 		amqp.LinkTargetAddress(sender.queueOrTopic))
 
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, nil, err
 	}
 
@@ -180,14 +165,4 @@ func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 
 	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink, internal.GetRecoveryKind)
 	return sender, nil
-}
-
-func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operationName)
-	tracing.ApplyComponentInfo(span, internal.Version)
-	span.AddAttributes(
-		tab.StringAttribute("span.kind", "producer"),
-		tab.StringAttribute("message_bus.destination", s.links.Audience()),
-	)
-	return ctx, span
 }

@@ -11,9 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 type Disposition struct {
@@ -33,9 +31,6 @@ const (
 )
 
 func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
-	defer span.End()
-
 	const messagesField, messageField = "messages", "message"
 
 	backwardsMode := uint32(0)
@@ -114,9 +109,6 @@ func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.Receive
 }
 
 func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanPeekFromSequenceNumber, Version)
-	defer span.End()
-
 	const messagesField, messageField = "messages", "message"
 
 	msg := &amqp.Message{
@@ -135,7 +127,6 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 
 	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -152,21 +143,18 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 	val, ok := rsp.Message.Value.(map[string]interface{})
 	if !ok {
 		err = NewErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	rawMessages, ok := val[messagesField]
 	if !ok {
 		err = ErrMissingField(messagesField)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	messages, ok := rawMessages.([]interface{})
 	if !ok {
 		err = NewErrIncorrectType(messagesField, []interface{}{}, rawMessages)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -175,28 +163,24 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 		rawEntry, ok := messages[i].(map[string]interface{})
 		if !ok {
 			err = NewErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		rawMessage, ok := rawEntry[messageField]
 		if !ok {
 			err = ErrMissingField(messageField)
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		marshaled, ok := rawMessage.([]byte)
 		if !ok {
 			err = new(ErrMalformedMessage)
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
 		var rehydrated amqp.Message
 		err = rehydrated.UnmarshalBinary(marshaled)
 		if err != nil {
-			tab.For(ctx).Error(err)
 			return nil, err
 		}
 
@@ -225,9 +209,6 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
 func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
-	defer span.End()
-
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:renew-lock",
@@ -244,13 +225,11 @@ func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockToken
 	response, err := rpcLink.RPC(ctx, renewRequestMsg)
 
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	if response.Code != 200 {
 		err := fmt.Errorf("error renewing locks: %v", response.Description)
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -390,12 +369,8 @@ func SetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string, sta
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
 func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
-	defer span.End()
-
 	if lockToken == nil {
 		err := errors.New("lock token on the message is not set, thus cannot send disposition")
-		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -426,7 +401,6 @@ func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID,
 	// no error, then it was successful
 	_, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -436,9 +410,6 @@ func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID,
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
 func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Time, messages []*amqp.Message) ([]int64, error) {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanScheduleMessage, Version)
-	defer span.End()
-
 	if len(messages) <= 0 {
 		return nil, errors.New("expected one or more messages")
 	}
@@ -505,7 +476,6 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Tim
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -533,9 +503,6 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Tim
 // CancelScheduledMessages allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
 func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) error {
-	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanCancelScheduledMessage, Version)
-	defer span.End()
-
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:cancel-scheduled-message",
@@ -551,7 +518,6 @@ func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) 
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
-		tab.For(ctx).Error(err)
 		return err
 	}
 

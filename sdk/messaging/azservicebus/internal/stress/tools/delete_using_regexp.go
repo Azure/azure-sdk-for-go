@@ -80,7 +80,7 @@ func DeleteUsingRegexp(remainingArgs []string) int {
 			}
 		}
 	case "topic":
-		pager := adminClient.ListTopics(nil)
+		pager := adminClient.NewListTopicsPager(nil)
 
 		var topicsToDelete []string
 

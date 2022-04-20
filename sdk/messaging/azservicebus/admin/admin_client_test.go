@@ -544,7 +544,7 @@ func TestAdminClient_ListTopics(t *testing.T) {
 	wg.Wait()
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopics(&ListTopicsOptions{
+	pager := adminClient.NewListTopicsPager(&ListTopicsOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]TopicItem{}
@@ -597,7 +597,7 @@ func TestAdminClient_ListTopicsRuntimeProperties(t *testing.T) {
 	times := 0
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListTopicsRuntimeProperties(&ListTopicsRuntimePropertiesOptions{
+	pager := adminClient.NewListTopicsRuntimePropertiesPager(&ListTopicsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]TopicRuntimePropertiesItem{}
@@ -851,7 +851,7 @@ func TestAdminClient_LackPermissions_Topic(t *testing.T) {
 	require.ErrorAs(t, err, &asResponseErr)
 	require.EqualValues(t, 401, asResponseErr.StatusCode)
 
-	pager := testData.Client.ListTopics(nil)
+	pager := testData.Client.NewListTopicsPager(nil)
 	_, err = pager.NextPage(context.Background())
 	require.Contains(t, err.Error(), ">Manage,EntityRead claims required for this operation")
 	require.ErrorAs(t, err, &asResponseErr)

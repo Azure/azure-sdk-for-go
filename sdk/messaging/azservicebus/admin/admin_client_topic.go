@@ -188,8 +188,8 @@ type ListTopicsOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
+// NewListTopicsPager creates a pager that can list topics.
+func (ac *Client) NewListTopicsPager(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -240,8 +240,8 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
+// NewListTopicsRuntimePropertiesPager creates a pager than can list runtime properties for topics.
+func (ac *Client) NewListTopicsRuntimePropertiesPager(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {

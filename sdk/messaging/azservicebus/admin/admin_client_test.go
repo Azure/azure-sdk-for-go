@@ -657,7 +657,7 @@ func TestAdminClient_ListSubscriptions(t *testing.T) {
 	}
 
 	// we skipped the first topic so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptions(topicName, &ListSubscriptionsOptions{
+	pager := adminClient.NewListSubscriptionsPager(topicName, &ListSubscriptionsOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]SubscriptionPropertiesItem{}
@@ -713,7 +713,7 @@ func TestAdminClient_ListSubscriptionRuntimeProperties(t *testing.T) {
 	}
 
 	// we skipped the first subscription so it shouldn't come back in the results.
-	pager := adminClient.ListSubscriptionsRuntimeProperties(topicName, &ListSubscriptionsRuntimePropertiesOptions{
+	pager := adminClient.NewListSubscriptionsRuntimePropertiesPager(topicName, &ListSubscriptionsRuntimePropertiesOptions{
 		MaxPageSize: 2,
 	})
 	all := map[string]SubscriptionRuntimePropertiesItem{}
@@ -932,7 +932,7 @@ func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
 	_, err = testData.Client.GetSubscription(ctx, testData.TopicName, testData.SubName, nil)
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
-	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
+	pager := testData.Client.NewListSubscriptionsPager(testData.TopicName, nil)
 	_, err = pager.NextPage(context.Background())
 	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 

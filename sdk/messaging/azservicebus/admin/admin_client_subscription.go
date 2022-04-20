@@ -203,8 +203,8 @@ type ListSubscriptionsResponse struct {
 	Subscriptions []SubscriptionPropertiesItem
 }
 
-// ListSubscriptions lists subscriptions for a topic.
-func (ac *Client) ListSubscriptions(topicName string, options *ListSubscriptionsOptions) *runtime.Pager[ListSubscriptionsResponse] {
+// NewListSubscriptionsPager creates a pager than can list subscriptions for a topic.
+func (ac *Client) NewListSubscriptionsPager(topicName string, options *ListSubscriptionsOptions) *runtime.Pager[ListSubscriptionsResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -258,8 +258,8 @@ type ListSubscriptionsRuntimePropertiesResponse struct {
 	SubscriptionRuntimeProperties []SubscriptionRuntimePropertiesItem
 }
 
-// ListSubscriptionsRuntimeProperties lists runtime properties for subscriptions for a topic.
-func (ac *Client) ListSubscriptionsRuntimeProperties(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) *runtime.Pager[ListSubscriptionsRuntimePropertiesResponse] {
+// NewListSubscriptionsRuntimePropertiesPager creates a pager than can list runtime properties for subscriptions for a topic.
+func (ac *Client) NewListSubscriptionsRuntimePropertiesPager(topicName string, options *ListSubscriptionsRuntimePropertiesOptions) *runtime.Pager[ListSubscriptionsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {

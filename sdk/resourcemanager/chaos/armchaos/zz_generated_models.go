@@ -30,11 +30,17 @@ type Action struct {
 
 // ActionStatus - Model that represents the an action and its status.
 type ActionStatus struct {
+	// READ-ONLY; String that represents the end time of the action.
+	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+
 	// READ-ONLY; The id of the action status.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the action status.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; String that represents the start time of the action.
+	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The status of the action.
 	Status *string `json:"status,omitempty" azure:"ro"`

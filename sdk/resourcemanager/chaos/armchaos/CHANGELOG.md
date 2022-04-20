@@ -1,5 +1,13 @@
 # Release History
 
+## 0.5.0 (2022-04-20)
+### Features Added
+
+- New function `*ActionStatus.UnmarshalJSON([]byte) error`
+- New field `EndTime` in struct `ActionStatus`
+- New field `StartTime` in struct `ActionStatus`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -20,11 +20,48 @@ func (a *Action) GetAction() *Action { return a }
 // MarshalJSON implements the json.Marshaller interface for type ActionStatus.
 func (a ActionStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "name", a.Name)
+	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
 	populate(objectMap, "targets", a.Targets)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ActionStatus.
+func (a *ActionStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endTime":
+			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			delete(rawMsg, key)
+		case "id":
+			err = unpopulate(val, &a.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &a.Name)
+			delete(rawMsg, key)
+		case "startTime":
+			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
+			delete(rawMsg, key)
+		case "targets":
+			err = unpopulate(val, &a.Targets)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Branch.

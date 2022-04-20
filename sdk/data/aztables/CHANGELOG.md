@@ -1,6 +1,6 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 0.8.0 (2022-04-20)
 
 ### Features Added
 * Added `TableErrorCode` to help recover from and understand error responses
@@ -8,12 +8,13 @@
 ### Breaking Changes
 * Renamed `InsertEntityResponse/Options` to `UpsertEntityResponse/Options`
 * Renamed `PossibleGeoReplicationStatusTypeValues` to `PossibleGeoReplicationStatusValues`
+* Renamed the following methods
+    * `Client.ListEntities` to `Client.NewListEntitiesPager`
+    * `ServiceClient.ListTables` to `ServiceClient.NewListTablesPager`
 
 ### Bugs Fixed
 * Convert `Start` and `Expiry` times in `AccessPolicy` to UTC format as required by the service.
 * Fixed `moduleName` to report the module name as part of telemetry.
-
-### Other Changes
 
 ## 0.7.0 (2022-04-05)
 

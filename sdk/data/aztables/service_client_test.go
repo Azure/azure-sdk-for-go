@@ -91,7 +91,7 @@ func TestQueryTable(t *testing.T) {
 
 			// Query for tables with no pagination. The filter should exclude one table from the results
 			filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-			pager := service.ListTables(&ListTablesOptions{Filter: &filter})
+			pager := service.NewListTablesPager(&ListTablesOptions{Filter: &filter})
 
 			resultCount := 0
 			for pager.More() {
@@ -104,7 +104,7 @@ func TestQueryTable(t *testing.T) {
 
 			// Query for tables with pagination
 			top := int32(2)
-			pager = service.ListTables(&ListTablesOptions{Filter: &filter, Top: &top})
+			pager = service.NewListTablesPager(&ListTablesOptions{Filter: &filter, Top: &top})
 
 			resultCount = 0
 			pageCount := 0
@@ -141,7 +141,7 @@ func TestListTables(t *testing.T) {
 			}
 
 			count := 0
-			pager := service.ListTables(nil)
+			pager := service.NewListTablesPager(nil)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)

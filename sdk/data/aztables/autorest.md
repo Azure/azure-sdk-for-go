@@ -11,12 +11,27 @@ clear-output-folder: false
 output-folder: internal
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.37"
-module-version: 0.7.0
+use: "@autorest/go@4.0.0-preview.39"
+module-version: 0.8.0
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 modelerfour:
   group-parameters: false
+
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/moduleName\s+=\s+"internal"/, `moduleName = "aztables"`).
+        replace(/\(client \*TableClient\) deleteEntityCreateRequest\(/, `(client *TableClient) DeleteEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) insertEntityCreateRequest\(/, `(client *TableClient) InsertEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) mergeEntityCreateRequest\(/, `(client *TableClient) MergeEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) updateEntityCreateRequest\(/, `(client *TableClient) UpdateEntityCreateRequest(`).
+        replace(/= client\.deleteEntityCreateRequest\(/, `= client.DeleteEntityCreateRequest(`).
+        replace(/= client\.insertEntityCreateRequest\(/, `= client.InsertEntityCreateRequest(`).
+        replace(/= client\.mergeEntityCreateRequest\(/, `= client.MergeEntityCreateRequest(`).
+        replace(/= client\.updateEntityCreateRequest\(/, `= client.UpdateEntityCreateRequest(`);
 ```
 
 ### Go multi-api

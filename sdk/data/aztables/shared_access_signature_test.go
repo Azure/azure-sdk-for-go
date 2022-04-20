@@ -178,7 +178,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 	// Success on a list
-	pager := client.ListEntities(nil)
+	pager := client.NewListEntitiesPager(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
@@ -247,7 +247,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
 
 	// Success on a list
-	pager := client.ListEntities(nil)
+	pager := client.NewListEntitiesPager(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)

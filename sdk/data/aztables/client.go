@@ -201,7 +201,7 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 	}, nil
 }
 
-// ListEntities queries the entities using the specified ListEntitiesOptions.
+// NewListEntitiesPager queries the entities using the specified ListEntitiesOptions.
 // ListEntitiesOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those entities that satisfy the filter expression.
@@ -213,11 +213,11 @@ func newListEntitiesPage(resp generated.TableClientQueryEntitiesResponse) (ListE
 // Top: The maximum number of entities that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// ListEntities returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
+// NewListEntitiesPager returns a Pager, which allows iteration through each page of results. Use nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *Client) ListEntities(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
+func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime.Pager[ListEntitiesResponse] {
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}

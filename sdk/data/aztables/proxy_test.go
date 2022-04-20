@@ -268,7 +268,7 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 }
 
 func clearAllTables(service *ServiceClient) error {
-	pager := service.ListTables(nil)
+	pager := service.NewListTablesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		if err != nil {

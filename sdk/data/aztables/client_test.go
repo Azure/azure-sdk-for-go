@@ -170,7 +170,7 @@ func TestMergeEntity(t *testing.T) {
 			require.Nil(t, updateErr)
 
 			var qResp ListEntitiesResponse
-			pager := client.ListEntities(listOptions)
+			pager := client.NewListEntitiesPager(listOptions)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -247,7 +247,7 @@ func TestInsertEntity(t *testing.T) {
 
 			// 5. Query for new entity
 			var qResp ListEntitiesResponse
-			pager := client.ListEntities(list)
+			pager := client.NewListEntitiesPager(list)
 			for pager.More() {
 				qResp, err = pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -306,7 +306,7 @@ func TestQuerySimpleEntity(t *testing.T) {
 			expectedCount := 4
 
 			var resp ListEntitiesResponse
-			pager := client.ListEntities(list)
+			pager := client.NewListEntitiesPager(list)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -357,7 +357,7 @@ func TestQueryComplexEntity(t *testing.T) {
 			expectedCount := 4
 			options := &ListEntitiesOptions{Filter: &filter}
 
-			pager := client.ListEntities(options)
+			pager := client.NewListEntitiesPager(options)
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
 				require.NoError(t, err)
@@ -412,7 +412,7 @@ func TestContinuationTokens(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.ListEntities(&ListEntitiesOptions{Top: to.Ptr(int32(1))})
+			pager := client.NewListEntitiesPager(&ListEntitiesOptions{Top: to.Ptr(int32(1))})
 			var pkContToken string
 			var rkContToken string
 			for pager.More() {
@@ -429,7 +429,7 @@ func TestContinuationTokens(t *testing.T) {
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
-			newPager := client.ListEntities(&ListEntitiesOptions{
+			newPager := client.NewListEntitiesPager(&ListEntitiesOptions{
 				NextPartitionKey: &pkContToken,
 				NextRowKey:       &rkContToken,
 			})
@@ -453,7 +453,7 @@ func TestContinuationTokensFilters(t *testing.T) {
 			err := insertNEntities("contToken", 10, client)
 			require.NoError(t, err)
 
-			pager := client.ListEntities(&ListEntitiesOptions{
+			pager := client.NewListEntitiesPager(&ListEntitiesOptions{
 				Top:    to.Ptr(int32(1)),
 				Filter: to.Ptr("Value le 5"),
 			})
@@ -473,7 +473,7 @@ func TestContinuationTokensFilters(t *testing.T) {
 			require.NotNil(t, pkContToken)
 			require.NotNil(t, rkContToken)
 
-			newPager := client.ListEntities(&ListEntitiesOptions{
+			newPager := client.NewListEntitiesPager(&ListEntitiesOptions{
 				NextPartitionKey: &pkContToken,
 				NextRowKey:       &rkContToken,
 				Filter:           to.Ptr("Value le 5"),
@@ -548,7 +548,7 @@ func TestAzurite(t *testing.T) {
 	require.NoError(t, err)
 
 	count := 0
-	pager := client.ListEntities(nil)
+	pager := client.NewListEntitiesPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		require.NoError(t, err)

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package internal
 
 const (
 	moduleName    = "aztables"
-	moduleVersion = "v0.7.1"
+	moduleVersion = "v0.8.0"
 )
 
 type Enum0 string
@@ -26,11 +26,6 @@ func PossibleEnum0Values() []Enum0 {
 	}
 }
 
-// ToPtr returns a *Enum0 pointing to the current value.
-func (c Enum0) ToPtr() *Enum0 {
-	return &c
-}
-
 type Enum1 string
 
 const (
@@ -42,11 +37,6 @@ func PossibleEnum1Values() []Enum1 {
 	return []Enum1{
 		Enum1Three0,
 	}
-}
-
-// ToPtr returns a *Enum1 pointing to the current value.
-func (c Enum1) ToPtr() *Enum1 {
-	return &c
 }
 
 type Enum4 string
@@ -62,11 +52,6 @@ func PossibleEnum4Values() []Enum4 {
 	}
 }
 
-// ToPtr returns a *Enum4 pointing to the current value.
-func (c Enum4) ToPtr() *Enum4 {
-	return &c
-}
-
 type Enum5 string
 
 const (
@@ -78,11 +63,6 @@ func PossibleEnum5Values() []Enum5 {
 	return []Enum5{
 		Enum5Service,
 	}
-}
-
-// ToPtr returns a *Enum5 pointing to the current value.
-func (c Enum5) ToPtr() *Enum5 {
-	return &c
 }
 
 type Enum6 string
@@ -98,11 +78,6 @@ func PossibleEnum6Values() []Enum6 {
 	}
 }
 
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
-	return &c
-}
-
 type Enum7 string
 
 const (
@@ -114,11 +89,6 @@ func PossibleEnum7Values() []Enum7 {
 	return []Enum7{
 		Enum7Stats,
 	}
-}
-
-// ToPtr returns a *Enum7 pointing to the current value.
-func (c Enum7) ToPtr() *Enum7 {
-	return &c
 }
 
 // GeoReplicationStatusType - The status of the secondary location.
@@ -139,11 +109,6 @@ func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
-func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
-	return &c
-}
-
 type ODataMetadataFormat string
 
 const (
@@ -161,11 +126,6 @@ func PossibleODataMetadataFormatValues() []ODataMetadataFormat {
 	}
 }
 
-// ToPtr returns a *ODataMetadataFormat pointing to the current value.
-func (c ODataMetadataFormat) ToPtr() *ODataMetadataFormat {
-	return &c
-}
-
 type ResponseFormat string
 
 const (
@@ -179,9 +139,4 @@ func PossibleResponseFormatValues() []ResponseFormat {
 		ResponseFormatReturnContent,
 		ResponseFormatReturnNoContent,
 	}
-}
-
-// ToPtr returns a *ResponseFormat pointing to the current value.
-func (c ResponseFormat) ToPtr() *ResponseFormat {
-	return &c
 }

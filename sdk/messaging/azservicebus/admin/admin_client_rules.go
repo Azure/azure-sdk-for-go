@@ -31,12 +31,6 @@ type Filters struct {
 	FalseFilter *FalseFilter
 }
 
-// Actions allows you to specify a single action for a particular rule.
-type Actions struct {
-	// SQLAction lets you update a message using SQL syntax.
-	SQLAction *SQLAction
-}
-
 // Rule specifies a message filter and action for a subscription.
 type Rule struct {
 	// Filter is the filter that will be used for Rule.
@@ -44,7 +38,8 @@ type Rule struct {
 	Filter Filters
 
 	// Action is the action that will be used for Rule.
-	Action Actions
+	// Valid types: *SQLAction
+	Action any
 }
 
 // SQLAction is an action that updates a message according to its
@@ -113,7 +108,8 @@ type RuleProperties struct {
 	Filter *Filters
 
 	// Action is the action for this rule.
-	Action *Actions
+	// Valid types: *SQLAction
+	Action any
 }
 
 // CreateRuleResponse contains the response fields for Client.CreateRule
@@ -130,7 +126,8 @@ type CreateRuleOptions struct {
 	Filter *Filters
 
 	// Action is the action for this rule
-	Action *Actions
+	// Valid types: *SQLAction
+	Action any
 }
 
 // CreateRule creates a rule that can filter and update message for a subscription.
@@ -328,19 +325,24 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 	theirAction := putProps.Action
 
 	if theirAction != nil {
-		ourAction := &atom.ActionDescription{
-			Type: "SqlRuleAction",
+		switch actualAction := theirAction.(type) {
+		case *SQLAction:
+			ourAction := &atom.ActionDescription{
+				Type: "SqlRuleAction",
+			}
+			ruleDesc.Action = ourAction
+
+			params, err := publicSQLParametersToInternal(actualAction.Parameters)
+
+			if err != nil {
+				return nil, nil, err
+			}
+
+			ourAction.SQLExpression = actualAction.Expression
+			ourAction.Parameters = params
+		default:
+			return nil, nil, fmt.Errorf("unknown action type %T", theirAction)
 		}
-		ruleDesc.Action = ourAction
-
-		params, err := publicSQLParametersToInternal(theirAction.SQLAction.Parameters)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		ourAction.SQLExpression = theirAction.SQLAction.Expression
-		ourAction.Parameters = params
 	}
 
 	ruleDesc.Name = "$Default"
@@ -433,11 +435,9 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 			return nil, err
 		}
 
-		props.Action = &Actions{
-			SQLAction: &SQLAction{
-				Expression: desc.Action.SQLExpression,
-				Parameters: params,
-			},
+		props.Action = &SQLAction{
+			Expression: desc.Action.SQLExpression,
+			Parameters: params,
 		}
 	default:
 		return nil, fmt.Errorf("action for rule %s, with type %s, is not handled", env.Title, desc.Action.Type)

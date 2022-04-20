@@ -1079,16 +1079,14 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	t.Run("ruleWithAction", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithAction",
-			Action: &Actions{
-				SQLAction: &SQLAction{
-					Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
-					Parameters: map[string]interface{}{
-						"@stringVar":   "hello world",
-						"@intVar":      int64(100),
-						"@floatVar":    float64(100.1),
-						"@dateTimeVar": time.Now().UTC(),
-						"@boolVar":     true,
-					},
+			Action: &SQLAction{
+				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": time.Now().UTC(),
+					"@boolVar":     true,
 				},
 			},
 		})
@@ -1109,16 +1107,14 @@ func TestAdminClient_CreateRules(t *testing.T) {
 					},
 				},
 			},
-			Action: &Actions{
-				SQLAction: &SQLAction{
-					Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
-					Parameters: map[string]interface{}{
-						"@stringVar":   "hello world",
-						"@intVar":      int64(100),
-						"@floatVar":    float64(100.1),
-						"@dateTimeVar": time.Now().UTC(),
-						"@boolVar":     true,
-					},
+			Action: &SQLAction{
+				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": time.Now().UTC(),
+					"@boolVar":     true,
 				},
 			},
 		})

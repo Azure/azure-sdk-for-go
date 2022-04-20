@@ -413,8 +413,10 @@ func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o 
 		correlatedActivityId: &correlatedActivityId,
 	}
 
-	if o == nil {
-		o = &QueryOptions{}
+	queryOptions := &QueryOptions{}
+	if o != nil {
+		originalOptions := *o
+		queryOptions = &originalOptions
 	}
 
 	operationContext := pipelineRequestOptions{
@@ -433,7 +435,7 @@ func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o 
 			if page != nil {
 				if page.ContinuationToken != "" {
 					// Use the previous page continuation if available
-					o.ContinuationToken = page.ContinuationToken
+					queryOptions.ContinuationToken = page.ContinuationToken
 				}
 			}
 
@@ -442,7 +444,7 @@ func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o 
 				ctx,
 				query,
 				operationContext,
-				o,
+				queryOptions,
 				nil)
 
 			if err != nil {

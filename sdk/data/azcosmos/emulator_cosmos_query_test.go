@@ -105,14 +105,17 @@ func TestSinglePartitionQuery(t *testing.T) {
 	documentsPerPk := 10
 	createSampleItems(t, container, documentsPerPk)
 
+	numberOfPages := 0
 	receivedIds := []string{}
-	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), &QueryOptions{PageSizeHint: 5})
+	opt := QueryOptions{PageSizeHint: 5}
+	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), &opt)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {
 			t.Fatalf("Failed to query items: %v", err)
 		}
 
+		numberOfPages++
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
 			err = json.Unmarshal(item, &itemResponseBody)
@@ -145,6 +148,14 @@ func TestSinglePartitionQuery(t *testing.T) {
 		if len(queryResponse.Items) != 5 && len(queryResponse.Items) != 0 {
 			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
 		}
+
+		if numberOfPages == 2 && opt.ContinuationToken != ""{
+			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
+		}
+	}
+
+	if numberOfPages != 2 {
+		t.Fatalf("Expected 2 pages, got %d", numberOfPages)
 	}
 
 	if len(receivedIds) != documentsPerPk {

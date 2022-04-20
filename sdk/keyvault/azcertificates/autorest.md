@@ -10,11 +10,18 @@ input-file:
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: true
 output-folder: internal/generated
-module: azcertificates
 openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.38"
-module-version: 0.3.0
+use: "@autorest/go@4.0.0-preview.39"
+module-version: 0.4.0
 export-clients: true
+
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/moduleName\s+=\s+"generated"/, `ModuleName = "azcertificates"`).
+        replace(/moduleVersion\s+=/, `ModuleVersion =`);
 ```

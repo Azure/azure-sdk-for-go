@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig/internal/generated"
 )
@@ -418,10 +417,6 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 			page, err := pagerInternal.NextPage(ctx)
 			if err != nil {
 				return ListRevisionsPage{}, err
-			}
-			if page.NextLink == nil {
-				// Set it to the zero value
-				page.NextLink = to.Ptr("")
 			}
 			return fromGeneratedGetRevisionsPage(page), nil
 		},

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2022-04-19)
+## 0.2.0 (2022-04-20)
 
 ### Breaking Changes
 * Upgraded to latest `azcore` which requires Go 1.18 or later.

@@ -33,7 +33,7 @@ func NewMetricAlertsClientWithBaseURI(baseURI string, subscriptionID string) Met
 
 // CreateOrUpdate create or update an metric alert definition.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 // parameters - the parameters of the rule to create or update.
 func (client MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource) (result MetricAlertResource, err error) {
@@ -50,11 +50,14 @@ func (client MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.MetricAlertProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.MetricAlertProperties.Scopes", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.EvaluationFrequency", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.WindowSize", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
@@ -126,7 +129,7 @@ func (client MetricAlertsClient) CreateOrUpdateResponder(resp *http.Response) (r
 
 // Delete delete an alert rule definition.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 func (client MetricAlertsClient) Delete(ctx context.Context, resourceGroupName string, ruleName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -141,7 +144,10 @@ func (client MetricAlertsClient) Delete(ctx context.Context, resourceGroupName s
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsClient", "Delete", err.Error())
 	}
 
@@ -207,7 +213,7 @@ func (client MetricAlertsClient) DeleteResponder(resp *http.Response) (result au
 
 // Get retrieve an alert rule definition.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 func (client MetricAlertsClient) Get(ctx context.Context, resourceGroupName string, ruleName string) (result MetricAlertResource, err error) {
 	if tracing.IsEnabled() {
@@ -222,7 +228,10 @@ func (client MetricAlertsClient) Get(ctx context.Context, resourceGroupName stri
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsClient", "Get", err.Error())
 	}
 
@@ -289,7 +298,7 @@ func (client MetricAlertsClient) GetResponder(resp *http.Response) (result Metri
 
 // ListByResourceGroup retrieve alert rule definitions in a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result MetricAlertResourceCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MetricAlertsClient.ListByResourceGroup")
@@ -303,7 +312,10 @@ func (client MetricAlertsClient) ListByResourceGroup(ctx context.Context, resour
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -446,7 +458,7 @@ func (client MetricAlertsClient) ListBySubscriptionResponder(resp *http.Response
 
 // Update update an metric alert definition.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // ruleName - the name of the rule.
 // parameters - the parameters of the rule to update.
 func (client MetricAlertsClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch) (result MetricAlertResource, err error) {
@@ -462,7 +474,10 @@ func (client MetricAlertsClient) Update(ctx context.Context, resourceGroupName s
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.MetricAlertsClient", "Update", err.Error())
 	}
 

@@ -34,7 +34,7 @@ func NewActivityLogAlertsClientWithBaseURI(baseURI string, subscriptionID string
 
 // CreateOrUpdate create a new activity log alert or update an existing one.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // activityLogAlertName - the name of the activity log alert.
 // activityLogAlert - the activity log alert to create or use for the update.
 func (client ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource) (result ActivityLogAlertResource, err error) {
@@ -51,6 +51,9 @@ func (client ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resour
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: activityLogAlert,
 			Constraints: []validation.Constraint{{Target: "activityLogAlert.ActivityLogAlert", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "activityLogAlert.ActivityLogAlert.Scopes", Name: validation.Null, Rule: true, Chain: nil},
@@ -126,7 +129,7 @@ func (client ActivityLogAlertsClient) CreateOrUpdateResponder(resp *http.Respons
 
 // Delete delete an activity log alert.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // activityLogAlertName - the name of the activity log alert.
 func (client ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -141,7 +144,10 @@ func (client ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupN
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActivityLogAlertsClient", "Delete", err.Error())
 	}
 
@@ -207,7 +213,7 @@ func (client ActivityLogAlertsClient) DeleteResponder(resp *http.Response) (resu
 
 // Get get an activity log alert.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // activityLogAlertName - the name of the activity log alert.
 func (client ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string) (result ActivityLogAlertResource, err error) {
 	if tracing.IsEnabled() {
@@ -222,7 +228,10 @@ func (client ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActivityLogAlertsClient", "Get", err.Error())
 	}
 
@@ -289,7 +298,7 @@ func (client ActivityLogAlertsClient) GetResponder(resp *http.Response) (result 
 
 // ListByResourceGroup get a list of all activity log alerts in a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ActivityLogAlertList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ActivityLogAlertsClient.ListByResourceGroup")
@@ -303,7 +312,10 @@ func (client ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActivityLogAlertsClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -446,7 +458,7 @@ func (client ActivityLogAlertsClient) ListBySubscriptionIDResponder(resp *http.R
 
 // Update updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // activityLogAlertName - the name of the activity log alert.
 // activityLogAlertPatch - parameters supplied to the operation.
 func (client ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody) (result ActivityLogAlertResource, err error) {
@@ -462,7 +474,10 @@ func (client ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupN
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActivityLogAlertsClient", "Update", err.Error())
 	}
 

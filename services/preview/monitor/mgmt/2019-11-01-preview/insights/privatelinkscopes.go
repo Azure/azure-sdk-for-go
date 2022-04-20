@@ -35,7 +35,7 @@ func NewPrivateLinkScopesClientWithBaseURI(baseURI string, subscriptionID string
 // CreateOrUpdate creates (or updates) a Azure Monitor PrivateLinkScope. Note: You cannot specify a different value for
 // InstrumentationKey nor AppId in the Put operation.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // azureMonitorPrivateLinkScopePayload - properties that need to be specified to create or update a Azure
 // Monitor PrivateLinkScope.
@@ -51,6 +51,9 @@ func (client PrivateLinkScopesClient) CreateOrUpdate(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: azureMonitorPrivateLinkScopePayload,
@@ -123,7 +126,7 @@ func (client PrivateLinkScopesClient) CreateOrUpdateResponder(resp *http.Respons
 
 // Delete deletes a Azure Monitor PrivateLinkScope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 func (client PrivateLinkScopesClient) Delete(ctx context.Context, resourceGroupName string, scopeName string) (result PrivateLinkScopesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -137,6 +140,9 @@ func (client PrivateLinkScopesClient) Delete(ctx context.Context, resourceGroupN
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopesClient", "Delete", err.Error())
@@ -207,7 +213,7 @@ func (client PrivateLinkScopesClient) DeleteResponder(resp *http.Response) (resu
 
 // Get returns a Azure Monitor PrivateLinkScope.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 func (client PrivateLinkScopesClient) Get(ctx context.Context, resourceGroupName string, scopeName string) (result AzureMonitorPrivateLinkScope, err error) {
 	if tracing.IsEnabled() {
@@ -221,6 +227,9 @@ func (client PrivateLinkScopesClient) Get(ctx context.Context, resourceGroupName
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopesClient", "Get", err.Error())
@@ -408,7 +417,7 @@ func (client PrivateLinkScopesClient) ListComplete(ctx context.Context) (result 
 
 // ListByResourceGroup gets a list of Azure Monitor PrivateLinkScopes within a resource group.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client PrivateLinkScopesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AzureMonitorPrivateLinkScopeListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkScopesClient.ListByResourceGroup")
@@ -421,6 +430,9 @@ func (client PrivateLinkScopesClient) ListByResourceGroup(ctx context.Context, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopesClient", "ListByResourceGroup", err.Error())
@@ -530,7 +542,7 @@ func (client PrivateLinkScopesClient) ListByResourceGroupComplete(ctx context.Co
 
 // UpdateTags updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // scopeName - the name of the Azure Monitor PrivateLinkScope resource.
 // privateLinkScopeTags - updated tag information to set into the PrivateLinkScope instance.
 func (client PrivateLinkScopesClient) UpdateTags(ctx context.Context, resourceGroupName string, scopeName string, privateLinkScopeTags TagsResource) (result AzureMonitorPrivateLinkScope, err error) {
@@ -545,6 +557,9 @@ func (client PrivateLinkScopesClient) UpdateTags(ctx context.Context, resourceGr
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopesClient", "UpdateTags", err.Error())

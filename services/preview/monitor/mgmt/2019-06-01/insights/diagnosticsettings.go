@@ -85,7 +85,7 @@ func (client DiagnosticSettingsClient) CreateOrUpdatePreparer(ctx context.Contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -161,7 +161,7 @@ func (client DiagnosticSettingsClient) DeletePreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -235,7 +235,7 @@ func (client DiagnosticSettingsClient) GetPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -308,7 +308,7 @@ func (client DiagnosticSettingsClient) ListPreparer(ctx context.Context, resourc
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/diagnosticSettings", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

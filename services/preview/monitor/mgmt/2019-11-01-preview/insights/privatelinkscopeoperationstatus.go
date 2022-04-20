@@ -35,7 +35,7 @@ func NewPrivateLinkScopeOperationStatusClientWithBaseURI(baseURI string, subscri
 // Get get the status of an azure asynchronous operation associated with a private link scope operation.
 // Parameters:
 // asyncOperationID - the operation Id.
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client PrivateLinkScopeOperationStatusClient) Get(ctx context.Context, asyncOperationID string, resourceGroupName string) (result OperationStatus, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkScopeOperationStatusClient.Get")
@@ -48,6 +48,9 @@ func (client PrivateLinkScopeOperationStatusClient) Get(ctx context.Context, asy
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.PrivateLinkScopeOperationStatusClient", "Get", err.Error())

@@ -1,5 +1,21 @@
 # Release History
 
+## 0.7.0 (2022-04-20)
+### Breaking Changes
+
+- Struct `TestNotificationResponse` has been removed
+- Field `TestNotificationResponse` of struct `ActionGroupsClientPostTestNotificationsResponse` has been removed
+
+### Features Added
+
+- New function `*ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel(context.Context, string, string, *ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions) (ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse, error)`
+- New function `*ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel(context.Context, string, NotificationRequestBody, *ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions) (*armruntime.Poller[ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse], error)`
+- New struct `ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions`
+- New struct `ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse`
+- New struct `ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions`
+- New struct `ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse`
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

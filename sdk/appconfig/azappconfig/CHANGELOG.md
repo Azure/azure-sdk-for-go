@@ -1,15 +1,16 @@
 # Release History
 
-## 0.1.1 (Unreleased)
-
-### Features Added
+## 0.2.0 (2022-04-20)
 
 ### Breaking Changes
+* Upgraded to latest `azcore` which requires Go 1.18 or later.
+* Renamed method `ListRevisions` to `NewListRevisionsPager` and removed `ListRevisionsPager` type.
+
+### Other Changes
+* Regenerated internal code with latest code generator.
 
 ### Bugs Fixed
 * Fixed authentication in Germany West Central using connection string (#17424).
-
-### Other Changes
 
 ## 0.1.0 (2022-03-09)
 

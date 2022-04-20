@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -85,7 +85,7 @@ func TestClient(t *testing.T) {
 	require.False(t, *roResp2.IsReadOnly)
 
 	any := "*"
-	revPgr := client.ListRevisions(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
+	revPgr := client.NewListRevisionsPager(SettingSelector{KeyFilter: &any, LabelFilter: &any, Fields: AllSettingFields()}, nil)
 	require.NotEmpty(t, revPgr)
 	hasMore := revPgr.More()
 	require.True(t, hasMore)

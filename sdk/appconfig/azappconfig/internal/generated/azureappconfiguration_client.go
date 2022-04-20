@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -24,7 +24,7 @@ import (
 type AzureAppConfigurationClient struct {
 	endpoint  string
 	syncToken *string
-	Pl        runtime.Pipeline
+	pl        runtime.Pipeline
 }
 
 // NewAzureAppConfigurationClient creates a new instance of AzureAppConfigurationClient with the specified values.
@@ -35,7 +35,7 @@ func NewAzureAppConfigurationClient(endpoint string, syncToken *string, pl runti
 	client := &AzureAppConfigurationClient{
 		endpoint:  endpoint,
 		syncToken: syncToken,
-		Pl:        pl,
+		pl:        pl,
 	}
 	return client
 }
@@ -50,7 +50,7 @@ func (client *AzureAppConfigurationClient) CheckKeyValue(ctx context.Context, ke
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValueResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValueResponse{}, err
 	}
@@ -97,7 +97,7 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 
 // checkKeyValueHandleResponse handles the CheckKeyValue response.
 func (client *AzureAppConfigurationClient) checkKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckKeyValueResponse, error) {
-	result := AzureAppConfigurationClientCheckKeyValueResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientCheckKeyValueResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -119,7 +119,7 @@ func (client *AzureAppConfigurationClient) CheckKeyValues(ctx context.Context, o
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValuesResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeyValuesResponse{}, err
 	}
@@ -162,7 +162,7 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 
 // checkKeyValuesHandleResponse handles the CheckKeyValues response.
 func (client *AzureAppConfigurationClient) checkKeyValuesHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckKeyValuesResponse, error) {
-	result := AzureAppConfigurationClientCheckKeyValuesResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientCheckKeyValuesResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -178,7 +178,7 @@ func (client *AzureAppConfigurationClient) CheckKeys(ctx context.Context, option
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeysResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckKeysResponse{}, err
 	}
@@ -215,7 +215,7 @@ func (client *AzureAppConfigurationClient) checkKeysCreateRequest(ctx context.Co
 
 // checkKeysHandleResponse handles the CheckKeys response.
 func (client *AzureAppConfigurationClient) checkKeysHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckKeysResponse, error) {
-	result := AzureAppConfigurationClientCheckKeysResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientCheckKeysResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -231,7 +231,7 @@ func (client *AzureAppConfigurationClient) CheckLabels(ctx context.Context, opti
 	if err != nil {
 		return AzureAppConfigurationClientCheckLabelsResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckLabelsResponse{}, err
 	}
@@ -271,7 +271,7 @@ func (client *AzureAppConfigurationClient) checkLabelsCreateRequest(ctx context.
 
 // checkLabelsHandleResponse handles the CheckLabels response.
 func (client *AzureAppConfigurationClient) checkLabelsHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckLabelsResponse, error) {
-	result := AzureAppConfigurationClientCheckLabelsResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientCheckLabelsResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -287,7 +287,7 @@ func (client *AzureAppConfigurationClient) CheckRevisions(ctx context.Context, o
 	if err != nil {
 		return AzureAppConfigurationClientCheckRevisionsResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientCheckRevisionsResponse{}, err
 	}
@@ -330,7 +330,7 @@ func (client *AzureAppConfigurationClient) checkRevisionsCreateRequest(ctx conte
 
 // checkRevisionsHandleResponse handles the CheckRevisions response.
 func (client *AzureAppConfigurationClient) checkRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientCheckRevisionsResponse, error) {
-	result := AzureAppConfigurationClientCheckRevisionsResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientCheckRevisionsResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -347,7 +347,7 @@ func (client *AzureAppConfigurationClient) DeleteKeyValue(ctx context.Context, k
 	if err != nil {
 		return AzureAppConfigurationClientDeleteKeyValueResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientDeleteKeyValueResponse{}, err
 	}
@@ -386,7 +386,7 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 
 // deleteKeyValueHandleResponse handles the DeleteKeyValue response.
 func (client *AzureAppConfigurationClient) deleteKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientDeleteKeyValueResponse, error) {
-	result := AzureAppConfigurationClientDeleteKeyValueResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientDeleteKeyValueResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -409,7 +409,7 @@ func (client *AzureAppConfigurationClient) DeleteLock(ctx context.Context, key s
 	if err != nil {
 		return AzureAppConfigurationClientDeleteLockResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientDeleteLockResponse{}, err
 	}
@@ -451,7 +451,7 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 
 // deleteLockHandleResponse handles the DeleteLock response.
 func (client *AzureAppConfigurationClient) deleteLockHandleResponse(resp *http.Response) (AzureAppConfigurationClientDeleteLockResponse, error) {
-	result := AzureAppConfigurationClientDeleteLockResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientDeleteLockResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -474,7 +474,7 @@ func (client *AzureAppConfigurationClient) GetKeyValue(ctx context.Context, key 
 	if err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientGetKeyValueResponse{}, err
 	}
@@ -522,7 +522,7 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 
 // getKeyValueHandleResponse handles the GetKeyValue response.
 func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetKeyValueResponse, error) {
-	result := AzureAppConfigurationClientGetKeyValueResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientGetKeyValueResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -538,20 +538,36 @@ func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetKeyValues - Gets a list of key-values.
+// NewGetKeyValuesPager - Gets a list of key-values.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeyValues
 // method.
-func (client *AzureAppConfigurationClient) GetKeyValues(options *AzureAppConfigurationClientGetKeyValuesOptions) *AzureAppConfigurationClientGetKeyValuesPager {
-	return &AzureAppConfigurationClientGetKeyValuesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getKeyValuesCreateRequest(ctx, options)
+func (client *AzureAppConfigurationClient) NewGetKeyValuesPager(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetKeyValuesResponse]{
+		More: func(page AzureAppConfigurationClientGetKeyValuesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureAppConfigurationClientGetKeyValuesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyValueListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetKeyValuesResponse) (AzureAppConfigurationClientGetKeyValuesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getKeyValuesCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureAppConfigurationClientGetKeyValuesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getKeyValuesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getKeyValuesCreateRequest creates the GetKeyValues request.
@@ -588,7 +604,7 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 
 // getKeyValuesHandleResponse handles the GetKeyValues response.
 func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetKeyValuesResponse, error) {
-	result := AzureAppConfigurationClientGetKeyValuesResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientGetKeyValuesResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -598,20 +614,36 @@ func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http
 	return result, nil
 }
 
-// GetKeys - Gets a list of keys.
+// NewGetKeysPager - Gets a list of keys.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeys
 // method.
-func (client *AzureAppConfigurationClient) GetKeys(options *AzureAppConfigurationClientGetKeysOptions) *AzureAppConfigurationClientGetKeysPager {
-	return &AzureAppConfigurationClientGetKeysPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getKeysCreateRequest(ctx, options)
+func (client *AzureAppConfigurationClient) NewGetKeysPager(options *AzureAppConfigurationClientGetKeysOptions) *runtime.Pager[AzureAppConfigurationClientGetKeysResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetKeysResponse]{
+		More: func(page AzureAppConfigurationClientGetKeysResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureAppConfigurationClientGetKeysResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetKeysResponse) (AzureAppConfigurationClientGetKeysResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getKeysCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureAppConfigurationClientGetKeysResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureAppConfigurationClientGetKeysResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureAppConfigurationClientGetKeysResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getKeysHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getKeysCreateRequest creates the GetKeys request.
@@ -642,7 +674,7 @@ func (client *AzureAppConfigurationClient) getKeysCreateRequest(ctx context.Cont
 
 // getKeysHandleResponse handles the GetKeys response.
 func (client *AzureAppConfigurationClient) getKeysHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetKeysResponse, error) {
-	result := AzureAppConfigurationClientGetKeysResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientGetKeysResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -652,20 +684,36 @@ func (client *AzureAppConfigurationClient) getKeysHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetLabels - Gets a list of labels.
+// NewGetLabelsPager - Gets a list of labels.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetLabelsOptions contains the optional parameters for the AzureAppConfigurationClient.GetLabels
 // method.
-func (client *AzureAppConfigurationClient) GetLabels(options *AzureAppConfigurationClientGetLabelsOptions) *AzureAppConfigurationClientGetLabelsPager {
-	return &AzureAppConfigurationClientGetLabelsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getLabelsCreateRequest(ctx, options)
+func (client *AzureAppConfigurationClient) NewGetLabelsPager(options *AzureAppConfigurationClientGetLabelsOptions) *runtime.Pager[AzureAppConfigurationClientGetLabelsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetLabelsResponse]{
+		More: func(page AzureAppConfigurationClientGetLabelsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureAppConfigurationClientGetLabelsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.LabelListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetLabelsResponse) (AzureAppConfigurationClientGetLabelsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getLabelsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureAppConfigurationClientGetLabelsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureAppConfigurationClientGetLabelsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureAppConfigurationClientGetLabelsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getLabelsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getLabelsCreateRequest creates the GetLabels request.
@@ -699,7 +747,7 @@ func (client *AzureAppConfigurationClient) getLabelsCreateRequest(ctx context.Co
 
 // getLabelsHandleResponse handles the GetLabels response.
 func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetLabelsResponse, error) {
-	result := AzureAppConfigurationClientGetLabelsResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientGetLabelsResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -709,24 +757,40 @@ func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetRevisions - Gets a list of key-value revisions.
+// NewGetRevisionsPager - Gets a list of key-value revisions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.GetRevisions
 // method.
-func (client *AzureAppConfigurationClient) GetRevisions(options *AzureAppConfigurationClientGetRevisionsOptions) *AzureAppConfigurationClientGetRevisionsPager {
-	return &AzureAppConfigurationClientGetRevisionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.GetRevisionsCreateRequest(ctx, options)
+func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetRevisionsResponse]{
+		More: func(page AzureAppConfigurationClientGetRevisionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp AzureAppConfigurationClientGetRevisionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.KeyValueListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationClientGetRevisionsResponse) (AzureAppConfigurationClientGetRevisionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getRevisionsCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return AzureAppConfigurationClientGetRevisionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return AzureAppConfigurationClientGetRevisionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return AzureAppConfigurationClientGetRevisionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getRevisionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
-// GetRevisionsCreateRequest creates the GetRevisions request.
-func (client *AzureAppConfigurationClient) GetRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
+// getRevisionsCreateRequest creates the GetRevisions request.
+func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context.Context, options *AzureAppConfigurationClientGetRevisionsOptions) (*policy.Request, error) {
 	urlPath := "/revisions"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -757,9 +821,9 @@ func (client *AzureAppConfigurationClient) GetRevisionsCreateRequest(ctx context
 	return req, nil
 }
 
-// GetRevisionsHandleResponse handles the GetRevisions response.
-func (client *AzureAppConfigurationClient) GetRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
-	result := AzureAppConfigurationClientGetRevisionsResponse{RawResponse: resp}
+// getRevisionsHandleResponse handles the GetRevisions response.
+func (client *AzureAppConfigurationClient) getRevisionsHandleResponse(resp *http.Response) (AzureAppConfigurationClientGetRevisionsResponse, error) {
+	result := AzureAppConfigurationClientGetRevisionsResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -779,7 +843,7 @@ func (client *AzureAppConfigurationClient) PutKeyValue(ctx context.Context, key 
 	if err != nil {
 		return AzureAppConfigurationClientPutKeyValueResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientPutKeyValueResponse{}, err
 	}
@@ -824,7 +888,7 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 
 // putKeyValueHandleResponse handles the PutKeyValue response.
 func (client *AzureAppConfigurationClient) putKeyValueHandleResponse(resp *http.Response) (AzureAppConfigurationClientPutKeyValueResponse, error) {
-	result := AzureAppConfigurationClientPutKeyValueResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientPutKeyValueResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}
@@ -847,7 +911,7 @@ func (client *AzureAppConfigurationClient) PutLock(ctx context.Context, key stri
 	if err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AzureAppConfigurationClientPutLockResponse{}, err
 	}
@@ -889,7 +953,7 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 
 // putLockHandleResponse handles the PutLock response.
 func (client *AzureAppConfigurationClient) putLockHandleResponse(resp *http.Response) (AzureAppConfigurationClientPutLockResponse, error) {
-	result := AzureAppConfigurationClientPutLockResponse{RawResponse: resp}
+	result := AzureAppConfigurationClientPutLockResponse{}
 	if val := resp.Header.Get("Sync-Token"); val != "" {
 		result.SyncToken = &val
 	}

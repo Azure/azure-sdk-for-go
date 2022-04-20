@@ -149,7 +149,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 			t.Fatalf("Expected 5 items, got %d", len(queryResponse.Items))
 		}
 
-		if numberOfPages == 2 && opt.ContinuationToken != ""{
+		if numberOfPages == 2 && opt.ContinuationToken != "" {
 			t.Fatalf("Original options should not be modified, initial continuation was empty, now it has %v", opt.ContinuationToken)
 		}
 	}

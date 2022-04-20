@@ -16,6 +16,9 @@
 * Convert `Start` and `Expiry` times in `AccessPolicy` to UTC format as required by the service.
 * Fixed `moduleName` to report the module name as part of telemetry.
 
+### Other Changes
+* Fixed bugs in some live tests.
+
 ## 0.7.0 (2022-04-05)
 
 ### Features Added

@@ -15,27 +15,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 )
 
-// Filters allows you to specify a single filter for a particular rule.
-// Only one of these properties can be set.
-type Filters struct {
-	// SQLFilter lets you filter messages using SQL syntax.
-	SQLFilter *SQLFilter
-
-	// CorrelationFilter lets you filter based on user or system properties of a message.
-	CorrelationFilter *CorrelationFilter
-
-	// TrueFilter evalutes to true for every message.
-	TrueFilter *TrueFilter
-
-	// FalseFilter evalutes to false for every message.
-	FalseFilter *FalseFilter
-}
-
 // Rule specifies a message filter and action for a subscription.
 type Rule struct {
 	// Filter is the filter that will be used for Rule.
-	// NOTE: only one of these filters should be set.
-	Filter Filters
+	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
+	Filter any
 
 	// Action is the action that will be used for Rule.
 	// Valid types: *SQLAction
@@ -105,7 +89,8 @@ type RuleProperties struct {
 	Name string
 
 	// Filter is the filter for this rule.
-	Filter *Filters
+	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
+	Filter any
 
 	// Action is the action for this rule.
 	// Valid types: *SQLAction
@@ -123,7 +108,8 @@ type CreateRuleOptions struct {
 	Name *string
 
 	// Filter is the filter for this rule
-	Filter *Filters
+	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
+	Filter any
 
 	// Action is the action for this rule
 	// Valid types: *SQLAction
@@ -275,47 +261,44 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 	theirFilter := putProps.Filter
 
 	if theirFilter != nil {
-		if theirFilter.FalseFilter != nil {
+		switch actualFilter := theirFilter.(type) {
+		case *FalseFilter:
 			ourFilter.Type = "FalseFilter"
 			ourFilter.SQLExpression = to.Ptr("1=0")
-		}
-
-		if theirFilter.TrueFilter != nil {
+		case *TrueFilter:
 			ourFilter.Type = "TrueFilter"
 			ourFilter.SQLExpression = to.Ptr("1=1")
-		}
-
-		if theirFilter.SQLFilter != nil {
-			params, err := publicSQLParametersToInternal(theirFilter.SQLFilter.Parameters)
+		case *SQLFilter:
+			params, err := publicSQLParametersToInternal(actualFilter.Parameters)
 
 			if err != nil {
 				return nil, nil, err
 			}
 
 			ourFilter.Type = "SqlFilter"
-			ourFilter.SQLExpression = &theirFilter.SQLFilter.Expression
+			ourFilter.SQLExpression = &actualFilter.Expression
 			ourFilter.Parameters = params
-		}
-
-		if theirFilter.CorrelationFilter != nil {
+		case *CorrelationFilter:
 			ourFilter.Type = "CorrelationFilter"
 
-			ourFilter.CorrelationFilter.ContentType = theirFilter.CorrelationFilter.ContentType
-			ourFilter.CorrelationFilter.CorrelationID = theirFilter.CorrelationFilter.CorrelationID
-			ourFilter.CorrelationFilter.MessageID = theirFilter.CorrelationFilter.MessageID
-			ourFilter.CorrelationFilter.ReplyTo = theirFilter.CorrelationFilter.ReplyTo
-			ourFilter.CorrelationFilter.ReplyToSessionID = theirFilter.CorrelationFilter.ReplyToSessionID
-			ourFilter.CorrelationFilter.SessionID = theirFilter.CorrelationFilter.SessionID
-			ourFilter.CorrelationFilter.Label = theirFilter.CorrelationFilter.Subject
-			ourFilter.CorrelationFilter.To = theirFilter.CorrelationFilter.To
+			ourFilter.CorrelationFilter.ContentType = actualFilter.ContentType
+			ourFilter.CorrelationFilter.CorrelationID = actualFilter.CorrelationID
+			ourFilter.CorrelationFilter.MessageID = actualFilter.MessageID
+			ourFilter.CorrelationFilter.ReplyTo = actualFilter.ReplyTo
+			ourFilter.CorrelationFilter.ReplyToSessionID = actualFilter.ReplyToSessionID
+			ourFilter.CorrelationFilter.SessionID = actualFilter.SessionID
+			ourFilter.CorrelationFilter.Label = actualFilter.Subject
+			ourFilter.CorrelationFilter.To = actualFilter.To
 
-			appProps, err := publicSQLParametersToInternal(theirFilter.CorrelationFilter.ApplicationProperties)
+			appProps, err := publicSQLParametersToInternal(actualFilter.ApplicationProperties)
 
 			if err != nil {
 				return nil, nil, err
 			}
 
 			ourFilter.CorrelationFilter.Properties = appProps
+		default:
+			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Filter", theirFilter)
 		}
 	} else {
 		ourFilter.Type = "TrueFilter"
@@ -341,7 +324,7 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 			ourAction.SQLExpression = actualAction.Expression
 			ourAction.Parameters = params
 		default:
-			return nil, nil, fmt.Errorf("unknown action type %T", theirAction)
+			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Action", theirAction)
 		}
 	}
 
@@ -382,15 +365,14 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 	desc := env.Content.RuleDescription
 
 	props := RuleProperties{
-		Name:   env.Title,
-		Filter: &Filters{},
+		Name: env.Title,
 	}
 
 	switch desc.Filter.Type {
 	case "TrueFilter":
-		props.Filter.TrueFilter = &TrueFilter{}
+		props.Filter = &TrueFilter{}
 	case "FalseFilter":
-		props.Filter.FalseFilter = &FalseFilter{}
+		props.Filter = &FalseFilter{}
 	case "CorrelationFilter":
 		cf := desc.Filter.CorrelationFilter
 
@@ -400,7 +382,7 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 			return nil, err
 		}
 
-		props.Filter.CorrelationFilter = &CorrelationFilter{
+		props.Filter = &CorrelationFilter{
 			ContentType:           cf.ContentType,
 			CorrelationID:         cf.CorrelationID,
 			MessageID:             cf.MessageID,
@@ -418,7 +400,7 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 			return nil, err
 		}
 
-		props.Filter.SQLFilter = &SQLFilter{
+		props.Filter = &SQLFilter{
 			Expression: *desc.Filter.SQLExpression,
 			Parameters: params,
 		}

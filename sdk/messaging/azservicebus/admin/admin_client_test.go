@@ -978,9 +978,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 		if rp.Filter == nil {
 			// Service Bus will automatically add in a 'TrueFilter' to our
 			// rule. We'll add it to our local copy just for assert purposes.
-			rp.Filter = &Filters{
-				TrueFilter: &TrueFilter{},
-			}
+			rp.Filter = &TrueFilter{}
 		}
 
 		require.Equal(t, createdRule, CreateRuleResponse{
@@ -1010,29 +1008,23 @@ func TestAdminClient_CreateRules(t *testing.T) {
 
 	t.Run("ruleWithFalseFilter", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
-			Name: "ruleWithFalseFilter",
-			Filter: &Filters{
-				FalseFilter: &FalseFilter{},
-			},
+			Name:   "ruleWithFalseFilter",
+			Filter: &FalseFilter{},
 		})
 	})
 
 	t.Run("ruleWithTrueFilter", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
-			Name: "ruleWithTrueFilter",
-			Filter: &Filters{
-				FalseFilter: &FalseFilter{},
-			},
+			Name:   "ruleWithTrueFilter",
+			Filter: &FalseFilter{},
 		})
 	})
 
 	t.Run("ruleWithSQLFilterNoParams", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithSQLFilterNoParams",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID='hello'",
-				},
+			Filter: &SQLFilter{
+				Expression: "MessageID='hello'",
 			},
 		})
 	})
@@ -1040,16 +1032,14 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	t.Run("ruleWithSQLFilterWithParams", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithSQLFilterWithParams",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
-					Parameters: map[string]interface{}{
-						"@stringVar":   "hello world",
-						"@intVar":      int64(100),
-						"@floatVar":    float64(100.1),
-						"@dateTimeVar": time.Now().UTC(),
-						"@boolVar":     true,
-					},
+			Filter: &SQLFilter{
+				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": time.Now().UTC(),
+					"@boolVar":     true,
 				},
 			},
 		})
@@ -1058,19 +1048,17 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	t.Run("ruleWithCorrelationFilter", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithCorrelationFilter",
-			Filter: &Filters{
-				CorrelationFilter: &CorrelationFilter{
-					ContentType:      to.Ptr("application/xml"),
-					CorrelationID:    to.Ptr("correlationID"),
-					MessageID:        to.Ptr("messageID"),
-					ReplyTo:          to.Ptr("replyTo"),
-					ReplyToSessionID: to.Ptr("replyToSessionID"),
-					SessionID:        to.Ptr("sessionID"),
-					Subject:          to.Ptr("subject"),
-					To:               to.Ptr("to"),
-					ApplicationProperties: map[string]interface{}{
-						"CustomProp1": "hello",
-					},
+			Filter: &CorrelationFilter{
+				ContentType:      to.Ptr("application/xml"),
+				CorrelationID:    to.Ptr("correlationID"),
+				MessageID:        to.Ptr("messageID"),
+				ReplyTo:          to.Ptr("replyTo"),
+				ReplyToSessionID: to.Ptr("replyToSessionID"),
+				SessionID:        to.Ptr("sessionID"),
+				Subject:          to.Ptr("subject"),
+				To:               to.Ptr("to"),
+				ApplicationProperties: map[string]interface{}{
+					"CustomProp1": "hello",
 				},
 			},
 		})
@@ -1095,16 +1083,14 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	t.Run("ruleWithFilterAndAction", func(t *testing.T) {
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithFilterAndAction",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
-					Parameters: map[string]interface{}{
-						"@stringVar":   "hello world",
-						"@intVar":      int64(100),
-						"@floatVar":    float64(100.1),
-						"@dateTimeVar": time.Now().UTC(),
-						"@boolVar":     true,
-					},
+			Filter: &SQLFilter{
+				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+				Parameters: map[string]interface{}{
+					"@stringVar":   "hello world",
+					"@intVar":      int64(100),
+					"@floatVar":    float64(100.1),
+					"@dateTimeVar": time.Now().UTC(),
+					"@boolVar":     true,
 				},
 			},
 			Action: &SQLAction{
@@ -1134,7 +1120,7 @@ func TestAdminClient_ListRulesWithOnlyDefault(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, []RuleProperties{
-		{Name: "$Default", Filter: &Filters{TrueFilter: &TrueFilter{}}},
+		{Name: "$Default", Filter: &TrueFilter{}},
 	}, resp.Rules)
 
 	// documenting this behavior - we let the service dictate the
@@ -1159,10 +1145,8 @@ func TestAdminClient_ListRules_MaxPageSize(t *testing.T) {
 	for _, rule := range []string{"rule1", "rule2", "rule3"} {
 		_, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
 			Name: to.Ptr(rule),
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: fmt.Sprintf("MessageID=%s", rule),
-				},
+			Filter: &SQLFilter{
+				Expression: fmt.Sprintf("MessageID=%s", rule),
 			},
 		})
 		require.NoError(t, err)
@@ -1208,33 +1192,25 @@ func TestAdminClient_ListRules_MaxPageSize(t *testing.T) {
 
 	require.Equal(t, []RuleProperties{
 		{
-			Name: "$Default",
-			Filter: &Filters{
-				TrueFilter: &TrueFilter{},
-			},
+			Name:   "$Default",
+			Filter: &TrueFilter{},
 		},
 		{
 			Name: "rule1",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID=rule1",
-				},
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule1",
 			},
 		},
 		{
 			Name: "rule2",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID=rule2",
-				},
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule2",
 			},
 		},
 		{
 			Name: "rule3",
-			Filter: &Filters{
-				SQLFilter: &SQLFilter{
-					Expression: "MessageID=rule3",
-				},
+			Filter: &SQLFilter{
+				Expression: "MessageID=rule3",
 			},
 		},
 	}, all)
@@ -1254,22 +1230,35 @@ func TestAdminClient_GetDefaultRule(t *testing.T) {
 	// message through (ie, the TrueFilter)
 	require.Equal(t, getResp, &GetRuleResponse{
 		RuleProperties: RuleProperties{
-			Name: "$Default",
-			Filter: &Filters{
-				TrueFilter: &TrueFilter{},
-			},
+			Name:   "$Default",
+			Filter: &TrueFilter{},
 		},
 	})
 
 	// switch to a filter that _rejects_ every message instead
-	getResp.RuleProperties.Filter = &Filters{
-		FalseFilter: &FalseFilter{},
-	}
+	getResp.RuleProperties.Filter = &FalseFilter{}
 
 	updateRuleResp, err := adminClient.UpdateRule(context.Background(), topicName, "sub", getResp.RuleProperties)
 	require.NoError(t, err)
 
 	require.Equal(t, updateRuleResp.RuleProperties, getResp.RuleProperties)
+}
+
+func TestAdminClient_CreateRuleWithInvalidTypes(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	_, err = adminClient.CreateRule(context.Background(), "any-topic", "any-sub", &CreateRuleOptions{
+		Name:   to.Ptr("some-name"),
+		Filter: "hello",
+	})
+	require.EqualError(t, err, "invalid type ('string') for Rule.Filter")
+
+	_, err = adminClient.CreateRule(context.Background(), "any-topic", "any-sub", &CreateRuleOptions{
+		Name:   to.Ptr("some-name"),
+		Action: 42,
+	})
+	require.EqualError(t, err, "invalid type ('int') for Rule.Action")
 }
 
 func createTestSub(t *testing.T) (*Client, string) {

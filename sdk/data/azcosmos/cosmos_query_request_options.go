@@ -3,7 +3,7 @@
 
 package azcosmos
 
-import "strconv"
+import "fmt"
 
 // QueryOptions includes options for query operations on items.
 type QueryOptions struct {
@@ -21,11 +21,11 @@ type QueryOptions struct {
 	// PopulateIndexMetrics is used to obtain the index metrics to understand how the query engine used existing indexes and how it could use potential new indexes.
 	// Please note that this options will incur overhead, so it should be enabled only when debugging slow queries and not in production.
 	PopulateIndexMetrics bool
-	// ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response. Valid values are >= 0.
-	ResponseContinuationTokenLimitInKb int
+	// ResponseContinuationTokenLimitInKB is used to limit the length of continuation token in the query response. Valid values are >= 0.
+	ResponseContinuationTokenLimitInKB int32
 	// PageSizeHint determines the maximum number of items to be retrieved in a query result page.
 	// '-1' Used for dynamic page size. This is a maximum. Query can return 0 items in the page.
-	PageSizeHint int
+	PageSizeHint int32
 	// EnableScanInQuery Allow scan on the queries which couldn't be served as indexing was opted out on the requested paths.
 	EnableScanInQuery bool
 	// ContinuationToken to be used to continue a previous query execution.
@@ -44,12 +44,12 @@ func (options *QueryOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderSessionToken] = options.SessionToken
 	}
 
-	if options.ResponseContinuationTokenLimitInKb > 0 {
-		headers[cosmosHeaderResponseContinuationTokenLimitInKb] = strconv.Itoa(options.ResponseContinuationTokenLimitInKb)
+	if options.ResponseContinuationTokenLimitInKB > 0 {
+		headers[cosmosHeaderResponseContinuationTokenLimitInKb] = fmt.Sprint(options.ResponseContinuationTokenLimitInKB)
 	}
 
 	if options.PageSizeHint != 0 {
-		headers[cosmosHeaderMaxItemCount] = strconv.Itoa(options.PageSizeHint)
+		headers[cosmosHeaderMaxItemCount] = fmt.Sprint(options.PageSizeHint)
 	}
 
 	if options.EnableScanInQuery {

@@ -13,7 +13,7 @@ func TestQueryRequestOptionsToHeaders(t *testing.T) {
 	options.SessionToken = "sessionToken"
 	options.PageSizeHint = 20
 	options.EnableScanInQuery = true
-	options.ResponseContinuationTokenLimitInKb = 100
+	options.ResponseContinuationTokenLimitInKB = 100
 	options.PopulateIndexMetrics = true
 	options.ContinuationToken = "continuationToken"
 	header := options.toHeaders()

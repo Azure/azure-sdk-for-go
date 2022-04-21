@@ -632,7 +632,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 	}
 }
 
-// ListPropertiesOfCertificates retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
+// NewListPropertiesOfCertificatesPager retrieves a list of the certificates in the Key Vault as JSON Web Key structures that contain the
 // public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
 // base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
 // certificate are not listed in the response. This operation requires the certificates/list permission.
@@ -682,7 +682,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	}
 }
 
-// ListPropertiesOfCertificateVersions lists all versions of the specified certificate. The full certificate identifer and
+// NewListPropertiesOfCertificateVersionsPager lists all versions of the specified certificate. The full certificate identifer and
 // attributes are provided in the response. No values are returned for the certificates. This operation
 // requires the certificates/list permission.
 func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
@@ -884,7 +884,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 	return ListIssuersPropertiesOfIssuersResponse{Issuers: vals, NextLink: i.NextLink}
 }
 
-// ListPropertiesOfIssuers returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
+// NewListPropertiesOfIssuersPager returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListIssuersPropertiesOfIssuersResponse] {
 	pager := c.genClient.NewGetCertificateIssuersPager(c.vaultURL, nil)
@@ -1529,7 +1529,7 @@ type ListDeletedCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListDeletedCertificates retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
+// NewListDeletedCertificatesPager retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
 // This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can
 // only be enabled on soft-delete enabled vaults.
 func (c *Client) NewListDeletedCertificatesPager(options *ListDeletedCertificatesOptions) *runtime.Pager[ListDeletedCertificatesResponse] {

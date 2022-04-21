@@ -1,5 +1,12 @@
 # Release History
 
+## 0.6.0 (2022-04-21)
+### Features Added
+
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -1530,6 +1530,15 @@ func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProperties.
+func (p PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupIds", p.GroupIDs)
+	populate(objectMap, "privateEndpoint", p.PrivateEndpoint)
+	populate(objectMap, "privateLinkServiceConnectionState", p.PrivateLinkServiceConnectionState)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
 func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

@@ -35,7 +35,7 @@ func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string)
 // CreateOrUpdate creates or updates a Sql pool data masking rule.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // dataMaskingRuleName - the name of the data masking rule.
 // parameters - the required parameters for creating or updating a data masking rule.
@@ -136,7 +136,7 @@ func (client DataMaskingRulesClient) CreateOrUpdateResponder(resp *http.Response
 // Get gets the specific Sql pool data masking rule.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // dataMaskingRuleName - the name of the data masking rule.
 func (client DataMaskingRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string) (result DataMaskingRule, err error) {
@@ -226,7 +226,7 @@ func (client DataMaskingRulesClient) GetResponder(resp *http.Response) (result D
 // ListBySQLPool gets a list of Sql pool data masking rules.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client DataMaskingRulesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result DataMaskingRuleListResult, err error) {
 	if tracing.IsEnabled() {

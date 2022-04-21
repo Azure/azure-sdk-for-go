@@ -34,7 +34,7 @@ func NewSQLPoolTablesClientWithBaseURI(baseURI string, subscriptionID string) SQ
 // Get get Sql pool table
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -125,7 +125,7 @@ func (client SQLPoolTablesClient) GetResponder(resp *http.Response) (result SQLP
 // ListBySchema gets tables of a given schema in a SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // filter - an OData filter expression that filters elements in the collection.

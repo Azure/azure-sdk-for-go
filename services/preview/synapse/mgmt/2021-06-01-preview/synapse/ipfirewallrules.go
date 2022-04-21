@@ -34,7 +34,7 @@ func NewIPFirewallRulesClientWithBaseURI(baseURI string, subscriptionID string) 
 // CreateOrUpdate creates or updates a firewall rule
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // ruleName - the IP firewall rule name
 // IPFirewallRuleInfo - IP firewall rule properties
 func (client IPFirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, IPFirewallRuleInfo IPFirewallRuleInfo) (result IPFirewallRulesCreateOrUpdateFuture, err error) {
@@ -127,7 +127,7 @@ func (client IPFirewallRulesClient) CreateOrUpdateResponder(resp *http.Response)
 // Delete deletes a firewall rule
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // ruleName - the IP firewall rule name
 func (client IPFirewallRulesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string) (result IPFirewallRulesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -217,7 +217,7 @@ func (client IPFirewallRulesClient) DeleteResponder(resp *http.Response) (result
 // Get get a firewall rule
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // ruleName - the IP firewall rule name
 func (client IPFirewallRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string) (result IPFirewallRuleInfo, err error) {
 	if tracing.IsEnabled() {
@@ -304,7 +304,7 @@ func (client IPFirewallRulesClient) GetResponder(resp *http.Response) (result IP
 // ListByWorkspace returns a list of firewall rules
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client IPFirewallRulesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result IPFirewallRuleInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPFirewallRulesClient.ListByWorkspace")
@@ -431,7 +431,7 @@ func (client IPFirewallRulesClient) ListByWorkspaceComplete(ctx context.Context,
 // ReplaceAll replaces firewall rules
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // request - replace all IP firewall rules request
 func (client IPFirewallRulesClient) ReplaceAll(ctx context.Context, resourceGroupName string, workspaceName string, request ReplaceAllIPFirewallRulesRequest) (result IPFirewallRulesReplaceAllFuture, err error) {
 	if tracing.IsEnabled() {

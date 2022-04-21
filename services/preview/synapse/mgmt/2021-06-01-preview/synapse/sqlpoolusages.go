@@ -34,7 +34,7 @@ func NewSQLPoolUsagesClientWithBaseURI(baseURI string, subscriptionID string) SQ
 // List gets SQL pool usages.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolUsageListResultPage, err error) {
 	if tracing.IsEnabled() {

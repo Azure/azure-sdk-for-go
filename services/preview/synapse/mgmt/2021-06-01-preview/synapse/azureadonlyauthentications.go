@@ -35,7 +35,7 @@ func NewAzureADOnlyAuthenticationsClientWithBaseURI(baseURI string, subscription
 // Create create or Update a Azure Active Directory Only Authentication property for the workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // azureADOnlyAuthenticationInfo - azure Active Directory Property
 func (client AzureADOnlyAuthenticationsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication) (result AzureADOnlyAuthenticationsCreateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -130,7 +130,7 @@ func (client AzureADOnlyAuthenticationsClient) CreateResponder(resp *http.Respon
 // Get gets a Azure Active Directory Only Authentication property for the workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client AzureADOnlyAuthenticationsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result AzureADOnlyAuthentication, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureADOnlyAuthenticationsClient.Get")
@@ -216,7 +216,7 @@ func (client AzureADOnlyAuthenticationsClient) GetResponder(resp *http.Response)
 // List gets a list of Azure Active Directory Only Authentication properties for a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client AzureADOnlyAuthenticationsClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result AzureADOnlyAuthenticationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureADOnlyAuthenticationsClient.List")

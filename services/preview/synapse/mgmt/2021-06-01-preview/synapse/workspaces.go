@@ -34,7 +34,7 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 // CreateOrUpdate creates or updates a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // workspaceInfo - workspace create or update request properties
 func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo Workspace) (result WorkspacesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -125,7 +125,7 @@ func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 // Delete deletes a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspacesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Delete")
@@ -213,7 +213,7 @@ func (client WorkspacesClient) DeleteResponder(resp *http.Response) (result SetO
 // Get gets a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result Workspace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Get")
@@ -542,7 +542,7 @@ func (client WorkspacesClient) ListByResourceGroupComplete(ctx context.Context, 
 // Update updates a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // workspacePatchInfo - workspace patch request properties
 func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, workspacePatchInfo WorkspacePatchInfo) (result WorkspacesUpdateFuture, err error) {
 	if tracing.IsEnabled() {

@@ -115,7 +115,7 @@ func (client OperationsClient) CheckNameAvailabilityResponder(resp *http.Respons
 // GetAzureAsyncHeaderResult get the status of an operation
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // operationID - operation ID
 func (client OperationsClient) GetAzureAsyncHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, operationID string) (result OperationResource, err error) {
 	if tracing.IsEnabled() {
@@ -202,7 +202,7 @@ func (client OperationsClient) GetAzureAsyncHeaderResultResponder(resp *http.Res
 // GetLocationHeaderResult get the result of an operation
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // operationID - operation ID
 func (client OperationsClient) GetLocationHeaderResult(ctx context.Context, resourceGroupName string, workspaceName string, operationID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {

@@ -36,7 +36,7 @@ func NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(baseURI st
 // CreateOrUpdate create or Update a workspace managed sql server's threat detection policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // parameters - the workspace managed sql server security alert policy.
 func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters ServerSecurityAlertPolicy) (result WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -128,7 +128,7 @@ func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdateR
 // Get get a workspace managed sql server's security alert policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerSecurityAlertPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerSecurityAlertPolicyClient.Get")
@@ -214,7 +214,7 @@ func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) GetResponder(re
 // List get workspace managed sql server's threat detection policies.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerSecurityAlertPolicyListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerSecurityAlertPolicyClient.List")

@@ -35,7 +35,7 @@ func NewSQLPoolMetadataSyncConfigsClientWithBaseURI(baseURI string, subscription
 // Create set the metadata sync configuration for a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // metadataSyncConfiguration - metadata sync configuration
 func (client SQLPoolMetadataSyncConfigsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, metadataSyncConfiguration MetadataSyncConfig) (result MetadataSyncConfig, err error) {
@@ -125,7 +125,7 @@ func (client SQLPoolMetadataSyncConfigsClient) CreateResponder(resp *http.Respon
 // Get get the metadata sync configuration for a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolMetadataSyncConfigsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result MetadataSyncConfig, err error) {
 	if tracing.IsEnabled() {

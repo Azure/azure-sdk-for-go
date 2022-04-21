@@ -35,7 +35,7 @@ func NewRestorableDroppedSQLPoolsClientWithBaseURI(baseURI string, subscriptionI
 // Get gets a deleted sql pool that can be restored
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // restorableDroppedSQLPoolID - the id of the deleted Sql Pool in the form of
 // sqlPoolName,deletionTimeInFileTimeFormat
 func (client RestorableDroppedSQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, restorableDroppedSQLPoolID string) (result RestorableDroppedSQLPool, err error) {
@@ -123,7 +123,7 @@ func (client RestorableDroppedSQLPoolsClient) GetResponder(resp *http.Response) 
 // ListByWorkspace gets a list of deleted Sql pools that can be restored
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client RestorableDroppedSQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result RestorableDroppedSQLPoolListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDroppedSQLPoolsClient.ListByWorkspace")

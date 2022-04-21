@@ -35,7 +35,7 @@ func NewSQLPoolReplicationLinksClientWithBaseURI(baseURI string, subscriptionID 
 // GetByName get SQL pool replication link by name.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // linkID - the ID of the replication link.
 func (client SQLPoolReplicationLinksClient) GetByName(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, linkID string) (result ReplicationLink, err error) {
@@ -124,7 +124,7 @@ func (client SQLPoolReplicationLinksClient) GetByNameResponder(resp *http.Respon
 // List lists a Sql pool's replication links.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolReplicationLinksClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ReplicationLinkListResultPage, err error) {
 	if tracing.IsEnabled() {

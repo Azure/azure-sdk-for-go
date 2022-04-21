@@ -35,7 +35,7 @@ func NewSQLPoolSensitivityLabelsClientWithBaseURI(baseURI string, subscriptionID
 // CreateOrUpdate creates or updates the sensitivity label of a given column in a Sql pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -133,7 +133,7 @@ func (client SQLPoolSensitivityLabelsClient) CreateOrUpdateResponder(resp *http.
 // Delete deletes the sensitivity label of a given column in a Sql pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -226,7 +226,7 @@ func (client SQLPoolSensitivityLabelsClient) DeleteResponder(resp *http.Response
 // DisableRecommendation disables sensitivity recommendations on a given column
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -320,7 +320,7 @@ func (client SQLPoolSensitivityLabelsClient) DisableRecommendationResponder(resp
 // on all columns)
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -413,7 +413,7 @@ func (client SQLPoolSensitivityLabelsClient) EnableRecommendationResponder(resp 
 // Get gets the sensitivity label of a given column
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.
@@ -508,7 +508,7 @@ func (client SQLPoolSensitivityLabelsClient) GetResponder(resp *http.Response) (
 // ListCurrent gets SQL pool sensitivity labels.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // filter - an OData filter expression that filters elements in the collection.
 func (client SQLPoolSensitivityLabelsClient) ListCurrent(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result SensitivityLabelListResultPage, err error) {
@@ -641,7 +641,7 @@ func (client SQLPoolSensitivityLabelsClient) ListCurrentComplete(ctx context.Con
 // ListRecommended gets sensitivity labels of a given SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // includeDisabledRecommendations - specifies whether to include disabled recommendations or not.
 // skipToken - an OData query option to indicate how many elements to skip in the collection.
@@ -782,7 +782,7 @@ func (client SQLPoolSensitivityLabelsClient) ListRecommendedComplete(ctx context
 // Update update sensitivity labels of a given SQL Pool using an operations batch.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolSensitivityLabelsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters SensitivityLabelUpdateList) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {

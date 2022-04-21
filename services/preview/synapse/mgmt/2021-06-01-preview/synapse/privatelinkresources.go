@@ -35,7 +35,7 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 // Get get private link resource in workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // privateLinkResourceName - the name of the private link resource
 func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, privateLinkResourceName string) (result PrivateLinkResource, err error) {
 	if tracing.IsEnabled() {
@@ -122,7 +122,7 @@ func (client PrivateLinkResourcesClient) GetResponder(resp *http.Response) (resu
 // List get all private link resources for a workspaces
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result PrivateLinkResourceListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkResourcesClient.List")

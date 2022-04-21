@@ -34,7 +34,7 @@ func NewSQLPoolsClientWithBaseURI(baseURI string, subscriptionID string) SQLPool
 // Create create a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // SQLPoolInfo - the SQL pool to create
 func (client SQLPoolsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, SQLPoolInfo SQLPool) (result SQLPoolsCreateFuture, err error) {
@@ -127,7 +127,7 @@ func (client SQLPoolsClient) CreateResponder(resp *http.Response) (result SQLPoo
 // Delete delete a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -217,7 +217,7 @@ func (client SQLPoolsClient) DeleteResponder(resp *http.Response) (result SetObj
 // Get get SQL pool properties
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPool, err error) {
 	if tracing.IsEnabled() {
@@ -304,7 +304,7 @@ func (client SQLPoolsClient) GetResponder(resp *http.Response) (result SQLPool, 
 // ListByWorkspace list all SQL pools
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client SQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result SQLPoolInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolsClient.ListByWorkspace")
@@ -431,7 +431,7 @@ func (client SQLPoolsClient) ListByWorkspaceComplete(ctx context.Context, resour
 // Pause pause a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolsClient) Pause(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolsPauseFuture, err error) {
 	if tracing.IsEnabled() {
@@ -521,7 +521,7 @@ func (client SQLPoolsClient) PauseResponder(resp *http.Response) (result SetObje
 // Rename rename a SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the resource move definition for renaming this Sql pool.
 func (client SQLPoolsClient) Rename(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters ResourceMoveDefinition) (result autorest.Response, err error) {
@@ -612,7 +612,7 @@ func (client SQLPoolsClient) RenameResponder(resp *http.Response) (result autore
 // Resume resume a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolsClient) Resume(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolsResumeFuture, err error) {
 	if tracing.IsEnabled() {
@@ -702,7 +702,7 @@ func (client SQLPoolsClient) ResumeResponder(resp *http.Response) (result SetObj
 // Update apply a partial update to a SQL pool
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // SQLPoolInfo - the updated SQL pool properties
 func (client SQLPoolsClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, SQLPoolInfo SQLPoolPatchInfo) (result SQLPool, err error) {

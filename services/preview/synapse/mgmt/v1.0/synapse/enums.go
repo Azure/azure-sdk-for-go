@@ -153,6 +153,25 @@ func PossibleConfigurationTypeValues() []ConfigurationType {
 	return []ConfigurationType{ConfigurationTypeArtifact, ConfigurationTypeFile}
 }
 
+// CreateMode enumerates the values for create mode.
+type CreateMode string
+
+const (
+	// CreateModeDefault ...
+	CreateModeDefault CreateMode = "Default"
+	// CreateModePointInTimeRestore ...
+	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
+	// CreateModeRecovery ...
+	CreateModeRecovery CreateMode = "Recovery"
+	// CreateModeRestore ...
+	CreateModeRestore CreateMode = "Restore"
+)
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{CreateModeDefault, CreateModePointInTimeRestore, CreateModeRecovery, CreateModeRestore}
+}
+
 // DataFlowComputeType enumerates the values for data flow compute type.
 type DataFlowComputeType string
 
@@ -898,13 +917,11 @@ const (
 	StorageAccountTypeGRS StorageAccountType = "GRS"
 	// StorageAccountTypeLRS ...
 	StorageAccountTypeLRS StorageAccountType = "LRS"
-	// StorageAccountTypeZRS ...
-	StorageAccountTypeZRS StorageAccountType = "ZRS"
 )
 
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{StorageAccountTypeGRS, StorageAccountTypeLRS, StorageAccountTypeZRS}
+	return []StorageAccountType{StorageAccountTypeGRS, StorageAccountTypeLRS}
 }
 
 // TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.

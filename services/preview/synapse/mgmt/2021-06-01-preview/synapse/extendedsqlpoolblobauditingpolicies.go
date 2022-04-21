@@ -36,7 +36,7 @@ func NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI string, sub
 // CreateOrUpdate creates or updates an extended Sql pool's blob auditing policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the extended Sql pool blob auditing policy.
 func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters ExtendedSQLPoolBlobAuditingPolicy) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
@@ -127,7 +127,7 @@ func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdateResponder(
 // Get gets an extended Sql pool's blob auditing policy.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client ExtendedSQLPoolBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
 	if tracing.IsEnabled() {
@@ -215,7 +215,7 @@ func (client ExtendedSQLPoolBlobAuditingPoliciesClient) GetResponder(resp *http.
 // ListBySQLPool lists extended auditing settings of a Sql pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ExtendedSQLPoolBlobAuditingPolicyListResultPage, err error) {
 	if tracing.IsEnabled() {

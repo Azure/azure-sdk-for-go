@@ -36,7 +36,7 @@ func NewSQLPoolDataWarehouseUserActivitiesClientWithBaseURI(baseURI string, subs
 // Get gets the user activities of a SQL pool which includes running and suspended queries
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolDataWarehouseUserActivitiesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result DataWarehouseUserActivities, err error) {
 	if tracing.IsEnabled() {

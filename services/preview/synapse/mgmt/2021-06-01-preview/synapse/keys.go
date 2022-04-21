@@ -34,7 +34,7 @@ func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient 
 // CreateOrUpdate creates or updates a workspace key
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // keyName - the name of the workspace key
 // keyProperties - key put request properties
 func (client KeysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key) (result Key, err error) {
@@ -124,7 +124,7 @@ func (client KeysClient) CreateOrUpdateResponder(resp *http.Response) (result Ke
 // Delete deletes a workspace key
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // keyName - the name of the workspace key
 func (client KeysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result Key, err error) {
 	if tracing.IsEnabled() {
@@ -211,7 +211,7 @@ func (client KeysClient) DeleteResponder(resp *http.Response) (result Key, err e
 // Get gets a workspace key
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // keyName - the name of the workspace key
 func (client KeysClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result Key, err error) {
 	if tracing.IsEnabled() {
@@ -298,7 +298,7 @@ func (client KeysClient) GetResponder(resp *http.Response) (result Key, err erro
 // ListByWorkspace returns a list of keys in a workspace
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 func (client KeysClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result KeyInfoListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/KeysClient.ListByWorkspace")

@@ -138,6 +138,25 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 	return []ColumnDataType{Bigint, Binary, Bit, Char, Date, Datetime, Datetime2, Datetimeoffset, Decimal, Float, Geography, Geometry, Hierarchyid, Image, Int, Money, Nchar, Ntext, Numeric, Nvarchar, Real, Smalldatetime, Smallint, Smallmoney, SQLVariant, Sysname, Text, Time, Timestamp, Tinyint, Uniqueidentifier, Varbinary, Varchar, XML}
 }
 
+// CreateMode enumerates the values for create mode.
+type CreateMode string
+
+const (
+	// Default ...
+	Default CreateMode = "Default"
+	// PointInTimeRestore ...
+	PointInTimeRestore CreateMode = "PointInTimeRestore"
+	// Recovery ...
+	Recovery CreateMode = "Recovery"
+	// Restore ...
+	Restore CreateMode = "Restore"
+)
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{Default, PointInTimeRestore, Recovery, Restore}
+}
+
 // DataFlowComputeType enumerates the values for data flow compute type.
 type DataFlowComputeType string
 
@@ -510,6 +529,10 @@ func PossibleNodeSizeValues() []NodeSize {
 type NodeSizeFamily string
 
 const (
+	// NodeSizeFamilyHardwareAcceleratedFPGA ...
+	NodeSizeFamilyHardwareAcceleratedFPGA NodeSizeFamily = "HardwareAcceleratedFPGA"
+	// NodeSizeFamilyHardwareAcceleratedGPU ...
+	NodeSizeFamilyHardwareAcceleratedGPU NodeSizeFamily = "HardwareAcceleratedGPU"
 	// NodeSizeFamilyMemoryOptimized ...
 	NodeSizeFamilyMemoryOptimized NodeSizeFamily = "MemoryOptimized"
 	// NodeSizeFamilyNone ...
@@ -518,7 +541,7 @@ const (
 
 // PossibleNodeSizeFamilyValues returns an array of possible values for the NodeSizeFamily const type.
 func PossibleNodeSizeFamilyValues() []NodeSizeFamily {
-	return []NodeSizeFamily{NodeSizeFamilyMemoryOptimized, NodeSizeFamilyNone}
+	return []NodeSizeFamily{NodeSizeFamilyHardwareAcceleratedFPGA, NodeSizeFamilyHardwareAcceleratedGPU, NodeSizeFamilyMemoryOptimized, NodeSizeFamilyNone}
 }
 
 // OperationStatus enumerates the values for operation status.
@@ -978,15 +1001,15 @@ func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
 type VulnerabilityAssessmentPolicyBaselineName string
 
 const (
-	// Default ...
-	Default VulnerabilityAssessmentPolicyBaselineName = "default"
-	// Master ...
-	Master VulnerabilityAssessmentPolicyBaselineName = "master"
+	// VulnerabilityAssessmentPolicyBaselineNameDefault ...
+	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = "default"
+	// VulnerabilityAssessmentPolicyBaselineNameMaster ...
+	VulnerabilityAssessmentPolicyBaselineNameMaster VulnerabilityAssessmentPolicyBaselineName = "master"
 )
 
 // PossibleVulnerabilityAssessmentPolicyBaselineNameValues returns an array of possible values for the VulnerabilityAssessmentPolicyBaselineName const type.
 func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAssessmentPolicyBaselineName {
-	return []VulnerabilityAssessmentPolicyBaselineName{Default, Master}
+	return []VulnerabilityAssessmentPolicyBaselineName{VulnerabilityAssessmentPolicyBaselineNameDefault, VulnerabilityAssessmentPolicyBaselineNameMaster}
 }
 
 // VulnerabilityAssessmentScanState enumerates the values for vulnerability assessment scan state.

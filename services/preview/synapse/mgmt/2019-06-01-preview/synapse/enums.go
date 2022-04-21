@@ -138,6 +138,25 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 	return []ColumnDataType{Bigint, Binary, Bit, Char, Date, Datetime, Datetime2, Datetimeoffset, Decimal, Float, Geography, Geometry, Hierarchyid, Image, Int, Money, Nchar, Ntext, Numeric, Nvarchar, Real, Smalldatetime, Smallint, Smallmoney, SQLVariant, Sysname, Text, Time, Timestamp, Tinyint, Uniqueidentifier, Varbinary, Varchar, XML}
 }
 
+// CreateMode enumerates the values for create mode.
+type CreateMode string
+
+const (
+	// Default ...
+	Default CreateMode = "Default"
+	// PointInTimeRestore ...
+	PointInTimeRestore CreateMode = "PointInTimeRestore"
+	// Recovery ...
+	Recovery CreateMode = "Recovery"
+	// Restore ...
+	Restore CreateMode = "Restore"
+)
+
+// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
+func PossibleCreateModeValues() []CreateMode {
+	return []CreateMode{Default, PointInTimeRestore, Recovery, Restore}
+}
+
 // DataFlowComputeType enumerates the values for data flow compute type.
 type DataFlowComputeType string
 
@@ -206,6 +225,31 @@ const (
 // PossibleDataMaskingStateValues returns an array of possible values for the DataMaskingState const type.
 func PossibleDataMaskingStateValues() []DataMaskingState {
 	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
+}
+
+// DayOfWeek enumerates the values for day of week.
+type DayOfWeek string
+
+const (
+	// Friday ...
+	Friday DayOfWeek = "Friday"
+	// Monday ...
+	Monday DayOfWeek = "Monday"
+	// Saturday ...
+	Saturday DayOfWeek = "Saturday"
+	// Sunday ...
+	Sunday DayOfWeek = "Sunday"
+	// Thursday ...
+	Thursday DayOfWeek = "Thursday"
+	// Tuesday ...
+	Tuesday DayOfWeek = "Tuesday"
+	// Wednesday ...
+	Wednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
 }
 
 // DesiredState enumerates the values for desired state.
@@ -614,6 +658,21 @@ func PossibleQueryObservedMetricTypeValues() []QueryObservedMetricType {
 	return []QueryObservedMetricType{CPU, Duration, ExecutionCount, Io, Logio}
 }
 
+// RecommendedSensitivityLabelUpdateKind enumerates the values for recommended sensitivity label update kind.
+type RecommendedSensitivityLabelUpdateKind string
+
+const (
+	// Disable ...
+	Disable RecommendedSensitivityLabelUpdateKind = "disable"
+	// Enable ...
+	Enable RecommendedSensitivityLabelUpdateKind = "enable"
+)
+
+// PossibleRecommendedSensitivityLabelUpdateKindValues returns an array of possible values for the RecommendedSensitivityLabelUpdateKind const type.
+func PossibleRecommendedSensitivityLabelUpdateKindValues() []RecommendedSensitivityLabelUpdateKind {
+	return []RecommendedSensitivityLabelUpdateKind{Disable, Enable}
+}
+
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
 
@@ -727,6 +786,27 @@ func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrat
 	return []SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
 }
 
+// SensitivityLabelRank enumerates the values for sensitivity label rank.
+type SensitivityLabelRank string
+
+const (
+	// SensitivityLabelRankCritical ...
+	SensitivityLabelRankCritical SensitivityLabelRank = "Critical"
+	// SensitivityLabelRankHigh ...
+	SensitivityLabelRankHigh SensitivityLabelRank = "High"
+	// SensitivityLabelRankLow ...
+	SensitivityLabelRankLow SensitivityLabelRank = "Low"
+	// SensitivityLabelRankMedium ...
+	SensitivityLabelRankMedium SensitivityLabelRank = "Medium"
+	// SensitivityLabelRankNone ...
+	SensitivityLabelRankNone SensitivityLabelRank = "None"
+)
+
+// PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return []SensitivityLabelRank{SensitivityLabelRankCritical, SensitivityLabelRankHigh, SensitivityLabelRankLow, SensitivityLabelRankMedium, SensitivityLabelRankNone}
+}
+
 // SensitivityLabelSource enumerates the values for sensitivity label source.
 type SensitivityLabelSource string
 
@@ -740,6 +820,21 @@ const (
 // PossibleSensitivityLabelSourceValues returns an array of possible values for the SensitivityLabelSource const type.
 func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return []SensitivityLabelSource{Current, Recommended}
+}
+
+// SensitivityLabelUpdateKind enumerates the values for sensitivity label update kind.
+type SensitivityLabelUpdateKind string
+
+const (
+	// Remove ...
+	Remove SensitivityLabelUpdateKind = "remove"
+	// Set ...
+	Set SensitivityLabelUpdateKind = "set"
+)
+
+// PossibleSensitivityLabelUpdateKindValues returns an array of possible values for the SensitivityLabelUpdateKind const type.
+func PossibleSensitivityLabelUpdateKindValues() []SensitivityLabelUpdateKind {
+	return []SensitivityLabelUpdateKind{Remove, Set}
 }
 
 // SsisObjectMetadataType enumerates the values for ssis object metadata type.
@@ -870,15 +965,15 @@ func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
 type VulnerabilityAssessmentPolicyBaselineName string
 
 const (
-	// Default ...
-	Default VulnerabilityAssessmentPolicyBaselineName = "default"
-	// Master ...
-	Master VulnerabilityAssessmentPolicyBaselineName = "master"
+	// VulnerabilityAssessmentPolicyBaselineNameDefault ...
+	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = "default"
+	// VulnerabilityAssessmentPolicyBaselineNameMaster ...
+	VulnerabilityAssessmentPolicyBaselineNameMaster VulnerabilityAssessmentPolicyBaselineName = "master"
 )
 
 // PossibleVulnerabilityAssessmentPolicyBaselineNameValues returns an array of possible values for the VulnerabilityAssessmentPolicyBaselineName const type.
 func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAssessmentPolicyBaselineName {
-	return []VulnerabilityAssessmentPolicyBaselineName{Default, Master}
+	return []VulnerabilityAssessmentPolicyBaselineName{VulnerabilityAssessmentPolicyBaselineNameDefault, VulnerabilityAssessmentPolicyBaselineNameMaster}
 }
 
 // VulnerabilityAssessmentScanState enumerates the values for vulnerability assessment scan state.

@@ -541,6 +541,16 @@ type WorkspaceManagedSQLServerRecoverableSQLPoolsClientAPI interface {
 
 var _ WorkspaceManagedSQLServerRecoverableSQLPoolsClientAPI = (*synapse.WorkspaceManagedSQLServerRecoverableSQLPoolsClient)(nil)
 
+// WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientAPI contains the set of methods on the WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient type.
+type WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, dedicatedSQLminimalTLSSettingsName string) (result synapse.DedicatedSQLminimalTLSSettings, err error)
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.DedicatedSQLminimalTLSSettingsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.DedicatedSQLminimalTLSSettingsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters synapse.DedicatedSQLminimalTLSSettings) (result synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture, err error)
+}
+
+var _ WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientAPI = (*synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient)(nil)
+
 // WorkspacesClientAPI contains the set of methods on the WorkspacesClient type.
 type WorkspacesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, workspaceInfo synapse.Workspace) (result synapse.WorkspacesCreateOrUpdateFuture, err error)

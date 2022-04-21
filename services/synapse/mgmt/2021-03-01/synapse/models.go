@@ -486,7 +486,7 @@ type BigDataPoolResourceProperties struct {
 	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
 	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge', 'NodeSizeXLarge', 'NodeSizeXXLarge', 'NodeSizeXXXLarge'
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
-	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
+	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized', 'NodeSizeFamilyHardwareAcceleratedFPGA', 'NodeSizeFamilyHardwareAcceleratedGPU'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
 	// LastSucceededTimestamp - READ-ONLY; The time when the Big Data pool was updated successfully.
 	LastSucceededTimestamp *date.Time `json:"lastSucceededTimestamp,omitempty"`
@@ -3462,6 +3462,39 @@ func (future *IntegrationRuntimeObjectMetadataRefreshFuture) result(client Integ
 	return
 }
 
+// IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint azure-SSIS integration runtime outbound
+// network dependency endpoints for one category.
+type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint struct {
+	// Category - The category of outbound network dependency.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoints for outbound network dependency.
+	Endpoints *[]IntegrationRuntimeOutboundNetworkDependenciesEndpoint `json:"endpoints,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpoint the endpoint for Azure-SSIS integration runtime
+// outbound network dependency.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpoint struct {
+	// DomainName - The domain name of endpoint.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The details of endpoint.
+	EndpointDetails *[]IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails `json:"endpointDetails,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails the details of Azure-SSIS integration
+// runtime outbound network dependency endpoint.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails struct {
+	// Port - The port of endpoint.
+	Port *int32 `json:"port,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse azure-SSIS integration runtime outbound
+// network dependency endpoints.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse struct {
+	autorest.Response `json:"-"`
+	// Value - The list of outbound network dependency endpoints.
+	Value *[]IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint `json:"value,omitempty"`
+}
+
 // IntegrationRuntimeRegenerateKeyParameters parameters to regenerate the authentication key.
 type IntegrationRuntimeRegenerateKeyParameters struct {
 	// KeyName - The name of the authentication key to regenerate. Possible values include: 'AuthKey1', 'AuthKey2'
@@ -4211,6 +4244,8 @@ type IntegrationRuntimeVNetProperties struct {
 	Subnet *string `json:"subnet,omitempty"`
 	// PublicIPs - Resource IDs of the public IP addresses that this integration runtime will use.
 	PublicIPs *[]string `json:"publicIPs,omitempty"`
+	// SubnetID - The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
+	SubnetID *string `json:"subnetId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeVNetProperties.
@@ -4224,6 +4259,9 @@ func (irvnp IntegrationRuntimeVNetProperties) MarshalJSON() ([]byte, error) {
 	}
 	if irvnp.PublicIPs != nil {
 		objectMap["publicIPs"] = irvnp.PublicIPs
+	}
+	if irvnp.SubnetID != nil {
+		objectMap["subnetId"] = irvnp.SubnetID
 	}
 	for k, v := range irvnp.AdditionalProperties {
 		objectMap[k] = v
@@ -4278,6 +4316,15 @@ func (irvnp *IntegrationRuntimeVNetProperties) UnmarshalJSON(body []byte) error 
 					return err
 				}
 				irvnp.PublicIPs = &publicIPs
+			}
+		case "subnetId":
+			if v != nil {
+				var subnetID string
+				err = json.Unmarshal(*v, &subnetID)
+				if err != nil {
+					return err
+				}
+				irvnp.SubnetID = &subnetID
 			}
 		}
 	}
@@ -12028,8 +12075,12 @@ type SQLPoolResourceProperties struct {
 	Status *string `json:"status,omitempty"`
 	// RestorePointInTime - Snapshot time to restore
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// CreateMode - What is this?
-	CreateMode *string `json:"createMode,omitempty"`
+	// CreateMode - Specifies the mode of sql pool creation.
+	// Default: regular sql pool creation.
+	// PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+	// Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+	// Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified. Possible values include: 'Default', 'PointInTimeRestore', 'Recovery', 'Restore'
+	CreateMode CreateMode `json:"createMode,omitempty"`
 	// CreationDate - Date the SQL pool was created
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'GRS', 'LRS', 'ZRS'
@@ -15947,7 +15998,7 @@ type WorkspacePatchProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Encryption - The encryption details of the workspace
 	Encryption *EncryptionDetails `json:"encryption,omitempty"`
-	// PublicNetworkAccess - Enable or Disable pubic network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
+	// PublicNetworkAccess - Enable or Disable public network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
 	PublicNetworkAccess WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
@@ -16009,7 +16060,7 @@ type WorkspaceProperties struct {
 	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
 	// AdlaResourceID - READ-ONLY; The ADLA resource ID.
 	AdlaResourceID *string `json:"adlaResourceId,omitempty"`
-	// PublicNetworkAccess - Enable or Disable pubic network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
+	// PublicNetworkAccess - Enable or Disable public network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
 	PublicNetworkAccess WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 

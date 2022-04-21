@@ -35,7 +35,7 @@ func NewSQLPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string
 // List gets a list of operations performed on the SQL pool.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolOperationsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage, err error) {
 	if tracing.IsEnabled() {

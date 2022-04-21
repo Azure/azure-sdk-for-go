@@ -34,7 +34,7 @@ func NewSQLPoolColumnsClientWithBaseURI(baseURI string, subscriptionID string) S
 // Get get Sql pool column
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // schemaName - the name of the schema.
 // tableName - the name of the table.

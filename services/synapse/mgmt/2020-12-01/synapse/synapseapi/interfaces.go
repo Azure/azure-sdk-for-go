@@ -373,6 +373,7 @@ type IntegrationRuntimesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, ifNoneMatch string) (result synapse.IntegrationRuntimeResource, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponsePage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponseIterator, err error)
+	ListOutboundNetworkDependenciesEndpoints(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse, err error)
 	Start(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesStopFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, updateIntegrationRuntimeRequest synapse.UpdateIntegrationRuntimeRequest) (result synapse.IntegrationRuntimeResource, err error)
@@ -571,3 +572,18 @@ type KeysClientAPI interface {
 }
 
 var _ KeysClientAPI = (*synapse.KeysClient)(nil)
+
+// LibraryClientAPI contains the set of methods on the LibraryClient type.
+type LibraryClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string) (result synapse.LibraryResource, err error)
+}
+
+var _ LibraryClientAPI = (*synapse.LibraryClient)(nil)
+
+// LibrariesClientAPI contains the set of methods on the LibrariesClient type.
+type LibrariesClientAPI interface {
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.LibraryListResponsePage, err error)
+	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.LibraryListResponseIterator, err error)
+}
+
+var _ LibrariesClientAPI = (*synapse.LibrariesClient)(nil)

@@ -36,7 +36,7 @@ func NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(baseURI string, subsc
 // CreateOrUpdate creates or updates a Sql pool's transparent data encryption configuration.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the required parameters for creating or updating transparent data encryption.
 func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters TransparentDataEncryption) (result TransparentDataEncryption, err error) {
@@ -128,7 +128,7 @@ func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdateResponder(re
 // Get get a SQL pool's transparent data encryption configuration.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryption, err error) {
 	if tracing.IsEnabled() {
@@ -216,7 +216,7 @@ func (client SQLPoolTransparentDataEncryptionsClient) GetResponder(resp *http.Re
 // List get list of SQL pool's transparent data encryption configurations.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryptionListResultPage, err error) {
 	if tracing.IsEnabled() {

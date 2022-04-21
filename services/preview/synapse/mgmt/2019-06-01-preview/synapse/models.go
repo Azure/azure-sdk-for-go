@@ -464,16 +464,20 @@ type BigDataPoolResourceProperties struct {
 	AutoPause *AutoPauseProperties `json:"autoPause,omitempty"`
 	// IsComputeIsolationEnabled - Whether compute isolation is required or not.
 	IsComputeIsolationEnabled *bool `json:"isComputeIsolationEnabled,omitempty"`
-	// HaveLibraryRequirementsChanged - Whether library requirements changed.
-	HaveLibraryRequirementsChanged *bool `json:"haveLibraryRequirementsChanged,omitempty"`
 	// SessionLevelPackagesEnabled - Whether session level packages enabled.
 	SessionLevelPackagesEnabled *bool `json:"sessionLevelPackagesEnabled,omitempty"`
+	// CacheSize - The cache size
+	CacheSize *int32 `json:"cacheSize,omitempty"`
+	// DynamicExecutorAllocation - Dynamic Executor Allocation
+	DynamicExecutorAllocation *DynamicExecutorAllocation `json:"dynamicExecutorAllocation,omitempty"`
 	// SparkEventsFolder - The Spark events folder
 	SparkEventsFolder *string `json:"sparkEventsFolder,omitempty"`
 	// NodeCount - The number of nodes in the Big Data pool.
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// LibraryRequirements - Library version requirements
 	LibraryRequirements *LibraryRequirements `json:"libraryRequirements,omitempty"`
+	// CustomLibraries - List of custom libraries/packages associated with the spark pool.
+	CustomLibraries *[]LibraryInfo `json:"customLibraries,omitempty"`
 	// SparkConfigProperties - Spark configuration file to specify additional properties
 	SparkConfigProperties *LibraryRequirements `json:"sparkConfigProperties,omitempty"`
 	// SparkVersion - The Apache Spark version.
@@ -484,6 +488,65 @@ type BigDataPoolResourceProperties struct {
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
 	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
+	// LastSucceededTimestamp - READ-ONLY; The time when the Big Data pool was updated successfully.
+	LastSucceededTimestamp *date.Time `json:"lastSucceededTimestamp,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BigDataPoolResourceProperties.
+func (bdprp BigDataPoolResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bdprp.ProvisioningState != nil {
+		objectMap["provisioningState"] = bdprp.ProvisioningState
+	}
+	if bdprp.AutoScale != nil {
+		objectMap["autoScale"] = bdprp.AutoScale
+	}
+	if bdprp.CreationDate != nil {
+		objectMap["creationDate"] = bdprp.CreationDate
+	}
+	if bdprp.AutoPause != nil {
+		objectMap["autoPause"] = bdprp.AutoPause
+	}
+	if bdprp.IsComputeIsolationEnabled != nil {
+		objectMap["isComputeIsolationEnabled"] = bdprp.IsComputeIsolationEnabled
+	}
+	if bdprp.SessionLevelPackagesEnabled != nil {
+		objectMap["sessionLevelPackagesEnabled"] = bdprp.SessionLevelPackagesEnabled
+	}
+	if bdprp.CacheSize != nil {
+		objectMap["cacheSize"] = bdprp.CacheSize
+	}
+	if bdprp.DynamicExecutorAllocation != nil {
+		objectMap["dynamicExecutorAllocation"] = bdprp.DynamicExecutorAllocation
+	}
+	if bdprp.SparkEventsFolder != nil {
+		objectMap["sparkEventsFolder"] = bdprp.SparkEventsFolder
+	}
+	if bdprp.NodeCount != nil {
+		objectMap["nodeCount"] = bdprp.NodeCount
+	}
+	if bdprp.LibraryRequirements != nil {
+		objectMap["libraryRequirements"] = bdprp.LibraryRequirements
+	}
+	if bdprp.CustomLibraries != nil {
+		objectMap["customLibraries"] = bdprp.CustomLibraries
+	}
+	if bdprp.SparkConfigProperties != nil {
+		objectMap["sparkConfigProperties"] = bdprp.SparkConfigProperties
+	}
+	if bdprp.SparkVersion != nil {
+		objectMap["sparkVersion"] = bdprp.SparkVersion
+	}
+	if bdprp.DefaultSparkLogFolder != nil {
+		objectMap["defaultSparkLogFolder"] = bdprp.DefaultSparkLogFolder
+	}
+	if bdprp.NodeSize != "" {
+		objectMap["nodeSize"] = bdprp.NodeSize
+	}
+	if bdprp.NodeSizeFamily != "" {
+		objectMap["nodeSizeFamily"] = bdprp.NodeSizeFamily
+	}
+	return json.Marshal(objectMap)
 }
 
 // BigDataPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1363,6 +1426,12 @@ type DataWarehouseUserActivitiesProperties struct {
 func (dwuap DataWarehouseUserActivitiesProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// DynamicExecutorAllocation dynamic Executor Allocation Properties
+type DynamicExecutorAllocation struct {
+	// Enabled - Indicates whether Dynamic Executor Allocation is enabled or not.
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // EncryptionDetails details of the encryption associated with the workspace
@@ -2325,6 +2394,14 @@ type GetSsisObjectMetadataRequest struct {
 	MetadataPath *string `json:"metadataPath,omitempty"`
 }
 
+// GitHubClientSecret client secret information for factory's bring your own app repository configuration
+type GitHubClientSecret struct {
+	// ByoaSecretAkvURL - Bring your own app client secret AKV URL
+	ByoaSecretAkvURL *string `json:"byoaSecretAkvUrl,omitempty"`
+	// ByoaSecretName - Bring your own app client secret name in AKV
+	ByoaSecretName *string `json:"byoaSecretName,omitempty"`
+}
+
 // BasicIntegrationRuntime azure Synapse nested object which serves as a compute resource for activities.
 type BasicIntegrationRuntime interface {
 	AsManagedIntegrationRuntime() (*ManagedIntegrationRuntime, bool)
@@ -2728,6 +2805,8 @@ type IntegrationRuntimeDataFlowProperties struct {
 	CoreCount *int32 `json:"coreCount,omitempty"`
 	// TimeToLive - Time to live (in minutes) setting of the cluster which will execute data flow job.
 	TimeToLive *int32 `json:"timeToLive,omitempty"`
+	// Cleanup - Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
+	Cleanup *bool `json:"cleanup,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeDataFlowProperties.
@@ -2741,6 +2820,9 @@ func (irdfp IntegrationRuntimeDataFlowProperties) MarshalJSON() ([]byte, error) 
 	}
 	if irdfp.TimeToLive != nil {
 		objectMap["timeToLive"] = irdfp.TimeToLive
+	}
+	if irdfp.Cleanup != nil {
+		objectMap["cleanup"] = irdfp.Cleanup
 	}
 	for k, v := range irdfp.AdditionalProperties {
 		objectMap[k] = v
@@ -2795,6 +2877,15 @@ func (irdfp *IntegrationRuntimeDataFlowProperties) UnmarshalJSON(body []byte) er
 					return err
 				}
 				irdfp.TimeToLive = &timeToLive
+			}
+		case "cleanup":
+			if v != nil {
+				var cleanup bool
+				err = json.Unmarshal(*v, &cleanup)
+				if err != nil {
+					return err
+				}
+				irdfp.Cleanup = &cleanup
 			}
 		}
 	}
@@ -4613,6 +4704,45 @@ type KeyProperties struct {
 	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
 }
 
+// LibraryInfo library/package information of a Big Data pool powered by Apache Spark
+type LibraryInfo struct {
+	// Name - Name of the library.
+	Name *string `json:"name,omitempty"`
+	// Path - Storage blob path of library.
+	Path *string `json:"path,omitempty"`
+	// ContainerName - Storage blob container name.
+	ContainerName *string `json:"containerName,omitempty"`
+	// UploadedTimestamp - The last update time of the library.
+	UploadedTimestamp *date.Time `json:"uploadedTimestamp,omitempty"`
+	// Type - Type of the library.
+	Type *string `json:"type,omitempty"`
+	// ProvisioningStatus - READ-ONLY; Provisioning status of the library/package.
+	ProvisioningStatus *string `json:"provisioningStatus,omitempty"`
+	// CreatorID - READ-ONLY; Creator Id of the library/package.
+	CreatorID *string `json:"creatorId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LibraryInfo.
+func (li LibraryInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if li.Name != nil {
+		objectMap["name"] = li.Name
+	}
+	if li.Path != nil {
+		objectMap["path"] = li.Path
+	}
+	if li.ContainerName != nil {
+		objectMap["containerName"] = li.ContainerName
+	}
+	if li.UploadedTimestamp != nil {
+		objectMap["uploadedTimestamp"] = li.UploadedTimestamp
+	}
+	if li.Type != nil {
+		objectMap["type"] = li.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // LibraryRequirements library requirements for a Big Data pool powered by Apache Spark
 type LibraryRequirements struct {
 	// Time - READ-ONLY; The last update time of the library requirements file.
@@ -5034,6 +5164,185 @@ func NewListSQLPoolSecurityAlertPoliciesPage(cur ListSQLPoolSecurityAlertPolicie
 	}
 }
 
+// MaintenanceWindowOptions maintenance window options.
+type MaintenanceWindowOptions struct {
+	autorest.Response `json:"-"`
+	// MaintenanceWindowOptionsProperties - Resource properties.
+	*MaintenanceWindowOptionsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MaintenanceWindowOptions.
+func (mwo MaintenanceWindowOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mwo.MaintenanceWindowOptionsProperties != nil {
+		objectMap["properties"] = mwo.MaintenanceWindowOptionsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MaintenanceWindowOptions struct.
+func (mwo *MaintenanceWindowOptions) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var maintenanceWindowOptionsProperties MaintenanceWindowOptionsProperties
+				err = json.Unmarshal(*v, &maintenanceWindowOptionsProperties)
+				if err != nil {
+					return err
+				}
+				mwo.MaintenanceWindowOptionsProperties = &maintenanceWindowOptionsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mwo.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mwo.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mwo.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MaintenanceWindowOptionsProperties maintenance window options properties.
+type MaintenanceWindowOptionsProperties struct {
+	// IsEnabled - Whether maintenance windows are enabled for the database.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// MaintenanceWindowCycles - Available maintenance cycles e.g. {Saturday, 0, 48*60}, {Wednesday, 0, 24*60}.
+	MaintenanceWindowCycles *[]MaintenanceWindowTimeRange `json:"maintenanceWindowCycles,omitempty"`
+	// MinDurationInMinutes - Minimum duration of maintenance window.
+	MinDurationInMinutes *int32 `json:"minDurationInMinutes,omitempty"`
+	// DefaultDurationInMinutes - Default duration for maintenance window.
+	DefaultDurationInMinutes *int32 `json:"defaultDurationInMinutes,omitempty"`
+	// MinCycles - Minimum number of maintenance windows cycles to be set on the database.
+	MinCycles *int32 `json:"minCycles,omitempty"`
+	// TimeGranularityInMinutes - Time granularity in minutes for maintenance windows.
+	TimeGranularityInMinutes *int32 `json:"timeGranularityInMinutes,omitempty"`
+	// AllowMultipleMaintenanceWindowsPerCycle - Whether we allow multiple maintenance windows per cycle.
+	AllowMultipleMaintenanceWindowsPerCycle *bool `json:"allowMultipleMaintenanceWindowsPerCycle,omitempty"`
+}
+
+// MaintenanceWindows maintenance windows.
+type MaintenanceWindows struct {
+	autorest.Response `json:"-"`
+	// MaintenanceWindowsProperties - Resource properties.
+	*MaintenanceWindowsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MaintenanceWindows.
+func (mw MaintenanceWindows) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mw.MaintenanceWindowsProperties != nil {
+		objectMap["properties"] = mw.MaintenanceWindowsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MaintenanceWindows struct.
+func (mw *MaintenanceWindows) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var maintenanceWindowsProperties MaintenanceWindowsProperties
+				err = json.Unmarshal(*v, &maintenanceWindowsProperties)
+				if err != nil {
+					return err
+				}
+				mw.MaintenanceWindowsProperties = &maintenanceWindowsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mw.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mw.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mw.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// MaintenanceWindowsProperties maintenance windows resource properties.
+type MaintenanceWindowsProperties struct {
+	TimeRanges *[]MaintenanceWindowTimeRange `json:"timeRanges,omitempty"`
+}
+
+// MaintenanceWindowTimeRange maintenance window time range.
+type MaintenanceWindowTimeRange struct {
+	// DayOfWeek - Day of maintenance window. Possible values include: 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	DayOfWeek DayOfWeek `json:"dayOfWeek,omitempty"`
+	// StartTime - Start time minutes offset from 12am.
+	StartTime *string `json:"startTime,omitempty"`
+	// Duration - Duration of maintenance window in minutes.
+	Duration *string `json:"duration,omitempty"`
+}
+
 // ManagedIdentity the workspace managed identity
 type ManagedIdentity struct {
 	// PrincipalID - READ-ONLY; The principal ID of the workspace managed identity
@@ -5157,6 +5466,8 @@ type ManagedIntegrationRuntime struct {
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// ManagedVirtualNetwork - Managed Virtual Network reference.
+	ManagedVirtualNetwork *ManagedVirtualNetworkReference `json:"managedVirtualNetwork,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -5171,6 +5482,9 @@ func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mir.ManagedIntegrationRuntimeTypeProperties != nil {
 		objectMap["typeProperties"] = mir.ManagedIntegrationRuntimeTypeProperties
+	}
+	if mir.ManagedVirtualNetwork != nil {
+		objectMap["managedVirtualNetwork"] = mir.ManagedVirtualNetwork
 	}
 	if mir.Description != nil {
 		objectMap["description"] = mir.Description
@@ -5230,6 +5544,15 @@ func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mir.ManagedIntegrationRuntimeTypeProperties = &managedIntegrationRuntimeTypeProperties
+			}
+		case "managedVirtualNetwork":
+			if v != nil {
+				var managedVirtualNetwork ManagedVirtualNetworkReference
+				err = json.Unmarshal(*v, &managedVirtualNetwork)
+				if err != nil {
+					return err
+				}
+				mir.ManagedVirtualNetwork = &managedVirtualNetwork
 			}
 		default:
 			if v != nil {
@@ -5463,6 +5786,14 @@ type ManagedIntegrationRuntimeTypeProperties struct {
 	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
 	// SsisProperties - SSIS properties for managed integration runtime.
 	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
+}
+
+// ManagedVirtualNetworkReference managed Virtual Network reference type.
+type ManagedVirtualNetworkReference struct {
+	// Type - Managed Virtual Network reference type.
+	Type *string `json:"type,omitempty"`
+	// ReferenceName - Reference ManagedVirtualNetwork name.
+	ReferenceName *string `json:"referenceName,omitempty"`
 }
 
 // ManagedVirtualNetworkSettings managed Virtual Network Settings
@@ -6902,6 +7233,96 @@ type QueryStatistic struct {
 func (qs QueryStatistic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// RecommendedSensitivityLabelUpdate a recommended sensitivity label update operation.
+type RecommendedSensitivityLabelUpdate struct {
+	// RecommendedSensitivityLabelUpdateProperties - Resource properties.
+	*RecommendedSensitivityLabelUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecommendedSensitivityLabelUpdate.
+func (rslu RecommendedSensitivityLabelUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rslu.RecommendedSensitivityLabelUpdateProperties != nil {
+		objectMap["properties"] = rslu.RecommendedSensitivityLabelUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecommendedSensitivityLabelUpdate struct.
+func (rslu *RecommendedSensitivityLabelUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recommendedSensitivityLabelUpdateProperties RecommendedSensitivityLabelUpdateProperties
+				err = json.Unmarshal(*v, &recommendedSensitivityLabelUpdateProperties)
+				if err != nil {
+					return err
+				}
+				rslu.RecommendedSensitivityLabelUpdateProperties = &recommendedSensitivityLabelUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rslu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rslu.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rslu.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RecommendedSensitivityLabelUpdateList a list of recommended sensitivity label update operations.
+type RecommendedSensitivityLabelUpdateList struct {
+	Operations *[]RecommendedSensitivityLabelUpdate `json:"operations,omitempty"`
+}
+
+// RecommendedSensitivityLabelUpdateProperties properties of an operation executed on a recommended
+// sensitivity label.
+type RecommendedSensitivityLabelUpdateProperties struct {
+	// Op - Possible values include: 'Enable', 'Disable'
+	Op RecommendedSensitivityLabelUpdateKind `json:"op,omitempty"`
+	// Schema - Schema name of the column to update.
+	Schema *string `json:"schema,omitempty"`
+	// Table - Table name of the column to update.
+	Table *string `json:"table,omitempty"`
+	// Column - Column name to update.
+	Column *string `json:"column,omitempty"`
 }
 
 // RecoverableSQLPool a recoverable sql pool
@@ -8371,6 +8792,8 @@ type SensitivityLabel struct {
 	autorest.Response `json:"-"`
 	// SensitivityLabelProperties - Resource properties.
 	*SensitivityLabelProperties `json:"properties,omitempty"`
+	// ManagedBy - READ-ONLY; managed by
+	ManagedBy *string `json:"managedBy,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -8405,6 +8828,15 @@ func (sl *SensitivityLabel) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sl.SensitivityLabelProperties = &sensitivityLabelProperties
+			}
+		case "managedBy":
+			if v != nil {
+				var managedBy string
+				err = json.Unmarshal(*v, &managedBy)
+				if err != nil {
+					return err
+				}
+				sl.ManagedBy = &managedBy
 			}
 		case "id":
 			if v != nil {
@@ -8606,6 +9038,12 @@ func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPa
 
 // SensitivityLabelProperties properties of a sensitivity label.
 type SensitivityLabelProperties struct {
+	// SchemaName - READ-ONLY; The schema name.
+	SchemaName *string `json:"schemaName,omitempty"`
+	// TableName - READ-ONLY; The table name.
+	TableName *string `json:"tableName,omitempty"`
+	// ColumnName - READ-ONLY; The column name.
+	ColumnName *string `json:"columnName,omitempty"`
 	// LabelName - The label name.
 	LabelName *string `json:"labelName,omitempty"`
 	// LabelID - The label ID.
@@ -8616,6 +9054,8 @@ type SensitivityLabelProperties struct {
 	InformationTypeID *string `json:"informationTypeId,omitempty"`
 	// IsDisabled - READ-ONLY; Is sensitivity recommendation disabled. Applicable for recommended sensitivity label only. Specifies whether the sensitivity recommendation on this column is disabled (dismissed) or not.
 	IsDisabled *bool `json:"isDisabled,omitempty"`
+	// Rank - Possible values include: 'SensitivityLabelRankNone', 'SensitivityLabelRankLow', 'SensitivityLabelRankMedium', 'SensitivityLabelRankHigh', 'SensitivityLabelRankCritical'
+	Rank SensitivityLabelRank `json:"rank,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SensitivityLabelProperties.
@@ -8633,7 +9073,101 @@ func (slp SensitivityLabelProperties) MarshalJSON() ([]byte, error) {
 	if slp.InformationTypeID != nil {
 		objectMap["informationTypeId"] = slp.InformationTypeID
 	}
+	if slp.Rank != "" {
+		objectMap["rank"] = slp.Rank
+	}
 	return json.Marshal(objectMap)
+}
+
+// SensitivityLabelUpdate a sensitivity label update operation.
+type SensitivityLabelUpdate struct {
+	// SensitivityLabelUpdateProperties - Resource properties.
+	*SensitivityLabelUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SensitivityLabelUpdate.
+func (slu SensitivityLabelUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if slu.SensitivityLabelUpdateProperties != nil {
+		objectMap["properties"] = slu.SensitivityLabelUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SensitivityLabelUpdate struct.
+func (slu *SensitivityLabelUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var sensitivityLabelUpdateProperties SensitivityLabelUpdateProperties
+				err = json.Unmarshal(*v, &sensitivityLabelUpdateProperties)
+				if err != nil {
+					return err
+				}
+				slu.SensitivityLabelUpdateProperties = &sensitivityLabelUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				slu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				slu.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				slu.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SensitivityLabelUpdateList a list of sensitivity label update operations.
+type SensitivityLabelUpdateList struct {
+	Operations *[]SensitivityLabelUpdate `json:"operations,omitempty"`
+}
+
+// SensitivityLabelUpdateProperties properties of an operation executed on a sensitivity label.
+type SensitivityLabelUpdateProperties struct {
+	// Op - Possible values include: 'Set', 'Remove'
+	Op SensitivityLabelUpdateKind `json:"op,omitempty"`
+	// Schema - Schema name of the column to update.
+	Schema *string `json:"schema,omitempty"`
+	// Table - Table name of the column to update.
+	Table *string `json:"table,omitempty"`
+	// Column - Column name to update.
+	Column *string `json:"column,omitempty"`
+	// SensitivityLabel - The sensitivity label information to apply on a column.
+	SensitivityLabel *SensitivityLabel `json:"sensitivityLabel,omitempty"`
 }
 
 // ServerBlobAuditingPolicy a server blob auditing policy.
@@ -10574,6 +11108,17 @@ func NewSQLPoolColumnListResultPage(cur SQLPoolColumnListResult, getNextPage fun
 type SQLPoolColumnProperties struct {
 	// ColumnType - The column data type. Possible values include: 'Image', 'Text', 'Uniqueidentifier', 'Date', 'Time', 'Datetime2', 'Datetimeoffset', 'Tinyint', 'Smallint', 'Int', 'Smalldatetime', 'Real', 'Money', 'Datetime', 'Float', 'SQLVariant', 'Ntext', 'Bit', 'Decimal', 'Numeric', 'Smallmoney', 'Bigint', 'Hierarchyid', 'Geometry', 'Geography', 'Varbinary', 'Varchar', 'Binary', 'Char', 'Timestamp', 'Nvarchar', 'Nchar', 'XML', 'Sysname'
 	ColumnType ColumnDataType `json:"columnType,omitempty"`
+	// IsComputed - READ-ONLY; Indicates whether column value is computed or not
+	IsComputed *bool `json:"isComputed,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLPoolColumnProperties.
+func (spcp SQLPoolColumnProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spcp.ColumnType != "" {
+		objectMap["columnType"] = spcp.ColumnType
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLPoolConnectionPolicy a Sql pool connection policy.
@@ -11055,8 +11600,12 @@ type SQLPoolResourceProperties struct {
 	Status *string `json:"status,omitempty"`
 	// RestorePointInTime - Snapshot time to restore
 	RestorePointInTime *string `json:"restorePointInTime,omitempty"`
-	// CreateMode - What is this?
-	CreateMode *string `json:"createMode,omitempty"`
+	// CreateMode - Specifies the mode of sql pool creation.
+	// Default: regular sql pool creation.
+	// PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+	// Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+	// Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified. Possible values include: 'Default', 'PointInTimeRestore', 'Recovery', 'Restore'
+	CreateMode CreateMode `json:"createMode,omitempty"`
 	// CreationDate - Date the SQL pool was created
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 }
@@ -14947,6 +15496,8 @@ type WorkspaceProperties struct {
 	WorkspaceRepositoryConfiguration *WorkspaceRepositoryConfiguration `json:"workspaceRepositoryConfiguration,omitempty"`
 	// PurviewConfiguration - Purview Configuration
 	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
+	// AdlaResourceID - READ-ONLY; The ADLA resource ID.
+	AdlaResourceID *string `json:"adlaResourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -15007,6 +15558,14 @@ type WorkspaceRepositoryConfiguration struct {
 	CollaborationBranch *string `json:"collaborationBranch,omitempty"`
 	// RootFolder - Root folder to use in the repository
 	RootFolder *string `json:"rootFolder,omitempty"`
+	// LastCommitID - The last commit ID
+	LastCommitID *string `json:"lastCommitId,omitempty"`
+	// TenantID - The VSTS tenant ID
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// ClientID - GitHub bring your own app client id
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecret - GitHub bring your own app client secret information.
+	ClientSecret *GitHubClientSecret `json:"clientSecret,omitempty"`
 }
 
 // WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

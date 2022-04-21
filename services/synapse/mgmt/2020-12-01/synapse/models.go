@@ -486,7 +486,7 @@ type BigDataPoolResourceProperties struct {
 	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
 	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge', 'NodeSizeXLarge', 'NodeSizeXXLarge', 'NodeSizeXXXLarge'
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
-	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
+	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized', 'NodeSizeFamilyHardwareAcceleratedFPGA', 'NodeSizeFamilyHardwareAcceleratedGPU'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
 	// LastSucceededTimestamp - READ-ONLY; The time when the Big Data pool was updated successfully.
 	LastSucceededTimestamp *date.Time `json:"lastSucceededTimestamp,omitempty"`
@@ -3462,6 +3462,39 @@ func (future *IntegrationRuntimeObjectMetadataRefreshFuture) result(client Integ
 	return
 }
 
+// IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint azure-SSIS integration runtime outbound
+// network dependency endpoints for one category.
+type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint struct {
+	// Category - The category of outbound network dependency.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoints for outbound network dependency.
+	Endpoints *[]IntegrationRuntimeOutboundNetworkDependenciesEndpoint `json:"endpoints,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpoint the endpoint for Azure-SSIS integration runtime
+// outbound network dependency.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpoint struct {
+	// DomainName - The domain name of endpoint.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The details of endpoint.
+	EndpointDetails *[]IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails `json:"endpointDetails,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails the details of Azure-SSIS integration
+// runtime outbound network dependency endpoint.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails struct {
+	// Port - The port of endpoint.
+	Port *int32 `json:"port,omitempty"`
+}
+
+// IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse azure-SSIS integration runtime outbound
+// network dependency endpoints.
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse struct {
+	autorest.Response `json:"-"`
+	// Value - The list of outbound network dependency endpoints.
+	Value *[]IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint `json:"value,omitempty"`
+}
+
 // IntegrationRuntimeRegenerateKeyParameters parameters to regenerate the authentication key.
 type IntegrationRuntimeRegenerateKeyParameters struct {
 	// KeyName - The name of the authentication key to regenerate. Possible values include: 'AuthKey1', 'AuthKey2'
@@ -4211,6 +4244,8 @@ type IntegrationRuntimeVNetProperties struct {
 	Subnet *string `json:"subnet,omitempty"`
 	// PublicIPs - Resource IDs of the public IP addresses that this integration runtime will use.
 	PublicIPs *[]string `json:"publicIPs,omitempty"`
+	// SubnetID - The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
+	SubnetID *string `json:"subnetId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeVNetProperties.
@@ -4224,6 +4259,9 @@ func (irvnp IntegrationRuntimeVNetProperties) MarshalJSON() ([]byte, error) {
 	}
 	if irvnp.PublicIPs != nil {
 		objectMap["publicIPs"] = irvnp.PublicIPs
+	}
+	if irvnp.SubnetID != nil {
+		objectMap["subnetId"] = irvnp.SubnetID
 	}
 	for k, v := range irvnp.AdditionalProperties {
 		objectMap[k] = v
@@ -4278,6 +4316,15 @@ func (irvnp *IntegrationRuntimeVNetProperties) UnmarshalJSON(body []byte) error 
 					return err
 				}
 				irvnp.PublicIPs = &publicIPs
+			}
+		case "subnetId":
+			if v != nil {
+				var subnetID string
+				err = json.Unmarshal(*v, &subnetID)
+				if err != nil {
+					return err
+				}
+				irvnp.SubnetID = &subnetID
 			}
 		}
 	}
@@ -4944,6 +4991,165 @@ func (li LibraryInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// LibraryListResponse a list of Library resources.
+type LibraryListResponse struct {
+	autorest.Response `json:"-"`
+	// Value - List of Library.
+	Value *[]LibraryResource `json:"value,omitempty"`
+	// NextLink - The link to the next page of results, if any remaining results exist.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LibraryListResponseIterator provides access to a complete listing of LibraryResource values.
+type LibraryListResponseIterator struct {
+	i    int
+	page LibraryListResponsePage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *LibraryListResponseIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LibraryListResponseIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *LibraryListResponseIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter LibraryListResponseIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter LibraryListResponseIterator) Response() LibraryListResponse {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter LibraryListResponseIterator) Value() LibraryResource {
+	if !iter.page.NotDone() {
+		return LibraryResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the LibraryListResponseIterator type.
+func NewLibraryListResponseIterator(page LibraryListResponsePage) LibraryListResponseIterator {
+	return LibraryListResponseIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (llr LibraryListResponse) IsEmpty() bool {
+	return llr.Value == nil || len(*llr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (llr LibraryListResponse) hasNextLink() bool {
+	return llr.NextLink != nil && len(*llr.NextLink) != 0
+}
+
+// libraryListResponsePreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (llr LibraryListResponse) libraryListResponsePreparer(ctx context.Context) (*http.Request, error) {
+	if !llr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(llr.NextLink)))
+}
+
+// LibraryListResponsePage contains a page of LibraryResource values.
+type LibraryListResponsePage struct {
+	fn  func(context.Context, LibraryListResponse) (LibraryListResponse, error)
+	llr LibraryListResponse
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *LibraryListResponsePage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/LibraryListResponsePage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.llr)
+		if err != nil {
+			return err
+		}
+		page.llr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *LibraryListResponsePage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page LibraryListResponsePage) NotDone() bool {
+	return !page.llr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page LibraryListResponsePage) Response() LibraryListResponse {
+	return page.llr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page LibraryListResponsePage) Values() []LibraryResource {
+	if page.llr.IsEmpty() {
+		return nil
+	}
+	return *page.llr.Value
+}
+
+// Creates a new instance of the LibraryListResponsePage type.
+func NewLibraryListResponsePage(cur LibraryListResponse, getNextPage func(context.Context, LibraryListResponse) (LibraryListResponse, error)) LibraryListResponsePage {
+	return LibraryListResponsePage{
+		fn:  getNextPage,
+		llr: cur,
+	}
+}
+
 // LibraryRequirements library requirements for a Big Data pool powered by Apache Spark
 type LibraryRequirements struct {
 	// Time - READ-ONLY; The last update time of the library requirements file.
@@ -4964,6 +5170,90 @@ func (lr LibraryRequirements) MarshalJSON() ([]byte, error) {
 		objectMap["filename"] = lr.Filename
 	}
 	return json.Marshal(objectMap)
+}
+
+// LibraryResource library response details
+type LibraryResource struct {
+	autorest.Response `json:"-"`
+	// LibraryInfo - Library/package properties.
+	*LibraryInfo `json:"properties,omitempty"`
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LibraryResource.
+func (lr LibraryResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lr.LibraryInfo != nil {
+		objectMap["properties"] = lr.LibraryInfo
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LibraryResource struct.
+func (lr *LibraryResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var libraryInfo LibraryInfo
+				err = json.Unmarshal(*v, &libraryInfo)
+				if err != nil {
+					return err
+				}
+				lr.LibraryInfo = &libraryInfo
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				lr.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				lr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				lr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				lr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // LicensedComponentSetupTypeProperties installation of licensed component setup type properties.
@@ -11785,8 +12075,12 @@ type SQLPoolResourceProperties struct {
 	Status *string `json:"status,omitempty"`
 	// RestorePointInTime - Snapshot time to restore
 	RestorePointInTime *string `json:"restorePointInTime,omitempty"`
-	// CreateMode - What is this?
-	CreateMode *string `json:"createMode,omitempty"`
+	// CreateMode - Specifies the mode of sql pool creation.
+	// Default: regular sql pool creation.
+	// PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+	// Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+	// Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified. Possible values include: 'Default', 'PointInTimeRestore', 'Recovery', 'Restore'
+	CreateMode CreateMode `json:"createMode,omitempty"`
 	// CreationDate - Date the SQL pool was created
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'GRS', 'LRS', 'ZRS'

@@ -759,7 +759,7 @@ type BigDataPoolResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AutoScale - Auto-scaling properties
 	AutoScale *AutoScaleProperties `json:"autoScale,omitempty"`
-	// CreationDate - The time when the Big Data pool was created.
+	// CreationDate - READ-ONLY; The time when the Big Data pool was created.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// AutoPause - Auto-pausing properties
 	AutoPause *AutoPauseProperties `json:"autoPause,omitempty"`
@@ -801,9 +801,6 @@ func (bdprp BigDataPoolResourceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if bdprp.AutoScale != nil {
 		objectMap["autoScale"] = bdprp.AutoScale
-	}
-	if bdprp.CreationDate != nil {
-		objectMap["creationDate"] = bdprp.CreationDate
 	}
 	if bdprp.AutoPause != nil {
 		objectMap["autoPause"] = bdprp.AutoPause
@@ -1693,10 +1690,270 @@ func (dwuap DataWarehouseUserActivitiesProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
+// DedicatedSQLminimalTLSSettings dedicated Sql Minimal Tls Settings Info
+type DedicatedSQLminimalTLSSettings struct {
+	autorest.Response `json:"-"`
+	// Location - READ-ONLY; Resource location.
+	Location *string `json:"location,omitempty"`
+	// DedicatedSQLminimalTLSSettingsProperties - Resource properties.
+	*DedicatedSQLminimalTLSSettingsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedSQLminimalTLSSettings.
+func (dslts DedicatedSQLminimalTLSSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dslts.DedicatedSQLminimalTLSSettingsProperties != nil {
+		objectMap["properties"] = dslts.DedicatedSQLminimalTLSSettingsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedSQLminimalTLSSettings struct.
+func (dslts *DedicatedSQLminimalTLSSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dslts.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var dedicatedSQLminimalTLSSettingsProperties DedicatedSQLminimalTLSSettingsProperties
+				err = json.Unmarshal(*v, &dedicatedSQLminimalTLSSettingsProperties)
+				if err != nil {
+					return err
+				}
+				dslts.DedicatedSQLminimalTLSSettingsProperties = &dedicatedSQLminimalTLSSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dslts.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dslts.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dslts.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DedicatedSQLminimalTLSSettingsListResult a list of the server's dedicated sql minimal tls settings.
+type DedicatedSQLminimalTLSSettingsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]DedicatedSQLminimalTLSSettings `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedSQLminimalTLSSettingsListResult.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DedicatedSQLminimalTLSSettingsListResultIterator provides access to a complete listing of
+// DedicatedSQLminimalTLSSettings values.
+type DedicatedSQLminimalTLSSettingsListResultIterator struct {
+	i    int
+	page DedicatedSQLminimalTLSSettingsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DedicatedSQLminimalTLSSettingsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedSQLminimalTLSSettingsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DedicatedSQLminimalTLSSettingsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) Response() DedicatedSQLminimalTLSSettingsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) Value() DedicatedSQLminimalTLSSettings {
+	if !iter.page.NotDone() {
+		return DedicatedSQLminimalTLSSettings{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DedicatedSQLminimalTLSSettingsListResultIterator type.
+func NewDedicatedSQLminimalTLSSettingsListResultIterator(page DedicatedSQLminimalTLSSettingsListResultPage) DedicatedSQLminimalTLSSettingsListResultIterator {
+	return DedicatedSQLminimalTLSSettingsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) IsEmpty() bool {
+	return dsltslr.Value == nil || len(*dsltslr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) hasNextLink() bool {
+	return dsltslr.NextLink != nil && len(*dsltslr.NextLink) != 0
+}
+
+// dedicatedSQLminimalTLSSettingsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) dedicatedSQLminimalTLSSettingsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !dsltslr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsltslr.NextLink)))
+}
+
+// DedicatedSQLminimalTLSSettingsListResultPage contains a page of DedicatedSQLminimalTLSSettings values.
+type DedicatedSQLminimalTLSSettingsListResultPage struct {
+	fn      func(context.Context, DedicatedSQLminimalTLSSettingsListResult) (DedicatedSQLminimalTLSSettingsListResult, error)
+	dsltslr DedicatedSQLminimalTLSSettingsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DedicatedSQLminimalTLSSettingsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedSQLminimalTLSSettingsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.dsltslr)
+		if err != nil {
+			return err
+		}
+		page.dsltslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DedicatedSQLminimalTLSSettingsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) NotDone() bool {
+	return !page.dsltslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) Response() DedicatedSQLminimalTLSSettingsListResult {
+	return page.dsltslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) Values() []DedicatedSQLminimalTLSSettings {
+	if page.dsltslr.IsEmpty() {
+		return nil
+	}
+	return *page.dsltslr.Value
+}
+
+// Creates a new instance of the DedicatedSQLminimalTLSSettingsListResultPage type.
+func NewDedicatedSQLminimalTLSSettingsListResultPage(cur DedicatedSQLminimalTLSSettingsListResult, getNextPage func(context.Context, DedicatedSQLminimalTLSSettingsListResult) (DedicatedSQLminimalTLSSettingsListResult, error)) DedicatedSQLminimalTLSSettingsListResultPage {
+	return DedicatedSQLminimalTLSSettingsListResultPage{
+		fn:      getNextPage,
+		dsltslr: cur,
+	}
+}
+
+// DedicatedSQLminimalTLSSettingsProperties properties of a dedicated sql minimal tls settings.
+type DedicatedSQLminimalTLSSettingsProperties struct {
+	// MinimalTLSVersion - The minimal tls version of the sql server.
+	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+}
+
 // DynamicExecutorAllocation dynamic Executor Allocation Properties
 type DynamicExecutorAllocation struct {
 	// Enabled - Indicates whether Dynamic Executor Allocation is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
+	// MinExecutors - The minimum number of executors alloted
+	MinExecutors *int32 `json:"minExecutors,omitempty"`
+	// MaxExecutors - The maximum number of executors alloted
+	MaxExecutors *int32 `json:"maxExecutors,omitempty"`
 }
 
 // EncryptionDetails details of the encryption associated with the workspace
@@ -3339,6 +3596,8 @@ type IntegrationRuntimeDataFlowProperties struct {
 	CoreCount *int32 `json:"coreCount,omitempty"`
 	// TimeToLive - Time to live (in minutes) setting of the cluster which will execute data flow job.
 	TimeToLive *int32 `json:"timeToLive,omitempty"`
+	// Cleanup - Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
+	Cleanup *bool `json:"cleanup,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IntegrationRuntimeDataFlowProperties.
@@ -3352,6 +3611,9 @@ func (irdfp IntegrationRuntimeDataFlowProperties) MarshalJSON() ([]byte, error) 
 	}
 	if irdfp.TimeToLive != nil {
 		objectMap["timeToLive"] = irdfp.TimeToLive
+	}
+	if irdfp.Cleanup != nil {
+		objectMap["cleanup"] = irdfp.Cleanup
 	}
 	for k, v := range irdfp.AdditionalProperties {
 		objectMap[k] = v
@@ -3406,6 +3668,15 @@ func (irdfp *IntegrationRuntimeDataFlowProperties) UnmarshalJSON(body []byte) er
 					return err
 				}
 				irdfp.TimeToLive = &timeToLive
+			}
+		case "cleanup":
+			if v != nil {
+				var cleanup bool
+				err = json.Unmarshal(*v, &cleanup)
+				if err != nil {
+					return err
+				}
+				irdfp.Cleanup = &cleanup
 			}
 		}
 	}
@@ -5287,7 +5558,7 @@ type LibraryInfo struct {
 	Path *string `json:"path,omitempty"`
 	// ContainerName - Storage blob container name.
 	ContainerName *string `json:"containerName,omitempty"`
-	// UploadedTimestamp - READ-ONLY; The last update time of the library.
+	// UploadedTimestamp - The last update time of the library.
 	UploadedTimestamp *date.Time `json:"uploadedTimestamp,omitempty"`
 	// Type - Type of the library.
 	Type *string `json:"type,omitempty"`
@@ -5308,6 +5579,9 @@ func (li LibraryInfo) MarshalJSON() ([]byte, error) {
 	}
 	if li.ContainerName != nil {
 		objectMap["containerName"] = li.ContainerName
+	}
+	if li.UploadedTimestamp != nil {
+		objectMap["uploadedTimestamp"] = li.UploadedTimestamp
 	}
 	if li.Type != nil {
 		objectMap["type"] = li.Type
@@ -6286,6 +6560,8 @@ type ManagedIntegrationRuntime struct {
 	State IntegrationRuntimeState `json:"state,omitempty"`
 	// ManagedIntegrationRuntimeTypeProperties - Managed integration runtime properties.
 	*ManagedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+	// ManagedIntegrationRuntimeManagedVirtualNetworkReference - Managed integration runtime managed virtual network.
+	*ManagedIntegrationRuntimeManagedVirtualNetworkReference `json:"managedVirtualNetwork,omitempty"`
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
 	AdditionalProperties map[string]interface{} `json:""`
 	// Description - Integration runtime description.
@@ -6300,6 +6576,9 @@ func (mir ManagedIntegrationRuntime) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mir.ManagedIntegrationRuntimeTypeProperties != nil {
 		objectMap["typeProperties"] = mir.ManagedIntegrationRuntimeTypeProperties
+	}
+	if mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference != nil {
+		objectMap["managedVirtualNetwork"] = mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference
 	}
 	if mir.Description != nil {
 		objectMap["description"] = mir.Description
@@ -6360,6 +6639,15 @@ func (mir *ManagedIntegrationRuntime) UnmarshalJSON(body []byte) error {
 				}
 				mir.ManagedIntegrationRuntimeTypeProperties = &managedIntegrationRuntimeTypeProperties
 			}
+		case "managedVirtualNetwork":
+			if v != nil {
+				var managedIntegrationRuntimeManagedVirtualNetworkReference ManagedIntegrationRuntimeManagedVirtualNetworkReference
+				err = json.Unmarshal(*v, &managedIntegrationRuntimeManagedVirtualNetworkReference)
+				if err != nil {
+					return err
+				}
+				mir.ManagedIntegrationRuntimeManagedVirtualNetworkReference = &managedIntegrationRuntimeManagedVirtualNetworkReference
+			}
 		default:
 			if v != nil {
 				var additionalProperties interface{}
@@ -6412,6 +6700,17 @@ type ManagedIntegrationRuntimeError struct {
 func (mire ManagedIntegrationRuntimeError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ManagedIntegrationRuntimeManagedVirtualNetworkReference managed integration runtime managed virtual
+// network reference.
+type ManagedIntegrationRuntimeManagedVirtualNetworkReference struct {
+	// ReferenceName - The reference name of the managed virtual network.
+	ReferenceName *string `json:"referenceName,omitempty"`
+	// Type - The type of the managed virtual network.
+	Type *string `json:"type,omitempty"`
+	// ID - The id of the managed virtual network.
+	ID *string `json:"id,omitempty"`
 }
 
 // ManagedIntegrationRuntimeNode properties of integration runtime node.
@@ -6681,8 +6980,17 @@ func (msc *MetadataSyncConfig) UnmarshalJSON(body []byte) error {
 type MetadataSyncConfigProperties struct {
 	// Enabled - Indicates whether the metadata sync is enabled or disabled
 	Enabled *bool `json:"enabled,omitempty"`
-	// SyncIntervalInMinutes - The Sync Interval in minutes.
+	// SyncIntervalInMinutes - READ-ONLY; The Sync Interval in minutes.
 	SyncIntervalInMinutes *int32 `json:"syncIntervalInMinutes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetadataSyncConfigProperties.
+func (msc MetadataSyncConfigProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msc.Enabled != nil {
+		objectMap["enabled"] = msc.Enabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationMetaLogSpecification what is this?
@@ -9549,6 +9857,10 @@ type SelfHostedIntegrationRuntimeStatusTypeProperties struct {
 	LatestVersion *string `json:"latestVersion,omitempty"`
 	// AutoUpdateETA - READ-ONLY; The estimated time when the self-hosted integration runtime will be updated.
 	AutoUpdateETA *date.Time `json:"autoUpdateETA,omitempty"`
+	// ServiceRegion - The service region of the integration runtime
+	ServiceRegion *string `json:"serviceRegion,omitempty"`
+	// NewerVersions - The newer versions on download center.
+	NewerVersions *[]string `json:"newerVersions,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SelfHostedIntegrationRuntimeStatusTypeProperties.
@@ -9559,6 +9871,12 @@ func (shirstp SelfHostedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([
 	}
 	if shirstp.Links != nil {
 		objectMap["links"] = shirstp.Links
+	}
+	if shirstp.ServiceRegion != nil {
+		objectMap["serviceRegion"] = shirstp.ServiceRegion
+	}
+	if shirstp.NewerVersions != nil {
+		objectMap["newerVersions"] = shirstp.NewerVersions
 	}
 	return json.Marshal(objectMap)
 }
@@ -12712,18 +13030,55 @@ type SQLPoolResourceProperties struct {
 	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
 	// ProvisioningState - Resource state
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// Status - Resource status
+	// Status - READ-ONLY; Resource status
 	Status *string `json:"status,omitempty"`
 	// RestorePointInTime - Snapshot time to restore
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// CreateMode - What is this?
-	CreateMode *string `json:"createMode,omitempty"`
-	// CreationDate - Date the SQL pool was created
+	// CreateMode - Specifies the mode of sql pool creation.
+	// Default: regular sql pool creation.
+	// PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+	// Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the recoverableDatabaseId to restore.
+	// Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified. Possible values include: 'CreateModeDefault', 'CreateModePointInTimeRestore', 'CreateModeRecovery', 'CreateModeRestore'
+	CreateMode CreateMode `json:"createMode,omitempty"`
+	// CreationDate - READ-ONLY; Date the SQL pool was created
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'StorageAccountTypeGRS', 'StorageAccountTypeLRS', 'StorageAccountTypeZRS'
+	// StorageAccountType - The storage account type used to store backups for this sql pool. Possible values include: 'StorageAccountTypeGRS', 'StorageAccountTypeLRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	// SourceDatabaseDeletionDate - Specifies the time that the sql pool was deleted
 	SourceDatabaseDeletionDate *date.Time `json:"sourceDatabaseDeletionDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLPoolResourceProperties.
+func (sprp SQLPoolResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sprp.MaxSizeBytes != nil {
+		objectMap["maxSizeBytes"] = sprp.MaxSizeBytes
+	}
+	if sprp.Collation != nil {
+		objectMap["collation"] = sprp.Collation
+	}
+	if sprp.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = sprp.SourceDatabaseID
+	}
+	if sprp.RecoverableDatabaseID != nil {
+		objectMap["recoverableDatabaseId"] = sprp.RecoverableDatabaseID
+	}
+	if sprp.ProvisioningState != nil {
+		objectMap["provisioningState"] = sprp.ProvisioningState
+	}
+	if sprp.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = sprp.RestorePointInTime
+	}
+	if sprp.CreateMode != "" {
+		objectMap["createMode"] = sprp.CreateMode
+	}
+	if sprp.StorageAccountType != "" {
+		objectMap["storageAccountType"] = sprp.StorageAccountType
+	}
+	if sprp.SourceDatabaseDeletionDate != nil {
+		objectMap["sourceDatabaseDeletionDate"] = sprp.SourceDatabaseDeletionDate
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLPoolRestorePointsCreateFuture an abstraction for monitoring and retrieving the results of a
@@ -16404,6 +16759,49 @@ func (future *WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture)
 	return
 }
 
+// WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
+type WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) (DedicatedSQLminimalTLSSettings, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture.Result.
+func (future *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture) result(client WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) (dslts DedicatedSQLminimalTLSSettings, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		dslts.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dslts.Response.Response, err = future.GetResult(sender); err == nil && dslts.Response.Response.StatusCode != http.StatusNoContent {
+		dslts, err = client.UpdateResponder(dslts.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture", "Result", dslts.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateFuture an abstraction for monitoring and
 // retrieving the results of a long-running operation.
 type WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateFuture struct {
@@ -16721,6 +17119,8 @@ type WorkspaceProperties struct {
 	Settings map[string]interface{} `json:"settings"`
 	// AzureADOnlyAuthentication - Enable or Disable AzureADOnlyAuthentication on All Workspace subresource
 	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
+	// TrustedServiceBypassEnabled - Is trustedServiceBypassEnabled for the workspace
+	TrustedServiceBypassEnabled *bool `json:"trustedServiceBypassEnabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -16770,6 +17170,9 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.AzureADOnlyAuthentication != nil {
 		objectMap["azureADOnlyAuthentication"] = wp.AzureADOnlyAuthentication
+	}
+	if wp.TrustedServiceBypassEnabled != nil {
+		objectMap["trustedServiceBypassEnabled"] = wp.TrustedServiceBypassEnabled
 	}
 	return json.Marshal(objectMap)
 }

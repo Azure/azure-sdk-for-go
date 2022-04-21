@@ -35,7 +35,7 @@ func NewSQLPoolRestorePointsClientWithBaseURI(baseURI string, subscriptionID str
 // Create creates a restore point for a data warehouse.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // parameters - the definition for creating the restore point of this Sql pool.
 func (client SQLPoolRestorePointsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters CreateSQLPoolRestorePointDefinition) (result SQLPoolRestorePointsCreateFuture, err error) {
@@ -130,7 +130,7 @@ func (client SQLPoolRestorePointsClient) CreateResponder(resp *http.Response) (r
 // Delete deletes a restore point.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // restorePointName - the name of the restore point.
 func (client SQLPoolRestorePointsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result autorest.Response, err error) {
@@ -218,7 +218,7 @@ func (client SQLPoolRestorePointsClient) DeleteResponder(resp *http.Response) (r
 // Get gets a restore point.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 // restorePointName - the name of the restore point.
 func (client SQLPoolRestorePointsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result RestorePoint, err error) {
@@ -307,7 +307,7 @@ func (client SQLPoolRestorePointsClient) GetResponder(resp *http.Response) (resu
 // List get SQL pool backup information
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
+// workspaceName - the name of the workspace.
 // SQLPoolName - SQL pool name
 func (client SQLPoolRestorePointsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result RestorePointListResultPage, err error) {
 	if tracing.IsEnabled() {

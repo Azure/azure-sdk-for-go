@@ -144,14 +144,15 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 	if options == nil {
 		options = &PollUntilDoneOptions{}
 	}
-	if options.Frequency == 0 {
-		options.Frequency = 30 * time.Second
+	cp := *options
+	if cp.Frequency == 0 {
+		cp.Frequency = 30 * time.Second
 	}
 	var resp T
 	if p.rt != nil {
 		resp = *p.rt
 	}
-	_, err := p.pt.PollUntilDone(ctx, options.Frequency, &resp)
+	_, err := p.pt.PollUntilDone(ctx, cp.Frequency, &resp)
 	return resp, err
 }
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2022-04-20)
+## 0.4.0 (2022-04-21)
 
 ### Breaking Changes
 * Renamed the following methods

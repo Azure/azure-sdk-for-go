@@ -368,9 +368,6 @@ func (client *KeyVaultClient) getCertificateCreateRequest(ctx context.Context, v
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(certificateName))
-	if certificateVersion == "" {
-		return nil, errors.New("parameter certificateVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(certificateVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
@@ -1286,9 +1283,6 @@ func (client *KeyVaultClient) updateCertificateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(certificateName))
-	if certificateVersion == "" {
-		return nil, errors.New("parameter certificateVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(certificateVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {

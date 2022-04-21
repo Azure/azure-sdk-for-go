@@ -13,15 +13,21 @@ output-folder: internal/generated
 openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.39"
+use: "@autorest/go@4.0.0-preview.40"
 module-version: 0.4.0
 export-clients: true
 
+# remove the empty certificateVersion path param check.  it's legal for KV but can't be described in OpenAPI
 directive:
-  - from: source-file-go
+  - from: constants.go
     where: $
     transform: >-
       return $.
         replace(/moduleName\s+=\s+"generated"/, `ModuleName = "azcertificates"`).
         replace(/moduleVersion\s+=/, `ModuleVersion =`);
+  - from: keyvault_client.go
+    where: $
+    transform: >-
+      return $.
+        replaceAll(/\sif certificateVersion == "" \{\s+return nil, errors\.New\("parameter certificateVersion cannot be empty"\)\s+\}\s/g, ``);
 ```

@@ -6352,6 +6352,116 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
+// PrivateEndpointConnection a private endpoint connection
+type PrivateEndpointConnection struct {
+	// PrivateEndpointConnectionProperties - Resource properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionProperties properties of a private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - Private endpoint which the connection belongs to.
+	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	// GroupIds - Gets the groupIds.
+	GroupIds *[]string `json:"groupIds,omitempty"`
+	// PrivateLinkServiceConnectionState - Connection State of the Private Endpoint Connection.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+}
+
+// PrivateEndpointProperty private endpoint which the connection belongs to.
+type PrivateEndpointProperty struct {
+	// ID - Resource id of the private endpoint.
+	ID *string `json:"id,omitempty"`
+}
+
+// PrivateLinkServiceConnectionStateProperty connection State of the Private Endpoint Connection.
+type PrivateLinkServiceConnectionStateProperty struct {
+	// Status - The private link service connection status.
+	Status *string `json:"status,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - READ-ONLY; Any action that is required beyond basic workflow (approve/ reject/ disconnect)
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkServiceConnectionStateProperty.
+func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plscsp.Status != nil {
+		objectMap["status"] = plscsp.Status
+	}
+	if plscsp.Description != nil {
+		objectMap["description"] = plscsp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource

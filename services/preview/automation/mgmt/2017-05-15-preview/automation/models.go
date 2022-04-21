@@ -5927,6 +5927,116 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
+// PrivateEndpointConnection a private endpoint connection
+type PrivateEndpointConnection struct {
+	// PrivateEndpointConnectionProperties - Resource properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionProperties properties of a private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - Private endpoint which the connection belongs to.
+	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	// GroupIds - Gets the groupIds.
+	GroupIds *[]string `json:"groupIds,omitempty"`
+	// PrivateLinkServiceConnectionState - Connection State of the Private Endpoint Connection.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+}
+
+// PrivateEndpointProperty private endpoint which the connection belongs to.
+type PrivateEndpointProperty struct {
+	// ID - Resource id of the private endpoint.
+	ID *string `json:"id,omitempty"`
+}
+
+// PrivateLinkServiceConnectionStateProperty connection State of the Private Endpoint Connection.
+type PrivateLinkServiceConnectionStateProperty struct {
+	// Status - The private link service connection status.
+	Status *string `json:"status,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - READ-ONLY; Any action that is required beyond basic workflow (approve/ reject/ disconnect)
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkServiceConnectionStateProperty.
+func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plscsp.Status != nil {
+		objectMap["status"] = plscsp.Status
+	}
+	if plscsp.Description != nil {
+		objectMap["description"] = plscsp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource
@@ -9386,6 +9496,382 @@ type VariableUpdateProperties struct {
 	Value *string `json:"value,omitempty"`
 	// Description - Gets or sets the description of the variable.
 	Description *string `json:"description,omitempty"`
+}
+
+// Watcher definition of the watcher type.
+type Watcher struct {
+	autorest.Response `json:"-"`
+	// WatcherProperties - Gets or sets the watcher properties.
+	*WatcherProperties `json:"properties,omitempty"`
+	// Etag - Gets or sets the etag of the resource.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The Azure Region where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Watcher.
+func (w Watcher) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if w.WatcherProperties != nil {
+		objectMap["properties"] = w.WatcherProperties
+	}
+	if w.Etag != nil {
+		objectMap["etag"] = w.Etag
+	}
+	if w.Tags != nil {
+		objectMap["tags"] = w.Tags
+	}
+	if w.Location != nil {
+		objectMap["location"] = w.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Watcher struct.
+func (w *Watcher) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watcherProperties WatcherProperties
+				err = json.Unmarshal(*v, &watcherProperties)
+				if err != nil {
+					return err
+				}
+				w.WatcherProperties = &watcherProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				w.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				w.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				w.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				w.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				w.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				w.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatcherListResult the response model for the list watcher operation.
+type WatcherListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Gets or sets a list of watchers.
+	Value *[]Watcher `json:"value,omitempty"`
+	// NextLink - Gets or sets the next link.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WatcherListResultIterator provides access to a complete listing of Watcher values.
+type WatcherListResultIterator struct {
+	i    int
+	page WatcherListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WatcherListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WatcherListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WatcherListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WatcherListResultIterator) Response() WatcherListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WatcherListResultIterator) Value() Watcher {
+	if !iter.page.NotDone() {
+		return Watcher{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WatcherListResultIterator type.
+func NewWatcherListResultIterator(page WatcherListResultPage) WatcherListResultIterator {
+	return WatcherListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wlr WatcherListResult) IsEmpty() bool {
+	return wlr.Value == nil || len(*wlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WatcherListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
+// watcherListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wlr WatcherListResult) watcherListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !wlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wlr.NextLink)))
+}
+
+// WatcherListResultPage contains a page of Watcher values.
+type WatcherListResultPage struct {
+	fn  func(context.Context, WatcherListResult) (WatcherListResult, error)
+	wlr WatcherListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WatcherListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatcherListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WatcherListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WatcherListResultPage) NotDone() bool {
+	return !page.wlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WatcherListResultPage) Response() WatcherListResult {
+	return page.wlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WatcherListResultPage) Values() []Watcher {
+	if page.wlr.IsEmpty() {
+		return nil
+	}
+	return *page.wlr.Value
+}
+
+// Creates a new instance of the WatcherListResultPage type.
+func NewWatcherListResultPage(cur WatcherListResult, getNextPage func(context.Context, WatcherListResult) (WatcherListResult, error)) WatcherListResultPage {
+	return WatcherListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
+}
+
+// WatcherProperties definition of the watcher properties
+type WatcherProperties struct {
+	// ExecutionFrequencyInSeconds - Gets or sets the frequency at which the watcher is invoked.
+	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
+	// ScriptName - Gets or sets the name of the script the watcher is attached to, i.e. the name of an existing runbook.
+	ScriptName *string `json:"scriptName,omitempty"`
+	// ScriptParameters - Gets or sets the parameters of the script.
+	ScriptParameters map[string]*string `json:"scriptParameters"`
+	// ScriptRunOn - Gets or sets the name of the hybrid worker group the watcher will run on.
+	ScriptRunOn *string `json:"scriptRunOn,omitempty"`
+	// Status - READ-ONLY; Gets the current status of the watcher.
+	Status *string `json:"status,omitempty"`
+	// CreationTime - READ-ONLY; Gets or sets the creation time.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - READ-ONLY; Gets or sets the last modified time.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// LastModifiedBy - READ-ONLY; Details of the user who last modified the watcher.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// Description - Gets or sets the description.
+	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatcherProperties.
+func (wp WatcherProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.ExecutionFrequencyInSeconds != nil {
+		objectMap["executionFrequencyInSeconds"] = wp.ExecutionFrequencyInSeconds
+	}
+	if wp.ScriptName != nil {
+		objectMap["scriptName"] = wp.ScriptName
+	}
+	if wp.ScriptParameters != nil {
+		objectMap["scriptParameters"] = wp.ScriptParameters
+	}
+	if wp.ScriptRunOn != nil {
+		objectMap["scriptRunOn"] = wp.ScriptRunOn
+	}
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
+// WatcherUpdateParameters ...
+type WatcherUpdateParameters struct {
+	// WatcherUpdateProperties - Gets or sets the watcher update properties.
+	*WatcherUpdateProperties `json:"properties,omitempty"`
+	// Name - Gets or sets the name of the resource.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatcherUpdateParameters.
+func (wup WatcherUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wup.WatcherUpdateProperties != nil {
+		objectMap["properties"] = wup.WatcherUpdateProperties
+	}
+	if wup.Name != nil {
+		objectMap["name"] = wup.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WatcherUpdateParameters struct.
+func (wup *WatcherUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watcherUpdateProperties WatcherUpdateProperties
+				err = json.Unmarshal(*v, &watcherUpdateProperties)
+				if err != nil {
+					return err
+				}
+				wup.WatcherUpdateProperties = &watcherUpdateProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wup.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatcherUpdateProperties the properties of the update watcher operation.
+type WatcherUpdateProperties struct {
+	// ExecutionFrequencyInSeconds - Gets or sets the frequency at which the watcher is invoked.
+	ExecutionFrequencyInSeconds *int64 `json:"executionFrequencyInSeconds,omitempty"`
 }
 
 // Webhook definition of the webhook type.

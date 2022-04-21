@@ -6418,6 +6418,8 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - Private endpoint which the connection belongs to.
 	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	// GroupIds - Gets the groupIds.
+	GroupIds *[]string `json:"groupIds,omitempty"`
 	// PrivateLinkServiceConnectionState - Connection State of the Private Endpoint Connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
 }

@@ -33,7 +33,7 @@ func TestSinglePartitionQueryWithIndexMetrics(t *testing.T) {
 	createSampleItems(t, container, documentsPerPk)
 
 	receivedIds := []string{}
-	queryPager := container.QueryItems("select * from docs c where c.someProp = '2'", NewPartitionKeyString("1"), &QueryOptions{PopulateIndexMetrics: true})
+	queryPager := container.NewQueryItemsPager("select * from docs c where c.someProp = '2'", NewPartitionKeyString("1"), &QueryOptions{PopulateIndexMetrics: true})
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {
@@ -108,7 +108,7 @@ func TestSinglePartitionQuery(t *testing.T) {
 	numberOfPages := 0
 	receivedIds := []string{}
 	opt := QueryOptions{PageSizeHint: 5}
-	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), &opt)
+	queryPager := container.NewQueryItemsPager("select * from c", NewPartitionKeyString("1"), &opt)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {

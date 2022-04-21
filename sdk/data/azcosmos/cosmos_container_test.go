@@ -443,7 +443,7 @@ func TestContainerQueryItems(t *testing.T) {
 	container, _ := newContainer("containerId", database)
 
 	receivedIds := []string{}
-	queryPager := container.QueryItems("select * from c", NewPartitionKeyString("1"), nil)
+	queryPager := container.NewQueryItemsPager("select * from c", NewPartitionKeyString("1"), nil)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.TODO())
 		if err != nil {

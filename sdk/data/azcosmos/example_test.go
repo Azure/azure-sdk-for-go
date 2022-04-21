@@ -528,7 +528,7 @@ func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
 	}
 }
 
-func ExampleContainerClient_QueryItems() {
+func ExampleContainerClient_NewQueryItemsPager() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
 		panic("AZURE_COSMOS_ENDPOINT could not be found")
@@ -556,7 +556,7 @@ func ExampleContainerClient_QueryItems() {
 
 	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
 
-	queryPager := container.QueryItems("select * from docs c", pk, nil)
+	queryPager := container.NewQueryItemsPager("select * from docs c", pk, nil)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context.Background())
 		if err != nil {

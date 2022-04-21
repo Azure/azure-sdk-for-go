@@ -110,7 +110,7 @@ Creating, reading, and deleting items
 Querying items
 
 	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
-	queryPager := container.QueryItems("select * from docs c", pk, nil)
+	queryPager := container.NewQueryItemsPager("select * from docs c", pk, nil)
 	for queryPager.More() {
 		queryResponse, err := queryPager.NextPage(context)
 		if err != nil {

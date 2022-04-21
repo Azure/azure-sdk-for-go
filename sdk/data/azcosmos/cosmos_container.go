@@ -401,12 +401,12 @@ func (c *ContainerClient) DeleteItem(
 	return newItemResponse(azResponse)
 }
 
-// QueryItems executes a single partition query in a Cosmos container.
+// NewQueryItemsPager executes a single partition query in a Cosmos container.
 // ctx - The context for the request.
 // query - The SQL query to execute.
 // partitionKey - The partition key to scope the query on.
 // o - Options for the operation.
-func (c *ContainerClient) QueryItems(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
+func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey PartitionKey, o *QueryOptions) *runtime.Pager[QueryItemsResponse] {
 	correlatedActivityId, _ := uuid.New()
 	h := headerOptionsOverride{
 		partitionKey:         &partitionKey,

@@ -133,6 +133,8 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	}
 
 	if options != nil {
+		client.retryOptions = options.RetryOptions
+
 		if options.TLSConfig != nil {
 			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))
 		}
@@ -160,6 +162,7 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 		ns:                  client.namespace,
 		entity:              entity{Queue: queueName},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
+		retryOptions:        client.retryOptions,
 	}, options)
 
 	if err != nil {
@@ -178,6 +181,7 @@ func (client *Client) NewReceiverForSubscription(topicName string, subscriptionN
 		ns:                  client.namespace,
 		entity:              entity{Topic: topicName, Subscription: subscriptionName},
 		getRecoveryKindFunc: internal.GetRecoveryKind,
+		retryOptions:        client.retryOptions,
 	}, options)
 
 	if err != nil {
@@ -200,7 +204,8 @@ func (client *Client) NewSender(queueOrTopic string, options *NewSenderOptions) 
 		ns:             client.namespace,
 		queueOrTopic:   queueOrTopic,
 		cleanupOnClose: cleanupOnClose,
-	}, client.retryOptions)
+		retryOptions:   client.retryOptions,
+	})
 
 	if err != nil {
 		return nil, err
@@ -216,11 +221,13 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queueName strin
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		&sessionID,
-		client.namespace,
-		entity{Queue: queueName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      &sessionID,
+			ns:             client.namespace,
+			entity:         entity{Queue: queueName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -240,10 +247,13 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		&sessionID,
-		client.namespace,
-		entity{Topic: topicName, Subscription: subscriptionName},
-		cleanupOnClose,
+		newSessionReceiverArgs{
+			sessionID:      &sessionID,
+			ns:             client.namespace,
+			entity:         entity{Topic: topicName, Subscription: subscriptionName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		},
 		toReceiverOptions(options))
 
 	if err != nil {
@@ -264,11 +274,13 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queueName s
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		nil,
-		client.namespace,
-		entity{Queue: queueName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity{Queue: queueName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -288,11 +300,13 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		nil,
-		client.namespace,
-		entity{Topic: topicName, Subscription: subscriptionName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity{Topic: topicName, Subscription: subscriptionName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err

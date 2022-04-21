@@ -33,7 +33,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		retryOptions:  retryOptionsOnlyOnce,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -78,7 +78,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		retryOptions:  retryOptionsOnlyOnce,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -156,7 +156,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 
 func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
 	ns := &Namespace{
-		retryOptions: retryOptionsOnlyOnce,
+		RetryOptions: retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{
 			// credentials that don't renew return a zero-initialized time.
 			expires: time.Time{},

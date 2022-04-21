@@ -11,6 +11,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -239,8 +240,8 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 }
 
 // calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*semver.Version, error) {
-	version, err := GetLatestVersion(packageRootPath)
+func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, error) {
+	version, err := semver.NewVersion(previousVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -255,13 +256,41 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 			newVersion = version.IncPatch()
 		}
 	} else {
-		// release version calculation
-		if changelog.HasBreakingChanges() {
-			newVersion = version.IncMajor()
-		} else if changelog.Modified.HasAdditiveChanges() {
-			newVersion = version.IncMinor()
+		if isCurrentPreview {
+			if strings.Contains(previousVersion, "beta") {
+				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
+				if err != nil {
+					return nil, err
+				}
+				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				if changelog.HasBreakingChanges() {
+					newVersion = version.IncMajor()
+				} else if changelog.Modified.HasAdditiveChanges() {
+					newVersion = version.IncMinor()
+				} else {
+					newVersion = version.IncPatch()
+				}
+				newVersion, err = newVersion.SetPrerelease("beta.1")
+				if err != nil {
+					return nil, err
+				}
+			}
 		} else {
-			newVersion = version.IncPatch()
+			if strings.Contains(previousVersion, "beta") {
+				return nil, fmt.Errorf("must have stable previous version")
+			}
+			// release version calculation
+			if changelog.HasBreakingChanges() {
+				newVersion = version.IncMajor()
+			} else if changelog.Modified.HasAdditiveChanges() {
+				newVersion = version.IncMinor()
+			} else {
+				newVersion = version.IncPatch()
+			}
 		}
 	}
 

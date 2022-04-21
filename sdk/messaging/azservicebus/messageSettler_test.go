@@ -126,25 +126,19 @@ func TestDeferredMessages(t *testing.T) {
 	receiver := testStuff.Receiver
 
 	t.Run("Abandon", func(t *testing.T) {
-		t.Skip("This test is currently broken, https://github.com/Azure/azure-sdk-for-go/issues/15626")
+		originalDeferredMessage := testStuff.deferMessageForTest(t)
 
-		msg := testStuff.deferMessageForTest(t)
-
-		// abandon the deferred message, which should return
-		// it to the queue.
-		err := receiver.AbandonMessage(ctx, msg, &AbandonMessageOptions{
+		// abandoning the deferred message will increment its delivery count
+		err := receiver.AbandonMessage(ctx, originalDeferredMessage, &AbandonMessageOptions{
 			PropertiesToModify: map[string]interface{}{
 				"hello": "world",
 			},
 		})
 		require.NoError(t, err)
 
-		// BUG: we're timing out here, even though our abandon should have put the message
-		// back into the queue. It appears that settlement methods don't work on messages
-		// that have been received as deferred.
-		messages, err := receiver.ReceiveMessages(ctx, 1, nil)
-		require.NoError(t, err)
-		require.EqualValues(t, "world", messages[0].ApplicationProperties["hello"].(string))
+		// we can peek it without altering anything here.
+		peekedMessage := peekSingleMessageForTest(t, receiver)
+		require.Equal(t, originalDeferredMessage.DeliveryCount+1, peekedMessage.DeliveryCount, "Delivery count is incremented")
 	})
 
 	t.Run("Complete", func(t *testing.T) {
@@ -308,6 +302,7 @@ func assertEntityEmpty(t *testing.T, receiver *Receiver) {
 	require.Empty(t, messages)
 }
 
+// deferMessageForTest defers a message with a message body of 'hello'.
 func (testStuff *testStuff) deferMessageForTest(t *testing.T) *ReceivedMessage {
 	err := testStuff.Sender.SendMessage(context.Background(), &Message{
 		Body: []byte("hello"),

@@ -93,7 +93,7 @@ func TestNewPollerAsync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +128,7 @@ func TestNewPollerBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -203,7 +203,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,7 +266,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	_, err = poller.PollUntilDone(context.Background(), time.Second)
+	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -301,7 +301,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -363,7 +363,7 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -10,7 +10,7 @@ package generated
 
 const (
 	ModuleName    = "azcertificates"
-	ModuleVersion = "v0.3.1"
+	ModuleVersion = "v0.4.0"
 )
 
 // ActionType - The type of the action.

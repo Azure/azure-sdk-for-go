@@ -275,7 +275,7 @@ func TestClient_ListCertificates(t *testing.T) {
 
 	time.Sleep(10 * delay())
 
-	pager := client.ListPropertiesOfCertificates(nil)
+	pager := client.NewListPropertiesOfCertificatesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -301,7 +301,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
-	pager := client.ListPropertiesOfCertificateVersions(name, nil)
+	pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -315,7 +315,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListPropertiesOfCertificateVersions(name, nil)
+	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -329,7 +329,7 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	createCert(t, client, name)
 	time.Sleep(10 * delay())
 
-	pager = client.ListPropertiesOfCertificateVersions(name, nil)
+	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count = 0
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
@@ -414,7 +414,7 @@ func TestClient_IssuerCRUD(t *testing.T) {
 	require.Equal(t, issuerName2, *createResp.Issuer.Name)
 
 	// List operation
-	pager := client.ListPropertiesOfIssuers(nil)
+	pager := client.NewListPropertiesOfIssuersPager(nil)
 	count := 0
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
@@ -886,7 +886,7 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 
 	time.Sleep(10 * delay())
 
-	pager := client.ListDeletedCertificates(nil)
+	pager := client.NewListDeletedCertificatesPager(nil)
 	deletedCount := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

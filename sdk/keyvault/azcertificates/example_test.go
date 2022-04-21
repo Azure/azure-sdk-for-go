@@ -133,7 +133,7 @@ func ExampleClient_UpdateCertificateProperties() {
 	fmt.Println(resp.Properties.Tags)
 }
 
-func ExampleClient_ListPropertiesOfCertificates() {
+func ExampleClient_NewListPropertiesOfCertificatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		panic(err)
@@ -149,7 +149,7 @@ func ExampleClient_ListPropertiesOfCertificates() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfCertificates(nil)
+	pager := client.NewListPropertiesOfCertificatesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

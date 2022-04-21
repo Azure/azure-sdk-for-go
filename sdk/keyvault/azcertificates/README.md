@@ -333,7 +333,7 @@ func main() {
 ```
 
 ### List  Certificates
-[ListCertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates#Client.ListCertificates)
+[NewListCertificatesPager](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates#Client.NewListCertificatesPager)
 lists the properties of all certificates in the specified Key Vault.
 ```go
 import (
@@ -363,7 +363,7 @@ func main() {
 		panic(err)
 	}
 
-	pager := client.ListCertificates(nil)
+	pager := client.NewListCertificatesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -380,13 +380,13 @@ func main() {
 ## Troubleshooting
 ### Error Handling
 
-All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
+All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any error object:
 ```golang
 resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
 if err != nil {
-    var httpErr azcore.HTTPResponse
-    if errors.As(err, &httpErr) {
-        // investigate httpErr.RawResponse()
+    var respErr *azcore.ResponseError
+    if errors.As(err, &respErr) {
+        // investigate respErr.RawResponse
     }
 }
 ```

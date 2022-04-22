@@ -151,6 +151,8 @@ type MetricDimension struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// InternalName - Internal name of the dimension.
 	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - Whether the dimension should be included for the shoebox export scenario.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring
@@ -165,10 +167,28 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 	// AggregationType - Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
 	AggregationType *string `json:"aggregationType,omitempty"`
+	// SupportedAggregationTypes - Supported aggregation types. Valid values: Average, Minimum, Maximum, Total, Count.
+	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
+	// SupportedTimeGrainTypes - Supported time grains. Valid values: PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D
+	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
+	// EnableRegionalMdmAccount - Flag to indicate use of regional Mdm accounts
+	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	// SourceMdmAccount - Source mdm account
+	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	// SourceMdmNamespace - Source mdm namespace
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	// MetricFilterPattern - Metric filter regex pattern
+	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	// FillGapWithZero - Flag to determine is Zero is returned for time duration where no metric is emitted
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// Category - Metric category
+	Category *string `json:"category,omitempty"`
 	// InternalMetricName - Internal metric name.
 	InternalMetricName *string `json:"internalMetricName,omitempty"`
 	// Dimensions - Dimensions of the metric
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// LockedAggregationType - Locked aggregation type of the metric
+	LockedAggregationType *string `json:"lockedAggregationType,omitempty"`
 }
 
 // Operation REST API operation
@@ -1206,7 +1226,7 @@ type SystemData struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 

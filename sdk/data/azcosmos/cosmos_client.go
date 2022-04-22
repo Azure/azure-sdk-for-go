@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -31,10 +32,18 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline(cred, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
 }
 
-func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline {
+// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
+// endpoint - The cosmos service endpoint to use.
+// cred - The credential used to authenticate with the cosmos service.
+// options - Optional Cosmos client options.  Pass nil to accept default values.
+func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (*Client, error) {
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
+}
+
+func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -42,7 +51,7 @@ func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline 
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
 			PerCall: []policy.Policy{
-				newSharedKeyCredPolicy(cred),
+				authPolicy,
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 				},

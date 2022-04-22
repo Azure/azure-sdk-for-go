@@ -721,7 +721,7 @@ func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpd
 func (client ServicesClient) UpdateResponder(resp *http.Response) (result ServicesDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

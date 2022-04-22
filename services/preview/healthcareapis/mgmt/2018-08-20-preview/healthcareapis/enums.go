@@ -23,6 +23,21 @@ func PossibleKindValues() []Kind {
 	return []Kind{Fhir, FhirR4, FhirStu3}
 }
 
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// None ...
+	None ManagedServiceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns an array of possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{None, SystemAssigned}
+}
+
 // OperationResultStatus enumerates the values for operation result status.
 type OperationResultStatus string
 

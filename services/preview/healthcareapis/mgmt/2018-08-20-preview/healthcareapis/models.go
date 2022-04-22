@@ -53,17 +53,27 @@ func (edi ErrorDetailsInternal) MarshalJSON() ([]byte, error) {
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
+	// IsDataAction - Gets or sets a value indicating whether the operation is a data action or not
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Origin - READ-ONLY; Default value is 'user,system'.
 	Origin *string `json:"origin,omitempty"`
 	// Display - The information displayed about the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Properties - Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if o.IsDataAction != nil {
+		objectMap["isDataAction"] = o.IsDataAction
+	}
 	if o.Display != nil {
 		objectMap["display"] = o.Display
+	}
+	if o.Properties != nil {
+		objectMap["properties"] = o.Properties
 	}
 	return json.Marshal(objectMap)
 }
@@ -294,6 +304,8 @@ type Resource struct {
 	Tags map[string]*string `json:"tags"`
 	// Etag - An etag associated with the resource, used for optimistic concurrency when editing it.
 	Etag *string `json:"etag,omitempty"`
+	// Identity - Setting indicating whether the service has a managed identity associated with it.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
@@ -310,6 +322,28 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	}
 	if r.Etag != nil {
 		objectMap["etag"] = r.Etag
+	}
+	if r.Identity != nil {
+		objectMap["identity"] = r.Identity
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceIdentity setting indicating whether the service has a managed identity associated with it.
+type ResourceIdentity struct {
+	// PrincipalID - READ-ONLY; The principal ID of the resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of the resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - Type of identity being specified, currently SystemAssigned and None are allowed. Possible values include: 'SystemAssigned', 'None'
+	Type ManagedServiceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceIdentity.
+func (r ResourceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Type != "" {
+		objectMap["type"] = r.Type
 	}
 	return json.Marshal(objectMap)
 }
@@ -449,6 +483,8 @@ type ServicesDescription struct {
 	Tags map[string]*string `json:"tags"`
 	// Etag - An etag associated with the resource, used for optimistic concurrency when editing it.
 	Etag *string `json:"etag,omitempty"`
+	// Identity - Setting indicating whether the service has a managed identity associated with it.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServicesDescription.
@@ -468,6 +504,9 @@ func (sd ServicesDescription) MarshalJSON() ([]byte, error) {
 	}
 	if sd.Etag != nil {
 		objectMap["etag"] = sd.Etag
+	}
+	if sd.Identity != nil {
+		objectMap["identity"] = sd.Identity
 	}
 	return json.Marshal(objectMap)
 }

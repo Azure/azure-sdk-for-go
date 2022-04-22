@@ -1,5 +1,5 @@
 {
-  "commit": "bb4175d29020cfff55f1d9087c2a5a89765067dc",
+  "commit": "8f67d564e191f0811dd24c81d21d11491798032f",
   "readme": "/_/azure-rest-api-specs/specification/healthcareapis/resource-manager/readme.md",
   "tag": "package-preview-2021-06",
   "use": "@microsoft.azure/autorest.go@2.1.187",

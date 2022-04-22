@@ -123,6 +123,13 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	}, nil
 }
 
+// PollUntilDoneOptions contains the optional values for the Poller[T].PollUntilDone() method.
+type PollUntilDoneOptions struct {
+	// Frequency is the time to wait between polling intervals in absence of a Retry-After header. Allowed minimum is one second.
+	// Pass zero to accept the default value (30s).
+	Frequency time.Duration
+}
+
 // Poller encapsulates a long-running operation, providing polling facilities until the operation reaches a terminal state.
 type Poller[T any] struct {
 	pt *pollers.Poller
@@ -130,13 +137,22 @@ type Poller[T any] struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached, an error is received, or the context expires.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-func (p *Poller[T]) PollUntilDone(ctx context.Context, freq time.Duration) (T, error) {
+// options: pass nil to accept the default values.
+// NOTE: the default polling frequency is 30 seconds which works well for most services.  However, some services might
+// benefit from a shorter or longer duration.
+func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOptions) (T, error) {
+	if options == nil {
+		options = &PollUntilDoneOptions{}
+	}
+	cp := *options
+	if cp.Frequency == 0 {
+		cp.Frequency = 30 * time.Second
+	}
 	var resp T
 	if p.rt != nil {
 		resp = *p.rt
 	}
-	_, err := p.pt.PollUntilDone(ctx, freq, &resp)
+	_, err := p.pt.PollUntilDone(ctx, cp.Frequency, &resp)
 	return resp, err
 }
 

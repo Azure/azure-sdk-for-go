@@ -35,6 +35,7 @@ The following sections provide several code snippets covering some of the most c
 	- Creating a database
 	- Creating a container
 	- Creating, reading, and deleting items
+	- Querying items
 
 
 Creating a database
@@ -105,5 +106,21 @@ Creating, reading, and deleting items
 
 	itemResponse, err = container.DeleteItem(context, pk, id, nil)
 	handle(err)
+
+Querying items
+
+	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
+	queryPager := container.NewQueryItemsPager("select * from docs c", pk, nil)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context)
+		if err != nil {
+			handle(err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			json.Unmarshal(item, &itemResponseBody)
+		}
+	}
 */
 package azcosmos

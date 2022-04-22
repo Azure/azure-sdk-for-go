@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -224,8 +225,8 @@ func TestSendDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if verifier.method != http.MethodDelete {
-		t.Errorf("Expected %v, but got %v", http.MethodDelete, verifier.method)
+	if verifier.requests[0].method != http.MethodDelete {
+		t.Errorf("Expected %v, but got %v", http.MethodDelete, verifier.requests[0].method)
 	}
 }
 
@@ -247,8 +248,8 @@ func TestSendGet(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if verifier.method != http.MethodGet {
-		t.Errorf("Expected %v, but got %v", http.MethodGet, verifier.method)
+	if verifier.requests[0].method != http.MethodGet {
+		t.Errorf("Expected %v, but got %v", http.MethodGet, verifier.requests[0].method)
 	}
 }
 
@@ -276,12 +277,12 @@ func TestSendPut(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if verifier.method != http.MethodPut {
-		t.Errorf("Expected %v, but got %v", http.MethodPut, verifier.method)
+	if verifier.requests[0].method != http.MethodPut {
+		t.Errorf("Expected %v, but got %v", http.MethodPut, verifier.requests[0].method)
 	}
 
-	if verifier.body != string(marshalled) {
-		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.body)
+	if verifier.requests[0].body != string(marshalled) {
+		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.requests[0].body)
 	}
 }
 
@@ -309,12 +310,12 @@ func TestSendPost(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if verifier.method != http.MethodPost {
-		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.method)
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.requests[0].method)
 	}
 
-	if verifier.body != string(marshalled) {
-		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.body)
+	if verifier.requests[0].body != string(marshalled) {
+		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.requests[0].body)
 	}
 }
 
@@ -336,37 +337,47 @@ func TestSendQuery(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if verifier.method != http.MethodPost {
-		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.method)
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.requests[0].method)
 	}
 
-	if verifier.isQuery != true {
-		t.Errorf("Expected %v, but got %v", true, verifier.isQuery)
+	if verifier.requests[0].isQuery != true {
+		t.Errorf("Expected %v, but got %v", true, verifier.requests[0].isQuery)
 	}
 
-	if verifier.contentType != cosmosHeaderValuesQuery {
-		t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, verifier.contentType)
+	if verifier.requests[0].contentType != cosmosHeaderValuesQuery {
+		t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, verifier.requests[0].contentType)
 	}
 
-	if verifier.body != "{\"query\":\"SELECT * FROM c\"}" {
-		t.Errorf("Expected %v, but got %v", "{\"query\":\"SELECT * FROM c\"}", verifier.body)
+	if verifier.requests[0].body != "{\"query\":\"SELECT * FROM c\"}" {
+		t.Errorf("Expected %v, but got %v", "{\"query\":\"SELECT * FROM c\"}", verifier.requests[0].body)
 	}
 }
 
 type pipelineVerifier struct {
+	requests []pipelineVerifierRequest
+}
+
+type pipelineVerifierRequest struct {
 	method      string
 	body        string
 	contentType string
 	isQuery     bool
+	url         *url.URL
+	headers     http.Header
 }
 
 func (p *pipelineVerifier) Do(req *policy.Request) (*http.Response, error) {
-	p.method = req.Raw().Method
+	pr := pipelineVerifierRequest{}
+	pr.method = req.Raw().Method
+	pr.url = req.Raw().URL
 	if req.Body() != nil {
 		readBody, _ := ioutil.ReadAll(req.Body())
-		p.body = string(readBody)
+		pr.body = string(readBody)
 	}
-	p.contentType = req.Raw().Header.Get(headerContentType)
-	p.isQuery = req.Raw().Method == http.MethodPost && req.Raw().Header.Get(cosmosHeaderQuery) == "True"
+	pr.contentType = req.Raw().Header.Get(headerContentType)
+	pr.headers = req.Raw().Header
+	pr.isQuery = req.Raw().Method == http.MethodPost && req.Raw().Header.Get(cosmosHeaderQuery) == "True"
+	p.requests = append(p.requests, pr)
 	return req.Next()
 }

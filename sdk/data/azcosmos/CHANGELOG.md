@@ -3,8 +3,10 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
+* Added single partition query support.
 
 ### Breaking Changes
+* This module now requires Go 1.18
 
 ### Bugs Fixed
 

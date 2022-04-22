@@ -4,6 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// Deprecated: use azcore/runtime instead.
 package runtime
 
 import (
@@ -14,10 +15,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -68,8 +69,8 @@ func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPoll
 	var lro pollers.Operation
 	if async.Applicable(resp) {
 		lro, err = async.New(resp, options.FinalStateVia, tName)
-	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, tName)
+	} else if armloc.Applicable(resp) {
+		lro, err = armloc.New(resp, tName)
 	} else if body.Applicable(resp) {
 		// must test body poller last as it's a subset of the other pollers.
 		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
@@ -116,9 +117,9 @@ func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options 
 	case async.Kind:
 		log.Writef(log.EventLRO, "Resuming %s poller.", async.Kind)
 		lro = &async.Poller{}
-	case loc.Kind:
-		log.Writef(log.EventLRO, "Resuming %s poller.", loc.Kind)
-		lro = &loc.Poller{}
+	case armloc.Kind:
+		log.Writef(log.EventLRO, "Resuming %s poller.", armloc.Kind)
+		lro = &armloc.Poller{}
 	case body.Kind:
 		log.Writef(log.EventLRO, "Resuming %s poller.", body.Kind)
 		lro = &body.Poller{}

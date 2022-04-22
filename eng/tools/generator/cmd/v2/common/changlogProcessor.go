@@ -67,8 +67,11 @@ func GetCurrentAPIVersion(packagePath string) (string, error) {
 
 			lines := strings.Split(string(b), "\n")
 			for _, line := range lines {
-				if strings.Contains(line, "api-version") {
-					return strings.Split(line, "\"")[3], nil
+				if strings.Contains(line, "\"api-version\"") {
+					parts := strings.Split(line, "\"")
+					if len(parts) == 5 {
+						return parts[3], nil
+					}
 				}
 			}
 		}

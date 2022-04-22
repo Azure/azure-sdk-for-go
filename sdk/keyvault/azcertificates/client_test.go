@@ -273,15 +273,25 @@ func TestClient_ListCertificates(t *testing.T) {
 		createdCount++
 	}
 
-	time.Sleep(10 * delay())
-
-	pager := client.NewListPropertiesOfCertificatesPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		createdCount -= len(page.Certificates)
-		for _, c := range page.Certificates {
-			fmt.Println(*c.ID)
+	// for live tests, there's a delay between creating the cert and when
+	// it shows up when listing them which can cause spurious test failures.
+	// add a few retries to hopefully mask over it.
+	for i := 0; i < 3; i++ {
+		time.Sleep(10 * delay())
+		pager := client.NewListPropertiesOfCertificatesPager(nil)
+		listCount := createdCount
+		for pager.More() {
+			page, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			listCount -= len(page.Certificates)
+			for _, c := range page.Certificates {
+				fmt.Println(*c.ID)
+			}
+		}
+		if listCount == 0 {
+			// success
+			createdCount = listCount
+			break
 		}
 	}
 
@@ -298,43 +308,70 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	name, err := createRandomName(t, "cert1")
 	require.NoError(t, err)
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
-	pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count := 0
-	for pager.More() {
-		resp, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		count += len(resp.Certificates)
+
+	// for live tests, there's a delay between creating the cert and when
+	// it shows up when listing them which can cause spurious test failures.
+	// add a few retries to hopefully mask over it.
+
+	for i := 0; i < 3; i++ {
+		time.Sleep(10 * delay())
+		pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
+		listCount := 0
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			listCount += len(resp.Certificates)
+		}
+		if listCount == 1 {
+			// success
+			count = listCount
+			break
+		}
 	}
 
 	require.Equal(t, 1, count)
 
 	// Add a second version
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 
-	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
-	count = 0
-	for pager.More() {
-		resp, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		count += len(resp.Certificates)
+	for i := 0; i < 3; i++ {
+		time.Sleep(10 * delay())
+		pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
+		listCount := 0
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			listCount += len(resp.Certificates)
+		}
+		if listCount == 2 {
+			// success
+			count = listCount
+			break
+		}
 	}
 
 	require.Equal(t, 2, count)
 
 	// Add a third version
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 
-	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
-	count = 0
-	for pager.More() {
-		resp, err := pager.NextPage(context.Background())
-		require.NoError(t, err)
-		count += len(resp.Certificates)
+	for i := 0; i < 3; i++ {
+		time.Sleep(10 * delay())
+		pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
+		listCount := 0
+		for pager.More() {
+			resp, err := pager.NextPage(context.Background())
+			require.NoError(t, err)
+			listCount += len(resp.Certificates)
+		}
+		if listCount == 3 {
+			// success
+			count = listCount
+			break
+		}
 	}
 
 	require.Equal(t, 3, count)
@@ -884,17 +921,27 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	time.Sleep(10 * delay())
-
-	pager := client.NewListDeletedCertificatesPager(nil)
 	deletedCount := 0
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		require.NoError(t, err)
-		for i := range page.Certificates {
-			purgeCert(t, client, names[i])
-			deletedCount += 1
+
+	// for live tests, there's a delay between creating the cert and when
+	// it shows up when listing them which can cause spurious test failures.
+	// add a few retries to hopefully mask over it.
+	for i := 0; i < 3; i++ {
+		time.Sleep(10 * delay())
+		pager := client.NewListDeletedCertificatesPager(nil)
+		listCount := 0
+		for pager.More() {
+			page, err := pager.NextPage(ctx)
+			require.NoError(t, err)
+			for i := range page.Certificates {
+				purgeCert(t, client, names[i])
+				listCount += 1
+			}
+		}
+		if listCount == createdCount {
+			// success
+			deletedCount = listCount
 		}
 	}
-	require.Equal(t, 4, createdCount)
+	require.Equal(t, createdCount, deletedCount)
 }

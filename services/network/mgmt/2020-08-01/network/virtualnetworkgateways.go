@@ -50,18 +50,18 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(ctx context.Context, r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
-							{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
+			Constraints: []validation.Constraint{{Target: "parameters.ExtendedLocation", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ExtendedLocation.Name", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ExtendedLocation.Type", Name: validation.Null, Rule: true, Chain: nil},
+				}},
+				{Target: "parameters.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
+								{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.BgpSettings.Asn", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
+							}},
 						}},
-					}},
-					{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.ExtendedLocation", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.ExtendedLocation.Name", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "parameters.VirtualNetworkGatewayPropertiesFormat.ExtendedLocation.Type", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-				}}}}}); err != nil {
+					}}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "CreateOrUpdate", err.Error())
 	}
 

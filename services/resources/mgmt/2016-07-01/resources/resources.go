@@ -397,7 +397,7 @@ func (client Client) GetResponder(resp *http.Response) (result GenericResource, 
 // filter - the filter to apply on the operation.
 // expand - comma-separated list of additional properties to be included in the response. Valid values include
 // `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-// top - query parameters. If null is passed returns all resource groups.
+// top - the number of results to return. If null is passed, returns all resources.
 func (client Client) List(ctx context.Context, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")

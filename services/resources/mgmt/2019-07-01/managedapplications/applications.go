@@ -983,7 +983,7 @@ func (client ApplicationsClient) UpdateSender(req *http.Request) (*http.Response
 func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result Application, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

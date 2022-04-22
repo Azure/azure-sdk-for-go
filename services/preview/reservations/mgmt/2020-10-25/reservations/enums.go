@@ -235,6 +235,27 @@ func PossiblePaymentStatusValues() []PaymentStatus {
 	return []PaymentStatus{PaymentStatusCancelled, PaymentStatusFailed, PaymentStatusScheduled, PaymentStatusSucceeded}
 }
 
+// QuotaRequestState enumerates the values for quota request state.
+type QuotaRequestState string
+
+const (
+	// QuotaRequestStateAccepted ...
+	QuotaRequestStateAccepted QuotaRequestState = "Accepted"
+	// QuotaRequestStateFailed ...
+	QuotaRequestStateFailed QuotaRequestState = "Failed"
+	// QuotaRequestStateInProgress ...
+	QuotaRequestStateInProgress QuotaRequestState = "InProgress"
+	// QuotaRequestStateInvalid ...
+	QuotaRequestStateInvalid QuotaRequestState = "Invalid"
+	// QuotaRequestStateSucceeded ...
+	QuotaRequestStateSucceeded QuotaRequestState = "Succeeded"
+)
+
+// PossibleQuotaRequestStateValues returns an array of possible values for the QuotaRequestState const type.
+func PossibleQuotaRequestStateValues() []QuotaRequestState {
+	return []QuotaRequestState{QuotaRequestStateAccepted, QuotaRequestStateFailed, QuotaRequestStateInProgress, QuotaRequestStateInvalid, QuotaRequestStateSucceeded}
+}
+
 // ReservationBillingPlan enumerates the values for reservation billing plan.
 type ReservationBillingPlan string
 
@@ -314,6 +335,27 @@ const (
 // PossibleReservedResourceTypeValues returns an array of possible values for the ReservedResourceType const type.
 func PossibleReservedResourceTypeValues() []ReservedResourceType {
 	return []ReservedResourceType{AppService, AzureDataExplorer, BlockBlob, CosmosDb, Databricks, DedicatedHost, ManagedDisk, MariaDb, MySQL, PostgreSQL, RedHat, RedHatOsa, RedisCache, SapHana, SQLAzureHybridBenefit, SQLDatabases, SQLDataWarehouse, SuseLinux, VirtualMachines, VMwareCloudSimple}
+}
+
+// ResourceType enumerates the values for resource type.
+type ResourceType string
+
+const (
+	// ResourceTypeDedicated ...
+	ResourceTypeDedicated ResourceType = "dedicated"
+	// ResourceTypeLowPriority ...
+	ResourceTypeLowPriority ResourceType = "lowPriority"
+	// ResourceTypeServiceSpecific ...
+	ResourceTypeServiceSpecific ResourceType = "serviceSpecific"
+	// ResourceTypeShared ...
+	ResourceTypeShared ResourceType = "shared"
+	// ResourceTypeStandard ...
+	ResourceTypeStandard ResourceType = "standard"
+)
+
+// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
+func PossibleResourceTypeValues() []ResourceType {
+	return []ResourceType{ResourceTypeDedicated, ResourceTypeLowPriority, ResourceTypeServiceSpecific, ResourceTypeShared, ResourceTypeStandard}
 }
 
 // StatusCode enumerates the values for status code.

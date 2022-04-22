@@ -336,8 +336,23 @@ func (cql *CurrentQuotaLimit) UnmarshalJSON(body []byte) error {
 // CurrentQuotaLimitBase quota properties.
 type CurrentQuotaLimitBase struct {
 	autorest.Response `json:"-"`
+	// ID - READ-ONLY; The quota request ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the quota request.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
+	Type *string `json:"type,omitempty"`
 	// Properties - Quota properties for the resource.
 	Properties *QuotaProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CurrentQuotaLimitBase.
+func (cqlb CurrentQuotaLimitBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cqlb.Properties != nil {
+		objectMap["properties"] = cqlb.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // Error ...
@@ -1675,8 +1690,8 @@ type QuotaProperties struct {
 	Unit *string `json:"unit,omitempty"`
 	// Name - Name of the resource provide by the resource provider. Use this property for quotaRequests resource operations.
 	Name *ResourceName `json:"name,omitempty"`
-	// ResourceType - The name of the resource type.
-	ResourceType interface{} `json:"resourceType,omitempty"`
+	// ResourceType - The name of the resource type. Possible values include: 'ResourceTypeStandard', 'ResourceTypeDedicated', 'ResourceTypeLowPriority', 'ResourceTypeShared', 'ResourceTypeServiceSpecific'
+	ResourceType ResourceType `json:"resourceType,omitempty"`
 	// QuotaPeriod - READ-ONLY; The time period over which the quota usage values are summarized. For example, P1D (per one day), PT1M (per one minute), and PT1S (per one second). This parameter is optional because, for some resources such as compute, the time period is irrelevant.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
 	// Properties - Additional properties for the specified resource provider.
@@ -1695,7 +1710,7 @@ func (qp QuotaProperties) MarshalJSON() ([]byte, error) {
 	if qp.Name != nil {
 		objectMap["name"] = qp.Name
 	}
-	if qp.ResourceType != nil {
+	if qp.ResourceType != "" {
 		objectMap["resourceType"] = qp.ResourceType
 	}
 	if qp.Properties != nil {
@@ -1938,8 +1953,8 @@ func NewQuotaRequestDetailsListPage(cur QuotaRequestDetailsList, getNextPage fun
 
 // QuotaRequestOneResourceProperties the details of quota request.
 type QuotaRequestOneResourceProperties struct {
-	// ProvisioningState - READ-ONLY; The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; User friendly status message.
 	Message *string `json:"message,omitempty"`
 	// RequestSubmitTime - READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
@@ -1968,7 +1983,7 @@ func (qrorp *QuotaRequestOneResourceProperties) UnmarshalJSON(body []byte) error
 		switch k {
 		case "provisioningState":
 			if v != nil {
-				var provisioningState interface{}
+				var provisioningState QuotaRequestState
 				err = json.Unmarshal(*v, &provisioningState)
 				if err != nil {
 					return err
@@ -2082,8 +2097,8 @@ func (qrorsr *QuotaRequestOneResourceSubmitResponse) UnmarshalJSON(body []byte) 
 
 // QuotaRequestProperties the details of quota request.
 type QuotaRequestProperties struct {
-	// ProvisioningState - The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; User friendly status message.
 	Message *string `json:"message,omitempty"`
 	// RequestSubmitTime - READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
@@ -2095,7 +2110,7 @@ type QuotaRequestProperties struct {
 // MarshalJSON is the custom marshaler for QuotaRequestProperties.
 func (qrp QuotaRequestProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if qrp.ProvisioningState != nil {
+	if qrp.ProvisioningState != "" {
 		objectMap["provisioningState"] = qrp.ProvisioningState
 	}
 	if qrp.Value != nil {
@@ -2106,8 +2121,8 @@ func (qrp QuotaRequestProperties) MarshalJSON() ([]byte, error) {
 
 // QuotaRequestStatusDetails quota request status details.
 type QuotaRequestStatusDetails struct {
-	// ProvisioningState - READ-ONLY; The details of the quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The details of the quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; A user friendly message.
 	Message *string `json:"message,omitempty"`
 }
@@ -2631,8 +2646,8 @@ type SubRequest struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Unit -  The limit units, such as **count** and **bytes**. Use the unit field provided in the response of the GET quota operation.
 	Unit *string `json:"unit,omitempty"`
-	// ProvisioningState - The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; User-friendly status message.
 	Message *string `json:"message,omitempty"`
 	// SubRequestID - READ-ONLY; Sub request ID for individual request.
@@ -2648,7 +2663,7 @@ func (sr SubRequest) MarshalJSON() ([]byte, error) {
 	if sr.Unit != nil {
 		objectMap["unit"] = sr.Unit
 	}
-	if sr.ProvisioningState != nil {
+	if sr.ProvisioningState != "" {
 		objectMap["provisioningState"] = sr.ProvisioningState
 	}
 	return json.Marshal(objectMap)

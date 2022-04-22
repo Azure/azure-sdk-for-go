@@ -18,6 +18,23 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-01-01/subscriptions"
 
+// AvailabilityZonePeers list of availability zones shared by the subscriptions.
+type AvailabilityZonePeers struct {
+	// AvailabilityZone - READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+	// Peers - Details of shared availability zone.
+	Peers *[]Peers `json:"peers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AvailabilityZonePeers.
+func (azp AvailabilityZonePeers) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if azp.Peers != nil {
+		objectMap["peers"] = azp.Peers
+	}
+	return json.Marshal(objectMap)
+}
+
 // CheckResourceNameResult resource Name valid if not a reserved word, does not contain a reserved word and
 // does not start with a reserved word
 type CheckResourceNameResult struct {
@@ -28,6 +45,37 @@ type CheckResourceNameResult struct {
 	Type *string `json:"type,omitempty"`
 	// Status - Is the resource name Allowed or Reserved. Possible values include: 'ResourceNameStatusAllowed', 'ResourceNameStatusReserved'
 	Status ResourceNameStatus `json:"status,omitempty"`
+}
+
+// CheckZonePeersRequest check zone peers request parameters.
+type CheckZonePeersRequest struct {
+	// Location - The Microsoft location.
+	Location *string `json:"location,omitempty"`
+	// SubscriptionIds - The peer Microsoft Azure subscription ID.
+	SubscriptionIds *[]string `json:"subscriptionIds,omitempty"`
+}
+
+// CheckZonePeersResult result of the Check zone peers operation.
+type CheckZonePeersResult struct {
+	autorest.Response `json:"-"`
+	// SubscriptionID - READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// Location - the location of the subscription.
+	Location *string `json:"location,omitempty"`
+	// AvailabilityZonePeers - The Availability Zones shared by the subscriptions.
+	AvailabilityZonePeers *[]AvailabilityZonePeers `json:"availabilityZonePeers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckZonePeersResult.
+func (czpr CheckZonePeersResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if czpr.Location != nil {
+		objectMap["location"] = czpr.Location
+	}
+	if czpr.AvailabilityZonePeers != nil {
+		objectMap["availabilityZonePeers"] = czpr.AvailabilityZonePeers
+	}
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response for a resource management request.
@@ -327,161 +375,10 @@ type OperationDisplay struct {
 // OperationListResult result of the request to list Microsoft.Resources operations. It contains a list of
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
-	autorest.Response `json:"-"`
 	// Value - List of Microsoft.Resources operations.
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// OperationListResultIterator provides access to a complete listing of Operation values.
-type OperationListResultIterator struct {
-	i    int
-	page OperationListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *OperationListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter OperationListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter OperationListResultIterator) Response() OperationListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter OperationListResultIterator) Value() Operation {
-	if !iter.page.NotDone() {
-		return Operation{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the OperationListResultIterator type.
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return OperationListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (olr OperationListResult) IsEmpty() bool {
-	return olr.Value == nil || len(*olr.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (olr OperationListResult) hasNextLink() bool {
-	return olr.NextLink != nil && len(*olr.NextLink) != 0
-}
-
-// operationListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if !olr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(olr.NextLink)))
-}
-
-// OperationListResultPage contains a page of Operation values.
-type OperationListResultPage struct {
-	fn  func(context.Context, OperationListResult) (OperationListResult, error)
-	olr OperationListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.olr)
-		if err != nil {
-			return err
-		}
-		page.olr = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *OperationListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page OperationListResultPage) NotDone() bool {
-	return !page.olr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page OperationListResultPage) Response() OperationListResult {
-	return page.olr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page OperationListResultPage) Values() []Operation {
-	if page.olr.IsEmpty() {
-		return nil
-	}
-	return *page.olr.Value
-}
-
-// Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{
-		fn:  getNextPage,
-		olr: cur,
-	}
 }
 
 // PairedRegion information regarding paired region.
@@ -496,6 +393,20 @@ type PairedRegion struct {
 
 // MarshalJSON is the custom marshaler for PairedRegion.
 func (pr PairedRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// Peers information about shared availability zone.
+type Peers struct {
+	// SubscriptionID - READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// AvailabilityZone - READ-ONLY; The availabilityZone.
+	AvailabilityZone *string `json:"availabilityZone,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Peers.
+func (p Peers) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

@@ -21,14 +21,14 @@ type SetDefinitionsClient struct {
 }
 
 // NewSetDefinitionsClient creates an instance of the SetDefinitionsClient client.
-func NewSetDefinitionsClient() SetDefinitionsClient {
-	return NewSetDefinitionsClientWithBaseURI(DefaultBaseURI)
+func NewSetDefinitionsClient(subscriptionID string) SetDefinitionsClient {
+	return NewSetDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSetDefinitionsClientWithBaseURI creates an instance of the SetDefinitionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSetDefinitionsClientWithBaseURI(baseURI string) SetDefinitionsClient {
-	return SetDefinitionsClient{NewWithBaseURI(baseURI)}
+func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) SetDefinitionsClient {
+	return SetDefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate this operation creates or updates a policy set definition in the given subscription with the given
@@ -36,8 +36,7 @@ func NewSetDefinitionsClientWithBaseURI(baseURI string) SetDefinitionsClient {
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to create.
 // parameters - the policy set definition properties.
-// subscriptionID - the ID of the target subscription.
-func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, subscriptionID string) (result SetDefinition, err error) {
+func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySetDefinitionName string, parameters SetDefinition) (result SetDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SetDefinitionsClient.CreateOrUpdate")
 		defer func() {
@@ -55,7 +54,7 @@ func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySet
 		return result, validation.NewError("policy.SetDefinitionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, policySetDefinitionName, parameters, subscriptionID)
+	req, err := client.CreateOrUpdatePreparer(ctx, policySetDefinitionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -78,10 +77,10 @@ func (client SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySet
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client SetDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, subscriptionID string) (*http.Request, error) {
+func (client SetDefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policySetDefinitionName string, parameters SetDefinition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", subscriptionID),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -212,8 +211,7 @@ func (client SetDefinitionsClient) CreateOrUpdateAtManagementGroupResponder(resp
 // Delete this operation deletes the policy set definition in the given subscription with the given name.
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to delete.
-// subscriptionID - the ID of the target subscription.
-func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string, subscriptionID string) (result autorest.Response, err error) {
+func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SetDefinitionsClient.Delete")
 		defer func() {
@@ -224,7 +222,7 @@ func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefiniti
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, policySetDefinitionName, subscriptionID)
+	req, err := client.DeletePreparer(ctx, policySetDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -247,10 +245,10 @@ func (client SetDefinitionsClient) Delete(ctx context.Context, policySetDefiniti
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SetDefinitionsClient) DeletePreparer(ctx context.Context, policySetDefinitionName string, subscriptionID string) (*http.Request, error) {
+func (client SetDefinitionsClient) DeletePreparer(ctx context.Context, policySetDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", subscriptionID),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -361,8 +359,7 @@ func (client SetDefinitionsClient) DeleteAtManagementGroupResponder(resp *http.R
 // Get this operation retrieves the policy set definition in the given subscription with the given name.
 // Parameters:
 // policySetDefinitionName - the name of the policy set definition to get.
-// subscriptionID - the ID of the target subscription.
-func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string, subscriptionID string) (result SetDefinition, err error) {
+func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string) (result SetDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SetDefinitionsClient.Get")
 		defer func() {
@@ -373,7 +370,7 @@ func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, policySetDefinitionName, subscriptionID)
+	req, err := client.GetPreparer(ctx, policySetDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -396,10 +393,10 @@ func (client SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionN
 }
 
 // GetPreparer prepares the Get request.
-func (client SetDefinitionsClient) GetPreparer(ctx context.Context, policySetDefinitionName string, subscriptionID string) (*http.Request, error) {
+func (client SetDefinitionsClient) GetPreparer(ctx context.Context, policySetDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policySetDefinitionName": autorest.Encode("path", policySetDefinitionName),
-		"subscriptionId":          autorest.Encode("path", subscriptionID),
+		"subscriptionId":          autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -592,7 +589,6 @@ func (client SetDefinitionsClient) GetBuiltInResponder(resp *http.Response) (res
 // $filter='category -eq {value}' is provided, the returned list only includes all policy set definitions whose
 // category match the {value}.
 // Parameters:
-// subscriptionID - the ID of the target subscription.
 // filter - the filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
 // -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
 // $filter=atExactScope() is provided, the returned list only includes all policy set definitions that at the
@@ -601,7 +597,7 @@ func (client SetDefinitionsClient) GetBuiltInResponder(resp *http.Response) (res
 // Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy set
 // definitions whose category match the {value}.
 // top - maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-func (client SetDefinitionsClient) List(ctx context.Context, subscriptionID string, filter string, top *int32) (result SetDefinitionListResultPage, err error) {
+func (client SetDefinitionsClient) List(ctx context.Context, filter string, top *int32) (result SetDefinitionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SetDefinitionsClient.List")
 		defer func() {
@@ -622,7 +618,7 @@ func (client SetDefinitionsClient) List(ctx context.Context, subscriptionID stri
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, subscriptionID, filter, top)
+	req, err := client.ListPreparer(ctx, filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.SetDefinitionsClient", "List", nil, "Failure preparing request")
 		return
@@ -649,9 +645,9 @@ func (client SetDefinitionsClient) List(ctx context.Context, subscriptionID stri
 }
 
 // ListPreparer prepares the List request.
-func (client SetDefinitionsClient) ListPreparer(ctx context.Context, subscriptionID string, filter string, top *int32) (*http.Request, error) {
+func (client SetDefinitionsClient) ListPreparer(ctx context.Context, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -713,7 +709,7 @@ func (client SetDefinitionsClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SetDefinitionsClient) ListComplete(ctx context.Context, subscriptionID string, filter string, top *int32) (result SetDefinitionListResultIterator, err error) {
+func (client SetDefinitionsClient) ListComplete(ctx context.Context, filter string, top *int32) (result SetDefinitionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SetDefinitionsClient.List")
 		defer func() {
@@ -724,7 +720,7 @@ func (client SetDefinitionsClient) ListComplete(ctx context.Context, subscriptio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, subscriptionID, filter, top)
+	result.page, err = client.List(ctx, filter, top)
 	return
 }
 

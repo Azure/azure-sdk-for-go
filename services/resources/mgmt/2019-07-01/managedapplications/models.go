@@ -926,6 +926,8 @@ type ApplicationPackageContact struct {
 type ApplicationPackageLockingPolicyDefinition struct {
 	// AllowedActions - The deny assignment excluded actions.
 	AllowedActions *[]string `json:"allowedActions,omitempty"`
+	// AllowedDataActions - The deny assignment excluded data actions.
+	AllowedDataActions *[]string `json:"allowedDataActions,omitempty"`
 }
 
 // ApplicationPackageSupportUrls the appliance package support URLs.
@@ -1394,15 +1396,45 @@ func (future *ApplicationsRefreshPermissionsFuture) result(client ApplicationsCl
 	return
 }
 
-// ErrorResponse error response indicates managed application is not able to process the incoming request.
-// The reason is provided in the error message.
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
 type ErrorResponse struct {
-	// HTTPStatus - Http status code.
-	HTTPStatus *string `json:"httpStatus,omitempty"`
-	// ErrorCode - Error code.
-	ErrorCode *string `json:"errorCode,omitempty"`
-	// ErrorMessage - Error message indicating why the operation failed.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // GenericResource resource information.
@@ -1713,14 +1745,20 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list Microsoft.Solutions operations. It contains a list of
-// operations and a URL link to get the next set of results.
+// OperationListResult a list of REST API operations supported by an Azure Resource Provider. It contains
+// an URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Microsoft.Solutions operations.
+	// Value - READ-ONLY; List of operations supported by the resource provider
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.

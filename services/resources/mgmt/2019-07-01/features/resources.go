@@ -733,7 +733,7 @@ func (client ResourcesClient) GetByIDResponder(resp *http.Response) (result Gene
 // plan/name, identity and identity/principalId.
 // expand - comma-separated list of additional properties to be included in the response. Valid values include
 // `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-// top - the number of results to return. If null is passed, returns all resource groups.
+// top - the number of results to return. If null is passed, returns all resources.
 func (client ResourcesClient) List(ctx context.Context, filter string, expand string, top *int32) (result ResourceListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.List")

@@ -722,7 +722,7 @@ func (client Client) GetByIDResponder(resp *http.Response) (result GenericResour
 // Parameters:
 // filter - the filter to apply on the operation.
 // expand - the $expand query parameter.
-// top - the number of results to return. If null is passed, returns all resource groups.
+// top - the number of results to return. If null is passed, returns all resources.
 func (client Client) List(ctx context.Context, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")

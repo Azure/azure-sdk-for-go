@@ -909,9 +909,9 @@ type ExpressRouteLinkMacSecCipher string
 
 const (
 	// GcmAes128 ...
-	GcmAes128 ExpressRouteLinkMacSecCipher = "gcm-aes-128"
+	GcmAes128 ExpressRouteLinkMacSecCipher = "GcmAes128"
 	// GcmAes256 ...
-	GcmAes256 ExpressRouteLinkMacSecCipher = "gcm-aes-256"
+	GcmAes256 ExpressRouteLinkMacSecCipher = "GcmAes256"
 )
 
 // PossibleExpressRouteLinkMacSecCipherValues returns an array of possible values for the ExpressRouteLinkMacSecCipher const type.

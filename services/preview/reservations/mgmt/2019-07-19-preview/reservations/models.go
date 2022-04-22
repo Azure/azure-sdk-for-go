@@ -110,6 +110,16 @@ type AppliedReservationsProperties struct {
 	ReservationOrderIds *AppliedReservationList `json:"reservationOrderIds,omitempty"`
 }
 
+// AppliedScopeProperties ...
+type AppliedScopeProperties struct {
+	// TenantID - Tenant ID of the applied scope type
+	TenantID *string `json:"tenantId,omitempty"`
+	// ManagementGroupID - Management group ID of the format /providers/Microsoft.Management/managementGroups/{managementGroupId}
+	ManagementGroupID *string `json:"managementGroupId,omitempty"`
+	// DisplayName - Management group display name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // AqiSettings settings for auto quota increase.
 type AqiSettings struct {
 	// AutoQuotaIncreaseState - If the subscription has enabled automatic quota increase.
@@ -222,6 +232,12 @@ type CalculatePriceResponse struct {
 type CalculatePriceResponseProperties struct {
 	// BillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency. Tax is not included.
 	BillingCurrencyTotal *CalculatePriceResponsePropertiesBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
+	// NetTotal - Net total
+	NetTotal *float64 `json:"netTotal,omitempty"`
+	// TaxTotal - Tax total
+	TaxTotal *float64 `json:"taxTotal,omitempty"`
+	// GrandTotal - Grand Total
+	GrandTotal *float64 `json:"grandTotal,omitempty"`
 	// IsBillingPartnerManaged - True if billing is managed by Microsoft Partner. Used only for CSP accounts.
 	IsBillingPartnerManaged *bool `json:"isBillingPartnerManaged,omitempty"`
 	// ReservationOrderID - GUID that represents reservation order that can be placed after calculating price.
@@ -257,6 +273,8 @@ type Catalog struct {
 	Name *string `json:"name,omitempty"`
 	// BillingPlans - The billing plan options available for this SKU.
 	BillingPlans map[string][]ReservationBillingPlan `json:"billingPlans"`
+	// Msrp - The sku's MSRP values for each term
+	Msrp map[string]interface{} `json:"msrp"`
 	// Terms - READ-ONLY; Available reservation terms for this resource
 	Terms *[]ReservationTerm `json:"terms,omitempty"`
 	// Locations - READ-ONLY
@@ -272,6 +290,9 @@ func (c Catalog) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.BillingPlans != nil {
 		objectMap["billingPlans"] = c.BillingPlans
+	}
+	if c.Msrp != nil {
+		objectMap["msrp"] = c.Msrp
 	}
 	return json.Marshal(objectMap)
 }
@@ -600,6 +621,14 @@ func (mr *MergeRequest) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// MsrpProperty ...
+type MsrpProperty struct {
+	// CurrencyCode - Represents the currency code - 3 character ISO.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+	// Amount - Represents the amount of money in the currency.
+	Amount *float64 `json:"amount,omitempty"`
 }
 
 // OperationDisplay ...
@@ -1211,11 +1240,13 @@ type PropertiesType struct {
 	SkuDescription     *string             `json:"skuDescription,omitempty"`
 	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
 	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
-	BillingPlan     ReservationBillingPlan `json:"billingPlan,omitempty"`
-	SplitProperties *SplitPropertiesType   `json:"splitProperties,omitempty"`
-	MergeProperties *MergePropertiesType   `json:"mergeProperties,omitempty"`
-	BillingScopeID  *string                `json:"billingScopeId,omitempty"`
-	Renew           *bool                  `json:"renew,omitempty"`
+	BillingPlan            ReservationBillingPlan  `json:"billingPlan,omitempty"`
+	SplitProperties        *SplitPropertiesType    `json:"splitProperties,omitempty"`
+	MergeProperties        *MergePropertiesType    `json:"mergeProperties,omitempty"`
+	SwapProperties         *SwapProperties         `json:"swapProperties,omitempty"`
+	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
+	BillingScopeID         *string                 `json:"billingScopeId,omitempty"`
+	Renew                  *bool                   `json:"renew,omitempty"`
 	// RenewSource - Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
 	RenewSource *string `json:"renewSource,omitempty"`
 	// RenewDestination - Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
@@ -1223,6 +1254,10 @@ type PropertiesType struct {
 	RenewProperties  *RenewPropertiesResponse `json:"renewProperties,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term ReservationTerm `json:"term,omitempty"`
+	// Archived - Property to determine if a reservation is archived or not
+	Archived *bool `json:"archived,omitempty"`
+	// Capabilities - List the Capabilities of a reservation
+	Capabilities *string `json:"capabilities,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PropertiesType.
@@ -1270,6 +1305,12 @@ func (pt PropertiesType) MarshalJSON() ([]byte, error) {
 	if pt.MergeProperties != nil {
 		objectMap["mergeProperties"] = pt.MergeProperties
 	}
+	if pt.SwapProperties != nil {
+		objectMap["swapProperties"] = pt.SwapProperties
+	}
+	if pt.AppliedScopeProperties != nil {
+		objectMap["appliedScopeProperties"] = pt.AppliedScopeProperties
+	}
 	if pt.BillingScopeID != nil {
 		objectMap["billingScopeId"] = pt.BillingScopeID
 	}
@@ -1287,6 +1328,12 @@ func (pt PropertiesType) MarshalJSON() ([]byte, error) {
 	}
 	if pt.Term != "" {
 		objectMap["term"] = pt.Term
+	}
+	if pt.Archived != nil {
+		objectMap["archived"] = pt.Archived
+	}
+	if pt.Capabilities != nil {
+		objectMap["capabilities"] = pt.Capabilities
 	}
 	return json.Marshal(objectMap)
 }
@@ -1360,7 +1407,9 @@ func (pr *PurchaseRequest) UnmarshalJSON(body []byte) error {
 type PurchaseRequestProperties struct {
 	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
-	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
+	// InstanceFlexibility - Possible values include: 'On', 'Off'
+	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
+	BillingScopeID      *string             `json:"billingScopeId,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term ReservationTerm `json:"term,omitempty"`
 	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
@@ -2384,8 +2433,9 @@ func (r Response) MarshalJSON() ([]byte, error) {
 
 // ScopeProperties ...
 type ScopeProperties struct {
-	Scope *string `json:"scope,omitempty"`
-	Valid *bool   `json:"valid,omitempty"`
+	Scope  *string `json:"scope,omitempty"`
+	Valid  *bool   `json:"valid,omitempty"`
+	Reason *string `json:"reason,omitempty"`
 }
 
 // ServiceError the api error details.
@@ -2607,4 +2657,12 @@ type SupportRequestAction struct {
 	PreferredContactMethod interface{} `json:"preferredContactMethod,omitempty"`
 	// AlternateEmailAddresses - The alternate email address of the recipient.
 	AlternateEmailAddresses *[]string `json:"alternateEmailAddresses,omitempty"`
+}
+
+// SwapProperties ...
+type SwapProperties struct {
+	// SwapSource - Resource Id of the Source Reservation that gets swapped. Format of the resource Id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapSource *string `json:"swapSource,omitempty"`
+	// SwapDestination - Reservation Resource Id that the original resource gets swapped to. Format of the resource Id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
+	SwapDestination *string `json:"swapDestination,omitempty"`
 }

@@ -930,18 +930,14 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 		time.Sleep(10 * delay())
 		pager := client.NewListDeletedCertificatesPager(nil)
 		listCount := 0
-		forPurge := []string{}
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			require.NoError(t, err)
-			for i := range page.Certificates {
-				forPurge = append(forPurge, names[i])
-				listCount += 1
-			}
+			listCount += len(page.Certificates)
 		}
 		if listCount == createdCount {
 			// success
-			for _, name := range forPurge {
+			for _, name := range names {
 				purgeCert(t, client, name)
 			}
 			deletedCount = listCount

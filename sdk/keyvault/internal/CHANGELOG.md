@@ -1,14 +1,16 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.4.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Updated `ExpiringResource` and its dependent types to use generics.
 
 ### Bugs Fixed
 
 ### Other Changes
+* Remove reference to `TokenRequestOptions.TenantID` as it's been removed and wasn't working anyways.
 
 ## 0.3.0 (2022-04-04)
 

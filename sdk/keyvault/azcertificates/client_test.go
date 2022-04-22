@@ -945,6 +945,7 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 				purgeCert(t, client, name)
 			}
 			deletedCount = listCount
+			break
 		}
 	}
 	require.Equal(t, createdCount, deletedCount)

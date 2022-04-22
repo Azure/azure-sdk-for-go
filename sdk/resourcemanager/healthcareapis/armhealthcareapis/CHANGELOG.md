@@ -1,5 +1,14 @@
 # Release History
 
+## 0.5.0 (2022-04-22)
+### Features Added
+
+- New struct `FhirServiceImportConfiguration`
+- New struct `ServiceImportConfigurationInfo`
+- New field `ImportConfiguration` in struct `ServicesProperties`
+- New field `ImportConfiguration` in struct `FhirServiceProperties`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

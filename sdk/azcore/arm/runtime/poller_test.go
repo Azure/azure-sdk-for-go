@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -153,7 +153,7 @@ func TestNewPollerLoc(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&loc.Poller{}) {
+	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&armloc.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()

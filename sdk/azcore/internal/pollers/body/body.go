@@ -10,7 +10,6 @@ import (
 	"errors"
 	"net/http"
 
-	armpollers "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -48,7 +47,7 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	// default initial state to InProgress.  depending on the HTTP
 	// status code and provisioning state, we might change the value.
 	curState := pollers.StatusInProgress
-	provState, err := armpollers.GetProvisioningState(resp)
+	provState, err := pollers.GetProvisioningState(resp)
 	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return nil, err
 	}
@@ -85,7 +84,7 @@ func (p *Poller) Update(resp *http.Response) error {
 		p.CurState = pollers.StatusSucceeded
 		return nil
 	}
-	state, err := armpollers.GetProvisioningState(resp)
+	state, err := pollers.GetProvisioningState(resp)
 	if errors.Is(err, pollers.ErrNoBody) {
 		// a missing response body in non-204 case is an error
 		return err

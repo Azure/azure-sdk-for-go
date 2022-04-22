@@ -13,6 +13,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* The functionality in `arm/runtime/poller.go` has been merged into `runtime/poller.go` so it should be used instead.
+  * `arm/runtime/poller.go` will be removed in a future release.
 
 ## 0.23.1 (2022-04-14)
 

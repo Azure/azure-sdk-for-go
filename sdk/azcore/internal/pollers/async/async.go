@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"net/http"
 
-	armpollers "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -68,7 +67,7 @@ func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string)
 		FinalState: finalState,
 	}
 	// check for provisioning state
-	state, err := armpollers.GetProvisioningState(resp)
+	state, err := pollers.GetProvisioningState(resp)
 	if errors.Is(err, pollers.ErrNoBody) || state == "" {
 		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
 		// contain a provisioning state.  to maintain compat with track 1 and other implementations
@@ -93,7 +92,7 @@ func (p *Poller) Done() bool {
 
 // Update updates the Poller from the polling response.
 func (p *Poller) Update(resp *http.Response) error {
-	state, err := armpollers.GetStatus(resp)
+	state, err := pollers.GetStatus(resp)
 	if err != nil {
 		return err
 	} else if state == "" {

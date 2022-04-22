@@ -16,6 +16,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/op"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -65,14 +68,28 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	}
 	// determine the polling method
 	var lro pollers.Operation
-	// op poller must be checked first as it can also have a location header
-	if op.Applicable(resp) {
+	if async.Applicable(resp) {
+		// async poller must be checked first as it can also have a location header
+		lro, err = async.New(resp, options.FinalStateVia, tName)
+	} else if op.Applicable(resp) {
+		// op poller must be checked before loc as it can also have a location header
 		lro, err = op.New(resp, options.FinalStateVia, tName)
+	} else if armloc.Applicable(resp) {
+		lro, err = armloc.New(resp, tName)
 	} else if loc.Applicable(resp) {
 		lro, err = loc.New(resp, options.FinalStateVia, tName)
+	} else if body.Applicable(resp) {
+		// must test body poller last as it's a subset of the other pollers.
+		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
+		lro, err = body.New(resp, tName)
+	} else if m := resp.Request.Method; resp.StatusCode == http.StatusAccepted && (m == http.MethodDelete || m == http.MethodPost) {
+		// if we get here it means we have a 202 with no polling headers.
+		// for DELETE and POST this is a hard error per ARM RPC spec.
+		return nil, errors.New("response is missing polling URL")
 	} else {
 		lro = &pollers.NopPoller{}
 	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -105,6 +122,15 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	// now rehydrate the poller based on the encoded poller type
 	var lro pollers.Operation
 	switch kind {
+	case async.Kind:
+		log.Writef(log.EventLRO, "Resuming %s poller.", async.Kind)
+		lro = &async.Poller{}
+	case armloc.Kind:
+		log.Writef(log.EventLRO, "Resuming %s poller.", armloc.Kind)
+		lro = &armloc.Poller{}
+	case body.Kind:
+		log.Writef(log.EventLRO, "Resuming %s poller.", body.Kind)
+		lro = &body.Poller{}
 	case loc.Kind:
 		log.Writef(log.EventLRO, "Resuming %s poller.", loc.Kind)
 		lro = &loc.Poller{}

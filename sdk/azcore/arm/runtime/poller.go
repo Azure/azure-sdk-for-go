@@ -6,6 +6,8 @@
 
 package runtime
 
+// NOTE: this file will be deleted in a future release
+
 import (
 	"context"
 	"encoding/json"
@@ -14,10 +16,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -50,6 +52,7 @@ type NewPollerOptions[T any] struct {
 }
 
 // NewPoller creates a Poller based on the provided initial response.
+// Deprecated: use azcore/runtime.NewPoller instead.
 func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPollerOptions[T]) (*Poller[T], error) {
 	if options == nil {
 		options = &NewPollerOptions[T]{}
@@ -68,8 +71,8 @@ func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPoll
 	var lro pollers.Operation
 	if async.Applicable(resp) {
 		lro, err = async.New(resp, options.FinalStateVia, tName)
-	} else if loc.Applicable(resp) {
-		lro, err = loc.New(resp, tName)
+	} else if armloc.Applicable(resp) {
+		lro, err = armloc.New(resp, tName)
 	} else if body.Applicable(resp) {
 		// must test body poller last as it's a subset of the other pollers.
 		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
@@ -98,6 +101,7 @@ type NewPollerFromResumeTokenOptions[T any] struct {
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
+// Deprecated: use azcore/runtime.NewPollerFromResumeToken instead.
 func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options *NewPollerFromResumeTokenOptions[T]) (*Poller[T], error) {
 	if options == nil {
 		options = &NewPollerFromResumeTokenOptions[T]{}
@@ -116,9 +120,9 @@ func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options 
 	case async.Kind:
 		log.Writef(log.EventLRO, "Resuming %s poller.", async.Kind)
 		lro = &async.Poller{}
-	case loc.Kind:
-		log.Writef(log.EventLRO, "Resuming %s poller.", loc.Kind)
-		lro = &loc.Poller{}
+	case armloc.Kind:
+		log.Writef(log.EventLRO, "Resuming %s poller.", armloc.Kind)
+		lro = &armloc.Poller{}
 	case body.Kind:
 		log.Writef(log.EventLRO, "Resuming %s poller.", body.Kind)
 		lro = &body.Poller{}
@@ -142,6 +146,7 @@ type PollUntilDoneOptions struct {
 }
 
 // Poller encapsulates a long-running operation, providing polling facilities until the operation reaches a terminal state.
+// Deprecated: use azcore/runtime.Poller[T] instead.
 type Poller[T any] struct {
 	pt *pollers.Poller
 	rt *T

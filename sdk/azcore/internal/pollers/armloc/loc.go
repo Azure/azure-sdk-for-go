@@ -4,17 +4,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package loc
+package armloc
 
 import (
 	"errors"
 	"fmt"
 	"net/http"
 
-	armpollers "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -72,9 +71,9 @@ func (p *Poller) Update(resp *http.Response) error {
 	if h := resp.Header.Get(shared.HeaderLocation); h != "" {
 		p.PollURL = h
 	}
-	if runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+	if exported.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		// if a 200/201 returns a provisioning state, use that instead
-		state, err := armpollers.GetProvisioningState(resp)
+		state, err := pollers.GetProvisioningState(resp)
 		if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 			return err
 		}

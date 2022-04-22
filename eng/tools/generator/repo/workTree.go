@@ -19,6 +19,7 @@ type WorkTree interface {
 	Add(path string) error
 	Commit(message string) error
 	Checkout(opt *CheckoutOptions) error
+	CheckoutTag(tag string) error
 	CreateBranch(branch *Branch) error
 	DeleteBranch(name string) error
 	CherryPick(commit string) error
@@ -135,6 +136,16 @@ func (r *repository) checkoutBranch(branch string, create bool) error {
 
 func (r *repository) checkoutHash(hash string) error {
 	cmd := exec.Command("git", "checkout", hash)
+	cmd.Dir = r.root
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf(string(output))
+	}
+	return nil
+}
+
+func (r *repository) CheckoutTag(tag string) error {
+	cmd := exec.Command("git", "checkout", tag)
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {

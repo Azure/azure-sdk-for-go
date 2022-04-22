@@ -926,20 +926,24 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 	// for live tests, there's a delay between creating the cert and when
 	// it shows up when listing them which can cause spurious test failures.
 	// add a few retries to hopefully mask over it.
-	for i := 0; i < 3; i++ {
+	for j := 0; j < 3; j++ {
 		time.Sleep(10 * delay())
 		pager := client.NewListDeletedCertificatesPager(nil)
 		listCount := 0
+		forPurge := []string{}
 		for pager.More() {
 			page, err := pager.NextPage(ctx)
 			require.NoError(t, err)
 			for i := range page.Certificates {
-				purgeCert(t, client, names[i])
+				forPurge = append(forPurge, names[i])
 				listCount += 1
 			}
 		}
 		if listCount == createdCount {
 			// success
+			for _, name := range forPurge {
+				purgeCert(t, client, name)
+			}
 			deletedCount = listCount
 		}
 	}

@@ -4,8 +4,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Deprecated: use azcore/runtime instead.
 package runtime
+
+// NOTE: this file will be deleted in a future release
 
 import (
 	"context"
@@ -51,6 +52,7 @@ type NewPollerOptions[T any] struct {
 }
 
 // NewPoller creates a Poller based on the provided initial response.
+// Deprecated: use azcore/runtime.NewPoller instead.
 func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPollerOptions[T]) (*Poller[T], error) {
 	if options == nil {
 		options = &NewPollerOptions[T]{}
@@ -99,6 +101,7 @@ type NewPollerFromResumeTokenOptions[T any] struct {
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
+// Deprecated: use azcore/runtime.NewPollerFromResumeToken instead.
 func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options *NewPollerFromResumeTokenOptions[T]) (*Poller[T], error) {
 	if options == nil {
 		options = &NewPollerFromResumeTokenOptions[T]{}
@@ -143,6 +146,7 @@ type PollUntilDoneOptions struct {
 }
 
 // Poller encapsulates a long-running operation, providing polling facilities until the operation reaches a terminal state.
+// Deprecated: use azcore/runtime.Poller[T] instead.
 type Poller[T any] struct {
 	pt *pollers.Poller
 	rt *T

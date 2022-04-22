@@ -56,7 +56,12 @@ func (client SpatialAnchorsAccountsClient) Create(ctx context.Context, resourceG
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: spatialAnchorsAccount,
+			Constraints: []validation.Constraint{{Target: "spatialAnchorsAccount.Sku", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "spatialAnchorsAccount.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
+				{Target: "spatialAnchorsAccount.Kind", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "spatialAnchorsAccount.Kind.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("mixedreality.SpatialAnchorsAccountsClient", "Create", err.Error())
 	}
 

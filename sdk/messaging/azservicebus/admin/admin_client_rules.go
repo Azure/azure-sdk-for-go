@@ -33,7 +33,7 @@ type RuleFilter interface {
 	ruleFilter()
 }
 
-// RuleFilter is an action for a subscription rule.
+// RuleAction is an action for a subscription rule.
 // Implemented by: *SQLAction
 type RuleAction interface {
 	ruleAction()

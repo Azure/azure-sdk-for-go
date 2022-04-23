@@ -298,21 +298,19 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 
 	defer cleanupTopic()
 
+	expectedRetryOptions := RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Second,
+		MaxRetryDelay: time.Millisecond,
+	}
+
 	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
-		RetryOptions: RetryOptions{
-			MaxRetries:    1,
-			RetryDelay:    time.Second,
-			MaxRetryDelay: time.Millisecond,
-		},
+		RetryOptions: expectedRetryOptions,
 	})
 	require.NoError(t, err)
 
 	actualNS := client.namespace.(*internal.Namespace)
-	require.Equal(t, RetryOptions{
-		MaxRetries:    1,
-		RetryDelay:    time.Second,
-		MaxRetryDelay: time.Millisecond,
-	}, actualNS.RetryOptions)
+	require.Equal(t, expectedRetryOptions, actualNS.RetryOptions)
 
 	queueSender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
@@ -334,41 +332,25 @@ func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, sessionReceiver.Close(context.Background()))
 
-	require.Equal(t, RetryOptions{
-		MaxRetries:    101,
-		RetryDelay:    6 * time.Hour,
-		MaxRetryDelay: 12 * time.Hour,
-	}, sessionReceiver.inner.retryOptions)
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
 
 	sessionReceiver, err = client.AcceptSessionForSubscription(context.Background(), topic, "sub", "hello", nil)
 	require.NoError(t, err)
 	require.NoError(t, sessionReceiver.Close(context.Background()))
 
-	require.Equal(t, RetryOptions{
-		MaxRetries:    101,
-		RetryDelay:    6 * time.Hour,
-		MaxRetryDelay: 12 * time.Hour,
-	}, sessionReceiver.inner.retryOptions)
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
 
 	sessionReceiver, err = client.AcceptNextSessionForQueue(context.Background(), queue, nil)
 	require.NoError(t, err)
 	require.NoError(t, sessionReceiver.Close(context.Background()))
 
-	require.Equal(t, RetryOptions{
-		MaxRetries:    101,
-		RetryDelay:    6 * time.Hour,
-		MaxRetryDelay: 12 * time.Hour,
-	}, sessionReceiver.inner.retryOptions)
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
 
 	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
 	require.NoError(t, err)
 	require.NoError(t, sessionReceiver.Close(context.Background()))
 
-	require.Equal(t, RetryOptions{
-		MaxRetries:    101,
-		RetryDelay:    6 * time.Hour,
-		MaxRetryDelay: 12 * time.Hour,
-	}, sessionReceiver.inner.retryOptions)
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
 }
 
 func TestNewClientUnitTests(t *testing.T) {

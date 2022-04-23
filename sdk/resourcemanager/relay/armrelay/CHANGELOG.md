@@ -1,5 +1,110 @@
 # Release History
 
+## 0.6.0 (2022-04-23)
+### Breaking Changes
+
+- Type of `NamespaceProperties.ProvisioningState` has been changed from `*ProvisioningStateEnum` to `*string`
+- Type of `SKU.Name` has been changed from `*string` to `*SKUName`
+- Type of `SKU.Tier` has been changed from `*string` to `*SKUTier`
+- Const `ProvisioningStateEnumUpdating` has been removed
+- Const `ProvisioningStateEnumDeleted` has been removed
+- Const `ProvisioningStateEnumUnknown` has been removed
+- Const `ProvisioningStateEnumCreated` has been removed
+- Const `ProvisioningStateEnumFailed` has been removed
+- Const `ProvisioningStateEnumSucceeded` has been removed
+- Function `PossibleProvisioningStateEnumValues` has been removed
+- Field `Code` of struct `ErrorResponse` has been removed
+- Field `Message` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New const `EndPointProvisioningStateCanceled`
+- New const `PublicNetworkAccessSecuredByPerimeter`
+- New const `EndPointProvisioningStateDeleting`
+- New const `DefaultActionDeny`
+- New const `EndPointProvisioningStateFailed`
+- New const `PrivateLinkConnectionStatusPending`
+- New const `PrivateLinkConnectionStatusRejected`
+- New const `CreatedByTypeManagedIdentity`
+- New const `EndPointProvisioningStateUpdating`
+- New const `PrivateLinkConnectionStatusApproved`
+- New const `SKUTierStandard`
+- New const `SKUNameStandard`
+- New const `PrivateLinkConnectionStatusDisconnected`
+- New const `EndPointProvisioningStateSucceeded`
+- New const `DefaultActionAllow`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeUser`
+- New const `PublicNetworkAccessDisabled`
+- New const `CreatedByTypeKey`
+- New const `NetworkRuleIPActionAllow`
+- New const `EndPointProvisioningStateCreating`
+- New const `PublicNetworkAccessEnabled`
+- New function `PossibleEndPointProvisioningStateValues() []EndPointProvisioningState`
+- New function `PossibleSKUTierValues() []SKUTier`
+- New function `NetworkRuleSetProperties.MarshalJSON() ([]byte, error)`
+- New function `PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleDefaultActionValues() []DefaultAction`
+- New function `PrivateEndpointConnectionListResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction`
+- New function `*NamespacesClient.GetNetworkRuleSet(context.Context, string, string, *NamespacesClientGetNetworkRuleSetOptions) (NamespacesClientGetNetworkRuleSetResponse, error)`
+- New function `PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `PrivateLinkResourcesListResult.MarshalJSON() ([]byte, error)`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `PossibleSKUNameValues() []SKUName`
+- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
+- New function `ErrorDetail.MarshalJSON() ([]byte, error)`
+- New function `*NamespacesClient.CreateOrUpdateNetworkRuleSet(context.Context, string, string, NetworkRuleSet, *NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New struct `ConnectionState`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `NWRuleSetIPRules`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetOptions`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse`
+- New struct `NamespacesClientGetNetworkRuleSetOptions`
+- New struct `NamespacesClientGetNetworkRuleSetResponse`
+- New struct `NetworkRuleSet`
+- New struct `NetworkRuleSetProperties`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesListResult`
+- New struct `ProxyResource`
+- New struct `SystemData`
+- New field `Status` in struct `NamespaceProperties`
+- New field `PrivateEndpointConnections` in struct `NamespaceProperties`
+- New field `PublicNetworkAccess` in struct `NamespaceProperties`
+- New field `IsDataAction` in struct `Operation`
+- New field `Origin` in struct `Operation`
+- New field `Properties` in struct `Operation`
+- New field `Error` in struct `ErrorResponse`
+- New field `Location` in struct `HybridConnection`
+- New field `SystemData` in struct `HybridConnection`
+- New field `Location` in struct `WcfRelay`
+- New field `SystemData` in struct `WcfRelay`
+- New field `SystemData` in struct `Namespace`
+- New field `Location` in struct `AuthorizationRule`
+- New field `SystemData` in struct `AuthorizationRule`
+- New field `Description` in struct `OperationDisplay`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

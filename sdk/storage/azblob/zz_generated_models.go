@@ -9,6 +9,7 @@
 package azblob
 
 import (
+	"encoding/base64"
 	"encoding/xml"
 	"time"
 )
@@ -309,7 +310,7 @@ func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 	aux := &struct {
 		*alias
 		AccessTierChangeTime        *timeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5                  *[]byte      `xml:"Content-MD5"`
+		ContentMD5                  *string      `xml:"Content-MD5"`
 		CopyCompletionTime          *timeRFC1123 `xml:"CopyCompletionTime"`
 		CreationTime                *timeRFC1123 `xml:"Creation-Time"`
 		DeletedTime                 *timeRFC1123 `xml:"DeletedTime"`
@@ -331,6 +332,15 @@ func (b *BlobPropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartEle
 	b.ImmutabilityPolicyExpiresOn = (*time.Time)(aux.ImmutabilityPolicyExpiresOn)
 	b.LastAccessedOn = (*time.Time)(aux.LastAccessedOn)
 	b.LastModified = (*time.Time)(aux.LastModified)
+	if aux.ContentMD5 != nil {
+		// ContentMD5 is a Base64 encoded version of the MD5. Other APIs use the direct bytes,
+		// so this decodes the MD5 to match.
+		contentMD5, err := base64.StdEncoding.DecodeString(*aux.ContentMD5)
+		if err != nil {
+			return err
+		}
+		b.ContentMD5 = contentMD5
+	}
 	return nil
 }
 

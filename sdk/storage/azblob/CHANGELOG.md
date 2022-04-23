@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* ContentMD5 is returned for ListBlobsFlat where appropriate.
+
 ### Other Changes
 
 ## 0.4.0 (2022-04-19)

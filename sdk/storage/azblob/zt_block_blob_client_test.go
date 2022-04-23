@@ -1349,6 +1349,40 @@ func (s *azblobTestSuite) TestSetStandardBlobTierWithRehydratePriority() {
 	_require.Equal(*getResp2.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 }
 
+func (s *azblobTestSuite) TestContentMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := "content_md5_test_blob"
+
+	bbClient, _ := getBlockBlobClient(blobName, containerClient)
+	reader, data := generateData(1024)
+
+	expectedContentMD5 := md5.Sum(data)
+
+	_, err = bbClient.Upload(ctx, reader, nil)
+	_require.Nil(err)
+
+	pager := containerClient.ListBlobsFlat(nil)
+	var blobs []*BlobItemInternal
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
+	}
+	_require.Nil(pager.Err())
+	_require.GreaterOrEqual(len(blobs), 1)
+	_require.Equal(blobs[0].Properties.ContentMD5, expectedContentMD5[:])
+}
+
 func (s *azblobTestSuite) TestRehydrateStatus() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

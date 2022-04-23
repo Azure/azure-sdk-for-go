@@ -45,7 +45,8 @@ type (
 
 		newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)
 
-		retryOptions exported.RetryOptions
+		// NOTE: exported only so it can be checked in a test
+		RetryOptions exported.RetryOptions
 
 		clientMu         sync.RWMutex
 		client           *amqp.Client
@@ -133,7 +134,7 @@ func NamespaceWithTokenCredential(fullyQualifiedNamespace string, tokenCredentia
 
 func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOption {
 	return func(ns *Namespace) error {
-		ns.retryOptions = retryOptions
+		ns.RetryOptions = retryOptions
 		return nil
 	}
 }
@@ -407,7 +408,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError, ns.retryOptions)
+					}, IsFatalSBError, ns.RetryOptions)
 
 					if err == nil {
 						break

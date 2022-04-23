@@ -283,6 +283,76 @@ func TestClientNewSessionReceiverCancel(t *testing.T) {
 	require.Nil(t, receiver)
 }
 
+func TestClientPropagatesRetryOptionsForSessions(t *testing.T) {
+	connectionString := test.GetConnectionString(t)
+
+	queue, cleanupQueue := createQueue(t, connectionString, &admin.QueueProperties{
+		RequiresSession: to.Ptr(true),
+	})
+
+	defer cleanupQueue()
+
+	topic, cleanupTopic := createSubscription(t, connectionString, nil, &admin.SubscriptionProperties{
+		RequiresSession: to.Ptr(true),
+	})
+
+	defer cleanupTopic()
+
+	expectedRetryOptions := RetryOptions{
+		MaxRetries:    1,
+		RetryDelay:    time.Second,
+		MaxRetryDelay: time.Millisecond,
+	}
+
+	client, err := NewClientFromConnectionString(connectionString, &ClientOptions{
+		RetryOptions: expectedRetryOptions,
+	})
+	require.NoError(t, err)
+
+	actualNS := client.namespace.(*internal.Namespace)
+	require.Equal(t, expectedRetryOptions, actualNS.RetryOptions)
+
+	queueSender, err := client.NewSender(queue, nil)
+	require.NoError(t, err)
+
+	topicSender, err := client.NewSender(topic, nil)
+	require.NoError(t, err)
+
+	err = queueSender.SendMessage(context.Background(), &Message{
+		SessionID: to.Ptr("hello"),
+	}, nil)
+	require.NoError(t, err)
+
+	err = topicSender.SendMessage(context.Background(), &Message{
+		SessionID: to.Ptr("hello"),
+	}, nil)
+	require.NoError(t, err)
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queue, "hello", nil)
+	require.NoError(t, err)
+	require.NoError(t, sessionReceiver.Close(context.Background()))
+
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
+
+	sessionReceiver, err = client.AcceptSessionForSubscription(context.Background(), topic, "sub", "hello", nil)
+	require.NoError(t, err)
+	require.NoError(t, sessionReceiver.Close(context.Background()))
+
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
+
+	sessionReceiver, err = client.AcceptNextSessionForQueue(context.Background(), queue, nil)
+	require.NoError(t, err)
+	require.NoError(t, sessionReceiver.Close(context.Background()))
+
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
+
+	sessionReceiver, err = client.AcceptNextSessionForSubscription(context.Background(), topic, "sub", nil)
+	require.NoError(t, err)
+	require.NoError(t, sessionReceiver.Close(context.Background()))
+
+	require.Equal(t, expectedRetryOptions, sessionReceiver.inner.retryOptions)
+}
+
 func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}
@@ -360,6 +430,67 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.NoError(t, client.Close(context.Background()))
 		require.Empty(t, client.links)
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
+	})
+
+	t.Run("RetryOptionsArePropagated", func(t *testing.T) {
+		// retry options are passed and copied along several routes, just make sure it's properly propagated.
+		// NOTE: session receivers are checked in a separate test because they require actual SB access.
+		client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, &ClientOptions{
+			RetryOptions: RetryOptions{
+				MaxRetries:    101,
+				RetryDelay:    6 * time.Hour,
+				MaxRetryDelay: 12 * time.Hour,
+			},
+		})
+
+		client.namespace = &internal.FakeNS{
+			AMQPLinks: &internal.FakeAMQPLinks{
+				Receiver: &internal.FakeAMQPReceiver{},
+			},
+		}
+
+		require.NoError(t, err)
+
+		require.Equal(t, RetryOptions{
+			MaxRetries:    101,
+			RetryDelay:    6 * time.Hour,
+			MaxRetryDelay: 12 * time.Hour,
+		}, client.retryOptions)
+
+		sender, err := client.NewSender("hello", nil)
+		require.NoError(t, err)
+
+		require.Equal(t, RetryOptions{
+			MaxRetries:    101,
+			RetryDelay:    6 * time.Hour,
+			MaxRetryDelay: 12 * time.Hour,
+		}, sender.retryOptions)
+
+		receiver, err := client.NewReceiverForQueue("hello", nil)
+		require.NoError(t, err)
+
+		require.Equal(t, RetryOptions{
+			MaxRetries:    101,
+			RetryDelay:    6 * time.Hour,
+			MaxRetryDelay: 12 * time.Hour,
+		}, receiver.retryOptions)
+
+		actualSettler := receiver.settler.(*messageSettler)
+
+		require.Equal(t, RetryOptions{
+			MaxRetries:    101,
+			RetryDelay:    6 * time.Hour,
+			MaxRetryDelay: 12 * time.Hour,
+		}, actualSettler.retryOptions)
+
+		subscriptionReceiver, err := client.NewReceiverForSubscription("hello", "world", nil)
+		require.NoError(t, err)
+
+		require.Equal(t, RetryOptions{
+			MaxRetries:    101,
+			RetryDelay:    6 * time.Hour,
+			MaxRetryDelay: 12 * time.Hour,
+		}, subscriptionReceiver.retryOptions)
 	})
 }
 

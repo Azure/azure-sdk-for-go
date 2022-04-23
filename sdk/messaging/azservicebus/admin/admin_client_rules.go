@@ -122,11 +122,11 @@ type CorrelationFilter struct {
 
 func (f *CorrelationFilter) ruleFilter() {}
 
-// UnknownRuleFilter is a rule type not yet handled by this SDK.
+// UnknownRuleFilter is a filter type not yet handled by this SDK.
 // If you get this type back you should update to a newer version of the SDK
 // which properly represents this type.
 type UnknownRuleFilter struct {
-	// Type is the Service Bus type for this action.
+	// Type is the Service Bus type for this filter.
 	Type string
 
 	// RawXML is the raw XML for this rule that could not be parsed.

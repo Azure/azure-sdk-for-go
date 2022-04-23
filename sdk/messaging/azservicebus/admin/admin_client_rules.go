@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"encoding/xml"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -19,11 +20,23 @@ import (
 type Rule struct {
 	// Filter is the filter that will be used for Rule.
 	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
-	Filter any
+	Filter RuleFilter
 
 	// Action is the action that will be used for Rule.
 	// Valid types: *SQLAction
-	Action any
+	Action RuleAction
+}
+
+// RuleFilter is a filter for a subscription rule.
+// Implemented by: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
+type RuleFilter interface {
+	ruleFilter()
+}
+
+// RuleFilter is an action for a subscription rule.
+// Implemented by: *SQLAction
+type RuleAction interface {
+	ruleAction()
 }
 
 // SQLAction is an action that updates a message according to its
@@ -36,6 +49,24 @@ type SQLAction struct {
 	Parameters map[string]interface{}
 }
 
+func (a *SQLAction) ruleAction() {}
+
+// UnknownRuleAction is an action type not yet handled by this SDK.
+// If you get this type back you should update to a newer version of the SDK
+// which properly represents this type.
+type UnknownRuleAction struct {
+	// Type is the Service Bus type for this action.
+	Type string
+
+	// RawXML is the raw XML for this action that could not be parsed.
+	RawXML string
+
+	// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+	RawAttrs []xml.Attr
+}
+
+func (a *UnknownRuleAction) ruleAction() {}
+
 // SQLFilter is a filter that evaluates to true for any message that matches
 // its expression.
 type SQLFilter struct {
@@ -46,11 +77,17 @@ type SQLFilter struct {
 	Parameters map[string]interface{}
 }
 
+func (f *SQLFilter) ruleFilter() {}
+
 // TrueFilter is a filter that always evaluates to true for any message.
 type TrueFilter struct{}
 
+func (f *TrueFilter) ruleFilter() {}
+
 // FalseFilter is a filter that always evaluates to false for any message.
 type FalseFilter struct{}
+
+func (f *FalseFilter) ruleFilter() {}
 
 // CorrelationFilter represents a set of conditions that are matched against user
 // and system properties of messages for a subscription.
@@ -83,18 +120,36 @@ type CorrelationFilter struct {
 	To *string
 }
 
+func (f *CorrelationFilter) ruleFilter() {}
+
+// UnknownRuleFilter is a rule type not yet handled by this SDK.
+// If you get this type back you should update to a newer version of the SDK
+// which properly represents this type.
+type UnknownRuleFilter struct {
+	// Type is the Service Bus type for this action.
+	Type string
+
+	// RawXML is the raw XML for this rule that could not be parsed.
+	RawXML string
+
+	// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+	RawAttrs []xml.Attr
+}
+
+func (f *UnknownRuleFilter) ruleFilter() {}
+
 // RuleProperties are the properties for a rule.
 type RuleProperties struct {
 	// Name is the name of this rule.
 	Name string
 
-	// Filter is the filter for this rule.
+	// Filter is the filter that will be used for Rule.
 	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
-	Filter any
+	Filter RuleFilter
 
-	// Action is the action for this rule.
+	// Action is the action that will be used for Rule.
 	// Valid types: *SQLAction
-	Action any
+	Action RuleAction
 }
 
 // CreateRuleResponse contains the response fields for Client.CreateRule
@@ -107,13 +162,13 @@ type CreateRuleOptions struct {
 	// Name is the name of the rule or nil, which will default to $Default
 	Name *string
 
-	// Filter is the filter for this rule
+	// Filter is the filter that will be used for Rule.
 	// Valid types: *SQLFilter, *CorrelationFilter, *FalseFilter, *TrueFilter
-	Filter any
+	Filter RuleFilter
 
-	// Action is the action for this rule
+	// Action is the action that will be used for Rule.
 	// Valid types: *SQLAction
-	Action any
+	Action RuleAction
 }
 
 // CreateRule creates a rule that can filter and update message for a subscription.
@@ -158,7 +213,7 @@ func (ac *Client) GetRule(ctx context.Context, topicName string, subscriptionNam
 		return mapATOMError[GetRuleResponse](err)
 	}
 
-	props, err := newRuleProperties(ruleEnv)
+	props, err := newRuleProperties(ruleEnv, ac.rulesAndActionsAreUnknown)
 
 	if err != nil {
 		return nil, err
@@ -190,7 +245,9 @@ func (ac *Client) NewListRulesPager(topicName string, subscriptionName string, o
 	}
 
 	ep := &entityPager[atom.RuleFeed, atom.RuleEnvelope, RuleProperties]{
-		convertFn:    newRuleProperties,
+		convertFn: func(t *atom.RuleEnvelope) (*RuleProperties, error) {
+			return newRuleProperties(t, ac.rulesAndActionsAreUnknown)
+		},
 		baseFragment: fmt.Sprintf("/%s/Subscriptions/%s/Rules/", topicName, subscriptionName),
 		maxPageSize:  pageSize,
 		em:           ac.em,
@@ -297,6 +354,10 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 			}
 
 			ourFilter.CorrelationFilter.Properties = appProps
+		case *UnknownRuleFilter:
+			ourFilter.Type = actualFilter.Type
+			ourFilter.RawXML = actualFilter.RawXML
+			ourFilter.RawAttrs = actualFilter.RawAttrs
 		default:
 			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Filter", theirFilter)
 		}
@@ -323,6 +384,12 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 
 			ourAction.SQLExpression = actualAction.Expression
 			ourAction.Parameters = params
+		case *UnknownRuleAction:
+			ruleDesc.Action = &atom.ActionDescription{
+				Type:     actualAction.Type,
+				RawXML:   actualAction.RawXML,
+				RawAttrs: actualAction.RawAttrs,
+			}
 		default:
 			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Action", theirAction)
 		}
@@ -356,12 +423,12 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 		return nil, nil, err
 	}
 
-	respProps, err := newRuleProperties(respEnv)
+	respProps, err := newRuleProperties(respEnv, ac.rulesAndActionsAreUnknown)
 
 	return respProps, httpResp, err
 }
 
-func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
+func newRuleProperties(env *atom.RuleEnvelope, rulesAndActionsAreUnknown bool) (*RuleProperties, error) {
 	desc := env.Content.RuleDescription
 
 	props := RuleProperties{
@@ -404,8 +471,14 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 			Expression: *desc.Filter.SQLExpression,
 			Parameters: params,
 		}
-	default:
-		return nil, fmt.Errorf("filter for rule %s, with type %s, is not handled", env.Title, desc.Filter.Type)
+	}
+
+	if rulesAndActionsAreUnknown || props.Filter == nil {
+		props.Filter = &UnknownRuleFilter{
+			Type:     desc.Filter.Type,
+			RawXML:   desc.Filter.RawXML,
+			RawAttrs: desc.Filter.RawAttrs,
+		}
 	}
 
 	switch desc.Action.Type {
@@ -422,13 +495,29 @@ func newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 			Parameters: params,
 		}
 	default:
-		return nil, fmt.Errorf("action for rule %s, with type %s, is not handled", env.Title, desc.Action.Type)
+		props.Action = &UnknownRuleAction{
+			Type:     desc.Action.Type,
+			RawXML:   desc.Action.RawXML,
+			RawAttrs: desc.Action.RawAttrs,
+		}
+	}
+
+	if rulesAndActionsAreUnknown {
+		props.Action = &UnknownRuleAction{
+			Type:     desc.Action.Type,
+			RawXML:   desc.Action.RawXML,
+			RawAttrs: desc.Action.RawAttrs,
+		}
 	}
 
 	return &props, nil
 }
 
-func publicSQLParametersToInternal(publicParams map[string]interface{}) ([]atom.KeyValueOfstringanyType, error) {
+func publicSQLParametersToInternal(publicParams map[string]interface{}) (*atom.KeyValueList, error) {
+	if len(publicParams) == 0 {
+		return nil, nil
+	}
+
 	var params []atom.KeyValueOfstringanyType
 
 	for k, v := range publicParams {
@@ -484,13 +573,17 @@ func publicSQLParametersToInternal(publicParams map[string]interface{}) ([]atom.
 		}
 	}
 
-	return params, nil
+	return &atom.KeyValueList{KeyValues: params}, nil
 }
 
-func internalSQLParametersToPublic(internalParams []atom.KeyValueOfstringanyType) (map[string]interface{}, error) {
+func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interface{}, error) {
+	if kvlist == nil {
+		return nil, nil
+	}
+
 	params := map[string]interface{}{}
 
-	for _, p := range internalParams {
+	for _, p := range kvlist.KeyValues {
 		switch p.Value.Type {
 		case "d6p1:string":
 			params[p.Key] = p.Value.Text

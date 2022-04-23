@@ -63,6 +63,7 @@ func WrapWithSubscriptionEnvelope(sd *SubscriptionDescription) *SubscriptionEnve
 
 func WrapWithRuleEnvelope(rd *RuleDescription) *RuleEnvelope {
 	rd.XMLNS = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	rd.XMLNSI = "http://www.w3.org/2001/XMLSchema-instance"
 
 	return &RuleEnvelope{
 		Entry: &Entry{

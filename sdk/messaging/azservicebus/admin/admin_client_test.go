@@ -1244,21 +1244,67 @@ func TestAdminClient_GetDefaultRule(t *testing.T) {
 	require.Equal(t, updateRuleResp.RuleProperties, getResp.RuleProperties)
 }
 
-func TestAdminClient_CreateRuleWithInvalidTypes(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
-	require.NoError(t, err)
+func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
+	// NOTE: This test is a little weird - we basically override all "known" type handling for filters and
+	// actions and force them to go through our "unknown" filter handling.
+	//
+	// This allows the service to potentially upgrade in the future without breaking older clients. They get a
+	// relatively primitive object but they won't accidentally delete or slice filters when doing updates.
+	//
+	// Also, if they're willing to deserialize the XML themselves they can interact with filters until they
+	// update their azservicebus dependency.
 
-	_, err = adminClient.CreateRule(context.Background(), "any-topic", "any-sub", &CreateRuleOptions{
-		Name:   to.Ptr("some-name"),
-		Filter: "hello",
-	})
-	require.EqualError(t, err, "invalid type ('string') for Rule.Filter")
+	adminClient, topicName := createTestSub(t)
+	defer func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}()
 
-	_, err = adminClient.CreateRule(context.Background(), "any-topic", "any-sub", &CreateRuleOptions{
-		Name:   to.Ptr("some-name"),
-		Action: 42,
+	adminClient.rulesAndActionsAreUnknown = true
+
+	rp := RuleProperties{
+		Name: "ruleWithFilterAndAction",
+		Filter: &SQLFilter{
+			Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
+			Parameters: map[string]interface{}{
+				"@stringVar":   "hello world",
+				"@intVar":      int64(100),
+				"@floatVar":    float64(100.1),
+				"@dateTimeVar": time.Now().UTC(),
+				"@boolVar":     true,
+			},
+		},
+		Action: &SQLAction{
+			Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
+			Parameters: map[string]interface{}{
+				"@stringVar":   "hello world",
+				"@intVar":      int64(100),
+				"@floatVar":    float64(100.1),
+				"@dateTimeVar": time.Now().UTC(),
+				"@boolVar":     true,
+			},
+		},
+	}
+
+	createdRule, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
+		Name:   &rp.Name,
+		Filter: rp.Filter,
+		Action: rp.Action,
 	})
-	require.EqualError(t, err, "invalid type ('int') for Rule.Action")
+	require.NoError(t, err, fmt.Sprintf("Created rule %s", rp.Name))
+
+	_, err = adminClient.UpdateRule(context.Background(), topicName, "sub", createdRule.RuleProperties)
+	require.NoError(t, err, fmt.Sprintf("Updated rule %s succeeds", rp.Name))
+
+	// now let things get deserialized as normal, double check that we kept things intact.
+	adminClient.rulesAndActionsAreUnknown = false
+
+	getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", rp.Name, nil)
+	require.NoError(t, err, fmt.Sprintf("Get rule %s succeeds", rp.Name))
+
+	require.Equal(t, getResp, &GetRuleResponse{
+		RuleProperties: rp,
+	}, fmt.Sprintf("Get rule %s matches our rule", rp.Name))
 }
 
 func createTestSub(t *testing.T) (*Client, string) {

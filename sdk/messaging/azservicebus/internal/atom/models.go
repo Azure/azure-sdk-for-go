@@ -158,6 +158,7 @@ type (
 	RuleDescription struct {
 		XMLName xml.Name `xml:"RuleDescription"`
 		XMLNS   string   `xml:"xmlns,attr"`
+		XMLNSI  string   `xml:"xmlns:i,attr"`
 		BaseEntityDescription
 		CreatedAt string             `xml:"CreatedAt,omitempty"`
 		Filter    *FilterDescription `xml:"Filter,omitempty"`
@@ -183,11 +184,19 @@ type (
 	// into the subscription. The default rule has no associated annotation action.
 	FilterDescription struct {
 		XMLName xml.Name `xml:"Filter"`
+
+		// RawXML is any XML that wasn't covered by our known properties.
+		RawXML string `xml:",innerxml"`
+
+		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+		RawAttrs []xml.Attr `xml:",any,attr"`
+
 		CorrelationFilter
-		Type               string                    `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
-		SQLExpression      *string                   `xml:"SqlExpression,omitempty"`
-		CompatibilityLevel int                       `xml:"CompatibilityLevel,omitempty"`
-		Parameters         []KeyValueOfstringanyType `xml:"Parameters>KeyValueOfstringanyType,omitempty"`
+		Type               string  `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		SQLExpression      *string `xml:"SqlExpression,omitempty"`
+		CompatibilityLevel int     `xml:"CompatibilityLevel,omitempty"`
+
+		Parameters *KeyValueList `xml:"Parameters,omitempty"`
 	}
 
 	// ActionDescription describes an action upon a message that matches a filter
@@ -198,9 +207,15 @@ type (
 	// is selected into the subscription. The changes to the message properties are private to the message copied into
 	// the subscription.
 	ActionDescription struct {
-		Type          string                    `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
-		SQLExpression string                    `xml:"SqlExpression,omitempty"`
-		Parameters    []KeyValueOfstringanyType `xml:"Parameters>KeyValueOfstringanyType,omitempty"`
+		Type          string        `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		SQLExpression string        `xml:"SqlExpression,omitempty"`
+		Parameters    *KeyValueList `xml:"Parameters,omitempty"`
+
+		// RawXML is any XML that wasn't covered by our known properties.
+		RawXML string `xml:",innerxml"`
+
+		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+		RawAttrs []xml.Attr `xml:",any,attr"`
 	}
 
 	Value struct {
@@ -316,15 +331,19 @@ type (
 	// multiple match properties, the filter combines them as a logical AND condition, meaning for the filter to match,
 	// all conditions must match.
 	CorrelationFilter struct {
-		CorrelationID    *string                   `xml:"CorrelationId,omitempty"`
-		MessageID        *string                   `xml:"MessageId,omitempty"`
-		To               *string                   `xml:"To,omitempty"`
-		ReplyTo          *string                   `xml:"ReplyTo,omitempty"`
-		Label            *string                   `xml:"Label,omitempty"`
-		SessionID        *string                   `xml:"SessionId,omitempty"`
-		ReplyToSessionID *string                   `xml:"ReplyToSessionId,omitempty"`
-		ContentType      *string                   `xml:"ContentType,omitempty"`
-		Properties       []KeyValueOfstringanyType `xml:"Properties>KeyValueOfstringanyType,omitempty"`
+		CorrelationID    *string       `xml:"CorrelationId,omitempty"`
+		MessageID        *string       `xml:"MessageId,omitempty"`
+		To               *string       `xml:"To,omitempty"`
+		ReplyTo          *string       `xml:"ReplyTo,omitempty"`
+		Label            *string       `xml:"Label,omitempty"`
+		SessionID        *string       `xml:"SessionId,omitempty"`
+		ReplyToSessionID *string       `xml:"ReplyToSessionId,omitempty"`
+		ContentType      *string       `xml:"ContentType,omitempty"`
+		Properties       *KeyValueList `xml:"Properties,omitempty"`
+	}
+
+	KeyValueList struct {
+		KeyValues []KeyValueOfstringanyType `xml:"KeyValueOfstringanyType,omitempty"`
 	}
 )
 

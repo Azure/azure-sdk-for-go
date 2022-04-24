@@ -309,9 +309,9 @@ function TestAndGenerateReport($dir)
     $Env:AZURE_PASSWORD = "mock-test"
 
     # do test with corage report and convert to cobertura format
-    Write-Host "go cmd: go test -v -coverprofile coverage.txt | Tee-Object -FilePath output.txt"
+    Write-Host "go cmd: go test -v -coverprofile coverage.txt | Tee-Object -FilePath outfile.txt"
     go test -v -coverprofile coverage.txt | Tee-Object -FilePath outfile.txt
-    Write-Host "report.xml: Get-Content output.txt | go-junit-report > report.xml"
+    Write-Host "report.xml: Get-Content outfile.txt | go-junit-report > report.xml"
     Get-Content outfile.txt | go-junit-report > report.xml
     Write-Host "coverage.json: gocov convert ./coverage.txt > ./coverage.json"
     gocov convert ./coverage.txt > ./coverage.json

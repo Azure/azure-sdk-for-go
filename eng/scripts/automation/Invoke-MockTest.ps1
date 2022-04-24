@@ -34,7 +34,7 @@ $sdk = Get-GoModuleProperties $packageFolder
 ExecuteSingleTest $sdk $runLocalMockServer
 
 TestAndGenerateReport $packageFolder
-$testoutputFile = Join-Path $packageFolder output.txt
+$testoutputFile = Join-Path $packageFolder outfile.txt
 $all = (Select-String -Path $testoutputFile -Pattern "=== RUN").Matches.length
 $pass = (Select-String -Path $testoutputFile -Pattern "--- PASS").Matches.length
 $fail = (Select-String -Path $testoutputFile -Pattern "--- FAIL").Matches.length

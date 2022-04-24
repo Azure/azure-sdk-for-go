@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-04-24)
+### Breaking Changes
+
+- Function `*DpsCertificateClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CertificateBodyDescription, *DpsCertificateClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, CertificateResponse, *DpsCertificateClientCreateOrUpdateOptions)`
+- Type of `AsyncOperationResult.Error` has been changed from `*ErrorMesssage` to `*ErrorMessage`
+- Struct `ErrorMesssage` has been removed
+
+### Features Added
+
+- New struct `ErrorMessage`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

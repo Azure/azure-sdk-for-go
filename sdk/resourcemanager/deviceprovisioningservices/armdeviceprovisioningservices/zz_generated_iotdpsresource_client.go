@@ -87,7 +87,7 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, arguments)
@@ -162,7 +162,7 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, iotDpsDescription)
@@ -231,7 +231,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
@@ -292,7 +292,7 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -358,7 +358,7 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -404,7 +404,7 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -467,7 +467,7 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("asyncinfo", asyncinfo)
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -528,7 +528,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -589,7 +589,7 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -653,7 +653,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -712,7 +712,7 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -780,7 +780,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -841,7 +841,7 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -897,7 +897,7 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -953,7 +953,7 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1022,7 +1022,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1093,7 +1093,7 @@ func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, provisioningServiceTags)

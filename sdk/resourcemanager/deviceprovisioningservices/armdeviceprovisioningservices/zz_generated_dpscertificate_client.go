@@ -65,7 +65,7 @@ func NewDpsCertificateClient(subscriptionID string, credential azcore.TokenCrede
 // certificateDescription - The certificate body.
 // options - DpsCertificateClientCreateOrUpdateOptions contains the optional parameters for the DpsCertificateClient.CreateOrUpdate
 // method.
-func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateBodyDescription, options *DpsCertificateClientCreateOrUpdateOptions) (DpsCertificateClientCreateOrUpdateResponse, error) {
+func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateResponse, options *DpsCertificateClientCreateOrUpdateOptions) (DpsCertificateClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, certificateName, certificateDescription, options)
 	if err != nil {
 		return DpsCertificateClientCreateOrUpdateResponse{}, err
@@ -81,7 +81,7 @@ func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateBodyDescription, options *DpsCertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateResponse, options *DpsCertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -104,7 +104,7 @@ func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -193,7 +193,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -272,7 +272,7 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -333,7 +333,7 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certif
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -391,7 +391,7 @@ func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -479,7 +479,7 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 	if options != nil && options.CertificateNonce != nil {
 		reqQP.Set("certificate.nonce", *options.CertificateNonce)
 	}
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")

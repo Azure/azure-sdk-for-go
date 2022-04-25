@@ -7,11 +7,14 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
@@ -27,23 +30,27 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
+// NewClientWithKey creates a new instance of Cosmos client with shared key authentication. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{newSharedKeyCredPolicy(cred)}, o)}, nil
 }
 
-// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
+// NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
+	scope, err := createScopeFromEndpoint(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{runtime.NewBearerTokenPolicy(cred, scope, nil), newCosmosBearerTokenPolicy()}, o)}, nil
 }
 
-func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
+func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -51,13 +58,22 @@ func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pip
 	return azruntime.NewPipeline("azcosmos", serviceLibVersion,
 		azruntime.PipelineOptions{
 			PerCall: []policy.Policy{
-				authPolicy,
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 				},
 			},
+			PerRetry: authPolicy,
 		},
 		&options.ClientOptions)
+}
+
+func createScopeFromEndpoint(endpoint string) ([]string, error) {
+	u, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	
+	return []string{fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())}, nil
 }
 
 // NewDatabase returns a struct that represents a database and allows database level operations.

@@ -17,18 +17,18 @@ type Event = log.Event
 const (
 	// EventRequest entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
-	EventRequest = log.EventRequest
+	EventRequest Event = "Request"
 
 	// EventResponse entries contain information about HTTP responses.
 	// This includes information like the HTTP status code, headers, and request URL.
-	EventResponse = log.EventResponse
+	EventResponse Event = "Response"
 
 	// EventRetryPolicy entries contain information specific to the retry policy in use.
-	EventRetryPolicy = log.EventRetryPolicy
+	EventRetryPolicy Event = "Retry"
 
 	// EventLRO entries contain information specific to long-running operations.
-	// This includes information like polling location, operation state and sleep intervals.
-	EventLRO = log.EventLRO
+	// This includes information like polling location, operation state, and sleep intervals.
+	EventLRO Event = "LongRunningOperation"
 )
 
 // SetEvents is used to control which events are written to

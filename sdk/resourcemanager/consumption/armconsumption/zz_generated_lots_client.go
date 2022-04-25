@@ -51,9 +51,8 @@ func NewLotsClient(credential azcore.TokenCredential, options *arm.ClientOptions
 	return client, nil
 }
 
-// NewListByBillingAccountPager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account
-// or a billing profile. Microsoft Azure consumption commitments are only supported for the billing account
-// scope.
+// NewListByBillingAccountPager - Lists all Microsoft Azure consumption commitments for a billing account. The API is only
+// supported for Microsoft Customer Agreements (MCA) and Direct Enterprise Agreement (EA) billing accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // options - LotsClientListByBillingAccountOptions contains the optional parameters for the LotsClient.ListByBillingAccount
@@ -116,9 +115,8 @@ func (client *LotsClient) listByBillingAccountHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// NewListByBillingProfilePager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account
-// or a billing profile. Microsoft Azure consumption commitments are only supported for the billing account
-// scope.
+// NewListByBillingProfilePager - Lists all Azure credits for a billing account or a billing profile. The API is only supported
+// for Microsoft Customer Agreements (MCA) billing accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // billingProfileID - Azure Billing Profile ID.
@@ -183,9 +181,8 @@ func (client *LotsClient) listByBillingProfileHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// NewListByCustomerPager - Lists all Azure credits and Microsoft Azure consumption commitments for a billing account or a
-// billing profile and a customer. Microsoft Azure consumption commitments are only supported for the
-// billing account scope.
+// NewListByCustomerPager - Lists all Azure credits for a customer. The API is only supported for Microsoft Partner Agreements
+// (MPA) billing accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
 // billingAccountID - BillingAccount ID
 // customerID - Customer ID

@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 * Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
+* Renamed `cloud.AzurePublicCloud` to `cloud.AzurePublic`
 * Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
 * Removed `TokenRequestOptions.TenantID`
 * `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`

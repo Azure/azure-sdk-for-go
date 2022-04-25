@@ -156,7 +156,7 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 }
 
 func Test_WellKnownHosts(t *testing.T) {
-	for _, cloud := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublicCloud} {
+	for _, cloud := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
 		host, err := setAuthorityHost(cloud)
 		if err != nil {
 			t.Fatal(err)
@@ -196,7 +196,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != cloud.AzurePublicCloud.ActiveDirectoryAuthorityHost {
+	if authorityHost != cloud.AzurePublic.ActiveDirectoryAuthorityHost {
 		t.Fatal("unexpected default host: " + authorityHost)
 	}
 }

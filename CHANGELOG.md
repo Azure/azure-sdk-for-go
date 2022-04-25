@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v63.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-03-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-08-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-03-02-preview/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+
 ## `v63.3.0`
 
 ### New Packages
@@ -10,7 +25,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.3.0/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
 
 ## `v63.2.0`
 

@@ -1030,6 +1030,9 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	})
 
 	t.Run("ruleWithSQLFilterWithParams", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithSQLFilterWithParams",
 			Filter: &SQLFilter{
@@ -1038,7 +1041,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
-					"@dateTimeVar": time.Now().UTC(),
+					"@dateTimeVar": dt,
 					"@boolVar":     true,
 				},
 			},
@@ -1065,6 +1068,9 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	})
 
 	t.Run("ruleWithAction", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithAction",
 			Action: &SQLAction{
@@ -1073,7 +1079,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
-					"@dateTimeVar": time.Now().UTC(),
+					"@dateTimeVar": dt,
 					"@boolVar":     true,
 				},
 			},
@@ -1081,6 +1087,9 @@ func TestAdminClient_CreateRules(t *testing.T) {
 	})
 
 	t.Run("ruleWithFilterAndAction", func(t *testing.T) {
+		dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+		require.NoError(t, err)
+
 		assertRuleCRUD(t, RuleProperties{
 			Name: "ruleWithFilterAndAction",
 			Filter: &SQLFilter{
@@ -1089,7 +1098,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
-					"@dateTimeVar": time.Now().UTC(),
+					"@dateTimeVar": dt,
 					"@boolVar":     true,
 				},
 			},
@@ -1099,7 +1108,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
-					"@dateTimeVar": time.Now().UTC(),
+					"@dateTimeVar": dt,
 					"@boolVar":     true,
 				},
 			},
@@ -1262,6 +1271,9 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 
 	adminClient.rulesAndActionsAreUnknown = true
 
+	dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
+	require.NoError(t, err)
+
 	rp := RuleProperties{
 		Name: "ruleWithFilterAndAction",
 		Filter: &SQLFilter{
@@ -1270,7 +1282,7 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 				"@stringVar":   "hello world",
 				"@intVar":      int64(100),
 				"@floatVar":    float64(100.1),
-				"@dateTimeVar": time.Now().UTC(),
+				"@dateTimeVar": dt,
 				"@boolVar":     true,
 			},
 		},
@@ -1280,7 +1292,7 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 				"@stringVar":   "hello world",
 				"@intVar":      int64(100),
 				"@floatVar":    float64(100.1),
-				"@dateTimeVar": time.Now().UTC(),
+				"@dateTimeVar": dt,
 				"@boolVar":     true,
 			},
 		},

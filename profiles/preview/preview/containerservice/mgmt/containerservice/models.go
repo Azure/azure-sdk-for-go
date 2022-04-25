@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-01-02-preview/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-03-02-preview/containerservice"
 )
 
 const (
@@ -240,7 +240,8 @@ const (
 type SnapshotType = original.SnapshotType
 
 const (
-	SnapshotTypeNodePool SnapshotType = original.SnapshotTypeNodePool
+	SnapshotTypeManagedCluster SnapshotType = original.SnapshotTypeManagedCluster
+	SnapshotTypeNodePool       SnapshotType = original.SnapshotTypeNodePool
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -474,6 +475,8 @@ type AgentPoolsClient = original.AgentPoolsClient
 type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
 type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
 type AgentPoolsUpgradeNodeImageVersionFuture = original.AgentPoolsUpgradeNodeImageVersionFuture
+type AzureEntityResource = original.AzureEntityResource
+type AzureKeyVaultKms = original.AzureKeyVaultKms
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -506,6 +509,8 @@ type ManagedClusterAutoUpgradeProfile = original.ManagedClusterAutoUpgradeProfil
 type ManagedClusterHTTPProxyConfig = original.ManagedClusterHTTPProxyConfig
 type ManagedClusterIdentity = original.ManagedClusterIdentity
 type ManagedClusterIdentityUserAssignedIdentitiesValue = original.ManagedClusterIdentityUserAssignedIdentitiesValue
+type ManagedClusterIngressProfile = original.ManagedClusterIngressProfile
+type ManagedClusterIngressProfileWebAppRouting = original.ManagedClusterIngressProfileWebAppRouting
 type ManagedClusterListResult = original.ManagedClusterListResult
 type ManagedClusterListResultIterator = original.ManagedClusterListResultIterator
 type ManagedClusterListResultPage = original.ManagedClusterListResultPage
@@ -526,10 +531,22 @@ type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfil
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
+type ManagedClusterPropertiesForSnapshot = original.ManagedClusterPropertiesForSnapshot
 type ManagedClusterSKU = original.ManagedClusterSKU
 type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
 type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
+type ManagedClusterSecurityProfileWorkloadIdentity = original.ManagedClusterSecurityProfileWorkloadIdentity
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
+type ManagedClusterSnapshot = original.ManagedClusterSnapshot
+type ManagedClusterSnapshotListResult = original.ManagedClusterSnapshotListResult
+type ManagedClusterSnapshotListResultIterator = original.ManagedClusterSnapshotListResultIterator
+type ManagedClusterSnapshotListResultPage = original.ManagedClusterSnapshotListResultPage
+type ManagedClusterSnapshotProperties = original.ManagedClusterSnapshotProperties
+type ManagedClusterSnapshotsClient = original.ManagedClusterSnapshotsClient
+type ManagedClusterStorageProfile = original.ManagedClusterStorageProfile
+type ManagedClusterStorageProfileDiskCSIDriver = original.ManagedClusterStorageProfileDiskCSIDriver
+type ManagedClusterStorageProfileFileCSIDriver = original.ManagedClusterStorageProfileFileCSIDriver
+type ManagedClusterStorageProfileSnapshotController = original.ManagedClusterStorageProfileSnapshotController
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
 type ManagedClusterWindowsProfile = original.ManagedClusterWindowsProfile
@@ -539,12 +556,14 @@ type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClustersResetAADProfileFuture = original.ManagedClustersResetAADProfileFuture
 type ManagedClustersResetServicePrincipalProfileFuture = original.ManagedClustersResetServicePrincipalProfileFuture
 type ManagedClustersRotateClusterCertificatesFuture = original.ManagedClustersRotateClusterCertificatesFuture
+type ManagedClustersRotateServiceAccountSigningKeysFuture = original.ManagedClustersRotateServiceAccountSigningKeysFuture
 type ManagedClustersRunCommandFuture = original.ManagedClustersRunCommandFuture
 type ManagedClustersStartFuture = original.ManagedClustersStartFuture
 type ManagedClustersStopFuture = original.ManagedClustersStopFuture
 type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
+type NetworkProfileForSnapshot = original.NetworkProfileForSnapshot
 type OSOptionProfile = original.OSOptionProfile
 type OSOptionProperty = original.OSOptionProperty
 type OSOptionPropertyList = original.OSOptionPropertyList
@@ -567,6 +586,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
 type ResolvePrivateLinkServiceIDClient = original.ResolvePrivateLinkServiceIDClient
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
@@ -586,6 +606,7 @@ type SystemData = original.SystemData
 type TagsObject = original.TagsObject
 type TimeInWeek = original.TimeInWeek
 type TimeSpan = original.TimeSpan
+type TrackedResource = original.TrackedResource
 type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
 type WindowsGmsaProfile = original.WindowsGmsaProfile
@@ -622,6 +643,18 @@ func NewManagedClusterListResultIterator(page ManagedClusterListResultPage) Mana
 }
 func NewManagedClusterListResultPage(cur ManagedClusterListResult, getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
 	return original.NewManagedClusterListResultPage(cur, getNextPage)
+}
+func NewManagedClusterSnapshotListResultIterator(page ManagedClusterSnapshotListResultPage) ManagedClusterSnapshotListResultIterator {
+	return original.NewManagedClusterSnapshotListResultIterator(page)
+}
+func NewManagedClusterSnapshotListResultPage(cur ManagedClusterSnapshotListResult, getNextPage func(context.Context, ManagedClusterSnapshotListResult) (ManagedClusterSnapshotListResult, error)) ManagedClusterSnapshotListResultPage {
+	return original.NewManagedClusterSnapshotListResultPage(cur, getNextPage)
+}
+func NewManagedClusterSnapshotsClient(subscriptionID string) ManagedClusterSnapshotsClient {
+	return original.NewManagedClusterSnapshotsClient(subscriptionID)
+}
+func NewManagedClusterSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) ManagedClusterSnapshotsClient {
+	return original.NewManagedClusterSnapshotsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedClustersClient(subscriptionID string) ManagedClustersClient {
 	return original.NewManagedClustersClient(subscriptionID)

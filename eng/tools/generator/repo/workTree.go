@@ -27,6 +27,10 @@ type WorkTree interface {
 	StashPop() error
 	Head() (*plumbing.Reference, error)
 	Tags() (storer.ReferenceIter, error)
+	Remotes() ([]*git.Remote, error)
+	DeleteRemote(name string) error
+	CreateRemote(c *config.RemoteConfig) (*git.Remote, error)
+	Fetch(o *git.FetchOptions) error
 }
 
 type CheckoutOptions git.CheckoutOptions

@@ -354,6 +354,22 @@ func TestSendQuery(t *testing.T) {
 	}
 }
 
+func TestCreateScopeFromEndpoint(t *testing.T) {
+	url := "https://foo.documents.azure.com:443/"
+	scope, err := createScopeFromEndpoint(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if scope[0] != "https://foo.documents.azure.com/.default" {
+		t.Errorf("Expected %v, but got %v", "https://foo.documents.azure.com/.default", scope[0])
+	}
+
+	if len(scope) != 1 {
+		t.Errorf("Expected %v, but got %v", 1, len(scope))
+	}
+}
+
 type pipelineVerifier struct {
 	requests []pipelineVerifierRequest
 }

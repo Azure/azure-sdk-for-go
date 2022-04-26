@@ -72,7 +72,7 @@ func createScopeFromEndpoint(endpoint string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return []string{fmt.Sprintf("%s://%s/.default", u.Scheme, u.Hostname())}, nil
 }
 

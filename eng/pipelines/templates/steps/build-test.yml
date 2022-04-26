@@ -48,6 +48,9 @@ steps:
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
+      parameters:
+        targetVersion: '1.0.0-dev.20220224.2'
+
 
   - task: PowerShell@2
     displayName: 'Run Tests'

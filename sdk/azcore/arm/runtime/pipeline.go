@@ -46,7 +46,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azr
 }
 
 func getConfiguration(o *azpolicy.ClientOptions) (cloud.ServiceConfiguration, error) {
-	c := cloud.AzurePublicCloud
+	c := cloud.AzurePublic
 	if !reflect.ValueOf(o.Cloud).IsZero() {
 		c = o.Cloud
 	}

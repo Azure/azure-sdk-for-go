@@ -17,7 +17,7 @@ func init() {
 		Audience: "https://management.core.usgovcloudapi.net",
 		Endpoint: "https://management.usgovcloudapi.net",
 	}
-	cloud.AzurePublicCloud.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
+	cloud.AzurePublic.Services[cloud.ResourceManager] = cloud.ServiceConfiguration{
 		Audience: "https://management.core.windows.net/",
 		Endpoint: "https://management.azure.com",
 	}

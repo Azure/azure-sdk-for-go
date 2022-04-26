@@ -14,9 +14,9 @@ Creating the Client
 
 Types of Credentials
 The clients support different forms of authentication. The azcosmos library supports
-any of the `azcore.TokenCredential` interfaces and authorization via account keys.
+authorization via Azure Active Directory or an account key.
 
-Using `azcore.TokenCredential`
+Using Azure Active Directory
 To create a client, you can use any of the TokenCredential implementations provided by `azidentity`.
 	cred, err := azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
 	client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)

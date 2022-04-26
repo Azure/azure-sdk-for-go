@@ -10,7 +10,7 @@ package armdataprotection
 
 const (
 	moduleName    = "armdataprotection"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 type AbsoluteMarker string
@@ -46,6 +46,21 @@ func PossibleAlertsStateValues() []AlertsState {
 	return []AlertsState{
 		AlertsStateDisabled,
 		AlertsStateEnabled,
+	}
+}
+
+type AutoHealStatus string
+
+const (
+	AutoHealStatusOff AutoHealStatus = "Off"
+	AutoHealStatusOn  AutoHealStatus = "On"
+)
+
+// PossibleAutoHealStatusValues returns the possible values for the AutoHealStatus const type.
+func PossibleAutoHealStatusValues() []AutoHealStatus {
+	return []AutoHealStatus{
+		AutoHealStatusOff,
+		AutoHealStatusOn,
 	}
 }
 

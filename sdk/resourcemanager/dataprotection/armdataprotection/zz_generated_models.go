@@ -63,6 +63,10 @@ type AuthCredentials struct {
 	ObjectType *string `json:"objectType,omitempty"`
 }
 
+type AutoHealSettings struct {
+	AutoHealStatus *AutoHealStatus `json:"autoHealStatus,omitempty"`
+}
+
 // AzureBackupDiscreteRecoveryPoint - Azure backup discrete RecoveryPoint
 type AzureBackupDiscreteRecoveryPoint struct {
 	// REQUIRED
@@ -629,6 +633,12 @@ type BackupInstancesClientGetOptions struct {
 
 // BackupInstancesClientListOptions contains the optional parameters for the BackupInstancesClient.List method.
 type BackupInstancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupInstancesExtensionRoutingClientListOptions contains the optional parameters for the BackupInstancesExtensionRoutingClient.List
+// method.
+type BackupInstancesExtensionRoutingClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1317,7 +1327,7 @@ type InnerError struct {
 // ItemLevelRestoreCriteriaClassification provides polymorphic access to related types.
 // Call the interface's GetItemLevelRestoreCriteria() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ItemLevelRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
+// - *ItemLevelRestoreCriteria, *KubernetesPVRestoreCriteria, *KubernetesStorageClassRestoreCriteria, *RangeBasedItemLevelRestoreCriteria
 type ItemLevelRestoreCriteriaClassification interface {
 	// GetItemLevelRestoreCriteria returns the ItemLevelRestoreCriteria content of the underlying type.
 	GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria
@@ -1403,6 +1413,30 @@ type JobsClientGetOptions struct {
 // JobsClientListOptions contains the optional parameters for the JobsClient.List method.
 type JobsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// KubernetesPVRestoreCriteria - Item Level kubernetes persistent volume target info for restore operation
+type KubernetesPVRestoreCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Selected persistent volume claim name
+	Name *string `json:"name,omitempty"`
+
+	// Selected storage class name for restore operation
+	StorageClassName *string `json:"storageClassName,omitempty"`
+}
+
+// KubernetesStorageClassRestoreCriteria - Item Level kubernetes storage class target info for restore operation
+type KubernetesStorageClassRestoreCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string `json:"objectType,omitempty"`
+
+	// Provisioner of the storage class
+	Provisioner *string `json:"provisioner,omitempty"`
+
+	// Selected storage class name
+	SelectedStorageClassName *string `json:"selectedStorageClassName,omitempty"`
 }
 
 // MonitoringSettings - Monitoring Settings

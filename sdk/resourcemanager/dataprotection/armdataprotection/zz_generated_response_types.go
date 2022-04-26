@@ -83,6 +83,11 @@ type BackupInstancesClientValidateForRestoreResponse struct {
 	OperationJobExtendedInfo
 }
 
+// BackupInstancesExtensionRoutingClientListResponse contains the response from method BackupInstancesExtensionRoutingClient.List.
+type BackupInstancesExtensionRoutingClientListResponse struct {
+	BackupInstanceResourceList
+}
+
 // BackupPoliciesClientCreateOrUpdateResponse contains the response from method BackupPoliciesClient.CreateOrUpdate.
 type BackupPoliciesClientCreateOrUpdateResponse struct {
 	BaseBackupPolicyResource

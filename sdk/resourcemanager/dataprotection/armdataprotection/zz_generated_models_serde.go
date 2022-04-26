@@ -1397,6 +1397,90 @@ func (j JobSubTask) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesPVRestoreCriteria.
+func (k *KubernetesPVRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: k.ObjectType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KubernetesPVRestoreCriteria.
+func (k KubernetesPVRestoreCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "name", k.Name)
+	objectMap["objectType"] = "KubernetesPVRestoreCriteria"
+	populate(objectMap, "storageClassName", k.StorageClassName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KubernetesPVRestoreCriteria.
+func (k *KubernetesPVRestoreCriteria) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "name":
+			err = unpopulate(val, &k.Name)
+			delete(rawMsg, key)
+		case "objectType":
+			err = unpopulate(val, &k.ObjectType)
+			delete(rawMsg, key)
+		case "storageClassName":
+			err = unpopulate(val, &k.StorageClassName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesStorageClassRestoreCriteria.
+func (k *KubernetesStorageClassRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: k.ObjectType,
+	}
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KubernetesStorageClassRestoreCriteria.
+func (k KubernetesStorageClassRestoreCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["objectType"] = "KubernetesStorageClassRestoreCriteria"
+	populate(objectMap, "provisioner", k.Provisioner)
+	populate(objectMap, "selectedStorageClassName", k.SelectedStorageClassName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KubernetesStorageClassRestoreCriteria.
+func (k *KubernetesStorageClassRestoreCriteria) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "objectType":
+			err = unpopulate(val, &k.ObjectType)
+			delete(rawMsg, key)
+		case "provisioner":
+			err = unpopulate(val, &k.Provisioner)
+			delete(rawMsg, key)
+		case "selectedStorageClassName":
+			err = unpopulate(val, &k.SelectedStorageClassName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // GetOperationExtendedInfo implements the OperationExtendedInfoClassification interface for type OperationExtendedInfo.
 func (o *OperationExtendedInfo) GetOperationExtendedInfo() *OperationExtendedInfo { return o }
 

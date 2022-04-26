@@ -47,7 +47,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{runtime.NewBearerTokenPolicy(cred, scope, nil), newCosmosBearerTokenPolicy()}, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{runtime.NewBearerTokenPolicy(cred, scope, nil), &cosmosBearerTokenPolicy{}}, o)}, nil
 }
 
 func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.Pipeline {

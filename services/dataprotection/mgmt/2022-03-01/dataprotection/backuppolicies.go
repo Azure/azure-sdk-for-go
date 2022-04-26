@@ -32,11 +32,11 @@ func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) B
 
 // CreateOrUpdate sends the create or update request.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// vaultName - the name of the backup vault.
 // backupPolicyName - name of the policy
 // parameters - request body for operation
-func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string, parameters BaseBackupPolicyResource) (result BaseBackupPolicyResource, err error) {
+func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string, parameters BaseBackupPolicyResource) (result BaseBackupPolicyResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.CreateOrUpdate")
 		defer func() {
@@ -47,7 +47,7 @@ func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, vaultName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, vaultName, resourceGroupName, backupPolicyName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, vaultName, backupPolicyName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupPoliciesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -70,7 +70,7 @@ func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, vaultName
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string, parameters BaseBackupPolicyResource) (*http.Request, error) {
+func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string, parameters BaseBackupPolicyResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupPolicyName":  autorest.Encode("path", backupPolicyName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -78,7 +78,7 @@ func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, v
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -113,9 +113,9 @@ func (client BackupPoliciesClient) CreateOrUpdateResponder(resp *http.Response) 
 
 // Delete sends the delete request.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
-func (client BackupPoliciesClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string) (result autorest.Response, err error) {
+// vaultName - the name of the backup vault.
+func (client BackupPoliciesClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.Delete")
 		defer func() {
@@ -126,7 +126,7 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, vaultName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, vaultName, resourceGroupName, backupPolicyName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, vaultName, backupPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupPoliciesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -149,7 +149,7 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, vaultName string,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string) (*http.Request, error) {
+func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupPolicyName":  autorest.Encode("path", backupPolicyName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -157,7 +157,7 @@ func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, vaultName
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -189,9 +189,9 @@ func (client BackupPoliciesClient) DeleteResponder(resp *http.Response) (result 
 
 // Get gets a backup policy belonging to a backup vault
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
-func (client BackupPoliciesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string) (result BaseBackupPolicyResource, err error) {
+// vaultName - the name of the backup vault.
+func (client BackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string) (result BaseBackupPolicyResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.Get")
 		defer func() {
@@ -202,7 +202,7 @@ func (client BackupPoliciesClient) Get(ctx context.Context, vaultName string, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, vaultName, resourceGroupName, backupPolicyName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, vaultName, backupPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupPoliciesClient", "Get", nil, "Failure preparing request")
 		return
@@ -225,7 +225,7 @@ func (client BackupPoliciesClient) Get(ctx context.Context, vaultName string, re
 }
 
 // GetPreparer prepares the Get request.
-func (client BackupPoliciesClient) GetPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupPolicyName string) (*http.Request, error) {
+func (client BackupPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, vaultName string, backupPolicyName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupPolicyName":  autorest.Encode("path", backupPolicyName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -233,7 +233,7 @@ func (client BackupPoliciesClient) GetPreparer(ctx context.Context, vaultName st
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -266,9 +266,9 @@ func (client BackupPoliciesClient) GetResponder(resp *http.Response) (result Bas
 
 // List returns list of backup policies belonging to a backup vault
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
-func (client BackupPoliciesClient) List(ctx context.Context, vaultName string, resourceGroupName string) (result BaseBackupPolicyResourceListPage, err error) {
+// vaultName - the name of the backup vault.
+func (client BackupPoliciesClient) List(ctx context.Context, resourceGroupName string, vaultName string) (result BaseBackupPolicyResourceListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.List")
 		defer func() {
@@ -280,7 +280,7 @@ func (client BackupPoliciesClient) List(ctx context.Context, vaultName string, r
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, vaultName, resourceGroupName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.BackupPoliciesClient", "List", nil, "Failure preparing request")
 		return
@@ -307,14 +307,14 @@ func (client BackupPoliciesClient) List(ctx context.Context, vaultName string, r
 }
 
 // ListPreparer prepares the List request.
-func (client BackupPoliciesClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string) (*http.Request, error) {
+func (client BackupPoliciesClient) ListPreparer(ctx context.Context, resourceGroupName string, vaultName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -367,7 +367,7 @@ func (client BackupPoliciesClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BackupPoliciesClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string) (result BaseBackupPolicyResourceListIterator, err error) {
+func (client BackupPoliciesClient) ListComplete(ctx context.Context, resourceGroupName string, vaultName string) (result BaseBackupPolicyResourceListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.List")
 		defer func() {
@@ -378,6 +378,6 @@ func (client BackupPoliciesClient) ListComplete(ctx context.Context, vaultName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, vaultName, resourceGroupName)
+	result.page, err = client.List(ctx, resourceGroupName, vaultName)
 	return
 }

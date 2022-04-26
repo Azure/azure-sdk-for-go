@@ -32,10 +32,10 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) R
 
 // Get gets a Recovery Point using recoveryPointId for a Datasource.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// vaultName - the name of the backup vault.
 // backupInstanceName - the name of the backup instance
-func (client RecoveryPointsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, recoveryPointID string) (result AzureBackupRecoveryPointResource, err error) {
+func (client RecoveryPointsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, recoveryPointID string) (result AzureBackupRecoveryPointResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.Get")
 		defer func() {
@@ -46,7 +46,7 @@ func (client RecoveryPointsClient) Get(ctx context.Context, vaultName string, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, vaultName, resourceGroupName, backupInstanceName, recoveryPointID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, vaultName, backupInstanceName, recoveryPointID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.RecoveryPointsClient", "Get", nil, "Failure preparing request")
 		return
@@ -69,7 +69,7 @@ func (client RecoveryPointsClient) Get(ctx context.Context, vaultName string, re
 }
 
 // GetPreparer prepares the Get request.
-func (client RecoveryPointsClient) GetPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, recoveryPointID string) (*http.Request, error) {
+func (client RecoveryPointsClient) GetPreparer(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, recoveryPointID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupInstanceName": autorest.Encode("path", backupInstanceName),
 		"recoveryPointId":    autorest.Encode("path", recoveryPointID),
@@ -78,7 +78,7 @@ func (client RecoveryPointsClient) GetPreparer(ctx context.Context, vaultName st
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -111,12 +111,12 @@ func (client RecoveryPointsClient) GetResponder(resp *http.Response) (result Azu
 
 // List returns a list of Recovery Points for a DataSource in a vault.
 // Parameters:
-// vaultName - the name of the backup vault.
 // resourceGroupName - the name of the resource group where the backup vault is present.
+// vaultName - the name of the backup vault.
 // backupInstanceName - the name of the backup instance
 // filter - oData filter options.
 // skipToken - skipToken Filter.
-func (client RecoveryPointsClient) List(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, filter string, skipToken string) (result AzureBackupRecoveryPointResourceListPage, err error) {
+func (client RecoveryPointsClient) List(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, filter string, skipToken string) (result AzureBackupRecoveryPointResourceListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.List")
 		defer func() {
@@ -128,7 +128,7 @@ func (client RecoveryPointsClient) List(ctx context.Context, vaultName string, r
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, vaultName, resourceGroupName, backupInstanceName, filter, skipToken)
+	req, err := client.ListPreparer(ctx, resourceGroupName, vaultName, backupInstanceName, filter, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dataprotection.RecoveryPointsClient", "List", nil, "Failure preparing request")
 		return
@@ -155,7 +155,7 @@ func (client RecoveryPointsClient) List(ctx context.Context, vaultName string, r
 }
 
 // ListPreparer prepares the List request.
-func (client RecoveryPointsClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, filter string, skipToken string) (*http.Request, error) {
+func (client RecoveryPointsClient) ListPreparer(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, filter string, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"backupInstanceName": autorest.Encode("path", backupInstanceName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -163,7 +163,7 @@ func (client RecoveryPointsClient) ListPreparer(ctx context.Context, vaultName s
 		"vaultName":          autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2022-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -222,7 +222,7 @@ func (client RecoveryPointsClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RecoveryPointsClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, filter string, skipToken string) (result AzureBackupRecoveryPointResourceListIterator, err error) {
+func (client RecoveryPointsClient) ListComplete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, filter string, skipToken string) (result AzureBackupRecoveryPointResourceListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.List")
 		defer func() {
@@ -233,6 +233,6 @@ func (client RecoveryPointsClient) ListComplete(ctx context.Context, vaultName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, vaultName, resourceGroupName, backupInstanceName, filter, skipToken)
+	result.page, err = client.List(ctx, resourceGroupName, vaultName, backupInstanceName, filter, skipToken)
 	return
 }

@@ -1,4 +1,4 @@
-// Package dataprotection implements the Azure ARM Dataprotection service API version 2021-01-01.
+// Package dataprotection implements the Azure ARM Dataprotection service API version 2022-03-01.
 //
 // Open API 2.0 Specs for Azure Data Protection service
 package dataprotection

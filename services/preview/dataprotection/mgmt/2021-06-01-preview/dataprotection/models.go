@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/dataprotection/mgmt/2021-06-01-preview/dataprotection"
 
 // AbsoluteDeleteOption delete option with duration
 type AbsoluteDeleteOption struct {
@@ -114,6 +114,80 @@ func (abtc AdhocBasedTriggerContext) AsBasicTriggerContext() (BasicTriggerContex
 	return &abtc, true
 }
 
+// BasicAuthCredentials base class for different types of authentication credentials.
+type BasicAuthCredentials interface {
+	AsSecretStoreBasedAuthCredentials() (*SecretStoreBasedAuthCredentials, bool)
+	AsAuthCredentials() (*AuthCredentials, bool)
+}
+
+// AuthCredentials base class for different types of authentication credentials.
+type AuthCredentials struct {
+	// ObjectType - Possible values include: 'ObjectTypeAuthCredentials', 'ObjectTypeSecretStoreBasedAuthCredentials'
+	ObjectType ObjectType `json:"objectType,omitempty"`
+}
+
+func unmarshalBasicAuthCredentials(body []byte) (BasicAuthCredentials, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["objectType"] {
+	case string(ObjectTypeSecretStoreBasedAuthCredentials):
+		var ssbac SecretStoreBasedAuthCredentials
+		err := json.Unmarshal(body, &ssbac)
+		return ssbac, err
+	default:
+		var ac AuthCredentials
+		err := json.Unmarshal(body, &ac)
+		return ac, err
+	}
+}
+func unmarshalBasicAuthCredentialsArray(body []byte) ([]BasicAuthCredentials, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	acArray := make([]BasicAuthCredentials, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ac, err := unmarshalBasicAuthCredentials(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		acArray[index] = ac
+	}
+	return acArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AuthCredentials.
+func (ac AuthCredentials) MarshalJSON() ([]byte, error) {
+	ac.ObjectType = ObjectTypeAuthCredentials
+	objectMap := make(map[string]interface{})
+	if ac.ObjectType != "" {
+		objectMap["objectType"] = ac.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSecretStoreBasedAuthCredentials is the BasicAuthCredentials implementation for AuthCredentials.
+func (ac AuthCredentials) AsSecretStoreBasedAuthCredentials() (*SecretStoreBasedAuthCredentials, bool) {
+	return nil, false
+}
+
+// AsAuthCredentials is the BasicAuthCredentials implementation for AuthCredentials.
+func (ac AuthCredentials) AsAuthCredentials() (*AuthCredentials, bool) {
+	return &ac, true
+}
+
+// AsBasicAuthCredentials is the BasicAuthCredentials implementation for AuthCredentials.
+func (ac AuthCredentials) AsBasicAuthCredentials() (BasicAuthCredentials, bool) {
+	return &ac, true
+}
+
 // AzureBackupDiscreteRecoveryPoint azure backup discrete RecoveryPoint
 type AzureBackupDiscreteRecoveryPoint struct {
 	FriendlyName                   *string                          `json:"friendlyName,omitempty"`
@@ -126,7 +200,7 @@ type AzureBackupDiscreteRecoveryPoint struct {
 	RetentionTagName               *string                          `json:"retentionTagName,omitempty"`
 	RetentionTagVersion            *string                          `json:"retentionTagVersion,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeAzureBackupRecoveryPoint', 'ObjectTypeAzureBackupDiscreteRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicAzureBackupRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureBackupDiscreteRecoveryPoint.
@@ -631,7 +705,7 @@ type BasicAzureBackupRecoveryPoint interface {
 // AzureBackupRecoveryPoint azure backup recoveryPoint
 type AzureBackupRecoveryPoint struct {
 	// ObjectType - Possible values include: 'ObjectTypeAzureBackupRecoveryPoint', 'ObjectTypeAzureBackupDiscreteRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicAzureBackupRecoveryPoint `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicAzureBackupRecoveryPoint(body []byte) (BasicAzureBackupRecoveryPoint, error) {
@@ -1781,7 +1855,9 @@ type BackupInstance struct {
 	ProtectionErrorDetails *UserFacingError `json:"protectionErrorDetails,omitempty"`
 	// ProvisioningState - READ-ONLY; Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	ObjectType        *string `json:"objectType,omitempty"`
+	// DatasourceAuthCredentials - Credentials to use to authenticate with data source provider.
+	DatasourceAuthCredentials BasicAuthCredentials `json:"datasourceAuthCredentials,omitempty"`
+	ObjectType                *string              `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupInstance.
@@ -1799,10 +1875,115 @@ func (bi BackupInstance) MarshalJSON() ([]byte, error) {
 	if bi.PolicyInfo != nil {
 		objectMap["policyInfo"] = bi.PolicyInfo
 	}
+	objectMap["datasourceAuthCredentials"] = bi.DatasourceAuthCredentials
 	if bi.ObjectType != nil {
 		objectMap["objectType"] = bi.ObjectType
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BackupInstance struct.
+func (bi *BackupInstance) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "friendlyName":
+			if v != nil {
+				var friendlyName string
+				err = json.Unmarshal(*v, &friendlyName)
+				if err != nil {
+					return err
+				}
+				bi.FriendlyName = &friendlyName
+			}
+		case "dataSourceInfo":
+			if v != nil {
+				var dataSourceInfo Datasource
+				err = json.Unmarshal(*v, &dataSourceInfo)
+				if err != nil {
+					return err
+				}
+				bi.DataSourceInfo = &dataSourceInfo
+			}
+		case "dataSourceSetInfo":
+			if v != nil {
+				var dataSourceSetInfo DatasourceSet
+				err = json.Unmarshal(*v, &dataSourceSetInfo)
+				if err != nil {
+					return err
+				}
+				bi.DataSourceSetInfo = &dataSourceSetInfo
+			}
+		case "policyInfo":
+			if v != nil {
+				var policyInfo PolicyInfo
+				err = json.Unmarshal(*v, &policyInfo)
+				if err != nil {
+					return err
+				}
+				bi.PolicyInfo = &policyInfo
+			}
+		case "protectionStatus":
+			if v != nil {
+				var protectionStatus ProtectionStatusDetails
+				err = json.Unmarshal(*v, &protectionStatus)
+				if err != nil {
+					return err
+				}
+				bi.ProtectionStatus = &protectionStatus
+			}
+		case "currentProtectionState":
+			if v != nil {
+				var currentProtectionState CurrentProtectionState
+				err = json.Unmarshal(*v, &currentProtectionState)
+				if err != nil {
+					return err
+				}
+				bi.CurrentProtectionState = currentProtectionState
+			}
+		case "protectionErrorDetails":
+			if v != nil {
+				var protectionErrorDetails UserFacingError
+				err = json.Unmarshal(*v, &protectionErrorDetails)
+				if err != nil {
+					return err
+				}
+				bi.ProtectionErrorDetails = &protectionErrorDetails
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				bi.ProvisioningState = &provisioningState
+			}
+		case "datasourceAuthCredentials":
+			if v != nil {
+				datasourceAuthCredentials, err := unmarshalBasicAuthCredentials(*v)
+				if err != nil {
+					return err
+				}
+				bi.DatasourceAuthCredentials = datasourceAuthCredentials
+			}
+		case "objectType":
+			if v != nil {
+				var objectType string
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				bi.ObjectType = &objectType
+			}
+		}
+	}
+
+	return nil
 }
 
 // BackupInstanceResource backupInstance Resource
@@ -2108,6 +2289,191 @@ func (future *BackupInstancesDeleteFuture) result(client BackupInstancesClient) 
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesResumeBackupsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesResumeBackupsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesResumeBackupsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesResumeBackupsFuture.Result.
+func (future *BackupInstancesResumeBackupsFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesResumeBackupsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesResumeBackupsFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesResumeProtectionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesResumeProtectionFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesResumeProtectionFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesResumeProtectionFuture.Result.
+func (future *BackupInstancesResumeProtectionFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesResumeProtectionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesResumeProtectionFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesStopProtectionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesStopProtectionFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesStopProtectionFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesStopProtectionFuture.Result.
+func (future *BackupInstancesStopProtectionFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesStopProtectionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesStopProtectionFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesSuspendBackupsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesSuspendBackupsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesSuspendBackupsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesSuspendBackupsFuture.Result.
+func (future *BackupInstancesSuspendBackupsFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesSuspendBackupsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesSuspendBackupsFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesSyncBackupInstanceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesSyncBackupInstanceFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesSyncBackupInstanceFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesSyncBackupInstanceFuture.Result.
+func (future *BackupInstancesSyncBackupInstanceFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesSyncBackupInstanceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesSyncBackupInstanceFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -4400,6 +4766,8 @@ type ItemLevelRestoreTargetInfo struct {
 	DatasourceInfo *Datasource `json:"datasourceInfo,omitempty"`
 	// DatasourceSetInfo - Information of target DS Set
 	DatasourceSetInfo *DatasourceSet `json:"datasourceSetInfo,omitempty"`
+	// DatasourceAuthCredentials - Credentials to use to authenticate with data source provider.
+	DatasourceAuthCredentials BasicAuthCredentials `json:"datasourceAuthCredentials,omitempty"`
 	// RecoveryOption - Recovery Option
 	RecoveryOption *string `json:"recoveryOption,omitempty"`
 	// RestoreLocation - Target Restore region
@@ -4421,6 +4789,7 @@ func (ilrti ItemLevelRestoreTargetInfo) MarshalJSON() ([]byte, error) {
 	if ilrti.DatasourceSetInfo != nil {
 		objectMap["datasourceSetInfo"] = ilrti.DatasourceSetInfo
 	}
+	objectMap["datasourceAuthCredentials"] = ilrti.DatasourceAuthCredentials
 	if ilrti.RecoveryOption != nil {
 		objectMap["recoveryOption"] = ilrti.RecoveryOption
 	}
@@ -4492,6 +4861,14 @@ func (ilrti *ItemLevelRestoreTargetInfo) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ilrti.DatasourceSetInfo = &datasourceSetInfo
+			}
+		case "datasourceAuthCredentials":
+			if v != nil {
+				datasourceAuthCredentials, err := unmarshalBasicAuthCredentials(*v)
+				if err != nil {
+					return err
+				}
+				ilrti.DatasourceAuthCredentials = datasourceAuthCredentials
 			}
 		case "recoveryOption":
 			if v != nil {
@@ -4867,6 +5244,8 @@ type RestoreTargetInfo struct {
 	DatasourceInfo *Datasource `json:"datasourceInfo,omitempty"`
 	// DatasourceSetInfo - Information of target DS Set
 	DatasourceSetInfo *DatasourceSet `json:"datasourceSetInfo,omitempty"`
+	// DatasourceAuthCredentials - Credentials to use to authenticate with data source provider.
+	DatasourceAuthCredentials BasicAuthCredentials `json:"datasourceAuthCredentials,omitempty"`
 	// RecoveryOption - Recovery Option
 	RecoveryOption *string `json:"recoveryOption,omitempty"`
 	// RestoreLocation - Target Restore region
@@ -4885,6 +5264,7 @@ func (rti RestoreTargetInfo) MarshalJSON() ([]byte, error) {
 	if rti.DatasourceSetInfo != nil {
 		objectMap["datasourceSetInfo"] = rti.DatasourceSetInfo
 	}
+	objectMap["datasourceAuthCredentials"] = rti.DatasourceAuthCredentials
 	if rti.RecoveryOption != nil {
 		objectMap["recoveryOption"] = rti.RecoveryOption
 	}
@@ -4920,6 +5300,74 @@ func (rti RestoreTargetInfo) AsRestoreTargetInfoBase() (*RestoreTargetInfoBase, 
 // AsBasicRestoreTargetInfoBase is the BasicRestoreTargetInfoBase implementation for RestoreTargetInfo.
 func (rti RestoreTargetInfo) AsBasicRestoreTargetInfoBase() (BasicRestoreTargetInfoBase, bool) {
 	return &rti, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for RestoreTargetInfo struct.
+func (rti *RestoreTargetInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "datasourceInfo":
+			if v != nil {
+				var datasourceInfo Datasource
+				err = json.Unmarshal(*v, &datasourceInfo)
+				if err != nil {
+					return err
+				}
+				rti.DatasourceInfo = &datasourceInfo
+			}
+		case "datasourceSetInfo":
+			if v != nil {
+				var datasourceSetInfo DatasourceSet
+				err = json.Unmarshal(*v, &datasourceSetInfo)
+				if err != nil {
+					return err
+				}
+				rti.DatasourceSetInfo = &datasourceSetInfo
+			}
+		case "datasourceAuthCredentials":
+			if v != nil {
+				datasourceAuthCredentials, err := unmarshalBasicAuthCredentials(*v)
+				if err != nil {
+					return err
+				}
+				rti.DatasourceAuthCredentials = datasourceAuthCredentials
+			}
+		case "recoveryOption":
+			if v != nil {
+				var recoveryOption string
+				err = json.Unmarshal(*v, &recoveryOption)
+				if err != nil {
+					return err
+				}
+				rti.RecoveryOption = &recoveryOption
+			}
+		case "restoreLocation":
+			if v != nil {
+				var restoreLocation string
+				err = json.Unmarshal(*v, &restoreLocation)
+				if err != nil {
+					return err
+				}
+				rti.RestoreLocation = &restoreLocation
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectTypeBasicRestoreTargetInfoBase
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				rti.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
 }
 
 // BasicRestoreTargetInfoBase base class common to RestoreTargetInfo and RestoreFilesTargetInfo
@@ -5153,6 +5601,50 @@ func (sbtc ScheduleBasedTriggerContext) AsBasicTriggerContext() (BasicTriggerCon
 	return &sbtc, true
 }
 
+// SecretStoreBasedAuthCredentials secret store based authentication credentials.
+type SecretStoreBasedAuthCredentials struct {
+	// SecretStoreResource - Secret store resource
+	SecretStoreResource *SecretStoreResource `json:"secretStoreResource,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeAuthCredentials', 'ObjectTypeSecretStoreBasedAuthCredentials'
+	ObjectType ObjectType `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SecretStoreBasedAuthCredentials.
+func (ssbac SecretStoreBasedAuthCredentials) MarshalJSON() ([]byte, error) {
+	ssbac.ObjectType = ObjectTypeSecretStoreBasedAuthCredentials
+	objectMap := make(map[string]interface{})
+	if ssbac.SecretStoreResource != nil {
+		objectMap["secretStoreResource"] = ssbac.SecretStoreResource
+	}
+	if ssbac.ObjectType != "" {
+		objectMap["objectType"] = ssbac.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSecretStoreBasedAuthCredentials is the BasicAuthCredentials implementation for SecretStoreBasedAuthCredentials.
+func (ssbac SecretStoreBasedAuthCredentials) AsSecretStoreBasedAuthCredentials() (*SecretStoreBasedAuthCredentials, bool) {
+	return &ssbac, true
+}
+
+// AsAuthCredentials is the BasicAuthCredentials implementation for SecretStoreBasedAuthCredentials.
+func (ssbac SecretStoreBasedAuthCredentials) AsAuthCredentials() (*AuthCredentials, bool) {
+	return nil, false
+}
+
+// AsBasicAuthCredentials is the BasicAuthCredentials implementation for SecretStoreBasedAuthCredentials.
+func (ssbac SecretStoreBasedAuthCredentials) AsBasicAuthCredentials() (BasicAuthCredentials, bool) {
+	return &ssbac, true
+}
+
+// SecretStoreResource class representing a secret store resource.
+type SecretStoreResource struct {
+	// URI - Uri to get to the resource
+	URI *string `json:"uri,omitempty"`
+	// SecretStoreType - Gets or sets the type of secret store. Possible values include: 'SecretStoreTypeInvalid', 'SecretStoreTypeAzureKeyVault'
+	SecretStoreType SecretStoreType `json:"secretStoreType,omitempty"`
+}
+
 // SourceLifeCycle source LifeCycle
 type SourceLifeCycle struct {
 	DeleteAfter                 BasicDeleteOption    `json:"deleteAfter,omitempty"`
@@ -5217,6 +5709,12 @@ type SupportedFeature struct {
 	SupportStatus FeatureSupportStatus `json:"supportStatus,omitempty"`
 	// ExposureControlledFeatures - support feature type.
 	ExposureControlledFeatures *[]string `json:"exposureControlledFeatures,omitempty"`
+}
+
+// SyncBackupInstanceRequest sync BackupInstance Request
+type SyncBackupInstanceRequest struct {
+	// SyncType - Field indicating sync type e.g. to sync only in case of failure or in all cases. Possible values include: 'Default', 'ForceResync'
+	SyncType SyncType `json:"syncType,omitempty"`
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.

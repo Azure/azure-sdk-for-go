@@ -8,7 +8,7 @@ package dataprotectionapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection"
+	"github.com/Azure/azure-sdk-for-go/services/preview/dataprotection/mgmt/2021-06-01-preview/dataprotection"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -82,6 +82,11 @@ type BackupInstancesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result dataprotection.BackupInstanceResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string) (result dataprotection.BackupInstanceResourceListPage, err error)
 	ListComplete(ctx context.Context, vaultName string, resourceGroupName string) (result dataprotection.BackupInstanceResourceListIterator, err error)
+	ResumeBackups(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result dataprotection.BackupInstancesResumeBackupsFuture, err error)
+	ResumeProtection(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result dataprotection.BackupInstancesResumeProtectionFuture, err error)
+	StopProtection(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result dataprotection.BackupInstancesStopProtectionFuture, err error)
+	SuspendBackups(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string) (result dataprotection.BackupInstancesSuspendBackupsFuture, err error)
+	SyncBackupInstance(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters dataprotection.SyncBackupInstanceRequest) (result dataprotection.BackupInstancesSyncBackupInstanceFuture, err error)
 	TriggerRehydrate(ctx context.Context, resourceGroupName string, vaultName string, parameters dataprotection.AzureBackupRehydrationRequest, backupInstanceName string) (result dataprotection.BackupInstancesTriggerRehydrateFuture, err error)
 	TriggerRestore(ctx context.Context, vaultName string, resourceGroupName string, backupInstanceName string, parameters dataprotection.BasicAzureBackupRestoreRequest) (result dataprotection.BackupInstancesTriggerRestoreFuture, err error)
 	ValidateForBackup(ctx context.Context, vaultName string, resourceGroupName string, parameters dataprotection.ValidateForBackupRequest) (result dataprotection.BackupInstancesValidateForBackupFuture, err error)

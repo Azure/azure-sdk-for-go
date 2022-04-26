@@ -10,7 +10,7 @@ package armrecoveryservices
 
 const (
 	moduleName    = "armrecoveryservices"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.4.1"
 )
 
 // AuthType - Specifies the authentication type.

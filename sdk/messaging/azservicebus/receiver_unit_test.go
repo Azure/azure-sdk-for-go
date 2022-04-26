@@ -386,16 +386,12 @@ func TestReceiverOptions(t *testing.T) {
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
 		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
-		retryOptions: RetryOptions{
-			MaxRetries: 101,
-		},
 	}))
 
 	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
 	path, err = e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
-	require.EqualValues(t, 101, receiver.retryOptions.MaxRetries)
 }
 
 func TestReceiverDeferUnitTests(t *testing.T) {

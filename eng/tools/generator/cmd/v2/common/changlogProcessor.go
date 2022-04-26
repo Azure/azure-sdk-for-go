@@ -15,11 +15,14 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
 const (
 	sdk_tag_fetch_url = "https://api.github.com/repos/Azure/azure-sdk-for-go/git/refs/tags"
+	sdk_remote_url    = "https://github.com/Azure/azure-sdk-for-go.git"
 )
 
 func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
@@ -110,6 +113,23 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 		return nil, err
 	}
 
+	// create remote with center sdk repo
+	remoteName := "release_remote"
+	_, err = sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
+	if err != nil {
+		if err != git.ErrRemoteExists {
+			return nil, err
+		}
+	}
+
+	// fetch tag from remote
+	err = sdkRepo.Fetch(&git.FetchOptions{RemoteName: remoteName, RefSpecs: []config.RefSpec{config.RefSpec(tag + ":" + tag)}})
+	if err != nil {
+		if err.Error() != "already up-to-date" {
+			return nil, err
+		}
+	}
+
 	// checkout to the specific tag
 	err = sdkRepo.CheckoutTag(strings.TrimPrefix(tag, "ref/tags/"))
 	if err != nil {
@@ -126,6 +146,12 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	err = sdkRepo.Checkout(&repo.CheckoutOptions{
 		Branch: plumbing.ReferenceName(currentRef.Name()),
 	})
+	if err != nil {
+		return nil, err
+	}
+
+	// remove remote
+	err = sdkRepo.DeleteRemote(remoteName)
 	if err != nil {
 		return nil, err
 	}

@@ -62,6 +62,35 @@ func createQueue(t *testing.T, connectionString string, queueProperties *admin.Q
 	}
 }
 
+// createSubscription creates a queue, automatically setting it to delete on idle in 5 minutes.
+func createSubscription(t *testing.T, connectionString string, topicProperties *admin.TopicProperties, subscriptionProperties *admin.SubscriptionProperties) (string, func()) {
+	nanoSeconds := time.Now().UnixNano()
+	topicName := fmt.Sprintf("topic-%X", nanoSeconds)
+
+	adminClient, err := admin.NewClientFromConnectionString(connectionString, nil)
+	require.NoError(t, err)
+
+	if topicProperties == nil {
+		topicProperties = &admin.TopicProperties{}
+	}
+
+	autoDeleteOnIdle := "PT5M"
+	topicProperties.AutoDeleteOnIdle = &autoDeleteOnIdle
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, &admin.CreateTopicOptions{
+		Properties: topicProperties,
+	})
+	require.NoError(t, err)
+
+	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub", &admin.CreateSubscriptionOptions{Properties: subscriptionProperties})
+	require.NoError(t, err)
+
+	return topicName, func() {
+		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
+		require.NoError(t, err)
+	}
+}
+
 func deleteQueue(t *testing.T, ac *admin.Client, queueName string) {
 	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)

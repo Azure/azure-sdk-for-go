@@ -81,14 +81,11 @@ type ReceiverOptions struct {
 	// SubQueue should be set to connect to the sub queue (ex: dead letter queue)
 	// of the queue or subscription.
 	SubQueue SubQueue
-
-	retryOptions RetryOptions
 }
 
 const defaultLinkRxBuffer = 2048
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
-
 	if options == nil {
 		receiver.receiveMode = ReceiveModePeekLock
 	} else {
@@ -101,8 +98,6 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 		if err := entity.SetSubQueue(options.SubQueue); err != nil {
 			return err
 		}
-
-		receiver.retryOptions = options.retryOptions
 	}
 
 	entityPath, err := entity.String()
@@ -121,6 +116,7 @@ type newReceiverArgs struct {
 	cleanupOnClose      func()
 	getRecoveryKindFunc func(err error) internal.RecoveryKind
 	newLinkFn           func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)
+	retryOptions        RetryOptions
 }
 
 func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, error) {
@@ -133,6 +129,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		cleanupOnClose:           args.cleanupOnClose,
 		defaultDrainTimeout:      time.Second,
 		defaultTimeAfterFirstMsg: 20 * time.Millisecond,
+		retryOptions:             args.retryOptions,
 	}
 
 	if err := applyReceiverOptions(receiver, &args.entity, options); err != nil {

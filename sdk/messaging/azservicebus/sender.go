@@ -150,9 +150,10 @@ type newSenderArgs struct {
 	ns             internal.NamespaceWithNewAMQPLinks
 	queueOrTopic   string
 	cleanupOnClose func()
+	retryOptions   RetryOptions
 }
 
-func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
+func newSender(args newSenderArgs) (*Sender, error) {
 	if err := args.ns.Check(); err != nil {
 		return nil, err
 	}
@@ -160,7 +161,7 @@ func newSender(args newSenderArgs, retryOptions RetryOptions) (*Sender, error) {
 	sender := &Sender{
 		queueOrTopic:   args.queueOrTopic,
 		cleanupOnClose: args.cleanupOnClose,
-		retryOptions:   RetryOptions(retryOptions),
+		retryOptions:   args.retryOptions,
 	}
 
 	sender.links = args.ns.NewAMQPLinks(args.queueOrTopic, sender.createSenderLink, internal.GetRecoveryKind)

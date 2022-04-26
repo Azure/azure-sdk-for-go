@@ -6,8 +6,8 @@ package azcosmos
 import (
 	"context"
 	"encoding/base64"
-	"os"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -21,10 +21,10 @@ type emulatorTests struct {
 }
 
 func newEmulatorTests(t *testing.T) *emulatorTests {
-	envCheck := os.Getenv("EMULATOR")
-	if envCheck == "" {
-		t.Skip("set EMULATOR environment variable to run this test")
-	}
+	//envCheck := os.Getenv("EMULATOR")
+	//if envCheck == "" {
+	//	t.Skip("set EMULATOR environment variable to run this test")
+	//}
 
 	return &emulatorTests{
 		host: "https://localhost:8081/",
@@ -85,30 +85,37 @@ type emulatorTokenCredential struct {
 }
 
 func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	header := "{\"typ\":\"JWT\",\"alg\":\"RS256\",\"x5t\":\"CosmosEmulatorPrimaryMaster\",\"kid\":\"CosmosEmulatorPrimaryMaster\"}"
+	header := `{"typ":"JWT","alg":"RS256","x5t":"CosmosEmulatorPrimaryMaster","kid":"CosmosEmulatorPrimaryMaster"}`
 	unixNow := time.Now().Unix()
 	expiration := unixNow + 7200
-	payload := `{
-		"oid":"96313034-4739-43cb-93cd-74193adbe5b6",
-		"tid":"7b1999a1-dfd7-440e-8204-00170979b984",
-		"scp"":"user_impersonation",
-		"groups":[
+	payload := `{ 
+		"appid":"localhost", 
+		"aio":"",
+		"appidacr":"1",
+		"idp": "https://localhost:8081/",
+		"oid": "96313034-4739-43cb-93cd-74193adbe5b6",
+		"rh": "",
+		"sub": "localhost",
+		"tid": "EmulatorFederation",
+		"uti": "",
+		"ver": "1.0",
+		"scp": "user_impersonation",
+		"groups":[ 
 			"7ce1d003-4cb3-4879-b7c5-74062a35c66e",
 			"e99ff30c-c229-4c67-ab29-30a6aebc3e58",
 			"5549bb62-c77b-4305-bda9-9ec66b85d9e4",
 			"c44fd685-5c58-452c-aaf7-13ce75184f65",
-			"be895215-eab5-43b7-9536-9ef8fe130330"
-		],
-		"nbf":` + strconv.FormatInt(unixNow, 10) + `,
-		"exp":` + strconv.FormatInt(expiration, 10) + `,
-		"iat":1596592335,
+			"be895215-eab5-43b7-9536-9ef8fe130330"], 
+		"nbf":` + strconv.FormatInt(unixNow, 10) + `, 
+		"exp":` + strconv.FormatInt(expiration, 10) + `, 
+		"iat":` + strconv.FormatInt(unixNow, 10) + `,
 		"iss":"https://sts.fake-issuer.net/7b1999a1-dfd7-440e-8204-00170979b984",
-		"aud":"https://localhost.localhost"
+		"aud":"https://localhost.localhost" 
 	}`
 
-	headerBase64 := base64.StdEncoding.EncodeToString([]byte(header))
-	payloadBase64 := base64.StdEncoding.EncodeToString([]byte(payload))
-	masterKeyBase64 := base64.StdEncoding.EncodeToString([]byte("C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="))
+	headerBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte(header)))
+	payloadBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte(payload)))
+	masterKeyBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte("C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==")))
 
 	token := headerBase64 + "." + payloadBase64 + "." + masterKeyBase64
 
@@ -116,4 +123,8 @@ func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.T
 		Token:     token,
 		ExpiresOn: time.Unix(expiration, 0),
 	}, nil
+}
+
+func (c *emulatorTokenCredential) removePadding(encodedString string) string {
+	return strings.Trim(encodedString, "=")
 }

@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/confluent/mgmt/2021-12-01/confluent"
 
 // AgreementProperties terms properties for Marketplace and Confluent.
 type AgreementProperties struct {
@@ -49,6 +49,8 @@ type AgreementResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the agreement.
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// AgreementProperties - Represents the properties of the resource.
 	*AgreementProperties `json:"properties,omitempty"`
 }
@@ -97,6 +99,15 @@ func (ar *AgreementResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ar.SystemData = &systemData
 			}
 		case "properties":
 			if v != nil {
@@ -597,8 +608,10 @@ type OrganizationResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
-	// OrganizationResourcePropertiesModel - Organization resource properties
-	*OrganizationResourcePropertiesModel `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// OrganizationResourceProperties - Organization resource properties
+	*OrganizationResourceProperties `json:"properties,omitempty"`
 	// Tags - Organization resource tags
 	Tags map[string]*string `json:"tags"`
 	// Location - Location of Organization resource
@@ -608,8 +621,8 @@ type OrganizationResource struct {
 // MarshalJSON is the custom marshaler for OrganizationResource.
 func (or OrganizationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if or.OrganizationResourcePropertiesModel != nil {
-		objectMap["properties"] = or.OrganizationResourcePropertiesModel
+	if or.OrganizationResourceProperties != nil {
+		objectMap["properties"] = or.OrganizationResourceProperties
 	}
 	if or.Tags != nil {
 		objectMap["tags"] = or.Tags
@@ -656,14 +669,23 @@ func (or *OrganizationResource) UnmarshalJSON(body []byte) error {
 				}
 				or.Type = &typeVar
 			}
-		case "properties":
+		case "systemData":
 			if v != nil {
-				var organizationResourcePropertiesModel OrganizationResourcePropertiesModel
-				err = json.Unmarshal(*v, &organizationResourcePropertiesModel)
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
 				if err != nil {
 					return err
 				}
-				or.OrganizationResourcePropertiesModel = &organizationResourcePropertiesModel
+				or.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var organizationResourceProperties OrganizationResourceProperties
+				err = json.Unmarshal(*v, &organizationResourceProperties)
+				if err != nil {
+					return err
+				}
+				or.OrganizationResourceProperties = &organizationResourceProperties
 			}
 		case "tags":
 			if v != nil {
@@ -860,9 +882,9 @@ type OrganizationResourceProperties struct {
 	// SsoURL - READ-ONLY; SSO url for the Confluent organization.
 	SsoURL *string `json:"ssoUrl,omitempty"`
 	// OfferDetail - Confluent offer detail
-	OfferDetail *OrganizationResourcePropertiesOfferDetail `json:"offerDetail,omitempty"`
+	OfferDetail *OfferDetail `json:"offerDetail,omitempty"`
 	// UserDetail - Subscriber detail
-	UserDetail *OrganizationResourcePropertiesUserDetail `json:"userDetail,omitempty"`
+	UserDetail *UserDetail `json:"userDetail,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OrganizationResourceProperties.
@@ -875,81 +897,6 @@ func (orp OrganizationResourceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["userDetail"] = orp.UserDetail
 	}
 	return json.Marshal(objectMap)
-}
-
-// OrganizationResourcePropertiesModel organization resource properties
-type OrganizationResourcePropertiesModel struct {
-	// CreatedTime - READ-ONLY; The creation time of the resource.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - READ-ONLY; Provision states for confluent RP. Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
-	ProvisioningState ProvisionState `json:"provisioningState,omitempty"`
-	// OrganizationID - READ-ONLY; Id of the Confluent organization.
-	OrganizationID *string `json:"organizationId,omitempty"`
-	// SsoURL - READ-ONLY; SSO url for the Confluent organization.
-	SsoURL *string `json:"ssoUrl,omitempty"`
-	// OfferDetail - Confluent offer detail
-	OfferDetail *OrganizationResourcePropertiesOfferDetail `json:"offerDetail,omitempty"`
-	// UserDetail - Subscriber detail
-	UserDetail *OrganizationResourcePropertiesUserDetail `json:"userDetail,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OrganizationResourcePropertiesModel.
-func (orpm OrganizationResourcePropertiesModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if orpm.OfferDetail != nil {
-		objectMap["offerDetail"] = orpm.OfferDetail
-	}
-	if orpm.UserDetail != nil {
-		objectMap["userDetail"] = orpm.UserDetail
-	}
-	return json.Marshal(objectMap)
-}
-
-// OrganizationResourcePropertiesOfferDetail confluent offer detail
-type OrganizationResourcePropertiesOfferDetail struct {
-	// PublisherID - Publisher Id
-	PublisherID *string `json:"publisherId,omitempty"`
-	// ID - Offer Id
-	ID *string `json:"id,omitempty"`
-	// PlanID - Offer Plan Id
-	PlanID *string `json:"planId,omitempty"`
-	// PlanName - Offer Plan Name
-	PlanName *string `json:"planName,omitempty"`
-	// TermUnit - Offer Plan Term unit
-	TermUnit *string `json:"termUnit,omitempty"`
-	// Status - READ-ONLY; SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
-	Status SaaSOfferStatus `json:"status,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OrganizationResourcePropertiesOfferDetail.
-func (orpD OrganizationResourcePropertiesOfferDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if orpD.PublisherID != nil {
-		objectMap["publisherId"] = orpD.PublisherID
-	}
-	if orpD.ID != nil {
-		objectMap["id"] = orpD.ID
-	}
-	if orpD.PlanID != nil {
-		objectMap["planId"] = orpD.PlanID
-	}
-	if orpD.PlanName != nil {
-		objectMap["planName"] = orpD.PlanName
-	}
-	if orpD.TermUnit != nil {
-		objectMap["termUnit"] = orpD.TermUnit
-	}
-	return json.Marshal(objectMap)
-}
-
-// OrganizationResourcePropertiesUserDetail subscriber detail
-type OrganizationResourcePropertiesUserDetail struct {
-	// FirstName - First name
-	FirstName *string `json:"firstName,omitempty"`
-	// LastName - Last name
-	LastName *string `json:"lastName,omitempty"`
-	// EmailAddress - Email address
-	EmailAddress *string `json:"emailAddress,omitempty"`
 }
 
 // OrganizationResourceUpdate organization Resource update
@@ -977,6 +924,22 @@ type ResourceProviderDefaultErrorResponse struct {
 func (rpder ResourceProviderDefaultErrorResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // UserDetail subscriber detail

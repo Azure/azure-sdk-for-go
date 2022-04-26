@@ -313,8 +313,29 @@ type OfferDetail struct {
 	PlanName *string `json:"planName,omitempty"`
 	// TermUnit - Offer Plan Term unit
 	TermUnit *string `json:"termUnit,omitempty"`
-	// Status - SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
+	// Status - READ-ONLY; SaaS Offer Status. Possible values include: 'SaaSOfferStatusStarted', 'SaaSOfferStatusPendingFulfillmentStart', 'SaaSOfferStatusInProgress', 'SaaSOfferStatusSubscribed', 'SaaSOfferStatusSuspended', 'SaaSOfferStatusReinstated', 'SaaSOfferStatusSucceeded', 'SaaSOfferStatusFailed', 'SaaSOfferStatusUnsubscribed', 'SaaSOfferStatusUpdating'
 	Status SaaSOfferStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OfferDetail.
+func (od OfferDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if od.PublisherID != nil {
+		objectMap["publisherId"] = od.PublisherID
+	}
+	if od.ID != nil {
+		objectMap["id"] = od.ID
+	}
+	if od.PlanID != nil {
+		objectMap["planId"] = od.PlanID
+	}
+	if od.PlanName != nil {
+		objectMap["planName"] = od.PlanName
+	}
+	if od.TermUnit != nil {
+		objectMap["termUnit"] = od.TermUnit
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.

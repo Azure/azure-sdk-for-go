@@ -7,6 +7,7 @@ import (
 	"context"
 	cryptoRand "crypto/rand"
 	"encoding/hex"
+	"encoding/xml"
 	"fmt"
 	"net/http"
 	"os"
@@ -1269,7 +1270,7 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	adminClient.rulesAndActionsAreUnknown = true
+	adminClient.treatFiltersAndActionsAsUnknown = true
 
 	dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
 	require.NoError(t, err)
@@ -1305,11 +1306,20 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 	})
 	require.NoError(t, err, fmt.Sprintf("Created rule %s", rp.Name))
 
+	urf := createdRule.Filter.(*UnknownRuleFilter)
+	ura := createdRule.Action.(*UnknownRuleAction)
+
+	require.Regexp(t, "^<Filter.*", string(urf.RawXML))
+	require.Regexp(t, "SqlFilter", urf.Type)
+
+	require.Regexp(t, "^<Action.*", string(ura.RawXML))
+	require.Regexp(t, "SqlRuleAction", ura.Type)
+
 	_, err = adminClient.UpdateRule(context.Background(), topicName, "sub", createdRule.RuleProperties)
 	require.NoError(t, err, fmt.Sprintf("Updated rule %s succeeds", rp.Name))
 
 	// now let things get deserialized as normal, double check that we kept things intact.
-	adminClient.rulesAndActionsAreUnknown = false
+	adminClient.treatFiltersAndActionsAsUnknown = false
 
 	getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", rp.Name, nil)
 	require.NoError(t, err, fmt.Sprintf("Get rule %s succeeds", rp.Name))
@@ -1474,6 +1484,80 @@ func TestAdminClient_pagerWithFullPage(t *testing.T) {
 		"/$Resources/Topics?&$top=10&$skip=10",
 		"/$Resources/Topics?&$top=10&$skip=20",
 	}, em.getPaths)
+}
+
+func TestAdminClient_unknownActionSerde(t *testing.T) {
+	ura, err := newUnknownRuleActionFromActionDescription(&atom.ActionDescription{
+		Type:   "SomeNewAction",
+		RawXML: []byte("<someNewActionXML></someNewActionXML>"),
+		RawAttrs: []xml.Attr{
+			{
+				Name: xml.Name{
+					Local: "some-custom-attribute",
+				},
+				Value: "some-custom-attribute-value",
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t,
+		`<Action some-custom-attribute="some-custom-attribute-value" i:type="SomeNewAction">`+
+			`<someNewActionXML></someNewActionXML>`+
+			`</Action>`, string(ura.RawXML))
+	require.Equal(t, "SomeNewAction", ura.Type)
+
+	// and now the inverse
+	ad, err := convertUnknownRuleActionToActionDescription(ura)
+	require.NoError(t, err)
+
+	require.Equal(t, "<someNewActionXML></someNewActionXML>", string(ad.RawXML))
+
+	require.Equal(t, []xml.Attr{
+		{Name: xml.Name{Local: "some-custom-attribute"}, Value: "some-custom-attribute-value"}}, ad.RawAttrs)
+	require.Equal(t, "SomeNewAction", string(ad.Type))
+
+	_, err = convertUnknownRuleActionToActionDescription(&UnknownRuleAction{
+		Type:   "something",
+		RawXML: []byte("invalid &xml"),
+	})
+	require.Error(t, err)
+}
+
+func TestAdminClient_unknownFilterSerde(t *testing.T) {
+	urf, err := newUnknownRuleFilterFromFilterDescription(&atom.FilterDescription{
+		Type:   "SomeNewFilter",
+		RawXML: []byte("<someNewFilterXML></someNewFilterXML>"),
+		RawAttrs: []xml.Attr{
+			{
+				Name: xml.Name{
+					Local: "some-custom-attribute",
+				},
+				Value: "some-custom-attribute-value",
+			},
+		},
+	})
+	require.NoError(t, err)
+	require.Equal(t,
+		`<Filter some-custom-attribute="some-custom-attribute-value" i:type="SomeNewFilter">`+
+			`<someNewFilterXML></someNewFilterXML>`+
+			`</Filter>`, string(urf.RawXML))
+	require.Equal(t, "SomeNewFilter", urf.Type)
+
+	// and now the inverse
+	ad, err := convertUnknownRuleFilterToFilterDescription(urf)
+	require.NoError(t, err)
+
+	require.Equal(t, "<someNewFilterXML></someNewFilterXML>", string(ad.RawXML))
+
+	require.Equal(t, []xml.Attr{
+		{Name: xml.Name{Local: "some-custom-attribute"}, Value: "some-custom-attribute-value"}}, ad.RawAttrs)
+	require.Equal(t, "SomeNewFilter", string(ad.Type))
+
+	_, err = convertUnknownRuleFilterToFilterDescription(&UnknownRuleFilter{
+		Type:   "something",
+		RawXML: []byte("invalid &xml"),
+	})
+	require.Error(t, err)
 }
 
 func deleteQueue(t *testing.T, ac *Client, queueName string) {

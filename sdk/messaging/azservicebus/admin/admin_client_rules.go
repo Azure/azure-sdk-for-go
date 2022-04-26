@@ -59,10 +59,7 @@ type UnknownRuleAction struct {
 	Type string
 
 	// RawXML is the raw XML for this action that could not be parsed.
-	RawXML string
-
-	// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
-	RawAttrs []xml.Attr
+	RawXML []byte
 }
 
 func (a *UnknownRuleAction) ruleAction() {}
@@ -130,10 +127,7 @@ type UnknownRuleFilter struct {
 	Type string
 
 	// RawXML is the raw XML for this rule that could not be parsed.
-	RawXML string
-
-	// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
-	RawAttrs []xml.Attr
+	RawXML []byte
 }
 
 func (f *UnknownRuleFilter) ruleFilter() {}
@@ -213,7 +207,7 @@ func (ac *Client) GetRule(ctx context.Context, topicName string, subscriptionNam
 		return mapATOMError[GetRuleResponse](err)
 	}
 
-	props, err := newRuleProperties(ruleEnv, ac.rulesAndActionsAreUnknown)
+	props, err := ac.newRuleProperties(ruleEnv)
 
 	if err != nil {
 		return nil, err
@@ -245,9 +239,7 @@ func (ac *Client) NewListRulesPager(topicName string, subscriptionName string, o
 	}
 
 	ep := &entityPager[atom.RuleFeed, atom.RuleEnvelope, RuleProperties]{
-		convertFn: func(t *atom.RuleEnvelope) (*RuleProperties, error) {
-			return newRuleProperties(t, ac.rulesAndActionsAreUnknown)
-		},
+		convertFn:    ac.newRuleProperties,
 		baseFragment: fmt.Sprintf("/%s/Subscriptions/%s/Rules/", topicName, subscriptionName),
 		maxPageSize:  pageSize,
 		em:           ac.em,
@@ -313,18 +305,20 @@ func (ac *Client) DeleteRule(ctx context.Context, topicName string, subscription
 func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subscriptionName string, putProps RuleProperties, creating bool) (*RuleProperties, *http.Response, error) {
 	ruleDesc := atom.RuleDescription{}
 
-	ourFilter := &atom.FilterDescription{}
-	ruleDesc.Filter = ourFilter
 	theirFilter := putProps.Filter
 
 	if theirFilter != nil {
 		switch actualFilter := theirFilter.(type) {
 		case *FalseFilter:
-			ourFilter.Type = "FalseFilter"
-			ourFilter.SQLExpression = to.Ptr("1=0")
+			ruleDesc.Filter = &atom.FilterDescription{
+				Type:          "FalseFilter",
+				SQLExpression: to.Ptr("1=0"),
+			}
 		case *TrueFilter:
-			ourFilter.Type = "TrueFilter"
-			ourFilter.SQLExpression = to.Ptr("1=1")
+			ruleDesc.Filter = &atom.FilterDescription{
+				Type:          "TrueFilter",
+				SQLExpression: to.Ptr("1=1"),
+			}
 		case *SQLFilter:
 			params, err := publicSQLParametersToInternal(actualFilter.Parameters)
 
@@ -332,38 +326,48 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 				return nil, nil, err
 			}
 
-			ourFilter.Type = "SqlFilter"
-			ourFilter.SQLExpression = &actualFilter.Expression
-			ourFilter.Parameters = params
+			ruleDesc.Filter = &atom.FilterDescription{
+				Type:          "SqlFilter",
+				SQLExpression: &actualFilter.Expression,
+				Parameters:    params,
+			}
 		case *CorrelationFilter:
-			ourFilter.Type = "CorrelationFilter"
-
-			ourFilter.CorrelationFilter.ContentType = actualFilter.ContentType
-			ourFilter.CorrelationFilter.CorrelationID = actualFilter.CorrelationID
-			ourFilter.CorrelationFilter.MessageID = actualFilter.MessageID
-			ourFilter.CorrelationFilter.ReplyTo = actualFilter.ReplyTo
-			ourFilter.CorrelationFilter.ReplyToSessionID = actualFilter.ReplyToSessionID
-			ourFilter.CorrelationFilter.SessionID = actualFilter.SessionID
-			ourFilter.CorrelationFilter.Label = actualFilter.Subject
-			ourFilter.CorrelationFilter.To = actualFilter.To
-
 			appProps, err := publicSQLParametersToInternal(actualFilter.ApplicationProperties)
 
 			if err != nil {
 				return nil, nil, err
 			}
 
-			ourFilter.CorrelationFilter.Properties = appProps
+			ruleDesc.Filter = &atom.FilterDescription{
+				Type: "CorrelationFilter",
+				CorrelationFilter: atom.CorrelationFilter{
+					ContentType:      actualFilter.ContentType,
+					CorrelationID:    actualFilter.CorrelationID,
+					MessageID:        actualFilter.MessageID,
+					ReplyTo:          actualFilter.ReplyTo,
+					ReplyToSessionID: actualFilter.ReplyToSessionID,
+					SessionID:        actualFilter.SessionID,
+					Label:            actualFilter.Subject,
+					To:               actualFilter.To,
+					Properties:       appProps,
+				},
+			}
 		case *UnknownRuleFilter:
-			ourFilter.Type = actualFilter.Type
-			ourFilter.RawXML = actualFilter.RawXML
-			ourFilter.RawAttrs = actualFilter.RawAttrs
+			fd, err := convertUnknownRuleFilterToFilterDescription(actualFilter)
+
+			if err != nil {
+				return nil, nil, err
+			}
+
+			ruleDesc.Filter = fd
 		default:
 			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Filter", theirFilter)
 		}
 	} else {
-		ourFilter.Type = "TrueFilter"
-		ourFilter.SQLExpression = to.Ptr("1=1")
+		ruleDesc.Filter = &atom.FilterDescription{
+			Type:          "TrueFilter",
+			SQLExpression: to.Ptr("1=1"),
+		}
 	}
 
 	theirAction := putProps.Action
@@ -371,25 +375,25 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 	if theirAction != nil {
 		switch actualAction := theirAction.(type) {
 		case *SQLAction:
-			ourAction := &atom.ActionDescription{
-				Type: "SqlRuleAction",
-			}
-			ruleDesc.Action = ourAction
-
 			params, err := publicSQLParametersToInternal(actualAction.Parameters)
 
 			if err != nil {
 				return nil, nil, err
 			}
 
-			ourAction.SQLExpression = actualAction.Expression
-			ourAction.Parameters = params
-		case *UnknownRuleAction:
 			ruleDesc.Action = &atom.ActionDescription{
-				Type:     actualAction.Type,
-				RawXML:   actualAction.RawXML,
-				RawAttrs: actualAction.RawAttrs,
+				Type:          "SqlRuleAction",
+				SQLExpression: actualAction.Expression,
+				Parameters:    params,
 			}
+		case *UnknownRuleAction:
+			ad, err := convertUnknownRuleActionToActionDescription(actualAction)
+
+			if err != nil {
+				return nil, nil, err
+			}
+
+			ruleDesc.Action = ad
 		default:
 			return nil, nil, fmt.Errorf("invalid type ('%T') for Rule.Action", theirAction)
 		}
@@ -423,12 +427,12 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 		return nil, nil, err
 	}
 
-	respProps, err := newRuleProperties(respEnv, ac.rulesAndActionsAreUnknown)
+	respProps, err := ac.newRuleProperties(respEnv)
 
 	return respProps, httpResp, err
 }
 
-func newRuleProperties(env *atom.RuleEnvelope, rulesAndActionsAreUnknown bool) (*RuleProperties, error) {
+func (ac *Client) newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, error) {
 	desc := env.Content.RuleDescription
 
 	props := RuleProperties{
@@ -473,16 +477,20 @@ func newRuleProperties(env *atom.RuleEnvelope, rulesAndActionsAreUnknown bool) (
 		}
 	}
 
-	if rulesAndActionsAreUnknown || props.Filter == nil {
-		props.Filter = &UnknownRuleFilter{
-			Type:     desc.Filter.Type,
-			RawXML:   desc.Filter.RawXML,
-			RawAttrs: desc.Filter.RawAttrs,
+	if ac.treatFiltersAndActionsAsUnknown || props.Filter == nil {
+		urf, err := newUnknownRuleFilterFromFilterDescription(desc.Filter)
+
+		if err != nil {
+			return nil, err
 		}
+
+		props.Filter = urf
 	}
 
+	const emptyRuleAction = "EmptyRuleAction"
+
 	switch desc.Action.Type {
-	case "EmptyRuleAction":
+	case emptyRuleAction:
 	case "SqlRuleAction":
 		params, err := internalSQLParametersToPublic(desc.Action.Parameters)
 
@@ -494,20 +502,16 @@ func newRuleProperties(env *atom.RuleEnvelope, rulesAndActionsAreUnknown bool) (
 			Expression: desc.Action.SQLExpression,
 			Parameters: params,
 		}
-	default:
-		props.Action = &UnknownRuleAction{
-			Type:     desc.Action.Type,
-			RawXML:   desc.Action.RawXML,
-			RawAttrs: desc.Action.RawAttrs,
-		}
 	}
 
-	if rulesAndActionsAreUnknown {
-		props.Action = &UnknownRuleAction{
-			Type:     desc.Action.Type,
-			RawXML:   desc.Action.RawXML,
-			RawAttrs: desc.Action.RawAttrs,
+	if ac.treatFiltersAndActionsAsUnknown || (desc.Action == nil && desc.Action.Type != emptyRuleAction) {
+		ura, err := newUnknownRuleActionFromActionDescription(desc.Action)
+
+		if err != nil {
+			return nil, err
 		}
+
+		props.Action = ura
 	}
 
 	return &props, nil
@@ -630,4 +634,106 @@ func internalSQLParametersToPublic(kvlist *atom.KeyValueList) (map[string]interf
 	}
 
 	return params, nil
+}
+
+func newUnknownRuleFilterFromFilterDescription(fd *atom.FilterDescription) (*UnknownRuleFilter, error) {
+	attrs := fd.RawAttrs
+
+	// 'type' gets parsed since it's one of the standard fields. Since we want to present
+	// the full filter XML we'll re-add it.
+	attrs = append(attrs, xml.Attr{
+		Name: xml.Name{
+			Local: "i:type",
+		}, Value: fd.Type,
+	})
+
+	userFacingXML := struct {
+		XMLName xml.Name   `xml:"Filter"`
+		Attrs   []xml.Attr `xml:",any,attr"`
+		XML     []byte     `xml:",innerxml"`
+	}{
+		Attrs: attrs,
+		XML:   fd.RawXML,
+	}
+
+	xmlBytes, err := xml.Marshal(userFacingXML)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &UnknownRuleFilter{
+		Type:   fd.Type,
+		RawXML: xmlBytes,
+	}, nil
+}
+
+func convertUnknownRuleFilterToFilterDescription(urf *UnknownRuleFilter) (*atom.FilterDescription, error) {
+	var fdXML struct {
+		Type  string     `xml:"i type,attr"`
+		Attrs []xml.Attr `xml:",any,attr"`
+		XML   []byte     `xml:",innerxml"`
+	}
+
+	if err := xml.Unmarshal([]byte(urf.RawXML), &fdXML); err != nil {
+		return nil, err
+	}
+
+	return &atom.FilterDescription{
+		Type:     fdXML.Type,
+		RawAttrs: fdXML.Attrs,
+		RawXML:   fdXML.XML,
+	}, nil
+}
+
+func newUnknownRuleActionFromActionDescription(ad *atom.ActionDescription) (*UnknownRuleAction, error) {
+	attrs := ad.RawAttrs
+
+	// 'type' gets parsed since it's one of the standard fields. Since we want to present
+	// the full filter XML we'll re-add it.
+	attrs = append(attrs, xml.Attr{
+		Name: xml.Name{
+			Local: "i:type",
+		}, Value: ad.Type,
+	})
+
+	userFacingXML := struct {
+		XMLName xml.Name   `xml:"Action"`
+		Attrs   []xml.Attr `xml:",any,attr"`
+		XML     []byte     `xml:",innerxml"`
+	}{
+		Attrs: attrs,
+		XML:   ad.RawXML,
+	}
+
+	xmlBytes, err := xml.Marshal(userFacingXML)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &UnknownRuleAction{
+		Type:   ad.Type,
+		RawXML: xmlBytes,
+	}, nil
+}
+
+// convertUnknownRuleActionToActionDescription creates an atom.ActionDescription.
+// This XML was originally
+func convertUnknownRuleActionToActionDescription(urf *UnknownRuleAction) (*atom.ActionDescription, error) {
+	var adXML struct {
+		Type  string     `xml:"i type,attr"`
+		Attrs []xml.Attr `xml:",any,attr"`
+		XML   []byte     `xml:",innerxml"`
+	}
+
+	if err := xml.Unmarshal([]byte(urf.RawXML), &adXML); err != nil {
+		return nil, err
+	}
+
+	return &atom.ActionDescription{
+		Type:     adXML.Type,
+		RawXML:   adXML.XML,
+		RawAttrs: adXML.Attrs,
+	}, nil
 }

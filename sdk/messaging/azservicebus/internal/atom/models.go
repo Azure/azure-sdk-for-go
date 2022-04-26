@@ -186,7 +186,7 @@ type (
 		XMLName xml.Name `xml:"Filter"`
 
 		// RawXML is any XML that wasn't covered by our known properties.
-		RawXML string `xml:",innerxml"`
+		RawXML []byte `xml:",innerxml"`
 
 		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
 		RawAttrs []xml.Attr `xml:",any,attr"`
@@ -212,7 +212,7 @@ type (
 		Parameters    *KeyValueList `xml:"Parameters,omitempty"`
 
 		// RawXML is any XML that wasn't covered by our known properties.
-		RawXML string `xml:",innerxml"`
+		RawXML []byte `xml:",innerxml"`
 
 		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
 		RawAttrs []xml.Attr `xml:",any,attr"`

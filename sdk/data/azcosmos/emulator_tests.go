@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/base64"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
@@ -21,10 +22,10 @@ type emulatorTests struct {
 }
 
 func newEmulatorTests(t *testing.T) *emulatorTests {
-	//envCheck := os.Getenv("EMULATOR")
-	//if envCheck == "" {
-	//	t.Skip("set EMULATOR environment variable to run this test")
-	//}
+	envCheck := os.Getenv("EMULATOR")
+	if envCheck == "" {
+		t.Skip("set EMULATOR environment variable to run this test")
+	}
 
 	return &emulatorTests{
 		host: "https://localhost:8081/",

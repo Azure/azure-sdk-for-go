@@ -13,6 +13,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -57,13 +58,10 @@ func TestNew(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakePollingURL1 {
@@ -80,13 +78,13 @@ func TestNew(t *testing.T) {
 	if err := poller.Update(pollingResponse(http.StatusNoContent, http.NoBody)); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "Succeeded" {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if err := poller.Update(pollingResponse(http.StatusConflict, http.NoBody)); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "Failed" {
+	if s := poller.State(); s != pollers.OperationStateFailed {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -98,13 +96,10 @@ func TestUpdateWithProvState(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakePollingURL1 {
@@ -121,13 +116,13 @@ func TestUpdateWithProvState(t *testing.T) {
 	if err := poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{ "properties": { "provisioningState": "Updating" } }`))); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "Updating" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if err := poller.Update(pollingResponse(http.StatusOK, http.NoBody)); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "Succeeded" {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 }

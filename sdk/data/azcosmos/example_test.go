@@ -12,8 +12,31 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
+
+func ExampleNewClient() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	// Obtain a TokenCredential for the current environment
+	// Alternatively, you could use any of the other credential types
+	// For example, azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClient(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
 
 func ExampleNewClientWithKey() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")

@@ -12,6 +12,19 @@ The azcosmos package is capable of:
 
 Creating the Client
 
+Types of Credentials
+The clients support different forms of authentication. The azcosmos library supports
+authorization via Azure Active Directory or an account key.
+
+Using Azure Active Directory
+To create a client, you can use any of the TokenCredential implementations provided by `azidentity`.
+	cred, err := azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
+	handle(err)
+	client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)
+	handle(err)
+
+
+Using account keys
 To create a client, you will need the account's endpoint URL and a key credential.
 
 	cred, err := azcosmos.NewKeyCredential("myAccountKey")

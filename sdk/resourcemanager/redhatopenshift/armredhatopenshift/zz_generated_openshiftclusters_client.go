@@ -110,7 +110,7 @@ func (client *OpenShiftClustersClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -171,7 +171,7 @@ func (client *OpenShiftClustersClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -217,7 +217,7 @@ func (client *OpenShiftClustersClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -275,7 +275,7 @@ func (client *OpenShiftClustersClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -286,6 +286,62 @@ func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response) (
 	result := OpenShiftClustersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterList); err != nil {
 		return OpenShiftClustersClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAdminCredentials - The operation returns the admin kubeconfig.
+// If the operation fails it returns an *azcore.ResponseError type.
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// resourceName - The name of the OpenShift cluster resource.
+// options - OpenShiftClustersClientListAdminCredentialsOptions contains the optional parameters for the OpenShiftClustersClient.ListAdminCredentials
+// method.
+func (client *OpenShiftClustersClient) ListAdminCredentials(ctx context.Context, resourceGroupName string, resourceName string, options *OpenShiftClustersClientListAdminCredentialsOptions) (OpenShiftClustersClientListAdminCredentialsResponse, error) {
+	req, err := client.listAdminCredentialsCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return OpenShiftClustersClientListAdminCredentialsResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listAdminCredentialsHandleResponse(resp)
+}
+
+// listAdminCredentialsCreateRequest creates the ListAdminCredentials request.
+func (client *OpenShiftClustersClient) listAdminCredentialsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *OpenShiftClustersClientListAdminCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters/{resourceName}/listAdminCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listAdminCredentialsHandleResponse handles the ListAdminCredentials response.
+func (client *OpenShiftClustersClient) listAdminCredentialsHandleResponse(resp *http.Response) (OpenShiftClustersClientListAdminCredentialsResponse, error) {
+	result := OpenShiftClustersClientListAdminCredentialsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterAdminKubeconfig); err != nil {
+		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
 	}
 	return result, nil
 }
@@ -339,7 +395,7 @@ func (client *OpenShiftClustersClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -395,7 +451,7 @@ func (client *OpenShiftClustersClient) listCredentialsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -466,7 +522,7 @@ func (client *OpenShiftClustersClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-04-30")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

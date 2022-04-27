@@ -8,15 +8,17 @@
 
 package armredhatopenshift
 
+import "time"
+
 // APIServerProfile represents an API server profile.
 type APIServerProfile struct {
-	// The IP of the cluster API server (immutable).
+	// The IP of the cluster API server.
 	IP *string `json:"ip,omitempty"`
 
-	// The URL to access the cluster API server (immutable).
+	// The URL to access the cluster API server.
 	URL *string `json:"url,omitempty"`
 
-	// API server visibility (immutable).
+	// API server visibility.
 	Visibility *Visibility `json:"visibility,omitempty"`
 }
 
@@ -43,22 +45,25 @@ type CloudErrorBody struct {
 
 // ClusterProfile represents a cluster profile.
 type ClusterProfile struct {
-	// The domain for the cluster (immutable).
+	// The domain for the cluster.
 	Domain *string `json:"domain,omitempty"`
 
-	// The pull secret for the cluster (immutable).
+	// If FIPS validated crypto modules are used
+	FipsValidatedModules *FipsValidatedModules `json:"fipsValidatedModules,omitempty"`
+
+	// The pull secret for the cluster.
 	PullSecret *string `json:"pullSecret,omitempty"`
 
-	// The ID of the cluster resource group (immutable).
+	// The ID of the cluster resource group.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
 
-	// The version of the cluster (immutable).
+	// The version of the cluster.
 	Version *string `json:"version,omitempty"`
 }
 
 // ConsoleProfile represents a console profile.
 type ConsoleProfile struct {
-	// The URL to access the cluster console (immutable).
+	// The URL to access the cluster console.
 	URL *string `json:"url,omitempty"`
 }
 
@@ -79,31 +84,37 @@ type Display struct {
 
 // IngressProfile represents an ingress profile.
 type IngressProfile struct {
-	// The IP of the ingress (immutable).
+	// The IP of the ingress.
 	IP *string `json:"ip,omitempty"`
 
-	// The ingress profile name. Must be "default" (immutable).
+	// The ingress profile name.
 	Name *string `json:"name,omitempty"`
 
-	// Ingress visibility (immutable).
+	// Ingress visibility.
 	Visibility *Visibility `json:"visibility,omitempty"`
 }
 
 // MasterProfile represents a master profile.
 type MasterProfile struct {
-	// The Azure resource ID of the master subnet (immutable).
+	// The resource ID of an associated DiskEncryptionSet, if applicable.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+
+	// Whether master virtual machines are encrypted at host.
+	EncryptionAtHost *EncryptionAtHost `json:"encryptionAtHost,omitempty"`
+
+	// The Azure resource ID of the master subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
 
-	// The size of the master VMs (immutable).
-	VMSize *VMSize `json:"vmSize,omitempty"`
+	// The size of the master VMs.
+	VMSize *string `json:"vmSize,omitempty"`
 }
 
 // NetworkProfile represents a network profile.
 type NetworkProfile struct {
-	// The CIDR used for OpenShift/Kubernetes Pods (immutable).
+	// The CIDR used for OpenShift/Kubernetes Pods.
 	PodCidr *string `json:"podCidr,omitempty"`
 
-	// The CIDR used for OpenShift/Kubernetes Services (immutable).
+	// The CIDR used for OpenShift/Kubernetes Services.
 	ServiceCidr *string `json:"serviceCidr,omitempty"`
 }
 
@@ -124,16 +135,25 @@ type OpenShiftCluster struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// OpenShiftClusterCredentials represents an OpenShift cluster's credentials
+// OpenShiftClusterAdminKubeconfig represents an OpenShift cluster's admin kubeconfig.
+type OpenShiftClusterAdminKubeconfig struct {
+	// The base64-encoded kubeconfig file.
+	Kubeconfig *string `json:"kubeconfig,omitempty"`
+}
+
+// OpenShiftClusterCredentials represents an OpenShift cluster's credentials.
 type OpenShiftClusterCredentials struct {
-	// The password for the kubeadmin user
+	// The password for the kubeadmin user.
 	KubeadminPassword *string `json:"kubeadminPassword,omitempty"`
 
-	// The username for the kubeadmin user
+	// The username for the kubeadmin user.
 	KubeadminUsername *string `json:"kubeadminUsername,omitempty"`
 }
 
@@ -166,7 +186,7 @@ type OpenShiftClusterProperties struct {
 	// The cluster network profile.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 
-	// The cluster provisioning state (immutable).
+	// The cluster provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
 
 	// The cluster service principal profile.
@@ -183,6 +203,9 @@ type OpenShiftClusterUpdate struct {
 
 	// The resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
 // OpenShiftClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the OpenShiftClustersClient.BeginCreateOrUpdate
@@ -208,6 +231,12 @@ type OpenShiftClustersClientBeginUpdateOptions struct {
 
 // OpenShiftClustersClientGetOptions contains the optional parameters for the OpenShiftClustersClient.Get method.
 type OpenShiftClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OpenShiftClustersClientListAdminCredentialsOptions contains the optional parameters for the OpenShiftClustersClient.ListAdminCredentials
+// method.
+type OpenShiftClustersClientListAdminCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -268,11 +297,32 @@ type Resource struct {
 
 // ServicePrincipalProfile represents a service principal profile.
 type ServicePrincipalProfile struct {
-	// The client ID used for the cluster (immutable).
+	// The client ID used for the cluster.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// The client secret used for the cluster (immutable).
+	// The client secret used for the cluster.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -296,18 +346,24 @@ type TrackedResource struct {
 
 // WorkerProfile represents a worker profile.
 type WorkerProfile struct {
-	// The number of worker VMs. Must be between 3 and 20 (immutable).
+	// The number of worker VMs.
 	Count *int32 `json:"count,omitempty"`
 
-	// The disk size of the worker VMs. Must be 128 or greater (immutable).
+	// The resource ID of an associated DiskEncryptionSet, if applicable.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+
+	// The disk size of the worker VMs.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 
-	// The worker profile name. Must be "worker" (immutable).
+	// Whether master virtual machines are encrypted at host.
+	EncryptionAtHost *EncryptionAtHost `json:"encryptionAtHost,omitempty"`
+
+	// The worker profile name.
 	Name *string `json:"name,omitempty"`
 
-	// The Azure resource ID of the worker subnet (immutable).
+	// The Azure resource ID of the worker subnet.
 	SubnetID *string `json:"subnetId,omitempty"`
 
-	// The size of the worker VMs (immutable).
-	VMSize *VMSize `json:"vmSize,omitempty"`
+	// The size of the worker VMs.
+	VMSize *string `json:"vmSize,omitempty"`
 }

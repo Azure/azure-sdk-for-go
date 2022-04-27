@@ -69,8 +69,7 @@ type DeviceCodeCredential struct {
 	account    public.Account
 }
 
-// NewDeviceCodeCredential creates a DeviceCodeCredential.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewDeviceCodeCredential creates a DeviceCodeCredential. Pass nil to accept default options.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
 	cp := DeviceCodeCredentialOptions{}
 	if options != nil {
@@ -94,10 +93,8 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	return &DeviceCodeCredential{userPrompt: cp.UserPrompt, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. It will begin the device code flow and poll until the user completes authentication.
+// GetToken requests an access token from Azure Active Directory. It will begin the device code flow and poll until the user completes authentication.
 // This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
 		return nil, errors.New(credNameDeviceCode + ": GetToken() requires at least one scope")

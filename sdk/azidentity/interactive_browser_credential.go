@@ -46,8 +46,7 @@ type InteractiveBrowserCredential struct {
 	account public.Account
 }
 
-// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential. Pass nil to accept default options.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {
@@ -71,9 +70,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	return &InteractiveBrowserCredential{options: cp, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
 		return nil, errors.New(credNameBrowser + ": GetToken() requires at least one scope")

@@ -8,7 +8,6 @@ import (
 	"encoding/base64"
 	"os"
 	"strconv"
-	"strings"
 	"testing"
 	"time"
 
@@ -114,9 +113,9 @@ func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.T
 		"aud":"https://localhost.localhost" 
 	}`
 
-	headerBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte(header)))
-	payloadBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte(payload)))
-	masterKeyBase64 := c.removePadding(base64.URLEncoding.EncodeToString([]byte("C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==")))
+	headerBase64 := base64.RawURLEncoding.EncodeToString([]byte(header))
+	payloadBase64 := base64.RawURLEncoding.EncodeToString([]byte(payload))
+	masterKeyBase64 := base64.RawURLEncoding.EncodeToString([]byte("C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="))
 
 	token := headerBase64 + "." + payloadBase64 + "." + masterKeyBase64
 
@@ -124,8 +123,4 @@ func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.T
 		Token:     token,
 		ExpiresOn: time.Unix(expiration, 0),
 	}, nil
-}
-
-func (c *emulatorTokenCredential) removePadding(encodedString string) string {
-	return strings.Trim(encodedString, "=")
 }

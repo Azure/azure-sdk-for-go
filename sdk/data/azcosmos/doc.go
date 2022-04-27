@@ -19,6 +19,7 @@ authorization via Azure Active Directory or an account key.
 Using Azure Active Directory
 To create a client, you can use any of the TokenCredential implementations provided by `azidentity`.
 	cred, err := azidentity.NewClientSecretCredential("tenantId", "clientId", "clientSecret")
+	handle(err)
 	client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)
 	handle(err)
 

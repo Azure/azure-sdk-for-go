@@ -50,6 +50,7 @@ The clients support different forms of authentication. The azcosmos library supp
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
 client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)
 handle(err)
 ```
@@ -62,7 +63,8 @@ const (
     cosmosDbKey = "someKey"
 )
 
-cred, _ := azcosmos.NewKeyCredential(cosmosDbKey)
+cred, err := azcosmos.NewKeyCredential(cosmosDbKey)
+handle(err)
 client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```

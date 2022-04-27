@@ -49,6 +49,8 @@ The clients support different forms of authentication. The azcosmos library supp
 **Using Azure Active Directory**
 
 ```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
 cred, err := azidentity.NewDefaultAzureCredential(nil)
 handle(err)
 client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)

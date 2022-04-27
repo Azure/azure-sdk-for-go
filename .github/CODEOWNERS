@@ -14,43 +14,43 @@
 
 # Catch all for non-code project files and unowned files | folders
 *                             @rickwinter @jhendrixMSFT
-/sdk/                         @rickwinter @chlowell @richardpark-msft @seankane-msft
+/sdk/                         @rickwinter @chlowell @richardpark-msft
 
 # Samples
-/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/samples/                     @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Core
-/sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/azcore/                  @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %Azure.Identity
 /sdk/azidentity/              @chlowell @jhendrixMSFT @rickwinter
 
 # PRLabel: %Internal
-/sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %App Configuration
-/sdk/appconfig/               @antkmsft @seankane-msft @jhendrixMSFT
+/sdk/appconfig/               @antkmsft @jhendrixMSFT
 
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli
 
 # PRLabel: %Tables
-/sdk/data/aztables/           @seankane-msft @jhendrixMSFT 
+/sdk/data/aztables/           @jhendrixMSFT
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                @seankane-msft @jhendrixMSFT
+/sdk/keyvault/                @chlowell @jhendrixMSFT
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
+/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Service Bus
-/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT 
+/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @jhendrixMSFT @seankane-msft
+/sdk/storage/                 @mohsha-msft @zezha-msft @jhendrixMSFT
 
 ###########
 # Eng Sys

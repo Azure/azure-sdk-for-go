@@ -35,22 +35,22 @@
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli
 
 # PRLabel: %Tables
-/sdk/data/aztables/           @jhendrixMSFT 
+/sdk/data/aztables/           @jhendrixMSFT
 
 # PRLabel: %KeyVault
-/sdk/keyvault/                @jhendrixMSFT
+/sdk/keyvault/                @chlowell @jhendrixMSFT
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
+/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Service Bus
-/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT 
+/sdk/messaging/internal       @richardpark-msft @jhendrixMSFT
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/         @ArcturusZhang @lirenhe @tadelesh
 
 # PRLabel: %Storage
-/sdk/storage/                 @mohsha-msft @zezha-msft
+/sdk/storage/                 @mohsha-msft @zezha-msft @jhendrixMSFT
 
 ###########
 # Eng Sys

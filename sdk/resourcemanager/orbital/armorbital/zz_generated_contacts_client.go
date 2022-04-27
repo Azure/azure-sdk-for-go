@@ -95,14 +95,14 @@ func (client *ContactsClient) create(ctx context.Context, resourceGroupName stri
 // createCreateRequest creates the Create request.
 func (client *ContactsClient) createCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, contactName string, parameters Contact, options *ContactsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -116,7 +116,7 @@ func (client *ContactsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -162,14 +162,14 @@ func (client *ContactsClient) deleteOperation(ctx context.Context, resourceGroup
 // deleteCreateRequest creates the Delete request.
 func (client *ContactsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, contactName string, options *ContactsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -183,7 +183,7 @@ func (client *ContactsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -213,14 +213,14 @@ func (client *ContactsClient) Get(ctx context.Context, resourceGroupName string,
 // getCreateRequest creates the Get request.
 func (client *ContactsClient) getCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, contactName string, options *ContactsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts/{contactName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -234,7 +234,7 @@ func (client *ContactsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -257,10 +257,16 @@ func (client *ContactsClient) getHandleResponse(resp *http.Response) (ContactsCl
 func (client *ContactsClient) NewListPager(resourceGroupName string, spacecraftName string, options *ContactsClientListOptions) *runtime.Pager[ContactsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[ContactsClientListResponse]{
 		More: func(page ContactsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ContactsClientListResponse) (ContactsClientListResponse, error) {
-			req, err := client.listCreateRequest(ctx, resourceGroupName, spacecraftName, options)
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, spacecraftName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
 				return ContactsClientListResponse{}, err
 			}
@@ -279,14 +285,14 @@ func (client *ContactsClient) NewListPager(resourceGroupName string, spacecraftN
 // listCreateRequest creates the List request.
 func (client *ContactsClient) listCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *ContactsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/contacts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -296,7 +302,10 @@ func (client *ContactsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

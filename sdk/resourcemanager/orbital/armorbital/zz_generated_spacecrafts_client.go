@@ -95,14 +95,14 @@ func (client *SpacecraftsClient) createOrUpdate(ctx context.Context, resourceGro
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters Spacecraft, options *SpacecraftsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -112,7 +112,7 @@ func (client *SpacecraftsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -157,14 +157,14 @@ func (client *SpacecraftsClient) deleteOperation(ctx context.Context, resourceGr
 // deleteCreateRequest creates the Delete request.
 func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -174,7 +174,7 @@ func (client *SpacecraftsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -203,14 +203,14 @@ func (client *SpacecraftsClient) Get(ctx context.Context, resourceGroupName stri
 // getCreateRequest creates the Get request.
 func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, options *SpacecraftsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -220,7 +220,7 @@ func (client *SpacecraftsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -242,10 +242,16 @@ func (client *SpacecraftsClient) getHandleResponse(resp *http.Response) (Spacecr
 func (client *SpacecraftsClient) NewListPager(resourceGroupName string, options *SpacecraftsClientListOptions) *runtime.Pager[SpacecraftsClientListResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpacecraftsClientListResponse]{
 		More: func(page SpacecraftsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SpacecraftsClientListResponse) (SpacecraftsClientListResponse, error) {
-			req, err := client.listCreateRequest(ctx, resourceGroupName, options)
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
 				return SpacecraftsClientListResponse{}, err
 			}
@@ -264,20 +270,23 @@ func (client *SpacecraftsClient) NewListPager(resourceGroupName string, options 
 // listCreateRequest creates the List request.
 func (client *SpacecraftsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *SpacecraftsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -299,17 +308,39 @@ func (client *SpacecraftsClient) listHandleResponse(resp *http.Response) (Spacec
 // parameters - The parameters to provide for the contacts.
 // options - SpacecraftsClientBeginListAvailableContactsOptions contains the optional parameters for the SpacecraftsClient.BeginListAvailableContacts
 // method.
-func (client *SpacecraftsClient) BeginListAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (*armruntime.Poller[SpacecraftsClientListAvailableContactsResponse], error) {
+func (client *SpacecraftsClient) BeginListAvailableContacts(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (*armruntime.Poller[*runtime.Pager[SpacecraftsClientListAvailableContactsResponse]], error) {
+	pager := runtime.NewPager(runtime.PageProcessor[SpacecraftsClientListAvailableContactsResponse]{
+		More: func(page SpacecraftsClientListAvailableContactsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SpacecraftsClientListAvailableContactsResponse) (SpacecraftsClientListAvailableContactsResponse, error) {
+			req, err := runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			if err != nil {
+				return SpacecraftsClientListAvailableContactsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SpacecraftsClientListAvailableContactsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SpacecraftsClientListAvailableContactsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listAvailableContactsHandleResponse(resp)
+		},
+	})
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.listAvailableContacts(ctx, resourceGroupName, spacecraftName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SpacecraftsClientListAvailableContactsResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[SpacecraftsClientListAvailableContactsResponse]]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+			Response:      &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SpacecraftsClientListAvailableContactsResponse](options.ResumeToken, client.pl, nil)
+		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[SpacecraftsClientListAvailableContactsResponse]]{
+			Response: &pager,
+		})
 	}
 }
 
@@ -324,7 +355,7 @@ func (client *SpacecraftsClient) listAvailableContacts(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -333,14 +364,14 @@ func (client *SpacecraftsClient) listAvailableContacts(ctx context.Context, reso
 // listAvailableContactsCreateRequest creates the ListAvailableContacts request.
 func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters ContactParameters, options *SpacecraftsClientBeginListAvailableContactsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}/listAvailableContacts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -350,10 +381,19 @@ func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// listAvailableContactsHandleResponse handles the ListAvailableContacts response.
+func (client *SpacecraftsClient) listAvailableContactsHandleResponse(resp *http.Response) (SpacecraftsClientListAvailableContactsResponse, error) {
+	result := SpacecraftsClientListAvailableContactsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableContactsListResult); err != nil {
+		return SpacecraftsClientListAvailableContactsResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListBySubscriptionPager - Return list of spacecrafts
@@ -363,10 +403,16 @@ func (client *SpacecraftsClient) listAvailableContactsCreateRequest(ctx context.
 func (client *SpacecraftsClient) NewListBySubscriptionPager(options *SpacecraftsClientListBySubscriptionOptions) *runtime.Pager[SpacecraftsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PageProcessor[SpacecraftsClientListBySubscriptionResponse]{
 		More: func(page SpacecraftsClientListBySubscriptionResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *SpacecraftsClientListBySubscriptionResponse) (SpacecraftsClientListBySubscriptionResponse, error) {
-			req, err := client.listBySubscriptionCreateRequest(ctx, options)
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listBySubscriptionCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
 				return SpacecraftsClientListBySubscriptionResponse{}, err
 			}
@@ -394,7 +440,10 @@ func (client *SpacecraftsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
+	if options != nil && options.Skiptoken != nil {
+		reqQP.Set("$skiptoken", *options.Skiptoken)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -409,38 +458,55 @@ func (client *SpacecraftsClient) listBySubscriptionHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// UpdateTags - Updates the specified spacecraft tags.
+// BeginUpdateTags - Updates the specified spacecraft tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // spacecraftName - Spacecraft ID
 // parameters - Parameters supplied to update spacecraft tags.
-// options - SpacecraftsClientUpdateTagsOptions contains the optional parameters for the SpacecraftsClient.UpdateTags method.
-func (client *SpacecraftsClient) UpdateTags(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientUpdateTagsOptions) (SpacecraftsClientUpdateTagsResponse, error) {
+// options - SpacecraftsClientBeginUpdateTagsOptions contains the optional parameters for the SpacecraftsClient.BeginUpdateTags
+// method.
+func (client *SpacecraftsClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientBeginUpdateTagsOptions) (*armruntime.Poller[SpacecraftsClientUpdateTagsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateTags(ctx, resourceGroupName, spacecraftName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SpacecraftsClientUpdateTagsResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[SpacecraftsClientUpdateTagsResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// UpdateTags - Updates the specified spacecraft tags.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SpacecraftsClient) updateTags(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientBeginUpdateTagsOptions) (*http.Response, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, spacecraftName, parameters, options)
 	if err != nil {
-		return SpacecraftsClientUpdateTagsResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SpacecraftsClientUpdateTagsResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SpacecraftsClientUpdateTagsResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return client.updateTagsHandleResponse(resp)
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientUpdateTagsOptions) (*policy.Request, error) {
+func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, spacecraftName string, parameters TagsObject, options *SpacecraftsClientBeginUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/spacecrafts/{spacecraftName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if spacecraftName == "" {
 		return nil, errors.New("parameter spacecraftName cannot be empty")
 	}
@@ -450,17 +516,8 @@ func (client *SpacecraftsClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
-}
-
-// updateTagsHandleResponse handles the UpdateTags response.
-func (client *SpacecraftsClient) updateTagsHandleResponse(resp *http.Response) (SpacecraftsClientUpdateTagsResponse, error) {
-	result := SpacecraftsClientUpdateTagsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Spacecraft); err != nil {
-		return SpacecraftsClientUpdateTagsResponse{}, err
-	}
-	return result, nil
 }

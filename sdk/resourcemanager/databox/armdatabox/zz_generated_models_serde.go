@@ -179,6 +179,7 @@ func (c CommonJobDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataImportDetails", c.DataImportDetails)
 	populate(objectMap, "datacenterAddress", c.DatacenterAddress)
 	populate(objectMap, "deliveryPackage", c.DeliveryPackage)
+	populate(objectMap, "deviceErasureDetails", c.DeviceErasureDetails)
 	populate(objectMap, "expectedDataSizeInTeraBytes", c.ExpectedDataSizeInTeraBytes)
 	objectMap["jobDetailsType"] = c.JobDetailsType
 	populate(objectMap, "jobStages", c.JobStages)
@@ -226,6 +227,9 @@ func (c *CommonJobDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &c.DeliveryPackage)
+			delete(rawMsg, key)
+		case "deviceErasureDetails":
+			err = unpopulate(val, &c.DeviceErasureDetails)
 			delete(rawMsg, key)
 		case "expectedDataSizeInTeraBytes":
 			err = unpopulate(val, &c.ExpectedDataSizeInTeraBytes)
@@ -467,6 +471,7 @@ func (c *CustomerDiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
 		CopyLogDetails:              c.CopyLogDetails,
 		ReverseShipmentLabelSasKey:  c.ReverseShipmentLabelSasKey,
 		ChainOfCustodySasKey:        c.ChainOfCustodySasKey,
+		DeviceErasureDetails:        c.DeviceErasureDetails,
 		KeyEncryptionKey:            c.KeyEncryptionKey,
 		ExpectedDataSizeInTeraBytes: c.ExpectedDataSizeInTeraBytes,
 		Actions:                     c.Actions,
@@ -490,6 +495,7 @@ func (c CustomerDiskJobDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "datacenterAddress", c.DatacenterAddress)
 	populate(objectMap, "deliverToDcPackageDetails", c.DeliverToDcPackageDetails)
 	populate(objectMap, "deliveryPackage", c.DeliveryPackage)
+	populate(objectMap, "deviceErasureDetails", c.DeviceErasureDetails)
 	populate(objectMap, "enableManifestBackup", c.EnableManifestBackup)
 	populate(objectMap, "expectedDataSizeInTeraBytes", c.ExpectedDataSizeInTeraBytes)
 	populate(objectMap, "exportDiskDetailsCollection", c.ExportDiskDetailsCollection)
@@ -547,6 +553,9 @@ func (c *CustomerDiskJobDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &c.DeliveryPackage)
+			delete(rawMsg, key)
+		case "deviceErasureDetails":
+			err = unpopulate(val, &c.DeviceErasureDetails)
 			delete(rawMsg, key)
 		case "enableManifestBackup":
 			err = unpopulate(val, &c.EnableManifestBackup)
@@ -1078,6 +1087,7 @@ func (d *DiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
 		CopyLogDetails:              d.CopyLogDetails,
 		ReverseShipmentLabelSasKey:  d.ReverseShipmentLabelSasKey,
 		ChainOfCustodySasKey:        d.ChainOfCustodySasKey,
+		DeviceErasureDetails:        d.DeviceErasureDetails,
 		KeyEncryptionKey:            d.KeyEncryptionKey,
 		ExpectedDataSizeInTeraBytes: d.ExpectedDataSizeInTeraBytes,
 		Actions:                     d.Actions,
@@ -1100,6 +1110,7 @@ func (d DiskJobDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataImportDetails", d.DataImportDetails)
 	populate(objectMap, "datacenterAddress", d.DatacenterAddress)
 	populate(objectMap, "deliveryPackage", d.DeliveryPackage)
+	populate(objectMap, "deviceErasureDetails", d.DeviceErasureDetails)
 	populate(objectMap, "disksAndSizeDetails", d.DisksAndSizeDetails)
 	populate(objectMap, "expectedDataSizeInTeraBytes", d.ExpectedDataSizeInTeraBytes)
 	populate(objectMap, "granularCopyProgress", d.GranularCopyProgress)
@@ -1154,6 +1165,9 @@ func (d *DiskJobDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &d.DeliveryPackage)
+			delete(rawMsg, key)
+		case "deviceErasureDetails":
+			err = unpopulate(val, &d.DeviceErasureDetails)
 			delete(rawMsg, key)
 		case "disksAndSizeDetails":
 			err = unpopulate(val, &d.DisksAndSizeDetails)
@@ -1381,6 +1395,7 @@ func (h *HeavyJobDetails) GetCommonJobDetails() *CommonJobDetails {
 		CopyLogDetails:              h.CopyLogDetails,
 		ReverseShipmentLabelSasKey:  h.ReverseShipmentLabelSasKey,
 		ChainOfCustodySasKey:        h.ChainOfCustodySasKey,
+		DeviceErasureDetails:        h.DeviceErasureDetails,
 		KeyEncryptionKey:            h.KeyEncryptionKey,
 		ExpectedDataSizeInTeraBytes: h.ExpectedDataSizeInTeraBytes,
 		Actions:                     h.Actions,
@@ -1403,6 +1418,7 @@ func (h HeavyJobDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataImportDetails", h.DataImportDetails)
 	populate(objectMap, "datacenterAddress", h.DatacenterAddress)
 	populate(objectMap, "deliveryPackage", h.DeliveryPackage)
+	populate(objectMap, "deviceErasureDetails", h.DeviceErasureDetails)
 	populate(objectMap, "devicePassword", h.DevicePassword)
 	populate(objectMap, "expectedDataSizeInTeraBytes", h.ExpectedDataSizeInTeraBytes)
 	objectMap["jobDetailsType"] = ClassDiscriminatorDataBoxHeavy
@@ -1454,6 +1470,9 @@ func (h *HeavyJobDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &h.DeliveryPackage)
+			delete(rawMsg, key)
+		case "deviceErasureDetails":
+			err = unpopulate(val, &h.DeviceErasureDetails)
 			delete(rawMsg, key)
 		case "devicePassword":
 			err = unpopulate(val, &h.DevicePassword)
@@ -1639,6 +1658,7 @@ func (j *JobDetails) GetCommonJobDetails() *CommonJobDetails {
 		CopyLogDetails:              j.CopyLogDetails,
 		ReverseShipmentLabelSasKey:  j.ReverseShipmentLabelSasKey,
 		ChainOfCustodySasKey:        j.ChainOfCustodySasKey,
+		DeviceErasureDetails:        j.DeviceErasureDetails,
 		KeyEncryptionKey:            j.KeyEncryptionKey,
 		ExpectedDataSizeInTeraBytes: j.ExpectedDataSizeInTeraBytes,
 		Actions:                     j.Actions,
@@ -1661,6 +1681,7 @@ func (j JobDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataImportDetails", j.DataImportDetails)
 	populate(objectMap, "datacenterAddress", j.DatacenterAddress)
 	populate(objectMap, "deliveryPackage", j.DeliveryPackage)
+	populate(objectMap, "deviceErasureDetails", j.DeviceErasureDetails)
 	populate(objectMap, "devicePassword", j.DevicePassword)
 	populate(objectMap, "expectedDataSizeInTeraBytes", j.ExpectedDataSizeInTeraBytes)
 	objectMap["jobDetailsType"] = ClassDiscriminatorDataBox
@@ -1712,6 +1733,9 @@ func (j *JobDetails) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "deliveryPackage":
 			err = unpopulate(val, &j.DeliveryPackage)
+			delete(rawMsg, key)
+		case "deviceErasureDetails":
+			err = unpopulate(val, &j.DeviceErasureDetails)
 			delete(rawMsg, key)
 		case "devicePassword":
 			err = unpopulate(val, &j.DevicePassword)

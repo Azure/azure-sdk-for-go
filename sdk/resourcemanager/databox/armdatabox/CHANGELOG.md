@@ -1,5 +1,16 @@
 # Release History
 
+## 0.5.0 (2022-04-27)
+### Features Added
+
+- New struct `DeviceErasureDetails`
+- New field `DeviceErasureDetails` in struct `CustomerDiskJobDetails`
+- New field `DeviceErasureDetails` in struct `HeavyJobDetails`
+- New field `DeviceErasureDetails` in struct `DiskJobDetails`
+- New field `DeviceErasureDetails` in struct `CommonJobDetails`
+- New field `DeviceErasureDetails` in struct `JobDetails`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

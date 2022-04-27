@@ -221,6 +221,9 @@ type CommonJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
 
@@ -519,6 +522,9 @@ type CustomerDiskJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
 	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection,omitempty" azure:"ro"`
 
@@ -749,6 +755,15 @@ type Details struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// DeviceErasureDetails - Device erasure details with erasure completion status and erasureordestructionlog sas key
+type DeviceErasureDetails struct {
+	// READ-ONLY; Holds the device erasure completion status
+	DeviceErasureStatus *StageStatus `json:"deviceErasureStatus,omitempty" azure:"ro"`
+
+	// READ-ONLY; Shared access key to download cleanup or destruction certificate for device
+	ErasureOrDestructionCertificateSasKey *string `json:"erasureOrDestructionCertificateSasKey,omitempty" azure:"ro"`
+}
+
 // DiskCopyLogDetails - Copy Log Details for a disk
 type DiskCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
@@ -904,6 +919,9 @@ type DiskJobDetails struct {
 
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks
 	// are shipped to the customer.
@@ -1139,6 +1157,9 @@ type HeavyJobDetails struct {
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
 
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
 
@@ -1280,6 +1301,9 @@ type JobDetails struct {
 
 	// READ-ONLY; Delivery package shipping details.
 	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Holds device data erasure details
+	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
 
 	// READ-ONLY; List of stages that run in the job.
 	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`

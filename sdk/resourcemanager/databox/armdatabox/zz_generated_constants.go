@@ -10,7 +10,7 @@ package armdatabox
 
 const (
 	moduleName    = "armdatabox"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 type AccessProtocol string
@@ -661,7 +661,7 @@ func PossibleStageNameValues() []StageName {
 	}
 }
 
-// StageStatus - Status of the job stage.
+// StageStatus - Holds the device erasure completion status
 type StageStatus string
 
 const (
@@ -689,7 +689,7 @@ const (
 	StageStatusWaitingForCustomerActionForCleanUp StageStatus = "WaitingForCustomerActionForCleanUp"
 	// StageStatusCustomerActionPerformedForCleanUp - Stage has performed customer action for clean up.
 	StageStatusCustomerActionPerformedForCleanUp StageStatus = "CustomerActionPerformedForCleanUp"
-	// StageStatusCustomerActionPerformed - Stage has performed customer action.
+	// StageStatusCustomerActionPerformed - Stage has performed customer action for clean up.
 	StageStatusCustomerActionPerformed StageStatus = "CustomerActionPerformed"
 )
 

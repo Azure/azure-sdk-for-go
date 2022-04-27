@@ -1,10 +1,11 @@
 # Release History
 
-## 0.9.3 (Unreleased)
+## 0.10.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Removed logging constants from the `log` package.
 
 ### Bugs Fixed
 

@@ -63,6 +63,8 @@ const (
 	CopyLogDetailsTypeCopyLogDetails CopyLogDetailsType = "CopyLogDetails"
 	// CopyLogDetailsTypeDataBox ...
 	CopyLogDetailsTypeDataBox CopyLogDetailsType = "DataBox"
+	// CopyLogDetailsTypeDataBoxCustomerDisk ...
+	CopyLogDetailsTypeDataBoxCustomerDisk CopyLogDetailsType = "DataBoxCustomerDisk"
 	// CopyLogDetailsTypeDataBoxDisk ...
 	CopyLogDetailsTypeDataBoxDisk CopyLogDetailsType = "DataBoxDisk"
 	// CopyLogDetailsTypeDataBoxHeavy ...
@@ -71,7 +73,7 @@ const (
 
 // PossibleCopyLogDetailsTypeValues returns an array of possible values for the CopyLogDetailsType const type.
 func PossibleCopyLogDetailsTypeValues() []CopyLogDetailsType {
-	return []CopyLogDetailsType{CopyLogDetailsTypeCopyLogDetails, CopyLogDetailsTypeDataBox, CopyLogDetailsTypeDataBoxDisk, CopyLogDetailsTypeDataBoxHeavy}
+	return []CopyLogDetailsType{CopyLogDetailsTypeCopyLogDetails, CopyLogDetailsTypeDataBox, CopyLogDetailsTypeDataBoxCustomerDisk, CopyLogDetailsTypeDataBoxDisk, CopyLogDetailsTypeDataBoxHeavy}
 }
 
 // CopyStatus enumerates the values for copy status.
@@ -86,25 +88,56 @@ const (
 	DeviceFormatted CopyStatus = "DeviceFormatted"
 	// DeviceMetadataModified Data copy failed. Device metadata was modified by user.
 	DeviceMetadataModified CopyStatus = "DeviceMetadataModified"
+	// DriveCorrupted Copy failed due to corrupted drive.
+	DriveCorrupted CopyStatus = "DriveCorrupted"
+	// DriveNotDetected Copy failed due to disk detection error.
+	DriveNotDetected CopyStatus = "DriveNotDetected"
+	// DriveNotReceived No copy triggered as device was not received.
+	DriveNotReceived CopyStatus = "DriveNotReceived"
 	// Failed Data copy failed. No data was copied.
 	Failed CopyStatus = "Failed"
 	// HardwareError The Device has hit hardware issues.
 	HardwareError CopyStatus = "HardwareError"
 	// InProgress Data copy is in progress.
 	InProgress CopyStatus = "InProgress"
+	// MetadataFilesModifiedOrRemoved Copy failed due to modified  or removed metadata files.
+	MetadataFilesModifiedOrRemoved CopyStatus = "MetadataFilesModifiedOrRemoved"
 	// NotReturned No copy triggered as device was not returned.
 	NotReturned CopyStatus = "NotReturned"
 	// NotStarted Data copy hasn't started yet.
 	NotStarted CopyStatus = "NotStarted"
+	// OtherServiceError Copy failed due to service error.
+	OtherServiceError CopyStatus = "OtherServiceError"
+	// OtherUserError Copy failed due to user error.
+	OtherUserError CopyStatus = "OtherUserError"
 	// StorageAccountNotAccessible Data copy failed. Storage Account was not accessible during copy.
 	StorageAccountNotAccessible CopyStatus = "StorageAccountNotAccessible"
 	// UnsupportedData Data copy failed. The Device data content is not supported.
 	UnsupportedData CopyStatus = "UnsupportedData"
+	// UnsupportedDrive No copy triggered as device type is not supported.
+	UnsupportedDrive CopyStatus = "UnsupportedDrive"
 )
 
 // PossibleCopyStatusValues returns an array of possible values for the CopyStatus const type.
 func PossibleCopyStatusValues() []CopyStatus {
-	return []CopyStatus{Completed, CompletedWithErrors, DeviceFormatted, DeviceMetadataModified, Failed, HardwareError, InProgress, NotReturned, NotStarted, StorageAccountNotAccessible, UnsupportedData}
+	return []CopyStatus{Completed, CompletedWithErrors, DeviceFormatted, DeviceMetadataModified, DriveCorrupted, DriveNotDetected, DriveNotReceived, Failed, HardwareError, InProgress, MetadataFilesModifiedOrRemoved, NotReturned, NotStarted, OtherServiceError, OtherUserError, StorageAccountNotAccessible, UnsupportedData, UnsupportedDrive}
+}
+
+// CustomerResolutionCode enumerates the values for customer resolution code.
+type CustomerResolutionCode string
+
+const (
+	// CustomerResolutionCodeMoveToCleanUpDevice Clean the device
+	CustomerResolutionCodeMoveToCleanUpDevice CustomerResolutionCode = "MoveToCleanUpDevice"
+	// CustomerResolutionCodeNone No Resolution Yet
+	CustomerResolutionCodeNone CustomerResolutionCode = "None"
+	// CustomerResolutionCodeResume Resume the job to same stage
+	CustomerResolutionCodeResume CustomerResolutionCode = "Resume"
+)
+
+// PossibleCustomerResolutionCodeValues returns an array of possible values for the CustomerResolutionCode const type.
+func PossibleCustomerResolutionCodeValues() []CustomerResolutionCode {
+	return []CustomerResolutionCode{CustomerResolutionCodeMoveToCleanUpDevice, CustomerResolutionCodeNone, CustomerResolutionCodeResume}
 }
 
 // DataAccountType enumerates the values for data account type.
@@ -138,6 +171,140 @@ const (
 // PossibleDataAccountTypeBasicDataAccountDetailsValues returns an array of possible values for the DataAccountTypeBasicDataAccountDetails const type.
 func PossibleDataAccountTypeBasicDataAccountDetailsValues() []DataAccountTypeBasicDataAccountDetails {
 	return []DataAccountTypeBasicDataAccountDetails{DataAccountTypeDataAccountDetails, DataAccountTypeManagedDisk, DataAccountTypeStorageAccount}
+}
+
+// DatacenterAddressType enumerates the values for datacenter address type.
+type DatacenterAddressType string
+
+const (
+	// DatacenterAddressTypeDatacenterAddressInstruction ...
+	DatacenterAddressTypeDatacenterAddressInstruction DatacenterAddressType = "DatacenterAddressInstruction"
+	// DatacenterAddressTypeDatacenterAddressLocation ...
+	DatacenterAddressTypeDatacenterAddressLocation DatacenterAddressType = "DatacenterAddressLocation"
+	// DatacenterAddressTypeDatacenterAddressResponse ...
+	DatacenterAddressTypeDatacenterAddressResponse DatacenterAddressType = "DatacenterAddressResponse"
+)
+
+// PossibleDatacenterAddressTypeValues returns an array of possible values for the DatacenterAddressType const type.
+func PossibleDatacenterAddressTypeValues() []DatacenterAddressType {
+	return []DatacenterAddressType{DatacenterAddressTypeDatacenterAddressInstruction, DatacenterAddressTypeDatacenterAddressLocation, DatacenterAddressTypeDatacenterAddressResponse}
+}
+
+// DataCenterCode enumerates the values for data center code.
+type DataCenterCode string
+
+const (
+	// DataCenterCodeAdHoc ...
+	DataCenterCodeAdHoc DataCenterCode = "AdHoc"
+	// DataCenterCodeAM2 ...
+	DataCenterCodeAM2 DataCenterCode = "AM2"
+	// DataCenterCodeAMS06 ...
+	DataCenterCodeAMS06 DataCenterCode = "AMS06"
+	// DataCenterCodeAMS20 ...
+	DataCenterCodeAMS20 DataCenterCode = "AMS20"
+	// DataCenterCodeAUH20 ...
+	DataCenterCodeAUH20 DataCenterCode = "AUH20"
+	// DataCenterCodeBJB ...
+	DataCenterCodeBJB DataCenterCode = "BJB"
+	// DataCenterCodeBL20 ...
+	DataCenterCodeBL20 DataCenterCode = "BL20"
+	// DataCenterCodeBL7 ...
+	DataCenterCodeBL7 DataCenterCode = "BL7"
+	// DataCenterCodeBN1 ...
+	DataCenterCodeBN1 DataCenterCode = "BN1"
+	// DataCenterCodeBN7 ...
+	DataCenterCodeBN7 DataCenterCode = "BN7"
+	// DataCenterCodeBOM01 ...
+	DataCenterCodeBOM01 DataCenterCode = "BOM01"
+	// DataCenterCodeBY1 ...
+	DataCenterCodeBY1 DataCenterCode = "BY1"
+	// DataCenterCodeBY2 ...
+	DataCenterCodeBY2 DataCenterCode = "BY2"
+	// DataCenterCodeBY21 ...
+	DataCenterCodeBY21 DataCenterCode = "BY21"
+	// DataCenterCodeBY24 ...
+	DataCenterCodeBY24 DataCenterCode = "BY24"
+	// DataCenterCodeCBR20 ...
+	DataCenterCodeCBR20 DataCenterCode = "CBR20"
+	// DataCenterCodeCH1 ...
+	DataCenterCodeCH1 DataCenterCode = "CH1"
+	// DataCenterCodeCPQ02 ...
+	DataCenterCodeCPQ02 DataCenterCode = "CPQ02"
+	// DataCenterCodeCPQ20 ...
+	DataCenterCodeCPQ20 DataCenterCode = "CPQ20"
+	// DataCenterCodeCWL20 ...
+	DataCenterCodeCWL20 DataCenterCode = "CWL20"
+	// DataCenterCodeCYS04 ...
+	DataCenterCodeCYS04 DataCenterCode = "CYS04"
+	// DataCenterCodeDSM05 ...
+	DataCenterCodeDSM05 DataCenterCode = "DSM05"
+	// DataCenterCodeFRA22 ...
+	DataCenterCodeFRA22 DataCenterCode = "FRA22"
+	// DataCenterCodeHKG20 ...
+	DataCenterCodeHKG20 DataCenterCode = "HKG20"
+	// DataCenterCodeInvalid ...
+	DataCenterCodeInvalid DataCenterCode = "Invalid"
+	// DataCenterCodeJNB21 ...
+	DataCenterCodeJNB21 DataCenterCode = "JNB21"
+	// DataCenterCodeJNB22 ...
+	DataCenterCodeJNB22 DataCenterCode = "JNB22"
+	// DataCenterCodeLON24 ...
+	DataCenterCodeLON24 DataCenterCode = "LON24"
+	// DataCenterCodeMAA01 ...
+	DataCenterCodeMAA01 DataCenterCode = "MAA01"
+	// DataCenterCodeMEL23 ...
+	DataCenterCodeMEL23 DataCenterCode = "MEL23"
+	// DataCenterCodeMNZ21 ...
+	DataCenterCodeMNZ21 DataCenterCode = "MNZ21"
+	// DataCenterCodeMWH01 ...
+	DataCenterCodeMWH01 DataCenterCode = "MWH01"
+	// DataCenterCodeORK70 ...
+	DataCenterCodeORK70 DataCenterCode = "ORK70"
+	// DataCenterCodeOSA20 ...
+	DataCenterCodeOSA20 DataCenterCode = "OSA20"
+	// DataCenterCodePAR22 ...
+	DataCenterCodePAR22 DataCenterCode = "PAR22"
+	// DataCenterCodePUS20 ...
+	DataCenterCodePUS20 DataCenterCode = "PUS20"
+	// DataCenterCodeSEL20 ...
+	DataCenterCodeSEL20 DataCenterCode = "SEL20"
+	// DataCenterCodeSEL21 ...
+	DataCenterCodeSEL21 DataCenterCode = "SEL21"
+	// DataCenterCodeSG2 ...
+	DataCenterCodeSG2 DataCenterCode = "SG2"
+	// DataCenterCodeSHA03 ...
+	DataCenterCodeSHA03 DataCenterCode = "SHA03"
+	// DataCenterCodeSIN20 ...
+	DataCenterCodeSIN20 DataCenterCode = "SIN20"
+	// DataCenterCodeSN5 ...
+	DataCenterCodeSN5 DataCenterCode = "SN5"
+	// DataCenterCodeSN6 ...
+	DataCenterCodeSN6 DataCenterCode = "SN6"
+	// DataCenterCodeSN8 ...
+	DataCenterCodeSN8 DataCenterCode = "SN8"
+	// DataCenterCodeSSE90 ...
+	DataCenterCodeSSE90 DataCenterCode = "SSE90"
+	// DataCenterCodeSYD03 ...
+	DataCenterCodeSYD03 DataCenterCode = "SYD03"
+	// DataCenterCodeSYD23 ...
+	DataCenterCodeSYD23 DataCenterCode = "SYD23"
+	// DataCenterCodeTYO01 ...
+	DataCenterCodeTYO01 DataCenterCode = "TYO01"
+	// DataCenterCodeTYO22 ...
+	DataCenterCodeTYO22 DataCenterCode = "TYO22"
+	// DataCenterCodeYQB20 ...
+	DataCenterCodeYQB20 DataCenterCode = "YQB20"
+	// DataCenterCodeYTO20 ...
+	DataCenterCodeYTO20 DataCenterCode = "YTO20"
+	// DataCenterCodeYTO21 ...
+	DataCenterCodeYTO21 DataCenterCode = "YTO21"
+	// DataCenterCodeZRH20 ...
+	DataCenterCodeZRH20 DataCenterCode = "ZRH20"
+)
+
+// PossibleDataCenterCodeValues returns an array of possible values for the DataCenterCode const type.
+func PossibleDataCenterCodeValues() []DataCenterCode {
+	return []DataCenterCode{DataCenterCodeAdHoc, DataCenterCodeAM2, DataCenterCodeAMS06, DataCenterCodeAMS20, DataCenterCodeAUH20, DataCenterCodeBJB, DataCenterCodeBL20, DataCenterCodeBL7, DataCenterCodeBN1, DataCenterCodeBN7, DataCenterCodeBOM01, DataCenterCodeBY1, DataCenterCodeBY2, DataCenterCodeBY21, DataCenterCodeBY24, DataCenterCodeCBR20, DataCenterCodeCH1, DataCenterCodeCPQ02, DataCenterCodeCPQ20, DataCenterCodeCWL20, DataCenterCodeCYS04, DataCenterCodeDSM05, DataCenterCodeFRA22, DataCenterCodeHKG20, DataCenterCodeInvalid, DataCenterCodeJNB21, DataCenterCodeJNB22, DataCenterCodeLON24, DataCenterCodeMAA01, DataCenterCodeMEL23, DataCenterCodeMNZ21, DataCenterCodeMWH01, DataCenterCodeORK70, DataCenterCodeOSA20, DataCenterCodePAR22, DataCenterCodePUS20, DataCenterCodeSEL20, DataCenterCodeSEL21, DataCenterCodeSG2, DataCenterCodeSHA03, DataCenterCodeSIN20, DataCenterCodeSN5, DataCenterCodeSN6, DataCenterCodeSN8, DataCenterCodeSSE90, DataCenterCodeSYD03, DataCenterCodeSYD23, DataCenterCodeTYO01, DataCenterCodeTYO22, DataCenterCodeYQB20, DataCenterCodeYTO20, DataCenterCodeYTO21, DataCenterCodeZRH20}
 }
 
 // DoubleEncryption enumerates the values for double encryption.
@@ -191,6 +358,8 @@ type JobDetailsTypeEnum string
 const (
 	// JobDetailsTypeDataBox ...
 	JobDetailsTypeDataBox JobDetailsTypeEnum = "DataBox"
+	// JobDetailsTypeDataBoxCustomerDisk ...
+	JobDetailsTypeDataBoxCustomerDisk JobDetailsTypeEnum = "DataBoxCustomerDisk"
 	// JobDetailsTypeDataBoxDisk ...
 	JobDetailsTypeDataBoxDisk JobDetailsTypeEnum = "DataBoxDisk"
 	// JobDetailsTypeDataBoxHeavy ...
@@ -201,7 +370,7 @@ const (
 
 // PossibleJobDetailsTypeEnumValues returns an array of possible values for the JobDetailsTypeEnum const type.
 func PossibleJobDetailsTypeEnumValues() []JobDetailsTypeEnum {
-	return []JobDetailsTypeEnum{JobDetailsTypeDataBox, JobDetailsTypeDataBoxDisk, JobDetailsTypeDataBoxHeavy, JobDetailsTypeJobDetails}
+	return []JobDetailsTypeEnum{JobDetailsTypeDataBox, JobDetailsTypeDataBoxCustomerDisk, JobDetailsTypeDataBoxDisk, JobDetailsTypeDataBoxHeavy, JobDetailsTypeJobDetails}
 }
 
 // JobSecretsTypeEnum enumerates the values for job secrets type enum.
@@ -210,6 +379,8 @@ type JobSecretsTypeEnum string
 const (
 	// JobSecretsTypeDataBox ...
 	JobSecretsTypeDataBox JobSecretsTypeEnum = "DataBox"
+	// JobSecretsTypeDataBoxCustomerDisk ...
+	JobSecretsTypeDataBoxCustomerDisk JobSecretsTypeEnum = "DataBoxCustomerDisk"
 	// JobSecretsTypeDataBoxDisk ...
 	JobSecretsTypeDataBoxDisk JobSecretsTypeEnum = "DataBoxDisk"
 	// JobSecretsTypeDataBoxHeavy ...
@@ -220,7 +391,7 @@ const (
 
 // PossibleJobSecretsTypeEnumValues returns an array of possible values for the JobSecretsTypeEnum const type.
 func PossibleJobSecretsTypeEnumValues() []JobSecretsTypeEnum {
-	return []JobSecretsTypeEnum{JobSecretsTypeDataBox, JobSecretsTypeDataBoxDisk, JobSecretsTypeDataBoxHeavy, JobSecretsTypeJobSecrets}
+	return []JobSecretsTypeEnum{JobSecretsTypeDataBox, JobSecretsTypeDataBoxCustomerDisk, JobSecretsTypeDataBoxDisk, JobSecretsTypeDataBoxHeavy, JobSecretsTypeJobSecrets}
 }
 
 // KekType enumerates the values for kek type.
@@ -259,6 +430,8 @@ type NotificationStageName string
 const (
 	// AtAzureDC Notification at device received at Azure datacenter stage.
 	AtAzureDC NotificationStageName = "AtAzureDC"
+	// Created Notification at job created stage.
+	Created NotificationStageName = "Created"
 	// DataCopy Notification at data copy started stage.
 	DataCopy NotificationStageName = "DataCopy"
 	// Delivered Notification at device delivered stage.
@@ -269,11 +442,13 @@ const (
 	Dispatched NotificationStageName = "Dispatched"
 	// PickedUp Notification at device picked up from user stage.
 	PickedUp NotificationStageName = "PickedUp"
+	// ShippedToCustomer Notification at shipped devices to customer stage.
+	ShippedToCustomer NotificationStageName = "ShippedToCustomer"
 )
 
 // PossibleNotificationStageNameValues returns an array of possible values for the NotificationStageName const type.
 func PossibleNotificationStageNameValues() []NotificationStageName {
-	return []NotificationStageName{AtAzureDC, DataCopy, Delivered, DevicePrepared, Dispatched, PickedUp}
+	return []NotificationStageName{AtAzureDC, Created, DataCopy, Delivered, DevicePrepared, Dispatched, PickedUp, ShippedToCustomer}
 }
 
 // OverallValidationStatus enumerates the values for overall validation status.
@@ -346,6 +521,8 @@ type SkuName string
 const (
 	// DataBox Data Box.
 	DataBox SkuName = "DataBox"
+	// DataBoxCustomerDisk Data Box Customer Disk
+	DataBoxCustomerDisk SkuName = "DataBoxCustomerDisk"
 	// DataBoxDisk Data Box Disk.
 	DataBoxDisk SkuName = "DataBoxDisk"
 	// DataBoxHeavy Data Box Heavy.
@@ -354,7 +531,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{DataBox, DataBoxDisk, DataBoxHeavy}
+	return []SkuName{DataBox, DataBoxCustomerDisk, DataBoxDisk, DataBoxHeavy}
 }
 
 // SkuNameBasicScheduleAvailabilityRequest enumerates the values for sku name basic schedule availability
@@ -385,6 +562,8 @@ const (
 	StageNameAborted StageName = "Aborted"
 	// StageNameAtAzureDC Device has been received at Azure datacenter from the user.
 	StageNameAtAzureDC StageName = "AtAzureDC"
+	// StageNameAwaitingShipmentDetails Awaiting shipment details of device from customer.
+	StageNameAwaitingShipmentDetails StageName = "AwaitingShipmentDetails"
 	// StageNameCancelled Order has been cancelled.
 	StageNameCancelled StageName = "Cancelled"
 	// StageNameCompleted Order has completed.
@@ -393,6 +572,8 @@ const (
 	StageNameCompletedWithErrors StageName = "CompletedWithErrors"
 	// StageNameCompletedWithWarnings Order has completed with warnings.
 	StageNameCompletedWithWarnings StageName = "CompletedWithWarnings"
+	// StageNameCreated Job created by the customer.
+	StageNameCreated StageName = "Created"
 	// StageNameDataCopy Data copy from the device at Azure datacenter.
 	StageNameDataCopy StageName = "DataCopy"
 	// StageNameDelivered Device has been delivered to the user of the order.
@@ -409,15 +590,21 @@ const (
 	StageNameFailedIssueReportedAtCustomer StageName = "Failed_IssueReportedAtCustomer"
 	// StageNamePickedUp Device has been picked up from user and in transit to Azure datacenter.
 	StageNamePickedUp StageName = "PickedUp"
+	// StageNamePreparingToShipFromAzureDC Preparing the device to ship to customer.
+	StageNamePreparingToShipFromAzureDC StageName = "PreparingToShipFromAzureDC"
 	// StageNameReadyToDispatchFromAzureDC Device is ready to be handed to customer from Azure DC.
 	StageNameReadyToDispatchFromAzureDC StageName = "ReadyToDispatchFromAzureDC"
 	// StageNameReadyToReceiveAtAzureDC Device can be dropped off at Azure DC.
 	StageNameReadyToReceiveAtAzureDC StageName = "ReadyToReceiveAtAzureDC"
+	// StageNameShippedToAzureDC User shipped the device to AzureDC.
+	StageNameShippedToAzureDC StageName = "ShippedToAzureDC"
+	// StageNameShippedToCustomer Shipped the device to customer.
+	StageNameShippedToCustomer StageName = "ShippedToCustomer"
 )
 
 // PossibleStageNameValues returns an array of possible values for the StageName const type.
 func PossibleStageNameValues() []StageName {
-	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameCompletedWithWarnings, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp, StageNameReadyToDispatchFromAzureDC, StageNameReadyToReceiveAtAzureDC}
+	return []StageName{StageNameAborted, StageNameAtAzureDC, StageNameAwaitingShipmentDetails, StageNameCancelled, StageNameCompleted, StageNameCompletedWithErrors, StageNameCompletedWithWarnings, StageNameCreated, StageNameDataCopy, StageNameDelivered, StageNameDeviceOrdered, StageNameDevicePrepared, StageNameDispatched, StageNameFailedIssueDetectedAtAzureDC, StageNameFailedIssueReportedAtCustomer, StageNamePickedUp, StageNamePreparingToShipFromAzureDC, StageNameReadyToDispatchFromAzureDC, StageNameReadyToReceiveAtAzureDC, StageNameShippedToAzureDC, StageNameShippedToCustomer}
 }
 
 // StageStatus enumerates the values for stage status.
@@ -428,6 +615,8 @@ const (
 	StageStatusCancelled StageStatus = "Cancelled"
 	// StageStatusCancelling Stage is cancelling.
 	StageStatusCancelling StageStatus = "Cancelling"
+	// StageStatusCustomerActionPerformedForCleanUp Stage has performed customer action for clean up.
+	StageStatusCustomerActionPerformedForCleanUp StageStatus = "CustomerActionPerformedForCleanUp"
 	// StageStatusFailed Stage has failed.
 	StageStatusFailed StageStatus = "Failed"
 	// StageStatusInProgress Stage is in progress.
@@ -442,11 +631,15 @@ const (
 	StageStatusSucceededWithWarnings StageStatus = "SucceededWithWarnings"
 	// StageStatusWaitingForCustomerAction Stage is stuck until customer takes some action.
 	StageStatusWaitingForCustomerAction StageStatus = "WaitingForCustomerAction"
+	// StageStatusWaitingForCustomerActionForCleanUp Stage is waiting for customer action for clean up.
+	StageStatusWaitingForCustomerActionForCleanUp StageStatus = "WaitingForCustomerActionForCleanUp"
+	// StageStatusWaitingForCustomerActionForKek Stage is waiting for customer action for kek action items.
+	StageStatusWaitingForCustomerActionForKek StageStatus = "WaitingForCustomerActionForKek"
 )
 
 // PossibleStageStatusValues returns an array of possible values for the StageStatus const type.
 func PossibleStageStatusValues() []StageStatus {
-	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors, StageStatusSucceededWithWarnings, StageStatusWaitingForCustomerAction}
+	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusCustomerActionPerformedForCleanUp, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors, StageStatusSucceededWithWarnings, StageStatusWaitingForCustomerAction, StageStatusWaitingForCustomerActionForCleanUp, StageStatusWaitingForCustomerActionForKek}
 }
 
 // TransferConfigurationType enumerates the values for transfer configuration type.

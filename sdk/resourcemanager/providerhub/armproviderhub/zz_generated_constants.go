@@ -10,7 +10,7 @@ package armproviderhub
 
 const (
 	moduleName    = "armproviderhub"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 type ExtensionCategory string

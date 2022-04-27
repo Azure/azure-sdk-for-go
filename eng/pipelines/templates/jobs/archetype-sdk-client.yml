@@ -79,7 +79,7 @@ stages:
     - job: Test
       displayName: Build and Test on
       variables:
-        - template: ../variables/globals.yml
+        - template: /eng/pipelines/templates/variables/globals.yml
       strategy:
         matrix:
           Linux_Go118:
@@ -124,7 +124,7 @@ stages:
     - job: Analyze
       displayName: Analyze
       variables:
-        - template: ../variables/globals.yml
+        - template: /eng/pipelines/templates/variables/globals.yml
       pool:
         name: azsdk-pool-mms-ubuntu-2004-general
 

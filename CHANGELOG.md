@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v64.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2022-02-05/iothub`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
 ## `v63.4.0`
 
 ### New Packages
@@ -13,7 +25,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.4.0/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
 
 ## `v63.3.0`
 

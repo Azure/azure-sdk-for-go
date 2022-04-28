@@ -70,8 +70,15 @@ type fakePoller struct {
 	Code int
 }
 
-func (f *fakePoller) Done() bool {
-	return f.Code == http.StatusOK || f.Code == http.StatusNoContent
+func (f *fakePoller) State() OperationState {
+	switch f.Code {
+	case http.StatusAccepted:
+		return OperationStateInProgress
+	case http.StatusOK, http.StatusNoContent:
+		return OperationStateSucceeded
+	default:
+		return OperationStateFailed
+	}
 }
 
 func (f *fakePoller) Update(resp *http.Response) error {
@@ -87,16 +94,11 @@ func (f *fakePoller) URL() string {
 	return f.Ep
 }
 
-func (f *fakePoller) Status() string {
-	switch f.Code {
-	case http.StatusAccepted:
-		return StatusInProgress
-	case http.StatusOK, http.StatusNoContent:
-		return StatusSucceeded
-	case http.StatusCreated:
-		return StatusCanceled
-	default:
-		return StatusFailed
+func newFakePoller(endpoint string, respCode int, finalGET string) *fakePoller {
+	return &fakePoller{
+		Ep:   endpoint,
+		Fg:   finalGET,
+		Code: respCode,
 	}
 }
 
@@ -111,7 +113,7 @@ func TestNewPoller(t *testing.T) {
 		Header:     http.Header{},
 	}
 	firstResp.Header.Set(shared.HeaderRetryAfter, "1")
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -162,7 +164,7 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL(), Fg: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, srv.URL()), firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -198,7 +200,7 @@ func TestNewPollerFail1(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	var respErr *exported.ResponseError
 	if !errors.As(err, &respErr) {
@@ -221,7 +223,7 @@ func TestNewPollerFail2(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	var respErr *exported.ResponseError
 	if !errors.As(err, &respErr) {
@@ -244,7 +246,7 @@ func TestNewPollerError(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")

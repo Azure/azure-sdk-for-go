@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
+// the well-known set of LRO status/provisioning state values.
 const (
 	StatusSucceeded  = "Succeeded"
 	StatusCanceled   = "Canceled"
@@ -26,13 +27,45 @@ const (
 	StatusInProgress = "InProgress"
 )
 
-// Operation abstracts the differences between concrete poller types.
+// OperationState contains the set of non-terminal and terminal states for an LRO.
+type OperationState int
+
+const (
+	OperationStateInProgress OperationState = 1
+	OperationStateSucceeded  OperationState = 2
+	OperationStateFailed     OperationState = 3
+)
+
+// String implements the fmt.Stringer interface for the OperationState type.
+func (o OperationState) String() string {
+	switch o {
+	case OperationStateInProgress:
+		return "InProgress"
+	case OperationStateSucceeded:
+		return "Succeeded"
+	case OperationStateFailed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("unknown state %d", o)
+	}
+}
+
+// Operation abstracts the differences among long-running operation implementations.
 type Operation interface {
-	Done() bool
+	// State returns the current state of the LRO.
+	// Calls to Update() will update the state as required.
+	State() OperationState
+
+	// Update provides the implementation with the latest HTTP response so it can react accordingly.
 	Update(resp *http.Response) error
+
+	// FinalGetURL returns the URL to GET when the LRO has reached a terminal, success state.
+	// Can return the empty string to indicate no final GET is required.  This usually indicates
+	// that the final response payload (if applicable) was within the terminal success response.
 	FinalGetURL() string
+
+	// URL returns the polling URL.
 	URL() string
-	Status() string
 }
 
 // IsTerminalState returns true if the LRO's state is terminal.
@@ -178,8 +211,8 @@ func (*NopPoller) URL() string {
 	return ""
 }
 
-func (*NopPoller) Done() bool {
-	return true
+func (*NopPoller) State() OperationState {
+	return OperationStateSucceeded
 }
 
 func (*NopPoller) Update(*http.Response) error {
@@ -188,8 +221,4 @@ func (*NopPoller) Update(*http.Response) error {
 
 func (*NopPoller) FinalGetURL() string {
 	return ""
-}
-
-func (*NopPoller) Status() string {
-	return StatusSucceeded
 }

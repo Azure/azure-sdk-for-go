@@ -73,9 +73,14 @@ func (p *Poller) URL() string {
 	return p.PollURL
 }
 
-// Done returns true if the LRO has reached a terminal state.
-func (p *Poller) Done() bool {
-	return pollers.IsTerminalState(p.Status())
+// State returns the current state of the LRO.
+func (p *Poller) State() pollers.OperationState {
+	if p.CurState == pollers.StatusSucceeded {
+		return pollers.OperationStateSucceeded
+	} else if pollers.IsTerminalState(p.CurState) {
+		return pollers.OperationStateFailed
+	}
+	return pollers.OperationStateInProgress
 }
 
 // Update updates the Poller from the polling response.
@@ -101,9 +106,4 @@ func (p *Poller) Update(resp *http.Response) error {
 // FinalGetURL returns the empty string as no final GET is required for this poller type.
 func (*Poller) FinalGetURL() string {
 	return ""
-}
-
-// Status returns the status of the LRO.
-func (p *Poller) Status() string {
-	return p.CurState
 }

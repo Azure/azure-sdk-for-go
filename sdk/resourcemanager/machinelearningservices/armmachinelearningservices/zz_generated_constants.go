@@ -10,7 +10,7 @@ package armmachinelearningservices
 
 const (
 	moduleName    = "armmachinelearningservices"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 // AllocationState - Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing.

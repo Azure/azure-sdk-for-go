@@ -8,6 +8,27 @@ import (
 	"time"
 )
 
+// All
+type (
+	AuthorizationRule struct {
+		// Type is the type attribute, which indicates the type of AuthorizationRule
+		// (today this is only `SharedAccessAuthorizationRule`)
+		Type string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+
+		ClaimType  string `xml:"ClaimType"`
+		ClaimValue string `xml:"ClaimValue"`
+
+		// SharedAccessAuthorizationRule properties
+		Rights       []string   `xml:"Rights>AccessRights"`
+		KeyName      *string    `xml:"KeyName"`
+		CreatedTime  *time.Time `xml:"CreatedTime"`
+		ModifiedTime *time.Time `xml:"ModifiedTime"`
+
+		PrimaryKey   *string `xml:"PrimaryKey"`
+		SecondaryKey *string `xml:"SecondaryKey"`
+	}
+)
+
 // Queues
 type (
 	// QueueEntity is the Azure Service Bus description of a Queue for management activities
@@ -39,30 +60,31 @@ type (
 	QueueDescription struct {
 		XMLName xml.Name `xml:"QueueDescription"`
 		BaseEntityDescription
-		LockDuration                        *string       `xml:"LockDuration,omitempty"`               // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-		MaxSizeInMegabytes                  *int32        `xml:"MaxSizeInMegabytes,omitempty"`         // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
-		RequiresDuplicateDetection          *bool         `xml:"RequiresDuplicateDetection,omitempty"` // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
-		RequiresSession                     *bool         `xml:"RequiresSession,omitempty"`
-		DefaultMessageTimeToLive            *string       `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
-		DeadLetteringOnMessageExpiration    *bool         `xml:"DeadLetteringOnMessageExpiration,omitempty"`    // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
-		DuplicateDetectionHistoryTimeWindow *string       `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-		MaxDeliveryCount                    *int32        `xml:"MaxDeliveryCount,omitempty"`                    // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-		EnableBatchedOperations             *bool         `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
-		SizeInBytes                         *int64        `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
-		MessageCount                        *int64        `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
-		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
-		Status                              *EntityStatus `xml:"Status,omitempty"`
-		AccessedAt                          string        `xml:"AccessedAt,omitempty"`
-		CreatedAt                           string        `xml:"CreatedAt,omitempty"`
-		UpdatedAt                           string        `xml:"UpdatedAt,omitempty"`
-		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`
-		AutoDeleteOnIdle                    *string       `xml:"AutoDeleteOnIdle,omitempty"`
-		EnablePartitioning                  *bool         `xml:"EnablePartitioning,omitempty"`
-		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
-		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
-		ForwardTo                           *string       `xml:"ForwardTo,omitempty"`
-		ForwardDeadLetteredMessagesTo       *string       `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
-		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
+		LockDuration                        *string             `xml:"LockDuration,omitempty"`               // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+		MaxSizeInMegabytes                  *int32              `xml:"MaxSizeInMegabytes,omitempty"`         // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool               `xml:"RequiresDuplicateDetection,omitempty"` // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		RequiresSession                     *bool               `xml:"RequiresSession,omitempty"`
+		DefaultMessageTimeToLive            *string             `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		DeadLetteringOnMessageExpiration    *bool               `xml:"DeadLetteringOnMessageExpiration,omitempty"`    // DeadLetteringOnMessageExpiration - A value that indicates whether this queue has dead letter support when a message expires.
+		DuplicateDetectionHistoryTimeWindow *string             `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		MaxDeliveryCount                    *int32              `xml:"MaxDeliveryCount,omitempty"`                    // MaxDeliveryCount - The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
+		EnableBatchedOperations             *bool               `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64              `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		MessageCount                        *int64              `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
+		IsAnonymousAccessible               *bool               `xml:"IsAnonymousAccessible,omitempty"`
+		AuthorizationRules                  []AuthorizationRule `xml:"AuthorizationRules>AuthorizationRule,omitempty"`
+		Status                              *EntityStatus       `xml:"Status,omitempty"`
+		AccessedAt                          string              `xml:"AccessedAt,omitempty"`
+		CreatedAt                           string              `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           string              `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool               `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string             `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool               `xml:"EnablePartitioning,omitempty"`
+		EnableExpress                       *bool               `xml:"EnableExpress,omitempty"`
+		CountDetails                        *CountDetails       `xml:"CountDetails,omitempty"`
+		ForwardTo                           *string             `xml:"ForwardTo,omitempty"`
+		ForwardDeadLetteredMessagesTo       *string             `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
+		UserMetadata                        *string             `xml:"UserMetadata,omitempty"`
 	}
 )
 
@@ -102,26 +124,27 @@ type (
 	TopicDescription struct {
 		XMLName xml.Name `xml:"TopicDescription"`
 		BaseEntityDescription
-		DefaultMessageTimeToLive            *string       `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message time span to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
-		MaxSizeInMegabytes                  *int32        `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
-		RequiresDuplicateDetection          *bool         `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
-		DuplicateDetectionHistoryTimeWindow *string       `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-		EnableBatchedOperations             *bool         `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
-		SizeInBytes                         *int64        `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
-		FilteringMessagesBeforePublishing   *bool         `xml:"FilteringMessagesBeforePublishing,omitempty"`
-		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
-		Status                              *EntityStatus `xml:"Status,omitempty"`
-		UserMetadata                        *string       `xml:"UserMetadata,omitempty"`
-		AccessedAt                          string        `xml:"AccessedAt,omitempty"`
-		CreatedAt                           string        `xml:"CreatedAt,omitempty"`
-		UpdatedAt                           string        `xml:"UpdatedAt,omitempty"`
-		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`
-		AutoDeleteOnIdle                    *string       `xml:"AutoDeleteOnIdle,omitempty"`
-		EnablePartitioning                  *bool         `xml:"EnablePartitioning,omitempty"`
-		EnableSubscriptionPartitioning      *bool         `xml:"EnableSubscriptionPartitioning,omitempty"`
-		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
-		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
-		SubscriptionCount                   *int32        `xml:"SubscriptionCount,omitempty"`
+		DefaultMessageTimeToLive            *string             `xml:"DefaultMessageTimeToLive,omitempty"`            // DefaultMessageTimeToLive - ISO 8601 default message time span to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+		MaxSizeInMegabytes                  *int32              `xml:"MaxSizeInMegabytes,omitempty"`                  // MaxSizeInMegabytes - The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
+		RequiresDuplicateDetection          *bool               `xml:"RequiresDuplicateDetection,omitempty"`          // RequiresDuplicateDetection - A value indicating if this queue requires duplicate detection.
+		DuplicateDetectionHistoryTimeWindow *string             `xml:"DuplicateDetectionHistoryTimeWindow,omitempty"` // DuplicateDetectionHistoryTimeWindow - ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
+		EnableBatchedOperations             *bool               `xml:"EnableBatchedOperations,omitempty"`             // EnableBatchedOperations - Value that indicates whether server-side batched operations are enabled.
+		SizeInBytes                         *int64              `xml:"SizeInBytes,omitempty"`                         // SizeInBytes - The size of the queue, in bytes.
+		FilteringMessagesBeforePublishing   *bool               `xml:"FilteringMessagesBeforePublishing,omitempty"`
+		IsAnonymousAccessible               *bool               `xml:"IsAnonymousAccessible,omitempty"`
+		AuthorizationRules                  []AuthorizationRule `xml:"AuthorizationRules>AuthorizationRule,omitempty"`
+		Status                              *EntityStatus       `xml:"Status,omitempty"`
+		UserMetadata                        *string             `xml:"UserMetadata,omitempty"`
+		AccessedAt                          string              `xml:"AccessedAt,omitempty"`
+		CreatedAt                           string              `xml:"CreatedAt,omitempty"`
+		UpdatedAt                           string              `xml:"UpdatedAt,omitempty"`
+		SupportOrdering                     *bool               `xml:"SupportOrdering,omitempty"`
+		AutoDeleteOnIdle                    *string             `xml:"AutoDeleteOnIdle,omitempty"`
+		EnablePartitioning                  *bool               `xml:"EnablePartitioning,omitempty"`
+		EnableSubscriptionPartitioning      *bool               `xml:"EnableSubscriptionPartitioning,omitempty"`
+		EnableExpress                       *bool               `xml:"EnableExpress,omitempty"`
+		CountDetails                        *CountDetails       `xml:"CountDetails,omitempty"`
+		SubscriptionCount                   *int32              `xml:"SubscriptionCount,omitempty"`
 	}
 )
 
@@ -131,23 +154,16 @@ func (tf TopicFeed) Items() []TopicEnvelope {
 
 // Subscriptions (and rules)
 type (
-	// FilterDescriber can transform itself into a FilterDescription
-	FilterDescriber interface {
-		ToFilterDescription() FilterDescription
-	}
-
-	// ActionDescriber can transform itself into a ActionDescription
-	ActionDescriber interface {
-		ToActionDescription() ActionDescription
-	}
-
 	// RuleDescription is the content type for Subscription Rule management requests
 	RuleDescription struct {
 		XMLName xml.Name `xml:"RuleDescription"`
+		XMLNS   string   `xml:"xmlns,attr"`
+		XMLNSI  string   `xml:"xmlns:i,attr"`
 		BaseEntityDescription
 		CreatedAt string             `xml:"CreatedAt,omitempty"`
-		Filter    FilterDescription  `xml:"Filter"`
+		Filter    *FilterDescription `xml:"Filter,omitempty"`
 		Action    *ActionDescription `xml:"Action,omitempty"`
+		Name      string             `xml:"Name"`
 	}
 	// DefaultRuleDescription is the content type for Subscription Rule management requests
 	DefaultRuleDescription struct {
@@ -168,10 +184,19 @@ type (
 	// into the subscription. The default rule has no associated annotation action.
 	FilterDescription struct {
 		XMLName xml.Name `xml:"Filter"`
+
+		// RawXML is any XML that wasn't covered by our known properties.
+		RawXML []byte `xml:",innerxml"`
+
+		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+		RawAttrs []xml.Attr `xml:",any,attr"`
+
 		CorrelationFilter
 		Type               string  `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
 		SQLExpression      *string `xml:"SqlExpression,omitempty"`
 		CompatibilityLevel int     `xml:"CompatibilityLevel,omitempty"`
+
+		Parameters *KeyValueList `xml:"Parameters,omitempty"`
 	}
 
 	// ActionDescription describes an action upon a message that matches a filter
@@ -182,28 +207,54 @@ type (
 	// is selected into the subscription. The changes to the message properties are private to the message copied into
 	// the subscription.
 	ActionDescription struct {
-		Type                  string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
-		SQLExpression         string `xml:"SqlExpression"`
-		RequiresPreprocessing bool   `xml:"RequiresPreprocessing"`
-		CompatibilityLevel    int    `xml:"CompatibilityLevel,omitempty"`
+		Type          string        `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		SQLExpression string        `xml:"SqlExpression,omitempty"`
+		Parameters    *KeyValueList `xml:"Parameters,omitempty"`
+
+		// RawXML is any XML that wasn't covered by our known properties.
+		RawXML []byte `xml:",innerxml"`
+
+		// RawAttrs are attributes for the raw XML element that wasn't covered by our known properties.
+		RawAttrs []xml.Attr `xml:",any,attr"`
 	}
 
-	// RuleEntity is the Azure Service Bus description of a Subscription Rule for management activities
+	Value struct {
+		Type  string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr"`
+		L28NS string `xml:"xmlns:l28,attr"`
+		Text  string `xml:",chardata"`
+	}
+
+	KeyValueOfstringanyType struct {
+		Key   string `xml:"Key"`
+		Value Value  `xml:"Value"`
+	}
+
+	// RuleEntity is the Azure Service Bus description of a Subscription Rule for madnagement activities
 	RuleEntity struct {
 		*RuleDescription
 		*Entity
 	}
 
-	// ruleContent is a specialized Subscription body for an Atom entry
-	ruleContent struct {
+	// RuleContent is a specialized Subscription body for an Atom entry
+	RuleContent struct {
 		XMLName         xml.Name        `xml:"content"`
 		Type            string          `xml:"type,attr"`
 		RuleDescription RuleDescription `xml:"RuleDescription"`
 	}
 
+	TempRuleEnvelope struct {
+		*Entry
+	}
+
+	// RuleFeed is a specialized feed containing RuleEnvelopes
+	RuleFeed struct {
+		*Feed
+		Entries []RuleEnvelope `xml:"entry"`
+	}
+
 	RuleEnvelope struct {
 		*Entry
-		Content *ruleContent `xml:"content"`
+		Content *RuleContent `xml:"content"`
 	}
 
 	// SubscriptionDescription is the content type for Subscription management requests
@@ -265,6 +316,36 @@ type (
 func (sf SubscriptionFeed) Items() []SubscriptionEnvelope {
 	return sf.Entries
 }
+
+func (rf RuleFeed) Items() []RuleEnvelope {
+	return rf.Entries
+}
+
+// Filters
+type (
+	// CorrelationFilter holds a set of conditions that are matched against one or more of an arriving message's user
+	// and system properties. A common use is to match against the CorrelationId property, but the application can also
+	// choose to match against ContentType, Label, MessageId, ReplyTo, ReplyToSessionId, SessionId, To, and any
+	// user-defined properties. A match exists when an arriving message's value for a property is equal to the value
+	// specified in the correlation filter. For string expressions, the comparison is case-sensitive. When specifying
+	// multiple match properties, the filter combines them as a logical AND condition, meaning for the filter to match,
+	// all conditions must match.
+	CorrelationFilter struct {
+		CorrelationID    *string       `xml:"CorrelationId,omitempty"`
+		MessageID        *string       `xml:"MessageId,omitempty"`
+		To               *string       `xml:"To,omitempty"`
+		ReplyTo          *string       `xml:"ReplyTo,omitempty"`
+		Label            *string       `xml:"Label,omitempty"`
+		SessionID        *string       `xml:"SessionId,omitempty"`
+		ReplyToSessionID *string       `xml:"ReplyToSessionId,omitempty"`
+		ContentType      *string       `xml:"ContentType,omitempty"`
+		Properties       *KeyValueList `xml:"Properties,omitempty"`
+	}
+
+	KeyValueList struct {
+		KeyValues []KeyValueOfstringanyType `xml:"KeyValueOfstringanyType,omitempty"`
+	}
+)
 
 type (
 	/*

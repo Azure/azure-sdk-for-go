@@ -5,7 +5,6 @@ package admin
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"time"
 
@@ -51,6 +50,9 @@ type TopicProperties struct {
 
 	// UserMetadata is custom metadata that user can associate with the topic.
 	UserMetadata *string
+
+	// AuthorizationRules are the authorization rules for this entity.
+	AuthorizationRules []AuthorizationRule
 }
 
 // TopicRuntimeProperties represent dynamic properties of a topic, such as the ActiveMessageCount.
@@ -121,11 +123,7 @@ func (ac *Client) GetTopic(ctx context.Context, topicName string, options *GetTo
 	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetTopicResponse](err)
 	}
 
 	topicItem, err := newTopicItem(atomResp)
@@ -157,11 +155,7 @@ func (ac *Client) GetTopicRuntimeProperties(ctx context.Context, topicName strin
 	_, err := ac.em.Get(ctx, "/"+topicName, &atomResp)
 
 	if err != nil {
-		if errors.Is(err, atom.ErrFeedEmpty) {
-			return nil, nil
-		}
-
-		return nil, err
+		return mapATOMError[GetTopicRuntimePropertiesResponse](err)
 	}
 
 	item, err := newTopicRuntimePropertiesItem(atomResp)
@@ -194,8 +188,8 @@ type ListTopicsOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopics lists topics.
-func (ac *Client) ListTopics(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
+// NewListTopicsPager creates a pager that can list topics.
+func (ac *Client) NewListTopicsPager(options *ListTopicsOptions) *runtime.Pager[ListTopicsResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -246,8 +240,8 @@ type ListTopicsRuntimePropertiesOptions struct {
 	MaxPageSize int32
 }
 
-// ListTopicsRuntimeProperties lists runtime properties for topics.
-func (ac *Client) ListTopicsRuntimeProperties(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
+// NewListTopicsRuntimePropertiesPager creates a pager than can list runtime properties for topics.
+func (ac *Client) NewListTopicsRuntimePropertiesPager(options *ListTopicsRuntimePropertiesOptions) *runtime.Pager[ListTopicsRuntimePropertiesResponse] {
 	var pageSize int32
 
 	if options != nil {
@@ -368,6 +362,7 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 		SupportOrdering:    props.SupportOrdering,
 		AutoDeleteOnIdle:   props.AutoDeleteOnIdle,
 		EnablePartitioning: props.EnablePartitioning,
+		AuthorizationRules: publicAccessRightsToInternal(props.AuthorizationRules),
 	}
 
 	return atom.WrapWithTopicEnvelope(desc)
@@ -389,6 +384,7 @@ func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
 			AutoDeleteOnIdle:                    td.AutoDeleteOnIdle,
 			EnablePartitioning:                  td.EnablePartitioning,
 			SupportOrdering:                     td.SupportOrdering,
+			AuthorizationRules:                  internalAccessRightsToPublic(td.AuthorizationRules),
 		},
 	}, nil
 }

@@ -384,12 +384,6 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 
 var ErrFeedEmpty = errors.New("entity does not exist")
 
-// ptrString takes a string and returns a pointer to that string. For use in literal pointers,
-// ptrString(fmt.Sprintf("..", foo)) -> *string
-func ptrString(toPtr string) *string {
-	return &toPtr
-}
-
 // deserializeBody deserializes the body of the response into the type specified by respObj
 // (similar to xml.Unmarshal, which this func is calling).
 // If an empty feed is found, it returns nil.

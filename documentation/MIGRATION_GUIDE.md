@@ -84,6 +84,8 @@ if err != nil {
 log.Printf("Status code: %d", rawResponse.StatusCode)
 ```
 
+> NOTE: runtime is import from **github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime**
+
 ### Long Running Operations
 
 In the previous version, if a request is a long-running operation, a struct `**Future` will be returned, which is an extension of the interface `azure.FutureAPI`. You need to invoke the `future.WaitForCompletionRef` to wait until it finishes.

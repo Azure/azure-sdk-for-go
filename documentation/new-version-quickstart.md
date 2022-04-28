@@ -50,7 +50,7 @@ please refer to [this document](https://docs.microsoft.com/azure/active-director
 ### Setting Environment Variables
 
 After you obtained the values, you need to set the following values as
-your environment variables
+your environment variables which will be used in the authorization part:
 
 -   `AZURE_CLIENT_ID`
 -   `AZURE_CLIENT_SECRET`
@@ -97,10 +97,10 @@ Authentication
 
 Once the environment is setup, all you need to do is to create an authenticated client. Before creating a client, you will first need to authenticate to Azure. In specific, you will need to provide a credential for authenticating with the Azure service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
-Our default option is to use **DefaultAzureCredential** which will make use of the environment variables we have set and take care of the authentication flow for us.
+We will use **EnvironmentCredential** to authenticate to Azure which will make use of the environment variables we have set and take care of the authentication flow for us. For further usage of `azidentity`, you could refer to [this document](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#readme)
 
 ```go
-cred, err := azidentity.NewDefaultAzureCredential(nil)
+cred, err := azidentity.NewEnvironmentCredential(nil)
 ```
 
 For more details on how authentication works in `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
@@ -311,7 +311,7 @@ Example: Managing Virtual Machines
 ---------------------------------
 In addition to resource groups, we will also use Virtual Machine as an example and show how to manage how to create a Virtual Machine which involves three Azure services (Resource Group, Network and Compute)
 
-Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk/go/mgmt/samples) for the complete sample.
+Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/createVM) for the complete sample.
 
 Long Running Operations
 -----------------------
@@ -334,6 +334,101 @@ log.Printf("LRO done")
 Note that you will need to pass a polling interval to ```PollUntilDone``` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on best practices and recommdend intervals for your specific use cases.
 
 For more advanced usage of LRO and design guidelines of LRO, please visit [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
+
+## Client Options
+
+### Request Retry Policy
+The SDK provides a baked in retry policy for failed requests with default values that can be configured by `arm.ClientOptions.Retry`. For example:
+
+```go
+rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
+    &arm.ClientOptions{
+        ClientOptions: policy.ClientOptions{
+            Retry: policy.RetryOptions{
+                // retry for 5 times
+                MaxRetries: 5,
+            },
+        },
+    },
+)
+```
+
+### Customized Policy
+
+You can use `arm.ClientOptions.PerCallPolicies` and `arm.ClientOptions.PerRetryPolicies` option to inject customized policy to the pipeline. You can refer to `azcore` [document](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore) for further information.
+
+### Custom HTTP Client
+
+You can use `arm.ClientOptions.Transport` to use your own implementation of HTTP client. The HTTP client must implement the `policy.Transporter` interface. For example:
+
+```go
+// your own implementation of HTTP client
+httpClient := NewYourOwnHTTPClient{}
+rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
+    &arm.ClientOptions{
+        ClientOptions: policy.ClientOptions{
+            Transport: &httpClient,
+        },
+    },
+)
+```
+
+### More options
+
+More client options can be found [here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore/policy/policy.go).
+
+
+## Troubleshooting
+
+### Logging
+
+The SDK uses the classification-based logging implementation in `azcore`. To enable console logging for all SDK modules, set AZURE_SDK_GO_LOGGING to all. 
+
+Use `LogOption` to configure log behavior. For example:
+```go
+rgClient, err := armresources.NewResourceGroupsClient(subscriptionId, credential,
+    &arm.ClientOptions{
+        ClientOptions: policy.ClientOptions{
+            Logging: policy.LogOptions{
+                // include HTTP body for log
+                IncludeBody: true,
+            },
+        },
+    },
+)
+```
+
+Use the `azcore/log` package to control log event and write log to the desired location. For example:
+
+```go
+import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+
+// print log output to stdout
+azlog.SetListener(func(event azlog.Event, s string) {
+    fmt.Println(s)
+})
+
+// include only azidentity credential logs
+azlog.SetEvents(azidentity.EventAuthentication)
+```
+
+### Raw HTTP response
+When there is an error in the SDK request, you need to convert the error to the `azcore.ResponseError` interface to get the raw HTTP response. When the request is successful, you can get the raw HTTP response from request context.
+
+```go
+var rawResponse *http.Response
+ctxWithResp := runtime.WithCaptureResponse(context.TODO(), &rawResponse)
+resp, err := resourceGroupsClient.CreateOrUpdate(ctxWithResp, resourceGroupName, resourceGroupParameters, nil)
+if err != nil {
+    var respErr *azcore.ResponseError
+    if errors.As(err, &respErr) {
+        log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
+    } else {
+        log.Fatalf("Other error: %+v", err)
+    }
+}
+log.Printf("Status code: %d", rawResponse.StatusCode)
+```
 
 ## Code Samples
 

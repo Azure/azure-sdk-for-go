@@ -21,11 +21,6 @@ import (
 // NOTE: For sending and receiving messages you'll need to use the `azservicebus.Client` type instead.
 type Client struct {
 	em atom.EntityManager
-
-	// For testing: treatFiltersAndActionsAsUnknown causes the deserialization of rule filters and rule actions
-	//  to behave as if they were unhandled types, forcing a return of an "unknown" filter. We use this to test that
-	// rule round-tripping works, even for types added after this library was published.
-	treatFiltersAndActionsAsUnknown bool
 }
 
 // RetryOptions represent the options for retries.

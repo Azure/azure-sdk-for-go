@@ -4,6 +4,7 @@
 package admin
 
 import (
+	"bytes"
 	"context"
 	cryptoRand "crypto/rand"
 	"encoding/hex"
@@ -23,6 +24,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/stretchr/testify/require"
 )
 
@@ -1254,6 +1256,48 @@ func TestAdminClient_GetDefaultRule(t *testing.T) {
 	require.Equal(t, updateRuleResp.RuleProperties, getResp.RuleProperties)
 }
 
+type emwrap struct {
+	inner atom.EntityManager
+}
+
+func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+	resp, err := em.inner.Put(ctx, entityPath, body, respObj, mw...)
+
+	if err != nil {
+		return resp, err
+	}
+
+	em.makeFilterAndActionUnknown(respObj)
+	return resp, err
+}
+
+func (em *emwrap) Delete(ctx context.Context, entityPath string, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+	return em.inner.Delete(ctx, entityPath, mw...)
+}
+func (em *emwrap) TokenProvider() auth.TokenProvider { return em.inner.TokenProvider() }
+
+func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+	resp, err := em.inner.Get(ctx, entityPath, respObj, mw...)
+
+	if err != nil {
+		return resp, err
+	}
+
+	em.makeFilterAndActionUnknown(respObj)
+	return resp, err
+}
+
+func (*emwrap) makeFilterAndActionUnknown(respObj interface{}) {
+	switch actual := respObj.(type) {
+	case **atom.RuleEnvelope:
+		f := (*actual).Content.RuleDescription.Filter
+		f.Type = "PurposefullyChangedFilterType_" + f.Type
+
+		a := (*actual).Content.RuleDescription.Action
+		a.Type = "PurposefullyChangedActionType_" + a.Type
+	}
+}
+
 func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 	// NOTE: This test is a little weird - we basically override all "known" type handling for filters and
 	// actions and force them to go through our "unknown" filter handling.
@@ -1269,8 +1313,6 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 		_, err := adminClient.DeleteTopic(context.Background(), topicName, nil)
 		require.NoError(t, err)
 	}()
-
-	adminClient.treatFiltersAndActionsAsUnknown = true
 
 	dt, err := time.Parse(time.RFC3339, "2001-01-01T01:02:03Z")
 	require.NoError(t, err)
@@ -1299,6 +1341,12 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 		},
 	}
 
+	origEM := adminClient.em
+
+	adminClient.em = &emwrap{
+		inner: origEM,
+	}
+
 	createdRule, err := adminClient.CreateRule(context.Background(), topicName, "sub", &CreateRuleOptions{
 		Name:   &rp.Name,
 		Filter: rp.Filter,
@@ -1307,19 +1355,22 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 	require.NoError(t, err, fmt.Sprintf("Created rule %s", rp.Name))
 
 	urf := createdRule.Filter.(*UnknownRuleFilter)
-	ura := createdRule.Action.(*UnknownRuleAction)
-
 	require.Regexp(t, "^<Filter.*", string(urf.RawXML))
-	require.Regexp(t, "SqlFilter", urf.Type)
+	require.Regexp(t, "PurposefullyChangedFilterType_SqlFilter", urf.Type)
 
+	ura := createdRule.Action.(*UnknownRuleAction)
 	require.Regexp(t, "^<Action.*", string(ura.RawXML))
-	require.Regexp(t, "SqlRuleAction", ura.Type)
+	require.Regexp(t, "PurposefullyChangedActionType_SqlRuleAction", ura.Type)
+
+	// now we'll change them to what they actually should be. We're still testing the
+	// UnknownRule(Action|Filter) logic on PUT, we just did it in a round-a-bout way.
+	urf.RawXML = bytes.Replace(urf.RawXML, []byte("PurposefullyChangedFilterType_SqlFilter"), []byte("SqlFilter"), 1)
+	ura.RawXML = bytes.Replace(ura.RawXML, []byte("PurposefullyChangedActionType_SqlRuleAction"), []byte("SqlRuleAction"), 1)
 
 	_, err = adminClient.UpdateRule(context.Background(), topicName, "sub", createdRule.RuleProperties)
 	require.NoError(t, err, fmt.Sprintf("Updated rule %s succeeds", rp.Name))
 
-	// now let things get deserialized as normal, double check that we kept things intact.
-	adminClient.treatFiltersAndActionsAsUnknown = false
+	adminClient.em = origEM
 
 	getResp, err := adminClient.GetRule(context.Background(), topicName, "sub", rp.Name, nil)
 	require.NoError(t, err, fmt.Sprintf("Get rule %s succeeds", rp.Name))

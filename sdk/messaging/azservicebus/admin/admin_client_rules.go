@@ -475,9 +475,7 @@ func (ac *Client) newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, er
 			Expression: *desc.Filter.SQLExpression,
 			Parameters: params,
 		}
-	}
-
-	if ac.treatFiltersAndActionsAsUnknown || props.Filter == nil {
+	default:
 		urf, err := newUnknownRuleFilterFromFilterDescription(desc.Filter)
 
 		if err != nil {
@@ -502,9 +500,7 @@ func (ac *Client) newRuleProperties(env *atom.RuleEnvelope) (*RuleProperties, er
 			Expression: desc.Action.SQLExpression,
 			Parameters: params,
 		}
-	}
-
-	if ac.treatFiltersAndActionsAsUnknown || (desc.Action == nil && desc.Action.Type != emptyRuleAction) {
+	default:
 		ura, err := newUnknownRuleActionFromActionDescription(desc.Action)
 
 		if err != nil {

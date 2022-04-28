@@ -10,11 +10,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:38 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil?restype=container
     method: PUT
   response:
@@ -23,17 +23,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:15 GMT
+      - Thu, 07 Apr 2022 12:22:38 GMT
       Etag:
-      - '"0x8DA068667A7AF2F"'
+      - '"0x8DA18914E80D08A"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b66b99-001e-004a-0e6f-382cf7000000
+      - c0fbf646-d01e-003b-6e7a-4acadc000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
@@ -50,13 +50,13 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:38 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil/gotestblobblobsetmetadatanil
     method: PUT
   response:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 15 Mar 2022 13:19:15 GMT
+      - Thu, 07 Apr 2022 12:22:38 GMT
       Etag:
-      - '"0x8DA068667DF80B6"'
+      - '"0x8DA18914EAD2149"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 21b66e5d-001e-004a-3d6f-382cf7000000
+      - c0fbf7f3-d01e-003b-6e7a-4acadc000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:16.4431542Z"
+      - "2022-04-07T12:22:39.5640137Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,13 +96,13 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       X-Ms-Meta-Not:
       - nil
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil/gotestblobblobsetmetadatanil?comp=metadata
     method: PUT
   response:
@@ -111,21 +111,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:15 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       Etag:
-      - '"0x8DA068668048F90"'
+      - '"0x8DA18914EE51932"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b67031-001e-004a-636f-382cf7000000
+      - c0fbf9b8-d01e-003b-097a-4acadc000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:16.6880145Z"
+      - "2022-04-07T12:22:39.9318082Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -138,11 +138,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil/gotestblobblobsetmetadatanil?comp=metadata
     method: PUT
   response:
@@ -151,21 +151,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       Etag:
-      - '"0x8DA0686682D4726"'
+      - '"0x8DA18914F259B63"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b67296-001e-004a-586f-382cf7000000
+      - c0fbfbfa-d01e-003b-0e7a-4acadc000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:16.9548609Z"
+      - "2022-04-07T12:22:40.3545715Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -178,11 +178,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:17 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil/gotestblobblobsetmetadatanil
     method: HEAD
   response:
@@ -197,11 +197,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:40 GMT
       Etag:
-      - '"0x8DA0686682D4726"'
+      - '"0x8DA18914F259B63"'
       Last-Modified:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -211,7 +211,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:39 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -219,13 +219,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 21b6745c-001e-004a-736f-382cf7000000
+      - c0fbfdbb-d01e-003b-277a-4acadc000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-03-15T13:19:16.9548609Z"
+      - "2022-04-07T12:22:40.3545715Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -238,11 +238,11 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.21.1 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Mar 2022 13:19:17 GMT
+      - Thu, 07 Apr 2022 12:22:40 GMT
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetmetadatanil?restype=container
     method: DELETE
   response:
@@ -251,13 +251,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Mar 2022 13:19:16 GMT
+      - Thu, 07 Apr 2022 12:22:40 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 21b67684-001e-004a-426f-382cf7000000
+      - c0fbff59-d01e-003b-237a-4acadc000000
       X-Ms-Version:
-      - "2019-12-12"
+      - "2020-10-02"
     status: 202 Accepted
     code: 202
     duration: ""

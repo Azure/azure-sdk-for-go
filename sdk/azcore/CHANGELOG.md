@@ -6,10 +6,16 @@
 
 ### Breaking Changes
 * Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
+* Renamed `cloud.AzurePublicCloud` to `cloud.AzurePublic`
+* Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
+* Removed `TokenRequestOptions.TenantID`
+* `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
 
 ### Bugs Fixed
 
 ### Other Changes
+* The functionality in `arm/runtime/poller.go` has been merged into `runtime/poller.go` so it should be used instead.
+  * `arm/runtime/poller.go` will be removed in a future release.
 
 ## 0.23.1 (2022-04-14)
 

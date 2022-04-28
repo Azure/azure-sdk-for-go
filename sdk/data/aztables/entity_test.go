@@ -43,7 +43,7 @@ func TestAddBasicEntity(t *testing.T) {
 
 			queryString := "PartitionKey eq 'pk001'"
 			listOptions := ListEntitiesOptions{Filter: &queryString}
-			pager := client.ListEntities(&listOptions)
+			pager := client.NewListEntitiesPager(&listOptions)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)

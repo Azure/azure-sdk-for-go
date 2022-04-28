@@ -16,9 +16,6 @@ import (
 type BearerTokenOptions struct {
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
-	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
-	// in cross-tenant applications.
-	AuxiliaryTenants []string
 }
 
 // RegistrationOptions configures the registration policy's behavior.

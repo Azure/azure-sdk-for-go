@@ -1,14 +1,16 @@
 # Release History
 
-## 0.3.1 (Unreleased)
-
-### Features Added
+## 0.4.0 (2022-04-21)
 
 ### Breaking Changes
-
-### Bugs Fixed
+* Renamed the following methods
+  * `Client.ListPropertiesOfCertificates` to `Client.NewListPropertiesOfCertificatesPager`
+  * `Client.ListPropertiesOfCertificateVersions` to `Client.NewListPropertiesOfCertificateVersionsPager`
+  * `Client.ListPropertiesOfIssuers` to `Client.NewListPropertiesOfIssuersPager`
+  * `Client.ListDeletedCertificates` to `Client.NewListDeletedCertificatesPager`
 
 ### Other Changes
+* Regenerated code with latest code generator (no visible changes).
 
 ## 0.3.0 (2022-04-06)
 

@@ -48,7 +48,7 @@ func newFakeBlockWriter() *fakeBlockWriter {
 }
 
 //nolint
-func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
+func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.ReadSeekCloser, _ *BlockBlobStageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
 		return BlockBlobStageBlockResponse{}, io.ErrNoProgress
@@ -72,7 +72,7 @@ func (f *fakeBlockWriter) StageBlock(_ context.Context, blockID string, body io.
 }
 
 //nolint
-func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
+func (f *fakeBlockWriter) CommitBlockList(_ context.Context, base64BlockIDs []string, _ *BlockBlobCommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	dst, err := os.OpenFile(filepath.Join(f.path, finalFileName), os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
@@ -186,7 +186,7 @@ func (s *azblobUnrecordedTestSuite) TestGetErr() {
 		c := copier{
 			errCh: make(chan error, 1),
 			ctx:   test.ctx,
-			o:     UploadStreamToBlockBlobOptions{TransferManager: tm},
+			o:     UploadStreamOptions{TransferManager: tm},
 		}
 		if test.err != nil {
 			c.errCh <- test.err
@@ -215,7 +215,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 	tests := []struct {
 		desc      string
 		ctx       context.Context
-		o         UploadStreamToBlockBlobOptions
+		o         UploadStreamOptions
 		fileSize  int
 		uploadErr bool
 		err       bool
@@ -226,34 +226,34 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 			err:  true,
 		},
 		{
-			desc:     "Send file(0 KiB) with default UploadStreamToBlockBlobOptions",
+			desc:     "Send file(0 KiB) with default UploadStreamOptions",
 			ctx:      context.Background(),
 			fileSize: 0,
 		},
 		{
-			desc:     "Send file(10 KiB) with default UploadStreamToBlockBlobOptions",
+			desc:     "Send file(10 KiB) with default UploadStreamOptions",
 			ctx:      context.Background(),
 			fileSize: 10 * 1024,
 		},
 		{
-			desc:     "Send file(10 KiB) with default UploadStreamToBlockBlobOptions set to azcopy settings",
+			desc:     "Send file(10 KiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: 10 * 1024,
-			o:        UploadStreamToBlockBlobOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
 		},
 		{
-			desc:     "Send file(1 MiB) with default UploadStreamToBlockBlobOptions",
+			desc:     "Send file(1 MiB) with default UploadStreamOptions",
 			ctx:      context.Background(),
 			fileSize: _1MiB,
 		},
 		{
-			desc:     "Send file(1 MiB) with default UploadStreamToBlockBlobOptions set to azcopy settings",
+			desc:     "Send file(1 MiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: _1MiB,
-			o:        UploadStreamToBlockBlobOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
 		},
 		{
-			desc:     "Send file(1.5 MiB) with default UploadStreamToBlockBlobOptions",
+			desc:     "Send file(1.5 MiB) with default UploadStreamOptions",
 			ctx:      context.Background(),
 			fileSize: _1MiB + 500*1024,
 		},
@@ -261,13 +261,13 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 			desc:     "Send file(1.5 MiB) with 2 writers",
 			ctx:      context.Background(),
 			fileSize: _1MiB + 500*1024 + 1,
-			o:        UploadStreamToBlockBlobOptions{MaxBuffers: 2},
+			o:        UploadStreamOptions{MaxBuffers: 2},
 		},
 		{
 			desc:      "Send file(12 MiB) with 3 writers and 1 MiB buffer and a write error",
 			ctx:       context.Background(),
 			fileSize:  12 * _1MiB,
-			o:         UploadStreamToBlockBlobOptions{MaxBuffers: 2, BufferSize: _1MiB},
+			o:         UploadStreamOptions{MaxBuffers: 2, BufferSize: _1MiB},
 			uploadErr: true,
 			err:       true,
 		},
@@ -275,19 +275,19 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 			desc:     "Send file(12 MiB) with 3 writers and 1.5 MiB buffer",
 			ctx:      context.Background(),
 			fileSize: 12 * _1MiB,
-			o:        UploadStreamToBlockBlobOptions{MaxBuffers: 2, BufferSize: _1MiB + .5*_1MiB},
+			o:        UploadStreamOptions{MaxBuffers: 2, BufferSize: _1MiB + .5*_1MiB},
 		},
 		{
-			desc:     "Send file(12 MiB) with default UploadStreamToBlockBlobOptions set to azcopy settings",
+			desc:     "Send file(12 MiB) with default UploadStreamOptions set to azcopy settings",
 			ctx:      context.Background(),
 			fileSize: 12 * _1MiB,
-			o:        UploadStreamToBlockBlobOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
+			o:        UploadStreamOptions{MaxBuffers: 5, BufferSize: 8 * 1024 * 1024},
 		},
 		{
-			desc:     "Send file(12 MiB) with default UploadStreamToBlockBlobOptions using SyncPool manager",
+			desc:     "Send file(12 MiB) with default UploadStreamOptions using SyncPool manager",
 			ctx:      context.Background(),
 			fileSize: 12 * _1MiB,
-			o: UploadStreamToBlockBlobOptions{
+			o: UploadStreamOptions{
 				TransferManager: spm,
 			},
 		},

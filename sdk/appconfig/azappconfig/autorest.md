@@ -13,7 +13,7 @@ output-folder: internal/generated
 module: azappconfig
 openapi-type: "data-plane"
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.35"
-module-version: 0.1.0
+use: "@autorest/go@4.0.0-preview.39"
+module-version: 0.2.0
 export-clients: true
 ```

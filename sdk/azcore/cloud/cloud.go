@@ -15,8 +15,8 @@ var (
 	AzureGovernment = Configuration{
 		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.us/", Services: map[ServiceName]ServiceConfiguration{},
 	}
-	// AzurePublicCloud contains configuration for Azure Public Cloud.
-	AzurePublicCloud = Configuration{
+	// AzurePublic contains configuration for Azure Public Cloud.
+	AzurePublic = Configuration{
 		ActiveDirectoryAuthorityHost: "https://login.microsoftonline.com/", Services: map[ServiceName]ServiceConfiguration{},
 	}
 )

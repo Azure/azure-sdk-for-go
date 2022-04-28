@@ -33,7 +33,7 @@ package azblob
 //	data := "Hello world!"
 //
 //	contentType := "text/plain"
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
+//	uploadBlockBlobOptions := BlockBlobUploadOptions{
 //		HTTPHeaders: &HTTPHeaders{
 //			BlobContentType: &contentType,
 //		},
@@ -105,7 +105,7 @@ package azblob
 //	//Create a normal blob and attempt to use the snapshot SAS against it (assuming failure) ---------------------------
 //	//If this succeeds, it means a normal SAS token was created.
 //
-//	uploadBlockBlobOptions1 := UploadBlockBlobOptions{
+//	uploadBlockBlobOptions1 := BlockBlobUploadOptions{
 //		HTTPHeaders: &HTTPHeaders{
 //			BlobContentType: &contentType,
 //		},

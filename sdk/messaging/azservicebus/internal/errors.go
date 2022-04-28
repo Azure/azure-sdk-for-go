@@ -13,7 +13,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/rpc"
 	"github.com/Azure/go-amqp"
 )
 
@@ -241,7 +240,7 @@ type (
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
-	ErrAMQP rpc.Response
+	ErrAMQP RPCResponse
 
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be
 	// more messages in the future.

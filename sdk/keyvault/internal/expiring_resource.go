@@ -12,10 +12,10 @@ import (
 )
 
 // AcquireResource abstracts a method for refreshing an expiring resource.
-type AcquireResource func(state interface{}) (newResource interface{}, newExpiration time.Time, err error)
+type AcquireResource[TResource any, TState any] func(state TState) (newResource TResource, newExpiration time.Time, err error)
 
 // ExpiringResource is a temporal resource (usually a credential), that requires periodic refreshing.
-type ExpiringResource struct {
+type ExpiringResource[TResource any, TState any] struct {
 	// cond is used to synchronize access to the shared resource embodied by the remaining fields
 	cond *sync.Cond
 
@@ -23,23 +23,23 @@ type ExpiringResource struct {
 	acquiring bool
 
 	// resource contains the value of the shared resource
-	resource interface{}
+	resource TResource
 
 	// expiration indicates when the shared resource expires; it is 0 if the resource was never acquired
 	expiration time.Time
 
 	// acquireResource is the callback function that actually acquires the resource
-	acquireResource AcquireResource
+	acquireResource AcquireResource[TResource, TState]
 }
 
 // NewExpiringResource creates a new ExpiringResource that uses the specified AcquireResource for refreshing.
-func NewExpiringResource(ar AcquireResource) *ExpiringResource {
-	return &ExpiringResource{cond: sync.NewCond(&sync.Mutex{}), acquireResource: ar}
+func NewExpiringResource[TResource any, TState any](ar AcquireResource[TResource, TState]) *ExpiringResource[TResource, TState] {
+	return &ExpiringResource[TResource, TState]{cond: sync.NewCond(&sync.Mutex{}), acquireResource: ar}
 }
 
 // GetResource returns the underlying resource.
 // If the resource is fresh, no refresh is performed.
-func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) {
+func (er *ExpiringResource[TResource, TState]) GetResource(state TState) (TResource, error) {
 	// If the resource is expiring within this time window, update it eagerly.
 	// This allows other threads/goroutines to keep running by using the not-yet-expired
 	// resource value while one thread/goroutine updates the resource.
@@ -98,7 +98,7 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 	return resource, err // Return the resource this thread/goroutine can use
 }
 
-func (er *ExpiringResource) Reset() {
+func (er *ExpiringResource[TResource, TState]) Reset() {
 	// acquire exclusive lock
 	er.cond.L.Lock()
 

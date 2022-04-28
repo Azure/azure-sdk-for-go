@@ -6,12 +6,6 @@
 
 package azblob
 
-import (
-	"context"
-	"io"
-	"net/http"
-)
-
 // GetHTTPHeaders returns the user-modifiable properties for this blob.
 func (bgpr BlobGetPropertiesResponse) GetHTTPHeaders() BlobHTTPHeaders {
 	return BlobHTTPHeaders{
@@ -27,57 +21,15 @@ func (bgpr BlobGetPropertiesResponse) GetHTTPHeaders() BlobHTTPHeaders {
 ///////////////////////////////////////////////////////////////////////////////
 
 // GetHTTPHeaders returns the user-modifiable properties for this blob.
-func (dr BlobDownloadResponse) GetHTTPHeaders() BlobHTTPHeaders {
+func (r BlobDownloadResponse) GetHTTPHeaders() BlobHTTPHeaders {
 	return BlobHTTPHeaders{
-		BlobContentType:        dr.ContentType,
-		BlobContentEncoding:    dr.ContentEncoding,
-		BlobContentLanguage:    dr.ContentLanguage,
-		BlobContentDisposition: dr.ContentDisposition,
-		BlobCacheControl:       dr.CacheControl,
-		BlobContentMD5:         dr.ContentMD5,
+		BlobContentType:        r.ContentType,
+		BlobContentEncoding:    r.ContentEncoding,
+		BlobContentLanguage:    r.ContentLanguage,
+		BlobContentDisposition: r.ContentDisposition,
+		BlobCacheControl:       r.CacheControl,
+		BlobContentMD5:         r.ContentMD5,
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-// DownloadResponse wraps AutoRest generated DownloadResponse and helps to provide info for retry.
-type DownloadResponse struct {
-	BlobDownloadResponse
-	ctx                    context.Context
-	b                      *BlobClient
-	getInfo                HTTPGetterInfo
-	ObjectReplicationRules []ObjectReplicationPolicy
-}
-
-// Body constructs new RetryReader stream for reading data. If a connection fails
-// while reading, it will make additional requests to reestablish a connection and
-// continue reading. Specifying a RetryReaderOption's with MaxRetryRequests set to 0
-// (the default), returns the original response body and no retries will be performed.
-// Pass in nil for options to accept the default options.
-func (r *DownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
-	if options == nil {
-		options = &RetryReaderOptions{}
-	}
-	if options.MaxRetryRequests == 0 { // No additional retries
-		return r.RawResponse.Body
-	}
-	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, *options,
-		func(ctx context.Context, getInfo HTTPGetterInfo) (*http.Response, error) {
-			accessConditions := &BlobAccessConditions{
-				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
-			}
-			options := DownloadBlobOptions{
-				Offset:               &getInfo.Offset,
-				Count:                &getInfo.Count,
-				BlobAccessConditions: accessConditions,
-				CpkInfo:              options.CpkInfo,
-				//CpkScopeInfo: 			  o.CpkScopeInfo,
-			}
-			resp, err := r.b.Download(ctx, &options)
-			if err != nil {
-				return nil, err
-			}
-			return resp.RawResponse, err
-		},
-	)
-}

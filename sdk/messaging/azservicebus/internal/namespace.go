@@ -17,12 +17,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 )
 
 const (
@@ -47,7 +45,8 @@ type (
 
 		newWebSocketConn func(ctx context.Context, args exported.NewWebSocketConnArgs) (net.Conn, error)
 
-		retryOptions exported.RetryOptions
+		// NOTE: exported only so it can be checked in a test
+		RetryOptions exported.RetryOptions
 
 		clientMu         sync.RWMutex
 		client           *amqp.Client
@@ -135,7 +134,7 @@ func NamespaceWithTokenCredential(fullyQualifiedNamespace string, tokenCredentia
 
 func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOption {
 	return func(ns *Namespace) error {
-		ns.retryOptions = retryOptions
+		ns.RetryOptions = retryOptions
 		return nil
 	}
 }
@@ -155,8 +154,6 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 }
 
 func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.newClient")
-	defer span.End()
 	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),
@@ -279,13 +276,6 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 		return false, ErrClientClosed
 	}
 
-	_, span := tab.StartSpan(ctx, tracing.SpanRecoverClient)
-	defer span.End()
-
-	span.AddAttributes(
-		tab.Int64Attribute("connID", int64(ns.connID)),
-		tab.Int64Attribute("theirConnID", int64(theirConnID)))
-
 	if ns.connID != theirConnID {
 		log.Writef(exported.EventConn, "Skipping connection recovery, already recovered: %d vs %d", ns.connID, theirConnID)
 		// we've already recovered since the client last tried.
@@ -336,8 +326,6 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 	refreshClaim := func(ctx context.Context) (time.Time, error) {
 		log.Writef(exported.EventAuth, "(%s) refreshing claim", entityPath)
-		ctx, span := ns.startSpanFromContext(ctx, tracing.SpanNegotiateClaim)
-		defer span.End()
 
 		amqpClient, clientRevision, err := nsGetAMQPClientImpl(ctx)
 
@@ -420,7 +408,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 						expiresOn = tmpExpiresOn
 						return nil
-					}, IsFatalSBError, ns.retryOptions)
+					}, IsFatalSBError, ns.RetryOptions)
 
 					if err == nil {
 						break
@@ -489,12 +477,6 @@ func (ns *Namespace) getUserAgent() string {
 		userAgent = fmt.Sprintf("%s/%s", userAgent, ns.userAgent)
 	}
 	return userAgent
-}
-
-func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operationName)
-	tracing.ApplyComponentInfo(span, Version)
-	return ctx, span
 }
 
 // nextClaimRefreshDuration figures out the proper interval for the next authorization

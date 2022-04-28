@@ -6,11 +6,11 @@
 
 package azblob
 
-import "github.com/stretchr/testify/assert"
+import "github.com/stretchr/testify/require"
 
 //nolint
 func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 
 	headers := map[string]string{
 		"x-ms-or-111_111":   "Completed",
@@ -22,39 +22,39 @@ func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 	}
 
 	result := deserializeORSPolicies(headers)
-	_assert.NotNil(result)
+	_require.NotNil(result)
 	rules0, rules1 := *result[0].Rules, *result[1].Rules
-	_assert.Len(result, 2)
-	_assert.Len(rules0, 2)
-	_assert.Len(rules1, 2)
+	_require.Len(result, 2)
+	_require.Len(rules0, 2)
+	_require.Len(rules1, 2)
 
 	if rules0[0].RuleId == "111" {
-		_assert.Equal(rules0[0].Status, "Completed")
+		_require.Equal(rules0[0].Status, "Completed")
 	} else {
-		_assert.Equal(rules0[0].Status, "Failed")
+		_require.Equal(rules0[0].Status, "Failed")
 	}
 
 	if rules0[1].RuleId == "222" {
-		_assert.Equal(rules0[1].Status, "Failed")
+		_require.Equal(rules0[1].Status, "Failed")
 	} else {
-		_assert.Equal(rules0[1].Status, "Completed")
+		_require.Equal(rules0[1].Status, "Completed")
 	}
 
 	if rules1[0].RuleId == "111" {
-		_assert.Equal(rules1[0].Status, "Completed")
+		_require.Equal(rules1[0].Status, "Completed")
 	} else {
-		_assert.Equal(rules1[0].Status, "Failed")
+		_require.Equal(rules1[0].Status, "Failed")
 	}
 
 	if rules1[1].RuleId == "222" {
-		_assert.Equal(rules1[1].Status, "Failed")
+		_require.Equal(rules1[1].Status, "Failed")
 	} else {
-		_assert.Equal(rules1[1].Status, "Completed")
+		_require.Equal(rules1[1].Status, "Completed")
 	}
 }
 
 //func (s * azblobUnrecordedTestSuite) TestORSSource() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
@@ -62,13 +62,13 @@ func (s *azblobUnrecordedTestSuite) TestDeserializeORSPolicies() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //
 //	bbName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+//	bbClient := createNewBlockBlob(_require, bbName, containerClient)
 //
 //	getResp, err := bbClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//	_assert.Nil(getResp.ObjectReplicationRules)
+//	_require.Nil(err)
+//	_require.Nil(getResp.ObjectReplicationRules)
 //}

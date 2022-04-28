@@ -167,7 +167,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 }
 
 func TestPipelineAudience(t *testing.T) {
-	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublicCloud} {
+	for _, c := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
 		srv, close := mock.NewServer()
 		defer close()
 		srv.AppendResponse(mock.WithStatusCode(200))

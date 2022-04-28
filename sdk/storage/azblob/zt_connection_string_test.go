@@ -8,9 +8,8 @@ package azblob
 
 import (
 	"encoding/base64"
+	"github.com/stretchr/testify/require"
 	"strings"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func getAccountKey(cred *SharedKeyCredential) string {
@@ -18,89 +17,89 @@ func getAccountKey(cred *SharedKeyCredential) string {
 }
 
 func (s *azblobTestSuite) TestConnectionStringParser() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 
 	connStr := "DefaultEndpointsProtocol=https;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
-	_assert.NotNil(sharedKeyCred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
+	_require.NotNil(sharedKeyCred)
 
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.True(strings.HasPrefix(client.client.endpoint, "https://"))
+	_require.True(strings.Contains(client.client.endpoint, "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccount;AccountKey=secretkeykey;EndpointSuffix=core.windows.net"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "http://dummyaccount.blob.core.windows.net")
-	_assert.NotNil(sharedKeyCred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "http://dummyaccount.blob.core.windows.net")
+	_require.NotNil(sharedKeyCred)
 
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.True(strings.HasPrefix(client.client.endpoint, "http://"))
+	_require.True(strings.Contains(client.client.endpoint, "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserBasic() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
-	_assert.NotNil(sharedKeyCred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net")
+	_require.NotNil(sharedKeyCred)
 
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.True(strings.HasPrefix(client.client.endpoint, "https://"))
+	_require.True(strings.Contains(client.client.endpoint, "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	connStr := "AccountName=dummyaccount;AccountKey=secretkeykey;BlobEndpoint=www.mydomain.com;"
 	serviceURL, sharedKeyCred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "www.mydomain.com")
-	_assert.NotNil(sharedKeyCred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "www.mydomain.com")
+	_require.NotNil(sharedKeyCred)
 
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.Equal(sharedKeyCred.accountName, "dummyaccount")
-	_assert.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "www."))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "mydomain.com"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
+	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
+	_require.True(strings.HasPrefix(client.client.endpoint, "www."))
+	_require.True(strings.Contains(client.client.endpoint, "mydomain.com"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	badConnectionStrings := []string{
 		"",
 		"foobar",
@@ -114,60 +113,60 @@ func (s *azblobTestSuite) TestConnectionStringParserInvalid() {
 
 	for _, badConnStr := range badConnectionStrings {
 		_, _, err := parseConnectionString(badConnStr)
-		_assert.NotNil(err)
-		_assert.Contains(err.Error(), errConnectionString.Error())
+		_require.NotNil(err)
+		_require.Contains(err.Error(), errConnectionString.Error())
 	}
 }
 
 func (s *azblobTestSuite) TestConnectionStringSAS() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	connStr := "AccountName=dummyaccount;SharedAccessSignature=fakesharedaccesssignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net/?fakesharedaccesssignature")
-	_assert.Nil(cred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net/?fakesharedaccesssignature")
+	_require.Nil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "https://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.windows.net"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.True(strings.HasPrefix(client.client.endpoint, "https://"))
+	_require.True(strings.Contains(client.client.endpoint, "core.windows.net"))
 }
 
 func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	connStr := "AccountName=dummyaccountname;AccountKey=secretkeykey;DefaultEndpointsProtocol=http;EndpointSuffix=core.chinacloudapi.cn;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "http://dummyaccountname.blob.core.chinacloudapi.cn")
-	_assert.NotNil(cred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "http://dummyaccountname.blob.core.chinacloudapi.cn")
+	_require.NotNil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "core.chinacloudapi.cn"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.True(strings.HasPrefix(client.client.endpoint, "http://"))
+	_require.True(strings.Contains(client.client.endpoint, "core.chinacloudapi.cn"))
 
-	_assert.NotNil(client.sharedKey)
-	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")
-	_assert.Equal(getAccountKey(client.sharedKey), "secretkeykey")
+	_require.NotNil(client.sharedKey)
+	_require.Equal(client.sharedKey.accountName, "dummyaccountname")
+	_require.Equal(getAccountKey(client.sharedKey), "secretkeykey")
 }
 
 func (s *azblobTestSuite) TestConnectionStringAzurite() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	connStr := "DefaultEndpointsProtocol=http;AccountName=dummyaccountname;AccountKey=secretkeykey;BlobEndpoint=http://local-machine:11002/custom/account/path/faketokensignature;"
 	serviceURL, cred, err := parseConnectionString(connStr)
-	_assert.Nil(err)
-	_assert.Equal(serviceURL, "http://local-machine:11002/custom/account/path/faketokensignature")
-	_assert.NotNil(cred)
+	_require.Nil(err)
+	_require.Equal(serviceURL, "http://local-machine:11002/custom/account/path/faketokensignature")
+	_require.NotNil(cred)
 
 	client, err := NewServiceClientFromConnectionString(connStr, nil)
-	_assert.Nil(err)
-	_assert.NotNil(client)
-	_assert.True(strings.HasPrefix(client.client.con.Endpoint(), "http://"))
-	_assert.True(strings.Contains(client.client.con.Endpoint(), "http://local-machine:11002/custom/account/path/faketokensignature"))
+	_require.Nil(err)
+	_require.NotNil(client)
+	_require.True(strings.HasPrefix(client.client.endpoint, "http://"))
+	_require.True(strings.Contains(client.client.endpoint, "http://local-machine:11002/custom/account/path/faketokensignature"))
 
-	_assert.NotNil(client.sharedKey)
-	_assert.Equal(client.sharedKey.accountName, "dummyaccountname")
-	_assert.Equal(getAccountKey(client.sharedKey), "secretkeykey")
+	_require.NotNil(client.sharedKey)
+	_require.Equal(client.sharedKey.accountName, "dummyaccountname")
+	_require.Equal(getAccountKey(client.sharedKey), "secretkeykey")
 }

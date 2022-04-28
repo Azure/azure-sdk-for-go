@@ -42,7 +42,7 @@ func setAuthorityHost(cc cloud.Configuration) (string, error) {
 		if len(cc.Services) > 0 {
 			return "", errors.New("missing ActiveDirectoryAuthorityHost for specified cloud")
 		}
-		host = cloud.AzurePublicCloud.ActiveDirectoryAuthorityHost
+		host = cloud.AzurePublic.ActiveDirectoryAuthorityHost
 		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
 		}

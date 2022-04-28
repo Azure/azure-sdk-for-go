@@ -207,7 +207,7 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 	}
 }
 
-// ListTables queries the existing tables using the specified ListTablesOptions.
+// NewListTablesPager queries the existing tables using the specified ListTablesOptions.
 // listOptions can specify the following properties to affect the query results returned:
 //
 // Filter: An OData filter expression that limits results to those tables that satisfy the filter expression.
@@ -216,11 +216,11 @@ func fromGeneratedTableResponseProperties(g *generated.TableResponseProperties) 
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
+// NewListTablesPager returns a Pager, which allows iteration through each page of results. Specify nil for listOptions if you want to use the default options.
 // For more information about writing query strings, check out:
 //  - API Documentation: https://docs.microsoft.com/en-us/rest/api/storageservices/querying-tables-and-entities
 //  - README samples: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/aztables/README.md#writing-filters
-func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
+func (t *ServiceClient) NewListTablesPager(listOptions *ListTablesOptions) *runtime.Pager[ListTablesResponse] {
 	if listOptions == nil {
 		listOptions = &ListTablesOptions{}
 	}

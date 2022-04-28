@@ -49,18 +49,27 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 	}
 }
 
-func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
+type newSessionReceiverArgs struct {
+	sessionID      *string
+	ns             internal.NamespaceWithNewAMQPLinks
+	entity         entity
+	cleanupOnClose func()
+	retryOptions   RetryOptions
+}
+
+func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, options *ReceiverOptions) (*SessionReceiver, error) {
 	sessionReceiver := &SessionReceiver{
-		sessionID:   sessionID,
+		sessionID:   args.sessionID,
 		lockedUntil: time.Time{},
 	}
 
 	r, err := newReceiver(newReceiverArgs{
-		ns:                  ns,
-		entity:              entity,
-		cleanupOnClose:      cleanupOnClose,
+		ns:                  args.ns,
+		entity:              args.entity,
+		cleanupOnClose:      args.cleanupOnClose,
 		newLinkFn:           sessionReceiver.newLink,
 		getRecoveryKindFunc: internal.GetRecoveryKindForSession,
+		retryOptions:        args.retryOptions,
 	}, options)
 
 	if err != nil {

@@ -12,9 +12,6 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 type ClientOptions struct {
 	policy.ClientOptions
 
-	// AuxiliaryTenants contains a list of additional tenants for cross-tenant requests.
-	AuxiliaryTenants []string
-
 	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
 }

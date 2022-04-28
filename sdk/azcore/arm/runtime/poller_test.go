@@ -15,11 +15,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -93,7 +93,7 @@ func TestNewPollerAsync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -128,7 +128,7 @@ func TestNewPollerBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -153,7 +153,7 @@ func TestNewPollerLoc(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&loc.Poller{}) {
+	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&armloc.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -203,7 +203,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,7 +266,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	_, err = poller.PollUntilDone(context.Background(), time.Second)
+	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -301,7 +301,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -363,7 +363,7 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), time.Second)
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -19,7 +19,7 @@ type downloadTestOptions struct {
 	size int
 }
 
-var downloadTestOpts downloadTestOptions = downloadTestOptions{size: 10240}
+var downloadTestOpts = downloadTestOptions{size: 10240}
 
 // downloadTestRegister is called once per process
 func downloadTestRegister() {
@@ -107,7 +107,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	}
 
 	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
-		Transporter: d.PerfTestOptions.Transporter,
+		Transport: d.PerfTestOptions.Transporter,
 	})
 	if err != nil {
 		return nil, err

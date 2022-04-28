@@ -88,7 +88,7 @@ func (l *Poller) Done() bool {
 	if l.err != nil {
 		return true
 	}
-	return l.lro.Done()
+	return l.lro.State() != OperationStateInProgress
 }
 
 // Poll sends a polling request to the polling endpoint and returns the response or error.
@@ -120,8 +120,8 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		return nil, err
 	}
 	l.resp = resp
-	log.Writef(log.EventLRO, "Status %s", l.lro.Status())
-	if Failed(l.lro.Status()) {
+	log.Writef(log.EventLRO, "State %s", l.lro.State())
+	if l.lro.State() == OperationStateFailed {
 		l.err = exported.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
@@ -211,7 +211,7 @@ func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType
 			return nil, err
 		}
 		if l.Done() {
-			logPollUntilDoneExit(l.lro.Status())
+			logPollUntilDoneExit(l.lro.State())
 			return l.FinalResponse(ctx, respType)
 		}
 		d := freq

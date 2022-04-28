@@ -175,10 +175,10 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
+	require.Equal(t, "AuthorizationPermissionMismatch", httpErr.ErrorCode)
 
 	// Success on a list
-	pager := client.ListEntities(nil)
+	pager := client.NewListEntitiesPager(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
@@ -244,10 +244,10 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
-	require.Contains(t, PossibleTableErrorCodeValues(), TableErrorCode(httpErr.ErrorCode))
+	require.Equal(t, "Forbidden", httpErr.ErrorCode)
 
 	// Success on a list
-	pager := client.ListEntities(nil)
+	pager := client.NewListEntitiesPager(nil)
 	count := 0
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)

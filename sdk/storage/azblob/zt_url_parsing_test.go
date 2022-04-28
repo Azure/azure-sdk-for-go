@@ -9,11 +9,11 @@ package azblob
 import (
 	"fmt"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func (s *azblobTestSuite) TestURLParsing() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testStorageAccount := "fakestorageaccount"
 	host := fmt.Sprintf("%s.blob.core.windows.net", testStorageAccount)
 	testContainer := "fakecontainer"
@@ -26,15 +26,15 @@ func (s *azblobTestSuite) TestURLParsing() {
 		sasWithVersionID := "?versionId=" + versionID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithVersionID)
 		blobURLParts, err := NewBlobURLParts(urlWithVersion)
-		_assert.Nil(err)
+		_require.Nil(err)
 
-		_assert.Equal(blobURLParts.Scheme, "https")
-		_assert.Equal(blobURLParts.Host, host)
-		_assert.Equal(blobURLParts.ContainerName, testContainer)
-		_assert.Equal(blobURLParts.VersionID, versionID)
-		_assert.Equal(blobURLParts.Snapshot, snapshotID)
+		_require.Equal(blobURLParts.Scheme, "https")
+		_require.Equal(blobURLParts.Host, host)
+		_require.Equal(blobURLParts.ContainerName, testContainer)
+		_require.Equal(blobURLParts.VersionID, versionID)
+		_require.Equal(blobURLParts.Snapshot, snapshotID)
 
-		validateSAS(_assert, sas, blobURLParts.SAS)
+		validateSAS(_require, sas, blobURLParts.SAS)
 	}
 
 	for _, fileName := range fileNames {
@@ -42,15 +42,15 @@ func (s *azblobTestSuite) TestURLParsing() {
 		sasWithSnapshotID := "?snapshot=" + snapshotID + "&" + sas
 		urlWithVersion := fmt.Sprintf("https://%s.blob.core.windows.net/%s%s%s", testStorageAccount, testContainer, fileName, sasWithSnapshotID)
 		blobURLParts, err := NewBlobURLParts(urlWithVersion)
-		_assert.Nil(err)
+		_require.Nil(err)
 
-		_assert.Equal(blobURLParts.Scheme, "https")
-		_assert.Equal(blobURLParts.Host, host)
-		_assert.Equal(blobURLParts.ContainerName, testContainer)
-		_assert.Equal(blobURLParts.VersionID, versionID)
-		_assert.Equal(blobURLParts.Snapshot, snapshotID)
+		_require.Equal(blobURLParts.Scheme, "https")
+		_require.Equal(blobURLParts.Host, host)
+		_require.Equal(blobURLParts.ContainerName, testContainer)
+		_require.Equal(blobURLParts.VersionID, versionID)
+		_require.Equal(blobURLParts.Snapshot, snapshotID)
 
-		validateSAS(_assert, sas, blobURLParts.SAS)
+		validateSAS(_require, sas, blobURLParts.SAS)
 	}
 
 	//urlWithIP := "https://127.0.0.1:5000/"

@@ -18,7 +18,7 @@ type uploadTestOptions struct {
 	size int
 }
 
-var uploadTestOpts uploadTestOptions = uploadTestOptions{size: 10240}
+var uploadTestOpts = uploadTestOptions{size: 10240}
 
 // uploadTestRegister is called once per process
 func uploadTestRegister() {
@@ -86,7 +86,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		connStr,
 		u.uploadTestGlobal.containerName,
 		&azblob.ClientOptions{
-			Transporter: u.PerfTestOptions.Transporter,
+			Transport: u.PerfTestOptions.Transporter,
 		},
 	)
 	if err != nil {

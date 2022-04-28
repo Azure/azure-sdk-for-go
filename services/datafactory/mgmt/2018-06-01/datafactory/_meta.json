@@ -1,5 +1,5 @@
 {
-  "commit": "61218420e95ad3435a029144877b110b56418958",
+  "commit": "0baca05c851c1749e92beb0d2134cd958827dd54",
   "readme": "/_/azure-rest-api-specs/specification/datafactory/resource-manager/readme.md",
   "tag": "package-2018-06",
   "use": "@microsoft.azure/autorest.go@2.1.187",

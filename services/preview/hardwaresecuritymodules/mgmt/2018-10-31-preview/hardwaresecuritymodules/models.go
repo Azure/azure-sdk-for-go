@@ -613,8 +613,8 @@ type ResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// Sku ...
+// Sku SKU of the dedicated HSM
 type Sku struct {
-	// Name - SKU of the dedicated HSM. Possible values include: 'SafeNetLunaNetworkHSMA790'
-	Name Name `json:"name,omitempty"`
+	// Name - SKU of the dedicated HSM. Possible values include: 'SafeNetLunaNetworkHSMA790', 'PayShield10KLMK1CPS60', 'PayShield10KLMK1CPS250', 'PayShield10KLMK1CPS2500', 'PayShield10KLMK2CPS60', 'PayShield10KLMK2CPS250', 'PayShield10KLMK2CPS2500'
+	Name SkuName `json:"name,omitempty"`
 }

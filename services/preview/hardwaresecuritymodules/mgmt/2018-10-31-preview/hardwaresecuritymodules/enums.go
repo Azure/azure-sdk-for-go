@@ -31,15 +31,33 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{Allocating, CheckingQuota, Connecting, Deleting, Failed, Provisioning, Succeeded}
 }
 
-// Name enumerates the values for name.
-type Name string
+// SkuName enumerates the values for sku name.
+type SkuName string
 
 const (
-	// SafeNetLunaNetworkHSMA790 ...
-	SafeNetLunaNetworkHSMA790 Name = "SafeNet Luna Network HSM A790"
+	// PayShield10KLMK1CPS250 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 1 local master key which supports up to 250 calls per second.
+	PayShield10KLMK1CPS250 SkuName = "payShield10K_LMK1_CPS250"
+	// PayShield10KLMK1CPS2500 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 1 local master key which supports up to 2500 calls per second.
+	PayShield10KLMK1CPS2500 SkuName = "payShield10K_LMK1_CPS2500"
+	// PayShield10KLMK1CPS60 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 1 local master key which supports up to 60 calls per second.
+	PayShield10KLMK1CPS60 SkuName = "payShield10K_LMK1_CPS60"
+	// PayShield10KLMK2CPS250 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 2 local master keys which supports up to 250 calls per second.
+	PayShield10KLMK2CPS250 SkuName = "payShield10K_LMK2_CPS250"
+	// PayShield10KLMK2CPS2500 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 2 local master keys which supports up to 2500 calls per second.
+	PayShield10KLMK2CPS2500 SkuName = "payShield10K_LMK2_CPS2500"
+	// PayShield10KLMK2CPS60 The dedicated HSM is a payShield 10K, model PS10-D, 10Gb Ethernet Hardware
+	// Platform device with 2 local master keys which supports up to 60 calls per second.
+	PayShield10KLMK2CPS60 SkuName = "payShield10K_LMK2_CPS60"
+	// SafeNetLunaNetworkHSMA790 The dedicated HSM is a Safenet Luna Network HSM A790 device.
+	SafeNetLunaNetworkHSMA790 SkuName = "SafeNet Luna Network HSM A790"
 )
 
-// PossibleNameValues returns an array of possible values for the Name const type.
-func PossibleNameValues() []Name {
-	return []Name{SafeNetLunaNetworkHSMA790}
+// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
+func PossibleSkuNameValues() []SkuName {
+	return []SkuName{PayShield10KLMK1CPS250, PayShield10KLMK1CPS2500, PayShield10KLMK1CPS60, PayShield10KLMK2CPS250, PayShield10KLMK2CPS2500, PayShield10KLMK2CPS60, SafeNetLunaNetworkHSMA790}
 }

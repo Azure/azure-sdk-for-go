@@ -167,7 +167,7 @@ func TestUpdateSucceeded(t *testing.T) {
 	if u := poller.URL(); u != fakePollingURL2 {
 		t.Fatalf("unexpected URL %s", u)
 	}
-	resp = createResponse(strings.NewReader(`{ "status": "Succeeded" }`))
+	resp = createResponse(strings.NewReader(`{ "status": "succeeded" }`))
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
 	}
@@ -184,7 +184,7 @@ func TestUpdateResourceLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp = createResponse(strings.NewReader(`{ "status": "Succeeded", "resourceLocation": "https://foo.bar.baz/resource2" }`))
+	resp = createResponse(strings.NewReader(`{ "status": "succeeded", "resourceLocation": "https://foo.bar.baz/resource2" }`))
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
 	}

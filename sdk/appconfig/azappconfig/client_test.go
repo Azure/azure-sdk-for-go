@@ -95,7 +95,7 @@ func TestClient(t *testing.T) {
 	require.Equal(t, key, *revResp.Settings[0].Key)
 	require.Equal(t, label, *revResp.Settings[0].Label)
 
-	delResp, err8 := client.DeleteSetting(context.TODO(), key, &DeleteReadOnlyOptions{Label: &label})
+	delResp, err8 := client.DeleteSetting(context.TODO(), key, &DeleteSettingOptions{Label: &label})
 	require.NoError(t, err8)
 	require.NotEmpty(t, delResp)
 	require.NotNil(t, delResp.Key)

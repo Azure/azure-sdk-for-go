@@ -456,6 +456,12 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 	})
 }
 
+// NewTransactionalBatch creates a batch of operations to be committed as a single unit.
+// See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
+func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) *TransactionalBatch {
+	return &TransactionalBatch{container: c, partitionKey: partitionKey}
+}
+
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {
 	containerResponse, err := c.Read(ctx, nil)
 	if err != nil {

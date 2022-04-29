@@ -43,14 +43,59 @@ type ConfigurationProfileAssignmentsClientGetResponse struct {
 	ConfigurationProfileAssignment
 }
 
+// ConfigurationProfileAssignmentsClientListByClusterNameResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByClusterName.
+type ConfigurationProfileAssignmentsClientListByClusterNameResponse struct {
+	ConfigurationProfileAssignmentList
+}
+
+// ConfigurationProfileAssignmentsClientListByMachineNameResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByMachineName.
+type ConfigurationProfileAssignmentsClientListByMachineNameResponse struct {
+	ConfigurationProfileAssignmentList
+}
+
 // ConfigurationProfileAssignmentsClientListBySubscriptionResponse contains the response from method ConfigurationProfileAssignmentsClient.ListBySubscription.
 type ConfigurationProfileAssignmentsClientListBySubscriptionResponse struct {
+	ConfigurationProfileAssignmentList
+}
+
+// ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByVirtualMachines.
+type ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse struct {
 	ConfigurationProfileAssignmentList
 }
 
 // ConfigurationProfileAssignmentsClientListResponse contains the response from method ConfigurationProfileAssignmentsClient.List.
 type ConfigurationProfileAssignmentsClientListResponse struct {
 	ConfigurationProfileAssignmentList
+}
+
+// ConfigurationProfileHCIAssignmentsClientCreateOrUpdateResponse contains the response from method ConfigurationProfileHCIAssignmentsClient.CreateOrUpdate.
+type ConfigurationProfileHCIAssignmentsClientCreateOrUpdateResponse struct {
+	ConfigurationProfileAssignment
+}
+
+// ConfigurationProfileHCIAssignmentsClientDeleteResponse contains the response from method ConfigurationProfileHCIAssignmentsClient.Delete.
+type ConfigurationProfileHCIAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConfigurationProfileHCIAssignmentsClientGetResponse contains the response from method ConfigurationProfileHCIAssignmentsClient.Get.
+type ConfigurationProfileHCIAssignmentsClientGetResponse struct {
+	ConfigurationProfileAssignment
+}
+
+// ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse contains the response from method ConfigurationProfileHCRPAssignmentsClient.CreateOrUpdate.
+type ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse struct {
+	ConfigurationProfileAssignment
+}
+
+// ConfigurationProfileHCRPAssignmentsClientDeleteResponse contains the response from method ConfigurationProfileHCRPAssignmentsClient.Delete.
+type ConfigurationProfileHCRPAssignmentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConfigurationProfileHCRPAssignmentsClientGetResponse contains the response from method ConfigurationProfileHCRPAssignmentsClient.Get.
+type ConfigurationProfileHCRPAssignmentsClientGetResponse struct {
+	ConfigurationProfileAssignment
 }
 
 // ConfigurationProfilesClientCreateOrUpdateResponse contains the response from method ConfigurationProfilesClient.CreateOrUpdate.
@@ -106,6 +151,26 @@ type ConfigurationProfilesVersionsClientListChildResourcesResponse struct {
 // ConfigurationProfilesVersionsClientUpdateResponse contains the response from method ConfigurationProfilesVersionsClient.Update.
 type ConfigurationProfilesVersionsClientUpdateResponse struct {
 	ConfigurationProfile
+}
+
+// HCIReportsClientGetResponse contains the response from method HCIReportsClient.Get.
+type HCIReportsClientGetResponse struct {
+	Report
+}
+
+// HCIReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCIReportsClient.ListByConfigurationProfileAssignments.
+type HCIReportsClientListByConfigurationProfileAssignmentsResponse struct {
+	ReportList
+}
+
+// HCRPReportsClientGetResponse contains the response from method HCRPReportsClient.Get.
+type HCRPReportsClientGetResponse struct {
+	Report
+}
+
+// HCRPReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCRPReportsClient.ListByConfigurationProfileAssignments.
+type HCRPReportsClientListByConfigurationProfileAssignmentsResponse struct {
+	ReportList
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.

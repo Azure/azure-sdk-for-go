@@ -40,9 +40,11 @@ func (a AccountList) MarshalJSON() ([]byte, error) {
 func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "hostName", a.HostName)
+	populate(objectMap, "locations", a.Locations)
 	populate(objectMap, "privateEndpointConnections", a.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", a.PublicNetworkAccess)
+	populate(objectMap, "sku", a.SKU)
 	return json.Marshal(objectMap)
 }
 

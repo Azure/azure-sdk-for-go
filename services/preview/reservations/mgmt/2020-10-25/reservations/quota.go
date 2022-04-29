@@ -32,11 +32,8 @@ func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 
 // CreateOrUpdate create or update the quota (service limits) of a resource to the requested value.
 // Steps:
-//
 // 1. Make the Get request to get the quota information for specific resource.
-//
 // 2. To increase the quota, update the limit field in the response from Get request to new value.
-//
 // 3. Submit the JSON to the quota request API to update the quota.
 // The Create quota request may be constructed as follows. The PUT operation can be used to update the quota.
 // Parameters:
@@ -86,6 +83,9 @@ func (client QuotaClient) CreateOrUpdatePreparer(ctx context.Context, subscripti
 		"api-version": APIVersion,
 	}
 
+	createQuotaRequest.ID = nil
+	createQuotaRequest.Name = nil
+	createQuotaRequest.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -326,11 +326,8 @@ func (client QuotaClient) ListComplete(ctx context.Context, subscriptionID strin
 }
 
 // Update update the quota (service limits) of this resource to the requested value.
-//
 // • To get the quota information for specific resource, send a GET request.
-//
 // • To increase the quota, update the limit field from the GET response to a new value.
-//
 // • To update the quota value, submit the JSON response to the quota request API to update the quota.
 // • To update the quota. use the PATCH operation.
 // Parameters:
@@ -380,6 +377,9 @@ func (client QuotaClient) UpdatePreparer(ctx context.Context, subscriptionID str
 		"api-version": APIVersion,
 	}
 
+	createQuotaRequest.ID = nil
+	createQuotaRequest.Name = nil
+	createQuotaRequest.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

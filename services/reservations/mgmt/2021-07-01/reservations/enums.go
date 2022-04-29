@@ -40,6 +40,25 @@ func PossibleCalculateExchangeOperationResultStatusValues() []CalculateExchangeO
 	return []CalculateExchangeOperationResultStatus{Cancelled, Failed, Pending, Succeeded}
 }
 
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
+}
+
 // ErrorResponseCode enumerates the values for error response code.
 type ErrorResponseCode string
 
@@ -48,6 +67,8 @@ const (
 	ActivateQuoteFailed ErrorResponseCode = "ActivateQuoteFailed"
 	// AppliedScopesNotAssociatedWithCommerceAccount ...
 	AppliedScopesNotAssociatedWithCommerceAccount ErrorResponseCode = "AppliedScopesNotAssociatedWithCommerceAccount"
+	// AppliedScopesSameAsExisting ...
+	AppliedScopesSameAsExisting ErrorResponseCode = "AppliedScopesSameAsExisting"
 	// AuthorizationFailed ...
 	AuthorizationFailed ErrorResponseCode = "AuthorizationFailed"
 	// BadRequest ...
@@ -158,7 +179,7 @@ const (
 
 // PossibleErrorResponseCodeValues returns an array of possible values for the ErrorResponseCode const type.
 func PossibleErrorResponseCodeValues() []ErrorResponseCode {
-	return []ErrorResponseCode{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PatchValuesSameAsExisting, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
+	return []ErrorResponseCode{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AppliedScopesSameAsExisting, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PatchValuesSameAsExisting, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
 }
 
 // ExchangeOperationResultStatus enumerates the values for exchange operation result status.
@@ -197,6 +218,19 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return []InstanceFlexibility{Off, On}
 }
 
+// Kind enumerates the values for kind.
+type Kind string
+
+const (
+	// MicrosoftCompute ...
+	MicrosoftCompute Kind = "Microsoft.Compute"
+)
+
+// PossibleKindValues returns an array of possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{MicrosoftCompute}
+}
+
 // OperationStatus enumerates the values for operation status.
 type OperationStatus string
 
@@ -233,6 +267,80 @@ const (
 // PossiblePaymentStatusValues returns an array of possible values for the PaymentStatus const type.
 func PossiblePaymentStatusValues() []PaymentStatus {
 	return []PaymentStatus{PaymentStatusCancelled, PaymentStatusFailed, PaymentStatusScheduled, PaymentStatusSucceeded}
+}
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateBillingFailed ...
+	ProvisioningStateBillingFailed ProvisioningState = "BillingFailed"
+	// ProvisioningStateCancelled ...
+	ProvisioningStateCancelled ProvisioningState = "Cancelled"
+	// ProvisioningStateConfirmedBilling ...
+	ProvisioningStateConfirmedBilling ProvisioningState = "ConfirmedBilling"
+	// ProvisioningStateConfirmedResourceHold ...
+	ProvisioningStateConfirmedResourceHold ProvisioningState = "ConfirmedResourceHold"
+	// ProvisioningStateCreated ...
+	ProvisioningStateCreated ProvisioningState = "Created"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateExpired ...
+	ProvisioningStateExpired ProvisioningState = "Expired"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateMerged ...
+	ProvisioningStateMerged ProvisioningState = "Merged"
+	// ProvisioningStatePendingBilling ...
+	ProvisioningStatePendingBilling ProvisioningState = "PendingBilling"
+	// ProvisioningStatePendingResourceHold ...
+	ProvisioningStatePendingResourceHold ProvisioningState = "PendingResourceHold"
+	// ProvisioningStateSplit ...
+	ProvisioningStateSplit ProvisioningState = "Split"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateBillingFailed, ProvisioningStateCancelled, ProvisioningStateConfirmedBilling, ProvisioningStateConfirmedResourceHold, ProvisioningStateCreated, ProvisioningStateCreating, ProvisioningStateExpired, ProvisioningStateFailed, ProvisioningStateMerged, ProvisioningStatePendingBilling, ProvisioningStatePendingResourceHold, ProvisioningStateSplit, ProvisioningStateSucceeded}
+}
+
+// ProvisioningState1 enumerates the values for provisioning state 1.
+type ProvisioningState1 string
+
+const (
+	// ProvisioningState1BillingFailed ...
+	ProvisioningState1BillingFailed ProvisioningState1 = "BillingFailed"
+	// ProvisioningState1Cancelled ...
+	ProvisioningState1Cancelled ProvisioningState1 = "Cancelled"
+	// ProvisioningState1ConfirmedBilling ...
+	ProvisioningState1ConfirmedBilling ProvisioningState1 = "ConfirmedBilling"
+	// ProvisioningState1ConfirmedResourceHold ...
+	ProvisioningState1ConfirmedResourceHold ProvisioningState1 = "ConfirmedResourceHold"
+	// ProvisioningState1Created ...
+	ProvisioningState1Created ProvisioningState1 = "Created"
+	// ProvisioningState1Creating ...
+	ProvisioningState1Creating ProvisioningState1 = "Creating"
+	// ProvisioningState1Expired ...
+	ProvisioningState1Expired ProvisioningState1 = "Expired"
+	// ProvisioningState1Failed ...
+	ProvisioningState1Failed ProvisioningState1 = "Failed"
+	// ProvisioningState1Merged ...
+	ProvisioningState1Merged ProvisioningState1 = "Merged"
+	// ProvisioningState1PendingBilling ...
+	ProvisioningState1PendingBilling ProvisioningState1 = "PendingBilling"
+	// ProvisioningState1PendingResourceHold ...
+	ProvisioningState1PendingResourceHold ProvisioningState1 = "PendingResourceHold"
+	// ProvisioningState1Split ...
+	ProvisioningState1Split ProvisioningState1 = "Split"
+	// ProvisioningState1Succeeded ...
+	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+)
+
+// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
 }
 
 // QuotaRequestState enumerates the values for quota request state.
@@ -279,11 +387,13 @@ const (
 	P1Y ReservationTerm = "P1Y"
 	// P3Y ...
 	P3Y ReservationTerm = "P3Y"
+	// P5Y ...
+	P5Y ReservationTerm = "P5Y"
 )
 
 // PossibleReservationTermValues returns an array of possible values for the ReservationTerm const type.
 func PossibleReservationTermValues() []ReservationTerm {
-	return []ReservationTerm{P1Y, P3Y}
+	return []ReservationTerm{P1Y, P3Y, P5Y}
 }
 
 // ReservedResourceType enumerates the values for reserved resource type.
@@ -292,14 +402,20 @@ type ReservedResourceType string
 const (
 	// AppService ...
 	AppService ReservedResourceType = "AppService"
+	// AVS ...
+	AVS ReservedResourceType = "AVS"
 	// AzureDataExplorer ...
 	AzureDataExplorer ReservedResourceType = "AzureDataExplorer"
+	// AzureFiles ...
+	AzureFiles ReservedResourceType = "AzureFiles"
 	// BlockBlob ...
 	BlockBlob ReservedResourceType = "BlockBlob"
 	// CosmosDb ...
 	CosmosDb ReservedResourceType = "CosmosDb"
 	// Databricks ...
 	Databricks ReservedResourceType = "Databricks"
+	// DataFactory ...
+	DataFactory ReservedResourceType = "DataFactory"
 	// DedicatedHost ...
 	DedicatedHost ReservedResourceType = "DedicatedHost"
 	// ManagedDisk ...
@@ -308,6 +424,8 @@ const (
 	MariaDb ReservedResourceType = "MariaDb"
 	// MySQL ...
 	MySQL ReservedResourceType = "MySql"
+	// NetAppStorage ...
+	NetAppStorage ReservedResourceType = "NetAppStorage"
 	// PostgreSQL ...
 	PostgreSQL ReservedResourceType = "PostgreSql"
 	// RedHat ...
@@ -324,6 +442,8 @@ const (
 	SQLDatabases ReservedResourceType = "SqlDatabases"
 	// SQLDataWarehouse ...
 	SQLDataWarehouse ReservedResourceType = "SqlDataWarehouse"
+	// SQLEdge ...
+	SQLEdge ReservedResourceType = "SqlEdge"
 	// SuseLinux ...
 	SuseLinux ReservedResourceType = "SuseLinux"
 	// VirtualMachines ...
@@ -334,7 +454,7 @@ const (
 
 // PossibleReservedResourceTypeValues returns an array of possible values for the ReservedResourceType const type.
 func PossibleReservedResourceTypeValues() []ReservedResourceType {
-	return []ReservedResourceType{AppService, AzureDataExplorer, BlockBlob, CosmosDb, Databricks, DedicatedHost, ManagedDisk, MariaDb, MySQL, PostgreSQL, RedHat, RedHatOsa, RedisCache, SapHana, SQLAzureHybridBenefit, SQLDatabases, SQLDataWarehouse, SuseLinux, VirtualMachines, VMwareCloudSimple}
+	return []ReservedResourceType{AppService, AVS, AzureDataExplorer, AzureFiles, BlockBlob, CosmosDb, Databricks, DataFactory, DedicatedHost, ManagedDisk, MariaDb, MySQL, NetAppStorage, PostgreSQL, RedHat, RedHatOsa, RedisCache, SapHana, SQLAzureHybridBenefit, SQLDatabases, SQLDataWarehouse, SQLEdge, SuseLinux, VirtualMachines, VMwareCloudSimple}
 }
 
 // ResourceType enumerates the values for resource type.
@@ -374,6 +494,8 @@ const (
 	StatusCodePaymentInstrumentError StatusCode = "PaymentInstrumentError"
 	// StatusCodePending ...
 	StatusCodePending StatusCode = "Pending"
+	// StatusCodeProcessing ...
+	StatusCodeProcessing StatusCode = "Processing"
 	// StatusCodePurchaseError ...
 	StatusCodePurchaseError StatusCode = "PurchaseError"
 	// StatusCodeSplit ...
@@ -384,5 +506,5 @@ const (
 
 // PossibleStatusCodeValues returns an array of possible values for the StatusCode const type.
 func PossibleStatusCodeValues() []StatusCode {
-	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
+	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodeProcessing, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
 }

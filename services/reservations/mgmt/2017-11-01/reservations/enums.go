@@ -255,6 +255,8 @@ const (
 	PendingBilling ProvisioningState = "PendingBilling"
 	// PendingResourceHold ...
 	PendingResourceHold ProvisioningState = "PendingResourceHold"
+	// Processing ...
+	Processing ProvisioningState = "Processing"
 	// Split ...
 	Split ProvisioningState = "Split"
 	// Succeeded ...
@@ -263,7 +265,7 @@ const (
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{BillingFailed, Cancelled, ConfirmedBilling, ConfirmedResourceHold, Created, Creating, Expired, Failed, Merged, PendingBilling, PendingResourceHold, Split, Succeeded}
+	return []ProvisioningState{BillingFailed, Cancelled, ConfirmedBilling, ConfirmedResourceHold, Created, Creating, Expired, Failed, Merged, PendingBilling, PendingResourceHold, Processing, Split, Succeeded}
 }
 
 // ProvisioningState1 enumerates the values for provisioning state 1.
@@ -292,6 +294,8 @@ const (
 	ProvisioningState1PendingBilling ProvisioningState1 = "PendingBilling"
 	// ProvisioningState1PendingResourceHold ...
 	ProvisioningState1PendingResourceHold ProvisioningState1 = "PendingResourceHold"
+	// ProvisioningState1Processing ...
+	ProvisioningState1Processing ProvisioningState1 = "Processing"
 	// ProvisioningState1Split ...
 	ProvisioningState1Split ProvisioningState1 = "Split"
 	// ProvisioningState1Succeeded ...
@@ -300,7 +304,7 @@ const (
 
 // PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
 func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Split, ProvisioningState1Succeeded}
+	return []ProvisioningState1{ProvisioningState1BillingFailed, ProvisioningState1Cancelled, ProvisioningState1ConfirmedBilling, ProvisioningState1ConfirmedResourceHold, ProvisioningState1Created, ProvisioningState1Creating, ProvisioningState1Expired, ProvisioningState1Failed, ProvisioningState1Merged, ProvisioningState1PendingBilling, ProvisioningState1PendingResourceHold, ProvisioningState1Processing, ProvisioningState1Split, ProvisioningState1Succeeded}
 }
 
 // StatusCode enumerates the values for status code.

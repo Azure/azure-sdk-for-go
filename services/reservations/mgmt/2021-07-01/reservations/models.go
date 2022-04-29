@@ -18,13 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations"
-
-// Actions the actions for auto quota increase.
-type Actions struct {
-	// EmailActions - The email actions for auto quota increase.
-	EmailActions *EmailActions `json:"emailActions,omitempty"`
-}
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2021-07-01/reservations"
 
 // AppliedReservationList ...
 type AppliedReservationList struct {
@@ -110,116 +104,110 @@ type AppliedReservationsProperties struct {
 	ReservationOrderIds *AppliedReservationList `json:"reservationOrderIds,omitempty"`
 }
 
-// AppliedScopeProperties ...
-type AppliedScopeProperties struct {
-	// TenantID - Tenant ID of the applied scope type
-	TenantID *string `json:"tenantId,omitempty"`
-	// ManagementGroupID - Management group ID of the format /providers/Microsoft.Management/managementGroups/{managementGroupId}
-	ManagementGroupID *string `json:"managementGroupId,omitempty"`
-	// DisplayName - Management group display name
-	DisplayName *string `json:"displayName,omitempty"`
-}
-
-// AqiSettings settings for auto quota increase.
-type AqiSettings struct {
-	// AutoQuotaIncreaseState - If the subscription has enabled automatic quota increase.
-	AutoQuotaIncreaseState interface{} `json:"autoQuotaIncreaseState,omitempty"`
-}
-
-// AutoQuotaIncreaseDetail auto Quota Increase settings.
-type AutoQuotaIncreaseDetail struct {
+// AvailableScopeProperties ...
+type AvailableScopeProperties struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The subscription Id.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the auto quota increase.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource
-	Type *string `json:"type,omitempty"`
-	// AutoQuotaIncreaseSettings - Actions for auto quota increase.
-	*AutoQuotaIncreaseSettings `json:"properties,omitempty"`
+	Properties        *SubscriptionScopeProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AutoQuotaIncreaseDetail.
-func (aqid AutoQuotaIncreaseDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if aqid.AutoQuotaIncreaseSettings != nil {
-		objectMap["properties"] = aqid.AutoQuotaIncreaseSettings
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AutoQuotaIncreaseDetail struct.
-func (aqid *AutoQuotaIncreaseDetail) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				aqid.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				aqid.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				aqid.Type = &typeVar
-			}
-		case "properties":
-			if v != nil {
-				var autoQuotaIncreaseSettings AutoQuotaIncreaseSettings
-				err = json.Unmarshal(*v, &autoQuotaIncreaseSettings)
-				if err != nil {
-					return err
-				}
-				aqid.AutoQuotaIncreaseSettings = &autoQuotaIncreaseSettings
-			}
-		}
-	}
-
-	return nil
-}
-
-// AutoQuotaIncreaseSettings actions for auto quota increase.
-type AutoQuotaIncreaseSettings struct {
-	// Settings - Settings for automatic quota increase.
-	Settings *AqiSettings `json:"settings,omitempty"`
-	// OnFailure - The on failure Actions.
-	OnFailure *Actions `json:"onFailure,omitempty"`
-	// OnSuccess - The on success Actions.
-	OnSuccess *Actions `json:"onSuccess,omitempty"`
-	// SupportTicketAction - The support ticket action.
-	SupportTicketAction *SupportRequestAction `json:"supportTicketAction,omitempty"`
-}
-
-// AvailableScopeRequest ...
+// AvailableScopeRequest available scope
 type AvailableScopeRequest struct {
 	Properties *AvailableScopeRequestProperties `json:"properties,omitempty"`
 }
 
-// AvailableScopeRequestProperties list of scopes for which availability should be checked
+// AvailableScopeRequestProperties available scope request properties
 type AvailableScopeRequestProperties struct {
-	// Scopes - Scopes to be checked for availability
 	Scopes *[]string `json:"scopes,omitempty"`
+}
+
+// BillingInformation billing information
+type BillingInformation struct {
+	BillingCurrencyTotalPaidAmount           *Price `json:"billingCurrencyTotalPaidAmount,omitempty"`
+	BillingCurrencyProratedAmount            *Price `json:"billingCurrencyProratedAmount,omitempty"`
+	BillingCurrencyRemainingCommitmentAmount *Price `json:"billingCurrencyRemainingCommitmentAmount,omitempty"`
+}
+
+// CalculateExchangeOperationResultResponse calculateExchange operation result
+type CalculateExchangeOperationResultResponse struct {
+	autorest.Response `json:"-"`
+	// ID - It should match what is used to GET the operation result.
+	ID *string `json:"id,omitempty"`
+	// Name - It must match the last segment of the id field, and will typically be a GUID / system generated value.
+	Name *string `json:"name,omitempty"`
+	// Status - Status of the operation. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Pending'
+	Status     CalculateExchangeOperationResultStatus `json:"status,omitempty"`
+	Properties *CalculateExchangeResponseProperties   `json:"properties,omitempty"`
+	Error      *OperationResultError                  `json:"error,omitempty"`
+}
+
+// CalculateExchangePostFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type CalculateExchangePostFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CalculateExchangeClient) (CalculateExchangeOperationResultResponse, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CalculateExchangePostFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CalculateExchangePostFuture.Result.
+func (future *CalculateExchangePostFuture) result(client CalculateExchangeClient) (ceorr CalculateExchangeOperationResultResponse, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.CalculateExchangePostFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ceorr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("reservations.CalculateExchangePostFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ceorr.Response.Response, err = future.GetResult(sender); err == nil && ceorr.Response.Response.StatusCode != http.StatusNoContent {
+		ceorr, err = client.PostResponder(ceorr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.CalculateExchangePostFuture", "Result", ceorr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CalculateExchangeRequest calculate exchange request
+type CalculateExchangeRequest struct {
+	Properties *CalculateExchangeRequestProperties `json:"properties,omitempty"`
+}
+
+// CalculateExchangeRequestProperties calculate exchange request properties
+type CalculateExchangeRequestProperties struct {
+	// ReservationsToPurchase - List of reservations that are being purchased in this exchange.
+	ReservationsToPurchase *[]PurchaseRequest `json:"reservationsToPurchase,omitempty"`
+	// ReservationsToExchange - List of reservations that are being returned in this exchange.
+	ReservationsToExchange *[]ToReturn `json:"reservationsToExchange,omitempty"`
+}
+
+// CalculateExchangeResponseProperties calculateExchange response properties
+type CalculateExchangeResponseProperties struct {
+	// SessionID - Exchange session identifier
+	SessionID      *string `json:"sessionId,omitempty"`
+	NetPayable     *Price  `json:"netPayable,omitempty"`
+	RefundsTotal   *Price  `json:"refundsTotal,omitempty"`
+	PurchasesTotal *Price  `json:"purchasesTotal,omitempty"`
+	// ReservationsToPurchase - Details of the reservations being purchased
+	ReservationsToPurchase *[]ToPurchaseCalculateExchange `json:"reservationsToPurchase,omitempty"`
+	// ReservationsToExchange - Details of the reservations being returned
+	ReservationsToExchange *[]ToExchange         `json:"reservationsToExchange,omitempty"`
+	PolicyResult           *ExchangePolicyErrors `json:"policyResult,omitempty"`
 }
 
 // CalculatePriceResponse ...
@@ -232,12 +220,14 @@ type CalculatePriceResponse struct {
 type CalculatePriceResponseProperties struct {
 	// BillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency. Tax is not included.
 	BillingCurrencyTotal *CalculatePriceResponsePropertiesBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
-	// NetTotal - Net total
+	// NetTotal - Net total amount in pricing currency.
 	NetTotal *float64 `json:"netTotal,omitempty"`
-	// TaxTotal - Tax total
+	// TaxTotal - Tax amount in pricing currency.
 	TaxTotal *float64 `json:"taxTotal,omitempty"`
-	// GrandTotal - Grand Total
+	// GrandTotal - Total amount in pricing currency.
 	GrandTotal *float64 `json:"grandTotal,omitempty"`
+	// IsTaxIncluded - Whether or not tax is included in grand total
+	IsTaxIncluded *bool `json:"isTaxIncluded,omitempty"`
 	// IsBillingPartnerManaged - True if billing is managed by Microsoft Partner. Used only for CSP accounts.
 	IsBillingPartnerManaged *bool `json:"isBillingPartnerManaged,omitempty"`
 	// ReservationOrderID - GUID that represents reservation order that can be placed after calculating price.
@@ -254,13 +244,16 @@ type CalculatePriceResponseProperties struct {
 // CalculatePriceResponsePropertiesBillingCurrencyTotal currency and amount that customer will be charged
 // in customer's local currency. Tax is not included.
 type CalculatePriceResponsePropertiesBillingCurrencyTotal struct {
-	CurrencyCode *string  `json:"currencyCode,omitempty"`
-	Amount       *float64 `json:"amount,omitempty"`
+	// CurrencyCode - The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string `json:"currencyCode,omitempty"`
+	// Amount - Amount in pricing currency. Tax is not included.
+	Amount *float64 `json:"amount,omitempty"`
 }
 
 // CalculatePriceResponsePropertiesPricingCurrencyTotal amount that Microsoft uses for record. Used during
 // refund for calculating refund limit. Tax is not included.
 type CalculatePriceResponsePropertiesPricingCurrencyTotal struct {
+	// CurrencyCode - The ISO 4217 3-letter currency code for the currency used by this purchase record.
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
 }
@@ -273,16 +266,22 @@ type Catalog struct {
 	Name *string `json:"name,omitempty"`
 	// BillingPlans - The billing plan options available for this SKU.
 	BillingPlans map[string][]ReservationBillingPlan `json:"billingPlans"`
-	// Msrp - The sku's MSRP values for each term
-	Msrp map[string]interface{} `json:"msrp"`
 	// Terms - READ-ONLY; Available reservation terms for this resource
 	Terms *[]ReservationTerm `json:"terms,omitempty"`
 	// Locations - READ-ONLY
 	Locations *[]string `json:"locations,omitempty"`
 	// SkuProperties - READ-ONLY
 	SkuProperties *[]SkuProperty `json:"skuProperties,omitempty"`
+	// Msrp - READ-ONLY; Pricing information about the SKU
+	Msrp *CatalogMsrp `json:"msrp,omitempty"`
 	// Restrictions - READ-ONLY
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
+	// Tier - READ-ONLY; The tier of this SKU
+	Tier *string `json:"tier,omitempty"`
+	// Size - READ-ONLY; The size of this SKU
+	Size *string `json:"size,omitempty"`
+	// Capabilities - READ-ONLY
+	Capabilities *[]SkuCapability `json:"capabilities,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Catalog.
@@ -291,10 +290,38 @@ func (c Catalog) MarshalJSON() ([]byte, error) {
 	if c.BillingPlans != nil {
 		objectMap["billingPlans"] = c.BillingPlans
 	}
-	if c.Msrp != nil {
-		objectMap["msrp"] = c.Msrp
-	}
 	return json.Marshal(objectMap)
+}
+
+// CatalogMsrp pricing information about the SKU
+type CatalogMsrp struct {
+	// P1Y - Amount in pricing currency. Tax not included.
+	P1Y *Price `json:"p1Y,omitempty"`
+}
+
+// ChangeDirectoryRequest ...
+type ChangeDirectoryRequest struct {
+	// DestinationTenantID - Tenant id GUID that reservation order is to be transferred to
+	DestinationTenantID *string `json:"destinationTenantId,omitempty"`
+}
+
+// ChangeDirectoryResponse change directory response
+type ChangeDirectoryResponse struct {
+	autorest.Response    `json:"-"`
+	ReservationOrder     *ChangeDirectoryResult   `json:"reservationOrder,omitempty"`
+	ReservationsProperty *[]ChangeDirectoryResult `json:"reservations,omitempty"`
+}
+
+// ChangeDirectoryResult change directory result for reservation order or reservation
+type ChangeDirectoryResult struct {
+	// ID - Identifier of the reservation order or reservation
+	ID *string `json:"id,omitempty"`
+	// Name - Name of the reservation order or reservation
+	Name *string `json:"name,omitempty"`
+	// IsSucceeded - True if change directory operation succeeded on this reservation order or reservation
+	IsSucceeded *bool `json:"isSucceeded,omitempty"`
+	// Error - Error reason if operation failed. Null otherwise
+	Error *string `json:"error,omitempty"`
 }
 
 // CreateGenericQuotaRequestParameters quota change requests information.
@@ -303,11 +330,11 @@ type CreateGenericQuotaRequestParameters struct {
 	Value *[]CurrentQuotaLimitBase `json:"value,omitempty"`
 }
 
-// CurrentQuotaLimit quota limits.
+// CurrentQuotaLimit current quota limits.
 type CurrentQuotaLimit struct {
-	// CurrentQuotaLimitBase - Quota information detail.
+	// CurrentQuotaLimitBase - Quota details.
 	*CurrentQuotaLimitBase `json:"quotaInformation,omitempty"`
-	// QuotaRequestStatusDetails - Addition properties for the quota request status for the resource.
+	// QuotaRequestStatusDetails - Additional properties for the quota status for the resource.
 	*QuotaRequestStatusDetails `json:"properties,omitempty"`
 }
 
@@ -356,23 +383,26 @@ func (cql *CurrentQuotaLimit) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CurrentQuotaLimitBase quota limits.
+// CurrentQuotaLimitBase quota properties.
 type CurrentQuotaLimitBase struct {
 	autorest.Response `json:"-"`
+	// ID - READ-ONLY; The quota request ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the quota request.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
+	Type *string `json:"type,omitempty"`
 	// Properties - Quota properties for the resource.
 	Properties *QuotaProperties `json:"properties,omitempty"`
 }
 
-// EmailAction email Action.
-type EmailAction struct {
-	// EmailAddress - The email address for the action.
-	EmailAddress *string `json:"emailAddress,omitempty"`
-}
-
-// EmailActions the email actions.
-type EmailActions struct {
-	// EmailAddresses - The list of email actions.
-	EmailAddresses *[]EmailAction `json:"emailAddresses,omitempty"`
+// MarshalJSON is the custom marshaler for CurrentQuotaLimitBase.
+func (cqlb CurrentQuotaLimitBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cqlb.Properties != nil {
+		objectMap["properties"] = cqlb.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // Error ...
@@ -380,22 +410,137 @@ type Error struct {
 	Error *ExtendedErrorInfo `json:"error,omitempty"`
 }
 
-// ExceptionResponse the api error.
+// ErrorDetails the details of the error.
+type ErrorDetails struct {
+	// Code - READ-ONLY; Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The target of the particular error.
+	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse error response indicates that the service is not able to process the incoming request. The
+// reason is provided in the error message.
+type ErrorResponse struct {
+	// Error - The details of the error.
+	Error *ErrorDetails `json:"error,omitempty"`
+}
+
+// ExceptionResponse the API error.
 type ExceptionResponse struct {
-	// Error - The api error details.
+	// Error - The API error details.
 	Error *ServiceError `json:"error,omitempty"`
+}
+
+// ExchangeOperationResultResponse exchange operation result
+type ExchangeOperationResultResponse struct {
+	autorest.Response `json:"-"`
+	// ID - It should match what is used to GET the operation result.
+	ID *string `json:"id,omitempty"`
+	// Name - It must match the last segment of the id field, and will typically be a GUID / system generated value.
+	Name *string `json:"name,omitempty"`
+	// Status - Status of the operation. Possible values include: 'ExchangeOperationResultStatusSucceeded', 'ExchangeOperationResultStatusFailed', 'ExchangeOperationResultStatusCancelled', 'ExchangeOperationResultStatusPendingRefunds', 'ExchangeOperationResultStatusPendingPurchases'
+	Status     ExchangeOperationResultStatus `json:"status,omitempty"`
+	Properties *ExchangeResponseProperties   `json:"properties,omitempty"`
+	Error      *OperationResultError         `json:"error,omitempty"`
+}
+
+// ExchangePolicyError error details
+type ExchangePolicyError struct {
+	Code    *string `json:"code,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// ExchangePolicyErrors exchange policy errors
+type ExchangePolicyErrors struct {
+	// PolicyErrors - Exchange Policy errors
+	PolicyErrors *[]ExchangePolicyError `json:"policyErrors,omitempty"`
+}
+
+// ExchangePostFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ExchangePostFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExchangeClient) (ExchangeOperationResultResponse, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExchangePostFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExchangePostFuture.Result.
+func (future *ExchangePostFuture) result(client ExchangeClient) (eorr ExchangeOperationResultResponse, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.ExchangePostFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		eorr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("reservations.ExchangePostFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if eorr.Response.Response, err = future.GetResult(sender); err == nil && eorr.Response.Response.StatusCode != http.StatusNoContent {
+		eorr, err = client.PostResponder(eorr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.ExchangePostFuture", "Result", eorr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ExchangeRequest exchange request
+type ExchangeRequest struct {
+	Properties *ExchangeRequestProperties `json:"properties,omitempty"`
+}
+
+// ExchangeRequestProperties exchange request properties
+type ExchangeRequestProperties struct {
+	// SessionID - SessionId that was returned by CalculateExchange API.
+	SessionID *string `json:"sessionId,omitempty"`
+}
+
+// ExchangeResponseProperties exchange response properties
+type ExchangeResponseProperties struct {
+	// SessionID - Exchange session identifier
+	SessionID      *string `json:"sessionId,omitempty"`
+	NetPayable     *Price  `json:"netPayable,omitempty"`
+	RefundsTotal   *Price  `json:"refundsTotal,omitempty"`
+	PurchasesTotal *Price  `json:"purchasesTotal,omitempty"`
+	// ReservationsToPurchase - Details of the reservations being purchased
+	ReservationsToPurchase *[]ToPurchaseExchange `json:"reservationsToPurchase,omitempty"`
+	// ReservationsToExchange - Details of the reservations being returned
+	ReservationsToExchange *[]ToReturnForExchange `json:"reservationsToExchange,omitempty"`
+	PolicyResult           *ExchangePolicyErrors  `json:"policyResult,omitempty"`
 }
 
 // ExtendedErrorInfo ...
 type ExtendedErrorInfo struct {
-	// Code - Possible values include: 'NotSpecified', 'InternalServerError', 'ServerTimeout', 'AuthorizationFailed', 'BadRequest', 'ClientCertificateThumbprintNotSet', 'InvalidRequestContent', 'OperationFailed', 'HTTPMethodNotSupported', 'InvalidRequestURI', 'MissingTenantID', 'InvalidTenantID', 'InvalidReservationOrderID', 'InvalidReservationID', 'ReservationIDNotInReservationOrder', 'ReservationOrderNotFound', 'InvalidSubscriptionID', 'InvalidAccessToken', 'InvalidLocationID', 'UnauthenticatedRequestsThrottled', 'InvalidHealthCheckType', 'Forbidden', 'BillingScopeIDCannotBeChanged', 'AppliedScopesNotAssociatedWithCommerceAccount', 'PatchValuesSameAsExisting', 'RoleAssignmentCreationFailed', 'ReservationOrderCreationFailed', 'ReservationOrderNotEnabled', 'CapacityUpdateScopesFailed', 'UnsupportedReservationTerm', 'ReservationOrderIDAlreadyExists', 'RiskCheckFailed', 'CreateQuoteFailed', 'ActivateQuoteFailed', 'NonsupportedAccountID', 'PaymentInstrumentNotFound', 'MissingAppliedScopesForSingle', 'NoValidReservationsToReRate', 'ReRateOnlyAllowedForEA', 'OperationCannotBePerformedInCurrentState', 'InvalidSingleAppliedScopesCount', 'InvalidFulfillmentRequestParameters', 'NotSupportedCountry', 'InvalidRefundQuantity', 'PurchaseError', 'BillingCustomerInputError', 'BillingPaymentInstrumentSoftError', 'BillingPaymentInstrumentHardError', 'BillingTransientError', 'BillingError', 'FulfillmentConfigurationError', 'FulfillmentOutOfStockError', 'FulfillmentTransientError', 'FulfillmentError', 'CalculatePriceFailed'
+	// Code - Possible values include: 'NotSpecified', 'InternalServerError', 'ServerTimeout', 'AuthorizationFailed', 'BadRequest', 'ClientCertificateThumbprintNotSet', 'InvalidRequestContent', 'OperationFailed', 'HTTPMethodNotSupported', 'InvalidRequestURI', 'MissingTenantID', 'InvalidTenantID', 'InvalidReservationOrderID', 'InvalidReservationID', 'ReservationIDNotInReservationOrder', 'ReservationOrderNotFound', 'InvalidSubscriptionID', 'InvalidAccessToken', 'InvalidLocationID', 'UnauthenticatedRequestsThrottled', 'InvalidHealthCheckType', 'Forbidden', 'BillingScopeIDCannotBeChanged', 'AppliedScopesNotAssociatedWithCommerceAccount', 'PatchValuesSameAsExisting', 'RoleAssignmentCreationFailed', 'ReservationOrderCreationFailed', 'ReservationOrderNotEnabled', 'CapacityUpdateScopesFailed', 'UnsupportedReservationTerm', 'ReservationOrderIDAlreadyExists', 'RiskCheckFailed', 'CreateQuoteFailed', 'ActivateQuoteFailed', 'NonsupportedAccountID', 'PaymentInstrumentNotFound', 'MissingAppliedScopesForSingle', 'NoValidReservationsToReRate', 'ReRateOnlyAllowedForEA', 'OperationCannotBePerformedInCurrentState', 'InvalidSingleAppliedScopesCount', 'InvalidFulfillmentRequestParameters', 'NotSupportedCountry', 'InvalidRefundQuantity', 'PurchaseError', 'BillingCustomerInputError', 'BillingPaymentInstrumentSoftError', 'BillingPaymentInstrumentHardError', 'BillingTransientError', 'BillingError', 'FulfillmentConfigurationError', 'FulfillmentOutOfStockError', 'FulfillmentTransientError', 'FulfillmentError', 'CalculatePriceFailed', 'AppliedScopesSameAsExisting'
 	Code    ErrorResponseCode `json:"code,omitempty"`
 	Message *string           `json:"message,omitempty"`
 }
 
 // ExtendedStatusInfo ...
 type ExtendedStatusInfo struct {
-	// StatusCode - Possible values include: 'StatusCodeNone', 'StatusCodePending', 'StatusCodeActive', 'StatusCodePurchaseError', 'StatusCodePaymentInstrumentError', 'StatusCodeSplit', 'StatusCodeMerged', 'StatusCodeExpired', 'StatusCodeSucceeded'
+	// StatusCode - Possible values include: 'StatusCodeNone', 'StatusCodePending', 'StatusCodeProcessing', 'StatusCodeActive', 'StatusCodePurchaseError', 'StatusCodePaymentInstrumentError', 'StatusCodeSplit', 'StatusCodeMerged', 'StatusCodeExpired', 'StatusCodeSucceeded'
 	StatusCode StatusCode `json:"statusCode,omitempty"`
 	// Message - The message giving detailed information about the status code.
 	Message *string `json:"message,omitempty"`
@@ -571,6 +716,176 @@ type ListResponse struct {
 	Value             *[]Response `json:"value,omitempty"`
 }
 
+// ListResult the list of reservations and summary of roll out count of reservations in each state.
+type ListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of reservations.
+	Value *[]Response `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Summary - The roll out count summary of the reservations
+	Summary *Summary `json:"summary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListResult.
+func (lr ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lr.Summary != nil {
+		objectMap["summary"] = lr.Summary
+	}
+	return json.Marshal(objectMap)
+}
+
+// ListResultIterator provides access to a complete listing of Response values.
+type ListResultIterator struct {
+	i    int
+	page ListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListResultIterator) Response() ListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListResultIterator) Value() Response {
+	if !iter.page.NotDone() {
+		return Response{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListResultIterator type.
+func NewListResultIterator(page ListResultPage) ListResultIterator {
+	return ListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lr ListResult) IsEmpty() bool {
+	return lr.Value == nil || len(*lr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
+// listResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !lr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lr.NextLink)))
+}
+
+// ListResultPage contains a page of Response values.
+type ListResultPage struct {
+	fn func(context.Context, ListResult) (ListResult, error)
+	lr ListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListResultPage) NotDone() bool {
+	return !page.lr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListResultPage) Response() ListResult {
+	return page.lr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListResultPage) Values() []Response {
+	if page.lr.IsEmpty() {
+		return nil
+	}
+	return *page.lr.Value
+}
+
+// Creates a new instance of the ListResultPage type.
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
+}
+
 // MergeProperties ...
 type MergeProperties struct {
 	// Sources - Format of the resource id should be /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
@@ -621,14 +936,6 @@ func (mr *MergeRequest) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// MsrpProperty ...
-type MsrpProperty struct {
-	// CurrencyCode - Represents the currency code - 3 character ISO.
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-	// Amount - Represents the amount of money in the currency.
-	Amount *float64 `json:"amount,omitempty"`
 }
 
 // OperationDisplay ...
@@ -799,9 +1106,24 @@ func NewOperationListPage(cur OperationList, getNextPage func(context.Context, O
 
 // OperationResponse ...
 type OperationResponse struct {
-	Name    *string           `json:"name,omitempty"`
+	// Name - Name of the operation
+	Name *string `json:"name,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
-	Origin  *string           `json:"origin,omitempty"`
+	// Origin - Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
+}
+
+// OperationResultError required if status == failed or status == canceled.
+type OperationResultError struct {
+	// Code - Required if status == failed or status == cancelled. If status == failed, provide an invariant error code used for error troubleshooting, aggregation, and analysis.
+	Code *string `json:"code,omitempty"`
+	// Message - Required if status == failed. Localized. If status == failed, provide an actionable error message indicating what error occurred, and what the user can do to address the issue.
+	Message *string `json:"message,omitempty"`
 }
 
 // OrderBillingPlanInformation information describing the type of billing plan for this reservation.
@@ -982,12 +1304,13 @@ type OrderProperties struct {
 	// CreatedDateTime - This is the DateTime when the reservation was created.
 	CreatedDateTime *date.Time `json:"createdDateTime,omitempty"`
 	// ExpiryDate - This is the date when the Reservation will expire.
-	ExpiryDate       *date.Date `json:"expiryDate,omitempty"`
-	OriginalQuantity *int32     `json:"originalQuantity,omitempty"`
-	// Term - Possible values include: 'P1Y', 'P3Y'
+	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
+	// OriginalQuantity - Total Quantity of the SKUs purchased in the Reservation.
+	OriginalQuantity *int32 `json:"originalQuantity,omitempty"`
+	// Term - Possible values include: 'P1Y', 'P3Y', 'P5Y'
 	Term ReservationTerm `json:"term,omitempty"`
-	// ProvisioningState - Current state of the reservation.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ProvisioningState - Current state of the reservation. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1PendingResourceHold', 'ProvisioningState1ConfirmedResourceHold', 'ProvisioningState1PendingBilling', 'ProvisioningState1ConfirmedBilling', 'ProvisioningState1Created', 'ProvisioningState1Succeeded', 'ProvisioningState1Cancelled', 'ProvisioningState1Expired', 'ProvisioningState1BillingFailed', 'ProvisioningState1Failed', 'ProvisioningState1Split', 'ProvisioningState1Merged'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
 	BillingPlan          ReservationBillingPlan       `json:"billingPlan,omitempty"`
 	PlanInformation      *OrderBillingPlanInformation `json:"planInformation,omitempty"`
@@ -1048,6 +1371,8 @@ type OrderResponse struct {
 	*OrderProperties `json:"properties,omitempty"`
 	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservations"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OrderResponse.
@@ -1115,6 +1440,15 @@ func (or *OrderResponse) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				or.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				or.SystemData = &systemData
 			}
 		}
 	}
@@ -1190,17 +1524,9 @@ type PaymentDetail struct {
 	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
 	// BillingAccount - Shows the Account that is charged for this payment.
 	BillingAccount *string `json:"billingAccount,omitempty"`
-	// Status - Possible values include: 'Succeeded', 'Failed', 'Scheduled', 'Cancelled'
+	// Status - Possible values include: 'PaymentStatusSucceeded', 'PaymentStatusFailed', 'PaymentStatusScheduled', 'PaymentStatusCancelled'
 	Status             PaymentStatus       `json:"status,omitempty"`
 	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
-}
-
-// PhoneAction phone Action.
-type PhoneAction struct {
-	// PhoneNumber - The phone number for the action.
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
-	// PreferredChannel - The preferred communication channel.
-	PreferredChannel interface{} `json:"preferredChannel,omitempty"`
 }
 
 // Price ...
@@ -1210,26 +1536,26 @@ type Price struct {
 	Amount       *float64 `json:"amount,omitempty"`
 }
 
-// Properties ...
+// Properties the properties of the reservations
 type Properties struct {
-	autorest.Response `json:"-"`
-	Properties        *SubscriptionScopeProperties `json:"properties,omitempty"`
-}
-
-// PropertiesType ...
-type PropertiesType struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
+	// ReservedResourceType - The type of the resource that is being reserved. Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit', 'AVS', 'DataFactory', 'NetAppStorage', 'AzureFiles', 'SQLEdge'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
-	// InstanceFlexibility - Possible values include: 'On', 'Off'
+	// InstanceFlexibility - Allows reservation discount to be applied across skus within the same Autofit group. Not all skus support instance size flexibility. Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 	// DisplayName - Friendly name for user to easily identify the reservation
-	DisplayName   *string   `json:"displayName,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
+	// AppliedScopes - The list of applied scopes
 	AppliedScopes *[]string `json:"appliedScopes,omitempty"`
-	// AppliedScopeType - Possible values include: 'Single', 'Shared'
+	// AppliedScopeType - The applied scope type. Possible values include: 'Single', 'Shared'
 	AppliedScopeType AppliedScopeType `json:"appliedScopeType,omitempty"`
-	Quantity         *int32           `json:"quantity,omitempty"`
-	// ProvisioningState - Current state of the reservation.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Archived - Indicates if the reservation is archived
+	Archived *bool `json:"archived,omitempty"`
+	// Capabilities - Capabilities of the reservation
+	Capabilities *string `json:"capabilities,omitempty"`
+	// Quantity - Quantity of the SKUs that are part of the Reservation.
+	Quantity *int32 `json:"quantity,omitempty"`
+	// ProvisioningState - Current state of the reservation. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStatePendingResourceHold', 'ProvisioningStateConfirmedResourceHold', 'ProvisioningStatePendingBilling', 'ProvisioningStateConfirmedBilling', 'ProvisioningStateCreated', 'ProvisioningStateSucceeded', 'ProvisioningStateCancelled', 'ProvisioningStateExpired', 'ProvisioningStateBillingFailed', 'ProvisioningStateFailed', 'ProvisioningStateSplit', 'ProvisioningStateMerged'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// EffectiveDateTime - DateTime of the Reservation starting when this version is effective from.
 	EffectiveDateTime *date.Time `json:"effectiveDateTime,omitempty"`
 	// LastUpdatedDateTime - READ-ONLY; DateTime of the last time the Reservation was updated.
@@ -1237,103 +1563,125 @@ type PropertiesType struct {
 	// ExpiryDate - This is the date when the Reservation will expire.
 	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
 	// SkuDescription - Description of the SKU in english.
-	SkuDescription     *string             `json:"skuDescription,omitempty"`
+	SkuDescription *string `json:"skuDescription,omitempty"`
+	// ExtendedStatusInfo - The message giving detailed information about the status code.
 	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
-	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
-	BillingPlan            ReservationBillingPlan  `json:"billingPlan,omitempty"`
-	SplitProperties        *SplitPropertiesType    `json:"splitProperties,omitempty"`
-	MergeProperties        *MergePropertiesType    `json:"mergeProperties,omitempty"`
-	SwapProperties         *SwapProperties         `json:"swapProperties,omitempty"`
-	AppliedScopeProperties *AppliedScopeProperties `json:"appliedScopeProperties,omitempty"`
-	BillingScopeID         *string                 `json:"billingScopeId,omitempty"`
-	Renew                  *bool                   `json:"renew,omitempty"`
+	// BillingPlan - The billing plan options available for this SKU. Possible values include: 'Upfront', 'Monthly'
+	BillingPlan ReservationBillingPlan `json:"billingPlan,omitempty"`
+	// DisplayProvisioningState - READ-ONLY; The provisioning state of the reservation for display, e.g. Succeeded
+	DisplayProvisioningState *string `json:"displayProvisioningState,omitempty"`
+	// ProvisioningSubState - READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
+	ProvisioningSubState *string `json:"provisioningSubState,omitempty"`
+	// PurchaseDate - This is the date when the Reservation was purchased.
+	PurchaseDate    *date.Date           `json:"purchaseDate,omitempty"`
+	SplitProperties *SplitPropertiesType `json:"splitProperties,omitempty"`
+	MergeProperties *MergePropertiesType `json:"mergeProperties,omitempty"`
+	BillingScopeID  *string              `json:"billingScopeId,omitempty"`
+	// Renew - Setting this to true will automatically purchase a new reservation on the expiration date time.
+	Renew *bool `json:"renew,omitempty"`
 	// RenewSource - Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
 	RenewSource *string `json:"renewSource,omitempty"`
 	// RenewDestination - Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
 	RenewDestination *string                  `json:"renewDestination,omitempty"`
 	RenewProperties  *RenewPropertiesResponse `json:"renewProperties,omitempty"`
-	// Term - Possible values include: 'P1Y', 'P3Y'
+	// Term - Represent the term of Reservation. Possible values include: 'P1Y', 'P3Y', 'P5Y'
 	Term ReservationTerm `json:"term,omitempty"`
-	// Archived - Property to determine if a reservation is archived or not
-	Archived *bool `json:"archived,omitempty"`
-	// Capabilities - List the Capabilities of a reservation
-	Capabilities *string `json:"capabilities,omitempty"`
+	// UserFriendlyAppliedScopeType - READ-ONLY; The applied scope type of the reservation for display, e.g. Shared
+	UserFriendlyAppliedScopeType *string `json:"userFriendlyAppliedScopeType,omitempty"`
+	// UserFriendlyRenewState - READ-ONLY; The renew state of the reservation for display, e.g. On
+	UserFriendlyRenewState *string `json:"userFriendlyRenewState,omitempty"`
+	// Utilization - READ-ONLY; Reservation utilization
+	Utilization *PropertiesUtilization `json:"utilization,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for PropertiesType.
-func (pt PropertiesType) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if pt.ReservedResourceType != "" {
-		objectMap["reservedResourceType"] = pt.ReservedResourceType
+	if p.ReservedResourceType != "" {
+		objectMap["reservedResourceType"] = p.ReservedResourceType
 	}
-	if pt.InstanceFlexibility != "" {
-		objectMap["instanceFlexibility"] = pt.InstanceFlexibility
+	if p.InstanceFlexibility != "" {
+		objectMap["instanceFlexibility"] = p.InstanceFlexibility
 	}
-	if pt.DisplayName != nil {
-		objectMap["displayName"] = pt.DisplayName
+	if p.DisplayName != nil {
+		objectMap["displayName"] = p.DisplayName
 	}
-	if pt.AppliedScopes != nil {
-		objectMap["appliedScopes"] = pt.AppliedScopes
+	if p.AppliedScopes != nil {
+		objectMap["appliedScopes"] = p.AppliedScopes
 	}
-	if pt.AppliedScopeType != "" {
-		objectMap["appliedScopeType"] = pt.AppliedScopeType
+	if p.AppliedScopeType != "" {
+		objectMap["appliedScopeType"] = p.AppliedScopeType
 	}
-	if pt.Quantity != nil {
-		objectMap["quantity"] = pt.Quantity
+	if p.Archived != nil {
+		objectMap["archived"] = p.Archived
 	}
-	if pt.ProvisioningState != nil {
-		objectMap["provisioningState"] = pt.ProvisioningState
+	if p.Capabilities != nil {
+		objectMap["capabilities"] = p.Capabilities
 	}
-	if pt.EffectiveDateTime != nil {
-		objectMap["effectiveDateTime"] = pt.EffectiveDateTime
+	if p.Quantity != nil {
+		objectMap["quantity"] = p.Quantity
 	}
-	if pt.ExpiryDate != nil {
-		objectMap["expiryDate"] = pt.ExpiryDate
+	if p.ProvisioningState != "" {
+		objectMap["provisioningState"] = p.ProvisioningState
 	}
-	if pt.SkuDescription != nil {
-		objectMap["skuDescription"] = pt.SkuDescription
+	if p.EffectiveDateTime != nil {
+		objectMap["effectiveDateTime"] = p.EffectiveDateTime
 	}
-	if pt.ExtendedStatusInfo != nil {
-		objectMap["extendedStatusInfo"] = pt.ExtendedStatusInfo
+	if p.ExpiryDate != nil {
+		objectMap["expiryDate"] = p.ExpiryDate
 	}
-	if pt.BillingPlan != "" {
-		objectMap["billingPlan"] = pt.BillingPlan
+	if p.SkuDescription != nil {
+		objectMap["skuDescription"] = p.SkuDescription
 	}
-	if pt.SplitProperties != nil {
-		objectMap["splitProperties"] = pt.SplitProperties
+	if p.ExtendedStatusInfo != nil {
+		objectMap["extendedStatusInfo"] = p.ExtendedStatusInfo
 	}
-	if pt.MergeProperties != nil {
-		objectMap["mergeProperties"] = pt.MergeProperties
+	if p.BillingPlan != "" {
+		objectMap["billingPlan"] = p.BillingPlan
 	}
-	if pt.SwapProperties != nil {
-		objectMap["swapProperties"] = pt.SwapProperties
+	if p.PurchaseDate != nil {
+		objectMap["purchaseDate"] = p.PurchaseDate
 	}
-	if pt.AppliedScopeProperties != nil {
-		objectMap["appliedScopeProperties"] = pt.AppliedScopeProperties
+	if p.SplitProperties != nil {
+		objectMap["splitProperties"] = p.SplitProperties
 	}
-	if pt.BillingScopeID != nil {
-		objectMap["billingScopeId"] = pt.BillingScopeID
+	if p.MergeProperties != nil {
+		objectMap["mergeProperties"] = p.MergeProperties
 	}
-	if pt.Renew != nil {
-		objectMap["renew"] = pt.Renew
+	if p.BillingScopeID != nil {
+		objectMap["billingScopeId"] = p.BillingScopeID
 	}
-	if pt.RenewSource != nil {
-		objectMap["renewSource"] = pt.RenewSource
+	if p.Renew != nil {
+		objectMap["renew"] = p.Renew
 	}
-	if pt.RenewDestination != nil {
-		objectMap["renewDestination"] = pt.RenewDestination
+	if p.RenewSource != nil {
+		objectMap["renewSource"] = p.RenewSource
 	}
-	if pt.RenewProperties != nil {
-		objectMap["renewProperties"] = pt.RenewProperties
+	if p.RenewDestination != nil {
+		objectMap["renewDestination"] = p.RenewDestination
 	}
-	if pt.Term != "" {
-		objectMap["term"] = pt.Term
+	if p.RenewProperties != nil {
+		objectMap["renewProperties"] = p.RenewProperties
 	}
-	if pt.Archived != nil {
-		objectMap["archived"] = pt.Archived
+	if p.Term != "" {
+		objectMap["term"] = p.Term
 	}
-	if pt.Capabilities != nil {
-		objectMap["capabilities"] = pt.Capabilities
+	return json.Marshal(objectMap)
+}
+
+// PropertiesUtilization reservation utilization
+type PropertiesUtilization struct {
+	// Trend - READ-ONLY; The number of days trend for a reservation
+	Trend *string `json:"trend,omitempty"`
+	// Aggregates - The array of aggregates of a reservation's utilization
+	Aggregates *[]UtilizationAggregates `json:"aggregates,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PropertiesUtilization.
+func (p PropertiesUtilization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Aggregates != nil {
+		objectMap["aggregates"] = p.Aggregates
 	}
 	return json.Marshal(objectMap)
 }
@@ -1405,16 +1753,15 @@ func (pr *PurchaseRequest) UnmarshalJSON(body []byte) error {
 
 // PurchaseRequestProperties ...
 type PurchaseRequestProperties struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit'
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa', 'Databricks', 'AppService', 'ManagedDisk', 'BlockBlob', 'RedisCache', 'AzureDataExplorer', 'MySQL', 'MariaDb', 'PostgreSQL', 'DedicatedHost', 'SapHana', 'SQLAzureHybridBenefit', 'AVS', 'DataFactory', 'NetAppStorage', 'AzureFiles', 'SQLEdge'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
-	// InstanceFlexibility - Possible values include: 'On', 'Off'
-	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
-	BillingScopeID      *string             `json:"billingScopeId,omitempty"`
-	// Term - Possible values include: 'P1Y', 'P3Y'
+	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
+	// Term - Possible values include: 'P1Y', 'P3Y', 'P5Y'
 	Term ReservationTerm `json:"term,omitempty"`
 	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
 	BillingPlan ReservationBillingPlan `json:"billingPlan,omitempty"`
-	Quantity    *int32                 `json:"quantity,omitempty"`
+	// Quantity - Quantity of the SKUs that are part of the Reservation.
+	Quantity *int32 `json:"quantity,omitempty"`
 	// DisplayName - Friendly name of the Reservation
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppliedScopeType - Possible values include: 'Single', 'Shared'
@@ -1478,9 +1825,9 @@ func (future *QuotaCreateOrUpdateFuture) result(client QuotaClient) (so SetObjec
 // QuotaLimits quota limits.
 type QuotaLimits struct {
 	autorest.Response `json:"-"`
-	// Value - List of Quota limits.
+	// Value - List of quotas (service limits).
 	Value *[]CurrentQuotaLimitBase `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of quota limits. When there are no more pages, this is null.
+	// NextLink - The URI for fetching the next page of quotas (service limits). When no more pages exist, the value is null.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1634,29 +1981,29 @@ func NewQuotaLimitsPage(cur QuotaLimits, getNextPage func(context.Context, Quota
 	}
 }
 
-// QuotaLimitsResponse quota limits request response.
+// QuotaLimitsResponse quotas (service limits) in the request response.
 type QuotaLimitsResponse struct {
-	// Value - List of Quota limits with the quota request status.
+	// Value - List of quotas with the quota request status.
 	Value *[]CurrentQuotaLimit `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of quota limits. When there are no more pages, this is null.
+	// NextLink - The URI for fetching the next page of quota limits. When no more pages exist, the value is null.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // QuotaProperties quota properties for the resource.
 type QuotaProperties struct {
-	// Limit - The quota limit.
+	// Limit - Quota properties.
 	Limit *int32 `json:"limit,omitempty"`
-	// CurrentValue - READ-ONLY; The current resource usages information.
+	// CurrentValue - READ-ONLY; Current usage value for the resource.
 	CurrentValue *int32 `json:"currentValue,omitempty"`
-	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
+	// Unit -  The limit units, such as **count** and **bytes**. Use the unit field provided in the response of the GET quota operation.
 	Unit *string `json:"unit,omitempty"`
-	// Name - Name of the resource provide by the resource Provider. Please use this name property for quotaRequests.
+	// Name - Name of the resource provide by the resource provider. Use this property for quotaRequests resource operations.
 	Name *ResourceName `json:"name,omitempty"`
-	// ResourceType - The Resource Type Name.
-	ResourceType interface{} `json:"resourceType,omitempty"`
-	// QuotaPeriod - READ-ONLY; The quota period over which the usage values are summarized, such as - P1D (Per one day), PT1M (Per one minute), PT1S (Per one second). This parameter is optional because, for some resources like compute, the period doesn’t matter.
+	// ResourceType - The name of the resource type. Possible values include: 'ResourceTypeStandard', 'ResourceTypeDedicated', 'ResourceTypeLowPriority', 'ResourceTypeShared', 'ResourceTypeServiceSpecific'
+	ResourceType ResourceType `json:"resourceType,omitempty"`
+	// QuotaPeriod - READ-ONLY; The time period over which the quota usage values are summarized. For example, P1D (per one day), PT1M (per one minute), and PT1S (per one second). This parameter is optional because, for some resources such as compute, the time period is irrelevant.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
-	// Properties - Additional properties for the specific resource provider.
+	// Properties - Additional properties for the specified resource provider.
 	Properties interface{} `json:"properties,omitempty"`
 }
 
@@ -1672,7 +2019,7 @@ func (qp QuotaProperties) MarshalJSON() ([]byte, error) {
 	if qp.Name != nil {
 		objectMap["name"] = qp.Name
 	}
-	if qp.ResourceType != nil {
+	if qp.ResourceType != "" {
 		objectMap["resourceType"] = qp.ResourceType
 	}
 	if qp.Properties != nil {
@@ -1681,16 +2028,16 @@ func (qp QuotaProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// QuotaRequestDetails the details of the quota Request.
+// QuotaRequestDetails quota request details.
 type QuotaRequestDetails struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The quota request Id.
+	// ID - READ-ONLY; Quota request ID.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the quota request.
+	// Name - READ-ONLY; Quota request name.
 	Name *string `json:"name,omitempty"`
-	// QuotaRequestProperties - The quota request details.
+	// QuotaRequestProperties - Quota request details.
 	*QuotaRequestProperties `json:"properties,omitempty"`
-	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1754,12 +2101,12 @@ func (qrd *QuotaRequestDetails) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// QuotaRequestDetailsList quota requests information.
+// QuotaRequestDetailsList quota request details.
 type QuotaRequestDetailsList struct {
 	autorest.Response `json:"-"`
-	// Value - The quota Requests.
+	// Value - The quota requests.
 	Value *[]QuotaRequestDetails `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of quota limits. When there are no more pages, this is null.
+	// NextLink - The URI to fetch the next page of quota limits. When there are no more pages, this is null.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1915,11 +2262,11 @@ func NewQuotaRequestDetailsListPage(cur QuotaRequestDetailsList, getNextPage fun
 
 // QuotaRequestOneResourceProperties the details of quota request.
 type QuotaRequestOneResourceProperties struct {
-	// ProvisioningState - READ-ONLY; The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; User friendly status message.
 	Message *string `json:"message,omitempty"`
-	// RequestSubmitTime - READ-ONLY; The quota request submit time. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// RequestSubmitTime - READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	RequestSubmitTime *date.Time `json:"requestSubmitTime,omitempty"`
 	// CurrentQuotaLimitBase - The quota request addition properties.
 	*CurrentQuotaLimitBase `json:"properties,omitempty"`
@@ -1945,7 +2292,7 @@ func (qrorp *QuotaRequestOneResourceProperties) UnmarshalJSON(body []byte) error
 		switch k {
 		case "provisioningState":
 			if v != nil {
-				var provisioningState interface{}
+				var provisioningState QuotaRequestState
 				err = json.Unmarshal(*v, &provisioningState)
 				if err != nil {
 					return err
@@ -1985,15 +2332,15 @@ func (qrorp *QuotaRequestOneResourceProperties) UnmarshalJSON(body []byte) error
 	return nil
 }
 
-// QuotaRequestOneResourceSubmitResponse quota submit request response
+// QuotaRequestOneResourceSubmitResponse response for the quota submission request.
 type QuotaRequestOneResourceSubmitResponse struct {
-	// ID - READ-ONLY; The quota request Id.
+	// ID - READ-ONLY; The quota request ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the quota request.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/ServiceLimits"
 	Type *string `json:"type,omitempty"`
-	// QuotaRequestOneResourceProperties - The quota request details.
+	// QuotaRequestOneResourceProperties - The details for quota request.
 	*QuotaRequestOneResourceProperties `json:"properties,omitempty"`
 }
 
@@ -2059,11 +2406,11 @@ func (qrorsr *QuotaRequestOneResourceSubmitResponse) UnmarshalJSON(body []byte) 
 
 // QuotaRequestProperties the details of quota request.
 type QuotaRequestProperties struct {
-	// ProvisioningState - The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; User friendly status message.
 	Message *string `json:"message,omitempty"`
-	// RequestSubmitTime - READ-ONLY; The quota request submit time. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	// RequestSubmitTime - READ-ONLY; The time when the quota request was submitted using format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
 	RequestSubmitTime *date.Time `json:"requestSubmitTime,omitempty"`
 	// Value - The quotaRequests.
 	Value *[]SubRequest `json:"value,omitempty"`
@@ -2072,7 +2419,7 @@ type QuotaRequestProperties struct {
 // MarshalJSON is the custom marshaler for QuotaRequestProperties.
 func (qrp QuotaRequestProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if qrp.ProvisioningState != nil {
+	if qrp.ProvisioningState != "" {
 		objectMap["provisioningState"] = qrp.ProvisioningState
 	}
 	if qrp.Value != nil {
@@ -2081,10 +2428,10 @@ func (qrp QuotaRequestProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// QuotaRequestStatusDetails the quota request status details.
+// QuotaRequestStatusDetails quota request status details.
 type QuotaRequestStatusDetails struct {
-	// ProvisioningState - READ-ONLY; The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The details of the quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
 	// Message - READ-ONLY; A user friendly message.
 	Message *string `json:"message,omitempty"`
 }
@@ -2095,9 +2442,9 @@ func (qrsd QuotaRequestStatusDetails) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// QuotaRequestSubmitResponse quota submit request response
+// QuotaRequestSubmitResponse response for the quota submission request.
 type QuotaRequestSubmitResponse struct {
-	// ID - READ-ONLY; The quota request Id.
+	// ID - READ-ONLY; The quota request ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the quota request.
 	Name *string `json:"name,omitempty"`
@@ -2116,15 +2463,15 @@ func (qrsr QuotaRequestSubmitResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// QuotaRequestSubmitResponse201 the quota request submit response with request id.
+// QuotaRequestSubmitResponse201 response with request ID that the quota request was accepted.
 type QuotaRequestSubmitResponse201 struct {
-	// ID - READ-ONLY; The quota request id. Please use the requestId to check the request status.
+	// ID - READ-ONLY; The quota request ID. Use the requestId parameter to check the request status.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The operation Id
+	// Name - READ-ONLY; Operation ID
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// QuotaRequestStatusDetails - The quota request status.
+	// QuotaRequestStatusDetails - Quota request status.
 	*QuotaRequestStatusDetails `json:"properties,omitempty"`
 }
 
@@ -2242,6 +2589,7 @@ type RenewPropertiesResponse struct {
 // RenewPropertiesResponseBillingCurrencyTotal currency and amount that customer will be charged in
 // customer's local currency for renewal purchase. Tax is not included.
 type RenewPropertiesResponseBillingCurrencyTotal struct {
+	// CurrencyCode - The ISO 4217 3-letter currency code for the currency used by this purchase record.
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
 }
@@ -2249,6 +2597,7 @@ type RenewPropertiesResponseBillingCurrencyTotal struct {
 // RenewPropertiesResponsePricingCurrencyTotal amount that Microsoft uses for record. Used during refund
 // for calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
 type RenewPropertiesResponsePricingCurrencyTotal struct {
+	// CurrencyCode - The ISO 4217 3-letter currency code for the currency used by this purchase record.
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
 }
@@ -2259,7 +2608,7 @@ type ReservationAvailableScopesFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(Client) (Properties, error)
+	Result func(Client) (AvailableScopeProperties, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -2274,7 +2623,7 @@ func (future *ReservationAvailableScopesFuture) UnmarshalJSON(body []byte) error
 }
 
 // result is the default implementation for ReservationAvailableScopesFuture.Result.
-func (future *ReservationAvailableScopesFuture) result(client Client) (p Properties, err error) {
+func (future *ReservationAvailableScopesFuture) result(client Client) (asp AvailableScopeProperties, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -2282,15 +2631,15 @@ func (future *ReservationAvailableScopesFuture) result(client Client) (p Propert
 		return
 	}
 	if !done {
-		p.Response.Response = future.Response()
+		asp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("reservations.ReservationAvailableScopesFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
-		p, err = client.AvailableScopesResponder(p.Response.Response)
+	if asp.Response.Response, err = future.GetResult(sender); err == nil && asp.Response.Response.StatusCode != http.StatusNoContent {
+		asp, err = client.AvailableScopesResponder(asp.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", p.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", asp.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2382,12 +2731,12 @@ func (future *ReservationUpdateFuture) result(client Client) (r Response, err er
 	return
 }
 
-// ResourceName name of the resource provide by the resource Provider. Please use this name property for
-// quotaRequests.
+// ResourceName resource name provided by the resource provider. Use this property for quotaRequest
+// parameter.
 type ResourceName struct {
 	// Value - Resource name.
 	Value *string `json:"value,omitempty"`
-	// LocalizedValue - READ-ONLY; Resource display name.
+	// LocalizedValue - READ-ONLY; Resource display localized name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
@@ -2400,25 +2749,34 @@ func (rn ResourceName) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Response ...
+// Response the definition of the reservation.
 type Response struct {
 	autorest.Response `json:"-"`
-	// Location - READ-ONLY; The Azure Region where the reserved resource lives.
+	// Location - The Azure Region where the reserved resource lives.
 	Location *string `json:"location,omitempty"`
 	Etag     *int32  `json:"etag,omitempty"`
 	// ID - READ-ONLY; Identifier of the reservation
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the reservation
-	Name       *string         `json:"name,omitempty"`
-	Sku        *SkuName        `json:"sku,omitempty"`
-	Properties *PropertiesType `json:"properties,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Sku - The sku information associated to this reservation
+	Sku *SkuName `json:"sku,omitempty"`
+	// Properties - The properties associated to this reservation
+	Properties *Properties `json:"properties,omitempty"`
 	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
 	Type *string `json:"type,omitempty"`
+	// Kind - Resource Provider type to be reserved. Possible values include: 'MicrosoftCompute'
+	Kind Kind `json:"kind,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Response.
 func (r Response) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
 	if r.Etag != nil {
 		objectMap["etag"] = r.Etag
 	}
@@ -2428,21 +2786,23 @@ func (r Response) MarshalJSON() ([]byte, error) {
 	if r.Properties != nil {
 		objectMap["properties"] = r.Properties
 	}
+	if r.Kind != "" {
+		objectMap["kind"] = r.Kind
+	}
 	return json.Marshal(objectMap)
 }
 
 // ScopeProperties ...
 type ScopeProperties struct {
-	Scope  *string `json:"scope,omitempty"`
-	Valid  *bool   `json:"valid,omitempty"`
-	Reason *string `json:"reason,omitempty"`
+	Scope *string `json:"scope,omitempty"`
+	Valid *bool   `json:"valid,omitempty"`
 }
 
-// ServiceError the api error details.
+// ServiceError the API error details.
 type ServiceError struct {
 	// Code - The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - The error message.
+	// Message - The error message text.
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; The list of error details.
 	Details *[]ServiceErrorDetail `json:"details,omitempty"`
@@ -2478,6 +2838,14 @@ func (sed ServiceErrorDetail) MarshalJSON() ([]byte, error) {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// SkuCapability ...
+type SkuCapability struct {
+	// Name - An invariant to describe the feature.
+	Name *string `json:"name,omitempty"`
+	// Value - An invariant if the feature is measured by quantity.
+	Value *string `json:"value,omitempty"`
 }
 
 // SkuName ...
@@ -2601,19 +2969,19 @@ func (sr *SplitRequest) UnmarshalJSON(body []byte) error {
 
 // SubRequest the sub-request submitted with the quota request.
 type SubRequest struct {
-	// Limit - READ-ONLY; The Resource limit.
+	// Limit - READ-ONLY; Quota (resource limit).
 	Limit *int32 `json:"limit,omitempty"`
-	// Name - The Resource name.
+	// Name - The resource name.
 	Name *ResourceName `json:"name,omitempty"`
 	// ResourceType - READ-ONLY; Resource type for which the quota check was made.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Unit -  The units of the limit, such as - Count, Bytes, etc. Use the unit field provided in the Get quota response.
+	// Unit -  The limit units, such as **count** and **bytes**. Use the unit field provided in the response of the GET quota operation.
 	Unit *string `json:"unit,omitempty"`
-	// ProvisioningState - The quota request status.
-	ProvisioningState interface{} `json:"provisioningState,omitempty"`
-	// Message - READ-ONLY; User friendly status message.
+	// ProvisioningState - The quota request status. Possible values include: 'QuotaRequestStateAccepted', 'QuotaRequestStateInvalid', 'QuotaRequestStateSucceeded', 'QuotaRequestStateFailed', 'QuotaRequestStateInProgress'
+	ProvisioningState QuotaRequestState `json:"provisioningState,omitempty"`
+	// Message - READ-ONLY; User-friendly status message.
 	Message *string `json:"message,omitempty"`
-	// SubRequestID - READ-ONLY; Sub request id for individual request.
+	// SubRequestID - READ-ONLY; Sub request ID for individual request.
 	SubRequestID *string `json:"subRequestId,omitempty"`
 }
 
@@ -2626,7 +2994,7 @@ func (sr SubRequest) MarshalJSON() ([]byte, error) {
 	if sr.Unit != nil {
 		objectMap["unit"] = sr.Unit
 	}
-	if sr.ProvisioningState != nil {
+	if sr.ProvisioningState != "" {
 		objectMap["provisioningState"] = sr.ProvisioningState
 	}
 	return json.Marshal(objectMap)
@@ -2637,32 +3005,108 @@ type SubscriptionScopeProperties struct {
 	Scopes *[]ScopeProperties `json:"scopes,omitempty"`
 }
 
-// SupportRequestAction the SupportRequest action.
-type SupportRequestAction struct {
-	// Severity - The support request severity.
-	Severity interface{} `json:"severity,omitempty"`
-	// FirstName - The first name of the recipient.
-	FirstName *string `json:"firstName,omitempty"`
-	// LastName - The last name of the recipient.
-	LastName *string `json:"lastName,omitempty"`
-	// Country - The country of the recipient.
-	Country *string `json:"country,omitempty"`
-	// PhoneNumber - The phone number of the recipient.
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
-	// PrimaryEmailAddress - The primary email addresses of the recipients.
-	PrimaryEmailAddress *string `json:"primaryEmailAddress,omitempty"`
-	// SupportLanguage - The support language.
-	SupportLanguage *string `json:"supportLanguage,omitempty"`
-	// PreferredContactMethod - The preferred communication channel.
-	PreferredContactMethod interface{} `json:"preferredContactMethod,omitempty"`
-	// AlternateEmailAddresses - The alternate email address of the recipient.
-	AlternateEmailAddresses *[]string `json:"alternateEmailAddresses,omitempty"`
+// Summary the roll up count summary of reservations in each state
+type Summary struct {
+	// SucceededCount - READ-ONLY; The number of reservation in Succeeded state
+	SucceededCount *float64 `json:"succeededCount,omitempty"`
+	// FailedCount - READ-ONLY; The number of reservation in Failed state
+	FailedCount *float64 `json:"failedCount,omitempty"`
+	// ExpiringCount - READ-ONLY; The number of reservation in Expiring state
+	ExpiringCount *float64 `json:"expiringCount,omitempty"`
+	// ExpiredCount - READ-ONLY; The number of reservation in Expired state
+	ExpiredCount *float64 `json:"expiredCount,omitempty"`
+	// PendingCount - READ-ONLY; The number of reservation in Pending state
+	PendingCount *float64 `json:"pendingCount,omitempty"`
+	// CancelledCount - READ-ONLY; The number of reservation in Cancelled state
+	CancelledCount *float64 `json:"cancelledCount,omitempty"`
+	// ProcessingCount - READ-ONLY; The number of reservation in Processing state
+	ProcessingCount *float64 `json:"processingCount,omitempty"`
 }
 
-// SwapProperties ...
-type SwapProperties struct {
-	// SwapSource - Resource Id of the Source Reservation that gets swapped. Format of the resource Id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	SwapSource *string `json:"swapSource,omitempty"`
-	// SwapDestination - Reservation Resource Id that the original resource gets swapped to. Format of the resource Id is /providers/microsoft.capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
-	SwapDestination *string `json:"swapDestination,omitempty"`
+// MarshalJSON is the custom marshaler for Summary.
+func (s Summary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
+// ToExchange reservation refund details
+type ToExchange struct {
+	// ReservationID - Fully qualified id of the Reservation being returned.
+	ReservationID *string `json:"reservationId,omitempty"`
+	// Quantity - Quantity to be returned
+	Quantity            *int32              `json:"quantity,omitempty"`
+	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
+}
+
+// ToPurchaseCalculateExchange reservation purchase details
+type ToPurchaseCalculateExchange struct {
+	Properties           *PurchaseRequest `json:"properties,omitempty"`
+	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
+}
+
+// ToPurchaseExchange reservation purchase details
+type ToPurchaseExchange struct {
+	// ReservationOrderID - Fully qualified id of the ReservationOrder being purchased
+	ReservationOrderID *string `json:"reservationOrderId,omitempty"`
+	// ReservationID - Fully qualified id of the Reservation being purchased. This value is only guaranteed to be non-null if the purchase is successful.
+	ReservationID        *string          `json:"reservationId,omitempty"`
+	Properties           *PurchaseRequest `json:"properties,omitempty"`
+	BillingCurrencyTotal *Price           `json:"billingCurrencyTotal,omitempty"`
+	// Status - Possible values include: 'OperationStatusSucceeded', 'OperationStatusFailed', 'OperationStatusCancelled', 'OperationStatusPending'
+	Status OperationStatus `json:"status,omitempty"`
+}
+
+// ToReturn reservation to return
+type ToReturn struct {
+	// ReservationID - Fully qualified identifier of the Reservation being returned
+	ReservationID *string `json:"reservationId,omitempty"`
+	// Quantity - Quantity to be returned. Must be greater than zero.
+	Quantity *int32 `json:"quantity,omitempty"`
+}
+
+// ToReturnForExchange reservation refund details
+type ToReturnForExchange struct {
+	// ReservationID - Fully qualified id of the Reservation being returned.
+	ReservationID *string `json:"reservationId,omitempty"`
+	// Quantity - Quantity to be returned
+	Quantity            *int32              `json:"quantity,omitempty"`
+	BillingRefundAmount *Price              `json:"billingRefundAmount,omitempty"`
+	BillingInformation  *BillingInformation `json:"billingInformation,omitempty"`
+	// Status - Possible values include: 'OperationStatusSucceeded', 'OperationStatusFailed', 'OperationStatusCancelled', 'OperationStatusPending'
+	Status OperationStatus `json:"status,omitempty"`
+}
+
+// UtilizationAggregates the aggregate values of reservation utilization
+type UtilizationAggregates struct {
+	// Grain - READ-ONLY; The grain of the aggregate
+	Grain *float64 `json:"grain,omitempty"`
+	// GrainUnit - READ-ONLY; The grain unit of the aggregate
+	GrainUnit *string `json:"grainUnit,omitempty"`
+	// Value - READ-ONLY; The aggregate value
+	Value *float64 `json:"value,omitempty"`
+	// ValueUnit - READ-ONLY; The aggregate value unit
+	ValueUnit *string `json:"valueUnit,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UtilizationAggregates.
+func (ua UtilizationAggregates) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

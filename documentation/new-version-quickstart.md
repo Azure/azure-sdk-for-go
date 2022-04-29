@@ -50,7 +50,7 @@ please refer to [this document](https://docs.microsoft.com/azure/active-director
 ### Setting Environment Variables
 
 After you obtained the values, you need to set the following values as
-your environment variables which will be used in the authorization part:
+your environment variables
 
 -   `AZURE_CLIENT_ID`
 -   `AZURE_CLIENT_SECRET`
@@ -97,10 +97,10 @@ Authentication
 
 Once the environment is setup, all you need to do is to create an authenticated client. Before creating a client, you will first need to authenticate to Azure. In specific, you will need to provide a credential for authenticating with the Azure service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
-We will use **EnvironmentCredential** to authenticate to Azure which will make use of the environment variables we have set and take care of the authentication flow for us. For further usage of `azidentity`, you could refer to [this document](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#readme)
+Our default option is to use **DefaultAzureCredential** which will make use of the environment variables we have set and take care of the authentication flow for us.
 
 ```go
-cred, err := azidentity.NewEnvironmentCredential(nil)
+cred, err := azidentity.NewDefaultAzureCredential(nil)
 ```
 
 For more details on how authentication works in `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
@@ -429,6 +429,8 @@ if err != nil {
 }
 log.Printf("Status code: %d", rawResponse.StatusCode)
 ```
+
+> NOTE: runtime is import from **github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime**
 
 ## Code Samples
 

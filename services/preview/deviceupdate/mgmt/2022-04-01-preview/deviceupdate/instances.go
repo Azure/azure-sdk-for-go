@@ -91,7 +91,7 @@ func (client InstancesClient) CreatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -186,7 +186,7 @@ func (client InstancesClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -285,7 +285,7 @@ func (client InstancesClient) GetPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -375,7 +375,7 @@ func (client InstancesClient) HeadPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -463,7 +463,7 @@ func (client InstancesClient) ListByAccountPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -591,7 +591,7 @@ func (client InstancesClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

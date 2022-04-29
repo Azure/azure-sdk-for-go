@@ -87,7 +87,7 @@ func (client PrivateLinkResourcesClient) GetPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -171,7 +171,7 @@ func (client PrivateLinkResourcesClient) ListByAccountPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

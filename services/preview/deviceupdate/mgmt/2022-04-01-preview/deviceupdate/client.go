@@ -1,4 +1,4 @@
-// Package deviceupdate implements the Azure ARM Deviceupdate service API version 2020-03-01-preview.
+// Package deviceupdate implements the Azure ARM Deviceupdate service API version 2022-04-01-preview.
 //
 // Microsoft Device Update resource provider.
 package deviceupdate
@@ -86,7 +86,7 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, requ
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

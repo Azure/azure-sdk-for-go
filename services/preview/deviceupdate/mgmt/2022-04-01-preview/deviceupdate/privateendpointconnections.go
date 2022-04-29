@@ -56,7 +56,7 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Contex
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: privateEndpointConnection,
-			Constraints: []validation.Constraint{{Target: "privateEndpointConnection.PrivateEndpointConnectionProperties", Name: validation.Null, Rule: false,
+			Constraints: []validation.Constraint{{Target: "privateEndpointConnection.PrivateEndpointConnectionProperties", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "privateEndpointConnection.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.PrivateEndpointConnectionsClient", "CreateOrUpdate", err.Error())
 	}
@@ -85,7 +85,7 @@ func (client PrivateEndpointConnectionsClient) CreateOrUpdatePreparer(ctx contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -177,7 +177,7 @@ func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -273,7 +273,7 @@ func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, 
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -357,7 +357,7 @@ func (client PrivateEndpointConnectionsClient) ListByAccountPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01-preview"
+	const APIVersion = "2022-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

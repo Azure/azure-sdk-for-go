@@ -8,7 +8,7 @@ package deviceupdateapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate"
+	"github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -64,6 +64,18 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*deviceupdate.PrivateLinkResourcesClient)(nil)
+
+// PrivateEndpointConnectionProxiesClientAPI contains the set of methods on the PrivateEndpointConnectionProxiesClient type.
+type PrivateEndpointConnectionProxiesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy deviceupdate.PrivateEndpointConnectionProxy) (result deviceupdate.PrivateEndpointConnectionProxiesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string) (result deviceupdate.PrivateEndpointConnectionProxiesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string) (result deviceupdate.PrivateEndpointConnectionProxy, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.PrivateEndpointConnectionProxyListResult, err error)
+	UpdatePrivateEndpointProperties(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointUpdate deviceupdate.PrivateEndpointUpdate) (result autorest.Response, err error)
+	Validate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionProxyID string, privateEndpointConnectionProxy deviceupdate.PrivateEndpointConnectionProxy) (result autorest.Response, err error)
+}
+
+var _ PrivateEndpointConnectionProxiesClientAPI = (*deviceupdate.PrivateEndpointConnectionProxiesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

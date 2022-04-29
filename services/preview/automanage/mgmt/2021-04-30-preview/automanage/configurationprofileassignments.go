@@ -380,6 +380,176 @@ func (client ConfigurationProfileAssignmentsClient) ListResponder(resp *http.Res
 	return
 }
 
+// ListByClusterName get list of configuration profile assignments
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// clusterName - the name of the Arc machine.
+func (client ConfigurationProfileAssignmentsClient) ListByClusterName(ctx context.Context, resourceGroupName string, clusterName string) (result ConfigurationProfileAssignmentList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfileAssignmentsClient.ListByClusterName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "ListByClusterName", err.Error())
+	}
+
+	req, err := client.ListByClusterNamePreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByClusterName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByClusterNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByClusterName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByClusterNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByClusterName", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListByClusterNamePreparer prepares the ListByClusterName request.
+func (client ConfigurationProfileAssignmentsClient) ListByClusterNamePreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-04-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHci/clusters/{clusterName}/providers/Microsoft.Automanage/configurationProfileAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByClusterNameSender sends the ListByClusterName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationProfileAssignmentsClient) ListByClusterNameSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByClusterNameResponder handles the response to the ListByClusterName request. The method always
+// closes the http.Response Body.
+func (client ConfigurationProfileAssignmentsClient) ListByClusterNameResponder(resp *http.Response) (result ConfigurationProfileAssignmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByMachineName get list of configuration profile assignments
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// machineName - the name of the Arc machine.
+func (client ConfigurationProfileAssignmentsClient) ListByMachineName(ctx context.Context, resourceGroupName string, machineName string) (result ConfigurationProfileAssignmentList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfileAssignmentsClient.ListByMachineName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "ListByMachineName", err.Error())
+	}
+
+	req, err := client.ListByMachineNamePreparer(ctx, resourceGroupName, machineName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByMachineName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByMachineNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByMachineName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByMachineNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByMachineName", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListByMachineNamePreparer prepares the ListByMachineName request.
+func (client ConfigurationProfileAssignmentsClient) ListByMachineNamePreparer(ctx context.Context, resourceGroupName string, machineName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"machineName":       autorest.Encode("path", machineName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-04-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.Automanage/configurationProfileAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByMachineNameSender sends the ListByMachineName request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationProfileAssignmentsClient) ListByMachineNameSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByMachineNameResponder handles the response to the ListByMachineName request. The method always
+// closes the http.Response Body.
+func (client ConfigurationProfileAssignmentsClient) ListByMachineNameResponder(resp *http.Response) (result ConfigurationProfileAssignmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListBySubscription get list of configuration profile assignments under a given subscription
 func (client ConfigurationProfileAssignmentsClient) ListBySubscription(ctx context.Context) (result ConfigurationProfileAssignmentList, err error) {
 	if tracing.IsEnabled() {
@@ -448,6 +618,91 @@ func (client ConfigurationProfileAssignmentsClient) ListBySubscriptionSender(req
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
 func (client ConfigurationProfileAssignmentsClient) ListBySubscriptionResponder(resp *http.Response) (result ConfigurationProfileAssignmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByVirtualMachines get list of configuration profile assignments
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// VMName - the name of the virtual machine.
+func (client ConfigurationProfileAssignmentsClient) ListByVirtualMachines(ctx context.Context, resourceGroupName string, VMName string) (result ConfigurationProfileAssignmentList, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfileAssignmentsClient.ListByVirtualMachines")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "ListByVirtualMachines", err.Error())
+	}
+
+	req, err := client.ListByVirtualMachinesPreparer(ctx, resourceGroupName, VMName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByVirtualMachines", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByVirtualMachinesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByVirtualMachines", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByVirtualMachinesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListByVirtualMachines", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// ListByVirtualMachinesPreparer prepares the ListByVirtualMachines request.
+func (client ConfigurationProfileAssignmentsClient) ListByVirtualMachinesPreparer(ctx context.Context, resourceGroupName string, VMName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vmName":            autorest.Encode("path", VMName),
+	}
+
+	const APIVersion = "2021-04-30-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByVirtualMachinesSender sends the ListByVirtualMachines request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationProfileAssignmentsClient) ListByVirtualMachinesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByVirtualMachinesResponder handles the response to the ListByVirtualMachines request. The method always
+// closes the http.Response Body.
+func (client ConfigurationProfileAssignmentsClient) ListByVirtualMachinesResponder(resp *http.Response) (result ConfigurationProfileAssignmentList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

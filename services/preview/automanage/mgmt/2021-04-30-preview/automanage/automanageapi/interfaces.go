@@ -57,7 +57,10 @@ type ConfigurationProfileAssignmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, VMName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, VMName string) (result automanage.ConfigurationProfileAssignment, err error)
 	List(ctx context.Context, resourceGroupName string) (result automanage.ConfigurationProfileAssignmentList, err error)
+	ListByClusterName(ctx context.Context, resourceGroupName string, clusterName string) (result automanage.ConfigurationProfileAssignmentList, err error)
+	ListByMachineName(ctx context.Context, resourceGroupName string, machineName string) (result automanage.ConfigurationProfileAssignmentList, err error)
 	ListBySubscription(ctx context.Context) (result automanage.ConfigurationProfileAssignmentList, err error)
+	ListByVirtualMachines(ctx context.Context, resourceGroupName string, VMName string) (result automanage.ConfigurationProfileAssignmentList, err error)
 }
 
 var _ ConfigurationProfileAssignmentsClientAPI = (*automanage.ConfigurationProfileAssignmentsClient)(nil)
@@ -76,3 +79,45 @@ type ReportsClientAPI interface {
 }
 
 var _ ReportsClientAPI = (*automanage.ReportsClient)(nil)
+
+// ServicePrincipalsClientAPI contains the set of methods on the ServicePrincipalsClient type.
+type ServicePrincipalsClientAPI interface {
+	Get(ctx context.Context) (result automanage.ServicePrincipal, err error)
+	ListBySubscription(ctx context.Context) (result automanage.ServicePrincipalListResult, err error)
+}
+
+var _ ServicePrincipalsClientAPI = (*automanage.ServicePrincipalsClient)(nil)
+
+// ConfigurationProfileHCRPAssignmentsClientAPI contains the set of methods on the ConfigurationProfileHCRPAssignmentsClient type.
+type ConfigurationProfileHCRPAssignmentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, parameters automanage.ConfigurationProfileAssignment, resourceGroupName string, machineName string, configurationProfileAssignmentName string) (result automanage.ConfigurationProfileAssignment, err error)
+	Delete(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string) (result automanage.ConfigurationProfileAssignment, err error)
+}
+
+var _ ConfigurationProfileHCRPAssignmentsClientAPI = (*automanage.ConfigurationProfileHCRPAssignmentsClient)(nil)
+
+// HCRPReportsClientAPI contains the set of methods on the HCRPReportsClient type.
+type HCRPReportsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, reportName string) (result automanage.Report, err error)
+	ListByConfigurationProfileAssignments(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string) (result automanage.ReportList, err error)
+}
+
+var _ HCRPReportsClientAPI = (*automanage.HCRPReportsClient)(nil)
+
+// ConfigurationProfileHCIAssignmentsClientAPI contains the set of methods on the ConfigurationProfileHCIAssignmentsClient type.
+type ConfigurationProfileHCIAssignmentsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, parameters automanage.ConfigurationProfileAssignment, resourceGroupName string, clusterName string, configurationProfileAssignmentName string) (result automanage.ConfigurationProfileAssignment, err error)
+	Delete(ctx context.Context, resourceGroupName string, clusterName string, configurationProfileAssignmentName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, clusterName string, configurationProfileAssignmentName string) (result automanage.ConfigurationProfileAssignment, err error)
+}
+
+var _ ConfigurationProfileHCIAssignmentsClientAPI = (*automanage.ConfigurationProfileHCIAssignmentsClient)(nil)
+
+// HCIReportsClientAPI contains the set of methods on the HCIReportsClient type.
+type HCIReportsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, clusterName string, configurationProfileAssignmentName string, reportName string) (result automanage.Report, err error)
+	ListByConfigurationProfileAssignments(ctx context.Context, resourceGroupName string, clusterName string, configurationProfileAssignmentName string) (result automanage.ReportList, err error)
+}
+
+var _ HCIReportsClientAPI = (*automanage.HCIReportsClient)(nil)

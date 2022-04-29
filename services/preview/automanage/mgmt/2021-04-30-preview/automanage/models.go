@@ -530,6 +530,111 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ServicePrincipal the Service Principal Id for the subscription.
+type ServicePrincipal struct {
+	autorest.Response `json:"-"`
+	// ServicePrincipalProperties - The Service Principal properties for the subscription
+	*ServicePrincipalProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrincipal.
+func (sp ServicePrincipal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ServicePrincipalProperties != nil {
+		objectMap["properties"] = sp.ServicePrincipalProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServicePrincipal struct.
+func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var servicePrincipalProperties ServicePrincipalProperties
+				err = json.Unmarshal(*v, &servicePrincipalProperties)
+				if err != nil {
+					return err
+				}
+				sp.ServicePrincipalProperties = &servicePrincipalProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				sp.SystemData = &systemData
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ServicePrincipalListResult the list of ServicePrincipals.
+type ServicePrincipalListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of servicePrincipals.
+	Value *[]ServicePrincipal `json:"value,omitempty"`
+}
+
+// ServicePrincipalProperties the Service Principal properties for the subscription.
+type ServicePrincipalProperties struct {
+	// ServicePrincipalID - READ-ONLY; The Service Principal Id for the subscription.
+	ServicePrincipalID *string `json:"servicePrincipalId,omitempty"`
+	// AuthorizationSet - READ-ONLY; Returns the contributor RBAC Role exist or not for the Service Principal Id.
+	AuthorizationSet *bool `json:"authorizationSet,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrincipalProperties.
+func (spp ServicePrincipalProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SystemData metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.

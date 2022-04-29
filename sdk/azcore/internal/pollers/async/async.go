@@ -87,7 +87,7 @@ func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string)
 
 // State returns the current state of the LRO.
 func (p *Poller) State() pollers.OperationState {
-	if p.CurState == pollers.StatusSucceeded {
+	if pollers.Succeeded(p.CurState) {
 		return pollers.OperationStateSucceeded
 	} else if pollers.IsTerminalState(p.CurState) {
 		return pollers.OperationStateFailed

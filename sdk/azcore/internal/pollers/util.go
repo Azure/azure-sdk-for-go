@@ -78,6 +78,11 @@ func Failed(s string) bool {
 	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
 }
 
+// Succeeded returns true if the LRO's state is terminal success.
+func Succeeded(s string) bool {
+	return strings.EqualFold(s, StatusSucceeded)
+}
+
 // returns true if the LRO response contains a valid HTTP status code
 func StatusCodeValid(resp *http.Response) bool {
 	return exported.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusCreated, http.StatusNoContent)

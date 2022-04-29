@@ -12,8 +12,8 @@ import (
 // See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
 type TransactionalBatch struct {
 	partitionKey PartitionKey
-	container *ContainerClient
-	operations []batchOperation
+	container    *ContainerClient
+	operations   []batchOperation
 }
 
 // CreateItem adds a create operation to the batch.
@@ -33,12 +33,12 @@ func (b *TransactionalBatch) ReplaceItem(itemId string, item []byte, o *Transact
 
 // DeleteItem adds a delete operation to the batch.
 func (b *TransactionalBatch) UpsertItem(item []byte, o *TransactionalBatchOptions) {
-	b.operations = append(b.operations, batchOperationUpsert{item, o})  
+	b.operations = append(b.operations, batchOperationUpsert{item, o})
 }
 
 // DeleteItem adds a delete operation to the batch.
 func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchOptions) {
-	b.operations = append(b.operations, batchOperationRead{itemId, o})  
+	b.operations = append(b.operations, batchOperationRead{itemId, o})
 }
 
 // Execute executes the transactional batch.
@@ -56,7 +56,7 @@ type batchOperation interface {
 }
 
 type batchOperationCreate struct {
-	item []byte
+	item    []byte
 	options *TransactionalBatchOptions
 }
 
@@ -69,7 +69,7 @@ func (b batchOperationCreate) getOptions() *TransactionalBatchOptions {
 }
 
 type batchOperationDelete struct {
-	itemId string
+	itemId  string
 	options *TransactionalBatchOptions
 }
 
@@ -82,8 +82,8 @@ func (b batchOperationDelete) getOptions() *TransactionalBatchOptions {
 }
 
 type batchOperationReplace struct {
-	itemId string
-	item []byte
+	itemId  string
+	item    []byte
 	options *TransactionalBatchOptions
 }
 
@@ -96,7 +96,7 @@ func (b batchOperationReplace) getOptions() *TransactionalBatchOptions {
 }
 
 type batchOperationUpsert struct {
-	item []byte
+	item    []byte
 	options *TransactionalBatchOptions
 }
 
@@ -109,7 +109,7 @@ func (b batchOperationUpsert) getOptions() *TransactionalBatchOptions {
 }
 
 type batchOperationRead struct {
-	itemId string
+	itemId  string
 	options *TransactionalBatchOptions
 }
 

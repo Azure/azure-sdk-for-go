@@ -16,7 +16,6 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 	response := TransactionalBatchResponse{
 		Response: newResponse(resp),
 	}
-	
 
 	return response, nil
 }

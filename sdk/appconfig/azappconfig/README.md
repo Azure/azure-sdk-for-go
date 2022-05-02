@@ -105,12 +105,11 @@ func ExampleAddConfigurationSetting() {
     // Create configuration setting
     resp, err := client.AddSetting(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
+        "key",
+        to.StringPtr("value"),
+        &azappconfig.AddSettingOptions{
             Label: to.StringPtr("label"),
-            Value: to.StringPtr("value")
-        },
-        nil)
+        })
 
     if err != nil {
         panic(err)
@@ -143,11 +142,10 @@ func ExampleGetConfigurationSetting() {
     // Get configuration setting
     resp, err := client.GetSetting(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
+        "key"
+        &azappconfig.GetSettingOptions{
             Label: to.StringPtr("label")
-        },
-        nil)
+        })
 
     if err != nil {
         panic(err)
@@ -180,12 +178,11 @@ func ExampleSetConfigurationSetting() {
     // Set configuration setting
     resp, err := client.SetSetting(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
+        "key",
+        to.StringPtr("new_value"),
+        &azappconfig.SetSettingOptions{
             Label: to.StringPtr("label"),
-            Value: to.StringPtr("new_value")
-        },
-        nil)
+        })
 
     if err != nil {
         panic(err)
@@ -218,12 +215,11 @@ func ExampleSetConfigurationSettingReadOnly() {
     // Set configuration setting read only
     resp, err := client.SetReadOnly(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
-            Label: to.StringPtr("label")
-        },
+        "key",
         true,
-        nil)
+        &azappconfig.SetReadOnlyOptions{
+            Label: to.StringPtr("label")
+        })
 
     if err != nil {
         panic(err)
@@ -237,12 +233,11 @@ func ExampleSetConfigurationSettingReadOnly() {
     // Remove read only status
     resp, err := client.SetReadOnly(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
-            Label: to.StringPtr("label")
-        },
+        "key",
         false,
-        nil)
+        &azappconfig.SetReadOnlyOptions{
+            Label: to.StringPtr("label")
+        })
 
     if err != nil {
         panic(err)
@@ -273,7 +268,7 @@ func ExampleListRevisions() {
         panic(err)
     }
 
-    revPgr := client.ListRevisions(
+    revPgr := client.NewListRevisionsPager(
         azappconfig.SettingSelector{
             KeyFilter: to.StringPtr("*"),
             LabelFilter: to.StringPtr("*"),
@@ -315,11 +310,10 @@ func ExampleDeleteConfigurationSetting() {
     // Delete configuration setting
     resp, err := client.DeleteSetting(
         context.TODO(),
-        azappconfig.Setting{
-            Key: to.StringPtr("key"),
+        "key",
+        &azappconfig.DeleteSettingOptions{
             Label: to.StringPtr("label")
-        },
-        nil)
+        })
 
     if err != nil {
         panic(err)

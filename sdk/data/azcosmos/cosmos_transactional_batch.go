@@ -32,11 +32,15 @@ func (b *TransactionalBatch) CreateItem(item []byte, o *TransactionalBatchItemOp
 
 // DeleteItem adds a delete operation to the batch.
 func (b *TransactionalBatch) DeleteItem(itemId string, o *TransactionalBatchItemOptions) {
+	if o == nil {
+		o = &TransactionalBatchItemOptions{}
+	}
 	b.operations = append(b.operations,
 		batchOperationDelete{
 			operationType: "Delete",
 			partitionKey:  b.partitionKey,
-			id:            itemId})
+			id:            itemId,
+			ifMatch:       o.IfMatchEtag})
 }
 
 // DeleteItem adds a delete operation to the batch.
@@ -157,6 +161,7 @@ func (b batchOperationCreate) MarshalJSON() ([]byte, error) {
 
 type batchOperationDelete struct {
 	operationType string
+	ifMatch       *azcore.ETag
 	id            string
 	partitionKey  PartitionKey
 }
@@ -174,6 +179,15 @@ func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+	if b.ifMatch != nil {
+		buffer.WriteString(",\"ifMatch\":")
+		etag, err := json.Marshal(b.ifMatch)
+		if err != nil {
+			return nil, err
+		}
+		buffer.Write(etag)
+	}
+
 	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil

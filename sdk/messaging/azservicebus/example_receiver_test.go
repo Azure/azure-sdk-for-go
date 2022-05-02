@@ -5,6 +5,7 @@ package azservicebus_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -92,6 +93,18 @@ func ExampleReceiver_ReceiveMessages() {
 		err = receiver.CompleteMessage(context.TODO(), message, nil)
 
 		if err != nil {
+			var sbErr azservicebus.Error
+
+			if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
+				// The message lock has expired. This isn't fatal for the client, but it does mean
+				// that this message can be received by another Receiver (or potentially this one!).
+				fmt.Printf("Message lock expired\n")
+
+				// You can extend the message lock by calling receiver.RenewMessageLock(msg) before the
+				// message lock has expired.
+				continue
+			}
+
 			panic(err)
 		}
 

@@ -20,13 +20,17 @@ type TransactionalBatchOptions struct {
 	// ConsistencyLevel overrides the account defined consistency level for this operation.
 	// Consistency can only be relaxed.
 	ConsistencyLevel *ConsistencyLevel
+}
+
+// TransactionalBatchItemOptions includes options for the specific operation inside a TransactionalBatch
+type TransactionalBatchItemOptions struct {
 	// IfMatchEtag is used to ensure optimistic concurrency control.
 	// https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control
 	IfMatchEtag *azcore.ETag
 }
 
 func (options *TransactionalBatchOptions) toHeaders() *map[string]string {
-	headers := make(map[string]string)
+	headers := make(map[string]string, 2)
 
 	if options.ConsistencyLevel != nil {
 		headers[cosmosHeaderConsistencyLevel] = string(*options.ConsistencyLevel)
@@ -36,9 +40,8 @@ func (options *TransactionalBatchOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderSessionToken] = options.SessionToken
 	}
 
-	if options.IfMatchEtag != nil {
-		headers[headerIfMatch] = string(*options.IfMatchEtag)
-	}
+	headers[cosmosHeaderIsBatchRequest] = "True"
+	headers[cosmosHeaderIsBatchAtomic] = "True"
 
 	return &headers
 }

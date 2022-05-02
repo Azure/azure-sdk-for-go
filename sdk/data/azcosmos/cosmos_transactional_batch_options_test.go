@@ -5,16 +5,12 @@ package azcosmos
 
 import (
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestTransactionalBatchOptionsToHeaders(t *testing.T) {
 	options := &TransactionalBatchOptions{}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
 	options.SessionToken = "sessionToken"
-	etagValue := azcore.ETag("someEtag")
-	options.IfMatchEtag = &etagValue
 	header := options.toHeaders()
 	if header == nil {
 		t.Fatal("toHeaders should return non-nil")
@@ -27,7 +23,10 @@ func TestTransactionalBatchOptionsToHeaders(t *testing.T) {
 	if headers[cosmosHeaderSessionToken] != "sessionToken" {
 		t.Errorf("SessionToken should be sessionToken but got %v", headers[cosmosHeaderSessionToken])
 	}
-	if headers[headerIfMatch] != string(*options.IfMatchEtag) {
-		t.Errorf("IfMatchEtag should be someEtag but got %v", headers[headerIfMatch])
+	if headers[cosmosHeaderIsBatchAtomic] != "True" {
+		t.Fatal("IsBatchAtomic should be true")
+	}
+	if headers[cosmosHeaderIsBatchRequest] != "True" {
+		t.Fatal("IsBatchRequest should be true")
 	}
 }

@@ -20,6 +20,9 @@ func ExampleClient_NewReceiverForSubscription() {
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForQueue() {
@@ -30,6 +33,9 @@ func ExampleClient_NewReceiverForQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
@@ -41,6 +47,9 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
@@ -53,6 +62,9 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleReceiver_ReceiveMessages() {

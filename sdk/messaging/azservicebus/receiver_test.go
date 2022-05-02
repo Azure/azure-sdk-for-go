@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
@@ -554,8 +555,10 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 	endCaptureFn := test.CaptureLogsForTest()
 	defer endCaptureFn()
 	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0], nil)
-	// String matching can go away once we fix #15644
-	// For now it at least provides the user with good context that something is incorrect about their lock token.
+
+	var asSBError Error
+	require.ErrorAs(t, expectedLockBadError, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
 	require.Contains(t, expectedLockBadError.Error(),
 		"status code 410 and description: The lock supplied is invalid. Either the lock expired, or the message has already been removed from the queue",
 		"error message from SB comes through")
@@ -750,6 +753,38 @@ func TestReceiverMultiTopic(t *testing.T) {
 	otherMessages, err = otherQueueReceiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"sent to other queue2"}, getSortedBodies(otherMessages))
+}
+
+func TestReceiverMessageLockExpires(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &admin.QueueProperties{
+		LockDuration: to.Ptr("PT5S"),
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	// sleep so our message locks expire
+	time.Sleep(6 * time.Second)
+
+	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
+
+	var asSBError Error
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	var amqpErr *amqp.Error
+	require.ErrorAs(t, err, &amqpErr)
+	require.Equal(t, amqp.ErrorCondition("com.microsoft:message-lock-lost"), amqpErr.Condition)
 }
 
 type badRPCLink struct {

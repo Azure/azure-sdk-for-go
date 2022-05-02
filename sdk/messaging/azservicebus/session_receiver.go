@@ -204,7 +204,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 		return nil
 	}, sr.inner.retryOptions)
 
-	return sessionState, err
+	return sessionState, internal.TransformError(err)
 }
 
 // SetSessionStateOptions contains optional parameters for the SetSessionState function.
@@ -214,9 +214,11 @@ type SetSessionStateOptions struct {
 
 // SetSessionState sets the state associated with the session.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
-	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
 	}, sr.inner.retryOptions)
+
+	return internal.TransformError(err)
 }
 
 // RenewSessionLockOptions contains optional parameters for the RenewSessionLock function.
@@ -227,7 +229,7 @@ type RenewSessionLockOptions struct {
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
-	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
 
 		if err != nil {
@@ -237,11 +239,13 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewS
 		sr.lockedUntil = newLockedUntil
 		return nil
 	}, sr.inner.retryOptions)
+
+	return internal.TransformError(err)
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.
 func (sr *SessionReceiver) init(ctx context.Context) error {
 	// initialize the links
 	_, err := sr.inner.amqpLinks.Get(ctx)
-	return err
+	return internal.TransformError(err)
 }

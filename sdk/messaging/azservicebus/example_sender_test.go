@@ -17,6 +17,9 @@ func ExampleClient_NewSender() {
 	if err != nil {
 		panic(err)
 	}
+
+	// close the sender when it's no longer needed
+	defer sender.Close(context.TODO())
 }
 
 func ExampleSender_SendMessage_message() {

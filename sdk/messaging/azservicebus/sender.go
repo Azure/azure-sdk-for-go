@@ -48,7 +48,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	}, s.retryOptions)
 
 	if err != nil {
-		return nil, err
+		return nil, internal.TransformError(err)
 	}
 
 	return batch, nil
@@ -61,9 +61,11 @@ type SendMessageOptions struct {
 
 // SendMessage sends a Message to a queue or topic.
 func (s *Sender) SendMessage(ctx context.Context, message *Message, options *SendMessageOptions) error {
-	return s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, message.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))
+
+	return internal.TransformError(err)
 }
 
 // SendMessageBatchOptions contains optional parameters for the SendMessageBatch function.
@@ -74,9 +76,11 @@ type SendMessageBatchOptions struct {
 // SendMessageBatch sends a MessageBatch to a queue or topic.
 // Message batches can be created using `Sender.NewMessageBatch`.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
-	return s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))
+
+	return internal.TransformError(err)
 }
 
 // ScheduleMessagesOptions contains optional parameters for the ScheduleMessages function.
@@ -94,7 +98,8 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 		amqpMessages = append(amqpMessages, m.toAMQPMessage())
 	}
 
-	return s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
+	ids, err := s.scheduleAMQPMessages(ctx, amqpMessages, scheduledEnqueueTime)
+	return ids, internal.TransformError(err)
 }
 
 // MessageBatch changes
@@ -106,9 +111,11 @@ type CancelScheduledMessagesOptions struct {
 
 // CancelScheduledMessages cancels multiple messages that were scheduled.
 func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumbers []int64, options *CancelScheduledMessagesOptions) error {
-	return s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := s.links.Retry(ctx, EventSender, "CancelScheduledMessages", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return internal.CancelScheduledMessages(ctx, lwv.RPC, sequenceNumbers)
 	}, s.retryOptions)
+
+	return internal.TransformError(err)
 }
 
 // Close permanently closes the Sender.

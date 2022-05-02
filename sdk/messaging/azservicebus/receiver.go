@@ -196,7 +196,8 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
-	return r.receiveMessagesImpl(ctx, maxMessages, options)
+	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
+	return messages, internal.TransformError(err)
 }
 
 // ReceiveDeferredMessagesOptions contains optional parameters for the ReceiveDeferredMessages function.
@@ -225,11 +226,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		return nil
 	}, r.retryOptions)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return receivedMessages, nil
+	return receivedMessages, internal.TransformError(err)
 }
 
 // PeekMessagesOptions contains options for the `Receiver.PeekMessages`
@@ -275,11 +272,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		return nil
 	}, r.retryOptions)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return receivedMessages, nil
+	return receivedMessages, internal.TransformError(err)
 }
 
 // RenewMessageLockOptions contains optional parameters for the RenewMessageLock function.
@@ -289,7 +282,7 @@ type RenewMessageLockOptions struct {
 
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
-	return r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
@@ -302,6 +295,7 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 		return nil
 	}, r.retryOptions)
 
+	return internal.TransformError(err)
 }
 
 // Close permanently closes the receiver.

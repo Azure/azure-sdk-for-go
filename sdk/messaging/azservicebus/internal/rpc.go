@@ -72,16 +72,21 @@ const (
 	RPCResponseCodeLockLost = http.StatusGone
 )
 
-type rpcError struct {
+// RPCError is an error from an RPCLink.
+// RPCLinks are used for communication with the $management and $cbs links.
+type RPCError struct {
 	Resp    *RPCResponse
 	Message string
 }
 
-func (e rpcError) Error() string {
+// Error is a string representation of the error.
+func (e RPCError) Error() string {
 	return e.Message
 }
 
-func (e rpcError) RPCCode() int {
+// RPCCode is the code that comes back in the rpc response. This code is intended
+// for programs toreact to programatically.
+func (e RPCError) RPCCode() int {
 	return e.Resp.Code
 }
 
@@ -301,7 +306,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 		return response, fmt.Errorf("failed accepting message on rpc link: %w", err)
 	}
 
-	var rpcErr rpcError
+	var rpcErr RPCError
 
 	if asRPCError(response, &rpcErr) {
 		return nil, rpcErr
@@ -434,7 +439,7 @@ func addMessageID(message *amqp.Message, uuidNewV4 func() (uuid.UUID, error)) (*
 // asRPCError checks to see if the res is actually a failed request
 // (where failed means the status code was non-2xx). If so,
 // it returns true and updates the struct pointed to by err.
-func asRPCError(res *RPCResponse, err *rpcError) bool {
+func asRPCError(res *RPCResponse, err *RPCError) bool {
 	if res == nil {
 		return false
 	}
@@ -443,7 +448,7 @@ func asRPCError(res *RPCResponse, err *rpcError) bool {
 		return false
 	}
 
-	*err = rpcError{
+	*err = RPCError{
 		Message: fmt.Sprintf("rpc: failed, status code %d and description: %s", res.Code, res.Description),
 		Resp:    res,
 	}

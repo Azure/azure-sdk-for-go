@@ -148,7 +148,7 @@ func (b batchOperationCreate) MarshalJSON() ([]byte, error) {
 
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":\"%s\"", partitionKeyAsString))
+	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
 	buffer.WriteString("}")
@@ -174,7 +174,7 @@ func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":\"%s\"", partitionKeyAsString))
+	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
 }
@@ -209,7 +209,7 @@ func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":\"%s\"", partitionKeyAsString))
+	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
@@ -246,7 +246,7 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":\"%s\"", partitionKeyAsString))
+	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
 	buffer.WriteString("}")
@@ -272,7 +272,7 @@ func (b batchOperationRead) MarshalJSON() ([]byte, error) {
 
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":\"%s\"", partitionKeyAsString))
+	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil

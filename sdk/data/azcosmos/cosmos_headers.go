@@ -30,6 +30,8 @@ const (
 	cosmosHeaderQueryMetrics                       string = "x-ms-documentdb-query-metrics"
 	cosmosHeaderIndexUtilization                   string = "x-ms-cosmos-index-utilization"
 	cosmosHeaderCorrelatedActivityId               string = "x-ms-cosmos-correlated-activityid"
+	cosmosHeaderIsBatchRequest                     string = "x-ms-cosmos-is-batch-request"
+	cosmosHeaderIsBatchAtomic                      string = "x-ms-cosmos-batch-atomic"
 	headerXmsDate                                  string = "x-ms-date"
 	headerAuthorization                            string = "Authorization"
 	headerContentType                              string = "Content-Type"

@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// QueryItemsResponse contains response from the query operation.
+// TransactionalBatchResponse contains response from a transactional batch operation.
 type TransactionalBatchResponse struct {
 	Response
 	// SessionToken contains the value from the session token header to be used on session consistency.
@@ -55,6 +55,7 @@ type TransactionalBatchResponseOperationResult struct {
 	ETag azcore.ETag
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface
 func (or *TransactionalBatchResponseOperationResult) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)

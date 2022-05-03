@@ -653,7 +653,7 @@ func ExampleContainerClient_NewTransactionalBatch() {
 
 	if batchResponse.IsSuccess {
 		// Transaction succeeded
-		// We can inspect the individual operation results 
+		// We can inspect the individual operation results
 		for index, operation := range batchResponse.OperationResults {
 			fmt.Printf("Operation %v completed with status code %v consumed %v RU", index, operation.StatusCode, operation.RequestCharge)
 			if index == 1 {

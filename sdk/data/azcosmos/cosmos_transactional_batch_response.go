@@ -17,6 +17,7 @@ type TransactionalBatchResponse struct {
 	// SessionToken contains the value from the session token header to be used on session consistency.
 	SessionToken string
 	// OperationResults contains the individual batch operation results.
+	// The order of the results is the same as the order of the operations in the batch.
 	OperationResults []TransactionalBatchResponseOperationResult
 	// IsSuccess indicates if the transaction was successfully committed.
 	// If false, one of the operations in the batch failed.

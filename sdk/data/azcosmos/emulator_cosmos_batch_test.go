@@ -45,7 +45,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Expected 2 operation results, got %v", len(response.OperationResults))
 	}
 
-	if !response.Committed {
+	if !response.IsSuccess {
 		t.Fatalf("Expected committed to be true, got false")
 	}
 
@@ -79,7 +79,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
 
-	if !response2.Committed {
+	if !response2.IsSuccess {
 		t.Fatalf("Expected committed to be true, got false")
 	}
 
@@ -123,13 +123,13 @@ func TestItemTransactionalBatch(t *testing.T) {
 	batch3.UpsertItem(emulatorTests.marshallItem("test4", "tBatch"), nil)
 	batch3.ReplaceItem("test3", emulatorTests.marshallItem("test3", "tBatch"), nil)
 
-	response3, err := batch3.Execute(context.TODO(), nil)
+	response3, err := batch3.Execute(context.TODO(), &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
 
-	if !response3.Committed {
-		t.Fatalf("Expected committed to be true, got false")
+	if !response3.IsSuccess {
+		t.Fatalf("Expected IsSuccess to be true, got false")
 	}
 
 	if len(response3.OperationResults) != 2 {
@@ -153,8 +153,8 @@ func TestItemTransactionalBatch(t *testing.T) {
 			t.Fatalf("Expected ETag to be non-empty, got %v", operationResult.ETag)
 		}
 
-		if operationResult.ResourceBody != nil {
-			t.Fatalf("Expected ResourceBody to be nil, got %v", operationResult.ResourceBody)
+		if operationResult.ResourceBody == nil {
+			t.Fatalf("Expected ResourceBody not to be nil, got %v", operationResult.ResourceBody)
 		}
 	}
 }
@@ -188,10 +188,10 @@ func TestItemTransactionalBatchError(t *testing.T) {
 
 	batch := container.NewTransactionalBatch(pkValue)
 
-	batch.ReadItem("test", nil)
+	batch.CreateItem(emulatorTests.marshallItem("test2", "tBatch"), nil)
 	batch.CreateItem(emulatorTests.marshallItem("test", "tBatch"), nil)
 
-	response, err := batch.Execute(context.TODO(), nil)
+	response, err := batch.Execute(context.TODO(), &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
@@ -200,8 +200,8 @@ func TestItemTransactionalBatchError(t *testing.T) {
 		t.Fatalf("Expected status code 207, got %v", response.RawResponse.StatusCode)
 	}
 
-	if response.Committed {
-		t.Fatalf("Expected committed to be false, got true")
+	if response.IsSuccess {
+		t.Fatalf("Expected IsSuccess to be false, got true")
 	}
 
 	if len(response.OperationResults) != 2 {
@@ -209,11 +209,11 @@ func TestItemTransactionalBatchError(t *testing.T) {
 	}
 
 	for index, operationResult := range response.OperationResults {
-		if index == 0 && operationResult.StatusCode != 424 {
+		if index == 0 && operationResult.StatusCode != http.StatusFailedDependency {
 			t.Fatalf("Expected status code 424, got %v", operationResult.StatusCode)
 		}
 
-		if index == 1 && operationResult.StatusCode != 409 {
+		if index == 1 && operationResult.StatusCode != http.StatusConflict {
 			t.Fatalf("Expected status code 409, got %v", operationResult.StatusCode)
 		}
 	}

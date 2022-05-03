@@ -18,11 +18,11 @@ type TransactionalBatchResponse struct {
 	SessionToken string
 	// OperationResults contains the individual batch operation results.
 	OperationResults []TransactionalBatchResponseOperationResult
-	// Committed indicates if the transaction was successfully committed.
+	// IsSuccess indicates if the transaction was successfully committed.
 	// If false, one of the operations in the batch failed.
-	// Inspect the OperationResults, any operation with status code 424 is a dependency failure.
-	// The cause of the batch failure is the first operation with status code different from 424.
-	Committed bool
+	// Inspect the OperationResults, any operation with status code http.StatusFailedDependency is a dependency failure.
+	// The cause of the batch failure is the first operation with status code different from http.StatusFailedDependency.
+	IsSuccess bool
 }
 
 func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchResponse, error) {
@@ -32,7 +32,7 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 
 	response.SessionToken = resp.Header.Get(cosmosHeaderSessionToken)
 
-	response.Committed = resp.StatusCode != http.StatusMultiStatus
+	response.IsSuccess = resp.StatusCode != http.StatusMultiStatus
 
 	if err := runtime.UnmarshalAsJSON(resp, &response.OperationResults); err != nil {
 		return TransactionalBatchResponse{}, err
@@ -41,11 +41,17 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 	return response, nil
 }
 
+// TransactionalBatchResponseOperationResult represents the result of a single operation in a batch.
 type TransactionalBatchResponseOperationResult struct {
-	StatusCode    int32
+	// StatusCode contains the status code of the operation.
+	StatusCode int32
+	// RequestCharge contains the request charge for the operation.
 	RequestCharge float32
-	ResourceBody  []byte
-	ETag          azcore.ETag
+	// ResourceBody contains the body response of the operation.
+	// This property is available depending on the EnableContentResponseOnWrite option.
+	ResourceBody []byte
+	// ETag contains the ETag of the operation.
+	ETag azcore.ETag
 }
 
 func (or *TransactionalBatchResponseOperationResult) UnmarshalJSON(b []byte) error {

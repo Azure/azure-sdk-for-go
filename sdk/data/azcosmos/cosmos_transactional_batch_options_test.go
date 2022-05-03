@@ -29,4 +29,7 @@ func TestTransactionalBatchOptionsToHeaders(t *testing.T) {
 	if headers[cosmosHeaderIsBatchRequest] != "True" {
 		t.Fatal("IsBatchRequest should be true")
 	}
+	if headers[cosmosHeaderIsBatchOrdered] != "True" {
+		t.Fatal("IsBatchOrdered should be true")
+	}
 }

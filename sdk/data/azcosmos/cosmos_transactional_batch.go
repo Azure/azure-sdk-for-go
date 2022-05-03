@@ -75,6 +75,7 @@ func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchItemOp
 }
 
 // Execute executes the transactional batch.
+// Once executed, verify the IsSuccess property of the response to determine if the batch was committed
 func (b *TransactionalBatch) Execute(ctx context.Context, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
 	if len(b.operations) == 0 {
 		return TransactionalBatchResponse{}, errors.New("no operations in batch")

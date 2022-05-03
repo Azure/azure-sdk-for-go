@@ -114,8 +114,8 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		req, err = exported.NewRequest(ctx, http.MethodGet, p.LocURL)
 	} else if p.FinalState == pollers.FinalStateViaOpLocation && p.Method == http.MethodPost {
 		// no final GET required, terminal response should have it
-	} else if rl, err := pollers.GetResourceLocation(p.resp); err != nil && !errors.Is(err, pollers.ErrNoBody) {
-		return *new(T), err
+	} else if rl, rlErr := pollers.GetResourceLocation(p.resp); rlErr != nil && !errors.Is(rlErr, pollers.ErrNoBody) {
+		return *new(T), rlErr
 	} else if rl != "" {
 		req, err = exported.NewRequest(ctx, http.MethodGet, rl)
 	} else if p.Method == http.MethodPatch || p.Method == http.MethodPut {
@@ -127,11 +127,9 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		return *new(T), err
 	}
 
-	// default to assuming the terminal response contains the payload
-	resp := p.resp
+	// if a final GET request has been created, execute it
 	if req != nil {
-		// nope, perform a final GET
-		resp, err = p.pl.Do(req)
+		resp, err := p.pl.Do(req)
 		if err != nil {
 			return *new(T), err
 		}

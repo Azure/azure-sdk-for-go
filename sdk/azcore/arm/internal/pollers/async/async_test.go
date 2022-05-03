@@ -39,13 +39,6 @@ func initialResponse(method string, resp io.Reader) *http.Response {
 	}
 }
 
-func pollingResponse(resp io.Reader) *http.Response {
-	return &http.Response{
-		Body:   ioutil.NopCloser(resp),
-		Header: http.Header{},
-	}
-}
-
 func TestApplicable(t *testing.T) {
 	resp := &http.Response{
 		Header: http.Header{},

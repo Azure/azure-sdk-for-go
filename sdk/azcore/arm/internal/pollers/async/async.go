@@ -147,11 +147,9 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		return *new(T), err
 	}
 
-	// default to assuming the terminal response contains the payload
-	resp := p.resp
+	// if a final GET request has been created, execute it
 	if req != nil {
-		// nope, perform a final GET
-		resp, err = p.pl.Do(req)
+		resp, err := p.pl.Do(req)
 		if err != nil {
 			return *new(T), err
 		}

@@ -24,7 +24,6 @@ import (
 
 const (
 	fakePollingURL     = "https://foo.bar.baz/status"
-	fakePollingURL2    = "https://foo.bar.baz/status/updated"
 	fakeLocationURL    = "https://foo.bar.baz/location"
 	fakeResourceURL    = "https://foo.bar.baz/resource"
 	fakeResourceLocURL = "https://foo.bar.baz/resourceLocation"
@@ -39,13 +38,6 @@ func initialResponse(method string, body io.Reader) *http.Response {
 		Body:    ioutil.NopCloser(body),
 		Header:  http.Header{},
 		Request: req,
-	}
-}
-
-func createResponse(body io.Reader) *http.Response {
-	return &http.Response{
-		Body:   ioutil.NopCloser(body),
-		Header: http.Header{},
 	}
 }
 

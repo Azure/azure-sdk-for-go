@@ -27,11 +27,11 @@ type azureCLITokenProvider func(ctx context.Context, resource string, tenantID s
 
 // AzureCLICredentialOptions contains optional parameters for AzureCLICredential.
 type AzureCLICredentialOptions struct {
-	tokenProvider azureCLITokenProvider
-
 	// TenantID identifies the tenant the credential should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the logged in user.
 	TenantID string
+
+	tokenProvider azureCLITokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
@@ -47,8 +47,7 @@ type AzureCLICredential struct {
 	tenantID      string
 }
 
-// NewAzureCLICredential constructs an AzureCLICredential.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewAzureCLICredential constructs an AzureCLICredential. Pass nil to accept default options.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	cp := AzureCLICredentialOptions{}
 	if options != nil {
@@ -63,8 +62,6 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 
 // GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
-// ctx: Context controlling the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
 		return nil, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")

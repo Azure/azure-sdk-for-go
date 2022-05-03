@@ -31,11 +31,11 @@ func getResponseFromError(err error) *http.Response {
 
 // AuthenticationFailedError indicates an authentication request has failed.
 type AuthenticationFailedError struct {
-	credType string
-	message  string
-
 	// RawResponse is the HTTP response motivating the error, if available.
 	RawResponse *http.Response
+
+	credType string
+	message  string
 }
 
 func newAuthenticationFailedError(credType string, message string, resp *http.Response) AuthenticationFailedError {
@@ -47,8 +47,7 @@ func newAuthenticationFailedErrorFromMSALError(credType string, err error) Authe
 	return newAuthenticationFailedError(credType, err.Error(), res)
 }
 
-// Error implements the error interface for type ResponseError.
-// Note that the message contents are not contractual and can change over time.
+// Error implements the error interface. Note that the message contents are not contractual and can change over time.
 func (e AuthenticationFailedError) Error() string {
 	if e.RawResponse == nil {
 		return e.credType + ": " + e.message
@@ -76,7 +75,7 @@ func (e AuthenticationFailedError) Error() string {
 	return msg.String()
 }
 
-// NonRetriable indicates that this error should not be retried.
+// NonRetriable indicates the request which provoked this error shouldn't be retried.
 func (AuthenticationFailedError) NonRetriable() {
 	// marker method
 }

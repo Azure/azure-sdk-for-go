@@ -25,29 +25,36 @@ type EnvironmentCredentialOptions struct {
 // EnvironmentCredential authenticates a service principal with a secret or certificate, or a user with a password, depending
 // on environment variable configuration. It reads configuration from these variables, in the following order:
 //
-// Service principal:
-// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
-// - AZURE_CLIENT_ID: the service principal's client ID
-// - AZURE_CLIENT_SECRET: one of the service principal's client secrets
+// Service principal with client secret
 //
-// Service principal with certificate:
-// - AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
-// - AZURE_CLIENT_ID: the service principal's client ID
-// - AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key. The
-//   certificate must not be password-protected.
+// AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
 //
-// User with username and password:
-// - AZURE_CLIENT_ID: the application's client ID
-// - AZURE_USERNAME: a username (usually an email address)
-// - AZURE_PASSWORD: that user's password
-// - AZURE_TENANT_ID: (optional) tenant to authenticate in. If not set, defaults to the "organizations" tenant, which
-//   can authenticate only Azure Active Directory work or school accounts.
+// AZURE_CLIENT_ID: the service principal's client ID
+//
+// AZURE_CLIENT_SECRET: one of the service principal's client secrets
+//
+// Service principal with certificate
+//
+// AZURE_TENANT_ID: ID of the service principal's tenant. Also called its "directory" ID.
+//
+// AZURE_CLIENT_ID: the service principal's client ID
+//
+// AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the unencrypted private key.
+//
+// User with username and password
+//
+// AZURE_TENANT_ID: (optional) tenant to authenticate in. Defaults to "organizations".
+//
+// AZURE_CLIENT_ID: client ID of the application the user will authenticate to
+//
+// AZURE_USERNAME: a username (usually an email address)
+//
+// AZURE_PASSWORD: the user's password
 type EnvironmentCredential struct {
 	cred azcore.TokenCredential
 }
 
-// NewEnvironmentCredential creates an EnvironmentCredential.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewEnvironmentCredential creates an EnvironmentCredential. Pass nil to accept default options.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
 	if options == nil {
 		options = &EnvironmentCredentialOptions{}
@@ -104,9 +111,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	return nil, errors.New("incomplete environment variable configuration. Only AZURE_TENANT_ID and AZURE_CLIENT_ID are set")
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *EnvironmentCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return c.cred.GetToken(ctx, opts)
 }

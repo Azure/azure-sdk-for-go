@@ -188,22 +188,16 @@ func cleanUpKey(t *testing.T, client *Client, key string) {
 	require.NoError(t, err)
 }
 
-type FakeCredential struct {
-	accountName string
-	accountKey  string
-}
+type FakeCredential struct{}
 
 func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
+	return &FakeCredential{}
 }
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
 		Token:     "faketoken",
-		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
+		ExpiresOn: time.Now().UTC().Add(time.Hour),
 	}, nil
 }
 

@@ -30,7 +30,19 @@ const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
 var enableHSM = true
 
 func TestMain(m *testing.M) {
-	// Initialize
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+
+		defer func() {
+			err := recording.ResetProxy(nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
 		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{

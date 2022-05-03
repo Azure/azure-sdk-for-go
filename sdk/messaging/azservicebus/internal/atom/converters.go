@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 )
 
-func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
+func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) *QueueEnvelope {
 	qd.ServiceBusSchema = to.Ptr(serviceBusSchema)
 
 	qe := &QueueEnvelope{
@@ -21,16 +21,7 @@ func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvide
 		},
 	}
 
-	var mw []MiddlewareFunc
-	if qd.ForwardTo != nil {
-		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, tokenProvider))
-	}
-
-	if qd.ForwardDeadLetteredMessagesTo != nil {
-		mw = append(mw, addDeadLetterSupplementalAuthorization(*qd.ForwardDeadLetteredMessagesTo, tokenProvider))
-	}
-
-	return qe, mw
+	return qe
 }
 
 func WrapWithTopicEnvelope(td *TopicDescription) *TopicEnvelope {

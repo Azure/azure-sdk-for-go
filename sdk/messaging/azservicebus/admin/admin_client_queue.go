@@ -346,20 +346,22 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 		props = &QueueProperties{}
 	}
 
-	env, mw := newQueueEnvelope(props, ac.em.TokenProvider())
+	env := newQueueEnvelope(props, ac.em.TokenProvider())
 
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
+	executeOpts := &atom.ExecuteOptions{
+		ForwardTo:           props.ForwardTo,
+		ForwardToDeadLetter: props.ForwardDeadLetteredMessagesTo,
+	}
+
 	var atomResp *atom.QueueEnvelope
-	resp, err := ac.em.Put(ctx, "/"+queueName, env, &atomResp, mw...)
+
+	resp, err := ac.em.Put(ctx, "/"+queueName, env, &atomResp, executeOpts)
 
 	if err != nil {
 		return nil, nil, err
@@ -374,7 +376,7 @@ func (ac *Client) createOrUpdateQueueImpl(ctx context.Context, queueName string,
 	return &item.QueueProperties, resp, nil
 }
 
-func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) (*atom.QueueEnvelope, []atom.MiddlewareFunc) {
+func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) *atom.QueueEnvelope {
 	qpr := &atom.QueueDescription{
 		LockDuration:                        props.LockDuration,
 		MaxSizeInMegabytes:                  props.MaxSizeInMegabytes,

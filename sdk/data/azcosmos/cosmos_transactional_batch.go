@@ -41,7 +41,7 @@ func (b *TransactionalBatch) DeleteItem(itemId string, o *TransactionalBatchItem
 			ifMatch:       o.IfMatchEtag})
 }
 
-// DeleteItem adds a delete operation to the batch.
+// ReplaceItem adds a replace operation to the batch.
 func (b *TransactionalBatch) ReplaceItem(itemId string, item []byte, o *TransactionalBatchItemOptions) {
 	if o == nil {
 		o = &TransactionalBatchItemOptions{}
@@ -54,7 +54,7 @@ func (b *TransactionalBatch) ReplaceItem(itemId string, item []byte, o *Transact
 			ifMatch:       o.IfMatchEtag})
 }
 
-// DeleteItem adds a delete operation to the batch.
+// UpsertItem adds an upsert operation to the batch.
 func (b *TransactionalBatch) UpsertItem(item []byte, o *TransactionalBatchItemOptions) {
 	if o == nil {
 		o = &TransactionalBatchItemOptions{}
@@ -66,7 +66,7 @@ func (b *TransactionalBatch) UpsertItem(item []byte, o *TransactionalBatchItemOp
 			ifMatch:       o.IfMatchEtag})
 }
 
-// DeleteItem adds a delete operation to the batch.
+// ReadItem adds a read operation to the batch.
 func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchItemOptions) {
 	b.operations = append(b.operations,
 		batchOperationRead{

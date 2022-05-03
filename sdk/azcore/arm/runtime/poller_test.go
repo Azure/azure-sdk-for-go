@@ -15,11 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/body"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -33,9 +31,8 @@ const (
 	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }` //nolint
 	statusInProgress   = `{ "status": "InProgress" }`
 	statusSucceeded    = `{ "status": "Succeeded" }`
-	statusCanceled     = `{ "status": "Canceled" }`
+	statusCanceled     = `{ "status": "Canceled", "error": { "code": "OperationCanceled", "message": "somebody canceled it" } }`
 	successResp        = `{ "field": "value" }`
-	errorResp          = `{ "error": "the operation failed" }`
 )
 
 type mockType struct {
@@ -65,6 +62,10 @@ func initialResponse(method, u string, resp io.Reader) (*http.Response, mock.Tra
 	}, closed
 }
 
+func typeOfOpField[T any](pl *runtime.Poller[T]) reflect.Type {
+	return reflect.ValueOf(pl).Elem().FieldByName("op").Elem().Type()
+}
+
 func TestNewPollerAsync(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -82,7 +83,7 @@ func TestNewPollerAsync(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -93,7 +94,7 @@ func TestNewPollerAsync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -117,7 +118,7 @@ func TestNewPollerBody(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&body.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -128,7 +129,7 @@ func TestNewPollerBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -153,7 +154,7 @@ func TestNewPollerLoc(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&armloc.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*loc.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -200,10 +201,10 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -228,7 +229,7 @@ func TestNewPollerCanceled(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	_, err = poller.Poll(context.Background())
@@ -239,11 +240,15 @@ func TestNewPollerCanceled(t *testing.T) {
 		t.Fatal("poller shouldn't be done yet")
 	}
 	_, err = poller.Poll(context.Background())
-	if err == nil {
-		t.Fatal("unexpected nil error")
+	if err != nil {
+		t.Fatal("expected nil error")
 	}
 	if !poller.Done() {
 		t.Fatal("poller should be done")
+	}
+	_, err = poller.Result(context.Background())
+	if err == nil {
+		t.Fatal("unexpected nil error")
 	}
 }
 
@@ -251,7 +256,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
-	srv.AppendResponse(mock.WithBody([]byte(errorResp)), mock.WithStatusCode(http.StatusBadRequest))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
 	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
 	resp.StatusCode = http.StatusCreated
@@ -263,15 +268,12 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&async.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err == nil {
 		t.Fatal(err)
-	}
-	if _, ok := err.(*exported.ResponseError); !ok {
-		t.Fatalf("unexpected error type %T", err)
 	}
 }
 
@@ -290,7 +292,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&body.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -301,7 +303,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -348,7 +350,7 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	if pt := pollers.PollerType(poller.pt); pt != reflect.TypeOf(&body.Poller{}) {
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[preconstructedMockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
 	tk, err := poller.ResumeToken()
@@ -363,7 +365,7 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}

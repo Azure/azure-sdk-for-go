@@ -19,11 +19,11 @@ import (
 )
 
 // Kind is the identifier of this type in a resume token.
-const kind = "loc"
+const kind = "ARM-Location"
 
 // Applicable returns true if the LRO is using Location.
 func Applicable(resp *http.Response) bool {
-	return resp.Header.Get(shared.HeaderLocation) != ""
+	return resp.StatusCode == http.StatusAccepted && resp.Header.Get(shared.HeaderLocation) != ""
 }
 
 // CanResume returns true if the token can rehydrate this poller type.
@@ -41,12 +41,18 @@ func CanResume(token map[string]interface{}) bool {
 
 // Poller is an LRO poller that uses the Location pattern.
 type Poller[T any] struct {
-	pl   exported.Pipeline
+	pl exported.Pipeline
+
 	resp *http.Response
 
-	Type     string `json:"type"`
-	PollURL  string `json:"pollURL"`
-	CurState int    `json:"state"`
+	// The poller's type, used for resume token processing.
+	Type string `json:"type"`
+
+	// The URL for polling.
+	PollURL string `json:"pollURL"`
+
+	// The LRO's current state.
+	CurState string `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response.
@@ -64,35 +70,48 @@ func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
 	if !pollers.IsValidURL(locURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", locURL)
 	}
-	return &Poller[T]{
+	p := &Poller[T]{
 		pl:       pl,
 		resp:     resp,
 		Type:     kind,
 		PollURL:  locURL,
-		CurState: resp.StatusCode,
-	}, nil
+		CurState: pollers.StatusInProgress,
+	}
+	return p, nil
 }
 
+// Done implements the Done method for the Operation interface.
 func (p *Poller[T]) Done() bool {
-	// anything other than a 202 indicates a terminal state
-	return p.CurState != http.StatusAccepted
+	return pollers.IsTerminalState(p.CurState)
 }
 
+// Poll implements the Poll method for the Operation interface.
 func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	err := pollers.PollHelper(ctx, p.PollURL, p.pl, func(resp *http.Response) (string, error) {
 		// location polling can return an updated polling URL
 		if h := resp.Header.Get(shared.HeaderLocation); h != "" {
 			p.PollURL = h
 		}
-		p.CurState = resp.StatusCode
-		p.resp = resp
-		if p.CurState == http.StatusAccepted {
-			return pollers.StatusInProgress, nil
-		} else if p.CurState > 199 && p.CurState < 300 {
-			// any 2xx other than a 202 indicates success
-			return pollers.StatusSucceeded, nil
+		if exported.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+			// if a 200/201 returns a provisioning state, use that instead
+			state, err := pollers.GetProvisioningState(resp)
+			if err != nil && !errors.Is(err, pollers.ErrNoBody) {
+				return "", err
+			}
+			if state != "" {
+				p.CurState = state
+			} else {
+				// a 200/201 with no provisioning state indicates success
+				p.CurState = pollers.StatusSucceeded
+			}
+		} else if resp.StatusCode == http.StatusNoContent {
+			p.CurState = pollers.StatusSucceeded
+		} else if resp.StatusCode > 399 && resp.StatusCode < 500 {
+			p.CurState = pollers.StatusFailed
 		}
-		return pollers.StatusFailed, nil
+		p.resp = resp
+		// a 202 falls through, means the LRO is still in progress and we don't check for provisioning state
+		return p.CurState, nil
 	})
 	if err != nil {
 		return nil, err
@@ -100,6 +119,7 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
+// Result implements the Result method for the Operation interface.
 func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
-	return pollers.ResultHelper(p.resp, p.resp.StatusCode > 399, out)
+	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

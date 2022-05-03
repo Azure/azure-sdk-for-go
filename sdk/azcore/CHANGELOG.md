@@ -12,6 +12,7 @@
 * `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
 
 ### Bugs Fixed
+* When per-try timeouts are enabled, only cancel the context after the body has been read and closed.
 
 ### Other Changes
 * The functionality in `arm/runtime/poller.go` has been merged into `runtime/poller.go` so it should be used instead.

@@ -66,6 +66,7 @@ func TestCreateKeyRSA(t *testing.T) {
 		})
 	}
 }
+
 func TestCreateKeyRSATags(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -510,9 +511,8 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				},
 				Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
 			})
-			_ = err
-			// require.NoError(t, err) // Recently failing with "AKV.SKR.1012: The specified attestation service  cannot be reached."
-			// defer cleanUpKey(t, client, key)
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
 
 			newMarshalledPolicy, err := json.Marshal(map[string]interface{}{
 				"anyOf": []map[string]interface{}{
@@ -528,19 +528,14 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				"version": "1.0.0",
 			})
 			require.NoError(t, err)
-			// require.Nil(t, createResp.Key.Properties)
-			_ = createResp
-			_ = newMarshalledPolicy
 
-			/*
-				createResp.Key.ReleasePolicy = &ReleasePolicy{
-					Immutable:     to.Ptr(true),
-					EncodedPolicy: newMarshalledPolicy,
-				}
-				_, err = client.UpdateKeyProperties(ctx, *createResp.Key, nil)
-				_ = err
-				require.Error(t, err)
-			*/
+			createResp.Key.ReleasePolicy = &ReleasePolicy{
+				Immutable:     to.Ptr(true),
+				EncodedPolicy: newMarshalledPolicy,
+			}
+
+			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			require.Error(t, err)
 		})
 	}
 }
@@ -694,9 +689,7 @@ func TestGetRandomBytes(t *testing.T) {
 func TestGetDeletedKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip()
-			}
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -727,10 +720,9 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -743,6 +735,11 @@ func TestRotateKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
+			if testType == HSMTEST {
+				// MHSM keys don't have a default rotation policy
+				_, err = client.UpdateKeyRotationPolicy(ctx, key, RotationPolicy{Attributes: &RotationPolicyAttributes{ExpiresIn: to.Ptr("P30D")}}, nil)
+				require.NoError(t, err)
+			}
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
@@ -751,16 +748,15 @@ func TestRotateKey(t *testing.T) {
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Zero(t, invalid.Key)
 		})
 	}
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -780,11 +776,9 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 }
 
 func TestReleaseKey(t *testing.T) {
-	t.Skip("key release isn't supported yet")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
-			// t.Skip("Release is not currently not enabled in API Version 7.3-preview")
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -806,33 +800,29 @@ func TestReleaseKey(t *testing.T) {
 				t.Skip("Skipping test in playback")
 			}
 
-			// Issue when deploying HSM as well
-			if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
-				_, err = http.DefaultClient.Do(req)
-				require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
-				// require.Equal(t, resp.StatusCode, http.StatusOK)
-				// defer resp.Body.Close()
+			resp, err := http.DefaultClient.Do(req)
+			require.NoError(t, err)
+			require.Equal(t, resp.StatusCode, http.StatusOK)
+			defer resp.Body.Close()
 
-				// type targetResponse struct {
-				// 	Token string `json:"token"`
-				// }
-
-				// var tR targetResponse
-				// err = json.NewDecoder(resp.Body).Decode(&tR)
-				// require.NoError(t, err)
-
-				_, err = client.ReleaseKey(ctx, key, "target", nil)
-				require.Error(t, err)
+			type targetResponse struct {
+				Token string `json:"token"`
 			}
+
+			var tR targetResponse
+			err = json.NewDecoder(resp.Body).Decode(&tR)
+			require.NoError(t, err)
+
+			_, err = client.ReleaseKey(ctx, key, "target", nil)
+			require.Error(t, err)
 		})
 	}
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -848,11 +838,11 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 
 			get, err := client.GetKeyRotationPolicy(ctx, key, nil)
 			require.NoError(t, err)
-			get.Attributes.ExpiresIn = to.Ptr("P90D")
+			get.Attributes = &RotationPolicyAttributes{ExpiresIn: to.Ptr("P90D")}
 			get.LifetimeActions = []*LifetimeActions{
 				{
 					Action: &LifetimeActionsType{
-						Type: to.Ptr(RotationActionNotify),
+						Type: to.Ptr(RotationActionRotate),
 					},
 					Trigger: &LifetimeActionsTrigger{
 						TimeBeforeExpiry: to.Ptr("P30D"),

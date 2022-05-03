@@ -26,7 +26,6 @@ func (b *TransactionalBatch) CreateItem(item []byte, o *TransactionalBatchItemOp
 	b.operations = append(b.operations,
 		batchOperationCreate{
 			operationType: "Create",
-			partitionKey:  b.partitionKey,
 			resourceBody:  item})
 }
 
@@ -38,7 +37,6 @@ func (b *TransactionalBatch) DeleteItem(itemId string, o *TransactionalBatchItem
 	b.operations = append(b.operations,
 		batchOperationDelete{
 			operationType: "Delete",
-			partitionKey:  b.partitionKey,
 			id:            itemId,
 			ifMatch:       o.IfMatchEtag})
 }
@@ -51,7 +49,6 @@ func (b *TransactionalBatch) ReplaceItem(itemId string, item []byte, o *Transact
 	b.operations = append(b.operations,
 		batchOperationReplace{
 			operationType: "Replace",
-			partitionKey:  b.partitionKey,
 			id:            itemId,
 			resourceBody:  item,
 			ifMatch:       o.IfMatchEtag})
@@ -65,7 +62,6 @@ func (b *TransactionalBatch) UpsertItem(item []byte, o *TransactionalBatchItemOp
 	b.operations = append(b.operations,
 		batchOperationUpsert{
 			operationType: "Upsert",
-			partitionKey:  b.partitionKey,
 			resourceBody:  item,
 			ifMatch:       o.IfMatchEtag})
 }
@@ -75,7 +71,6 @@ func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchItemOp
 	b.operations = append(b.operations,
 		batchOperationRead{
 			operationType: "Read",
-			partitionKey:  b.partitionKey,
 			id:            itemId})
 }
 
@@ -85,12 +80,14 @@ func (b *TransactionalBatch) Execute(ctx context.Context, o *TransactionalBatchO
 		return TransactionalBatchResponse{}, errors.New("no operations in batch")
 	}
 
-	if o == nil {
-		o = &TransactionalBatchOptions{}
-	}
-
 	h := headerOptionsOverride{
 		partitionKey: &b.partitionKey,
+	}
+
+	if o == nil {
+		o = &TransactionalBatchOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
 	}
 
 	// If contentResponseOnWrite is not enabled at the client level the
@@ -108,6 +105,7 @@ func (b *TransactionalBatch) Execute(ctx context.Context, o *TransactionalBatchO
 	operationContext := pipelineRequestOptions{
 		resourceType:          resourceTypeDocument,
 		resourceAddress:       b.container.link,
+		isWriteOperation:      true,
 		headerOptionsOverride: &h}
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
@@ -135,7 +133,6 @@ type batchOperation interface {
 
 type batchOperationCreate struct {
 	operationType string
-	partitionKey  PartitionKey
 	resourceBody  []byte
 }
 
@@ -145,14 +142,8 @@ func (b batchOperationCreate) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationCreate) MarshalJSON() ([]byte, error) {
-	partitionKeyAsString, err := b.partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
 	buffer.WriteString("}")
@@ -163,7 +154,6 @@ type batchOperationDelete struct {
 	operationType string
 	ifMatch       *azcore.ETag
 	id            string
-	partitionKey  PartitionKey
 }
 
 func (b batchOperationDelete) getOperationType() operationType {
@@ -172,13 +162,9 @@ func (b batchOperationDelete) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
-	partitionKeyAsString, err := b.partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	if b.ifMatch != nil {
 		buffer.WriteString(",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
@@ -188,7 +174,6 @@ func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil
 }
@@ -196,7 +181,6 @@ func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 type batchOperationReplace struct {
 	operationType string
 	ifMatch       *azcore.ETag
-	partitionKey  PartitionKey
 	id            string
 	resourceBody  []byte
 }
@@ -207,11 +191,6 @@ func (b batchOperationReplace) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
-	partitionKeyAsString, err := b.partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
 	if b.ifMatch != nil {
@@ -223,7 +202,6 @@ func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
@@ -234,7 +212,6 @@ func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 type batchOperationUpsert struct {
 	operationType string
 	ifMatch       *azcore.ETag
-	partitionKey  PartitionKey
 	resourceBody  []byte
 }
 
@@ -244,11 +221,6 @@ func (b batchOperationUpsert) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
-	partitionKeyAsString, err := b.partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
 	if b.ifMatch != nil {
@@ -260,7 +232,6 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
 	buffer.WriteString("}")
@@ -269,7 +240,6 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 
 type batchOperationRead struct {
 	operationType string
-	partitionKey  PartitionKey
 	id            string
 }
 
@@ -279,14 +249,8 @@ func (b batchOperationRead) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationRead) MarshalJSON() ([]byte, error) {
-	partitionKeyAsString, err := b.partitionKey.toJsonString()
-	if err != nil {
-		return nil, err
-	}
-
 	buffer := bytes.NewBufferString("{")
 	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"partitionKey\":%s", partitionKeyAsString))
 	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
 	buffer.WriteString("}")
 	return buffer.Bytes(), nil

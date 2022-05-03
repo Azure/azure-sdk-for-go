@@ -20,6 +20,9 @@ type TransactionalBatchOptions struct {
 	// ConsistencyLevel overrides the account defined consistency level for this operation.
 	// Consistency can only be relaxed.
 	ConsistencyLevel *ConsistencyLevel
+	// When EnableContentResponseOnWrite is false will cause the response on write operations to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
+	// The default is false.
+	EnableContentResponseOnWrite bool
 }
 
 // TransactionalBatchItemOptions includes options for the specific operation inside a TransactionalBatch

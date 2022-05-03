@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"os"
 	"strconv"
 	"testing"
@@ -79,6 +80,16 @@ func (e *emulatorTests) deleteDatabase(
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
 	}
+}
+
+func (e *emulatorTests) marshallItem(id string, pk string) []byte {
+	item := map[string]string{
+		"id": id,
+		"pk": pk,
+	}
+
+	marshalled, _ := json.Marshal(item)
+	return marshalled
 }
 
 type emulatorTokenCredential struct {

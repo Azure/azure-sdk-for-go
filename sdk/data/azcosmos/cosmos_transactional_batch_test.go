@@ -37,13 +37,6 @@ func TestTransactionalBatchCreateItem(t *testing.T) {
 	if string(asCreate.resourceBody) != string(itemMarshall) {
 		t.Errorf("Expected body %v, but got %v", string(itemMarshall), string(asCreate.resourceBody))
 	}
-
-	pkValue, _ := asCreate.partitionKey.toJsonString()
-	batchPkValue, _ := batch.partitionKey.toJsonString()
-
-	if pkValue != batchPkValue {
-		t.Errorf("Expected partition key %v, but got %v", pkValue, batchPkValue)
-	}
 }
 
 func TestTransactionalBatchReadItem(t *testing.T) {
@@ -64,13 +57,6 @@ func TestTransactionalBatchReadItem(t *testing.T) {
 
 	if asRead.operationType != "Read" {
 		t.Errorf("Expected operation type %v, but got %v", "Read", asRead.operationType)
-	}
-
-	pkValue, _ := asRead.partitionKey.toJsonString()
-	batchPkValue, _ := batch.partitionKey.toJsonString()
-
-	if pkValue != batchPkValue {
-		t.Errorf("Expected partition key %v, but got %v", pkValue, batchPkValue)
 	}
 
 	if asRead.id != itemId {
@@ -112,13 +98,6 @@ func TestTransactionalBatchUpsertItem(t *testing.T) {
 
 	if string(asUpsert.resourceBody) != string(itemMarshall) {
 		t.Errorf("Expected body %v, but got %v", string(itemMarshall), string(asUpsert.resourceBody))
-	}
-
-	pkValue, _ := asUpsert.partitionKey.toJsonString()
-	batchPkValue, _ := batch.partitionKey.toJsonString()
-
-	if pkValue != batchPkValue {
-		t.Errorf("Expected partition key %v, but got %v", pkValue, batchPkValue)
 	}
 }
 
@@ -162,13 +141,6 @@ func TestTransactionalBatchReplaceItem(t *testing.T) {
 	if string(asReplace.resourceBody) != string(itemMarshall) {
 		t.Errorf("Expected body %v, but got %v", string(itemMarshall), string(asReplace.resourceBody))
 	}
-
-	pkValue, _ := asReplace.partitionKey.toJsonString()
-	batchPkValue, _ := batch.partitionKey.toJsonString()
-
-	if pkValue != batchPkValue {
-		t.Errorf("Expected partition key %v, but got %v", pkValue, batchPkValue)
-	}
 }
 
 func TestTransactionalBatchDeleteItem(t *testing.T) {
@@ -192,13 +164,6 @@ func TestTransactionalBatchDeleteItem(t *testing.T) {
 
 	if asDelete.operationType != "Delete" {
 		t.Errorf("Expected operation type %v, but got %v", "Delete", asDelete.operationType)
-	}
-
-	pkValue, _ := asDelete.partitionKey.toJsonString()
-	batchPkValue, _ := batch.partitionKey.toJsonString()
-
-	if pkValue != batchPkValue {
-		t.Errorf("Expected partition key %v, but got %v", pkValue, batchPkValue)
 	}
 
 	if asDelete.ifMatch != options.IfMatchEtag {

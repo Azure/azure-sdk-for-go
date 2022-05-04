@@ -48,7 +48,7 @@ func TestPagerSinglePage(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2, 3, 4, 5]}`)))
 	pl := exported.NewPipeline(srv)
 
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -81,7 +81,7 @@ func TestPagerMultiplePages(t *testing.T) {
 	pl := exported.NewPipeline(srv)
 
 	pageCount := 0
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -124,7 +124,7 @@ func TestPagerLROMultiplePages(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [6, 7, 8]}`)))
 	pl := exported.NewPipeline(srv)
 
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -157,7 +157,7 @@ func TestPagerLROMultiplePages(t *testing.T) {
 }
 
 func TestPagerFetcherError(t *testing.T) {
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -178,7 +178,7 @@ func TestPagerPipelineError(t *testing.T) {
 	srv.SetError(errors.New("pipeline failed"))
 	pl := exported.NewPipeline(srv)
 
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -201,7 +201,7 @@ func TestPagerSecondPageError(t *testing.T) {
 	pl := exported.NewPipeline(srv)
 
 	pageCount := 0
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
@@ -242,7 +242,7 @@ func TestPagerResponderError(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`incorrect JSON response`)))
 	pl := exported.NewPipeline(srv)
 
-	pager := NewPager(PageProcessor[PageResponse]{
+	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},

@@ -106,9 +106,9 @@ func ExampleAddConfigurationSetting() {
     resp, err := client.AddSetting(
         context.TODO(),
         "key",
-        to.StringPtr("value"),
+        to.Ptr("value"),
         &azappconfig.AddSettingOptions{
-            Label: to.StringPtr("label"),
+            Label: to.Ptr("label"),
         })
 
     if err != nil {
@@ -144,7 +144,7 @@ func ExampleGetConfigurationSetting() {
         context.TODO(),
         "key"
         &azappconfig.GetSettingOptions{
-            Label: to.StringPtr("label")
+            Label: to.Ptr("label")
         })
 
     if err != nil {
@@ -179,9 +179,9 @@ func ExampleSetConfigurationSetting() {
     resp, err := client.SetSetting(
         context.TODO(),
         "key",
-        to.StringPtr("new_value"),
+        to.Ptr("new_value"),
         &azappconfig.SetSettingOptions{
-            Label: to.StringPtr("label"),
+            Label: to.Ptr("label"),
         })
 
     if err != nil {
@@ -218,7 +218,7 @@ func ExampleSetConfigurationSettingReadOnly() {
         "key",
         true,
         &azappconfig.SetReadOnlyOptions{
-            Label: to.StringPtr("label")
+            Label: to.Ptr("label")
         })
 
     if err != nil {
@@ -236,7 +236,7 @@ func ExampleSetConfigurationSettingReadOnly() {
         "key",
         false,
         &azappconfig.SetReadOnlyOptions{
-            Label: to.StringPtr("label")
+            Label: to.Ptr("label")
         })
 
     if err != nil {
@@ -270,8 +270,8 @@ func ExampleListRevisions() {
 
     revPgr := client.NewListRevisionsPager(
         azappconfig.SettingSelector{
-            KeyFilter: to.StringPtr("*"),
-            LabelFilter: to.StringPtr("*"),
+            KeyFilter: to.Ptr("*"),
+            LabelFilter: to.Ptr("*"),
             Fields: azappconfig.AllSettingFields()
         },
         nil)
@@ -312,7 +312,7 @@ func ExampleDeleteConfigurationSetting() {
         context.TODO(),
         "key",
         &azappconfig.DeleteSettingOptions{
-            Label: to.StringPtr("label")
+            Label: to.Ptr("label")
         })
 
     if err != nil {

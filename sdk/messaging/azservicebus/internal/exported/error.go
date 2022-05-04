@@ -31,7 +31,11 @@ type Error struct {
 
 // Error is an error message containing the code and a user friendly message, if any.
 func (e Error) Error() string {
-	return fmt.Sprintf("(%s): %s", e.Code, e.innerErr.Error())
+	msg := "unknown error"
+	if e.innerErr != nil {
+		msg = e.innerErr.Error()
+	}
+	return fmt.Sprintf("(%s): %s", e.Code, msg)
 }
 
 // Unwrap is implemented so this error can be used with errors.As()

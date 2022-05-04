@@ -11,16 +11,13 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"net"
 	"net/http"
-	"net/http/httputil"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 )
@@ -33,9 +30,9 @@ const (
 
 type (
 	EntityManager interface {
-		Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error)
-		Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error)
-		Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error)
+		Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error)
+		Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, options *ExecuteOptions) (*http.Response, error)
+		Delete(ctx context.Context, entityPath string) (*http.Response, error)
 		TokenProvider() auth.TokenProvider
 	}
 
@@ -43,9 +40,7 @@ type (
 	entityManager struct {
 		tokenProvider auth.TokenProvider
 		Host          string
-		mwStack       []MiddlewareFunc
-		version       string
-		retryOptions  exported.RetryOptions
+		pl            runtime.Pipeline
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -73,44 +68,6 @@ type (
 
 	// EntityStatus enumerates the values for entity status.
 	EntityStatus string
-
-	// MiddlewareFunc allows a consumer of the entity manager to inject handlers within the request / response pipeline
-	//
-	// The example below adds the atom xml content type to the request, calls the next middleware and returns the
-	// result.
-	//
-	// addAtomXMLContentType MiddlewareFunc = func(next RestHandler) RestHandler {
-	//		return func(ctx context.Context, req *http.Request) (res *http.Response, e error) {
-	//			if req.Method != http.MethodGet && req.Method != http.MethodHead {
-	//				req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
-	//			}
-	//			return next(ctx, req)
-	//		}
-	//	}
-	MiddlewareFunc func(next RestHandler) RestHandler
-
-	// RestHandler is used to transform a request and response within the http pipeline
-	RestHandler func(ctx context.Context, req *http.Request) (*http.Response, error)
-)
-
-var (
-	addAtomXMLContentType MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (res *http.Response, e error) {
-			if req.Method != http.MethodGet && req.Method != http.MethodHead {
-				req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
-			}
-			return next(ctx, req)
-		}
-	}
-
-	addAPIVersion201704 MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			q := req.URL.Query()
-			q.Add("api-version", "2017-04")
-			req.URL.RawQuery = q.Encode()
-			return next(ctx, req)
-		}
-	}
 )
 
 const (
@@ -141,7 +98,7 @@ func (m *ManagementError) String() string {
 // NewEntityManagerWithConnectionString creates an entity manager (a lower level HTTP client
 // for the ATOM endpoint). This is typically wrapped by an entity specific client (like
 // TopicManager, QueueManager or , SubscriptionManager).
-func NewEntityManagerWithConnectionString(connectionString string, version string) (EntityManager, error) {
+func NewEntityManagerWithConnectionString(connectionString string, version string, options *azcore.ClientOptions) (EntityManager, error) {
 	parsed, err := conn.ParsedConnectionFromStr(connectionString)
 
 	if err != nil {
@@ -154,36 +111,18 @@ func NewEntityManagerWithConnectionString(connectionString string, version strin
 		return nil, err
 	}
 
-	return &entityManager{
-		Host:          fmt.Sprintf("https://%s/", parsed.Namespace),
-		version:       version,
-		tokenProvider: provider,
-		mwStack: []MiddlewareFunc{
-			addAPIVersion201704,
-			addAtomXMLContentType,
-			addAuthorization(provider),
-		},
-	}, nil
+	return newEntityManagerImpl(provider, version, options, parsed.Namespace)
 }
 
 // NewEntityManager creates an entity manager using a TokenCredential.
-func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string, retryOptions exported.RetryOptions) (EntityManager, error) {
-	return &entityManager{
-		Host:          fmt.Sprintf("https://%s/", ns),
-		version:       version,
-		tokenProvider: sbauth.NewTokenProvider(tokenCredential),
-		mwStack: []MiddlewareFunc{
-			addAPIVersion201704,
-			addAtomXMLContentType,
-			addAuthorization(sbauth.NewTokenProvider(tokenCredential)),
-		},
-		retryOptions: retryOptions,
-	}, nil
+func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string, options *azcore.ClientOptions) (EntityManager, error) {
+	provider := sbauth.NewTokenProvider(tokenCredential)
+	return newEntityManagerImpl(provider, version, options, ns)
 }
 
 // Get performs an HTTP Get for a given entity path, deserializing the returned XML into `respObj`
-func (em *entityManager) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
-	resp, err := em.execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
+func (em *entityManager) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+	resp, err := em.execute(ctx, http.MethodGet, entityPath, http.NoBody, nil)
 	defer CloseRes(ctx, resp)
 
 	if err != nil {
@@ -194,14 +133,14 @@ func (em *entityManager) Get(ctx context.Context, entityPath string, respObj int
 }
 
 // Put performs an HTTP PUT for a given entity path and body, deserializing the returned XML into `respObj`
-func (em *entityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *entityManager) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, options *ExecuteOptions) (*http.Response, error) {
 	bodyBytes, err := xml.Marshal(body)
 
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := em.execute(ctx, http.MethodPut, entityPath, bytes.NewReader(bodyBytes), mw...)
+	resp, err := em.execute(ctx, http.MethodPut, entityPath, bytes.NewReader(bodyBytes), options)
 	defer CloseRes(ctx, resp)
 
 	if err != nil {
@@ -212,96 +151,46 @@ func (em *entityManager) Put(ctx context.Context, entityPath string, body interf
 }
 
 // Delete performs an HTTP DELETE for a given entity path
-func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
+func (em *entityManager) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
+	return em.execute(ctx, http.MethodDelete, entityPath, http.NoBody, nil)
 }
 
-func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
-	var finalResp *http.Response
+type ExecuteOptions struct {
+	ForwardTo           *string
+	ForwardToDeadLetter *string
+}
 
-	err := utils.Retry(ctx, exported.EventAdmin, fmt.Sprintf("%s %s", method, entityPath), func(ctx context.Context, args *utils.RetryFnArgs) error {
-		req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
-		if err != nil {
-			return err
-		}
+func (em *entityManager) execute(ctx context.Context, method string, entityPath string, body io.Reader, options *ExecuteOptions) (*http.Response, error) {
+	url := em.Host + strings.TrimPrefix(entityPath, "/")
 
-		final := func(_ RestHandler) RestHandler {
-			return func(reqCtx context.Context, request *http.Request) (*http.Response, error) {
-				client := &http.Client{
-					Timeout: 60 * time.Second,
-				}
-				request = request.WithContext(reqCtx)
-				return client.Do(request)
-			}
-		}
+	ctx = context.WithValue(ctx, ctxWithAuthKey{}, options)
 
-		mwStack := []MiddlewareFunc{final}
-		sl := len(em.mwStack) - 1
-		for i := sl; i >= 0; i-- {
-			mwStack = append(mwStack, em.mwStack[i])
-		}
-
-		for i := len(mw) - 1; i >= 0; i-- {
-			mwStack = append(mwStack, mw[i])
-		}
-
-		var h RestHandler
-		for _, mw := range mwStack {
-			h = mw(h)
-		}
-
-		resp, err := h(ctx, req)
-
-		if err == nil {
-			if resp.StatusCode >= http.StatusBadRequest {
-				return NewResponseError(resp)
-			}
-
-			finalResp = resp
-			return nil
-		}
-
-		if resp != nil {
-			return NewResponseError(resp)
-		}
-
-		return err
-	}, isFatalHTTPError, em.retryOptions)
+	req, err := runtime.NewRequest(ctx, method, url)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return finalResp, nil
-}
+	q := req.Raw().URL.Query()
+	q.Add("api-version", "2017-04")
+	req.Raw().URL.RawQuery = q.Encode()
 
-func isFatalHTTPError(err error) bool {
-	var netErr net.Error
-
-	if errors.As(err, &netErr) {
-		return false
+	if body != nil && body != http.NoBody {
+		req.Raw().Body = io.NopCloser(body)
+		req.Raw().Header.Add("Content-Type", "application/atom+xml;type=entry;charset=utf-8")
 	}
 
-	var respErr *azcore.ResponseError
+	resp, err := em.pl.Do(req)
 
-	// TODO: this is very much temporary. We need to move this over to the azcore HTTP stack.
-	if errors.As(err, &respErr) {
-		if respErr.StatusCode == http.StatusRequestTimeout || // 408
-			respErr.StatusCode == http.StatusTooManyRequests || // 429
-			respErr.StatusCode == http.StatusInternalServerError || // 500
-			respErr.StatusCode == http.StatusBadGateway || // 502
-			respErr.StatusCode == http.StatusServiceUnavailable || // 503
-			respErr.StatusCode == http.StatusGatewayTimeout { // 504	)
-			return false
-		}
+	if err != nil {
+		return nil, err
 	}
 
-	return true
-}
+	if resp.StatusCode >= http.StatusBadRequest {
+		return nil, runtime.NewResponseError(resp)
+	}
 
-// Use adds middleware to the middleware mwStack
-func (em *entityManager) Use(mw ...MiddlewareFunc) {
-	em.mwStack = append(em.mwStack, mw...)
+	return resp, nil
 }
 
 // TokenProvider generates authorization tokens for communicating with the Service Bus management API
@@ -317,69 +206,6 @@ func FormatManagementError(body []byte, origErr error) error {
 	}
 
 	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
-}
-
-func addAuthorization(tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			signature, err := tp.GetToken(req.URL.String())
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Add("Authorization", signature.Token)
-			return next(ctx, req)
-		}
-	}
-}
-
-func addSupplementalAuthorization(supplementalURI string, tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			signature, err := tp.GetToken(supplementalURI)
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Add("ServiceBusSupplementaryAuthorization", signature.Token)
-			return next(ctx, req)
-		}
-	}
-}
-
-func addDeadLetterSupplementalAuthorization(targetURI string, tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (response *http.Response, e error) {
-			signature, err := tp.GetToken(targetURI)
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Add("ServiceBusDlqSupplementaryAuthorization", signature.Token)
-			return next(ctx, req)
-		}
-	}
-}
-
-// TraceReqAndResponseMiddleware will print the dump of the management request and response.
-//
-// This should only be used for debugging or educational purposes.
-func TraceReqAndResponseMiddleware() MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			if dump, err := httputil.DumpRequest(req, true); err == nil {
-				fmt.Println(string(dump))
-			}
-
-			res, err := next(ctx, req)
-
-			if dump, err := httputil.DumpResponse(res, true); err == nil {
-				fmt.Println(string(dump))
-			}
-
-			return res, err
-		}
-	}
 }
 
 var ErrFeedEmpty = errors.New("entity does not exist")
@@ -413,4 +239,20 @@ func deserializeBody(resp *http.Response, respObj interface{}) (*http.Response, 
 	}
 
 	return resp, nil
+}
+
+func newEntityManagerImpl(provider *sbauth.TokenProvider, version string, options *policy.ClientOptions, ns string) (EntityManager, error) {
+	popts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{
+			&perRetryAuthPolicy{tp: provider},
+		},
+	}
+
+	pl := runtime.NewPipeline("azsbadmin", version, popts, options)
+
+	return &entityManager{
+		Host:          fmt.Sprintf("https://%s/", ns),
+		tokenProvider: provider,
+		pl:            pl,
+	}, nil
 }

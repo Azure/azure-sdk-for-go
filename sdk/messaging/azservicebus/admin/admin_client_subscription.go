@@ -338,20 +338,20 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 	}
 
 	env := newSubscriptionEnvelope(props, ac.em.TokenProvider())
-	var mw []atom.MiddlewareFunc
 
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
+	executeOpts := &atom.ExecuteOptions{
+		ForwardTo:           props.ForwardTo,
+		ForwardToDeadLetter: props.ForwardDeadLetteredMessagesTo,
+	}
+
 	var atomResp *atom.SubscriptionEnvelope
-	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s", topicName, subscriptionName), env, &atomResp, executeOpts)
 
 	if err != nil {
 		return nil, nil, err

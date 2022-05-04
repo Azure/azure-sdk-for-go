@@ -3,6 +3,7 @@
 ## 0.10.0 (Unreleased)
 
 ### Features Added
+* Added `temporal` package for handling of temporal resources.
 
 ### Breaking Changes
 * Removed logging constants from the `log` package.
@@ -10,6 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated build constraints and Go version to 1.18.
 
 ## 0.9.2 (2022-04-04)
 

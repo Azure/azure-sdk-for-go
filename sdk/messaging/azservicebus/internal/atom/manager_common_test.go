@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/require"
 )
 
@@ -37,13 +38,13 @@ func newFakeResponse(statusCode int, status string, contents string) *http.Respo
 
 func TestResponseError(t *testing.T) {
 	resp := newFakeResponse(http.StatusConflict, "statusString", "")
-	require.Contains(t, NewResponseError(resp).Error(), "statusString")
+	require.Contains(t, runtime.NewResponseError(resp).Error(), "statusString")
 
 	resp = newFakeResponse(http.StatusConflict, "statusString", "contents")
-	require.Contains(t, NewResponseError(resp).Error(), "statusString")
+	require.Contains(t, runtime.NewResponseError(resp).Error(), "statusString")
 
 	resp = newFakeResponse(http.StatusBadGateway, "statusString", "<Error><Code>401</Code><Detail>Manage,EntityRead claims required for this operation.</Detail></Error>")
-	err := NewResponseError(resp)
+	err := runtime.NewResponseError(resp)
 
 	re, ok := err.(*azcore.ResponseError)
 	require.True(t, ok)

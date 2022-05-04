@@ -187,7 +187,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	}
 
 	if resp.StatusCode >= http.StatusBadRequest {
-		return nil, NewResponseError(resp)
+		return nil, runtime.NewResponseError(resp)
 	}
 
 	return resp, nil

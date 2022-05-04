@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,10 +9,11 @@
 package azblob
 
 const (
-	module  = "azblob"
-	version = "v0.3.0"
+	moduleName    = "azblob"
+	moduleVersion = "v0.4.1"
 )
 
+// AccessTier enum
 type AccessTier string
 
 const (
@@ -57,6 +58,7 @@ func (c AccessTier) ToPtr() *AccessTier {
 	return &c
 }
 
+// AccountKind enum
 type AccountKind string
 
 const (
@@ -83,6 +85,7 @@ func (c AccountKind) ToPtr() *AccountKind {
 	return &c
 }
 
+// ArchiveStatus enum
 type ArchiveStatus string
 
 const (
@@ -103,6 +106,7 @@ func (c ArchiveStatus) ToPtr() *ArchiveStatus {
 	return &c
 }
 
+// BlobExpiryOptions enum
 type BlobExpiryOptions string
 
 const (
@@ -127,6 +131,53 @@ func (c BlobExpiryOptions) ToPtr() *BlobExpiryOptions {
 	return &c
 }
 
+// BlobGeoReplicationStatus - The status of the secondary location
+type BlobGeoReplicationStatus string
+
+const (
+	BlobGeoReplicationStatusLive        BlobGeoReplicationStatus = "live"
+	BlobGeoReplicationStatusBootstrap   BlobGeoReplicationStatus = "bootstrap"
+	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = "unavailable"
+)
+
+// PossibleBlobGeoReplicationStatusValues returns the possible values for the BlobGeoReplicationStatus const type.
+func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
+	return []BlobGeoReplicationStatus{
+		BlobGeoReplicationStatusLive,
+		BlobGeoReplicationStatusBootstrap,
+		BlobGeoReplicationStatusUnavailable,
+	}
+}
+
+// ToPtr returns a *BlobGeoReplicationStatus pointing to the current value.
+func (c BlobGeoReplicationStatus) ToPtr() *BlobGeoReplicationStatus {
+	return &c
+}
+
+// BlobImmutabilityPolicyMode enum
+type BlobImmutabilityPolicyMode string
+
+const (
+	BlobImmutabilityPolicyModeMutable  BlobImmutabilityPolicyMode = "Mutable"
+	BlobImmutabilityPolicyModeUnlocked BlobImmutabilityPolicyMode = "Unlocked"
+	BlobImmutabilityPolicyModeLocked   BlobImmutabilityPolicyMode = "Locked"
+)
+
+// PossibleBlobImmutabilityPolicyModeValues returns the possible values for the BlobImmutabilityPolicyMode const type.
+func PossibleBlobImmutabilityPolicyModeValues() []BlobImmutabilityPolicyMode {
+	return []BlobImmutabilityPolicyMode{
+		BlobImmutabilityPolicyModeMutable,
+		BlobImmutabilityPolicyModeUnlocked,
+		BlobImmutabilityPolicyModeLocked,
+	}
+}
+
+// ToPtr returns a *BlobImmutabilityPolicyMode pointing to the current value.
+func (c BlobImmutabilityPolicyMode) ToPtr() *BlobImmutabilityPolicyMode {
+	return &c
+}
+
+// BlobType enum
 type BlobType string
 
 const (
@@ -149,6 +200,7 @@ func (c BlobType) ToPtr() *BlobType {
 	return &c
 }
 
+// BlockListType enum
 type BlockListType string
 
 const (
@@ -171,6 +223,7 @@ func (c BlockListType) ToPtr() *BlockListType {
 	return &c
 }
 
+// CopyStatusType enum
 type CopyStatusType string
 
 const (
@@ -195,6 +248,7 @@ func (c CopyStatusType) ToPtr() *CopyStatusType {
 	return &c
 }
 
+// DeleteSnapshotsOptionType enum
 type DeleteSnapshotsOptionType string
 
 const (
@@ -215,29 +269,28 @@ func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
 	return &c
 }
 
-// GeoReplicationStatusType - The status of the secondary location
-type GeoReplicationStatusType string
+// EncryptionAlgorithmType enum
+type EncryptionAlgorithmType string
 
 const (
-	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
-	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = "None"
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{
-		GeoReplicationStatusTypeBootstrap,
-		GeoReplicationStatusTypeLive,
-		GeoReplicationStatusTypeUnavailable,
+// PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
+func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
+	return []EncryptionAlgorithmType{
+		EncryptionAlgorithmTypeNone,
+		EncryptionAlgorithmTypeAES256,
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
-func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
+// ToPtr returns a *EncryptionAlgorithmType pointing to the current value.
+func (c EncryptionAlgorithmType) ToPtr() *EncryptionAlgorithmType {
 	return &c
 }
 
+// LeaseDurationType enum
 type LeaseDurationType string
 
 const (
@@ -258,6 +311,7 @@ func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
+// LeaseStateType enum
 type LeaseStateType string
 
 const (
@@ -284,6 +338,7 @@ func (c LeaseStateType) ToPtr() *LeaseStateType {
 	return &c
 }
 
+// LeaseStatusType enum
 type LeaseStatusType string
 
 const (
@@ -304,16 +359,20 @@ func (c LeaseStatusType) ToPtr() *LeaseStatusType {
 	return &c
 }
 
+// ListBlobsIncludeItem enum
 type ListBlobsIncludeItem string
 
 const (
-	ListBlobsIncludeItemCopy             ListBlobsIncludeItem = "copy"
-	ListBlobsIncludeItemDeleted          ListBlobsIncludeItem = "deleted"
-	ListBlobsIncludeItemMetadata         ListBlobsIncludeItem = "metadata"
-	ListBlobsIncludeItemSnapshots        ListBlobsIncludeItem = "snapshots"
-	ListBlobsIncludeItemUncommittedblobs ListBlobsIncludeItem = "uncommittedblobs"
-	ListBlobsIncludeItemVersions         ListBlobsIncludeItem = "versions"
-	ListBlobsIncludeItemTags             ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemCopy                ListBlobsIncludeItem = "copy"
+	ListBlobsIncludeItemDeleted             ListBlobsIncludeItem = "deleted"
+	ListBlobsIncludeItemMetadata            ListBlobsIncludeItem = "metadata"
+	ListBlobsIncludeItemSnapshots           ListBlobsIncludeItem = "snapshots"
+	ListBlobsIncludeItemUncommittedblobs    ListBlobsIncludeItem = "uncommittedblobs"
+	ListBlobsIncludeItemVersions            ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemTags                ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemImmutabilitypolicy  ListBlobsIncludeItem = "immutabilitypolicy"
+	ListBlobsIncludeItemLegalhold           ListBlobsIncludeItem = "legalhold"
+	ListBlobsIncludeItemDeletedwithversions ListBlobsIncludeItem = "deletedwithversions"
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
@@ -326,6 +385,9 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 		ListBlobsIncludeItemUncommittedblobs,
 		ListBlobsIncludeItemVersions,
 		ListBlobsIncludeItemTags,
+		ListBlobsIncludeItemImmutabilitypolicy,
+		ListBlobsIncludeItemLegalhold,
+		ListBlobsIncludeItemDeletedwithversions,
 	}
 }
 
@@ -334,11 +396,13 @@ func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
 	return &c
 }
 
+// ListContainersIncludeType enum
 type ListContainersIncludeType string
 
 const (
 	ListContainersIncludeTypeMetadata ListContainersIncludeType = "metadata"
 	ListContainersIncludeTypeDeleted  ListContainersIncludeType = "deleted"
+	ListContainersIncludeTypeSystem   ListContainersIncludeType = "system"
 )
 
 // PossibleListContainersIncludeTypeValues returns the possible values for the ListContainersIncludeType const type.
@@ -346,6 +410,7 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	return []ListContainersIncludeType{
 		ListContainersIncludeTypeMetadata,
 		ListContainersIncludeTypeDeleted,
+		ListContainersIncludeTypeSystem,
 	}
 }
 
@@ -354,26 +419,7 @@ func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
 	return &c
 }
 
-type PathRenameMode string
-
-const (
-	PathRenameModeLegacy PathRenameMode = "legacy"
-	PathRenameModePosix  PathRenameMode = "posix"
-)
-
-// PossiblePathRenameModeValues returns the possible values for the PathRenameMode const type.
-func PossiblePathRenameModeValues() []PathRenameMode {
-	return []PathRenameMode{
-		PathRenameModeLegacy,
-		PathRenameModePosix,
-	}
-}
-
-// ToPtr returns a *PathRenameMode pointing to the current value.
-func (c PathRenameMode) ToPtr() *PathRenameMode {
-	return &c
-}
-
+// PremiumPageBlobAccessTier enum
 type PremiumPageBlobAccessTier string
 
 const (
@@ -412,6 +458,7 @@ func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
 	return &c
 }
 
+// PublicAccessType enum
 type PublicAccessType string
 
 const (
@@ -438,6 +485,8 @@ type QueryFormatType string
 const (
 	QueryFormatTypeDelimited QueryFormatType = "delimited"
 	QueryFormatTypeJSON      QueryFormatType = "json"
+	QueryFormatTypeArrow     QueryFormatType = "arrow"
+	QueryFormatTypeParquet   QueryFormatType = "parquet"
 )
 
 // PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
@@ -445,6 +494,8 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	return []QueryFormatType{
 		QueryFormatTypeDelimited,
 		QueryFormatTypeJSON,
+		QueryFormatTypeArrow,
+		QueryFormatTypeParquet,
 	}
 }
 
@@ -453,7 +504,8 @@ func (c QueryFormatType) ToPtr() *QueryFormatType {
 	return &c
 }
 
-// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High and Standard.
+// RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
+// Valid values are High and Standard.
 type RehydratePriority string
 
 const (
@@ -474,6 +526,7 @@ func (c RehydratePriority) ToPtr() *RehydratePriority {
 	return &c
 }
 
+// SKUName enum
 type SKUName string
 
 const (
@@ -500,6 +553,7 @@ func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
 
+// SequenceNumberActionType enum
 type SequenceNumberActionType string
 
 const (
@@ -628,8 +682,8 @@ const (
 	StorageErrorCodeSequenceNumberConditionNotMet                     StorageErrorCode = "SequenceNumberConditionNotMet"
 	StorageErrorCodeSequenceNumberIncrementTooLarge                   StorageErrorCode = "SequenceNumberIncrementTooLarge"
 	StorageErrorCodeServerBusy                                        StorageErrorCode = "ServerBusy"
-	StorageErrorCodeSnaphotOperationRateExceeded                      StorageErrorCode = "SnaphotOperationRateExceeded"
 	StorageErrorCodeSnapshotCountExceeded                             StorageErrorCode = "SnapshotCountExceeded"
+	StorageErrorCodeSnapshotOperationRateExceeded                     StorageErrorCode = "SnapshotOperationRateExceeded"
 	StorageErrorCodeSnapshotsPresent                                  StorageErrorCode = "SnapshotsPresent"
 	StorageErrorCodeSourceConditionNotMet                             StorageErrorCode = "SourceConditionNotMet"
 	StorageErrorCodeSystemInUse                                       StorageErrorCode = "SystemInUse"
@@ -746,8 +800,8 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeSequenceNumberConditionNotMet,
 		StorageErrorCodeSequenceNumberIncrementTooLarge,
 		StorageErrorCodeServerBusy,
-		StorageErrorCodeSnaphotOperationRateExceeded,
 		StorageErrorCodeSnapshotCountExceeded,
+		StorageErrorCodeSnapshotOperationRateExceeded,
 		StorageErrorCodeSnapshotsPresent,
 		StorageErrorCodeSourceConditionNotMet,
 		StorageErrorCodeSystemInUse,
@@ -762,5 +816,26 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 
 // ToPtr returns a *StorageErrorCode pointing to the current value.
 func (c StorageErrorCode) ToPtr() *StorageErrorCode {
+	return &c
+}
+
+// BlobDeleteType enum
+type BlobDeleteType string
+
+const (
+	BlobDeleteTypeNone      BlobDeleteType = "None"
+	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
+)
+
+// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
+func PossibleBlobDeleteTypeValues() []BlobDeleteType {
+	return []BlobDeleteType{
+		BlobDeleteTypeNone,
+		BlobDeleteTypePermanent,
+	}
+}
+
+// ToPtr returns a *BlobDeleteType pointing to the current value.
+func (c BlobDeleteType) ToPtr() *BlobDeleteType {
 	return &c
 }

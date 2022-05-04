@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,11 +8,7 @@
 
 package armmanagedservices
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
+import "time"
 
 // Authorization - The Azure Active Directory principal identifier and Azure built-in role that describes the access the principal
 // will receive on the delegated resource in the managed tenant.
@@ -31,16 +27,6 @@ type Authorization struct {
 
 	// The display name of the Azure Active Directory principal.
 	PrincipalIDDisplayName *string `json:"principalIdDisplayName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Authorization.
-func (a Authorization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "delegatedRoleDefinitionIds", a.DelegatedRoleDefinitionIDs)
-	populate(objectMap, "principalId", a.PrincipalID)
-	populate(objectMap, "principalIdDisplayName", a.PrincipalIDDisplayName)
-	populate(objectMap, "roleDefinitionId", a.RoleDefinitionID)
-	return json.Marshal(objectMap)
 }
 
 // EligibleApprover - Defines the Azure Active Directory principal that can approve any just-in-time access requests by the
@@ -83,15 +69,6 @@ type ErrorDefinition struct {
 	Details []*ErrorDefinition `json:"details,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Error response.
 type ErrorResponse struct {
 	// The error details.
@@ -108,15 +85,6 @@ type JustInTimeAccessPolicy struct {
 
 	// The maximum access duration in ISO 8601 format for just-in-time access requests.
 	MaximumActivationDuration *string `json:"maximumActivationDuration,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JustInTimeAccessPolicy.
-func (j JustInTimeAccessPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "managedByTenantApprovers", j.ManagedByTenantApprovers)
-	populate(objectMap, "maximumActivationDuration", j.MaximumActivationDuration)
-	populate(objectMap, "multiFactorAuthProvider", j.MultiFactorAuthProvider)
-	return json.Marshal(objectMap)
 }
 
 type MarketplaceRegistrationDefinition struct {
@@ -145,14 +113,6 @@ type MarketplaceRegistrationDefinitionList struct {
 	Value []*MarketplaceRegistrationDefinition `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MarketplaceRegistrationDefinitionList.
-func (m MarketplaceRegistrationDefinitionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarketplaceRegistrationDefinitionProperties - The properties of the marketplace registration definition.
 type MarketplaceRegistrationDefinitionProperties struct {
 	// REQUIRED; The collection of authorization objects describing the access Azure Active Directory principals in the managedBy
@@ -177,18 +137,6 @@ type MarketplaceRegistrationDefinitionProperties struct {
 	PublisherDisplayName *string `json:"publisherDisplayName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MarketplaceRegistrationDefinitionProperties.
-func (m MarketplaceRegistrationDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizations", m.Authorizations)
-	populate(objectMap, "eligibleAuthorizations", m.EligibleAuthorizations)
-	populate(objectMap, "managedByTenantId", m.ManagedByTenantID)
-	populate(objectMap, "offerDisplayName", m.OfferDisplayName)
-	populate(objectMap, "planDisplayName", m.PlanDisplayName)
-	populate(objectMap, "publisherDisplayName", m.PublisherDisplayName)
-	return json.Marshal(objectMap)
-}
-
 // MarketplaceRegistrationDefinitionsClientGetOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.Get
 // method.
 type MarketplaceRegistrationDefinitionsClientGetOptions struct {
@@ -198,7 +146,7 @@ type MarketplaceRegistrationDefinitionsClientGetOptions struct {
 // MarketplaceRegistrationDefinitionsClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsClient.List
 // method.
 type MarketplaceRegistrationDefinitionsClientListOptions struct {
-	// The filter query parameter to filter marketplace registration definitions by plan identifier, publisher, version etc.
+	// The filter query parameter to filter managed services resources by.
 	Filter *string
 }
 
@@ -211,7 +159,7 @@ type MarketplaceRegistrationDefinitionsWithoutScopeClientGetOptions struct {
 // MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions contains the optional parameters for the MarketplaceRegistrationDefinitionsWithoutScopeClient.List
 // method.
 type MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions struct {
-	// The filter query parameter to filter marketplace registration definitions by plan identifier, publisher, version etc.
+	// The filter query parameter to filter managed services resources by.
 	Filter *string
 }
 
@@ -245,15 +193,13 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationsWithScopeClientListOptions contains the optional parameters for the OperationsWithScopeClient.List method.
+type OperationsWithScopeClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -283,6 +229,9 @@ type RegistrationAssignment struct {
 	// READ-ONLY; The name of the registration assignment.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; The metadata for the registration assignment resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the Azure resource (Microsoft.ManagedServices/registrationAssignments).
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -294,14 +243,6 @@ type RegistrationAssignmentList struct {
 
 	// READ-ONLY; The list of registration assignments.
 	Value []*RegistrationAssignment `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistrationAssignmentList.
-func (r RegistrationAssignmentList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegistrationAssignmentProperties - The properties of the registration assignment.
@@ -329,6 +270,9 @@ type RegistrationAssignmentPropertiesRegistrationDefinition struct {
 
 	// READ-ONLY; The name of the registration definition.
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The metadata for the registration definition resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the Azure resource (Microsoft.ManagedServices/registrationDefinitions).
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -368,31 +312,18 @@ type RegistrationAssignmentPropertiesRegistrationDefinitionProperties struct {
 	RegistrationDefinitionName *string `json:"registrationDefinitionName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegistrationAssignmentPropertiesRegistrationDefinitionProperties.
-func (r RegistrationAssignmentPropertiesRegistrationDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizations", r.Authorizations)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "eligibleAuthorizations", r.EligibleAuthorizations)
-	populate(objectMap, "managedByTenantId", r.ManagedByTenantID)
-	populate(objectMap, "managedByTenantName", r.ManagedByTenantName)
-	populate(objectMap, "manageeTenantId", r.ManageeTenantID)
-	populate(objectMap, "manageeTenantName", r.ManageeTenantName)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "registrationDefinitionName", r.RegistrationDefinitionName)
-	return json.Marshal(objectMap)
-}
-
 // RegistrationAssignmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginCreateOrUpdate
 // method.
 type RegistrationAssignmentsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistrationAssignmentsClientBeginDeleteOptions contains the optional parameters for the RegistrationAssignmentsClient.BeginDelete
 // method.
 type RegistrationAssignmentsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistrationAssignmentsClientGetOptions contains the optional parameters for the RegistrationAssignmentsClient.Get method.
@@ -405,6 +336,8 @@ type RegistrationAssignmentsClientGetOptions struct {
 type RegistrationAssignmentsClientListOptions struct {
 	// The flag indicating whether to return the registration definition details along with the registration assignment details.
 	ExpandRegistrationDefinition *bool
+	// The filter query parameter to filter managed services resources by.
+	Filter *string
 }
 
 // RegistrationDefinition - The registration definition.
@@ -421,6 +354,9 @@ type RegistrationDefinition struct {
 	// READ-ONLY; The name of the registration definition.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; The metadata for the registration assignment resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the Azure resource (Microsoft.ManagedServices/registrationDefinitions).
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -432,14 +368,6 @@ type RegistrationDefinitionList struct {
 
 	// READ-ONLY; The list of registration definitions.
 	Value []*RegistrationDefinition `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistrationDefinitionList.
-func (r RegistrationDefinitionList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegistrationDefinitionProperties - The properties of a registration definition.
@@ -475,25 +403,11 @@ type RegistrationDefinitionProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegistrationDefinitionProperties.
-func (r RegistrationDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "authorizations", r.Authorizations)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "eligibleAuthorizations", r.EligibleAuthorizations)
-	populate(objectMap, "managedByTenantId", r.ManagedByTenantID)
-	populate(objectMap, "managedByTenantName", r.ManagedByTenantName)
-	populate(objectMap, "manageeTenantId", r.ManageeTenantID)
-	populate(objectMap, "manageeTenantName", r.ManageeTenantName)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "registrationDefinitionName", r.RegistrationDefinitionName)
-	return json.Marshal(objectMap)
-}
-
 // RegistrationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the RegistrationDefinitionsClient.BeginCreateOrUpdate
 // method.
 type RegistrationDefinitionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistrationDefinitionsClientDeleteOptions contains the optional parameters for the RegistrationDefinitionsClient.Delete
@@ -509,15 +423,27 @@ type RegistrationDefinitionsClientGetOptions struct {
 
 // RegistrationDefinitionsClientListOptions contains the optional parameters for the RegistrationDefinitionsClient.List method.
 type RegistrationDefinitionsClientListOptions struct {
-	// placeholder for future optional parameters
+	// The filter query parameter to filter managed services resources by.
+	Filter *string
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }

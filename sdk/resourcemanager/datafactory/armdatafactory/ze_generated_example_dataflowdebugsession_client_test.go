@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,97 +19,106 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
 )
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
 func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreate(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.CreateDataFlowDebugSessionRequest{
 			IntegrationRuntime: &armdatafactory.IntegrationRuntimeDebugResource{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 				Properties: &armdatafactory.ManagedIntegrationRuntime{
-					Type: armdatafactory.IntegrationRuntimeType("Managed").ToPtr(),
+					Type: to.Ptr(armdatafactory.IntegrationRuntimeTypeManaged),
 					TypeProperties: &armdatafactory.ManagedIntegrationRuntimeTypeProperties{
 						ComputeProperties: &armdatafactory.IntegrationRuntimeComputeProperties{
 							DataFlowProperties: &armdatafactory.IntegrationRuntimeDataFlowProperties{
-								ComputeType: armdatafactory.DataFlowComputeType("General").ToPtr(),
-								CoreCount:   to.Int32Ptr(48),
-								TimeToLive:  to.Int32Ptr(10),
+								ComputeType: to.Ptr(armdatafactory.DataFlowComputeTypeGeneral),
+								CoreCount:   to.Ptr[int32](48),
+								TimeToLive:  to.Ptr[int32](10),
 							},
-							Location: to.StringPtr("<location>"),
+							Location: to.Ptr("<location>"),
 						},
 					},
 				},
 			},
-			TimeToLive: to.Int32Ptr(60),
+			TimeToLive: to.Ptr[int32](60),
 		},
-		nil)
+		&armdatafactory.DataFlowDebugSessionClientBeginCreateOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientCreateResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
-func ExampleDataFlowDebugSessionClient_QueryByFactory() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
+func ExampleDataFlowDebugSessionClient_NewQueryByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
-	pager := client.QueryByFactory("<resource-group-name>",
+	client, err := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewQueryByFactoryPager("<resource-group-name>",
 		"<factory-name>",
 		nil)
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
 func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.AddDataFlow(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.DataFlowDebugPackage{
 			DataFlow: &armdatafactory.DataFlowDebugResource{
-				Name: to.StringPtr("<name>"),
+				Name: to.Ptr("<name>"),
 				Properties: &armdatafactory.MappingDataFlow{
-					Type: to.StringPtr("<type>"),
+					Type: to.Ptr("<type>"),
 					TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
-						Script: to.StringPtr("<script>"),
+						Script: to.Ptr("<script>"),
 						Sinks:  []*armdatafactory.DataFlowSink{},
 						Sources: []*armdatafactory.DataFlowSource{
 							{
-								Name: to.StringPtr("<name>"),
+								Name: to.Ptr("<name>"),
 								Dataset: &armdatafactory.DatasetReference{
-									Type:          armdatafactory.DatasetReferenceType("DatasetReference").ToPtr(),
-									ReferenceName: to.StringPtr("<reference-name>"),
+									Type:          to.Ptr(armdatafactory.DatasetReferenceTypeDatasetReference),
+									ReferenceName: to.Ptr("<reference-name>"),
 								},
 							}},
 						Transformations: []*armdatafactory.Transformation{},
@@ -118,73 +127,29 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 			},
 			Datasets: []*armdatafactory.DatasetDebugResource{
 				{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 					Properties: &armdatafactory.DelimitedTextDataset{
-						Type: to.StringPtr("<type>"),
-						Schema: map[string]interface{}{
-							"0": map[string]interface{}{
+						Type: to.Ptr("<type>"),
+						Schema: []interface{}{
+							map[string]interface{}{
 								"type": "String",
 							},
 						},
-						Annotations: []map[string]interface{}{},
+						Annotations: []interface{}{},
 						LinkedServiceName: &armdatafactory.LinkedServiceReference{
-							Type:          armdatafactory.LinkedServiceReferenceType("LinkedServiceReference").ToPtr(),
-							ReferenceName: to.StringPtr("<reference-name>"),
+							Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
+							ReferenceName: to.Ptr("<reference-name>"),
 						},
 						TypeProperties: &armdatafactory.DelimitedTextDatasetTypeProperties{
-							ColumnDelimiter: map[string]interface{}{
-								"0": ",",
-							},
-							EscapeChar: map[string]interface{}{
-								"0": "\\",
-							},
-							FirstRowAsHeader: map[string]interface{}{},
+							ColumnDelimiter:  ",",
+							EscapeChar:       "\\",
+							FirstRowAsHeader: true,
 							Location: &armdatafactory.AzureBlobStorageLocation{
-								Type: to.StringPtr("<type>"),
-								FileName: map[string]interface{}{
-									"0":  "A",
-									"1":  "n",
-									"2":  "s",
-									"3":  "i",
-									"4":  "e",
-									"5":  "n",
-									"6":  "c",
-									"7":  "o",
-									"8":  "d",
-									"9":  "i",
-									"10": "n",
-									"11": "g",
-									"12": ".",
-									"13": "c",
-									"14": "s",
-									"15": "v",
-								},
-								Container: map[string]interface{}{
-									"0":  "d",
-									"1":  "a",
-									"2":  "t",
-									"3":  "a",
-									"4":  "f",
-									"5":  "l",
-									"6":  "o",
-									"7":  "w",
-									"8":  "-",
-									"9":  "s",
-									"10": "a",
-									"11": "m",
-									"12": "p",
-									"13": "l",
-									"14": "e",
-									"15": "-",
-									"16": "d",
-									"17": "a",
-									"18": "t",
-									"19": "a",
-								},
+								Type:      to.Ptr("<type>"),
+								FileName:  "Ansiencoding.csv",
+								Container: "dataflow-sample-data",
 							},
-							QuoteChar: map[string]interface{}{
-								"0": "\"",
-							},
+							QuoteChar: "\"",
 						},
 					},
 				}},
@@ -197,180 +162,94 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 						"time": "def",
 					},
 				},
-				Parameters: map[string]map[string]interface{}{
-					"sourcePath": {
-						"0": "T",
-						"1": "o",
-						"2": "y",
-					},
+				Parameters: map[string]interface{}{
+					"sourcePath": "Toy",
 				},
 				SourceSettings: []*armdatafactory.DataFlowSourceSetting{
 					{
-						RowLimit:   to.Int32Ptr(1000),
-						SourceName: to.StringPtr("<source-name>"),
+						RowLimit:   to.Ptr[int32](1000),
+						SourceName: to.Ptr("<source-name>"),
 					},
 					{
-						RowLimit:   to.Int32Ptr(222),
-						SourceName: to.StringPtr("<source-name>"),
+						RowLimit:   to.Ptr[int32](222),
+						SourceName: to.Ptr("<source-name>"),
 					}},
 			},
 			LinkedServices: []*armdatafactory.LinkedServiceDebugResource{
 				{
-					Name: to.StringPtr("<name>"),
+					Name: to.Ptr("<name>"),
 					Properties: &armdatafactory.AzureBlobStorageLinkedService{
-						Type:        to.StringPtr("<type>"),
-						Annotations: []map[string]interface{}{},
+						Type:        to.Ptr("<type>"),
+						Annotations: []interface{}{},
 						TypeProperties: &armdatafactory.AzureBlobStorageLinkedServiceTypeProperties{
-							ConnectionString: map[string]interface{}{
-								"0":  "D",
-								"1":  "e",
-								"2":  "f",
-								"3":  "a",
-								"4":  "u",
-								"5":  "l",
-								"6":  "t",
-								"7":  "E",
-								"8":  "n",
-								"9":  "d",
-								"10": "p",
-								"11": "o",
-								"12": "i",
-								"13": "n",
-								"14": "t",
-								"15": "s",
-								"16": "P",
-								"17": "r",
-								"18": "o",
-								"19": "t",
-								"20": "o",
-								"21": "c",
-								"22": "o",
-								"23": "l",
-								"24": "=",
-								"25": "h",
-								"26": "t",
-								"27": "t",
-								"28": "p",
-								"29": "s",
-								"30": ";",
-								"31": "A",
-								"32": "c",
-								"33": "c",
-								"34": "o",
-								"35": "u",
-								"36": "n",
-								"37": "t",
-								"38": "N",
-								"39": "a",
-								"40": "m",
-								"41": "e",
-								"42": "=",
-								"43": "<",
-								"44": "s",
-								"45": "t",
-								"46": "o",
-								"47": "r",
-								"48": "a",
-								"49": "g",
-								"50": "e",
-								"51": "N",
-								"52": "a",
-								"53": "m",
-								"54": "e",
-								"55": ">",
-								"56": ";",
-								"57": "E",
-								"58": "n",
-								"59": "d",
-								"60": "p",
-								"61": "o",
-								"62": "i",
-								"63": "n",
-								"64": "t",
-								"65": "S",
-								"66": "u",
-								"67": "f",
-								"68": "f",
-								"69": "i",
-								"70": "x",
-								"71": "=",
-								"72": "c",
-								"73": "o",
-								"74": "r",
-								"75": "e",
-								"76": ".",
-								"77": "w",
-								"78": "i",
-								"79": "n",
-								"80": "d",
-								"81": "o",
-								"82": "w",
-								"83": "s",
-								"84": ".",
-								"85": "n",
-								"86": "e",
-								"87": "t",
-								"88": ";",
-							},
-							EncryptedCredential: to.StringPtr("<encrypted-credential>"),
+							ConnectionString:    "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;",
+							EncryptedCredential: to.Ptr("<encrypted-credential>"),
 						},
 					},
 				}},
-			SessionID: to.StringPtr("<session-id>"),
+			SessionID: to.Ptr("<session-id>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientAddDataFlowResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
 func ExampleDataFlowDebugSessionClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.Delete(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.DeleteDataFlowDebugSessionRequest{
-			SessionID: to.StringPtr("<session-id>"),
+			SessionID: to.Ptr("<session-id>"),
 		},
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
 func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDataFlowDebugSessionClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginExecuteCommand(ctx,
 		"<resource-group-name>",
 		"<factory-name>",
 		armdatafactory.DataFlowDebugCommandRequest{
-			Command: armdatafactory.DataFlowDebugCommandType("executePreviewQuery").ToPtr(),
+			Command: to.Ptr(armdatafactory.DataFlowDebugCommandTypeExecutePreviewQuery),
 			CommandPayload: &armdatafactory.DataFlowDebugCommandPayload{
-				RowLimits:  to.Int32Ptr(100),
-				StreamName: to.StringPtr("<stream-name>"),
+				RowLimits:  to.Ptr[int32](100),
+				StreamName: to.Ptr("<stream-name>"),
 			},
-			SessionID: to.StringPtr("<session-id>"),
+			SessionID: to.Ptr("<session-id>"),
 		},
-		nil)
+		&armdatafactory.DataFlowDebugSessionClientBeginExecuteCommandOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.DataFlowDebugSessionClientExecuteCommandResult)
+	// TODO: use response item
+	_ = res
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,19 +29,23 @@ type PolicyClient struct {
 // NewPolicyClient creates a new instance of PolicyClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptions) *PolicyClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PolicyClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // AddUpdatePolicyForTenant - Create or Update Subscription tenant policy for user's tenant.
@@ -78,7 +83,7 @@ func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Co
 
 // addUpdatePolicyForTenantHandleResponse handles the AddUpdatePolicyForTenant response.
 func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Response) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
-	result := PolicyClientAddUpdatePolicyForTenantResponse{RawResponse: resp}
+	result := PolicyClientAddUpdatePolicyForTenantResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyResponse); err != nil {
 		return PolicyClientAddUpdatePolicyForTenantResponse{}, err
 	}
@@ -120,27 +125,43 @@ func (client *PolicyClient) getPolicyForTenantCreateRequest(ctx context.Context,
 
 // getPolicyForTenantHandleResponse handles the GetPolicyForTenant response.
 func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response) (PolicyClientGetPolicyForTenantResponse, error) {
-	result := PolicyClientGetPolicyForTenantResponse{RawResponse: resp}
+	result := PolicyClientGetPolicyForTenantResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyResponse); err != nil {
 		return PolicyClientGetPolicyForTenantResponse{}, err
 	}
 	return result, nil
 }
 
-// ListPolicyForTenant - Get the subscription tenant policy for the user's tenant.
+// NewListPolicyForTenantPager - Get the subscription tenant policy for the user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.ListPolicyForTenant
 // method.
-func (client *PolicyClient) ListPolicyForTenant(options *PolicyClientListPolicyForTenantOptions) *PolicyClientListPolicyForTenantPager {
-	return &PolicyClientListPolicyForTenantPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listPolicyForTenantCreateRequest(ctx, options)
+func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
+	return runtime.NewPager(runtime.PageProcessor[PolicyClientListPolicyForTenantResponse]{
+		More: func(page PolicyClientListPolicyForTenantResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp PolicyClientListPolicyForTenantResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.GetTenantPolicyListResponse.NextLink)
+		Fetcher: func(ctx context.Context, page *PolicyClientListPolicyForTenantResponse) (PolicyClientListPolicyForTenantResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listPolicyForTenantCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return PolicyClientListPolicyForTenantResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return PolicyClientListPolicyForTenantResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PolicyClientListPolicyForTenantResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listPolicyForTenantHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listPolicyForTenantCreateRequest creates the ListPolicyForTenant request.
@@ -159,7 +180,7 @@ func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context
 
 // listPolicyForTenantHandleResponse handles the ListPolicyForTenant response.
 func (client *PolicyClient) listPolicyForTenantHandleResponse(resp *http.Response) (PolicyClientListPolicyForTenantResponse, error) {
-	result := PolicyClientListPolicyForTenantResponse{RawResponse: resp}
+	result := PolicyClientListPolicyForTenantResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetTenantPolicyListResponse); err != nil {
 		return PolicyClientListPolicyForTenantResponse{}, err
 	}

@@ -1,5 +1,164 @@
 # CHANGELOG
 
+## `v63.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-03-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-08-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-03-02-preview/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2022-03-01/reservations`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+
+## `v63.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2022-04-02-preview/kubernetesconfiguration`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.3.0/services/preview/botservice/mgmt/2021-05-01-preview/botservice/CHANGELOG.md) |
+
+## `v63.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2020-10-01/authorization`
+- `github.com/Azure/azure-sdk-for-go/services/azureadexternalidentities/mgmt/2021-04-01/azureadexternalidentities`
+- `github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2022-01-01/redisenterprise`
+
+## `v63.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2022-03-01/cognitiveservices`
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-11-01/media`
+- `github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/activitylogs`
+- `github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2021-08-01/scheduledqueryrules`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/iotcentral/mgmt/2021-11-01-preview/iotcentral`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2016-03-01-preview/monitorlegacy`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-05-01-preview/diagnostics`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-05-01-preview/metrics`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-09-01-preview/datacollection`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-09-01/storage`
+
+## `v63.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-10-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-02-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/hardwaresecuritymodules/mgmt/2021-11-30/hardwaresecuritymodules`
+- `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2022-03-01/kubernetesconfiguration`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.0.0/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-03-30/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-06-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-09-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-12-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-03-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-06-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-08-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2015-05-01-preview/network=`
+
+## `v62.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2022-01-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2021-06-01/cdn`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-02-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi`
+- `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2022-01-01/storagecache`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2020-03-01/streamanalytics` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v62.3.0/services/streamanalytics/mgmt/2020-03-01/streamanalytics/CHANGELOG.md) |
+
+## `v62.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform`
+
+## `v62.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-12-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2021-11-01/healthcareapis`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-10-01-preview/appconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2021-06-01/redis`
+- `github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2020-05-01/resourcehealth`
+
+## `v62.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2022-02-01/kusto`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-12-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-11-15-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2021-06-01-preview/healthcareapis`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2021-11-01-preview/sqlvirtualmachine`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v62.0.0/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-11-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v62.0.0/services/compute/mgmt/2021-11-01/compute/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v62.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v61.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-01-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp`
+
+## `v61.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2022-01-02-preview/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2021-10-30-preview/datamigration`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-08-01/storage`
+
+## `v61.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2022-01-11-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2021-10-15/iothub`
+
 ## `v61.3.0`
 
 ### New Packages

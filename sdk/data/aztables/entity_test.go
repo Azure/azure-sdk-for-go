@@ -43,10 +43,11 @@ func TestAddBasicEntity(t *testing.T) {
 
 			queryString := "PartitionKey eq 'pk001'"
 			listOptions := ListEntitiesOptions{Filter: &queryString}
-			pager := client.List(&listOptions)
+			pager := client.NewListEntitiesPager(&listOptions)
 			count := 0
-			for pager.NextPage(ctx) {
-				resp := pager.PageResponse()
+			for pager.More() {
+				resp, err := pager.NextPage(ctx)
+				require.NoError(t, err)
 				for _, e := range resp.Entities {
 					err = json.Unmarshal(e, &receivedEntity)
 					require.NoError(t, err)

@@ -11,7 +11,7 @@ The `armcompute` module provides operations for working with Azure Compute.
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.16 or above
+- Go 1.18 or above
 
 ## Install the package
 
@@ -38,17 +38,30 @@ For more information on authentication, please see the documentation for `aziden
 Azure Compute modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, nil)
+client, err := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options = arm.ClientOptions{
-    Host: arm.AzureChina,
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
 }
-client := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
+client, err := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/availabilityset)
+- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/createVM)
+- [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/dedicated_host)
+- [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/disk)
+- [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/gallery)
+- [Proximity Placement Group](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/proximity)
+- [Snapshot](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/snapshot)
+- [Virtual Machine Scale Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/vmscaleset)
 
 ## Provide Feedback
 

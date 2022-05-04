@@ -9,11 +9,12 @@
 
 package automationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2020-01-13-preview/automation/automationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2021-06-22-preview/automation/automationapi"
 
 type AccountClientAPI = original.AccountClientAPI
 type ActivityClientAPI = original.ActivityClientAPI
 type AgentRegistrationInformationClientAPI = original.AgentRegistrationInformationClientAPI
+type BaseClientAPI = original.BaseClientAPI
 type CertificateClientAPI = original.CertificateClientAPI
 type ConnectionClientAPI = original.ConnectionClientAPI
 type ConnectionTypeClientAPI = original.ConnectionTypeClientAPI
@@ -25,6 +26,7 @@ type DscNodeClientAPI = original.DscNodeClientAPI
 type DscNodeConfigurationClientAPI = original.DscNodeConfigurationClientAPI
 type FieldsClientAPI = original.FieldsClientAPI
 type HybridRunbookWorkerGroupClientAPI = original.HybridRunbookWorkerGroupClientAPI
+type HybridRunbookWorkersClientAPI = original.HybridRunbookWorkersClientAPI
 type JobClientAPI = original.JobClientAPI
 type JobScheduleClientAPI = original.JobScheduleClientAPI
 type JobStreamClientAPI = original.JobStreamClientAPI

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ProactiveDetectionConfigurationsClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProactiveDetectionConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProactiveDetectionConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProactiveDetectionConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProactiveDetectionConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProactiveDetectionConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Get - Get the ProactiveDetection configuration for this configuration id.
@@ -103,7 +108,7 @@ func (client *ProactiveDetectionConfigurationsClient) getCreateRequest(ctx conte
 
 // getHandleResponse handles the Get response.
 func (client *ProactiveDetectionConfigurationsClient) getHandleResponse(resp *http.Response) (ProactiveDetectionConfigurationsClientGetResponse, error) {
-	result := ProactiveDetectionConfigurationsClientGetResponse{RawResponse: resp}
+	result := ProactiveDetectionConfigurationsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentProactiveDetectionConfiguration); err != nil {
 		return ProactiveDetectionConfigurationsClientGetResponse{}, err
 	}
@@ -159,7 +164,7 @@ func (client *ProactiveDetectionConfigurationsClient) listCreateRequest(ctx cont
 
 // listHandleResponse handles the List response.
 func (client *ProactiveDetectionConfigurationsClient) listHandleResponse(resp *http.Response) (ProactiveDetectionConfigurationsClientListResponse, error) {
-	result := ProactiveDetectionConfigurationsClientListResponse{RawResponse: resp}
+	result := ProactiveDetectionConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentProactiveDetectionConfigurationArray); err != nil {
 		return ProactiveDetectionConfigurationsClientListResponse{}, err
 	}
@@ -221,7 +226,7 @@ func (client *ProactiveDetectionConfigurationsClient) updateCreateRequest(ctx co
 
 // updateHandleResponse handles the Update response.
 func (client *ProactiveDetectionConfigurationsClient) updateHandleResponse(resp *http.Response) (ProactiveDetectionConfigurationsClientUpdateResponse, error) {
-	result := ProactiveDetectionConfigurationsClientUpdateResponse{RawResponse: resp}
+	result := ProactiveDetectionConfigurationsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentProactiveDetectionConfiguration); err != nil {
 		return ProactiveDetectionConfigurationsClientUpdateResponse{}, err
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armworkloadmonitor
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // ErrorDetails - Error details
 type ErrorDetails struct {
@@ -42,15 +37,6 @@ type ErrorResponseError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseError.
-func (e ErrorResponseError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
 // HealthMonitor - Information about the monitor’s current health status.
 type HealthMonitor struct {
 	// Properties of the monitor's health status.
@@ -75,14 +61,6 @@ type HealthMonitorList struct {
 	Value []*HealthMonitor `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HealthMonitorList.
-func (h HealthMonitorList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
 // HealthMonitorProperties - Properties of the monitor.
 type HealthMonitorProperties struct {
 	// Timestamp of the monitor's last health state change.
@@ -92,13 +70,13 @@ type HealthMonitorProperties struct {
 	EvaluationTimestamp *string `json:"evaluationTimestamp,omitempty"`
 
 	// Evidence validating the monitor's current health state.
-	Evidence map[string]interface{} `json:"evidence,omitempty"`
+	Evidence interface{} `json:"evidence,omitempty"`
 
 	// Timestamp of the monitor's last reported health state.
 	LastReportedTimestamp *string `json:"lastReportedTimestamp,omitempty"`
 
 	// The configuration settings at the time of the monitor's health evaluation.
-	MonitorConfiguration map[string]interface{} `json:"monitorConfiguration,omitempty"`
+	MonitorConfiguration interface{} `json:"monitorConfiguration,omitempty"`
 
 	// Human-readable name of the monitor.
 	MonitorName *string `json:"monitorName,omitempty"`
@@ -143,14 +121,6 @@ type HealthMonitorStateChangeList struct {
 	Value []*HealthMonitorStateChange `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HealthMonitorStateChangeList.
-func (h HealthMonitorStateChangeList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
 // HealthMonitorStateChangeProperties - Properties of the monitor.
 type HealthMonitorStateChangeProperties struct {
 	// Timestamp of the monitor's last health state change.
@@ -160,10 +130,10 @@ type HealthMonitorStateChangeProperties struct {
 	EvaluationTimestamp *string `json:"evaluationTimestamp,omitempty"`
 
 	// Evidence validating the monitor's current health state.
-	Evidence map[string]interface{} `json:"evidence,omitempty"`
+	Evidence interface{} `json:"evidence,omitempty"`
 
 	// The configuration settings at the time of the monitor's health evaluation.
-	MonitorConfiguration map[string]interface{} `json:"monitorConfiguration,omitempty"`
+	MonitorConfiguration interface{} `json:"monitorConfiguration,omitempty"`
 
 	// Human-readable name of the monitor.
 	MonitorName *string `json:"monitorName,omitempty"`
@@ -251,14 +221,6 @@ type OperationList struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -274,14 +236,4 @@ type Resource struct {
 
 	// READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armstoragesync
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // APIError - Error type
 type APIError struct {
@@ -24,7 +19,7 @@ type APIError struct {
 	Details *ErrorDetails `json:"details,omitempty"`
 
 	// Inner error details of the given entry.
-	InnerError *InnerErrorDetails `json:"innerError,omitempty"`
+	Innererror *InnerErrorDetails `json:"innererror,omitempty"`
 
 	// Error message of the given entry.
 	Message *string `json:"message,omitempty"`
@@ -73,6 +68,9 @@ type CloudEndpoint struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -81,13 +79,6 @@ type CloudEndpoint struct {
 type CloudEndpointArray struct {
 	// Collection of CloudEndpoint.
 	Value []*CloudEndpoint `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpointArray.
-func (c CloudEndpointArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // CloudEndpointChangeEnumerationActivity - Cloud endpoint change enumeration activity object
@@ -132,81 +123,6 @@ type CloudEndpointChangeEnumerationActivity struct {
 	TotalSizeBytes *int64 `json:"totalSizeBytes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpointChangeEnumerationActivity.
-func (c CloudEndpointChangeEnumerationActivity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "deletesProgressPercent", c.DeletesProgressPercent)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	populate(objectMap, "minutesRemaining", c.MinutesRemaining)
-	populate(objectMap, "operationState", c.OperationState)
-	populate(objectMap, "processedDirectoriesCount", c.ProcessedDirectoriesCount)
-	populate(objectMap, "processedFilesCount", c.ProcessedFilesCount)
-	populate(objectMap, "progressPercent", c.ProgressPercent)
-	populateTimeRFC3339(objectMap, "startedTimestamp", c.StartedTimestamp)
-	populate(objectMap, "statusCode", c.StatusCode)
-	populate(objectMap, "totalCountsState", c.TotalCountsState)
-	populate(objectMap, "totalDirectoriesCount", c.TotalDirectoriesCount)
-	populate(objectMap, "totalFilesCount", c.TotalFilesCount)
-	populate(objectMap, "totalSizeBytes", c.TotalSizeBytes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEndpointChangeEnumerationActivity.
-func (c *CloudEndpointChangeEnumerationActivity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "deletesProgressPercent":
-			err = unpopulate(val, &c.DeletesProgressPercent)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "minutesRemaining":
-			err = unpopulate(val, &c.MinutesRemaining)
-			delete(rawMsg, key)
-		case "operationState":
-			err = unpopulate(val, &c.OperationState)
-			delete(rawMsg, key)
-		case "processedDirectoriesCount":
-			err = unpopulate(val, &c.ProcessedDirectoriesCount)
-			delete(rawMsg, key)
-		case "processedFilesCount":
-			err = unpopulate(val, &c.ProcessedFilesCount)
-			delete(rawMsg, key)
-		case "progressPercent":
-			err = unpopulate(val, &c.ProgressPercent)
-			delete(rawMsg, key)
-		case "startedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.StartedTimestamp)
-			delete(rawMsg, key)
-		case "statusCode":
-			err = unpopulate(val, &c.StatusCode)
-			delete(rawMsg, key)
-		case "totalCountsState":
-			err = unpopulate(val, &c.TotalCountsState)
-			delete(rawMsg, key)
-		case "totalDirectoriesCount":
-			err = unpopulate(val, &c.TotalDirectoriesCount)
-			delete(rawMsg, key)
-		case "totalFilesCount":
-			err = unpopulate(val, &c.TotalFilesCount)
-			delete(rawMsg, key)
-		case "totalSizeBytes":
-			err = unpopulate(val, &c.TotalSizeBytes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudEndpointChangeEnumerationStatus - Cloud endpoint change enumeration status object
 type CloudEndpointChangeEnumerationStatus struct {
 	// READ-ONLY; Change enumeration activity
@@ -219,41 +135,6 @@ type CloudEndpointChangeEnumerationStatus struct {
 	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpointChangeEnumerationStatus.
-func (c CloudEndpointChangeEnumerationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activity", c.Activity)
-	populate(objectMap, "lastEnumerationStatus", c.LastEnumerationStatus)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEndpointChangeEnumerationStatus.
-func (c *CloudEndpointChangeEnumerationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activity":
-			err = unpopulate(val, &c.Activity)
-			delete(rawMsg, key)
-		case "lastEnumerationStatus":
-			err = unpopulate(val, &c.LastEnumerationStatus)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudEndpointCreateParameters - The parameters used when creating a cloud endpoint.
 type CloudEndpointCreateParameters struct {
 	// The parameters used to create the cloud endpoint.
@@ -264,6 +145,9 @@ type CloudEndpointCreateParameters struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -305,53 +189,6 @@ type CloudEndpointLastChangeEnumerationStatus struct {
 	StartedTimestamp *time.Time `json:"startedTimestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudEndpointLastChangeEnumerationStatus.
-func (c CloudEndpointLastChangeEnumerationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "completedTimestamp", c.CompletedTimestamp)
-	populate(objectMap, "namespaceDirectoriesCount", c.NamespaceDirectoriesCount)
-	populate(objectMap, "namespaceFilesCount", c.NamespaceFilesCount)
-	populate(objectMap, "namespaceSizeBytes", c.NamespaceSizeBytes)
-	populateTimeRFC3339(objectMap, "nextRunTimestamp", c.NextRunTimestamp)
-	populateTimeRFC3339(objectMap, "startedTimestamp", c.StartedTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEndpointLastChangeEnumerationStatus.
-func (c *CloudEndpointLastChangeEnumerationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "completedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.CompletedTimestamp)
-			delete(rawMsg, key)
-		case "namespaceDirectoriesCount":
-			err = unpopulate(val, &c.NamespaceDirectoriesCount)
-			delete(rawMsg, key)
-		case "namespaceFilesCount":
-			err = unpopulate(val, &c.NamespaceFilesCount)
-			delete(rawMsg, key)
-		case "namespaceSizeBytes":
-			err = unpopulate(val, &c.NamespaceSizeBytes)
-			delete(rawMsg, key)
-		case "nextRunTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.NextRunTimestamp)
-			delete(rawMsg, key)
-		case "startedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.StartedTimestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudEndpointProperties - CloudEndpoint Properties object.
 type CloudEndpointProperties struct {
 	// Azure file share name
@@ -387,42 +224,49 @@ type CloudEndpointProperties struct {
 
 // CloudEndpointsClientBeginCreateOptions contains the optional parameters for the CloudEndpointsClient.BeginCreate method.
 type CloudEndpointsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginDeleteOptions contains the optional parameters for the CloudEndpointsClient.BeginDelete method.
 type CloudEndpointsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPostBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPostBackup
 // method.
 type CloudEndpointsClientBeginPostBackupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPostRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPostRestore
 // method.
 type CloudEndpointsClientBeginPostRestoreOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPreBackupOptions contains the optional parameters for the CloudEndpointsClient.BeginPreBackup
 // method.
 type CloudEndpointsClientBeginPreBackupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginPreRestoreOptions contains the optional parameters for the CloudEndpointsClient.BeginPreRestore
 // method.
 type CloudEndpointsClientBeginPreRestoreOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientBeginTriggerChangeDetectionOptions contains the optional parameters for the CloudEndpointsClient.BeginTriggerChangeDetection
 // method.
 type CloudEndpointsClientBeginTriggerChangeDetectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // CloudEndpointsClientGetOptions contains the optional parameters for the CloudEndpointsClient.Get method.
@@ -457,45 +301,6 @@ type CloudTieringCachePerformance struct {
 	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudTieringCachePerformance.
-func (c CloudTieringCachePerformance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cacheHitBytes", c.CacheHitBytes)
-	populate(objectMap, "cacheHitBytesPercent", c.CacheHitBytesPercent)
-	populate(objectMap, "cacheMissBytes", c.CacheMissBytes)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTieringCachePerformance.
-func (c *CloudTieringCachePerformance) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cacheHitBytes":
-			err = unpopulate(val, &c.CacheHitBytes)
-			delete(rawMsg, key)
-		case "cacheHitBytesPercent":
-			err = unpopulate(val, &c.CacheHitBytesPercent)
-			delete(rawMsg, key)
-		case "cacheMissBytes":
-			err = unpopulate(val, &c.CacheMissBytes)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudTieringDatePolicyStatus - Status of the date policy
 type CloudTieringDatePolicyStatus struct {
 	// READ-ONLY; Last updated timestamp
@@ -503,37 +308,6 @@ type CloudTieringDatePolicyStatus struct {
 
 	// READ-ONLY; Most recent access time of tiered files
 	TieredFilesMostRecentAccessTimestamp *time.Time `json:"tieredFilesMostRecentAccessTimestamp,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudTieringDatePolicyStatus.
-func (c CloudTieringDatePolicyStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	populateTimeRFC3339(objectMap, "tieredFilesMostRecentAccessTimestamp", c.TieredFilesMostRecentAccessTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTieringDatePolicyStatus.
-func (c *CloudTieringDatePolicyStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "tieredFilesMostRecentAccessTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.TieredFilesMostRecentAccessTimestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CloudTieringFilesNotTiering - Server endpoint cloud tiering status object.
@@ -546,41 +320,6 @@ type CloudTieringFilesNotTiering struct {
 
 	// READ-ONLY; Last cloud tiering result (HResult)
 	TotalFileCount *int64 `json:"totalFileCount,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudTieringFilesNotTiering.
-func (c CloudTieringFilesNotTiering) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errors", c.Errors)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	populate(objectMap, "totalFileCount", c.TotalFileCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTieringFilesNotTiering.
-func (c *CloudTieringFilesNotTiering) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "errors":
-			err = unpopulate(val, &c.Errors)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "totalFileCount":
-			err = unpopulate(val, &c.TotalFileCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CloudTieringSpaceSavings - Server endpoint cloud tiering status object.
@@ -604,53 +343,6 @@ type CloudTieringSpaceSavings struct {
 	VolumeSizeBytes *int64 `json:"volumeSizeBytes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CloudTieringSpaceSavings.
-func (c CloudTieringSpaceSavings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cachedSizeBytes", c.CachedSizeBytes)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	populate(objectMap, "spaceSavingsBytes", c.SpaceSavingsBytes)
-	populate(objectMap, "spaceSavingsPercent", c.SpaceSavingsPercent)
-	populate(objectMap, "totalSizeCloudBytes", c.TotalSizeCloudBytes)
-	populate(objectMap, "volumeSizeBytes", c.VolumeSizeBytes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTieringSpaceSavings.
-func (c *CloudTieringSpaceSavings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cachedSizeBytes":
-			err = unpopulate(val, &c.CachedSizeBytes)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "spaceSavingsBytes":
-			err = unpopulate(val, &c.SpaceSavingsBytes)
-			delete(rawMsg, key)
-		case "spaceSavingsPercent":
-			err = unpopulate(val, &c.SpaceSavingsPercent)
-			delete(rawMsg, key)
-		case "totalSizeCloudBytes":
-			err = unpopulate(val, &c.TotalSizeCloudBytes)
-			delete(rawMsg, key)
-		case "volumeSizeBytes":
-			err = unpopulate(val, &c.VolumeSizeBytes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CloudTieringVolumeFreeSpacePolicyStatus - Status of the volume free space policy
 type CloudTieringVolumeFreeSpacePolicyStatus struct {
 	// READ-ONLY; Current volume free space percentage.
@@ -661,41 +353,6 @@ type CloudTieringVolumeFreeSpacePolicyStatus struct {
 
 	// READ-ONLY; Last updated timestamp
 	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudTieringVolumeFreeSpacePolicyStatus.
-func (c CloudTieringVolumeFreeSpacePolicyStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "currentVolumeFreeSpacePercent", c.CurrentVolumeFreeSpacePercent)
-	populate(objectMap, "effectiveVolumeFreeSpacePolicy", c.EffectiveVolumeFreeSpacePolicy)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", c.LastUpdatedTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CloudTieringVolumeFreeSpacePolicyStatus.
-func (c *CloudTieringVolumeFreeSpacePolicyStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "currentVolumeFreeSpacePercent":
-			err = unpopulate(val, &c.CurrentVolumeFreeSpacePercent)
-			delete(rawMsg, key)
-		case "effectiveVolumeFreeSpacePolicy":
-			err = unpopulate(val, &c.EffectiveVolumeFreeSpacePolicy)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &c.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Error type
@@ -782,57 +439,6 @@ type LocationOperationStatus struct {
 	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LocationOperationStatus.
-func (l LocationOperationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", l.EndTime)
-	populate(objectMap, "error", l.Error)
-	populate(objectMap, "id", l.ID)
-	populate(objectMap, "name", l.Name)
-	populate(objectMap, "percentComplete", l.PercentComplete)
-	populateTimeRFC3339(objectMap, "startTime", l.StartTime)
-	populate(objectMap, "status", l.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LocationOperationStatus.
-func (l *LocationOperationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &l.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &l.Error)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &l.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &l.Name)
-			delete(rawMsg, key)
-		case "percentComplete":
-			err = unpopulate(val, &l.PercentComplete)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &l.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &l.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MicrosoftStorageSyncClientLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSyncClient.LocationOperationStatus
 // method.
 type MicrosoftStorageSyncClientLocationOperationStatusOptions struct {
@@ -893,14 +499,6 @@ type OperationEntityListResult struct {
 	Value []*OperationEntity `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationEntityListResult.
-func (o OperationEntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - Properties of the operations resource.
 type OperationProperties struct {
 	// Service specification for the operations resource.
@@ -927,21 +525,11 @@ type OperationResourceMetricSpecification struct {
 	// Name of the metric.
 	Name *string `json:"name,omitempty"`
 
+	// Supported aggregation types for the metric.
+	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+
 	// Unit for the metric.
 	Unit *string `json:"unit,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationResourceMetricSpecification.
-func (o OperationResourceMetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", o.AggregationType)
-	populate(objectMap, "dimensions", o.Dimensions)
-	populate(objectMap, "displayDescription", o.DisplayDescription)
-	populate(objectMap, "displayName", o.DisplayName)
-	populate(objectMap, "fillGapWithZero", o.FillGapWithZero)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "unit", o.Unit)
-	return json.Marshal(objectMap)
 }
 
 // OperationResourceMetricSpecificationDimension object.
@@ -962,13 +550,6 @@ type OperationResourceServiceSpecification struct {
 	MetricSpecifications []*OperationResourceMetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResourceServiceSpecification.
-func (o OperationResourceServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
 // OperationStatus - Operation status object
 type OperationStatus struct {
 	// READ-ONLY; End time of the operation
@@ -985,49 +566,6 @@ type OperationStatus struct {
 
 	// READ-ONLY; Operation status
 	Status *string `json:"status,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationStatus.
-func (o OperationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationStatus.
-func (o *OperationStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &o.Error)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &o.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
@@ -1079,20 +617,6 @@ type PostRestoreRequest struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PostRestoreRequest.
-func (p PostRestoreRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureFileShareUri", p.AzureFileShareURI)
-	populate(objectMap, "failedFileList", p.FailedFileList)
-	populate(objectMap, "partition", p.Partition)
-	populate(objectMap, "replicaGroup", p.ReplicaGroup)
-	populate(objectMap, "requestId", p.RequestID)
-	populate(objectMap, "restoreFileSpec", p.RestoreFileSpec)
-	populate(objectMap, "sourceAzureFileShareUri", p.SourceAzureFileShareURI)
-	populate(objectMap, "status", p.Status)
-	return json.Marshal(objectMap)
-}
-
 // PreRestoreRequest - Pre Restore request object.
 type PreRestoreRequest struct {
 	// Pre Restore Azure file share uri.
@@ -1123,21 +647,6 @@ type PreRestoreRequest struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PreRestoreRequest.
-func (p PreRestoreRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureFileShareUri", p.AzureFileShareURI)
-	populate(objectMap, "backupMetadataPropertyBag", p.BackupMetadataPropertyBag)
-	populate(objectMap, "partition", p.Partition)
-	populate(objectMap, "pauseWaitForSyncDrainTimePeriodInSeconds", p.PauseWaitForSyncDrainTimePeriodInSeconds)
-	populate(objectMap, "replicaGroup", p.ReplicaGroup)
-	populate(objectMap, "requestId", p.RequestID)
-	populate(objectMap, "restoreFileSpec", p.RestoreFileSpec)
-	populate(objectMap, "sourceAzureFileShareUri", p.SourceAzureFileShareURI)
-	populate(objectMap, "status", p.Status)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
@@ -1155,6 +664,9 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1163,13 +675,6 @@ type PrivateEndpointConnection struct {
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
@@ -1187,13 +692,15 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -1219,6 +726,9 @@ type PrivateLinkResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1227,13 +737,6 @@ type PrivateLinkResource struct {
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
 	Value []*PrivateLinkResource `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
@@ -1246,15 +749,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The private link resource required member names.
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByStorageSyncService
@@ -1285,6 +779,9 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1309,6 +806,9 @@ type RegisteredServer struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1317,13 +817,6 @@ type RegisteredServer struct {
 type RegisteredServerArray struct {
 	// Collection of Registered Server.
 	Value []*RegisteredServer `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegisteredServerArray.
-func (r RegisteredServerArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegisteredServerCreateParameters - The parameters used when creating a registered server.
@@ -1336,6 +829,9 @@ type RegisteredServerCreateParameters struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1443,137 +939,25 @@ type RegisteredServerProperties struct {
 	ServerName *string `json:"serverName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegisteredServerProperties.
-func (r RegisteredServerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentVersion", r.AgentVersion)
-	populateTimeRFC3339(objectMap, "agentVersionExpirationDate", r.AgentVersionExpirationDate)
-	populate(objectMap, "agentVersionStatus", r.AgentVersionStatus)
-	populate(objectMap, "clusterId", r.ClusterID)
-	populate(objectMap, "clusterName", r.ClusterName)
-	populate(objectMap, "discoveryEndpointUri", r.DiscoveryEndpointURI)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "lastHeartBeat", r.LastHeartBeat)
-	populate(objectMap, "lastOperationName", r.LastOperationName)
-	populate(objectMap, "lastWorkflowId", r.LastWorkflowID)
-	populate(objectMap, "managementEndpointUri", r.ManagementEndpointURI)
-	populate(objectMap, "monitoringConfiguration", r.MonitoringConfiguration)
-	populate(objectMap, "monitoringEndpointUri", r.MonitoringEndpointURI)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "resourceLocation", r.ResourceLocation)
-	populate(objectMap, "serverCertificate", r.ServerCertificate)
-	populate(objectMap, "serverId", r.ServerID)
-	populate(objectMap, "serverManagementErrorCode", r.ServerManagementErrorCode)
-	populate(objectMap, "serverName", r.ServerName)
-	populate(objectMap, "serverOSVersion", r.ServerOSVersion)
-	populate(objectMap, "serverRole", r.ServerRole)
-	populate(objectMap, "serviceLocation", r.ServiceLocation)
-	populate(objectMap, "storageSyncServiceUid", r.StorageSyncServiceUID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RegisteredServerProperties.
-func (r *RegisteredServerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentVersion":
-			err = unpopulate(val, &r.AgentVersion)
-			delete(rawMsg, key)
-		case "agentVersionExpirationDate":
-			err = unpopulateTimeRFC3339(val, &r.AgentVersionExpirationDate)
-			delete(rawMsg, key)
-		case "agentVersionStatus":
-			err = unpopulate(val, &r.AgentVersionStatus)
-			delete(rawMsg, key)
-		case "clusterId":
-			err = unpopulate(val, &r.ClusterID)
-			delete(rawMsg, key)
-		case "clusterName":
-			err = unpopulate(val, &r.ClusterName)
-			delete(rawMsg, key)
-		case "discoveryEndpointUri":
-			err = unpopulate(val, &r.DiscoveryEndpointURI)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "lastHeartBeat":
-			err = unpopulate(val, &r.LastHeartBeat)
-			delete(rawMsg, key)
-		case "lastOperationName":
-			err = unpopulate(val, &r.LastOperationName)
-			delete(rawMsg, key)
-		case "lastWorkflowId":
-			err = unpopulate(val, &r.LastWorkflowID)
-			delete(rawMsg, key)
-		case "managementEndpointUri":
-			err = unpopulate(val, &r.ManagementEndpointURI)
-			delete(rawMsg, key)
-		case "monitoringConfiguration":
-			err = unpopulate(val, &r.MonitoringConfiguration)
-			delete(rawMsg, key)
-		case "monitoringEndpointUri":
-			err = unpopulate(val, &r.MonitoringEndpointURI)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "resourceLocation":
-			err = unpopulate(val, &r.ResourceLocation)
-			delete(rawMsg, key)
-		case "serverCertificate":
-			err = unpopulate(val, &r.ServerCertificate)
-			delete(rawMsg, key)
-		case "serverId":
-			err = unpopulate(val, &r.ServerID)
-			delete(rawMsg, key)
-		case "serverManagementErrorCode":
-			err = unpopulate(val, &r.ServerManagementErrorCode)
-			delete(rawMsg, key)
-		case "serverName":
-			err = unpopulate(val, &r.ServerName)
-			delete(rawMsg, key)
-		case "serverOSVersion":
-			err = unpopulate(val, &r.ServerOSVersion)
-			delete(rawMsg, key)
-		case "serverRole":
-			err = unpopulate(val, &r.ServerRole)
-			delete(rawMsg, key)
-		case "serviceLocation":
-			err = unpopulate(val, &r.ServiceLocation)
-			delete(rawMsg, key)
-		case "storageSyncServiceUid":
-			err = unpopulate(val, &r.StorageSyncServiceUID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RegisteredServersClientBeginCreateOptions contains the optional parameters for the RegisteredServersClient.BeginCreate
 // method.
 type RegisteredServersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegisteredServersClientBeginDeleteOptions contains the optional parameters for the RegisteredServersClient.BeginDelete
 // method.
 type RegisteredServersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegisteredServersClientBeginTriggerRolloverOptions contains the optional parameters for the RegisteredServersClient.BeginTriggerRollover
 // method.
 type RegisteredServersClientBeginTriggerRolloverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegisteredServersClientGetOptions contains the optional parameters for the RegisteredServersClient.Get method.
@@ -1595,6 +979,9 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1606,14 +993,6 @@ type ResourcesMoveInfo struct {
 
 	// Target resource group.
 	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcesMoveInfo.
-func (r ResourcesMoveInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resources", r.Resources)
-	populate(objectMap, "targetResourceGroup", r.TargetResourceGroup)
-	return json.Marshal(objectMap)
 }
 
 // RestoreFileSpec - Restore file spec.
@@ -1636,6 +1015,9 @@ type ServerEndpoint struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1644,13 +1026,6 @@ type ServerEndpoint struct {
 type ServerEndpointArray struct {
 	// Collection of ServerEndpoint.
 	Value []*ServerEndpoint `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointArray.
-func (s ServerEndpointArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServerEndpointBackgroundDataDownloadActivity - Background data download activity object
@@ -1666,45 +1041,6 @@ type ServerEndpointBackgroundDataDownloadActivity struct {
 
 	// READ-ONLY; Timestamp when properties were updated
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointBackgroundDataDownloadActivity.
-func (s ServerEndpointBackgroundDataDownloadActivity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "downloadedBytes", s.DownloadedBytes)
-	populate(objectMap, "percentProgress", s.PercentProgress)
-	populateTimeRFC3339(objectMap, "startedTimestamp", s.StartedTimestamp)
-	populateTimeRFC3339(objectMap, "timestamp", s.Timestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointBackgroundDataDownloadActivity.
-func (s *ServerEndpointBackgroundDataDownloadActivity) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "downloadedBytes":
-			err = unpopulate(val, &s.DownloadedBytes)
-			delete(rawMsg, key)
-		case "percentProgress":
-			err = unpopulate(val, &s.PercentProgress)
-			delete(rawMsg, key)
-		case "startedTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.StartedTimestamp)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &s.Timestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ServerEndpointCloudTieringStatus - Server endpoint cloud tiering status object.
@@ -1740,69 +1076,6 @@ type ServerEndpointCloudTieringStatus struct {
 	VolumeFreeSpacePolicyStatus *CloudTieringVolumeFreeSpacePolicyStatus `json:"volumeFreeSpacePolicyStatus,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointCloudTieringStatus.
-func (s ServerEndpointCloudTieringStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cachePerformance", s.CachePerformance)
-	populate(objectMap, "datePolicyStatus", s.DatePolicyStatus)
-	populate(objectMap, "filesNotTiering", s.FilesNotTiering)
-	populate(objectMap, "health", s.Health)
-	populateTimeRFC3339(objectMap, "healthLastUpdatedTimestamp", s.HealthLastUpdatedTimestamp)
-	populate(objectMap, "lastCloudTieringResult", s.LastCloudTieringResult)
-	populateTimeRFC3339(objectMap, "lastSuccessTimestamp", s.LastSuccessTimestamp)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", s.LastUpdatedTimestamp)
-	populate(objectMap, "spaceSavings", s.SpaceSavings)
-	populate(objectMap, "volumeFreeSpacePolicyStatus", s.VolumeFreeSpacePolicyStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointCloudTieringStatus.
-func (s *ServerEndpointCloudTieringStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cachePerformance":
-			err = unpopulate(val, &s.CachePerformance)
-			delete(rawMsg, key)
-		case "datePolicyStatus":
-			err = unpopulate(val, &s.DatePolicyStatus)
-			delete(rawMsg, key)
-		case "filesNotTiering":
-			err = unpopulate(val, &s.FilesNotTiering)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &s.Health)
-			delete(rawMsg, key)
-		case "healthLastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.HealthLastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "lastCloudTieringResult":
-			err = unpopulate(val, &s.LastCloudTieringResult)
-			delete(rawMsg, key)
-		case "lastSuccessTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastSuccessTimestamp)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "spaceSavings":
-			err = unpopulate(val, &s.SpaceSavings)
-			delete(rawMsg, key)
-		case "volumeFreeSpacePolicyStatus":
-			err = unpopulate(val, &s.VolumeFreeSpacePolicyStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServerEndpointCreateParameters - The parameters used when creating a server endpoint.
 type ServerEndpointCreateParameters struct {
 	// The parameters used to create the server endpoint.
@@ -1813,6 +1086,9 @@ type ServerEndpointCreateParameters struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1950,41 +1226,6 @@ type ServerEndpointRecallStatus struct {
 	TotalRecallErrorsCount *int64 `json:"totalRecallErrorsCount,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointRecallStatus.
-func (s ServerEndpointRecallStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", s.LastUpdatedTimestamp)
-	populate(objectMap, "recallErrors", s.RecallErrors)
-	populate(objectMap, "totalRecallErrorsCount", s.TotalRecallErrorsCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointRecallStatus.
-func (s *ServerEndpointRecallStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "recallErrors":
-			err = unpopulate(val, &s.RecallErrors)
-			delete(rawMsg, key)
-		case "totalRecallErrorsCount":
-			err = unpopulate(val, &s.TotalRecallErrorsCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServerEndpointSyncActivityStatus - Sync Session status object.
 type ServerEndpointSyncActivityStatus struct {
 	// READ-ONLY; Applied bytes
@@ -2012,61 +1253,6 @@ type ServerEndpointSyncActivityStatus struct {
 	TotalItemCount *int64 `json:"totalItemCount,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointSyncActivityStatus.
-func (s ServerEndpointSyncActivityStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliedBytes", s.AppliedBytes)
-	populate(objectMap, "appliedItemCount", s.AppliedItemCount)
-	populate(objectMap, "perItemErrorCount", s.PerItemErrorCount)
-	populate(objectMap, "sessionMinutesRemaining", s.SessionMinutesRemaining)
-	populate(objectMap, "syncMode", s.SyncMode)
-	populateTimeRFC3339(objectMap, "timestamp", s.Timestamp)
-	populate(objectMap, "totalBytes", s.TotalBytes)
-	populate(objectMap, "totalItemCount", s.TotalItemCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointSyncActivityStatus.
-func (s *ServerEndpointSyncActivityStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appliedBytes":
-			err = unpopulate(val, &s.AppliedBytes)
-			delete(rawMsg, key)
-		case "appliedItemCount":
-			err = unpopulate(val, &s.AppliedItemCount)
-			delete(rawMsg, key)
-		case "perItemErrorCount":
-			err = unpopulate(val, &s.PerItemErrorCount)
-			delete(rawMsg, key)
-		case "sessionMinutesRemaining":
-			err = unpopulate(val, &s.SessionMinutesRemaining)
-			delete(rawMsg, key)
-		case "syncMode":
-			err = unpopulate(val, &s.SyncMode)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &s.Timestamp)
-			delete(rawMsg, key)
-		case "totalBytes":
-			err = unpopulate(val, &s.TotalBytes)
-			delete(rawMsg, key)
-		case "totalItemCount":
-			err = unpopulate(val, &s.TotalItemCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServerEndpointSyncSessionStatus - Sync Session status object.
 type ServerEndpointSyncSessionStatus struct {
 	// READ-ONLY; Array of per-item errors coming from the last sync session.
@@ -2092,61 +1278,6 @@ type ServerEndpointSyncSessionStatus struct {
 
 	// READ-ONLY; Count of transient files not syncing.
 	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointSyncSessionStatus.
-func (s ServerEndpointSyncSessionStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "filesNotSyncingErrors", s.FilesNotSyncingErrors)
-	populate(objectMap, "lastSyncMode", s.LastSyncMode)
-	populate(objectMap, "lastSyncPerItemErrorCount", s.LastSyncPerItemErrorCount)
-	populate(objectMap, "lastSyncResult", s.LastSyncResult)
-	populateTimeRFC3339(objectMap, "lastSyncSuccessTimestamp", s.LastSyncSuccessTimestamp)
-	populateTimeRFC3339(objectMap, "lastSyncTimestamp", s.LastSyncTimestamp)
-	populate(objectMap, "persistentFilesNotSyncingCount", s.PersistentFilesNotSyncingCount)
-	populate(objectMap, "transientFilesNotSyncingCount", s.TransientFilesNotSyncingCount)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointSyncSessionStatus.
-func (s *ServerEndpointSyncSessionStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "filesNotSyncingErrors":
-			err = unpopulate(val, &s.FilesNotSyncingErrors)
-			delete(rawMsg, key)
-		case "lastSyncMode":
-			err = unpopulate(val, &s.LastSyncMode)
-			delete(rawMsg, key)
-		case "lastSyncPerItemErrorCount":
-			err = unpopulate(val, &s.LastSyncPerItemErrorCount)
-			delete(rawMsg, key)
-		case "lastSyncResult":
-			err = unpopulate(val, &s.LastSyncResult)
-			delete(rawMsg, key)
-		case "lastSyncSuccessTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastSyncSuccessTimestamp)
-			delete(rawMsg, key)
-		case "lastSyncTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastSyncTimestamp)
-			delete(rawMsg, key)
-		case "persistentFilesNotSyncingCount":
-			err = unpopulate(val, &s.PersistentFilesNotSyncingCount)
-			delete(rawMsg, key)
-		case "transientFilesNotSyncingCount":
-			err = unpopulate(val, &s.TransientFilesNotSyncingCount)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ServerEndpointSyncStatus - Server Endpoint sync status
@@ -2188,88 +1319,10 @@ type ServerEndpointSyncStatus struct {
 	UploadStatus *ServerEndpointSyncSessionStatus `json:"uploadStatus,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointSyncStatus.
-func (s ServerEndpointSyncStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "backgroundDataDownloadActivity", s.BackgroundDataDownloadActivity)
-	populate(objectMap, "combinedHealth", s.CombinedHealth)
-	populate(objectMap, "downloadActivity", s.DownloadActivity)
-	populate(objectMap, "downloadHealth", s.DownloadHealth)
-	populate(objectMap, "downloadStatus", s.DownloadStatus)
-	populateTimeRFC3339(objectMap, "lastUpdatedTimestamp", s.LastUpdatedTimestamp)
-	populate(objectMap, "offlineDataTransferStatus", s.OfflineDataTransferStatus)
-	populate(objectMap, "syncActivity", s.SyncActivity)
-	populate(objectMap, "totalPersistentFilesNotSyncingCount", s.TotalPersistentFilesNotSyncingCount)
-	populate(objectMap, "uploadActivity", s.UploadActivity)
-	populate(objectMap, "uploadHealth", s.UploadHealth)
-	populate(objectMap, "uploadStatus", s.UploadStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServerEndpointSyncStatus.
-func (s *ServerEndpointSyncStatus) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "backgroundDataDownloadActivity":
-			err = unpopulate(val, &s.BackgroundDataDownloadActivity)
-			delete(rawMsg, key)
-		case "combinedHealth":
-			err = unpopulate(val, &s.CombinedHealth)
-			delete(rawMsg, key)
-		case "downloadActivity":
-			err = unpopulate(val, &s.DownloadActivity)
-			delete(rawMsg, key)
-		case "downloadHealth":
-			err = unpopulate(val, &s.DownloadHealth)
-			delete(rawMsg, key)
-		case "downloadStatus":
-			err = unpopulate(val, &s.DownloadStatus)
-			delete(rawMsg, key)
-		case "lastUpdatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &s.LastUpdatedTimestamp)
-			delete(rawMsg, key)
-		case "offlineDataTransferStatus":
-			err = unpopulate(val, &s.OfflineDataTransferStatus)
-			delete(rawMsg, key)
-		case "syncActivity":
-			err = unpopulate(val, &s.SyncActivity)
-			delete(rawMsg, key)
-		case "totalPersistentFilesNotSyncingCount":
-			err = unpopulate(val, &s.TotalPersistentFilesNotSyncingCount)
-			delete(rawMsg, key)
-		case "uploadActivity":
-			err = unpopulate(val, &s.UploadActivity)
-			delete(rawMsg, key)
-		case "uploadHealth":
-			err = unpopulate(val, &s.UploadHealth)
-			delete(rawMsg, key)
-		case "uploadStatus":
-			err = unpopulate(val, &s.UploadStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServerEndpointUpdateParameters - Parameters for updating an Server Endpoint.
 type ServerEndpointUpdateParameters struct {
 	// The properties of the server endpoint.
 	Properties *ServerEndpointUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServerEndpointUpdateParameters.
-func (s ServerEndpointUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
 }
 
 // ServerEndpointUpdateProperties - ServerEndpoint Update Properties object.
@@ -2295,24 +1348,29 @@ type ServerEndpointUpdateProperties struct {
 
 // ServerEndpointsClientBeginCreateOptions contains the optional parameters for the ServerEndpointsClient.BeginCreate method.
 type ServerEndpointsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServerEndpointsClientBeginDeleteOptions contains the optional parameters for the ServerEndpointsClient.BeginDelete method.
 type ServerEndpointsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServerEndpointsClientBeginRecallActionOptions contains the optional parameters for the ServerEndpointsClient.BeginRecallAction
 // method.
 type ServerEndpointsClientBeginRecallActionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServerEndpointsClientBeginUpdateOptions contains the optional parameters for the ServerEndpointsClient.BeginUpdate method.
 type ServerEndpointsClientBeginUpdateOptions struct {
 	// Any of the properties applicable in PUT request.
 	Parameters *ServerEndpointUpdateParameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServerEndpointsClientGetOptions contains the optional parameters for the ServerEndpointsClient.Get method.
@@ -2343,33 +1401,17 @@ type Service struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Service.
-func (s Service) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
 }
 
 // ServiceArray - Array of StorageSyncServices
 type ServiceArray struct {
 	// Collection of StorageSyncServices.
 	Value []*Service `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceArray.
-func (s ServiceArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // ServiceCreateParameters - The parameters used when creating a storage sync service.
@@ -2387,15 +1429,6 @@ type ServiceCreateParameters struct {
 	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
 	// 256 characters.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceCreateParameters.
-func (s ServiceCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", s.Location)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ServiceCreateParametersProperties - StorageSyncService Properties object.
@@ -2428,19 +1461,6 @@ type ServiceProperties struct {
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceProperties.
-func (s ServiceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "incomingTrafficPolicy", s.IncomingTrafficPolicy)
-	populate(objectMap, "lastOperationName", s.LastOperationName)
-	populate(objectMap, "lastWorkflowId", s.LastWorkflowID)
-	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", s.ProvisioningState)
-	populate(objectMap, "storageSyncServiceStatus", s.StorageSyncServiceStatus)
-	populate(objectMap, "storageSyncServiceUid", s.StorageSyncServiceUID)
-	return json.Marshal(objectMap)
-}
-
 // ServiceUpdateParameters - Parameters for updating an Storage sync service.
 type ServiceUpdateParameters struct {
 	// The properties of the server endpoint.
@@ -2448,14 +1468,6 @@ type ServiceUpdateParameters struct {
 
 	// The user-specified tags associated with the storage sync service.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceUpdateParameters.
-func (s ServiceUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
 }
 
 // ServiceUpdateProperties - StorageSyncService Properties object.
@@ -2466,18 +1478,22 @@ type ServiceUpdateProperties struct {
 
 // ServicesClientBeginCreateOptions contains the optional parameters for the ServicesClient.BeginCreate method.
 type ServicesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
 type ServicesClientBeginUpdateOptions struct {
 	// Storage Sync Service resource.
 	Parameters *ServiceUpdateParameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -2504,7 +1520,7 @@ type ServicesClientListBySubscriptionOptions struct {
 // SubscriptionState - Subscription State object.
 type SubscriptionState struct {
 	// Subscription state properties.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// State of Azure Subscription
 	State *Reason `json:"state,omitempty"`
@@ -2524,6 +1540,9 @@ type SyncGroup struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -2534,23 +1553,19 @@ type SyncGroupArray struct {
 	Value []*SyncGroup `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SyncGroupArray.
-func (s SyncGroupArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SyncGroupCreateParameters - The parameters used when creating a sync group.
 type SyncGroupCreateParameters struct {
 	// The parameters used to create the sync group
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -2586,6 +1601,27 @@ type SyncGroupsClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -2601,19 +1637,11 @@ type TrackedResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
 }
 
 // TriggerChangeDetectionParameters - The parameters used when calling trigger change detection action on cloud endpoint.
@@ -2626,15 +1654,6 @@ type TriggerChangeDetectionParameters struct {
 
 	// Array of relative paths on the Azure File share to be included in the change detection. Can be files and directories.
 	Paths []*string `json:"paths,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TriggerChangeDetectionParameters.
-func (t TriggerChangeDetectionParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "changeDetectionMode", t.ChangeDetectionMode)
-	populate(objectMap, "directoryPath", t.DirectoryPath)
-	populate(objectMap, "paths", t.Paths)
-	return json.Marshal(objectMap)
 }
 
 // TriggerRolloverRequest - Trigger Rollover Request.
@@ -2654,6 +1673,9 @@ type Workflow struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -2662,13 +1684,6 @@ type Workflow struct {
 type WorkflowArray struct {
 	// Collection of workflow items.
 	Value []*Workflow `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WorkflowArray.
-func (w WorkflowArray) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
 }
 
 // WorkflowProperties - Workflow Properties object.
@@ -2698,61 +1713,6 @@ type WorkflowProperties struct {
 	LastStatusTimestamp *time.Time `json:"lastStatusTimestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WorkflowProperties.
-func (w WorkflowProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "commandName", w.CommandName)
-	populateTimeRFC3339(objectMap, "createdTimestamp", w.CreatedTimestamp)
-	populate(objectMap, "lastOperationId", w.LastOperationID)
-	populateTimeRFC3339(objectMap, "lastStatusTimestamp", w.LastStatusTimestamp)
-	populate(objectMap, "lastStepName", w.LastStepName)
-	populate(objectMap, "operation", w.Operation)
-	populate(objectMap, "status", w.Status)
-	populate(objectMap, "steps", w.Steps)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WorkflowProperties.
-func (w *WorkflowProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "commandName":
-			err = unpopulate(val, &w.CommandName)
-			delete(rawMsg, key)
-		case "createdTimestamp":
-			err = unpopulateTimeRFC3339(val, &w.CreatedTimestamp)
-			delete(rawMsg, key)
-		case "lastOperationId":
-			err = unpopulate(val, &w.LastOperationID)
-			delete(rawMsg, key)
-		case "lastStatusTimestamp":
-			err = unpopulateTimeRFC3339(val, &w.LastStatusTimestamp)
-			delete(rawMsg, key)
-		case "lastStepName":
-			err = unpopulate(val, &w.LastStepName)
-			delete(rawMsg, key)
-		case "operation":
-			err = unpopulate(val, &w.Operation)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &w.Status)
-			delete(rawMsg, key)
-		case "steps":
-			err = unpopulate(val, &w.Steps)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WorkflowsClientAbortOptions contains the optional parameters for the WorkflowsClient.Abort method.
 type WorkflowsClientAbortOptions struct {
 	// placeholder for future optional parameters
@@ -2767,21 +1727,4 @@ type WorkflowsClientGetOptions struct {
 // method.
 type WorkflowsClientListByStorageSyncServiceOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

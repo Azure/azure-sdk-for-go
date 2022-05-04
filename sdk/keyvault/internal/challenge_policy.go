@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 const headerAuthorization = "Authorization"
@@ -26,7 +27,7 @@ const bearerHeader = "Bearer "
 
 type KeyVaultChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
-	mainResource *ExpiringResource
+	mainResource *ExpiringResource[*azcore.AccessToken, acquiringResourceState]
 	cred         azcore.TokenCredential
 	scope        *string
 	tenantID     *string
@@ -57,6 +58,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
+		if resp.StatusCode > 399 && resp.StatusCode != http.StatusUnauthorized {
+			// the request failed for some other reason, don't try any further
+			return resp, nil
+		}
 		err = k.findScopeAndTenant(resp)
 		if err != nil {
 			return nil, err
@@ -68,12 +73,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		return nil, err
 	}
 
-	if token, ok := tk.(*azcore.AccessToken); ok {
-		req.Raw().Header.Set(
-			headerAuthorization,
-			fmt.Sprintf("%s%s", bearerHeader, token.Token),
-		)
-	}
+	req.Raw().Header.Set(
+		headerAuthorization,
+		fmt.Sprintf("%s%s", bearerHeader, tk.Token),
+	)
 
 	// send a copy of the request
 	cloneReq := req.Clone(req.Raw().Context())
@@ -99,15 +102,10 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return resp, err
 		}
 
-		if token, ok := tk.(*azcore.AccessToken); ok {
-			req.Raw().Header.Set(
-				headerAuthorization,
-				bearerHeader+token.Token,
-			)
-		} else {
-			// tk is not an azcore.AccessToken type, something went wrong and we should return the 401 and accompanying error
-			return resp, cloneReqErr
-		}
+		req.Raw().Header.Set(
+			headerAuthorization,
+			bearerHeader+tk.Token,
+		)
 
 		// send the original request now
 		return req.Next()
@@ -120,7 +118,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 // https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000
 func parseTenant(url string) *string {
 	if url == "" {
-		return to.StringPtr("")
+		return to.Ptr("")
 	}
 	parts := strings.Split(url, "/")
 	tenant := parts[3]
@@ -128,11 +126,29 @@ func parseTenant(url string) *string {
 	return &tenant
 }
 
+type challengePolicyError struct {
+	err error
+}
+
+func (c *challengePolicyError) Error() string {
+	return c.err.Error()
+}
+
+func (*challengePolicyError) NonRetriable() {
+	// marker method
+}
+
+func (c *challengePolicyError) Unwrap() error {
+	return c.err
+}
+
+var _ errorinfo.NonRetriable = (*challengePolicyError)(nil)
+
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
 	if authHeader == "" {
-		return errors.New("response has no WWW-Authenticate header for challenge authentication")
+		return &challengePolicyError{err: errors.New("response has no WWW-Authenticate header for challenge authentication")}
 	}
 
 	// Strip down to auth and resource
@@ -161,7 +177,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 		}
 		k.scope = &resource
 	} else {
-		return errors.New("could not find a valid resource in the WWW-Authenticate header")
+		return &challengePolicyError{err: errors.New("could not find a valid resource in the WWW-Authenticate header")}
 	}
 
 	return nil
@@ -170,7 +186,7 @@ func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error 
 func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*policy.Request, error) {
 	req, err := runtime.NewRequest(orig.Raw().Context(), orig.Raw().Method, orig.Raw().URL.String())
 	if err != nil {
-		return nil, err
+		return nil, &challengePolicyError{err: err}
 	}
 
 	req.Raw().Header = orig.Raw().Header
@@ -183,7 +199,7 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig policy.Request) (*poli
 	copied.Raw().Header.Set("Content-Length", "0")
 	err = copied.SetBody(streaming.NopCloser(bytes.NewReader([]byte{})), "application/json")
 	if err != nil {
-		return nil, err
+		return nil, &challengePolicyError{err: err}
 	}
 	copied.Raw().Header.Del("Content-Type")
 
@@ -197,13 +213,11 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
-	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(
-		s.req.Raw().Context(),
+func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+	tk, err := state.p.cred.GetToken(
+		state.req.Raw().Context(),
 		policy.TokenRequestOptions{
-			Scopes:   []string{*s.p.scope},
-			TenantID: *s.p.scope,
+			Scopes: []string{*state.p.scope},
 		},
 	)
 	if err != nil {

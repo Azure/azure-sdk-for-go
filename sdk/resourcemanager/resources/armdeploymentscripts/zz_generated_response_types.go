@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,67 +8,13 @@
 
 package armdeploymentscripts
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// ClientCreatePollerResponse contains the response from method Client.Create.
-type ClientCreatePollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *ClientCreatePoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
-func (l ClientCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClientCreateResponse, error) {
-	respType := ClientCreateResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ClientCreateResult)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a ClientCreatePollerResponse from the provided client and resume token.
-func (l *ClientCreatePollerResponse) Resume(ctx context.Context, client *Client, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("Client.Create", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &ClientCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
 // ClientCreateResponse contains the response from method Client.Create.
 type ClientCreateResponse struct {
-	ClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientCreateResult contains the result from method Client.Create.
-type ClientCreateResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClientCreateResult.
-func (c *ClientCreateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientCreateResponse.
+func (c *ClientCreateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err
@@ -79,48 +25,26 @@ func (c *ClientCreateResult) UnmarshalJSON(data []byte) error {
 
 // ClientDeleteResponse contains the response from method Client.Delete.
 type ClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ClientGetLogsDefaultResponse contains the response from method Client.GetLogsDefault.
 type ClientGetLogsDefaultResponse struct {
-	ClientGetLogsDefaultResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientGetLogsDefaultResult contains the result from method Client.GetLogsDefault.
-type ClientGetLogsDefaultResult struct {
 	ScriptLog
 }
 
 // ClientGetLogsResponse contains the response from method Client.GetLogs.
 type ClientGetLogsResponse struct {
-	ClientGetLogsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientGetLogsResult contains the result from method Client.GetLogs.
-type ClientGetLogsResult struct {
 	ScriptLogsList
 }
 
 // ClientGetResponse contains the response from method Client.Get.
 type ClientGetResponse struct {
-	ClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientGetResult contains the result from method Client.Get.
-type ClientGetResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClientGetResult.
-func (c *ClientGetResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientGetResponse.
+func (c *ClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err
@@ -131,42 +55,21 @@ func (c *ClientGetResult) UnmarshalJSON(data []byte) error {
 
 // ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
 type ClientListByResourceGroupResponse struct {
-	ClientListByResourceGroupResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientListByResourceGroupResult contains the result from method Client.ListByResourceGroup.
-type ClientListByResourceGroupResult struct {
 	DeploymentScriptListResult
 }
 
 // ClientListBySubscriptionResponse contains the response from method Client.ListBySubscription.
 type ClientListBySubscriptionResponse struct {
-	ClientListBySubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientListBySubscriptionResult contains the result from method Client.ListBySubscription.
-type ClientListBySubscriptionResult struct {
 	DeploymentScriptListResult
 }
 
 // ClientUpdateResponse contains the response from method Client.Update.
 type ClientUpdateResponse struct {
-	ClientUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ClientUpdateResult contains the result from method Client.Update.
-type ClientUpdateResult struct {
 	DeploymentScriptClassification
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClientUpdateResult.
-func (c *ClientUpdateResult) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ClientUpdateResponse.
+func (c *ClientUpdateResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalDeploymentScriptClassification(data)
 	if err != nil {
 		return err

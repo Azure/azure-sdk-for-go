@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -79,10 +82,10 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 	return p, nil
 }
 
-// The AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
+// AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process bool
+	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process, Tag, FilterByTags bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
@@ -116,6 +119,12 @@ func (p AccountSASPermissions) String() string {
 	if p.Process {
 		buffer.WriteRune('p')
 	}
+	if p.Tag {
+		buffer.WriteRune('t')
+	}
+	if p.FilterByTags {
+		buffer.WriteRune('f')
+	}
 	return buffer.String()
 }
 
@@ -142,6 +151,10 @@ func (p *AccountSASPermissions) Parse(s string) error {
 			p.Process = true
 		case 'x':
 			p.Process = true
+		case 't':
+			p.Tag = true
+		case 'f':
+			p.FilterByTags = true
 		default:
 			return fmt.Errorf("invalid permission character: '%v'", r)
 		}
@@ -149,7 +162,7 @@ func (p *AccountSASPermissions) Parse(s string) error {
 	return nil
 }
 
-// The AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
+// AccountSASServices type simplifies creating the services string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Services field.
 type AccountSASServices struct {
 	Blob, Queue, File bool
@@ -189,7 +202,7 @@ func (s *AccountSASServices) Parse(str string) error {
 	return nil
 }
 
-// The AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
+// AccountSASResourceTypes type simplifies creating the resource types string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's ResourceTypes field.
 type AccountSASResourceTypes struct {
 	Service, Container, Object bool

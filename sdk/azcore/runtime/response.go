@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -23,12 +24,12 @@ import (
 // On a successful read, the response body is cached.
 // Subsequent reads will access the cached value.
 func Payload(resp *http.Response) ([]byte, error) {
-	return shared.Payload(resp)
+	return exported.Payload(resp)
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
 func HasStatusCode(resp *http.Response, statusCodes ...int) bool {
-	return shared.HasStatusCode(resp, statusCodes...)
+	return exported.HasStatusCode(resp, statusCodes...)
 }
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
@@ -99,7 +100,7 @@ func removeBOM(resp *http.Response) error {
 	// UTF8
 	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
 	if len(trimmed) < len(payload) {
-		resp.Body.(*shared.NopClosingBytesReader).Set(trimmed)
+		resp.Body.(shared.BytesSetter).Set(trimmed)
 	}
 	return nil
 }

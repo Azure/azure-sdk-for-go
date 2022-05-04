@@ -8,13 +8,7 @@
 
 package internal
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Attributes - The object attributes managed by the KeyVault service.
 type Attributes struct {
@@ -34,96 +28,10 @@ type Attributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Attributes.
-func (a Attributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeUnix(objectMap, "created", a.Created)
-	populate(objectMap, "enabled", a.Enabled)
-	populateTimeUnix(objectMap, "exp", a.Expires)
-	populateTimeUnix(objectMap, "nbf", a.NotBefore)
-	populateTimeUnix(objectMap, "updated", a.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Attributes.
-func (a *Attributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeUnix(val, &a.Created)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &a.Enabled)
-			delete(rawMsg, key)
-		case "exp":
-			err = unpopulateTimeUnix(val, &a.Expires)
-			delete(rawMsg, key)
-		case "nbf":
-			err = unpopulateTimeUnix(val, &a.NotBefore)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeUnix(val, &a.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BackupSecretResult - The backup secret result, containing the backup blob.
 type BackupSecretResult struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BackupSecretResult.
-func (b BackupSecretResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", b.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupSecretResult.
-func (b *BackupSecretResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type CertificateInfoObject struct {
-	// REQUIRED; Certificates needed from customer
-	Certificates []*SecurityDomainJSONWebKey `json:"certificates,omitempty"`
-
-	// Customer to specify the number of certificates (minimum 2 and maximum 10) to restore Security Domain
-	Required *int32 `json:"required,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateInfoObject.
-func (c CertificateInfoObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "certificates", c.Certificates)
-	populate(objectMap, "required", c.Required)
-	return json.Marshal(objectMap)
 }
 
 // DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on
@@ -162,69 +70,6 @@ type DeletedSecretBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedSecretBundle.
-func (d DeletedSecretBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", d.Attributes)
-	populate(objectMap, "contentType", d.ContentType)
-	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "kid", d.Kid)
-	populate(objectMap, "managed", d.Managed)
-	populate(objectMap, "recoveryId", d.RecoveryID)
-	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeletedSecretBundle.
-func (d *DeletedSecretBundle) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
-		case "contentType":
-			err = unpopulate(val, &d.ContentType)
-			delete(rawMsg, key)
-		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &d.Kid)
-			delete(rawMsg, key)
-		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
-		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
-		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &d.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretItem struct {
 	// The secret management attributes.
@@ -253,61 +98,6 @@ type DeletedSecretItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedSecretItem.
-func (d DeletedSecretItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", d.Attributes)
-	populate(objectMap, "contentType", d.ContentType)
-	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "managed", d.Managed)
-	populate(objectMap, "recoveryId", d.RecoveryID)
-	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeletedSecretItem.
-func (d *DeletedSecretItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
-		case "contentType":
-			err = unpopulate(val, &d.ContentType)
-			delete(rawMsg, key)
-		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
-		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
-		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeletedSecretListResult - The deleted secret list result
 type DeletedSecretListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted secrets.
@@ -316,14 +106,6 @@ type DeletedSecretListResult struct {
 	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page
 	// of deleted secrets
 	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeletedSecretListResult.
-func (d DeletedSecretListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // Error - The key vault server error.
@@ -336,36 +118,6 @@ type Error struct {
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// HSMSecurityDomainClientBeginDownloadOptions contains the optional parameters for the HSMSecurityDomainClient.BeginDownload
-// method.
-type HSMSecurityDomainClientBeginDownloadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientBeginUploadOptions contains the optional parameters for the HSMSecurityDomainClient.BeginUpload
-// method.
-type HSMSecurityDomainClientBeginUploadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientDownloadPendingOptions contains the optional parameters for the HSMSecurityDomainClient.DownloadPending
-// method.
-type HSMSecurityDomainClientDownloadPendingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientTransferKeyOptions contains the optional parameters for the HSMSecurityDomainClient.TransferKey
-// method.
-type HSMSecurityDomainClientTransferKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientUploadPendingOptions contains the optional parameters for the HSMSecurityDomainClient.UploadPending
-// method.
-type HSMSecurityDomainClientUploadPendingOptions struct {
-	// placeholder for future optional parameters
 }
 
 // KeyVaultClientBackupSecretOptions contains the optional parameters for the KeyVaultClient.BackupSecret method.
@@ -438,215 +190,6 @@ type KeyVaultError struct {
 	Error *Error `json:"error,omitempty" azure:"ro"`
 }
 
-// Permission - Role definition permissions.
-type Permission struct {
-	// Action permissions that are granted.
-	Actions []*string `json:"actions,omitempty"`
-
-	// Data action permissions that are granted.
-	DataActions []*DataAction `json:"dataActions,omitempty"`
-
-	// Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
-	NotActions []*string `json:"notActions,omitempty"`
-
-	// Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
-	NotDataActions []*DataAction `json:"notDataActions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Permission.
-func (p Permission) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", p.Actions)
-	populate(objectMap, "dataActions", p.DataActions)
-	populate(objectMap, "notActions", p.NotActions)
-	populate(objectMap, "notDataActions", p.NotDataActions)
-	return json.Marshal(objectMap)
-}
-
-// RoleAssignment - Role Assignments
-type RoleAssignment struct {
-	// Role assignment properties.
-	Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
-
-	// READ-ONLY; The role assignment ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleAssignmentCreateParameters - Role assignment create parameters.
-type RoleAssignmentCreateParameters struct {
-	// REQUIRED; Role assignment properties.
-	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
-}
-
-// RoleAssignmentFilter - Role Assignments filter
-type RoleAssignmentFilter struct {
-	// Returns role assignment of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-}
-
-// RoleAssignmentListResult - Role assignment list operation result.
-type RoleAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role assignment list.
-	Value []*RoleAssignment `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleAssignmentListResult.
-func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RoleAssignmentProperties - Role assignment properties.
-type RoleAssignmentProperties struct {
-	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user,
-	// service principal, or security group.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// REQUIRED; The role definition ID used in the role assignment.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-}
-
-// RoleAssignmentPropertiesWithScope - Role assignment properties with scope.
-type RoleAssignmentPropertiesWithScope struct {
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The role scope.
-	Scope *RoleScope `json:"scope,omitempty"`
-}
-
-// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
-type RoleAssignmentsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
-type RoleAssignmentsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
-type RoleAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
-type RoleAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-}
-
-// RoleDefinition - Role definition.
-type RoleDefinition struct {
-	// Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role definition ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition type.
-	Type *RoleDefinitionType `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleDefinitionCreateParameters - Role definition create parameters.
-type RoleDefinitionCreateParameters struct {
-	// REQUIRED; Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-}
-
-// RoleDefinitionFilter - Role Definitions filter
-type RoleDefinitionFilter struct {
-	// Returns role definition with the specific name.
-	RoleName *string `json:"roleName,omitempty"`
-}
-
-// RoleDefinitionListResult - Role definition list operation result.
-type RoleDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role definition list.
-	Value []*RoleDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionListResult.
-func (r RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RoleDefinitionProperties - Role definition properties.
-type RoleDefinitionProperties struct {
-	// Role definition assignable scopes.
-	AssignableScopes []*RoleScope `json:"assignableScopes,omitempty"`
-
-	// The role definition description.
-	Description *string `json:"description,omitempty"`
-
-	// Role definition permissions.
-	Permissions []*Permission `json:"permissions,omitempty"`
-
-	// The role name.
-	RoleName *string `json:"roleName,omitempty"`
-
-	// The role type.
-	RoleType *RoleType `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionProperties.
-func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignableScopes", r.AssignableScopes)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "permissions", r.Permissions)
-	populate(objectMap, "roleName", r.RoleName)
-	populate(objectMap, "type", r.RoleType)
-	return json.Marshal(objectMap)
-}
-
-// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
-// method.
-type RoleDefinitionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
-type RoleDefinitionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
-type RoleDefinitionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
-type RoleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-	Filter *string
-}
-
 // SecretAttributes - The secret management attributes.
 type SecretAttributes struct {
 	// Determines whether the object is enabled.
@@ -671,57 +214,6 @@ type SecretAttributes struct {
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecretAttributes.
-func (s SecretAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeUnix(objectMap, "created", s.Created)
-	populate(objectMap, "enabled", s.Enabled)
-	populateTimeUnix(objectMap, "exp", s.Expires)
-	populateTimeUnix(objectMap, "nbf", s.NotBefore)
-	populate(objectMap, "recoverableDays", s.RecoverableDays)
-	populate(objectMap, "recoveryLevel", s.RecoveryLevel)
-	populateTimeUnix(objectMap, "updated", s.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecretAttributes.
-func (s *SecretAttributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeUnix(val, &s.Created)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &s.Enabled)
-			delete(rawMsg, key)
-		case "exp":
-			err = unpopulateTimeUnix(val, &s.Expires)
-			delete(rawMsg, key)
-		case "nbf":
-			err = unpopulateTimeUnix(val, &s.NotBefore)
-			delete(rawMsg, key)
-		case "recoverableDays":
-			err = unpopulate(val, &s.RecoverableDays)
-			delete(rawMsg, key)
-		case "recoveryLevel":
-			err = unpopulate(val, &s.RecoveryLevel)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeUnix(val, &s.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SecretBundle - A secret consisting of a value, id and its attributes.
@@ -750,19 +242,6 @@ type SecretBundle struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecretBundle.
-func (s SecretBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", s.Attributes)
-	populate(objectMap, "contentType", s.ContentType)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "kid", s.Kid)
-	populate(objectMap, "managed", s.Managed)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SecretItem - The secret item containing secret metadata.
 type SecretItem struct {
 	// The secret management attributes.
@@ -782,17 +261,6 @@ type SecretItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecretItem.
-func (s SecretItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", s.Attributes)
-	populate(objectMap, "contentType", s.ContentType)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "managed", s.Managed)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
 // SecretListResult - The secret list result.
 type SecretListResult struct {
 	// READ-ONLY; The URL to get the next set of secrets.
@@ -800,14 +268,6 @@ type SecretListResult struct {
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
 	Value []*SecretItem `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecretListResult.
-func (s SecretListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // SecretProperties - Properties of the key backing a certificate.
@@ -820,33 +280,6 @@ type SecretProperties struct {
 type SecretRestoreParameters struct {
 	// REQUIRED; The backup blob associated with a secret bundle.
 	SecretBundleBackup []byte `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecretRestoreParameters.
-func (s SecretRestoreParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", s.SecretBundleBackup, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SecretRestoreParameters.
-func (s *SecretRestoreParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &s.SecretBundleBackup, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SecretSetParameters - The secret set parameters.
@@ -864,16 +297,6 @@ type SecretSetParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SecretSetParameters.
-func (s SecretSetParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentType", s.ContentType)
-	populate(objectMap, "attributes", s.SecretAttributes)
-	populate(objectMap, "tags", s.Tags)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SecretUpdateParameters - The secret update parameters.
 type SecretUpdateParameters struct {
 	// Type of the secret value such as a password.
@@ -884,109 +307,4 @@ type SecretUpdateParameters struct {
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecretUpdateParameters.
-func (s SecretUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentType", s.ContentType)
-	populate(objectMap, "attributes", s.SecretAttributes)
-	populate(objectMap, "tags", s.Tags)
-	return json.Marshal(objectMap)
-}
-
-type SecurityDomainJSONWebKey struct {
-	// REQUIRED; Algorithm intended for use with the key.
-	Alg *string `json:"alg,omitempty"`
-
-	// REQUIRED; RSA public exponent.
-	E *string `json:"e,omitempty"`
-
-	// REQUIRED
-	KeyOps []*string `json:"key_ops,omitempty"`
-
-	// REQUIRED; Key identifier.
-	Kid *string `json:"kid,omitempty"`
-
-	// REQUIRED; JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	// For Security Domain this value must be RSA.
-	Kty *string `json:"kty,omitempty"`
-
-	// REQUIRED; RSA modulus.
-	N *string `json:"n,omitempty"`
-
-	// REQUIRED; X509 certificate chain parameter
-	X5C []*string `json:"x5c,omitempty"`
-
-	// REQUIRED; X509 certificate SHA256 thumbprint.
-	X5TS256 *string `json:"x5t#S256,omitempty"`
-
-	// Public Key Use Parameter. This is optional and if present must be enc.
-	Use *string `json:"use,omitempty"`
-
-	// X509 certificate SHA1 thumbprint. This is optional.
-	X5T *string `json:"x5t,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityDomainJSONWebKey.
-func (s SecurityDomainJSONWebKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", s.Alg)
-	populate(objectMap, "e", s.E)
-	populate(objectMap, "key_ops", s.KeyOps)
-	populate(objectMap, "kid", s.Kid)
-	populate(objectMap, "kty", s.Kty)
-	populate(objectMap, "n", s.N)
-	populate(objectMap, "use", s.Use)
-	populate(objectMap, "x5c", s.X5C)
-	populate(objectMap, "x5t", s.X5T)
-	populate(objectMap, "x5t#S256", s.X5TS256)
-	return json.Marshal(objectMap)
-}
-
-// SecurityDomainObject - The Security Domain.
-type SecurityDomainObject struct {
-	// REQUIRED; The Security Domain.
-	Value *string `json:"value,omitempty"`
-}
-
-type SecurityDomainOperationStatus struct {
-	// operation status
-	Status        *OperationStatus `json:"status,omitempty"`
-	StatusDetails *string          `json:"status_details,omitempty"`
-}
-
-type TransferKey struct {
-	// REQUIRED; Specifies the transfer key in JWK format
-	TransferKey *SecurityDomainJSONWebKey `json:"transfer_key,omitempty"`
-
-	// Specifies the format of the transfer key
-	KeyFormat *string `json:"key_format,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

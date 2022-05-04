@@ -1,16 +1,129 @@
 # Release History
 
-## 0.3.4 (Unreleased)
+## 0.4.1 (Unreleased)
 
 ### Features Added
+
+- Exported log.Event constants for azservicebus. This will make them easier to
+  discover and they are also documented. NOTE: The log messages themselves 
+  are not guaranteed to be stable. (#17596)
+- `admin.Client` can now manage authorization rules and subscription filters and 
+  actions. (#17616)
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix.
+- Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
+  couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
 
 ### Other Changes
+
+## 0.4.0 (2022-04-06)
+
+### Features Added
+
+- Support for using a SharedAccessSignature in a connection string. Ex: `Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>` (#17314)
+
+### Bugs Fixed
+
+- Fixed bug where message batch size calculation was inaccurate, resulting in batches that were too large to be sent. (#17318)
+- Fixing an issue with an entity not being found leading to a longer timeout than needed. (#17279)
+- Fixed the RPCLink so it does better handling of connection/link failures. (#17389)
+- Fixed issue where a message lock expiring would cause unnecessary retries. These retries could cause message settlement calls (ex: Receiver.CompleteMessage) 
+  to appear to hang. (#17382)
+- Fixed issue where a cancellation on ReceiveMessages() would work, but wouldn't return the proper cancellation error. (#17422)
+
+### Breaking Changes
+
+- This module now requires Go 1.18
+- Multiple functions have had `options` parameters added.
+- `SessionReceiver.RenewMessageLock` has been removed - it isn't used for sessions. SessionReceivers should use `SessionReceiver.RenewSessionLock`.
+- The `admin.Client` type has been changed to conform with the latest Azure Go SDK guidelines. As part of this:
+  - Embedded `*Result` structs in `admin.Client`'s APIs have been removed. Inner *Properties values have been hoisted up to the `*Response` instead.
+  - `.Response` fields have been removed for successful results. These will be added back using a     different pattern in the next release.
+  - Fields that were of type `time.Duration` have been changed to `*string`, where the value of the string is an ISO8601 timestamp. 
+    Affected fields from Queues, Topics and Subscriptions: AutoDeleteOnIdle, DefaultMessageTimeToLive, DuplicateDetectionHistoryTimeWindow, LockDuration.    
+  - Properties that were passed as a parameter to CreateQueue, CreateTopic or CreateSubscription are now in the `options` parameter (as they were optional):
+    Previously:
+    ```go
+    // older code
+    adminClient.CreateQueue(context.Background(), queueName, &queueProperties, nil)	  
+    ```
+
+    And now:
+    ```go
+    // new code
+    adminClient.CreateQueue(context.Background(), queueName, &admin.CreateQueueOptions{
+      Properties: queueProperties,
+    })
+    ```  
+  - Pagers have been changed to use the new generics-based `runtime.Pager`:
+  
+    Previously:
+    ```go
+    // older code
+    for queuePager.NextPage(context.TODO()) {
+		  for _, queue := range queuePager.PageResponse().Items {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    
+    if err := queuePager.Err(); err != nil {
+      panic(err)
+    }
+    ```
+    And now:
+
+    ```go
+    // new code
+    for queuePager.More() {
+		  page, err := queuePager.NextPage(context.TODO())
+
+		  if err != nil {
+			  panic(err)
+		  }
+
+		  for _, queue := range page.Queues {
+			  fmt.Printf("Queue name: %s, max size in MB: %d\n", queue.QueueName, *queue.MaxSizeInMegabytes)
+		  }
+	  }
+    ```
+
+## 0.3.6 (2022-03-08)
+
+### Bugs Fixed
+
+- Fix connection recovery in situations where network errors bubble up from go-amqp. (#17048)
+- Quicker reattach for idle links. (#17205)
+- Quick exit on receiver reconnects to avoid potentially returning duplicate messages. (#17157)
+
+### Breaking Changes
+
+- The following 'Get' APIs have been changed to return a nil result when an item is not found: (#17229)
+  - GetQueue, GetQueueRuntimeProperties
+  - GetTopic, GetTopicRuntimeProperties
+  - GetSubscription, GetSubscriptionRuntimeProperties
+
+## 0.3.5 (2022-02-10)
+
+### Bugs Fixed
+
+- Fix panic() when go-amqp was returning an incorrect error on drain failures. (#17036)
+
+## 0.3.4 (2022-02-08)
+
+### Features Added
+
+- Allow RetryOptions to be configured in the options for azservicebus.Client as well and admin.Client(#16831)
+- Add in the MessageState property to the ReceivedMessage. (#16985)
+
+### Bugs Fixed
+
+- Fix unaligned 64-bit atomic operation on mips.  Thanks to @jackesdavid for contributing this fix. (#16847)
+- Multiple fixes to address connection/link recovery (#16831)
+- Fixing panic() when the links haven't been initialized (early cancellation) (#16941)
+- Handle 500 as a retryable code (no recovery needed) (#16925)
 
 ## 0.3.3 (2022-01-12)
 

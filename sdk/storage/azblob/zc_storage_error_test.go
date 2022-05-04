@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -10,6 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestErrorResponseUnmarshal() {
 	t := s.T()
 
@@ -23,14 +27,14 @@ func (s *azblobUnrecordedTestSuite) TestErrorResponseUnmarshal() {
 
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			_assert := assert.New(t)
+			_require := assert.New(t)
 			se := StorageError{}
-			_assert.Nil(xml.Unmarshal([]byte(c.input), &se))
+			_require.Nil(xml.Unmarshal([]byte(c.input), &se))
 
-			_assert.Contains(se.details, "Code")
-			_assert.Equal("ContainerAlreadyExists", se.details["Code"])
+			_require.Contains(se.details, "Code")
+			_require.Equal("ContainerAlreadyExists", se.details["Code"])
 
-			_assert.Equal("The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z", se.description)
+			_require.Equal("The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z", se.description)
 		})
 	}
 }

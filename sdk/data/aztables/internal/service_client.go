@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -31,14 +31,13 @@ type ServiceClient struct {
 // version - Specifies the version of the operation to use for this request.
 // options - pass nil to accept the default values.
 func NewServiceClient(endpoint string, version Enum0, options *azcore.ClientOptions) *ServiceClient {
-	cp := azcore.ClientOptions{}
-	if options != nil {
-		cp = *options
+	if options == nil {
+		options = &azcore.ClientOptions{}
 	}
 	client := &ServiceClient{
 		endpoint: endpoint,
 		version:  version,
-		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &cp),
+		pl:       runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, options),
 	}
 	return client
 }
@@ -87,7 +86,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, res
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (ServiceClientGetPropertiesResponse, error) {
-	result := ServiceClientGetPropertiesResponse{RawResponse: resp}
+	result := ServiceClientGetPropertiesResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -147,7 +146,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, res
 
 // getStatisticsHandleResponse handles the GetStatistics response.
 func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (ServiceClientGetStatisticsResponse, error) {
-	result := ServiceClientGetStatisticsResponse{RawResponse: resp}
+	result := ServiceClientGetStatisticsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -215,7 +214,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, res
 
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceClientSetPropertiesResponse, error) {
-	result := ServiceClientSetPropertiesResponse{RawResponse: resp}
+	result := ServiceClientSetPropertiesResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}

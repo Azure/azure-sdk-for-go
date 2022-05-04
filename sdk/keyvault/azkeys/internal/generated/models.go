@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,13 +8,7 @@
 
 package generated
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Attributes - The object attributes managed by the KeyVault service.
 type Attributes struct {
@@ -34,96 +28,10 @@ type Attributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Attributes.
-func (a Attributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeUnix(objectMap, "created", a.Created)
-	populate(objectMap, "enabled", a.Enabled)
-	populateTimeUnix(objectMap, "exp", a.Expires)
-	populateTimeUnix(objectMap, "nbf", a.NotBefore)
-	populateTimeUnix(objectMap, "updated", a.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Attributes.
-func (a *Attributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeUnix(val, &a.Created)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &a.Enabled)
-			delete(rawMsg, key)
-		case "exp":
-			err = unpopulateTimeUnix(val, &a.Expires)
-			delete(rawMsg, key)
-		case "nbf":
-			err = unpopulateTimeUnix(val, &a.NotBefore)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeUnix(val, &a.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // BackupKeyResult - The backup key result, containing the backup blob.
 type BackupKeyResult struct {
 	// READ-ONLY; The backup blob containing the backed up key.
 	Value []byte `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BackupKeyResult.
-func (b BackupKeyResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", b.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupKeyResult.
-func (b *BackupKeyResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type CertificateInfoObject struct {
-	// REQUIRED; Certificates needed from customer
-	Certificates []*SecurityDomainJSONWebKey `json:"certificates,omitempty"`
-
-	// Customer to specify the number of certificates (minimum 2 and maximum 10) to restore Security Domain
-	Required *int32 `json:"required,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CertificateInfoObject.
-func (c CertificateInfoObject) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "certificates", c.Certificates)
-	populate(objectMap, "required", c.Required)
-	return json.Marshal(objectMap)
 }
 
 // DeletedKeyBundle - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
@@ -154,61 +62,6 @@ type DeletedKeyBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedKeyBundle.
-func (d DeletedKeyBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", d.Attributes)
-	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
-	populate(objectMap, "key", d.Key)
-	populate(objectMap, "managed", d.Managed)
-	populate(objectMap, "recoveryId", d.RecoveryID)
-	populate(objectMap, "release_policy", d.ReleasePolicy)
-	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeletedKeyBundle.
-func (d *DeletedKeyBundle) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
-		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
-		case "key":
-			err = unpopulate(val, &d.Key)
-			delete(rawMsg, key)
-		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
-		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
-		case "release_policy":
-			err = unpopulate(val, &d.ReleasePolicy)
-			delete(rawMsg, key)
-		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
 type DeletedKeyItem struct {
 	// The key management attributes.
@@ -234,57 +87,6 @@ type DeletedKeyItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeletedKeyItem.
-func (d DeletedKeyItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", d.Attributes)
-	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
-	populate(objectMap, "kid", d.Kid)
-	populate(objectMap, "managed", d.Managed)
-	populate(objectMap, "recoveryId", d.RecoveryID)
-	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
-	populate(objectMap, "tags", d.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeletedKeyItem.
-func (d *DeletedKeyItem) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "attributes":
-			err = unpopulate(val, &d.Attributes)
-			delete(rawMsg, key)
-		case "deletedDate":
-			err = unpopulateTimeUnix(val, &d.DeletedDate)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &d.Kid)
-			delete(rawMsg, key)
-		case "managed":
-			err = unpopulate(val, &d.Managed)
-			delete(rawMsg, key)
-		case "recoveryId":
-			err = unpopulate(val, &d.RecoveryID)
-			delete(rawMsg, key)
-		case "scheduledPurgeDate":
-			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &d.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DeletedKeyListResult - A list of keys that have been deleted in this vault.
 type DeletedKeyListResult struct {
 	// READ-ONLY; The URL to get the next set of deleted keys.
@@ -293,14 +95,6 @@ type DeletedKeyListResult struct {
 	// READ-ONLY; A response message containing a list of deleted keys in the vault along with a link to the next page of deleted
 	// keys
 	Value []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DeletedKeyListResult.
-func (d DeletedKeyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // Error - The key vault server error.
@@ -319,36 +113,6 @@ type Error struct {
 type GetRandomBytesRequest struct {
 	// REQUIRED; The requested number of random bytes.
 	Count *int32 `json:"count,omitempty"`
-}
-
-// HSMSecurityDomainClientBeginDownloadOptions contains the optional parameters for the HSMSecurityDomainClient.BeginDownload
-// method.
-type HSMSecurityDomainClientBeginDownloadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientBeginUploadOptions contains the optional parameters for the HSMSecurityDomainClient.BeginUpload
-// method.
-type HSMSecurityDomainClientBeginUploadOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientDownloadPendingOptions contains the optional parameters for the HSMSecurityDomainClient.DownloadPending
-// method.
-type HSMSecurityDomainClientDownloadPendingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientTransferKeyOptions contains the optional parameters for the HSMSecurityDomainClient.TransferKey
-// method.
-type HSMSecurityDomainClientTransferKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// HSMSecurityDomainClientUploadPendingOptions contains the optional parameters for the HSMSecurityDomainClient.UploadPending
-// method.
-type HSMSecurityDomainClientUploadPendingOptions struct {
-	// placeholder for future optional parameters
 }
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
@@ -400,93 +164,6 @@ type JSONWebKey struct {
 	Y []byte `json:"y,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JSONWebKey.
-func (j JSONWebKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "crv", j.Crv)
-	populateByteArray(objectMap, "d", j.D, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "dp", j.DP, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "dq", j.DQ, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "e", j.E, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "k", j.K, runtime.Base64URLFormat)
-	populate(objectMap, "key_ops", j.KeyOps)
-	populate(objectMap, "kid", j.Kid)
-	populate(objectMap, "kty", j.Kty)
-	populateByteArray(objectMap, "n", j.N, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "p", j.P, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "q", j.Q, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "qi", j.QI, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "key_hsm", j.T, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "x", j.X, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "y", j.Y, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JSONWebKey.
-func (j *JSONWebKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "crv":
-			err = unpopulate(val, &j.Crv)
-			delete(rawMsg, key)
-		case "d":
-			err = runtime.DecodeByteArray(string(val), &j.D, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "dp":
-			err = runtime.DecodeByteArray(string(val), &j.DP, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "dq":
-			err = runtime.DecodeByteArray(string(val), &j.DQ, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "e":
-			err = runtime.DecodeByteArray(string(val), &j.E, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "k":
-			err = runtime.DecodeByteArray(string(val), &j.K, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "key_ops":
-			err = unpopulate(val, &j.KeyOps)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &j.Kid)
-			delete(rawMsg, key)
-		case "kty":
-			err = unpopulate(val, &j.Kty)
-			delete(rawMsg, key)
-		case "n":
-			err = runtime.DecodeByteArray(string(val), &j.N, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "p":
-			err = runtime.DecodeByteArray(string(val), &j.P, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "q":
-			err = runtime.DecodeByteArray(string(val), &j.Q, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "qi":
-			err = runtime.DecodeByteArray(string(val), &j.QI, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "key_hsm":
-			err = runtime.DecodeByteArray(string(val), &j.T, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "x":
-			err = runtime.DecodeByteArray(string(val), &j.X, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "y":
-			err = runtime.DecodeByteArray(string(val), &j.Y, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyAttributes - The attributes of a key managed by the key vault service.
 type KeyAttributes struct {
 	// Determines whether the object is enabled.
@@ -516,61 +193,6 @@ type KeyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyAttributes.
-func (k KeyAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeUnix(objectMap, "created", k.Created)
-	populate(objectMap, "enabled", k.Enabled)
-	populateTimeUnix(objectMap, "exp", k.Expires)
-	populate(objectMap, "exportable", k.Exportable)
-	populateTimeUnix(objectMap, "nbf", k.NotBefore)
-	populate(objectMap, "recoverableDays", k.RecoverableDays)
-	populate(objectMap, "recoveryLevel", k.RecoveryLevel)
-	populateTimeUnix(objectMap, "updated", k.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyAttributes.
-func (k *KeyAttributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeUnix(val, &k.Created)
-			delete(rawMsg, key)
-		case "enabled":
-			err = unpopulate(val, &k.Enabled)
-			delete(rawMsg, key)
-		case "exp":
-			err = unpopulateTimeUnix(val, &k.Expires)
-			delete(rawMsg, key)
-		case "exportable":
-			err = unpopulate(val, &k.Exportable)
-			delete(rawMsg, key)
-		case "nbf":
-			err = unpopulateTimeUnix(val, &k.NotBefore)
-			delete(rawMsg, key)
-		case "recoverableDays":
-			err = unpopulate(val, &k.RecoverableDays)
-			delete(rawMsg, key)
-		case "recoveryLevel":
-			err = unpopulate(val, &k.RecoveryLevel)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeUnix(val, &k.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyBundle - A KeyBundle consisting of a WebKey plus its attributes.
 type KeyBundle struct {
 	// The key management attributes.
@@ -588,17 +210,6 @@ type KeyBundle struct {
 	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
 	// be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyBundle.
-func (k KeyBundle) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", k.Attributes)
-	populate(objectMap, "key", k.Key)
-	populate(objectMap, "managed", k.Managed)
-	populate(objectMap, "release_policy", k.ReleasePolicy)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
 }
 
 // KeyCreateParameters - The key create parameters.
@@ -624,20 +235,6 @@ type KeyCreateParameters struct {
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyCreateParameters.
-func (k KeyCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "crv", k.Curve)
-	populate(objectMap, "attributes", k.KeyAttributes)
-	populate(objectMap, "key_ops", k.KeyOps)
-	populate(objectMap, "key_size", k.KeySize)
-	populate(objectMap, "kty", k.Kty)
-	populate(objectMap, "public_exponent", k.PublicExponent)
-	populate(objectMap, "release_policy", k.ReleasePolicy)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
 }
 
 // KeyExportParameters - The export key parameters.
@@ -670,17 +267,6 @@ type KeyImportParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyImportParameters.
-func (k KeyImportParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "Hsm", k.Hsm)
-	populate(objectMap, "key", k.Key)
-	populate(objectMap, "attributes", k.KeyAttributes)
-	populate(objectMap, "release_policy", k.ReleasePolicy)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
-}
-
 // KeyItem - The key item containing key metadata.
 type KeyItem struct {
 	// The key management attributes.
@@ -697,16 +283,6 @@ type KeyItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyItem.
-func (k KeyItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", k.Attributes)
-	populate(objectMap, "kid", k.Kid)
-	populate(objectMap, "managed", k.Managed)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
-}
-
 // KeyListResult - The key list result.
 type KeyListResult struct {
 	// READ-ONLY; The URL to get the next set of keys.
@@ -714,14 +290,6 @@ type KeyListResult struct {
 
 	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
 	Value []*KeyItem `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyListResult.
-func (k KeyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", k.NextLink)
-	populate(objectMap, "value", k.Value)
-	return json.Marshal(objectMap)
 }
 
 // KeyOperationResult - The key operation result.
@@ -742,49 +310,6 @@ type KeyOperationResult struct {
 	Result []byte `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyOperationResult.
-func (k KeyOperationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "aad", k.AdditionalAuthenticatedData, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "tag", k.AuthenticationTag, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "iv", k.Iv, runtime.Base64URLFormat)
-	populate(objectMap, "kid", k.Kid)
-	populateByteArray(objectMap, "value", k.Result, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyOperationResult.
-func (k *KeyOperationResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "aad":
-			err = runtime.DecodeByteArray(string(val), &k.AdditionalAuthenticatedData, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "tag":
-			err = runtime.DecodeByteArray(string(val), &k.AuthenticationTag, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "iv":
-			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "kid":
-			err = unpopulate(val, &k.Kid)
-			delete(rawMsg, key)
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &k.Result, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyOperationsParameters - The key operations parameters.
 type KeyOperationsParameters struct {
 	// REQUIRED; algorithm identifier
@@ -801,49 +326,6 @@ type KeyOperationsParameters struct {
 
 	// The tag to authenticate when performing decryption with an authenticated algorithm.
 	Tag []byte `json:"tag,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyOperationsParameters.
-func (k KeyOperationsParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "aad", k.AAD, runtime.Base64URLFormat)
-	populate(objectMap, "alg", k.Algorithm)
-	populateByteArray(objectMap, "iv", k.Iv, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "tag", k.Tag, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "value", k.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyOperationsParameters.
-func (k *KeyOperationsParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "aad":
-			err = runtime.DecodeByteArray(string(val), &k.AAD, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
-		case "iv":
-			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "tag":
-			err = runtime.DecodeByteArray(string(val), &k.Tag, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KeyProperties - Properties of the key pair backing a certificate.
@@ -867,7 +349,7 @@ type KeyProperties struct {
 // KeyReleaseParameters - The release key parameters.
 type KeyReleaseParameters struct {
 	// REQUIRED; The attestation assertion for the target of the key release.
-	Target *string `json:"target,omitempty"`
+	TargetAttestationToken *string `json:"target,omitempty"`
 
 	// The encryption algorithm to use to protected the exported key material
 	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
@@ -881,38 +363,11 @@ type KeyReleasePolicy struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Blob encoding the policy rules under which the key can be released.
-	Data []byte `json:"data,omitempty"`
-}
+	EncodedPolicy []byte `json:"data,omitempty"`
 
-// MarshalJSON implements the json.Marshaller interface for type KeyReleasePolicy.
-func (k KeyReleasePolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentType", k.ContentType)
-	populateByteArray(objectMap, "data", k.Data, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyReleasePolicy.
-func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "contentType":
-			err = unpopulate(val, &k.ContentType)
-			delete(rawMsg, key)
-		case "data":
-			err = runtime.DecodeByteArray(string(val), &k.Data, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// Defines the mutability state of the policy. Once marked immutable, this flag cannot be reset and the policy cannot be changed
+	// under any circumstances.
+	Immutable *bool `json:"immutable,omitempty"`
 }
 
 // KeyReleaseResult - The release result, containing the released key.
@@ -925,33 +380,6 @@ type KeyReleaseResult struct {
 type KeyRestoreParameters struct {
 	// REQUIRED; The backup blob associated with a key bundle.
 	KeyBundleBackup []byte `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyRestoreParameters.
-func (k KeyRestoreParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", k.KeyBundleBackup, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyRestoreParameters.
-func (k *KeyRestoreParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &k.KeyBundleBackup, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KeyRotationPolicy - Management policy for a key.
@@ -968,15 +396,6 @@ type KeyRotationPolicy struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicy.
-func (k KeyRotationPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", k.Attributes)
-	populate(objectMap, "id", k.ID)
-	populate(objectMap, "lifetimeActions", k.LifetimeActions)
-	return json.Marshal(objectMap)
-}
-
 // KeyRotationPolicyAttributes - The key rotation policy attributes.
 type KeyRotationPolicyAttributes struct {
 	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples:
@@ -990,41 +409,6 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicyAttributes.
-func (k KeyRotationPolicyAttributes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeUnix(objectMap, "created", k.Created)
-	populate(objectMap, "expiryTime", k.ExpiryTime)
-	populateTimeUnix(objectMap, "updated", k.Updated)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyRotationPolicyAttributes.
-func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "created":
-			err = unpopulateTimeUnix(val, &k.Created)
-			delete(rawMsg, key)
-		case "expiryTime":
-			err = unpopulate(val, &k.ExpiryTime)
-			delete(rawMsg, key)
-		case "updated":
-			err = unpopulateTimeUnix(val, &k.Updated)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeySignParameters - The key operations parameters.
 type KeySignParameters struct {
 	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
@@ -1032,37 +416,6 @@ type KeySignParameters struct {
 
 	// REQUIRED
 	Value []byte `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeySignParameters.
-func (k KeySignParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", k.Algorithm)
-	populateByteArray(objectMap, "value", k.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeySignParameters.
-func (k *KeySignParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KeyUpdateParameters - The key update parameters.
@@ -1078,16 +431,6 @@ type KeyUpdateParameters struct {
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type KeyUpdateParameters.
-func (k KeyUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "attributes", k.KeyAttributes)
-	populate(objectMap, "key_ops", k.KeyOps)
-	populate(objectMap, "release_policy", k.ReleasePolicy)
-	populate(objectMap, "tags", k.Tags)
-	return json.Marshal(objectMap)
 }
 
 // KeyVaultClientBackupKeyOptions contains the optional parameters for the KeyVaultClient.BackupKey method.
@@ -1112,11 +455,6 @@ type KeyVaultClientDeleteKeyOptions struct {
 
 // KeyVaultClientEncryptOptions contains the optional parameters for the KeyVaultClient.Encrypt method.
 type KeyVaultClientEncryptOptions struct {
-	// placeholder for future optional parameters
-}
-
-// KeyVaultClientExportOptions contains the optional parameters for the KeyVaultClient.Export method.
-type KeyVaultClientExportOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1238,41 +576,6 @@ type KeyVerifyParameters struct {
 	Signature []byte `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyVerifyParameters.
-func (k KeyVerifyParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", k.Algorithm)
-	populateByteArray(objectMap, "digest", k.Digest, runtime.Base64URLFormat)
-	populateByteArray(objectMap, "value", k.Signature, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVerifyParameters.
-func (k *KeyVerifyParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "alg":
-			err = unpopulate(val, &k.Algorithm)
-			delete(rawMsg, key)
-		case "digest":
-			err = runtime.DecodeByteArray(string(val), &k.Digest, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &k.Signature, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyVerifyResult - The key verify result.
 type KeyVerifyResult struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
@@ -1304,340 +607,8 @@ type LifetimeActionsType struct {
 	Type *ActionType `json:"type,omitempty"`
 }
 
-// Permission - Role definition permissions.
-type Permission struct {
-	// Action permissions that are granted.
-	Actions []*string `json:"actions,omitempty"`
-
-	// Data action permissions that are granted.
-	DataActions []*DataAction `json:"dataActions,omitempty"`
-
-	// Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
-	NotActions []*string `json:"notActions,omitempty"`
-
-	// Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
-	NotDataActions []*DataAction `json:"notDataActions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Permission.
-func (p Permission) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", p.Actions)
-	populate(objectMap, "dataActions", p.DataActions)
-	populate(objectMap, "notActions", p.NotActions)
-	populate(objectMap, "notDataActions", p.NotDataActions)
-	return json.Marshal(objectMap)
-}
-
 // RandomBytes - The get random bytes response object containing the bytes.
 type RandomBytes struct {
 	// REQUIRED; The bytes encoded as a base64url string.
 	Value []byte `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RandomBytes.
-func (r RandomBytes) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", r.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RandomBytes.
-func (r *RandomBytes) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &r.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// RoleAssignment - Role Assignments
-type RoleAssignment struct {
-	// Role assignment properties.
-	Properties *RoleAssignmentPropertiesWithScope `json:"properties,omitempty"`
-
-	// READ-ONLY; The role assignment ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role assignment type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleAssignmentCreateParameters - Role assignment create parameters.
-type RoleAssignmentCreateParameters struct {
-	// REQUIRED; Role assignment properties.
-	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
-}
-
-// RoleAssignmentFilter - Role Assignments filter
-type RoleAssignmentFilter struct {
-	// Returns role assignment of the specific principal.
-	PrincipalID *string `json:"principalId,omitempty"`
-}
-
-// RoleAssignmentListResult - Role assignment list operation result.
-type RoleAssignmentListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role assignment list.
-	Value []*RoleAssignment `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleAssignmentListResult.
-func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RoleAssignmentProperties - Role assignment properties.
-type RoleAssignmentProperties struct {
-	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user,
-	// service principal, or security group.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// REQUIRED; The role definition ID used in the role assignment.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-}
-
-// RoleAssignmentPropertiesWithScope - Role assignment properties with scope.
-type RoleAssignmentPropertiesWithScope struct {
-	// The principal ID.
-	PrincipalID *string `json:"principalId,omitempty"`
-
-	// The role definition ID.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
-
-	// The role scope.
-	Scope *RoleScope `json:"scope,omitempty"`
-}
-
-// RoleAssignmentsClientCreateOptions contains the optional parameters for the RoleAssignmentsClient.Create method.
-type RoleAssignmentsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientDeleteOptions contains the optional parameters for the RoleAssignmentsClient.Delete method.
-type RoleAssignmentsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientGetOptions contains the optional parameters for the RoleAssignmentsClient.Get method.
-type RoleAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleAssignmentsClientListForScopeOptions contains the optional parameters for the RoleAssignmentsClient.ListForScope method.
-type RoleAssignmentsClientListForScopeOptions struct {
-	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId
-	// eq {id} to return all role assignments at, above or below the
-	// scope for the specified principal.
-	Filter *string
-}
-
-// RoleDefinition - Role definition.
-type RoleDefinition struct {
-	// Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; The role definition ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; The role definition type.
-	Type *RoleDefinitionType `json:"type,omitempty" azure:"ro"`
-}
-
-// RoleDefinitionCreateParameters - Role definition create parameters.
-type RoleDefinitionCreateParameters struct {
-	// REQUIRED; Role definition properties.
-	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
-}
-
-// RoleDefinitionFilter - Role Definitions filter
-type RoleDefinitionFilter struct {
-	// Returns role definition with the specific name.
-	RoleName *string `json:"roleName,omitempty"`
-}
-
-// RoleDefinitionListResult - Role definition list operation result.
-type RoleDefinitionListResult struct {
-	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// Role definition list.
-	Value []*RoleDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionListResult.
-func (r RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// RoleDefinitionProperties - Role definition properties.
-type RoleDefinitionProperties struct {
-	// Role definition assignable scopes.
-	AssignableScopes []*RoleScope `json:"assignableScopes,omitempty"`
-
-	// The role definition description.
-	Description *string `json:"description,omitempty"`
-
-	// Role definition permissions.
-	Permissions []*Permission `json:"permissions,omitempty"`
-
-	// The role name.
-	RoleName *string `json:"roleName,omitempty"`
-
-	// The role type.
-	RoleType *RoleType `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionProperties.
-func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignableScopes", r.AssignableScopes)
-	populate(objectMap, "description", r.Description)
-	populate(objectMap, "permissions", r.Permissions)
-	populate(objectMap, "roleName", r.RoleName)
-	populate(objectMap, "type", r.RoleType)
-	return json.Marshal(objectMap)
-}
-
-// RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
-// method.
-type RoleDefinitionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
-type RoleDefinitionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
-type RoleDefinitionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
-type RoleDefinitionsClientListOptions struct {
-	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-	Filter *string
-}
-
-type SecurityDomainJSONWebKey struct {
-	// REQUIRED; Algorithm intended for use with the key.
-	Alg *string `json:"alg,omitempty"`
-
-	// REQUIRED; RSA public exponent.
-	E *string `json:"e,omitempty"`
-
-	// REQUIRED
-	KeyOps []*string `json:"key_ops,omitempty"`
-
-	// REQUIRED; Key identifier.
-	Kid *string `json:"kid,omitempty"`
-
-	// REQUIRED; JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	// For Security Domain this value must be RSA.
-	Kty *string `json:"kty,omitempty"`
-
-	// REQUIRED; RSA modulus.
-	N *string `json:"n,omitempty"`
-
-	// REQUIRED; X509 certificate chain parameter
-	X5C []*string `json:"x5c,omitempty"`
-
-	// REQUIRED; X509 certificate SHA256 thumbprint.
-	X5TS256 *string `json:"x5t#S256,omitempty"`
-
-	// Public Key Use Parameter. This is optional and if present must be enc.
-	Use *string `json:"use,omitempty"`
-
-	// X509 certificate SHA1 thumbprint. This is optional.
-	X5T *string `json:"x5t,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SecurityDomainJSONWebKey.
-func (s SecurityDomainJSONWebKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "alg", s.Alg)
-	populate(objectMap, "e", s.E)
-	populate(objectMap, "key_ops", s.KeyOps)
-	populate(objectMap, "kid", s.Kid)
-	populate(objectMap, "kty", s.Kty)
-	populate(objectMap, "n", s.N)
-	populate(objectMap, "use", s.Use)
-	populate(objectMap, "x5c", s.X5C)
-	populate(objectMap, "x5t", s.X5T)
-	populate(objectMap, "x5t#S256", s.X5TS256)
-	return json.Marshal(objectMap)
-}
-
-// SecurityDomainObject - The Security Domain.
-type SecurityDomainObject struct {
-	// REQUIRED; The Security Domain.
-	Value *string `json:"value,omitempty"`
-}
-
-type SecurityDomainOperationStatus struct {
-	// operation status
-	Status        *OperationStatus `json:"status,omitempty"`
-	StatusDetails *string          `json:"status_details,omitempty"`
-}
-
-type TransferKey struct {
-	// REQUIRED; Specifies the transfer key in JWK format
-	TransferKey *SecurityDomainJSONWebKey `json:"transfer_key,omitempty"`
-
-	// Specifies the format of the transfer key
-	KeyFormat *string `json:"key_format,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
-	if azcore.IsNullValue(b) {
-		m[k] = nil
-	} else if len(b) == 0 {
-		return
-	} else {
-		m[k] = runtime.EncodeByteArray(b, f)
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

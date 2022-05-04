@@ -1,18 +1,23 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package azblob
 
 import (
+	"bytes"
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"io/ioutil"
+	"strconv"
 	"strings"
 )
 
 func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	_context := getTestContext(testName)
@@ -22,30 +27,30 @@ func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	bbClient := createNewBlockBlob(_assert, generateBlobName(testName), containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+	bbClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
 
 	blobProp, _ := bbClient.GetProperties(ctx, nil)
 
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
+	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 		},
 	}
 	uploadResp, err := bbClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
-	_assert.Nil(err)
-	_assert.NotNil(uploadResp.VersionID)
+	_require.Nil(err)
+	_require.NotNil(uploadResp.VersionID)
 	blobProp, _ = bbClient.GetProperties(ctx, nil)
-	_assert.EqualValues(uploadResp.VersionID, blobProp.VersionID)
-	_assert.EqualValues(uploadResp.LastModified, blobProp.LastModified)
-	_assert.Equal(*uploadResp.ETag, *blobProp.ETag)
-	_assert.Equal(*blobProp.IsCurrentVersion, true)
+	_require.EqualValues(uploadResp.VersionID, blobProp.VersionID)
+	_require.EqualValues(uploadResp.LastModified, blobProp.LastModified)
+	_require.Equal(*uploadResp.ETag, *blobProp.ETag)
+	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
 func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	_context := getTestContext(testName)
@@ -55,31 +60,31 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
-	abClient := createNewAppendBlob(_assert, generateBlobName(testName), containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+	abClient := createNewAppendBlob(_require, generateBlobName(testName), containerClient)
 
 	blobProp, _ := abClient.GetProperties(ctx, nil)
 
-	createAppendBlobOptions := CreateAppendBlobOptions{
+	createAppendBlobOptions := AppendBlobCreateOptions{
 		Metadata: basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 		},
 	}
 	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-	_assert.Nil(err)
-	_assert.NotNil(createResp.VersionID)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
 	blobProp, _ = abClient.GetProperties(ctx, nil)
-	_assert.EqualValues(createResp.VersionID, blobProp.VersionID)
-	_assert.EqualValues(createResp.LastModified, blobProp.LastModified)
-	_assert.Equal(*createResp.ETag, *blobProp.ETag)
-	_assert.Equal(*blobProp.IsCurrentVersion, true)
+	_require.EqualValues(createResp.VersionID, blobProp.VersionID)
+	_require.EqualValues(createResp.LastModified, blobProp.LastModified)
+	_require.Equal(*createResp.ETag, *blobProp.ETag)
+	_require.Equal(*blobProp.IsCurrentVersion, true)
 }
 
 //nolint
 //func (s *azblobUnrecordedTestSuite) TestSetBlobMetadataReturnsVID() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -88,41 +93,41 @@ func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //
 //	bbName := generateName(testName)
-//	bbClient := createNewBlockBlob(_assert, bbName, containerClient)
+//	bbClient := createNewBlockBlob(_require, bbName, containerClient)
 //
 //	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
 //	resp, err := bbClient.SetMetadata(ctx, metadata, nil)
-//	_assert.Nil(err)
-//	_assert.NotNil(resp.VersionID)
+//	_require.Nil(err)
+//	_require.NotNil(resp.VersionID)
 //
-//	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+//	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 //		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata},
 //	})
 //
 //	if !pager.NextPage(ctx) {
-//		_assert.Nil(pager.Err()) // check for an error first
+//		_require.Nil(pager.Err()) // check for an error first
 //		s.T().Fail()             // no page was gotten
 //	}
 //
 //	pageResp := pager.PageResponse()
 //
-//	_assert.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
+//	_require.NotNil(pageResp.EnumerationResults.Segment.BlobItems)
 //	blobList := pageResp.EnumerationResults.Segment.BlobItems
-//	_assert.Len(blobList, 1)
+//	_require.Len(blobList, 1)
 //	blobResp1 := blobList[0]
-//	_assert.Equal(*blobResp1.Name, bbName)
-//	_assert.NotNil(blobResp1.Metadata.AdditionalProperties)
-//	_assert.Len(blobResp1.Metadata.AdditionalProperties, 2)
+//	_require.Equal(*blobResp1.Name, bbName)
+//	_require.NotNil(blobResp1.Metadata.AdditionalProperties)
+//	_require.Len(blobResp1.Metadata.AdditionalProperties, 2)
 //	// _assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
 //
 //}
 
 func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	_context := getTestContext(testName)
@@ -132,30 +137,32 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
 	data := []rune("-._/()$=',~0123456789")
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
-		blobURL := containerClient.NewBlockBlobClient(blobName)
-		resp, err := blobURL.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
-		_assert.Nil(err)
-		_assert.NotNil(resp.VersionID)
+		blobClient, _ := containerClient.NewBlockBlobClient(blobName)
+		resp, err := blobClient.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
+		_require.Nil(err)
+		_require.NotNil(resp.VersionID)
 
-		dResp, err := blobURL.WithVersionID(*resp.VersionID).Download(ctx, nil)
-		_assert.Nil(err)
-		d1, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
-		_assert.Nil(err)
-		_assert.NotEqual(*dResp.Version, "")
-		_assert.EqualValues(string(d1), string(data[i]))
+		blobClientWithVersionID, err := blobClient.WithVersionID(*resp.VersionID)
+		_require.Nil(err)
+		dResp, err := blobClientWithVersionID.Download(ctx, nil)
+		_require.Nil(err)
+		d1, err := ioutil.ReadAll(dResp.Body(nil))
+		_require.Nil(err)
+		_require.NotEqual(*dResp.Version, "")
+		_require.EqualValues(string(d1), string(data[i]))
 		versionId := dResp.RawResponse.Header.Get("x-ms-version-id")
-		_assert.NotNil(versionId)
-		_assert.Equal(versionId, *resp.VersionID)
+		_require.NotNil(versionId)
+		_require.Equal(versionId, *resp.VersionID)
 	}
 }
 
 //func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
 //	_context := getTestContext(testName)
@@ -165,24 +172,24 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &UploadBlockBlobOptions{
+//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
-//	_assert.Nil(err)
-//	_assert.NotNil(uploadResp.VersionID)
+//	_require.Nil(err)
+//	_require.NotNil(uploadResp.VersionID)
 //	versionID1 := uploadResp.VersionID
 //
-//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &UploadBlockBlobOptions{
+//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
-//	_assert.Nil(err)
-//	_assert.NotNil(uploadResp.VersionID)
+//	_require.Nil(err)
+//	_require.NotNil(uploadResp.VersionID)
 //
-//	listPager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
+//	listPager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
 //		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
 //	})
 //
@@ -200,16 +207,16 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //			fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name, snapTime)
 //		}
 //	}
-//	_assert.Nil(listPager.Err())
-//	_assert.Len(count, 2)
+//	_require.Nil(listPager.Err())
+//	_require.Len(count, 2)
 //
 //	// Deleting previous version snapshot.
 //	deleteResp, err := blobURL.WithVersionID(versionID1).Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(deleteResp.StatusCode(), chk.Equals, 202)
 //
 //	listBlobsResp, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true}})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(listBlobsResp.Segment.BlobItems, chk.NotNil)
 //	if len(listBlobsResp.Segment.BlobItems) != 1 {
 //		s.T().Fail()
@@ -217,7 +224,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //}
 //
 //func (s *azblobTestSuite) TestDeleteSpecificBlobVersionWithBlobSAS() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
 //	_context := getTestContext(testName)
@@ -227,17 +234,17 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //
 //	resp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	versionId := resp.VersionID
 //	_assert(versionId, chk.NotNil)
 //
 //	resp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.VersionID, chk.NotNil)
 //
 //	blobParts := NewBlobURLParts(blobURL.URL())
@@ -258,97 +265,82 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_assert(deleteResp, chk.IsNil)
 //
 //	listBlobResp, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true}})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	for _, blob := range listBlobResp.Segment.BlobItems {
 //		_assert(blob.VersionID, chk.Not(chk.Equals), versionId)
 //	}
 //}
-//
-//func (s *azblobTestSuite) TestDownloadSpecificBlobVersion() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//	blobURL, _ := getBlockBlobClient(c, containerClient)
-//
-//	blockBlobUploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(blockBlobUploadResp, chk.NotNil)
-//	versionId1 := blockBlobUploadResp.VersionID
-//
-//	blockBlobUploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(blockBlobUploadResp, chk.NotNil)
-//	versionId2 := blockBlobUploadResp.VersionID
-//	_assert(blockBlobUploadResp.VersionID, chk.NotNil)
-//
-//	// Download previous version of snapshot.
-//	blobURL = blobURL.WithVersionID(versionId1)
-//	blockBlobDeleteResp, err := blobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	data, err := ioutil.ReadAll(blockBlobDeleteResp.Response().Body)
-//	_assert(string(data), chk.Equals, "data")
-//
-//	// Download current version of snapshot.
-//	blobURL = blobURL.WithVersionID(versionId2)
-//	blockBlobDeleteResp, err = blobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	data, err = ioutil.ReadAll(blockBlobDeleteResp.Response().Body)
-//	_assert(string(data), chk.Equals, "updated_data")
-//}
-//
-//func (s *azblobTestSuite) TestCreateBlobSnapshotReturnsVID() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
-//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(uploadResp.VersionID, chk.NotNil)
-//
-//	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	_assert(csResp.VersionID, chk.NotNil)
-//	lbResp, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{
-//		Details: BlobListingDetails{Versions: true, Snapshots: true},
-//	})
-//	_assert(lbResp, chk.NotNil)
-//	if len(lbResp.Segment.BlobItems) < 2 {
-//		s.T().Fail()
-//	}
-//
-//	_, err = blobURL.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
-//	lbResp, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{
-//		Details: BlobListingDetails{Versions: true, Snapshots: true},
-//	})
-//	_assert(lbResp, chk.NotNil)
-//	if len(lbResp.Segment.BlobItems) < 2 {
-//		s.T().Fail()
-//	}
-//	for _, blob := range lbResp.Segment.BlobItems {
-//		_assert(blob.Snapshot, chk.Equals, "")
-//	}
-//}
+func (s *azblobTestSuite) TestDeleteSpecificBlobVersion() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+
+	versions := make([]string, 0)
+	for i := 0; i < 5; i++ {
+		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &BlockBlobUploadOptions{
+			Metadata: basicMetadata,
+		})
+		_require.Nil(err)
+		_require.NotNil(uploadResp.VersionID)
+		versions = append(versions, *uploadResp.VersionID)
+	}
+
+	listPager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
+	})
+
+	found := make([]*BlobItemInternal, 0)
+	for listPager.NextPage(ctx) {
+		resp := listPager.PageResponse()
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Nil(listPager.Err())
+	_require.Len(found, 5)
+
+	// Deleting the 2nd and 3rd versions
+	for i := 0; i < 3; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		deleteResp, err := bbClientWithVersionID.Delete(ctx, nil)
+		_require.Nil(err)
+		_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+	}
+
+	listPager = containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*BlobItemInternal, 0)
+	for listPager.NextPage(ctx) {
+		resp := listPager.PageResponse()
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Nil(listPager.Err())
+	_require.Len(found, 2)
+
+	for i := 3; i < 5; i++ {
+		bbClientWithVersionID, err := bbClient.WithVersionID(versions[i])
+		_require.Nil(err)
+		downloadResp, err := bbClientWithVersionID.Download(ctx, nil)
+		_require.Nil(err)
+		destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+		_require.Nil(err)
+		_require.EqualValues(destData, "data"+strconv.Itoa(i))
+	}
+}
+
 //
 //func (s *azblobTestSuite) TestCopyBlobFromURLWithSASReturnsVID() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
 //	_context := getTestContext(testName)
@@ -358,8 +350,8 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //
 //	testSize := 4 * 1024 * 1024 // 4MB
 //	r, sourceData := getRandomDataAndReader(testSize)
@@ -369,7 +361,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	destBlob := container.NewBlockBlobClient(generateBlobName())
 //
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, HTTPHeaders{}, Metadata{}, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(uploadSrcResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(uploadSrcResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //
@@ -389,7 +381,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //
 //	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{"foo": "bar"}, ModifiedAccessConditions{}, BlobAccessConditions{}, sourceDataMD5Value[:], DefaultAccessTier, nil)
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
 //	_assert(resp.Version(), chk.Not(chk.Equals), "")
 //	_assert(resp.CopyID(), chk.Not(chk.Equals), "")
@@ -397,18 +389,18 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	_assert(resp.VersionID, chk.NotNil)
 //
 //	downloadResp, err := destBlob.BlobURL.Download(ctx, 0, CountToEnd, BlobAccessConditions{}, false, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	_assert.Nil(err)
+//	_require.Nil(err)
+//	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
+//	_require.Nil(err)
 //	_assert(destData, chk.DeepEquals, sourceData)
 //	_assert(downloadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //	_assert(len(downloadResp.NewMetadata()), chk.Equals, 1)
 //	_, badMD5 := getRandomDataAndReader(16)
 //	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, badMD5, DefaultAccessTier, nil)
-//	_assert.NotNil(err)
+//	_require.NotNil(err)
 //
 //	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, nil, DefaultAccessTier, nil)
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(resp.Response().StatusCode, chk.Equals, 202)
 //	_assert(resp.XMsContentCRC64(), chk.Not(chk.Equals), "")
 //	_assert(resp.Response().Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
@@ -416,7 +408,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //}
 //
 //func (s *azblobTestSuite) TestCreateBlockBlobReturnsVID() {
-//	_assert := assert.New(s.T())
+//	_require := require.New(s.T())
 //	testName := s.T().Name()
 //
 //	_context := getTestContext(testName)
@@ -426,8 +418,8 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	}
 //
 //	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
 //
 //	testSize := 2 * 1024 * 1024 // 1MB
 //	r, _ := getRandomDataAndReader(testSize)
@@ -436,30 +428,30 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //
 //	// Prepare source blob for copy.
 //	uploadResp, err := blobURL.Upload(ctx, r, HTTPHeaders{}, Metadata{}, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(uploadResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(uploadResp.rawResponse.Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
 //	_assert(uploadResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //
 //	csResp, err := blobURL.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(csResp.Response().StatusCode, chk.Equals, 201)
 //	_assert(csResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //
 //	listBlobResp, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(listBlobResp.rawResponse.Header.Get("x-ms-request-id"), chk.NotNil)
 //	if len(listBlobResp.Segment.BlobItems) < 2 {
 //		s.T().Fail()
 //	}
 //
 //	deleteResp, err := blobURL.Delete(ctx, DeleteSnapshotsOptionOnly, BlobAccessConditions{})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(deleteResp.Response().StatusCode, chk.Equals, 202)
 //	_assert(deleteResp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //
 //	listBlobResp, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Versions: true}})
-//	_assert.Nil(err)
+//	_require.Nil(err)
 //	_assert(listBlobResp.rawResponse.Header.Get("x-ms-request-id"), chk.NotNil)
 //	if len(listBlobResp.Segment.BlobItems) == 0 {
 //		s.T().Fail()
@@ -469,7 +461,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //}
 
 func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
 
 	_context := getTestContext(testName)
@@ -479,10 +471,10 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
@@ -490,26 +482,87 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
-		_assert.Nil(err)
-		_assert.Equal(resp.RawResponse.StatusCode, 201)
-		_assert.NotNil(resp.Version)
-		_assert.NotEqual(*resp.Version, "")
+		_require.Nil(err)
+		_require.Equal(resp.RawResponse.StatusCode, 201)
+		_require.NotNil(resp.Version)
+		_require.NotEqual(*resp.Version, "")
 	}
 
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, nil)
-	_assert.Nil(err)
-	_assert.NotNil(commitResp.VersionID)
+	_require.Nil(err)
+	_require.NotNil(commitResp.VersionID)
 
 	contentResp, err := bbClient.Download(ctx, nil)
-	_assert.Nil(err)
-	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
-	_assert.Nil(err)
-	_assert.EqualValues(contentData, []uint8(strings.Join(data, "")))
+	_require.Nil(err)
+	contentData, err := ioutil.ReadAll(contentResp.Body(nil))
+	_require.Nil(err)
+	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestCreateBlockBlobReturnsVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	testSize := 2 * 1024 * 1024 // 1MB
+	r, _ := getRandomDataAndReader(testSize)
+	ctx := context.Background() // Use default Background context
+	bbClient, _ := containerClient.NewBlockBlobClient(generateBlobName(testName))
+
+	// Prepare source blob for copy.
+	uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(r), nil)
+	_require.Nil(err)
+	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	_require.NotNil(uploadResp.VersionID)
+
+	csResp, err := bbClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(csResp.RawResponse.StatusCode, 201)
+	_require.NotNil(csResp.VersionID)
+
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
+	})
+
+	found := make([]*BlobItemInternal, 0)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Nil(pager.Err())
+	_require.Len(found, 2)
+
+	deleteSnapshotsOnly := DeleteSnapshotsOptionTypeOnly
+	deleteResp, err := bbClient.Delete(ctx, &BlobDeleteOptions{DeleteSnapshots: &deleteSnapshotsOnly})
+	_require.Nil(err)
+	_require.Equal(deleteResp.RawResponse.StatusCode, 202)
+
+	pager = containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
+		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots, ListBlobsIncludeItemVersions},
+	})
+
+	found = make([]*BlobItemInternal, 0)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		found = append(found, resp.Segment.BlobItems...)
+	}
+	_require.Nil(pager.Err())
+	_require.NotEqual(len(found), 0)
 }
 
 func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
-	_assert := assert.New(s.T())
+	_require := require.New(s.T())
 	testName := s.T().Name()
+
 	_context := getTestContext(testName)
 	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
@@ -517,26 +570,26 @@ func (s *azblobTestSuite) TestCreatePageBlobReturnsVID() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_assert, containerName, svcClient)
-	defer deleteContainer(_assert, containerClient)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
 
-	pbClob := createNewPageBlob(_assert, generateBlobName(testName), containerClient)
+	pbClob := createNewPageBlob(_require, generateBlobName(testName), containerClient)
 
 	contentSize := 1 * 1024
 	r, _ := generateData(contentSize)
 	offset, count := int64(0), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{
+	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := pbClob.UploadPages(context.Background(), r, &uploadPagesOptions)
-	_assert.Nil(err)
-	_assert.Equal(putResp.RawResponse.StatusCode, 201)
-	_assert.Equal(putResp.LastModified.IsZero(), false)
-	_assert.NotNil(putResp.ETag)
-	_assert.NotEqual(putResp.Version, "")
-	_assert.NotNil(putResp.RawResponse.Header.Get("x-ms-version-id"))
+	_require.Nil(err)
+	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	_require.Equal(putResp.LastModified.IsZero(), false)
+	_require.NotNil(putResp.ETag)
+	_require.NotEqual(putResp.Version, "")
+	_require.NotNil(putResp.RawResponse.Header.Get("x-ms-version-id"))
 
 	gpResp, err := pbClob.GetProperties(ctx, nil)
-	_assert.Nil(err)
-	_assert.NotNil(gpResp)
+	_require.Nil(err)
+	_require.NotNil(gpResp)
 }

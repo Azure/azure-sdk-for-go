@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagementClient struct {
 // subscriptionID - The Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CheckServiceProviderAvailability - Checks if the peering service provider is present within 1000 miles of customer's location
@@ -72,7 +77,7 @@ func (client *ManagementClient) CheckServiceProviderAvailability(ctx context.Con
 
 // checkServiceProviderAvailabilityCreateRequest creates the CheckServiceProviderAvailability request.
 func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput, options *ManagementClientCheckServiceProviderAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/CheckServiceProviderAvailability"
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/checkServiceProviderAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -82,7 +87,7 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-08-01-preview")
+	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput)
@@ -90,7 +95,7 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 
 // checkServiceProviderAvailabilityHandleResponse handles the CheckServiceProviderAvailability response.
 func (client *ManagementClient) checkServiceProviderAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckServiceProviderAvailabilityResponse, error) {
-	result := ManagementClientCheckServiceProviderAvailabilityResponse{RawResponse: resp}
+	result := ManagementClientCheckServiceProviderAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err
 	}

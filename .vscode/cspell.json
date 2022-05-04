@@ -18,6 +18,7 @@
     ],
     "words": [
         "azcore",
+        "azappconfig",
         "azidentity",
         "unpopulate",
         "etag",

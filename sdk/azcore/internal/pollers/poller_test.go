@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -70,8 +70,15 @@ type fakePoller struct {
 	Code int
 }
 
-func (f *fakePoller) Done() bool {
-	return f.Code == http.StatusOK || f.Code == http.StatusNoContent
+func (f *fakePoller) State() OperationState {
+	switch f.Code {
+	case http.StatusAccepted:
+		return OperationStateInProgress
+	case http.StatusOK, http.StatusNoContent:
+		return OperationStateSucceeded
+	default:
+		return OperationStateFailed
+	}
 }
 
 func (f *fakePoller) Update(resp *http.Response) error {
@@ -87,16 +94,11 @@ func (f *fakePoller) URL() string {
 	return f.Ep
 }
 
-func (f *fakePoller) Status() string {
-	switch f.Code {
-	case http.StatusAccepted:
-		return StatusInProgress
-	case http.StatusOK, http.StatusNoContent:
-		return StatusSucceeded
-	case http.StatusCreated:
-		return StatusCanceled
-	default:
-		return StatusFailed
+func newFakePoller(endpoint string, respCode int, finalGET string) *fakePoller {
+	return &fakePoller{
+		Ep:   endpoint,
+		Fg:   finalGET,
+		Code: respCode,
 	}
 }
 
@@ -105,13 +107,13 @@ func TestNewPoller(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusNoContent)) // terminal
 	defer close()
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 		Header:     http.Header{},
 	}
 	firstResp.Header.Set(shared.HeaderRetryAfter, "1")
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -158,11 +160,11 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))                                                // terminal
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{ "shape": "round" }`))) // final GET
 	defer close()
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL(), Fg: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, srv.URL()), firstResp, pl)
 	if p.Done() {
 		t.Fatal("unexpected done")
 	}
@@ -194,13 +196,13 @@ func TestNewPollerFail1(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict)) // terminal
 	defer close()
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
-	var respErr *shared.ResponseError
+	var respErr *exported.ResponseError
 	if !errors.As(err, &respErr) {
 		t.Fatalf("unexpected error type %T", err)
 	}
@@ -217,13 +219,13 @@ func TestNewPollerFail2(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusCreated)) // terminal
 	defer close()
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
-	var respErr *shared.ResponseError
+	var respErr *exported.ResponseError
 	if !errors.As(err, &respErr) {
 		t.Fatalf("unexpected error type %T", err)
 	}
@@ -240,11 +242,11 @@ func TestNewPollerError(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendError(errors.New("fatal"))
 	defer close()
-	pl := pipeline.NewPipeline(srv)
+	pl := exported.NewPipeline(srv)
 	firstResp := &http.Response{
 		StatusCode: http.StatusAccepted,
 	}
-	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl)
+	p := NewPoller(newFakePoller(srv.URL(), firstResp.StatusCode, ""), firstResp, pl)
 	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")

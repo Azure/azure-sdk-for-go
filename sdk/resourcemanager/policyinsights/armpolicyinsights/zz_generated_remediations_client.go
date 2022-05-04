@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,31 +35,34 @@ type RemediationsClient struct {
 // subscriptionID - Microsoft Azure subscription ID.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RemediationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewRemediationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RemediationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &RemediationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CancelAtManagementGroup - Cancels a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientCancelAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CancelAtManagementGroup
 // method.
-func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (RemediationsClientCancelAtManagementGroupResponse, error) {
-	req, err := client.cancelAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (RemediationsClientCancelAtManagementGroupResponse, error) {
+	req, err := client.cancelAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientCancelAtManagementGroupResponse{}, err
 	}
@@ -73,12 +77,9 @@ func (client *RemediationsClient) CancelAtManagementGroup(ctx context.Context, m
 }
 
 // cancelAtManagementGroupCreateRequest creates the CancelAtManagementGroup request.
-func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientCancelAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/cancel"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -100,7 +101,7 @@ func (client *RemediationsClient) cancelAtManagementGroupCreateRequest(ctx conte
 
 // cancelAtManagementGroupHandleResponse handles the CancelAtManagementGroup response.
 func (client *RemediationsClient) cancelAtManagementGroupHandleResponse(resp *http.Response) (RemediationsClientCancelAtManagementGroupResponse, error) {
-	result := RemediationsClientCancelAtManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientCancelAtManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCancelAtManagementGroupResponse{}, err
 	}
@@ -149,7 +150,7 @@ func (client *RemediationsClient) cancelAtResourceCreateRequest(ctx context.Cont
 
 // cancelAtResourceHandleResponse handles the CancelAtResource response.
 func (client *RemediationsClient) cancelAtResourceHandleResponse(resp *http.Response) (RemediationsClientCancelAtResourceResponse, error) {
-	result := RemediationsClientCancelAtResourceResponse{RawResponse: resp}
+	result := RemediationsClientCancelAtResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCancelAtResourceResponse{}, err
 	}
@@ -205,7 +206,7 @@ func (client *RemediationsClient) cancelAtResourceGroupCreateRequest(ctx context
 
 // cancelAtResourceGroupHandleResponse handles the CancelAtResourceGroup response.
 func (client *RemediationsClient) cancelAtResourceGroupHandleResponse(resp *http.Response) (RemediationsClientCancelAtResourceGroupResponse, error) {
-	result := RemediationsClientCancelAtResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientCancelAtResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCancelAtResourceGroupResponse{}, err
 	}
@@ -256,7 +257,7 @@ func (client *RemediationsClient) cancelAtSubscriptionCreateRequest(ctx context.
 
 // cancelAtSubscriptionHandleResponse handles the CancelAtSubscription response.
 func (client *RemediationsClient) cancelAtSubscriptionHandleResponse(resp *http.Response) (RemediationsClientCancelAtSubscriptionResponse, error) {
-	result := RemediationsClientCancelAtSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientCancelAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCancelAtSubscriptionResponse{}, err
 	}
@@ -265,14 +266,13 @@ func (client *RemediationsClient) cancelAtSubscriptionHandleResponse(resp *http.
 
 // CreateOrUpdateAtManagementGroup - Creates or updates a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // parameters - The remediation parameters.
 // options - RemediationsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the RemediationsClient.CreateOrUpdateAtManagementGroup
 // method.
-func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
-	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, parameters, options)
+func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
+	req, err := client.createOrUpdateAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, parameters, options)
 	if err != nil {
 		return RemediationsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -287,12 +287,9 @@ func (client *RemediationsClient) CreateOrUpdateAtManagementGroup(ctx context.Co
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
-func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, parameters Remediation, options *RemediationsClientCreateOrUpdateAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -314,7 +311,7 @@ func (client *RemediationsClient) createOrUpdateAtManagementGroupCreateRequest(c
 
 // createOrUpdateAtManagementGroupHandleResponse handles the CreateOrUpdateAtManagementGroup response.
 func (client *RemediationsClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response) (RemediationsClientCreateOrUpdateAtManagementGroupResponse, error) {
-	result := RemediationsClientCreateOrUpdateAtManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientCreateOrUpdateAtManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -364,7 +361,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceCreateRequest(ctx cont
 
 // createOrUpdateAtResourceHandleResponse handles the CreateOrUpdateAtResource response.
 func (client *RemediationsClient) createOrUpdateAtResourceHandleResponse(resp *http.Response) (RemediationsClientCreateOrUpdateAtResourceResponse, error) {
-	result := RemediationsClientCreateOrUpdateAtResourceResponse{RawResponse: resp}
+	result := RemediationsClientCreateOrUpdateAtResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceResponse{}, err
 	}
@@ -421,7 +418,7 @@ func (client *RemediationsClient) createOrUpdateAtResourceGroupCreateRequest(ctx
 
 // createOrUpdateAtResourceGroupHandleResponse handles the CreateOrUpdateAtResourceGroup response.
 func (client *RemediationsClient) createOrUpdateAtResourceGroupHandleResponse(resp *http.Response) (RemediationsClientCreateOrUpdateAtResourceGroupResponse, error) {
-	result := RemediationsClientCreateOrUpdateAtResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientCreateOrUpdateAtResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCreateOrUpdateAtResourceGroupResponse{}, err
 	}
@@ -473,7 +470,7 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionCreateRequest(ctx 
 
 // createOrUpdateAtSubscriptionHandleResponse handles the CreateOrUpdateAtSubscription response.
 func (client *RemediationsClient) createOrUpdateAtSubscriptionHandleResponse(resp *http.Response) (RemediationsClientCreateOrUpdateAtSubscriptionResponse, error) {
-	result := RemediationsClientCreateOrUpdateAtSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientCreateOrUpdateAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientCreateOrUpdateAtSubscriptionResponse{}, err
 	}
@@ -482,13 +479,12 @@ func (client *RemediationsClient) createOrUpdateAtSubscriptionHandleResponse(res
 
 // DeleteAtManagementGroup - Deletes an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientDeleteAtManagementGroupOptions contains the optional parameters for the RemediationsClient.DeleteAtManagementGroup
 // method.
-func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (RemediationsClientDeleteAtManagementGroupResponse, error) {
-	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (RemediationsClientDeleteAtManagementGroupResponse, error) {
+	req, err := client.deleteAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientDeleteAtManagementGroupResponse{}, err
 	}
@@ -503,12 +499,9 @@ func (client *RemediationsClient) DeleteAtManagementGroup(ctx context.Context, m
 }
 
 // deleteAtManagementGroupCreateRequest creates the DeleteAtManagementGroup request.
-func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientDeleteAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -530,7 +523,7 @@ func (client *RemediationsClient) deleteAtManagementGroupCreateRequest(ctx conte
 
 // deleteAtManagementGroupHandleResponse handles the DeleteAtManagementGroup response.
 func (client *RemediationsClient) deleteAtManagementGroupHandleResponse(resp *http.Response) (RemediationsClientDeleteAtManagementGroupResponse, error) {
-	result := RemediationsClientDeleteAtManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientDeleteAtManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientDeleteAtManagementGroupResponse{}, err
 	}
@@ -579,7 +572,7 @@ func (client *RemediationsClient) deleteAtResourceCreateRequest(ctx context.Cont
 
 // deleteAtResourceHandleResponse handles the DeleteAtResource response.
 func (client *RemediationsClient) deleteAtResourceHandleResponse(resp *http.Response) (RemediationsClientDeleteAtResourceResponse, error) {
-	result := RemediationsClientDeleteAtResourceResponse{RawResponse: resp}
+	result := RemediationsClientDeleteAtResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientDeleteAtResourceResponse{}, err
 	}
@@ -635,7 +628,7 @@ func (client *RemediationsClient) deleteAtResourceGroupCreateRequest(ctx context
 
 // deleteAtResourceGroupHandleResponse handles the DeleteAtResourceGroup response.
 func (client *RemediationsClient) deleteAtResourceGroupHandleResponse(resp *http.Response) (RemediationsClientDeleteAtResourceGroupResponse, error) {
-	result := RemediationsClientDeleteAtResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientDeleteAtResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientDeleteAtResourceGroupResponse{}, err
 	}
@@ -686,7 +679,7 @@ func (client *RemediationsClient) deleteAtSubscriptionCreateRequest(ctx context.
 
 // deleteAtSubscriptionHandleResponse handles the DeleteAtSubscription response.
 func (client *RemediationsClient) deleteAtSubscriptionHandleResponse(resp *http.Response) (RemediationsClientDeleteAtSubscriptionResponse, error) {
-	result := RemediationsClientDeleteAtSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientDeleteAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientDeleteAtSubscriptionResponse{}, err
 	}
@@ -695,13 +688,12 @@ func (client *RemediationsClient) deleteAtSubscriptionHandleResponse(resp *http.
 
 // GetAtManagementGroup - Gets an existing remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
 // options - RemediationsClientGetAtManagementGroupOptions contains the optional parameters for the RemediationsClient.GetAtManagementGroup
 // method.
-func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (RemediationsClientGetAtManagementGroupResponse, error) {
-	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (RemediationsClientGetAtManagementGroupResponse, error) {
+	req, err := client.getAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, options)
 	if err != nil {
 		return RemediationsClientGetAtManagementGroupResponse{}, err
 	}
@@ -716,12 +708,9 @@ func (client *RemediationsClient) GetAtManagementGroup(ctx context.Context, mana
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
-func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (*policy.Request, error) {
+func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, options *RemediationsClientGetAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -743,7 +732,7 @@ func (client *RemediationsClient) getAtManagementGroupCreateRequest(ctx context.
 
 // getAtManagementGroupHandleResponse handles the GetAtManagementGroup response.
 func (client *RemediationsClient) getAtManagementGroupHandleResponse(resp *http.Response) (RemediationsClientGetAtManagementGroupResponse, error) {
-	result := RemediationsClientGetAtManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientGetAtManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientGetAtManagementGroupResponse{}, err
 	}
@@ -792,7 +781,7 @@ func (client *RemediationsClient) getAtResourceCreateRequest(ctx context.Context
 
 // getAtResourceHandleResponse handles the GetAtResource response.
 func (client *RemediationsClient) getAtResourceHandleResponse(resp *http.Response) (RemediationsClientGetAtResourceResponse, error) {
-	result := RemediationsClientGetAtResourceResponse{RawResponse: resp}
+	result := RemediationsClientGetAtResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientGetAtResourceResponse{}, err
 	}
@@ -848,7 +837,7 @@ func (client *RemediationsClient) getAtResourceGroupCreateRequest(ctx context.Co
 
 // getAtResourceGroupHandleResponse handles the GetAtResourceGroup response.
 func (client *RemediationsClient) getAtResourceGroupHandleResponse(resp *http.Response) (RemediationsClientGetAtResourceGroupResponse, error) {
-	result := RemediationsClientGetAtResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientGetAtResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientGetAtResourceGroupResponse{}, err
 	}
@@ -899,39 +888,53 @@ func (client *RemediationsClient) getAtSubscriptionCreateRequest(ctx context.Con
 
 // getAtSubscriptionHandleResponse handles the GetAtSubscription response.
 func (client *RemediationsClient) getAtSubscriptionHandleResponse(resp *http.Response) (RemediationsClientGetAtSubscriptionResponse, error) {
-	result := RemediationsClientGetAtSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientGetAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Remediation); err != nil {
 		return RemediationsClientGetAtSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// ListDeploymentsAtManagementGroup - Gets all deployments for a remediation at management group scope.
+// NewListDeploymentsAtManagementGroupPager - Gets all deployments for a remediation at management group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
 // remediationName - The name of the remediation.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtManagementGroup(managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtManagementGroupPager {
-	return &RemediationsClientListDeploymentsAtManagementGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeploymentsAtManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, remediationName, options)
+// options - RemediationsClientListDeploymentsAtManagementGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtManagementGroup
+// method.
+func (client *RemediationsClient) NewListDeploymentsAtManagementGroupPager(managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtManagementGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtManagementGroupResponse]{
+		More: func(page RemediationsClientListDeploymentsAtManagementGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListDeploymentsAtManagementGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationDeploymentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListDeploymentsAtManagementGroupResponse) (RemediationsClientListDeploymentsAtManagementGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDeploymentsAtManagementGroupCreateRequest(ctx, managementGroupID, remediationName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListDeploymentsAtManagementGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListDeploymentsAtManagementGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListDeploymentsAtManagementGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDeploymentsAtManagementGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDeploymentsAtManagementGroupCreateRequest creates the ListDeploymentsAtManagementGroup request.
-func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, remediationName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(ctx context.Context, managementGroupID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/listDeployments"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -945,8 +948,8 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -956,33 +959,51 @@ func (client *RemediationsClient) listDeploymentsAtManagementGroupCreateRequest(
 
 // listDeploymentsAtManagementGroupHandleResponse handles the ListDeploymentsAtManagementGroup response.
 func (client *RemediationsClient) listDeploymentsAtManagementGroupHandleResponse(resp *http.Response) (RemediationsClientListDeploymentsAtManagementGroupResponse, error) {
-	result := RemediationsClientListDeploymentsAtManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientListDeploymentsAtManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationDeploymentsListResult); err != nil {
 		return RemediationsClientListDeploymentsAtManagementGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ListDeploymentsAtResource - Gets all deployments for a remediation at resource scope.
+// NewListDeploymentsAtResourcePager - Gets all deployments for a remediation at resource scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
 // remediationName - The name of the remediation.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtResource(resourceID string, remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtResourcePager {
-	return &RemediationsClientListDeploymentsAtResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeploymentsAtResourceCreateRequest(ctx, resourceID, remediationName, options)
+// options - RemediationsClientListDeploymentsAtResourceOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResource
+// method.
+func (client *RemediationsClient) NewListDeploymentsAtResourcePager(resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceResponse]{
+		More: func(page RemediationsClientListDeploymentsAtResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListDeploymentsAtResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationDeploymentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListDeploymentsAtResourceResponse) (RemediationsClientListDeploymentsAtResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDeploymentsAtResourceCreateRequest(ctx, resourceID, remediationName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListDeploymentsAtResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListDeploymentsAtResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListDeploymentsAtResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDeploymentsAtResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDeploymentsAtResourceCreateRequest creates the ListDeploymentsAtResource request.
-func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx context.Context, resourceID string, remediationName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx context.Context, resourceID string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/listDeployments"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	if remediationName == "" {
@@ -994,8 +1015,8 @@ func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1005,33 +1026,51 @@ func (client *RemediationsClient) listDeploymentsAtResourceCreateRequest(ctx con
 
 // listDeploymentsAtResourceHandleResponse handles the ListDeploymentsAtResource response.
 func (client *RemediationsClient) listDeploymentsAtResourceHandleResponse(resp *http.Response) (RemediationsClientListDeploymentsAtResourceResponse, error) {
-	result := RemediationsClientListDeploymentsAtResourceResponse{RawResponse: resp}
+	result := RemediationsClientListDeploymentsAtResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationDeploymentsListResult); err != nil {
 		return RemediationsClientListDeploymentsAtResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// ListDeploymentsAtResourceGroup - Gets all deployments for a remediation at resource group scope.
+// NewListDeploymentsAtResourceGroupPager - Gets all deployments for a remediation at resource group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name.
 // remediationName - The name of the remediation.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtResourceGroup(resourceGroupName string, remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtResourceGroupPager {
-	return &RemediationsClientListDeploymentsAtResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeploymentsAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, options)
+// options - RemediationsClientListDeploymentsAtResourceGroupOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtResourceGroup
+// method.
+func (client *RemediationsClient) NewListDeploymentsAtResourceGroupPager(resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) *runtime.Pager[RemediationsClientListDeploymentsAtResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtResourceGroupResponse]{
+		More: func(page RemediationsClientListDeploymentsAtResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListDeploymentsAtResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationDeploymentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListDeploymentsAtResourceGroupResponse) (RemediationsClientListDeploymentsAtResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDeploymentsAtResourceGroupCreateRequest(ctx, resourceGroupName, remediationName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListDeploymentsAtResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListDeploymentsAtResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListDeploymentsAtResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDeploymentsAtResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDeploymentsAtResourceGroupCreateRequest creates the ListDeploymentsAtResourceGroup request.
-func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, remediationName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/listDeployments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1050,8 +1089,8 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1061,32 +1100,50 @@ func (client *RemediationsClient) listDeploymentsAtResourceGroupCreateRequest(ct
 
 // listDeploymentsAtResourceGroupHandleResponse handles the ListDeploymentsAtResourceGroup response.
 func (client *RemediationsClient) listDeploymentsAtResourceGroupHandleResponse(resp *http.Response) (RemediationsClientListDeploymentsAtResourceGroupResponse, error) {
-	result := RemediationsClientListDeploymentsAtResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientListDeploymentsAtResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationDeploymentsListResult); err != nil {
 		return RemediationsClientListDeploymentsAtResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ListDeploymentsAtSubscription - Gets all deployments for a remediation at subscription scope.
+// NewListDeploymentsAtSubscriptionPager - Gets all deployments for a remediation at subscription scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 // remediationName - The name of the remediation.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListDeploymentsAtSubscription(remediationName string, options *QueryOptions) *RemediationsClientListDeploymentsAtSubscriptionPager {
-	return &RemediationsClientListDeploymentsAtSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listDeploymentsAtSubscriptionCreateRequest(ctx, remediationName, options)
+// options - RemediationsClientListDeploymentsAtSubscriptionOptions contains the optional parameters for the RemediationsClient.ListDeploymentsAtSubscription
+// method.
+func (client *RemediationsClient) NewListDeploymentsAtSubscriptionPager(remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) *runtime.Pager[RemediationsClientListDeploymentsAtSubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListDeploymentsAtSubscriptionResponse]{
+		More: func(page RemediationsClientListDeploymentsAtSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListDeploymentsAtSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationDeploymentsListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListDeploymentsAtSubscriptionResponse) (RemediationsClientListDeploymentsAtSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listDeploymentsAtSubscriptionCreateRequest(ctx, remediationName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListDeploymentsAtSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListDeploymentsAtSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListDeploymentsAtSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listDeploymentsAtSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listDeploymentsAtSubscriptionCreateRequest creates the ListDeploymentsAtSubscription request.
-func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx context.Context, remediationName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx context.Context, remediationName string, queryOptions *QueryOptions, options *RemediationsClientListDeploymentsAtSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/remediations/{remediationName}/listDeployments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1101,8 +1158,8 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1112,38 +1169,52 @@ func (client *RemediationsClient) listDeploymentsAtSubscriptionCreateRequest(ctx
 
 // listDeploymentsAtSubscriptionHandleResponse handles the ListDeploymentsAtSubscription response.
 func (client *RemediationsClient) listDeploymentsAtSubscriptionHandleResponse(resp *http.Response) (RemediationsClientListDeploymentsAtSubscriptionResponse, error) {
-	result := RemediationsClientListDeploymentsAtSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientListDeploymentsAtSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationDeploymentsListResult); err != nil {
 		return RemediationsClientListDeploymentsAtSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// ListForManagementGroup - Gets all remediations for the management group.
+// NewListForManagementGroupPager - Gets all remediations for the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// managementGroupsNamespace - The namespace for Microsoft Management RP; only "Microsoft.Management" is allowed.
 // managementGroupID - Management group ID.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListForManagementGroup(managementGroupsNamespace Enum0, managementGroupID string, options *QueryOptions) *RemediationsClientListForManagementGroupPager {
-	return &RemediationsClientListForManagementGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForManagementGroupCreateRequest(ctx, managementGroupsNamespace, managementGroupID, options)
+// options - RemediationsClientListForManagementGroupOptions contains the optional parameters for the RemediationsClient.ListForManagementGroup
+// method.
+func (client *RemediationsClient) NewListForManagementGroupPager(managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) *runtime.Pager[RemediationsClientListForManagementGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForManagementGroupResponse]{
+		More: func(page RemediationsClientListForManagementGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListForManagementGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListForManagementGroupResponse) (RemediationsClientListForManagementGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForManagementGroupCreateRequest(ctx, managementGroupID, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListForManagementGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListForManagementGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListForManagementGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForManagementGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
-func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupsNamespace Enum0, managementGroupID string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, queryOptions *QueryOptions, options *RemediationsClientListForManagementGroupOptions) (*policy.Request, error) {
 	urlPath := "/providers/{managementGroupsNamespace}/managementGroups/{managementGroupId}/providers/Microsoft.PolicyInsights/remediations"
-	if managementGroupsNamespace == "" {
-		return nil, errors.New("parameter managementGroupsNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape(string(managementGroupsNamespace)))
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupsNamespace}", url.PathEscape("Microsoft.Management"))
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")
 	}
@@ -1153,11 +1224,11 @@ func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1167,32 +1238,50 @@ func (client *RemediationsClient) listForManagementGroupCreateRequest(ctx contex
 
 // listForManagementGroupHandleResponse handles the ListForManagementGroup response.
 func (client *RemediationsClient) listForManagementGroupHandleResponse(resp *http.Response) (RemediationsClientListForManagementGroupResponse, error) {
-	result := RemediationsClientListForManagementGroupResponse{RawResponse: resp}
+	result := RemediationsClientListForManagementGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationListResult); err != nil {
 		return RemediationsClientListForManagementGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ListForResource - Gets all remediations for a resource.
+// NewListForResourcePager - Gets all remediations for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceID - Resource ID.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListForResource(resourceID string, options *QueryOptions) *RemediationsClientListForResourcePager {
-	return &RemediationsClientListForResourcePager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceCreateRequest(ctx, resourceID, options)
+// options - RemediationsClientListForResourceOptions contains the optional parameters for the RemediationsClient.ListForResource
+// method.
+func (client *RemediationsClient) NewListForResourcePager(resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) *runtime.Pager[RemediationsClientListForResourceResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceResponse]{
+		More: func(page RemediationsClientListForResourceResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListForResourceResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListForResourceResponse) (RemediationsClientListForResourceResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceCreateRequest(ctx, resourceID, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListForResourceResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListForResourceResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListForResourceResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Context, resourceID string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Context, resourceID string, queryOptions *QueryOptions, options *RemediationsClientListForResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.PolicyInsights/remediations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
@@ -1200,11 +1289,11 @@ func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1214,32 +1303,50 @@ func (client *RemediationsClient) listForResourceCreateRequest(ctx context.Conte
 
 // listForResourceHandleResponse handles the ListForResource response.
 func (client *RemediationsClient) listForResourceHandleResponse(resp *http.Response) (RemediationsClientListForResourceResponse, error) {
-	result := RemediationsClientListForResourceResponse{RawResponse: resp}
+	result := RemediationsClientListForResourceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationListResult); err != nil {
 		return RemediationsClientListForResourceResponse{}, err
 	}
 	return result, nil
 }
 
-// ListForResourceGroup - Gets all remediations for the subscription.
+// NewListForResourceGroupPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Resource group name.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListForResourceGroup(resourceGroupName string, options *QueryOptions) *RemediationsClientListForResourceGroupPager {
-	return &RemediationsClientListForResourceGroupPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
+// options - RemediationsClientListForResourceGroupOptions contains the optional parameters for the RemediationsClient.ListForResourceGroup
+// method.
+func (client *RemediationsClient) NewListForResourceGroupPager(resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) *runtime.Pager[RemediationsClientListForResourceGroupResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForResourceGroupResponse]{
+		More: func(page RemediationsClientListForResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListForResourceGroupResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListForResourceGroupResponse) (RemediationsClientListForResourceGroupResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForResourceGroupCreateRequest(ctx, resourceGroupName, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListForResourceGroupResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListForResourceGroupResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListForResourceGroupResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForResourceGroupHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, queryOptions *QueryOptions, options *RemediationsClientListForResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/remediations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1254,11 +1361,11 @@ func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1268,31 +1375,49 @@ func (client *RemediationsClient) listForResourceGroupCreateRequest(ctx context.
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
 func (client *RemediationsClient) listForResourceGroupHandleResponse(resp *http.Response) (RemediationsClientListForResourceGroupResponse, error) {
-	result := RemediationsClientListForResourceGroupResponse{RawResponse: resp}
+	result := RemediationsClientListForResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationListResult); err != nil {
 		return RemediationsClientListForResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ListForSubscription - Gets all remediations for the subscription.
+// NewListForSubscriptionPager - Gets all remediations for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// options - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
-func (client *RemediationsClient) ListForSubscription(options *QueryOptions) *RemediationsClientListForSubscriptionPager {
-	return &RemediationsClientListForSubscriptionPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listForSubscriptionCreateRequest(ctx, options)
+// options - RemediationsClientListForSubscriptionOptions contains the optional parameters for the RemediationsClient.ListForSubscription
+// method.
+func (client *RemediationsClient) NewListForSubscriptionPager(queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) *runtime.Pager[RemediationsClientListForSubscriptionResponse] {
+	return runtime.NewPager(runtime.PageProcessor[RemediationsClientListForSubscriptionResponse]{
+		More: func(page RemediationsClientListForSubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp RemediationsClientListForSubscriptionResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.RemediationListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *RemediationsClientListForSubscriptionResponse) (RemediationsClientListForSubscriptionResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listForSubscriptionCreateRequest(ctx, queryOptions, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return RemediationsClientListForSubscriptionResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return RemediationsClientListForSubscriptionResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return RemediationsClientListForSubscriptionResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listForSubscriptionHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listForSubscriptionCreateRequest creates the ListForSubscription request.
-func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.Context, options *QueryOptions) (*policy.Request, error) {
+func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.Context, queryOptions *QueryOptions, options *RemediationsClientListForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/remediations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1303,11 +1428,11 @@ func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -1317,7 +1442,7 @@ func (client *RemediationsClient) listForSubscriptionCreateRequest(ctx context.C
 
 // listForSubscriptionHandleResponse handles the ListForSubscription response.
 func (client *RemediationsClient) listForSubscriptionHandleResponse(resp *http.Response) (RemediationsClientListForSubscriptionResponse, error) {
-	result := RemediationsClientListForSubscriptionResponse{RawResponse: resp}
+	result := RemediationsClientListForSubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemediationListResult); err != nil {
 		return RemediationsClientListForSubscriptionResponse{}, err
 	}

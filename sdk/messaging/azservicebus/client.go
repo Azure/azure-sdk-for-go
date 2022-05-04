@@ -7,30 +7,36 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
-	"fmt"
 	"net"
 	"sync"
 	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/devigned/tab"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
+	// NOTE: values need to be 64-bit aligned. Simplest way to make sure this happens
+	// is just to make it the first value in the struct
+	// See:
+	//   Godoc: https://pkg.go.dev/sync/atomic#pkg-note-BUG
+	//   PR: https://github.com/Azure/azure-sdk-for-go/pull/16847
 	linkCounter uint64
-	links       map[uint64]internal.Closeable
-	creds       clientCreds
-	namespace   interface {
+
+	linksMu   *sync.Mutex
+	links     map[uint64]internal.Closeable
+	creds     clientCreds
+	namespace interface {
 		// used internally by `Client`
 		internal.NamespaceWithNewAMQPLinks
 		// for child clients
 		internal.NamespaceForAMQPLinks
-		internal.NamespaceForMgmtClient
 	}
-	linksMu *sync.Mutex
+	retryOptions RetryOptions
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
@@ -45,10 +51,18 @@ type ClientOptions struct {
 	// NewWebSocketConn is a function that can create a net.Conn for use with websockets.
 	// For an example, see ExampleNewClient_usingWebsockets() function in example_client_test.go.
 	NewWebSocketConn func(ctx context.Context, args NewWebSocketConnArgs) (net.Conn, error)
+
+	// RetryOptions controls how often operations are retried from this client and any
+	// Receivers and Senders created from this client.
+	RetryOptions RetryOptions
 }
 
+// RetryOptions controls how often operations are retried from this client and any
+// Receivers and Senders created from this client.
+type RetryOptions = exported.RetryOptions
+
 // NewWebSocketConnArgs are passed to your web socket creation function (ClientOptions.NewWebSocketConn)
-type NewWebSocketConnArgs = internal.NewWebSocketConnArgs
+type NewWebSocketConnArgs = exported.NewWebSocketConnArgs
 
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
@@ -71,7 +85,11 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 
 // NewClientFromConnectionString creates a new Client for a Service Bus namespace using a connection string.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
-// connectionString is a Service Bus connection string for the namespace or for an entity.
+// connectionString can be a Service Bus connection string for the namespace or for an entity, which contains a
+// SharedAccessKeyName and SharedAccessKey properties (for instance, from the Azure Portal):
+//   Endpoint=sb://<sb>.servicebus.windows.net/;SharedAccessKeyName=<key name>;SharedAccessKey=<key value>
+// Or it can be a connection string with a SharedAccessSignature:
+//   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if connectionString == "" {
 		return nil, errors.New("connectionString must not be empty")
@@ -107,7 +125,7 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	if client.creds.connectionString != "" {
 		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.creds.connectionString))
 	} else if client.creds.credential != nil {
-		option := internal.NamespacesWithTokenCredential(
+		option := internal.NamespaceWithTokenCredential(
 			client.creds.fullyQualifiedNamespace,
 			client.creds.credential)
 
@@ -115,6 +133,8 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 	}
 
 	if options != nil {
+		client.retryOptions = options.RetryOptions
+
 		if options.TLSConfig != nil {
 			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(options.TLSConfig))
 		}
@@ -126,16 +146,24 @@ func newClientImpl(creds clientCreds, options *ClientOptions) (*Client, error) {
 		if options.ApplicationID != "" {
 			nsOptions = append(nsOptions, internal.NamespaceWithUserAgent(options.ApplicationID))
 		}
+
+		nsOptions = append(nsOptions, internal.NamespaceWithRetryOptions(options.RetryOptions))
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
 	return client, err
 }
 
-// NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
+// NewReceiverForQueue creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Queue: queueName}, cleanupOnClose, options, nil)
+	receiver, err := newReceiver(newReceiverArgs{
+		cleanupOnClose:      cleanupOnClose,
+		ns:                  client.namespace,
+		entity:              entity{Queue: queueName},
+		getRecoveryKindFunc: internal.GetRecoveryKind,
+		retryOptions:        client.retryOptions,
+	}, options)
 
 	if err != nil {
 		return nil, err
@@ -145,10 +173,16 @@ func (client *Client) NewReceiverForQueue(queueName string, options *ReceiverOpt
 	return receiver, nil
 }
 
-// NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
+// NewReceiverForSubscription creates a Receiver for a subscription. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForSubscription(topicName string, subscriptionName string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	receiver, err := newReceiver(client.namespace, &entity{Topic: topicName, Subscription: subscriptionName}, cleanupOnClose, options, nil)
+	receiver, err := newReceiver(newReceiverArgs{
+		cleanupOnClose:      cleanupOnClose,
+		ns:                  client.namespace,
+		entity:              entity{Topic: topicName, Subscription: subscriptionName},
+		getRecoveryKindFunc: internal.GetRecoveryKind,
+		retryOptions:        client.retryOptions,
+	}, options)
 
 	if err != nil {
 		return nil, err
@@ -158,6 +192,7 @@ func (client *Client) NewReceiverForSubscription(topicName string, subscriptionN
 	return receiver, nil
 }
 
+// NewSenderOptions contains optional parameters for Client.NewSender
 type NewSenderOptions struct {
 	// For future expansion
 }
@@ -165,7 +200,12 @@ type NewSenderOptions struct {
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
 func (client *Client) NewSender(queueOrTopic string, options *NewSenderOptions) (*Sender, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	sender, err := newSender(client.namespace, queueOrTopic, cleanupOnClose)
+	sender, err := newSender(newSenderArgs{
+		ns:             client.namespace,
+		queueOrTopic:   queueOrTopic,
+		cleanupOnClose: cleanupOnClose,
+		retryOptions:   client.retryOptions,
+	})
 
 	if err != nil {
 		return nil, err
@@ -181,11 +221,13 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queueName strin
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		&sessionID,
-		client.namespace,
-		&entity{Queue: queueName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      &sessionID,
+			ns:             client.namespace,
+			entity:         entity{Queue: queueName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -205,10 +247,13 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topicNam
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		&sessionID,
-		client.namespace,
-		&entity{Topic: topicName, Subscription: subscriptionName},
-		cleanupOnClose,
+		newSessionReceiverArgs{
+			sessionID:      &sessionID,
+			ns:             client.namespace,
+			entity:         entity{Topic: topicName, Subscription: subscriptionName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		},
 		toReceiverOptions(options))
 
 	if err != nil {
@@ -229,11 +274,13 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queueName s
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		nil,
-		client.namespace,
-		&entity{Queue: queueName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity{Queue: queueName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -253,11 +300,13 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
-		nil,
-		client.namespace,
-		&entity{Topic: topicName, Subscription: subscriptionName},
-		cleanupOnClose,
-		toReceiverOptions(options))
+		newSessionReceiverArgs{
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity{Topic: topicName, Subscription: subscriptionName},
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
+		}, toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -274,8 +323,6 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 // Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
-	var lastError error
-
 	var links []internal.Closeable
 
 	client.linksMu.Lock()
@@ -288,15 +335,11 @@ func (client *Client) Close(ctx context.Context) error {
 
 	for _, link := range links {
 		if err := link.Close(ctx); err != nil {
-			tab.For(ctx).Error(err)
-			lastError = err
+			log.Writef(EventConn, "Failed to close link (error might be cached): %s", err.Error())
 		}
 	}
 
-	if lastError != nil {
-		return fmt.Errorf("errors while closing links: %w", lastError)
-	}
-	return nil
+	return client.namespace.Close(ctx, true)
 }
 
 func (client *Client) addCloseable(id uint64, closeable internal.Closeable) {

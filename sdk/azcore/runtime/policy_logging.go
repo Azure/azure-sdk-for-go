@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -56,6 +56,7 @@ func NewLogPolicy(o *policy.LogOptions) policy.Policy {
 		"traceparent":                   {},
 		"transfer-encoding":             {},
 		"user-agent":                    {},
+		"www-authenticate":              {},
 		"x-ms-request-id":               {},
 		"x-ms-client-request-id":        {},
 		"x-ms-return-client-request-id": {},

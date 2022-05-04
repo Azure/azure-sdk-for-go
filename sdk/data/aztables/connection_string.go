@@ -10,6 +10,7 @@ import (
 
 // NewServiceClientFromConnectionString creates a new ServiceClient struct from a connection string. The connection
 // string must contain either an account name and account key or an account name and a shared access signature.
+// Pass in nil for options to construct the client with the default ClientOptions.
 func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
 	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {

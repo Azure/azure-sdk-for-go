@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -34,7 +34,7 @@ type Poller struct {
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, pollerID string) (*Poller, error) {
+func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string) (*Poller, error) {
 	log.Write(log.EventLRO, "Using Operation-Location poller.")
 	opURL := resp.Header.Get(shared.HeaderOperationLocation)
 	if opURL == "" {
@@ -52,7 +52,7 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	// service sent us a status then use that instead.
 	curState := pollers.StatusInProgress
 	status, err := getValue(resp, "status")
-	if err != nil && !errors.Is(err, shared.ErrNoBody) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return nil, err
 	}
 	if status != "" {
@@ -61,6 +61,7 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	// calculate the tentative final GET URL.
 	// can change if we receive a resourceLocation.
 	// it's ok for it to be empty in some cases.
+	// TODO: finalState
 	finalGET := ""
 	if resp.Request.Method == http.MethodPatch || resp.Request.Method == http.MethodPut {
 		finalGET = resp.Request.URL.String()
@@ -80,8 +81,14 @@ func (p *Poller) URL() string {
 	return p.PollURL
 }
 
-func (p *Poller) Done() bool {
-	return pollers.IsTerminalState(p.Status())
+// State returns the current state of the LRO.
+func (p *Poller) State() pollers.OperationState {
+	if pollers.Succeeded(p.CurState) {
+		return pollers.OperationStateSucceeded
+	} else if pollers.IsTerminalState(p.CurState) {
+		return pollers.OperationStateFailed
+	}
+	return pollers.OperationStateInProgress
 }
 
 func (p *Poller) Update(resp *http.Response) error {
@@ -98,7 +105,7 @@ func (p *Poller) Update(resp *http.Response) error {
 	}
 	// check for resourceLocation
 	resLoc, err := getValue(resp, "resourceLocation")
-	if err != nil && !errors.Is(err, shared.ErrNoBody) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return err
 	} else if resLoc != "" {
 		p.FinalGET = resLoc
@@ -110,12 +117,8 @@ func (p *Poller) FinalGetURL() string {
 	return p.FinalGET
 }
 
-func (p *Poller) Status() string {
-	return p.CurState
-}
-
 func getValue(resp *http.Response, val string) (string, error) {
-	jsonBody, err := shared.GetJSON(resp)
+	jsonBody, err := pollers.GetJSON(resp)
 	if err != nil {
 		return "", err
 	}

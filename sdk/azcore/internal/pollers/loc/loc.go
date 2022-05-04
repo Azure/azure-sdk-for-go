@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -28,11 +28,12 @@ func Applicable(resp *http.Response) bool {
 type Poller struct {
 	Type     string `json:"type"`
 	PollURL  string `json:"pollURL"`
+	FinalGET string `json:"finalGET"`
 	CurState int    `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, pollerID string) (*Poller, error) {
+func New(resp *http.Response, finalState pollers.FinalStateVia, pollerID string) (*Poller, error) {
 	log.Write(log.EventLRO, "Using Location poller.")
 	locURL := resp.Header.Get(shared.HeaderLocation)
 	if locURL == "" {
@@ -41,9 +42,12 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	if !pollers.IsValidURL(locURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", locURL)
 	}
+	// TODO: calculate the final GET URL.  can be empty
+	finalGET := ""
 	return &Poller{
 		Type:     pollers.MakeID(pollerID, Kind),
 		PollURL:  locURL,
+		FinalGET: finalGET,
 		CurState: resp.StatusCode,
 	}, nil
 }
@@ -52,8 +56,14 @@ func (p *Poller) URL() string {
 	return p.PollURL
 }
 
-func (p *Poller) Done() bool {
-	return pollers.IsTerminalState(p.Status())
+func (p *Poller) State() pollers.OperationState {
+	if p.CurState == http.StatusAccepted {
+		return pollers.OperationStateInProgress
+	} else if p.CurState > 199 && p.CurState < 300 {
+		// any 2xx other than a 202 indicates success
+		return pollers.OperationStateSucceeded
+	}
+	return pollers.OperationStateFailed
 }
 
 func (p *Poller) Update(resp *http.Response) error {
@@ -65,16 +75,6 @@ func (p *Poller) Update(resp *http.Response) error {
 	return nil
 }
 
-func (*Poller) FinalGetURL() string {
-	return ""
-}
-
-func (p *Poller) Status() string {
-	if p.CurState == http.StatusAccepted {
-		return pollers.StatusInProgress
-	} else if p.CurState > 199 && p.CurState < 300 {
-		// any 2xx other than a 202 indicates success
-		return pollers.StatusSucceeded
-	}
-	return pollers.StatusFailed
+func (p *Poller) FinalGetURL() string {
+	return p.FinalGET
 }

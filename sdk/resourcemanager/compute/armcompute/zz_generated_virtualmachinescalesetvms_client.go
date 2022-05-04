@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,20 +36,24 @@ type VirtualMachineScaleSetVMsClient struct {
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualMachineScaleSetVMsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetVMsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &VirtualMachineScaleSetVMsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginDeallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases
@@ -60,22 +65,16 @@ func NewVirtualMachineScaleSetVMsClient(subscriptionID string, credential azcore
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginDeallocateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginDeallocate
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (VirtualMachineScaleSetVMsClientDeallocatePollerResponse, error) {
-	resp, err := client.deallocate(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientDeallocatePollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientDeallocateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deallocate(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientDeallocateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientDeallocateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientDeallocatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Deallocate", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientDeallocatePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientDeallocatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Deallocate - Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the
@@ -99,7 +98,7 @@ func (client *VirtualMachineScaleSetVMsClient) deallocate(ctx context.Context, r
 
 // deallocateCreateRequest creates the Deallocate request.
 func (client *VirtualMachineScaleSetVMsClient) deallocateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/deallocate"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/deallocate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -121,8 +120,9 @@ func (client *VirtualMachineScaleSetVMsClient) deallocateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -133,22 +133,16 @@ func (client *VirtualMachineScaleSetVMsClient) deallocateCreateRequest(ctx conte
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginDeleteOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginDelete
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeleteOptions) (VirtualMachineScaleSetVMsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientDeletePollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeleteOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes a virtual machine from a VM scale set.
@@ -170,7 +164,7 @@ func (client *VirtualMachineScaleSetVMsClient) deleteOperation(ctx context.Conte
 
 // deleteCreateRequest creates the Delete request.
 func (client *VirtualMachineScaleSetVMsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -195,8 +189,9 @@ func (client *VirtualMachineScaleSetVMsClient) deleteCreateRequest(ctx context.C
 	if options != nil && options.ForceDeletion != nil {
 		reqQP.Set("forceDeletion", strconv.FormatBool(*options.ForceDeletion))
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -224,7 +219,7 @@ func (client *VirtualMachineScaleSetVMsClient) Get(ctx context.Context, resource
 
 // getCreateRequest creates the Get request.
 func (client *VirtualMachineScaleSetVMsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -249,7 +244,7 @@ func (client *VirtualMachineScaleSetVMsClient) getCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -257,7 +252,7 @@ func (client *VirtualMachineScaleSetVMsClient) getCreateRequest(ctx context.Cont
 
 // getHandleResponse handles the Get response.
 func (client *VirtualMachineScaleSetVMsClient) getHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsClientGetResponse, error) {
-	result := VirtualMachineScaleSetVMsClientGetResponse{RawResponse: resp}
+	result := VirtualMachineScaleSetVMsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVM); err != nil {
 		return VirtualMachineScaleSetVMsClientGetResponse{}, err
 	}
@@ -288,7 +283,7 @@ func (client *VirtualMachineScaleSetVMsClient) GetInstanceView(ctx context.Conte
 
 // getInstanceViewCreateRequest creates the GetInstanceView request.
 func (client *VirtualMachineScaleSetVMsClient) getInstanceViewCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientGetInstanceViewOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/instanceView"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/instanceView"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -310,7 +305,7 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -318,29 +313,45 @@ func (client *VirtualMachineScaleSetVMsClient) getInstanceViewCreateRequest(ctx 
 
 // getInstanceViewHandleResponse handles the GetInstanceView response.
 func (client *VirtualMachineScaleSetVMsClient) getInstanceViewHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsClientGetInstanceViewResponse, error) {
-	result := VirtualMachineScaleSetVMsClientGetInstanceViewResponse{RawResponse: resp}
+	result := VirtualMachineScaleSetVMsClientGetInstanceViewResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMInstanceView); err != nil {
 		return VirtualMachineScaleSetVMsClientGetInstanceViewResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Gets a list of all virtual machines in a VM scale sets.
+// NewListPager - Gets a list of all virtual machines in a VM scale sets.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // virtualMachineScaleSetName - The name of the VM scale set.
 // options - VirtualMachineScaleSetVMsClientListOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.List
 // method.
-func (client *VirtualMachineScaleSetVMsClient) List(resourceGroupName string, virtualMachineScaleSetName string, options *VirtualMachineScaleSetVMsClientListOptions) *VirtualMachineScaleSetVMsClientListPager {
-	return &VirtualMachineScaleSetVMsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
+func (client *VirtualMachineScaleSetVMsClient) NewListPager(resourceGroupName string, virtualMachineScaleSetName string, options *VirtualMachineScaleSetVMsClientListOptions) *runtime.Pager[VirtualMachineScaleSetVMsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[VirtualMachineScaleSetVMsClientListResponse]{
+		More: func(page VirtualMachineScaleSetVMsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp VirtualMachineScaleSetVMsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineScaleSetVMListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetVMsClientListResponse) (VirtualMachineScaleSetVMsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return VirtualMachineScaleSetVMsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VirtualMachineScaleSetVMsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VirtualMachineScaleSetVMsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -372,7 +383,7 @@ func (client *VirtualMachineScaleSetVMsClient) listCreateRequest(ctx context.Con
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -380,7 +391,7 @@ func (client *VirtualMachineScaleSetVMsClient) listCreateRequest(ctx context.Con
 
 // listHandleResponse handles the List response.
 func (client *VirtualMachineScaleSetVMsClient) listHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsClientListResponse, error) {
-	result := VirtualMachineScaleSetVMsClientListResponse{RawResponse: resp}
+	result := VirtualMachineScaleSetVMsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMListResult); err != nil {
 		return VirtualMachineScaleSetVMsClientListResponse{}, err
 	}
@@ -394,22 +405,16 @@ func (client *VirtualMachineScaleSetVMsClient) listHandleResponse(resp *http.Res
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginPerformMaintenance
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions) (VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse, error) {
-	resp, err := client.performMaintenance(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.performMaintenance(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.PerformMaintenance", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientPerformMaintenancePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientPerformMaintenancePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PerformMaintenance - Performs maintenance on a virtual machine in a VM scale set.
@@ -453,8 +458,9 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenanceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -467,22 +473,16 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenanceCreateRequest(c
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginPowerOffOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginPowerOff
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginPowerOffOptions) (VirtualMachineScaleSetVMsClientPowerOffPollerResponse, error) {
-	resp, err := client.powerOff(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientPowerOffPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginPowerOffOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientPowerOffResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.powerOff(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientPowerOffResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientPowerOffResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientPowerOffPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.PowerOff", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientPowerOffPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientPowerOffPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // PowerOff - Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting
@@ -531,8 +531,9 @@ func (client *VirtualMachineScaleSetVMsClient) powerOffCreateRequest(ctx context
 	if options != nil && options.SkipShutdown != nil {
 		reqQP.Set("skipShutdown", strconv.FormatBool(*options.SkipShutdown))
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -544,22 +545,16 @@ func (client *VirtualMachineScaleSetVMsClient) powerOffCreateRequest(ctx context
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginRedeployOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRedeploy
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginRedeployOptions) (VirtualMachineScaleSetVMsClientRedeployPollerResponse, error) {
-	resp, err := client.redeploy(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRedeployPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginRedeploy(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginRedeployOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientRedeployResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.redeploy(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientRedeployResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientRedeployResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientRedeployPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Redeploy", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRedeployPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientRedeployPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Redeploy - Shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back
@@ -604,8 +599,9 @@ func (client *VirtualMachineScaleSetVMsClient) redeployCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -616,22 +612,16 @@ func (client *VirtualMachineScaleSetVMsClient) redeployCreateRequest(ctx context
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginReimageOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginReimage
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginReimage(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageOptions) (VirtualMachineScaleSetVMsClientReimagePollerResponse, error) {
-	resp, err := client.reimage(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientReimagePollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginReimage(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reimage(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientReimageResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientReimageResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientReimagePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Reimage", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientReimagePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientReimagePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Reimage - Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -653,7 +643,7 @@ func (client *VirtualMachineScaleSetVMsClient) reimage(ctx context.Context, reso
 
 // reimageCreateRequest creates the Reimage request.
 func (client *VirtualMachineScaleSetVMsClient) reimageCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/reimage"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/reimage"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -675,8 +665,9 @@ func (client *VirtualMachineScaleSetVMsClient) reimageCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.VMScaleSetVMReimageInput != nil {
 		return req, runtime.MarshalAsJSON(req, *options.VMScaleSetVMReimageInput)
 	}
@@ -691,22 +682,16 @@ func (client *VirtualMachineScaleSetVMsClient) reimageCreateRequest(ctx context.
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginReimageAllOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginReimageAll
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginReimageAll(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageAllOptions) (VirtualMachineScaleSetVMsClientReimageAllPollerResponse, error) {
-	resp, err := client.reimageAll(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientReimageAllPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginReimageAll(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageAllOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageAllResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reimageAll(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientReimageAllResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientReimageAllResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientReimageAllPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.ReimageAll", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientReimageAllPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientReimageAllPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // ReimageAll - Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation
@@ -729,7 +714,7 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAll(ctx context.Context, r
 
 // reimageAllCreateRequest creates the ReimageAll request.
 func (client *VirtualMachineScaleSetVMsClient) reimageAllCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginReimageAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}/reimageall"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/reimageall"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -751,8 +736,9 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAllCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -763,22 +749,16 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAllCreateRequest(ctx conte
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginRestartOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRestart
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginRestart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginRestartOptions) (VirtualMachineScaleSetVMsClientRestartPollerResponse, error) {
-	resp, err := client.restart(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRestartPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginRestart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginRestartOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientRestartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restart(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientRestartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientRestartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Restart", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRestartPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientRestartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Restart - Restarts a virtual machine in a VM scale set.
@@ -822,8 +802,9 @@ func (client *VirtualMachineScaleSetVMsClient) restartCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -877,7 +858,7 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataCreate
 	if options != nil && options.SasURIExpirationTimeInMinutes != nil {
 		reqQP.Set("sasUriExpirationTimeInMinutes", strconv.FormatInt(int64(*options.SasURIExpirationTimeInMinutes), 10))
 	}
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -885,7 +866,7 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataCreate
 
 // retrieveBootDiagnosticsDataHandleResponse handles the RetrieveBootDiagnosticsData response.
 func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse, error) {
-	result := VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{RawResponse: resp}
+	result := VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RetrieveBootDiagnosticsDataResult); err != nil {
 		return VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{}, err
 	}
@@ -900,22 +881,18 @@ func (client *VirtualMachineScaleSetVMsClient) retrieveBootDiagnosticsDataHandle
 // parameters - Parameters supplied to the Run command operation.
 // options - VirtualMachineScaleSetVMsClientBeginRunCommandOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginRunCommand
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters RunCommandInput, options *VirtualMachineScaleSetVMsClientBeginRunCommandOptions) (VirtualMachineScaleSetVMsClientRunCommandPollerResponse, error) {
-	resp, err := client.runCommand(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRunCommandPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginRunCommand(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters RunCommandInput, options *VirtualMachineScaleSetVMsClientBeginRunCommandOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientRunCommandResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.runCommand(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineScaleSetVMsClientRunCommandResponse]{
+			FinalStateVia: armruntime.FinalStateViaLocation,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientRunCommandResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientRunCommandPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.RunCommand", "location", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientRunCommandPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientRunCommandPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // RunCommand - Run command on a virtual machine in a VM scale set.
@@ -959,7 +936,7 @@ func (client *VirtualMachineScaleSetVMsClient) runCommandCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json, text/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -984,7 +961,7 @@ func (client *VirtualMachineScaleSetVMsClient) SimulateEviction(ctx context.Cont
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, runtime.NewResponseError(resp)
 	}
-	return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{RawResponse: resp}, nil
+	return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, nil
 }
 
 // simulateEvictionCreateRequest creates the SimulateEviction request.
@@ -1011,8 +988,9 @@ func (client *VirtualMachineScaleSetVMsClient) simulateEvictionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -1023,22 +1001,16 @@ func (client *VirtualMachineScaleSetVMsClient) simulateEvictionCreateRequest(ctx
 // instanceID - The instance ID of the virtual machine.
 // options - VirtualMachineScaleSetVMsClientBeginStartOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginStart
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginStart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginStartOptions) (VirtualMachineScaleSetVMsClientStartPollerResponse, error) {
-	resp, err := client.start(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientStartPollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginStart(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMsClientBeginStartOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, vmScaleSetName, instanceID, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientStartResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientStartPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Start", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientStartPollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientStartPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Start - Starts a virtual machine in a VM scale set.
@@ -1082,8 +1054,9 @@ func (client *VirtualMachineScaleSetVMsClient) startCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -1095,22 +1068,16 @@ func (client *VirtualMachineScaleSetVMsClient) startCreateRequest(ctx context.Co
 // parameters - Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
 // options - VirtualMachineScaleSetVMsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineScaleSetVMsClient.BeginUpdate
 // method.
-func (client *VirtualMachineScaleSetVMsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters VirtualMachineScaleSetVM, options *VirtualMachineScaleSetVMsClientBeginUpdateOptions) (VirtualMachineScaleSetVMsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientUpdatePollerResponse{}, err
+func (client *VirtualMachineScaleSetVMsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters VirtualMachineScaleSetVM, options *VirtualMachineScaleSetVMsClientBeginUpdateOptions) (*armruntime.Poller[VirtualMachineScaleSetVMsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[VirtualMachineScaleSetVMsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[VirtualMachineScaleSetVMsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := VirtualMachineScaleSetVMsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("VirtualMachineScaleSetVMsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return VirtualMachineScaleSetVMsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &VirtualMachineScaleSetVMsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Updates a virtual machine of a VM scale set.
@@ -1132,7 +1099,7 @@ func (client *VirtualMachineScaleSetVMsClient) update(ctx context.Context, resou
 
 // updateCreateRequest creates the Update request.
 func (client *VirtualMachineScaleSetVMsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters VirtualMachineScaleSetVM, options *VirtualMachineScaleSetVMsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualmachines/{instanceId}"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -1154,7 +1121,7 @@ func (client *VirtualMachineScaleSetVMsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)

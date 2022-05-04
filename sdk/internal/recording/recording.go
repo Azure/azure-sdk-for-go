@@ -476,6 +476,22 @@ func init() {
 	if ok := certPool.AppendCertsFromPEM(cert); !ok {
 		log.Println("no certs appended, using system certs only")
 	}
+
+	// Set a Default matcher that ignores :path, :scheme, :authority, and :method headers
+	err = SetDefaultMatcher(
+		nil,
+		&SetDefaultMatcherOptions{ExcludedHeaders: []string{
+			":authority",
+			":method",
+			":path",
+			":scheme",
+		}},
+	)
+	if err != nil {
+		log.Println("could not set the default matcher")
+	} else {
+		log.Println("default matcher was set ")
+	}
 }
 
 var recordMode string
@@ -508,6 +524,7 @@ type RecordingOptions struct {
 	UseHTTPS        bool
 	GroupForReplace string
 	Variables       map[string]interface{}
+	TestInstance    *testing.T
 }
 
 func defaultOptions() *RecordingOptions {
@@ -662,7 +679,7 @@ func Stop(t *testing.T, options *RecordingOptions) error {
 	if recTest, ok = testSuite[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recTest.recordingId)
+	req.Header.Set(IDHeader, recTest.recordingId)
 	resp, err := client.Do(req)
 	if resp.StatusCode != 200 {
 		b, err := ioutil.ReadAll(resp.Body)
@@ -706,7 +723,11 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	return testSuite[t.Name()].recordingId
+	if val, ok := testSuite[t.Name()]; ok {
+		return val.recordingId
+	} else {
+		return ""
+	}
 }
 
 func GetRecordMode() string {

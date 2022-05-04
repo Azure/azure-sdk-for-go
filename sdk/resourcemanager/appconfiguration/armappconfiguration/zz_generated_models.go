@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armappconfiguration
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // APIKey - An API key used for authenticating with a configuration store endpoint.
 type APIKey struct {
@@ -36,53 +31,6 @@ type APIKey struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type APIKey.
-func (a APIKey) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "connectionString", a.ConnectionString)
-	populate(objectMap, "id", a.ID)
-	populateTimeRFC3339(objectMap, "lastModified", a.LastModified)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "readOnly", a.ReadOnly)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type APIKey.
-func (a *APIKey) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "connectionString":
-			err = unpopulate(val, &a.ConnectionString)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &a.LastModified)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "readOnly":
-			err = unpopulate(val, &a.ReadOnly)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &a.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // APIKeyListResult - The result of a request to list API keys.
 type APIKeyListResult struct {
 	// The URI that can be used to request the next set of paged results.
@@ -90,14 +38,6 @@ type APIKeyListResult struct {
 
 	// The collection value.
 	Value []*APIKey `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type APIKeyListResult.
-func (a APIKeyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityParameters - Parameters used for checking whether a resource name is available.
@@ -140,21 +80,6 @@ type ConfigurationStore struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationStore.
-func (c ConfigurationStore) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "systemData", c.SystemData)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationStoreListResult - The result of a request to list configuration stores.
 type ConfigurationStoreListResult struct {
 	// The URI that can be used to request the next set of paged results.
@@ -164,24 +89,25 @@ type ConfigurationStoreListResult struct {
 	Value []*ConfigurationStore `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationStoreListResult.
-func (c ConfigurationStoreListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationStoreProperties - The properties of a configuration store.
 type ConfigurationStoreProperties struct {
+	// Indicates whether the configuration store need to be recovered.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Disables all authentication methods other than AAD authentication.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Property specifying whether protection against purge is enabled for this configuration store.
+	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// The encryption settings of the configuration store.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
 
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// The amount of time in days that the configuration store will be retained when it is soft deleted.
+	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
 	// READ-ONLY; The creation date of configuration store.
 	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
@@ -196,61 +122,13 @@ type ConfigurationStoreProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationStoreProperties.
-func (c ConfigurationStoreProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationDate", c.CreationDate)
-	populate(objectMap, "disableLocalAuth", c.DisableLocalAuth)
-	populate(objectMap, "encryption", c.Encryption)
-	populate(objectMap, "endpoint", c.Endpoint)
-	populate(objectMap, "privateEndpointConnections", c.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", c.PublicNetworkAccess)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConfigurationStoreProperties.
-func (c *ConfigurationStoreProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationDate":
-			err = unpopulateTimeRFC3339(val, &c.CreationDate)
-			delete(rawMsg, key)
-		case "disableLocalAuth":
-			err = unpopulate(val, &c.DisableLocalAuth)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &c.Encryption)
-			delete(rawMsg, key)
-		case "endpoint":
-			err = unpopulate(val, &c.Endpoint)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &c.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &c.PublicNetworkAccess)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ConfigurationStorePropertiesUpdateParameters - The properties for updating a configuration store.
 type ConfigurationStorePropertiesUpdateParameters struct {
 	// Disables all authentication methods other than AAD authentication.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+
+	// Property specifying whether protection against purge is enabled for this configuration store.
+	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// The encryption settings of the configuration store.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
@@ -274,31 +152,37 @@ type ConfigurationStoreUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationStoreUpdateParameters.
-func (c ConfigurationStoreUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
-}
-
 // ConfigurationStoresClientBeginCreateOptions contains the optional parameters for the ConfigurationStoresClient.BeginCreate
 // method.
 type ConfigurationStoresClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ConfigurationStoresClientBeginDeleteOptions contains the optional parameters for the ConfigurationStoresClient.BeginDelete
 // method.
 type ConfigurationStoresClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConfigurationStoresClientBeginPurgeDeletedOptions contains the optional parameters for the ConfigurationStoresClient.BeginPurgeDeleted
+// method.
+type ConfigurationStoresClientBeginPurgeDeletedOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ConfigurationStoresClientBeginUpdateOptions contains the optional parameters for the ConfigurationStoresClient.BeginUpdate
 // method.
 type ConfigurationStoresClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConfigurationStoresClientGetDeletedOptions contains the optional parameters for the ConfigurationStoresClient.GetDeleted
+// method.
+type ConfigurationStoresClientGetDeletedOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -314,6 +198,12 @@ type ConfigurationStoresClientListByResourceGroupOptions struct {
 	// a nextLink element, the value of the nextLink element will include a
 	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
+}
+
+// ConfigurationStoresClientListDeletedOptions contains the optional parameters for the ConfigurationStoresClient.ListDeleted
+// method.
+type ConfigurationStoresClientListDeletedOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ConfigurationStoresClientListKeysOptions contains the optional parameters for the ConfigurationStoresClient.ListKeys method.
@@ -338,6 +228,51 @@ type ConfigurationStoresClientRegenerateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DeletedConfigurationStore - Deleted configuration store information with extended details.
+type DeletedConfigurationStore struct {
+	// Properties of the deleted configuration store
+	Properties *DeletedConfigurationStoreProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID for the deleted configuration store.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the configuration store.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type of the configuration store.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DeletedConfigurationStoreListResult - List of deleted configuration stores
+type DeletedConfigurationStoreListResult struct {
+	// The URL to get the next set of deleted configuration stores.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of deleted configuration store.
+	Value []*DeletedConfigurationStore `json:"value,omitempty"`
+}
+
+// DeletedConfigurationStoreProperties - Properties of the deleted configuration store.
+type DeletedConfigurationStoreProperties struct {
+	// READ-ONLY; The resource id of the original configuration store.
+	ConfigurationStoreID *string `json:"configurationStoreId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The deleted date.
+	DeletionDate *time.Time `json:"deletionDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The location of the original configuration store.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Purge protection status of the original configuration store.
+	PurgeProtectionEnabled *bool `json:"purgeProtectionEnabled,omitempty" azure:"ro"`
+
+	// READ-ONLY; The scheduled purged date.
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Tags of the original configuration store.
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+}
+
 // EncryptionProperties - The encryption settings for a configuration store.
 type EncryptionProperties struct {
 	// Key vault properties.
@@ -347,7 +282,7 @@ type EncryptionProperties struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -363,15 +298,6 @@ type ErrorDetails struct {
 
 	// READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetails.
-func (e ErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
@@ -405,14 +331,6 @@ type KeyValueListResult struct {
 	Value []*KeyValue `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyValueListResult.
-func (k KeyValueListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", k.NextLink)
-	populate(objectMap, "value", k.Value)
-	return json.Marshal(objectMap)
-}
-
 // KeyValueProperties - All key-value properties.
 type KeyValueProperties struct {
 	// The content type of the key-value's value. Providing a proper content-type can enable transformations of values when they
@@ -441,64 +359,10 @@ type KeyValueProperties struct {
 	Locked *bool `json:"locked,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyValueProperties.
-func (k KeyValueProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentType", k.ContentType)
-	populate(objectMap, "eTag", k.ETag)
-	populate(objectMap, "key", k.Key)
-	populate(objectMap, "label", k.Label)
-	populateTimeRFC3339(objectMap, "lastModified", k.LastModified)
-	populate(objectMap, "locked", k.Locked)
-	populate(objectMap, "tags", k.Tags)
-	populate(objectMap, "value", k.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyValueProperties.
-func (k *KeyValueProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "contentType":
-			err = unpopulate(val, &k.ContentType)
-			delete(rawMsg, key)
-		case "eTag":
-			err = unpopulate(val, &k.ETag)
-			delete(rawMsg, key)
-		case "key":
-			err = unpopulate(val, &k.Key)
-			delete(rawMsg, key)
-		case "label":
-			err = unpopulate(val, &k.Label)
-			delete(rawMsg, key)
-		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &k.LastModified)
-			delete(rawMsg, key)
-		case "locked":
-			err = unpopulate(val, &k.Locked)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, &k.Tags)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, &k.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // KeyValuesClientBeginDeleteOptions contains the optional parameters for the KeyValuesClient.BeginDelete method.
 type KeyValuesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // KeyValuesClientCreateOrUpdateOptions contains the optional parameters for the KeyValuesClient.CreateOrUpdate method.
@@ -581,20 +445,6 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "fillGapWithZero", m.FillGapWithZero)
-	populate(objectMap, "internalMetricName", m.InternalMetricName)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
 // NameAvailabilityStatus - The result of a request to check the availability of a resource name.
 type NameAvailabilityStatus struct {
 	// READ-ONLY; If any, the error message that provides more detail for the reason that the name is not available.
@@ -649,14 +499,6 @@ type OperationDefinitionListResult struct {
 	Value []*OperationDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationDefinitionListResult.
-func (o OperationDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationProperties - Extra Operation properties
 type OperationProperties struct {
 	// Service specifications of the operation
@@ -675,6 +517,12 @@ type OperationsClientListOptions struct {
 	// a nextLink element, the value of the nextLink element will include a
 	// skipToken parameter that specifies a starting point to use for subsequent calls.
 	SkipToken *string
+}
+
+// OperationsClientRegionalCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.RegionalCheckNameAvailability
+// method.
+type OperationsClientRegionalCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // PrivateEndpoint - Private endpoint which a connection belongs to.
@@ -707,14 +555,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
@@ -745,13 +585,15 @@ type PrivateEndpointConnectionReference struct {
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -790,14 +632,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
@@ -808,15 +642,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The list of required DNS zone names of the private link resource.
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -880,16 +705,6 @@ type ResourceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceIdentity.
-func (r ResourceIdentity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", r.PrincipalID)
-	populate(objectMap, "tenantId", r.TenantID)
-	populate(objectMap, "type", r.Type)
-	populate(objectMap, "userAssignedIdentities", r.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // SKU - Describes a configuration store SKU.
 type SKU struct {
 	// REQUIRED; The SKU name of the configuration store.
@@ -903,14 +718,6 @@ type ServiceSpecification struct {
 
 	// Specifications of the Metrics for Azure Monitoring
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", s.LogSpecifications)
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -934,53 +741,6 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
@@ -1000,17 +760,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UserIdentity - A resource identity that is managed by the user of the service.
 type UserIdentity struct {
 	// READ-ONLY; The client ID of the user-assigned identity.
@@ -1018,21 +767,4 @@ type UserIdentity struct {
 
 	// READ-ONLY; The principal ID of the user-assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

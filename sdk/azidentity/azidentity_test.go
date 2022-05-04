@@ -6,12 +6,16 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/confidential"
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
@@ -28,8 +32,7 @@ const (
 
 // constants for this file
 const (
-	envHostString           = "https://mock.com/"
-	customHostString        = "https://custommock.com/"
+	testHost                = "https://localhost"
 	tenantDiscoveryResponse = `{
 		"token_endpoint": "https://login.microsoftonline.com/3c631bb7-a9f7-4343-a5ba-a6159135f1fc/oauth2/v2.0/token",
 		"token_endpoint_auth_methods_supported": [
@@ -152,43 +155,83 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 	})
 }
 
+func Test_WellKnownHosts(t *testing.T) {
+	for _, cloud := range []cloud.Configuration{cloud.AzureChina, cloud.AzureGovernment, cloud.AzurePublic} {
+		host, err := setAuthorityHost(cloud)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !strings.HasPrefix(host, "https://login.") {
+			t.Fatal("unexpected ActiveDirectoryAuthorityHost: " + host)
+		}
+	}
+}
+
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
-	authorityHost, err := setAuthorityHost("")
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != envHostString {
-		t.Fatalf("Unexpected error when get host from environment variable: %v", err)
+	if authorityHost != testHost {
+		t.Fatalf(`unexpected host "%s"`, authorityHost)
 	}
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
-	authorityHost, err := setAuthorityHost(customHostString)
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost + "/not"})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: testHost})
 	if err != nil {
 		t.Fatal(err)
 	}
 	// ensure env var doesn't override explicit value
-	if authorityHost != customHostString {
-		t.Fatalf("Unexpected host when get host from environment variable: %v", authorityHost)
+	if authorityHost != testHost {
+		t.Fatalf(`expected "%s", got "%s"`, testHost, authorityHost)
 	}
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
-	authorityHost, err := setAuthorityHost("")
+	authorityHost, err := setAuthorityHost(cloud.Configuration{})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != string(AzurePublicCloud) {
-		t.Fatalf("Unexpected host when set default AuthorityHost: %v", authorityHost)
+	if authorityHost != cloud.AzurePublic.ActiveDirectoryAuthorityHost {
+		t.Fatal("unexpected default host: " + authorityHost)
+	}
+}
+
+func Test_GetTokenRequiresScopes(t *testing.T) {
+	for _, ctor := range []func() (azcore.TokenCredential, error){
+		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewClientCertificateCredential("tenantID", "clientID", allCertTests[0].certs, allCertTests[0].key, nil)
+		},
+		func() (azcore.TokenCredential, error) {
+			return NewClientSecretCredential("tenantID", "clientID", "secret", nil)
+		},
+		func() (azcore.TokenCredential, error) { return NewDeviceCodeCredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewInteractiveBrowserCredential(nil) },
+		func() (azcore.TokenCredential, error) {
+			return NewUsernamePasswordCredential("tenantID", "clientID", "username", "password", nil)
+		},
+	} {
+		cred, err := ctor()
+		t.Run(fmt.Sprintf("%T", cred), func(t *testing.T) {
+			if err != nil {
+				t.Fatal(err)
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{})
+			if err == nil {
+				t.Fatal("expected an error")
+			}
+		})
 	}
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
-	authorityHost, err := setAuthorityHost("http://foo.com")
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: "http://localhost"})
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")
 	}

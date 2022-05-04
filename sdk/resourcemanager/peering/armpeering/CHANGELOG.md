@@ -1,5 +1,609 @@
 # Release History
 
+## 0.5.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*CdnPeeringPrefixesClient.List` has been removed
+- Function `*RegisteredPrefixesClient.ListByPeering` has been removed
+- Function `*PeerAsnsClient.ListBySubscription` has been removed
+- Function `*ConnectionMonitorTestsClient.ListByPeeringService` has been removed
+- Function `*PrefixesClient.ListByPeeringService` has been removed
+- Function `*ServicesClient.ListBySubscription` has been removed
+- Function `*PeeringsClient.ListByResourceGroup` has been removed
+- Function `*PeeringsClient.ListBySubscription` has been removed
+- Function `*RegisteredAsnsClient.ListByPeering` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*LegacyPeeringsClient.List` has been removed
+- Function `*ServicesClient.ListByResourceGroup` has been removed
+- Function `*ReceivedRoutesClient.ListByPeering` has been removed
+- Function `*ServiceProvidersClient.List` has been removed
+- Function `*ServiceLocationsClient.List` has been removed
+- Function `*LocationsClient.List` has been removed
+- Function `*ServiceCountriesClient.List` has been removed
+
+### Features Added
+
+- New function `*ServicesClient.NewListByResourceGroupPager(string, *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse]`
+- New function `*PeerAsnsClient.NewListBySubscriptionPager(*PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse]`
+- New function `*ReceivedRoutesClient.NewListByPeeringPager(string, string, *ReceivedRoutesClientListByPeeringOptions) *runtime.Pager[ReceivedRoutesClientListByPeeringResponse]`
+- New function `*CdnPeeringPrefixesClient.NewListPager(string, *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse]`
+- New function `*ConnectionMonitorTestsClient.NewListByPeeringServicePager(string, string, *ConnectionMonitorTestsClientListByPeeringServiceOptions) *runtime.Pager[ConnectionMonitorTestsClientListByPeeringServiceResponse]`
+- New function `*RegisteredAsnsClient.NewListByPeeringPager(string, string, *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse]`
+- New function `*ServiceCountriesClient.NewListPager(*ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse]`
+- New function `*ServicesClient.NewListBySubscriptionPager(*ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse]`
+- New function `*PeeringsClient.NewListByResourceGroupPager(string, *PeeringsClientListByResourceGroupOptions) *runtime.Pager[PeeringsClientListByResourceGroupResponse]`
+- New function `*ServiceLocationsClient.NewListPager(*ServiceLocationsClientListOptions) *runtime.Pager[ServiceLocationsClientListResponse]`
+- New function `*RegisteredPrefixesClient.NewListByPeeringPager(string, string, *RegisteredPrefixesClientListByPeeringOptions) *runtime.Pager[RegisteredPrefixesClientListByPeeringResponse]`
+- New function `*LegacyPeeringsClient.NewListPager(string, LegacyPeeringsKind, *LegacyPeeringsClientListOptions) *runtime.Pager[LegacyPeeringsClientListResponse]`
+- New function `*LocationsClient.NewListPager(PeeringLocationsKind, *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse]`
+- New function `*ServiceProvidersClient.NewListPager(*ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse]`
+- New function `*PrefixesClient.NewListByPeeringServicePager(string, string, *PrefixesClientListByPeeringServiceOptions) *runtime.Pager[PrefixesClientListByPeeringServiceResponse]`
+- New function `*PeeringsClient.NewListBySubscriptionPager(*PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+
+
+## 0.4.0 (2022-04-12)
+### Breaking Changes
+
+- Function `NewRegisteredAsnsClient` return value(s) have been changed from `(*RegisteredAsnsClient)` to `(*RegisteredAsnsClient, error)`
+- Function `*PrefixesClient.ListByPeeringService` return value(s) have been changed from `(*PrefixesClientListByPeeringServicePager)` to `(*runtime.Pager[PrefixesClientListByPeeringServiceResponse])`
+- Function `NewPeerAsnsClient` return value(s) have been changed from `(*PeerAsnsClient)` to `(*PeerAsnsClient, error)`
+- Function `NewLocationsClient` return value(s) have been changed from `(*LocationsClient)` to `(*LocationsClient, error)`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `*ServiceProvidersClient.List` return value(s) have been changed from `(*ServiceProvidersClientListPager)` to `(*runtime.Pager[ServiceProvidersClientListResponse])`
+- Function `*ServiceCountriesClient.List` return value(s) have been changed from `(*ServiceCountriesClientListPager)` to `(*runtime.Pager[ServiceCountriesClientListResponse])`
+- Function `*PeeringsClient.ListBySubscription` return value(s) have been changed from `(*PeeringsClientListBySubscriptionPager)` to `(*runtime.Pager[PeeringsClientListBySubscriptionResponse])`
+- Function `NewLegacyPeeringsClient` return value(s) have been changed from `(*LegacyPeeringsClient)` to `(*LegacyPeeringsClient, error)`
+- Function `*ServiceLocationsClient.List` return value(s) have been changed from `(*ServiceLocationsClientListPager)` to `(*runtime.Pager[ServiceLocationsClientListResponse])`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewLookingGlassClient` return value(s) have been changed from `(*LookingGlassClient)` to `(*LookingGlassClient, error)`
+- Function `*PeerAsnsClient.ListBySubscription` return value(s) have been changed from `(*PeerAsnsClientListBySubscriptionPager)` to `(*runtime.Pager[PeerAsnsClientListBySubscriptionResponse])`
+- Function `NewServiceLocationsClient` return value(s) have been changed from `(*ServiceLocationsClient)` to `(*ServiceLocationsClient, error)`
+- Function `*LocationsClient.List` return value(s) have been changed from `(*LocationsClientListPager)` to `(*runtime.Pager[LocationsClientListResponse])`
+- Function `*RegisteredAsnsClient.ListByPeering` return value(s) have been changed from `(*RegisteredAsnsClientListByPeeringPager)` to `(*runtime.Pager[RegisteredAsnsClientListByPeeringResponse])`
+- Function `NewManagementClient` return value(s) have been changed from `(*ManagementClient)` to `(*ManagementClient, error)`
+- Function `NewRegisteredPrefixesClient` return value(s) have been changed from `(*RegisteredPrefixesClient)` to `(*RegisteredPrefixesClient, error)`
+- Function `*CdnPeeringPrefixesClient.List` return value(s) have been changed from `(*CdnPeeringPrefixesClientListPager)` to `(*runtime.Pager[CdnPeeringPrefixesClientListResponse])`
+- Function `NewServiceCountriesClient` return value(s) have been changed from `(*ServiceCountriesClient)` to `(*ServiceCountriesClient, error)`
+- Function `NewServicesClient` return value(s) have been changed from `(*ServicesClient)` to `(*ServicesClient, error)`
+- Function `NewPeeringsClient` return value(s) have been changed from `(*PeeringsClient)` to `(*PeeringsClient, error)`
+- Function `*PeeringsClient.ListByResourceGroup` return value(s) have been changed from `(*PeeringsClientListByResourceGroupPager)` to `(*runtime.Pager[PeeringsClientListByResourceGroupResponse])`
+- Function `NewServiceProvidersClient` return value(s) have been changed from `(*ServiceProvidersClient)` to `(*ServiceProvidersClient, error)`
+- Function `NewCdnPeeringPrefixesClient` return value(s) have been changed from `(*CdnPeeringPrefixesClient)` to `(*CdnPeeringPrefixesClient, error)`
+- Function `*ConnectionMonitorTestsClient.ListByPeeringService` return value(s) have been changed from `(*ConnectionMonitorTestsClientListByPeeringServicePager)` to `(*runtime.Pager[ConnectionMonitorTestsClientListByPeeringServiceResponse])`
+- Function `*ServicesClient.ListBySubscription` return value(s) have been changed from `(*ServicesClientListBySubscriptionPager)` to `(*runtime.Pager[ServicesClientListBySubscriptionResponse])`
+- Function `*ReceivedRoutesClient.ListByPeering` return value(s) have been changed from `(*ReceivedRoutesClientListByPeeringPager)` to `(*runtime.Pager[ReceivedRoutesClientListByPeeringResponse])`
+- Function `NewPrefixesClient` return value(s) have been changed from `(*PrefixesClient)` to `(*PrefixesClient, error)`
+- Function `NewConnectionMonitorTestsClient` return value(s) have been changed from `(*ConnectionMonitorTestsClient)` to `(*ConnectionMonitorTestsClient, error)`
+- Function `NewReceivedRoutesClient` return value(s) have been changed from `(*ReceivedRoutesClient)` to `(*ReceivedRoutesClient, error)`
+- Function `*LegacyPeeringsClient.List` return value(s) have been changed from `(*LegacyPeeringsClientListPager)` to `(*runtime.Pager[LegacyPeeringsClientListResponse])`
+- Function `*ServicesClient.ListByResourceGroup` return value(s) have been changed from `(*ServicesClientListByResourceGroupPager)` to `(*runtime.Pager[ServicesClientListByResourceGroupResponse])`
+- Function `*RegisteredPrefixesClient.ListByPeering` return value(s) have been changed from `(*RegisteredPrefixesClientListByPeeringPager)` to `(*runtime.Pager[RegisteredPrefixesClientListByPeeringResponse])`
+- Function `SessionStateV6.ToPtr` has been removed
+- Function `*RegisteredAsnsClientListByPeeringPager.NextPage` has been removed
+- Function `*ServicesClientListByResourceGroupPager.Err` has been removed
+- Function `*PeeringsClientListByResourceGroupPager.NextPage` has been removed
+- Function `*ConnectionMonitorTestsClientListByPeeringServicePager.PageResponse` has been removed
+- Function `LegacyPeeringsKind.ToPtr` has been removed
+- Function `*PeerAsnsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*ServiceCountriesClientListPager.PageResponse` has been removed
+- Function `Command.ToPtr` has been removed
+- Function `ValidationState.ToPtr` has been removed
+- Function `*RegisteredPrefixesClientListByPeeringPager.NextPage` has been removed
+- Function `*ServicesClientListBySubscriptionPager.PageResponse` has been removed
+- Function `DirectPeeringType.ToPtr` has been removed
+- Function `*LocationsClientListPager.NextPage` has been removed
+- Function `SessionStateV4.ToPtr` has been removed
+- Function `LookingGlassSourceType.ToPtr` has been removed
+- Function `*ServiceLocationsClientListPager.PageResponse` has been removed
+- Function `*ServiceCountriesClientListPager.Err` has been removed
+- Function `*ServicesClientListBySubscriptionPager.NextPage` has been removed
+- Function `*LegacyPeeringsClientListPager.PageResponse` has been removed
+- Function `*LocationsClientListPager.Err` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*ServiceCountriesClientListPager.NextPage` has been removed
+- Function `*ReceivedRoutesClientListByPeeringPager.Err` has been removed
+- Function `Size.ToPtr` has been removed
+- Function `*PeeringsClientListBySubscriptionPager.PageResponse` has been removed
+- Function `*PrefixesClientListByPeeringServicePager.Err` has been removed
+- Function `Kind.ToPtr` has been removed
+- Function `*RegisteredPrefixesClientListByPeeringPager.Err` has been removed
+- Function `*ServiceProvidersClientListPager.NextPage` has been removed
+- Function `*PeeringsClientListByResourceGroupPager.Err` has been removed
+- Function `Role.ToPtr` has been removed
+- Function `*CdnPeeringPrefixesClientListPager.NextPage` has been removed
+- Function `*ServiceLocationsClientListPager.NextPage` has been removed
+- Function `*ServicesClientListByResourceGroupPager.NextPage` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `Enum0.ToPtr` has been removed
+- Function `*ServicesClientListBySubscriptionPager.Err` has been removed
+- Function `*RegisteredAsnsClientListByPeeringPager.PageResponse` has been removed
+- Function `*ReceivedRoutesClientListByPeeringPager.NextPage` has been removed
+- Function `SessionAddressProvider.ToPtr` has been removed
+- Function `*CdnPeeringPrefixesClientListPager.Err` has been removed
+- Function `*PeerAsnsClientListBySubscriptionPager.Err` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*PeeringsClientListByResourceGroupPager.PageResponse` has been removed
+- Function `LearnedType.ToPtr` has been removed
+- Function `*PrefixesClientListByPeeringServicePager.PageResponse` has been removed
+- Function `*PeerAsnsClientListBySubscriptionPager.NextPage` has been removed
+- Function `*ServicesClientListByResourceGroupPager.PageResponse` has been removed
+- Function `*ConnectionMonitorTestsClientListByPeeringServicePager.Err` has been removed
+- Function `*ServiceLocationsClientListPager.Err` has been removed
+- Function `PrefixValidationState.ToPtr` has been removed
+- Function `*PeeringsClientListBySubscriptionPager.NextPage` has been removed
+- Function `PeeringLocationsKind.ToPtr` has been removed
+- Function `*ConnectionMonitorTestsClientListByPeeringServicePager.NextPage` has been removed
+- Function `*ReceivedRoutesClientListByPeeringPager.PageResponse` has been removed
+- Function `*LocationsClientListPager.PageResponse` has been removed
+- Function `ConnectionState.ToPtr` has been removed
+- Function `*PeeringsClientListBySubscriptionPager.Err` has been removed
+- Function `*CdnPeeringPrefixesClientListPager.PageResponse` has been removed
+- Function `*LegacyPeeringsClientListPager.Err` has been removed
+- Function `*ServiceProvidersClientListPager.PageResponse` has been removed
+- Function `Family.ToPtr` has been removed
+- Function `LookingGlassCommand.ToPtr` has been removed
+- Function `Tier.ToPtr` has been removed
+- Function `*ServiceProvidersClientListPager.Err` has been removed
+- Function `*PrefixesClientListByPeeringServicePager.NextPage` has been removed
+- Function `*RegisteredPrefixesClientListByPeeringPager.PageResponse` has been removed
+- Function `*RegisteredAsnsClientListByPeeringPager.Err` has been removed
+- Function `PeeringLocationsDirectPeeringType.ToPtr` has been removed
+- Function `*LegacyPeeringsClientListPager.NextPage` has been removed
+- Struct `CdnPeeringPrefixesClientListPager` has been removed
+- Struct `CdnPeeringPrefixesClientListResult` has been removed
+- Struct `ConnectionMonitorTestsClientCreateOrUpdateResult` has been removed
+- Struct `ConnectionMonitorTestsClientGetResult` has been removed
+- Struct `ConnectionMonitorTestsClientListByPeeringServicePager` has been removed
+- Struct `ConnectionMonitorTestsClientListByPeeringServiceResult` has been removed
+- Struct `LegacyPeeringsClientListPager` has been removed
+- Struct `LegacyPeeringsClientListResult` has been removed
+- Struct `LocationsClientListPager` has been removed
+- Struct `LocationsClientListResult` has been removed
+- Struct `LookingGlassClientInvokeResult` has been removed
+- Struct `ManagementClientCheckServiceProviderAvailabilityResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PeerAsnsClientCreateOrUpdateResult` has been removed
+- Struct `PeerAsnsClientGetResult` has been removed
+- Struct `PeerAsnsClientListBySubscriptionPager` has been removed
+- Struct `PeerAsnsClientListBySubscriptionResult` has been removed
+- Struct `PeeringsClientCreateOrUpdateResult` has been removed
+- Struct `PeeringsClientGetResult` has been removed
+- Struct `PeeringsClientListByResourceGroupPager` has been removed
+- Struct `PeeringsClientListByResourceGroupResult` has been removed
+- Struct `PeeringsClientListBySubscriptionPager` has been removed
+- Struct `PeeringsClientListBySubscriptionResult` has been removed
+- Struct `PeeringsClientUpdateResult` has been removed
+- Struct `PrefixesClientCreateOrUpdateResult` has been removed
+- Struct `PrefixesClientGetResult` has been removed
+- Struct `PrefixesClientListByPeeringServicePager` has been removed
+- Struct `PrefixesClientListByPeeringServiceResult` has been removed
+- Struct `ReceivedRoutesClientListByPeeringPager` has been removed
+- Struct `ReceivedRoutesClientListByPeeringResult` has been removed
+- Struct `RegisteredAsnsClientCreateOrUpdateResult` has been removed
+- Struct `RegisteredAsnsClientGetResult` has been removed
+- Struct `RegisteredAsnsClientListByPeeringPager` has been removed
+- Struct `RegisteredAsnsClientListByPeeringResult` has been removed
+- Struct `RegisteredPrefixesClientCreateOrUpdateResult` has been removed
+- Struct `RegisteredPrefixesClientGetResult` has been removed
+- Struct `RegisteredPrefixesClientListByPeeringPager` has been removed
+- Struct `RegisteredPrefixesClientListByPeeringResult` has been removed
+- Struct `ServiceCountriesClientListPager` has been removed
+- Struct `ServiceCountriesClientListResult` has been removed
+- Struct `ServiceLocationsClientListPager` has been removed
+- Struct `ServiceLocationsClientListResult` has been removed
+- Struct `ServiceProvidersClientListPager` has been removed
+- Struct `ServiceProvidersClientListResult` has been removed
+- Struct `ServicesClientCreateOrUpdateResult` has been removed
+- Struct `ServicesClientGetResult` has been removed
+- Struct `ServicesClientListByResourceGroupPager` has been removed
+- Struct `ServicesClientListByResourceGroupResult` has been removed
+- Struct `ServicesClientListBySubscriptionPager` has been removed
+- Struct `ServicesClientListBySubscriptionResult` has been removed
+- Struct `ServicesClientUpdateResult` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorTestsClientDeleteResponse` has been removed
+- Field `PeeringsClientCreateOrUpdateResult` of struct `PeeringsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientCreateOrUpdateResponse` has been removed
+- Field `PrefixesClientGetResult` of struct `PrefixesClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrefixesClientGetResponse` has been removed
+- Field `PrefixesClientListByPeeringServiceResult` of struct `PrefixesClientListByPeeringServiceResponse` has been removed
+- Field `RawResponse` of struct `PrefixesClientListByPeeringServiceResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientDeleteResponse` has been removed
+- Field `PeeringsClientUpdateResult` of struct `PeeringsClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientUpdateResponse` has been removed
+- Field `RegisteredPrefixesClientGetResult` of struct `RegisteredPrefixesClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegisteredPrefixesClientGetResponse` has been removed
+- Field `PeeringsClientListByResourceGroupResult` of struct `PeeringsClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientListByResourceGroupResponse` has been removed
+- Field `ManagementClientCheckServiceProviderAvailabilityResult` of struct `ManagementClientCheckServiceProviderAvailabilityResponse` has been removed
+- Field `RawResponse` of struct `ManagementClientCheckServiceProviderAvailabilityResponse` has been removed
+- Field `ReceivedRoutesClientListByPeeringResult` of struct `ReceivedRoutesClientListByPeeringResponse` has been removed
+- Field `RawResponse` of struct `ReceivedRoutesClientListByPeeringResponse` has been removed
+- Field `RawResponse` of struct `RegisteredAsnsClientDeleteResponse` has been removed
+- Field `ServicesClientUpdateResult` of struct `ServicesClientUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientUpdateResponse` has been removed
+- Field `PeeringsClientGetResult` of struct `PeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegisteredPrefixesClientDeleteResponse` has been removed
+- Field `PeerAsnsClientGetResult` of struct `PeerAsnsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PeerAsnsClientGetResponse` has been removed
+- Field `RawResponse` of struct `PrefixesClientDeleteResponse` has been removed
+- Field `RegisteredAsnsClientListByPeeringResult` of struct `RegisteredAsnsClientListByPeeringResponse` has been removed
+- Field `RawResponse` of struct `RegisteredAsnsClientListByPeeringResponse` has been removed
+- Field `ConnectionMonitorTestsClientGetResult` of struct `ConnectionMonitorTestsClientGetResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorTestsClientGetResponse` has been removed
+- Field `PeeringsClientListBySubscriptionResult` of struct `PeeringsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PeeringsClientListBySubscriptionResponse` has been removed
+- Field `LookingGlassClientInvokeResult` of struct `LookingGlassClientInvokeResponse` has been removed
+- Field `RawResponse` of struct `LookingGlassClientInvokeResponse` has been removed
+- Field `RegisteredPrefixesClientCreateOrUpdateResult` of struct `RegisteredPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RegisteredPrefixesClientCreateOrUpdateResponse` has been removed
+- Field `ServicesClientCreateOrUpdateResult` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientCreateOrUpdateResponse` has been removed
+- Field `RegisteredPrefixesClientListByPeeringResult` of struct `RegisteredPrefixesClientListByPeeringResponse` has been removed
+- Field `RawResponse` of struct `RegisteredPrefixesClientListByPeeringResponse` has been removed
+- Field `PeerAsnsClientCreateOrUpdateResult` of struct `PeerAsnsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PeerAsnsClientCreateOrUpdateResponse` has been removed
+- Field `RegisteredAsnsClientCreateOrUpdateResult` of struct `RegisteredAsnsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `RegisteredAsnsClientCreateOrUpdateResponse` has been removed
+- Field `PrefixesClientCreateOrUpdateResult` of struct `PrefixesClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `PrefixesClientCreateOrUpdateResponse` has been removed
+- Field `ServiceCountriesClientListResult` of struct `ServiceCountriesClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceCountriesClientListResponse` has been removed
+- Field `CdnPeeringPrefixesClientListResult` of struct `CdnPeeringPrefixesClientListResponse` has been removed
+- Field `RawResponse` of struct `CdnPeeringPrefixesClientListResponse` has been removed
+- Field `ServicesClientListBySubscriptionResult` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListBySubscriptionResponse` has been removed
+- Field `ConnectionMonitorTestsClientCreateOrUpdateResult` of struct `ConnectionMonitorTestsClientCreateOrUpdateResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorTestsClientCreateOrUpdateResponse` has been removed
+- Field `ConnectionMonitorTestsClientListByPeeringServiceResult` of struct `ConnectionMonitorTestsClientListByPeeringServiceResponse` has been removed
+- Field `RawResponse` of struct `ConnectionMonitorTestsClientListByPeeringServiceResponse` has been removed
+- Field `RegisteredAsnsClientGetResult` of struct `RegisteredAsnsClientGetResponse` has been removed
+- Field `RawResponse` of struct `RegisteredAsnsClientGetResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `PeerAsnsClientDeleteResponse` has been removed
+- Field `ServiceProvidersClientListResult` of struct `ServiceProvidersClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceProvidersClientListResponse` has been removed
+- Field `PeerAsnsClientListBySubscriptionResult` of struct `PeerAsnsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `PeerAsnsClientListBySubscriptionResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientInitializeConnectionMonitorResponse` has been removed
+- Field `LegacyPeeringsClientListResult` of struct `LegacyPeeringsClientListResponse` has been removed
+- Field `RawResponse` of struct `LegacyPeeringsClientListResponse` has been removed
+- Field `LocationsClientListResult` of struct `LocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `LocationsClientListResponse` has been removed
+- Field `ServiceLocationsClientListResult` of struct `ServiceLocationsClientListResponse` has been removed
+- Field `RawResponse` of struct `ServiceLocationsClientListResponse` has been removed
+- Field `ServicesClientListByResourceGroupResult` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientListByResourceGroupResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientDeleteResponse` has been removed
+- Field `ServicesClientGetResult` of struct `ServicesClientGetResponse` has been removed
+- Field `RawResponse` of struct `ServicesClientGetResponse` has been removed
+
+### Features Added
+
+- New const `PeeringLocationsDirectPeeringTypeEdgeZoneForOperators`
+- New const `DirectPeeringTypeEdgeZoneForOperators`
+- New struct `ErrorDetail`
+- New struct `ErrorResponse`
+- New anonymous field `ServicePrefixListResult` in struct `PrefixesClientListByPeeringServiceResponse`
+- New anonymous field `ServicePrefix` in struct `PrefixesClientGetResponse`
+- New anonymous field `ListResult` in struct `PeeringsClientListByResourceGroupResponse`
+- New anonymous field `ServiceProviderListResult` in struct `ServiceProvidersClientListResponse`
+- New anonymous field `CdnPeeringPrefixListResult` in struct `CdnPeeringPrefixesClientListResponse`
+- New anonymous field `ServiceListResult` in struct `ServicesClientListByResourceGroupResponse`
+- New anonymous field `ConnectionMonitorTest` in struct `ConnectionMonitorTestsClientGetResponse`
+- New anonymous field `Peering` in struct `PeeringsClientGetResponse`
+- New anonymous field `ListResult` in struct `LegacyPeeringsClientListResponse`
+- New anonymous field `Service` in struct `ServicesClientUpdateResponse`
+- New anonymous field `RegisteredAsn` in struct `RegisteredAsnsClientCreateOrUpdateResponse`
+- New anonymous field `ReceivedRouteListResult` in struct `ReceivedRoutesClientListByPeeringResponse`
+- New anonymous field `ServicePrefix` in struct `PrefixesClientCreateOrUpdateResponse`
+- New anonymous field `ServiceLocationListResult` in struct `ServiceLocationsClientListResponse`
+- New anonymous field `RegisteredPrefix` in struct `RegisteredPrefixesClientCreateOrUpdateResponse`
+- New anonymous field `Peering` in struct `PeeringsClientCreateOrUpdateResponse`
+- New anonymous field `PeerAsn` in struct `PeerAsnsClientCreateOrUpdateResponse`
+- New anonymous field `RegisteredAsn` in struct `RegisteredAsnsClientGetResponse`
+- New anonymous field `PeerAsn` in struct `PeerAsnsClientGetResponse`
+- New anonymous field `PeerAsnListResult` in struct `PeerAsnsClientListBySubscriptionResponse`
+- New anonymous field `ServiceListResult` in struct `ServicesClientListBySubscriptionResponse`
+- New anonymous field `RegisteredPrefixListResult` in struct `RegisteredPrefixesClientListByPeeringResponse`
+- New anonymous field `LocationListResult` in struct `LocationsClientListResponse`
+- New anonymous field `Peering` in struct `PeeringsClientUpdateResponse`
+- New anonymous field `Service` in struct `ServicesClientGetResponse`
+- New anonymous field `ConnectionMonitorTestListResult` in struct `ConnectionMonitorTestsClientListByPeeringServiceResponse`
+- New anonymous field `Service` in struct `ServicesClientCreateOrUpdateResponse`
+- New anonymous field `ServiceCountryListResult` in struct `ServiceCountriesClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `RegisteredPrefix` in struct `RegisteredPrefixesClientGetResponse`
+- New anonymous field `ConnectionMonitorTest` in struct `ConnectionMonitorTestsClientCreateOrUpdateResponse`
+- New field `Value` in struct `ManagementClientCheckServiceProviderAvailabilityResponse`
+- New anonymous field `RegisteredAsnListResult` in struct `RegisteredAsnsClientListByPeeringResponse`
+- New anonymous field `LookingGlassOutput` in struct `LookingGlassClientInvokeResponse`
+- New anonymous field `ListResult` in struct `PeeringsClientListBySubscriptionResponse`
+
+
+## 0.3.0 (2022-02-22)
+### Breaking Changes
+
+- Function `*LegacyPeeringsClient.List` parameter(s) have been changed from `(string, Enum1, *LegacyPeeringsClientListOptions)` to `(string, LegacyPeeringsKind, *LegacyPeeringsClientListOptions)`
+- Function `*LocationsClient.List` parameter(s) have been changed from `(Enum14, *LocationsClientListOptions)` to `(PeeringLocationsKind, *LocationsClientListOptions)`
+- Type of `SKU.Name` has been changed from `*Name` to `*string`
+- Type of `LocationsClientListOptions.DirectPeeringType` has been changed from `*Enum15` to `*PeeringLocationsDirectPeeringType`
+- Const `Enum0UnAvailable` has been removed
+- Const `LearnedTypeViaPartner` has been removed
+- Const `Enum14Exchange` has been removed
+- Const `NamePremiumDirectMetered` has been removed
+- Const `NameBasicDirectFree` has been removed
+- Const `Enum15Internal` has been removed
+- Const `Enum15Cdn` has been removed
+- Const `NameBasicExchangeFree` has been removed
+- Const `Enum1Exchange` has been removed
+- Const `Enum15Edge` has been removed
+- Const `NamePremiumDirectFree` has been removed
+- Const `NamePremiumExchangeMetered` has been removed
+- Const `Enum14Direct` has been removed
+- Const `Enum1Direct` has been removed
+- Const `NamePremiumDirectUnlimited` has been removed
+- Const `Enum15Transit` has been removed
+- Function `Enum1.ToPtr` has been removed
+- Function `NewServicePrefixesClient` has been removed
+- Function `*ServicePrefixesClient.Delete` has been removed
+- Function `PossibleNameValues` has been removed
+- Function `Enum15.ToPtr` has been removed
+- Function `Enum14.ToPtr` has been removed
+- Function `PossibleEnum14Values` has been removed
+- Function `*ServicePrefixesClient.Get` has been removed
+- Function `PossibleEnum1Values` has been removed
+- Function `Name.ToPtr` has been removed
+- Function `ContactInfo.MarshalJSON` has been removed
+- Function `PossibleEnum15Values` has been removed
+- Function `*ServicePrefixesClient.CreateOrUpdate` has been removed
+- Struct `ContactInfo` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ServicePrefixesClient` has been removed
+- Struct `ServicePrefixesClientCreateOrUpdateOptions` has been removed
+- Struct `ServicePrefixesClientCreateOrUpdateResponse` has been removed
+- Struct `ServicePrefixesClientCreateOrUpdateResult` has been removed
+- Struct `ServicePrefixesClientDeleteOptions` has been removed
+- Struct `ServicePrefixesClientDeleteResponse` has been removed
+- Struct `ServicePrefixesClientGetOptions` has been removed
+- Struct `ServicePrefixesClientGetResponse` has been removed
+- Struct `ServicePrefixesClientGetResult` has been removed
+- Field `PeerContactInfo` of struct `PeerAsnProperties` has been removed
+
+### Features Added
+
+- New const `RoleEscalation`
+- New const `DirectPeeringTypeVoice`
+- New const `LookingGlassCommandTraceroute`
+- New const `PeeringLocationsKindDirect`
+- New const `PeeringLocationsDirectPeeringTypeInternal`
+- New const `RoleService`
+- New const `PeeringLocationsDirectPeeringTypeCdn`
+- New const `RoleNoc`
+- New const `PeeringLocationsDirectPeeringTypeEdge`
+- New const `PeeringLocationsDirectPeeringTypeIx`
+- New const `RoleOther`
+- New const `PeeringLocationsKindExchange`
+- New const `LookingGlassSourceTypeAzureRegion`
+- New const `LegacyPeeringsKindDirect`
+- New const `LegacyPeeringsKindExchange`
+- New const `PrefixValidationStateWarning`
+- New const `DirectPeeringTypeIx`
+- New const `CommandTraceroute`
+- New const `DirectPeeringTypeIxRs`
+- New const `LookingGlassCommandPing`
+- New const `CommandPing`
+- New const `PeeringLocationsDirectPeeringTypeTransit`
+- New const `RoleTechnical`
+- New const `PeeringLocationsDirectPeeringTypeIxRs`
+- New const `RolePolicy`
+- New const `Enum0Unavailable`
+- New const `PeeringLocationsDirectPeeringTypeVoice`
+- New const `LearnedTypeViaServiceProvider`
+- New const `LookingGlassCommandBgpRoute`
+- New const `CommandBgpRoute`
+- New const `LookingGlassSourceTypeEdgeSite`
+- New function `ServicePrefixProperties.MarshalJSON() ([]byte, error)`
+- New function `*timeRFC3339.Parse(string) error`
+- New function `*RegisteredAsnsClientListByPeeringPager.Err() error`
+- New function `*RegisteredAsnsClientListByPeeringPager.NextPage(context.Context) bool`
+- New function `NewCdnPeeringPrefixesClient(string, azcore.TokenCredential, *arm.ClientOptions) *CdnPeeringPrefixesClient`
+- New function `PossibleLookingGlassCommandValues() []LookingGlassCommand`
+- New function `NewLookingGlassClient(string, azcore.TokenCredential, *arm.ClientOptions) *LookingGlassClient`
+- New function `timeRFC3339.MarshalJSON() ([]byte, error)`
+- New function `*RegisteredPrefixesClient.CreateOrUpdate(context.Context, string, string, string, RegisteredPrefix, *RegisteredPrefixesClientCreateOrUpdateOptions) (RegisteredPrefixesClientCreateOrUpdateResponse, error)`
+- New function `ConnectionMonitorTestProperties.MarshalJSON() ([]byte, error)`
+- New function `*ConnectionMonitorTestsClient.CreateOrUpdate(context.Context, string, string, string, ConnectionMonitorTest, *ConnectionMonitorTestsClientCreateOrUpdateOptions) (ConnectionMonitorTestsClientCreateOrUpdateResponse, error)`
+- New function `MetricSpecification.MarshalJSON() ([]byte, error)`
+- New function `PeerAsnProperties.MarshalJSON() ([]byte, error)`
+- New function `ConnectionMonitorTestListResult.MarshalJSON() ([]byte, error)`
+- New function `ServicePrefixEvent.MarshalJSON() ([]byte, error)`
+- New function `*ReceivedRoutesClientListByPeeringPager.Err() error`
+- New function `*timeRFC3339.UnmarshalJSON([]byte) error`
+- New function `PossibleCommandValues() []Command`
+- New function `*ServicePrefixEvent.UnmarshalJSON([]byte) error`
+- New function `ServiceProviderProperties.MarshalJSON() ([]byte, error)`
+- New function `*LookingGlassClient.Invoke(context.Context, LookingGlassCommand, LookingGlassSourceType, string, string, *LookingGlassClientInvokeOptions) (LookingGlassClientInvokeResponse, error)`
+- New function `NewServiceCountriesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ServiceCountriesClient`
+- New function `*RegisteredPrefixesClient.Delete(context.Context, string, string, string, *RegisteredPrefixesClientDeleteOptions) (RegisteredPrefixesClientDeleteResponse, error)`
+- New function `LegacyPeeringsKind.ToPtr() *LegacyPeeringsKind`
+- New function `PeeringLocationsDirectPeeringType.ToPtr() *PeeringLocationsDirectPeeringType`
+- New function `PossiblePeeringLocationsKindValues() []PeeringLocationsKind`
+- New function `NewConnectionMonitorTestsClient(string, azcore.TokenCredential, *arm.ClientOptions) *ConnectionMonitorTestsClient`
+- New function `*RegisteredPrefixesClient.ListByPeering(string, string, *RegisteredPrefixesClientListByPeeringOptions) *RegisteredPrefixesClientListByPeeringPager`
+- New function `*ServiceCountriesClientListPager.PageResponse() ServiceCountriesClientListResponse`
+- New function `*CdnPeeringPrefixesClientListPager.PageResponse() CdnPeeringPrefixesClientListResponse`
+- New function `PossibleRoleValues() []Role`
+- New function `Role.ToPtr() *Role`
+- New function `CdnPeeringPrefixListResult.MarshalJSON() ([]byte, error)`
+- New function `LookingGlassSourceType.ToPtr() *LookingGlassSourceType`
+- New function `PossibleLegacyPeeringsKindValues() []LegacyPeeringsKind`
+- New function `*RegisteredAsnsClient.CreateOrUpdate(context.Context, string, string, string, RegisteredAsn, *RegisteredAsnsClientCreateOrUpdateOptions) (RegisteredAsnsClientCreateOrUpdateResponse, error)`
+- New function `RegisteredAsnListResult.MarshalJSON() ([]byte, error)`
+- New function `PossiblePeeringLocationsDirectPeeringTypeValues() []PeeringLocationsDirectPeeringType`
+- New function `LogAnalyticsWorkspaceProperties.MarshalJSON() ([]byte, error)`
+- New function `ServiceSpecification.MarshalJSON() ([]byte, error)`
+- New function `*RegisteredAsnsClientListByPeeringPager.PageResponse() RegisteredAsnsClientListByPeeringResponse`
+- New function `*ConnectionMonitorTestsClientListByPeeringServicePager.NextPage(context.Context) bool`
+- New function `*CdnPeeringPrefixesClientListPager.Err() error`
+- New function `*ConnectionMonitorTestsClient.Get(context.Context, string, string, string, *ConnectionMonitorTestsClientGetOptions) (ConnectionMonitorTestsClientGetResponse, error)`
+- New function `*RegisteredAsnsClient.Get(context.Context, string, string, string, *RegisteredAsnsClientGetOptions) (RegisteredAsnsClientGetResponse, error)`
+- New function `*CdnPeeringPrefixesClient.List(string, *CdnPeeringPrefixesClientListOptions) *CdnPeeringPrefixesClientListPager`
+- New function `RegisteredPrefixListResult.MarshalJSON() ([]byte, error)`
+- New function `*ConnectionMonitorTestsClientListByPeeringServicePager.Err() error`
+- New function `*ConnectionMonitorTestsClientListByPeeringServicePager.PageResponse() ConnectionMonitorTestsClientListByPeeringServiceResponse`
+- New function `*ConnectionMonitorTestsClient.ListByPeeringService(string, string, *ConnectionMonitorTestsClientListByPeeringServiceOptions) *ConnectionMonitorTestsClientListByPeeringServicePager`
+- New function `*ServiceCountriesClientListPager.NextPage(context.Context) bool`
+- New function `Command.ToPtr() *Command`
+- New function `NewRegisteredPrefixesClient(string, azcore.TokenCredential, *arm.ClientOptions) *RegisteredPrefixesClient`
+- New function `PossibleLookingGlassSourceTypeValues() []LookingGlassSourceType`
+- New function `NewRegisteredAsnsClient(string, azcore.TokenCredential, *arm.ClientOptions) *RegisteredAsnsClient`
+- New function `*timeRFC3339.UnmarshalText([]byte) error`
+- New function `*PrefixesClient.Delete(context.Context, string, string, string, *PrefixesClientDeleteOptions) (PrefixesClientDeleteResponse, error)`
+- New function `NewReceivedRoutesClient(string, azcore.TokenCredential, *arm.ClientOptions) *ReceivedRoutesClient`
+- New function `*CdnPeeringPrefixesClientListPager.NextPage(context.Context) bool`
+- New function `*ConnectionMonitorTestsClient.Delete(context.Context, string, string, string, *ConnectionMonitorTestsClientDeleteOptions) (ConnectionMonitorTestsClientDeleteResponse, error)`
+- New function `*ReceivedRoutesClientListByPeeringPager.NextPage(context.Context) bool`
+- New function `*RegisteredPrefixesClient.Get(context.Context, string, string, string, *RegisteredPrefixesClientGetOptions) (RegisteredPrefixesClientGetResponse, error)`
+- New function `*RegisteredAsnsClient.Delete(context.Context, string, string, string, *RegisteredAsnsClientDeleteOptions) (RegisteredAsnsClientDeleteResponse, error)`
+- New function `*RegisteredPrefixesClientListByPeeringPager.PageResponse() RegisteredPrefixesClientListByPeeringResponse`
+- New function `*ReceivedRoutesClientListByPeeringPager.PageResponse() ReceivedRoutesClientListByPeeringResponse`
+- New function `*PrefixesClient.CreateOrUpdate(context.Context, string, string, string, ServicePrefix, *PrefixesClientCreateOrUpdateOptions) (PrefixesClientCreateOrUpdateResponse, error)`
+- New function `timeRFC3339.MarshalText() ([]byte, error)`
+- New function `ServiceCountryListResult.MarshalJSON() ([]byte, error)`
+- New function `*RegisteredAsnsClient.ListByPeering(string, string, *RegisteredAsnsClientListByPeeringOptions) *RegisteredAsnsClientListByPeeringPager`
+- New function `*PrefixesClient.Get(context.Context, string, string, string, *PrefixesClientGetOptions) (PrefixesClientGetResponse, error)`
+- New function `*RegisteredPrefixesClientListByPeeringPager.Err() error`
+- New function `*ReceivedRoutesClient.ListByPeering(string, string, *ReceivedRoutesClientListByPeeringOptions) *ReceivedRoutesClientListByPeeringPager`
+- New function `PeeringLocationsKind.ToPtr() *PeeringLocationsKind`
+- New function `LookingGlassCommand.ToPtr() *LookingGlassCommand`
+- New function `*RegisteredPrefixesClientListByPeeringPager.NextPage(context.Context) bool`
+- New function `*ServiceCountriesClientListPager.Err() error`
+- New function `*ServicesClient.InitializeConnectionMonitor(context.Context, *ServicesClientInitializeConnectionMonitorOptions) (ServicesClientInitializeConnectionMonitorResponse, error)`
+- New function `*ServiceCountriesClient.List(*ServiceCountriesClientListOptions) *ServiceCountriesClientListPager`
+- New function `ReceivedRouteListResult.MarshalJSON() ([]byte, error)`
+- New struct `CdnPeeringPrefix`
+- New struct `CdnPeeringPrefixListResult`
+- New struct `CdnPeeringPrefixProperties`
+- New struct `CdnPeeringPrefixesClient`
+- New struct `CdnPeeringPrefixesClientListOptions`
+- New struct `CdnPeeringPrefixesClientListPager`
+- New struct `CdnPeeringPrefixesClientListResponse`
+- New struct `CdnPeeringPrefixesClientListResult`
+- New struct `ConnectionMonitorTest`
+- New struct `ConnectionMonitorTestListResult`
+- New struct `ConnectionMonitorTestProperties`
+- New struct `ConnectionMonitorTestsClient`
+- New struct `ConnectionMonitorTestsClientCreateOrUpdateOptions`
+- New struct `ConnectionMonitorTestsClientCreateOrUpdateResponse`
+- New struct `ConnectionMonitorTestsClientCreateOrUpdateResult`
+- New struct `ConnectionMonitorTestsClientDeleteOptions`
+- New struct `ConnectionMonitorTestsClientDeleteResponse`
+- New struct `ConnectionMonitorTestsClientGetOptions`
+- New struct `ConnectionMonitorTestsClientGetResponse`
+- New struct `ConnectionMonitorTestsClientGetResult`
+- New struct `ConnectionMonitorTestsClientListByPeeringServiceOptions`
+- New struct `ConnectionMonitorTestsClientListByPeeringServicePager`
+- New struct `ConnectionMonitorTestsClientListByPeeringServiceResponse`
+- New struct `ConnectionMonitorTestsClientListByPeeringServiceResult`
+- New struct `ContactDetail`
+- New struct `LogAnalyticsWorkspaceProperties`
+- New struct `LookingGlassClient`
+- New struct `LookingGlassClientInvokeOptions`
+- New struct `LookingGlassClientInvokeResponse`
+- New struct `LookingGlassClientInvokeResult`
+- New struct `LookingGlassOutput`
+- New struct `MetricDimension`
+- New struct `MetricSpecification`
+- New struct `OperationProperties`
+- New struct `PrefixesClientCreateOrUpdateOptions`
+- New struct `PrefixesClientCreateOrUpdateResponse`
+- New struct `PrefixesClientCreateOrUpdateResult`
+- New struct `PrefixesClientDeleteOptions`
+- New struct `PrefixesClientDeleteResponse`
+- New struct `PrefixesClientGetOptions`
+- New struct `PrefixesClientGetResponse`
+- New struct `PrefixesClientGetResult`
+- New struct `ReceivedRoute`
+- New struct `ReceivedRouteListResult`
+- New struct `ReceivedRoutesClient`
+- New struct `ReceivedRoutesClientListByPeeringOptions`
+- New struct `ReceivedRoutesClientListByPeeringPager`
+- New struct `ReceivedRoutesClientListByPeeringResponse`
+- New struct `ReceivedRoutesClientListByPeeringResult`
+- New struct `RegisteredAsn`
+- New struct `RegisteredAsnListResult`
+- New struct `RegisteredAsnProperties`
+- New struct `RegisteredAsnsClient`
+- New struct `RegisteredAsnsClientCreateOrUpdateOptions`
+- New struct `RegisteredAsnsClientCreateOrUpdateResponse`
+- New struct `RegisteredAsnsClientCreateOrUpdateResult`
+- New struct `RegisteredAsnsClientDeleteOptions`
+- New struct `RegisteredAsnsClientDeleteResponse`
+- New struct `RegisteredAsnsClientGetOptions`
+- New struct `RegisteredAsnsClientGetResponse`
+- New struct `RegisteredAsnsClientGetResult`
+- New struct `RegisteredAsnsClientListByPeeringOptions`
+- New struct `RegisteredAsnsClientListByPeeringPager`
+- New struct `RegisteredAsnsClientListByPeeringResponse`
+- New struct `RegisteredAsnsClientListByPeeringResult`
+- New struct `RegisteredPrefix`
+- New struct `RegisteredPrefixListResult`
+- New struct `RegisteredPrefixProperties`
+- New struct `RegisteredPrefixesClient`
+- New struct `RegisteredPrefixesClientCreateOrUpdateOptions`
+- New struct `RegisteredPrefixesClientCreateOrUpdateResponse`
+- New struct `RegisteredPrefixesClientCreateOrUpdateResult`
+- New struct `RegisteredPrefixesClientDeleteOptions`
+- New struct `RegisteredPrefixesClientDeleteResponse`
+- New struct `RegisteredPrefixesClientGetOptions`
+- New struct `RegisteredPrefixesClientGetResponse`
+- New struct `RegisteredPrefixesClientGetResult`
+- New struct `RegisteredPrefixesClientListByPeeringOptions`
+- New struct `RegisteredPrefixesClientListByPeeringPager`
+- New struct `RegisteredPrefixesClientListByPeeringResponse`
+- New struct `RegisteredPrefixesClientListByPeeringResult`
+- New struct `ServiceCountriesClient`
+- New struct `ServiceCountriesClientListOptions`
+- New struct `ServiceCountriesClientListPager`
+- New struct `ServiceCountriesClientListResponse`
+- New struct `ServiceCountriesClientListResult`
+- New struct `ServiceCountry`
+- New struct `ServiceCountryListResult`
+- New struct `ServicePrefixEvent`
+- New struct `ServiceSKU`
+- New struct `ServiceSpecification`
+- New struct `ServicesClientInitializeConnectionMonitorOptions`
+- New struct `ServicesClientInitializeConnectionMonitorResponse`
+- New field `PeeringServicePrefixKey` in struct `ServicePrefixProperties`
+- New field `ErrorMessage` in struct `ServicePrefixProperties`
+- New field `Events` in struct `ServicePrefixProperties`
+- New field `ProviderBackupPeeringLocation` in struct `ServiceProperties`
+- New field `ProviderPrimaryPeeringLocation` in struct `ServiceProperties`
+- New field `LogAnalyticsWorkspaceProperties` in struct `ServiceProperties`
+- New field `SKU` in struct `Service`
+- New field `Properties` in struct `Operation`
+- New field `Asn` in struct `LegacyPeeringsClientListOptions`
+- New field `MicrosoftTrackingID` in struct `DirectConnection`
+- New field `ErrorMessage` in struct `DirectConnection`
+- New field `ErrorMessage` in struct `ExchangeConnection`
+- New field `PeerContactDetail` in struct `PeerAsnProperties`
+- New field `ErrorMessage` in struct `PeerAsnProperties`
+- New field `PeeringLocations` in struct `ServiceProviderProperties`
+- New field `Country` in struct `ServiceLocationsClientListOptions`
+- New field `Expand` in struct `PrefixesClientListByPeeringServiceOptions`
+
+
+## 0.2.1 (2022-02-22)
+
+### Other Changes
+
+- Remove the go_mod_tidy_hack.go file.
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

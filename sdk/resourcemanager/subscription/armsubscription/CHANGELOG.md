@@ -1,5 +1,158 @@
 # Release History
 
+## 0.4.0 (2022-04-18)
+### Breaking Changes
+
+- Function `*SubscriptionsClient.List` has been removed
+- Function `*TenantsClient.List` has been removed
+- Function `*OperationsClient.List` has been removed
+- Function `*SubscriptionsClient.ListLocations` has been removed
+- Function `*PolicyClient.ListPolicyForTenant` has been removed
+
+### Features Added
+
+- New function `*SubscriptionsClient.NewListLocationsPager(string, *SubscriptionsClientListLocationsOptions) *runtime.Pager[SubscriptionsClientListLocationsResponse]`
+- New function `*OperationsClient.NewListPager(*OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse]`
+- New function `*SubscriptionsClient.NewListPager(*SubscriptionsClientListOptions) *runtime.Pager[SubscriptionsClientListResponse]`
+- New function `*PolicyClient.NewListPolicyForTenantPager(*PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse]`
+- New function `*TenantsClient.NewListPager(*TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse]`
+
+
+## 0.3.0 (2022-04-13)
+### Breaking Changes
+
+- Function `*SubscriptionsClient.List` return value(s) have been changed from `(*SubscriptionsClientListPager)` to `(*runtime.Pager[SubscriptionsClientListResponse])`
+- Function `NewOperationsClient` return value(s) have been changed from `(*OperationsClient)` to `(*OperationsClient, error)`
+- Function `NewClient` return value(s) have been changed from `(*Client)` to `(*Client, error)`
+- Function `NewTenantsClient` return value(s) have been changed from `(*TenantsClient)` to `(*TenantsClient, error)`
+- Function `*AliasClient.BeginCreate` return value(s) have been changed from `(AliasClientCreatePollerResponse, error)` to `(*armruntime.Poller[AliasClientCreateResponse], error)`
+- Function `*Client.BeginAcceptOwnership` return value(s) have been changed from `(ClientAcceptOwnershipPollerResponse, error)` to `(*armruntime.Poller[ClientAcceptOwnershipResponse], error)`
+- Function `NewPolicyClient` return value(s) have been changed from `(*PolicyClient)` to `(*PolicyClient, error)`
+- Function `NewAliasClient` return value(s) have been changed from `(*AliasClient)` to `(*AliasClient, error)`
+- Function `*TenantsClient.List` return value(s) have been changed from `(*TenantsClientListPager)` to `(*runtime.Pager[TenantsClientListResponse])`
+- Function `*PolicyClient.ListPolicyForTenant` return value(s) have been changed from `(*PolicyClientListPolicyForTenantPager)` to `(*runtime.Pager[PolicyClientListPolicyForTenantResponse])`
+- Function `NewBillingAccountClient` return value(s) have been changed from `(*BillingAccountClient)` to `(*BillingAccountClient, error)`
+- Function `*OperationsClient.List` return value(s) have been changed from `(*OperationsClientListPager)` to `(*runtime.Pager[OperationsClientListResponse])`
+- Function `NewSubscriptionsClient` return value(s) have been changed from `(*SubscriptionsClient)` to `(*SubscriptionsClient, error)`
+- Function `*SubscriptionsClient.ListLocations` parameter(s) have been changed from `(context.Context, string, *SubscriptionsClientListLocationsOptions)` to `(string, *SubscriptionsClientListLocationsOptions)`
+- Function `*SubscriptionsClient.ListLocations` return value(s) have been changed from `(SubscriptionsClientListLocationsResponse, error)` to `(*runtime.Pager[SubscriptionsClientListLocationsResponse])`
+- Function `CreatedByType.ToPtr` has been removed
+- Function `*ClientAcceptOwnershipPollerResponse.Resume` has been removed
+- Function `ProvisioningState.ToPtr` has been removed
+- Function `*SubscriptionsClientListPager.NextPage` has been removed
+- Function `AcceptOwnership.ToPtr` has been removed
+- Function `*ClientAcceptOwnershipPoller.FinalResponse` has been removed
+- Function `ClientAcceptOwnershipPollerResponse.PollUntilDone` has been removed
+- Function `*OperationsClientListPager.NextPage` has been removed
+- Function `*TenantsClientListPager.Err` has been removed
+- Function `SubscriptionState.ToPtr` has been removed
+- Function `*OperationsClientListPager.PageResponse` has been removed
+- Function `*AliasClientCreatePollerResponse.Resume` has been removed
+- Function `*TenantsClientListPager.NextPage` has been removed
+- Function `*PolicyClientListPolicyForTenantPager.PageResponse` has been removed
+- Function `*SubscriptionsClientListPager.PageResponse` has been removed
+- Function `*AliasClientCreatePoller.Poll` has been removed
+- Function `Workload.ToPtr` has been removed
+- Function `*OperationsClientListPager.Err` has been removed
+- Function `*ClientAcceptOwnershipPoller.Done` has been removed
+- Function `AliasClientCreatePollerResponse.PollUntilDone` has been removed
+- Function `*PolicyClientListPolicyForTenantPager.Err` has been removed
+- Function `*AliasClientCreatePoller.Done` has been removed
+- Function `*PolicyClientListPolicyForTenantPager.NextPage` has been removed
+- Function `*ClientAcceptOwnershipPoller.ResumeToken` has been removed
+- Function `*AliasClientCreatePoller.ResumeToken` has been removed
+- Function `*ClientAcceptOwnershipPoller.Poll` has been removed
+- Function `SpendingLimit.ToPtr` has been removed
+- Function `*SubscriptionsClientListPager.Err` has been removed
+- Function `*AliasClientCreatePoller.FinalResponse` has been removed
+- Function `*TenantsClientListPager.PageResponse` has been removed
+- Struct `AliasClientCreatePoller` has been removed
+- Struct `AliasClientCreatePollerResponse` has been removed
+- Struct `AliasClientCreateResult` has been removed
+- Struct `AliasClientGetResult` has been removed
+- Struct `AliasClientListResult` has been removed
+- Struct `BillingAccountClientGetPolicyResult` has been removed
+- Struct `ClientAcceptOwnershipPoller` has been removed
+- Struct `ClientAcceptOwnershipPollerResponse` has been removed
+- Struct `ClientAcceptOwnershipStatusResult` has been removed
+- Struct `ClientCancelResult` has been removed
+- Struct `ClientEnableResult` has been removed
+- Struct `ClientRenameResult` has been removed
+- Struct `OperationsClientListPager` has been removed
+- Struct `OperationsClientListResult` has been removed
+- Struct `PolicyClientAddUpdatePolicyForTenantResult` has been removed
+- Struct `PolicyClientGetPolicyForTenantResult` has been removed
+- Struct `PolicyClientListPolicyForTenantPager` has been removed
+- Struct `PolicyClientListPolicyForTenantResult` has been removed
+- Struct `SubscriptionsClientGetResult` has been removed
+- Struct `SubscriptionsClientListLocationsResult` has been removed
+- Struct `SubscriptionsClientListPager` has been removed
+- Struct `SubscriptionsClientListResult` has been removed
+- Struct `TenantsClientListPager` has been removed
+- Struct `TenantsClientListResult` has been removed
+- Field `ClientAcceptOwnershipStatusResult` of struct `ClientAcceptOwnershipStatusResponse` has been removed
+- Field `RawResponse` of struct `ClientAcceptOwnershipStatusResponse` has been removed
+- Field `AliasClientCreateResult` of struct `AliasClientCreateResponse` has been removed
+- Field `RawResponse` of struct `AliasClientCreateResponse` has been removed
+- Field `PolicyClientGetPolicyForTenantResult` of struct `PolicyClientGetPolicyForTenantResponse` has been removed
+- Field `RawResponse` of struct `PolicyClientGetPolicyForTenantResponse` has been removed
+- Field `SubscriptionsClientGetResult` of struct `SubscriptionsClientGetResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientGetResponse` has been removed
+- Field `ClientRenameResult` of struct `ClientRenameResponse` has been removed
+- Field `RawResponse` of struct `ClientRenameResponse` has been removed
+- Field `SubscriptionsClientListLocationsResult` of struct `SubscriptionsClientListLocationsResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientListLocationsResponse` has been removed
+- Field `AliasClientListResult` of struct `AliasClientListResponse` has been removed
+- Field `RawResponse` of struct `AliasClientListResponse` has been removed
+- Field `OperationsClientListResult` of struct `OperationsClientListResponse` has been removed
+- Field `RawResponse` of struct `OperationsClientListResponse` has been removed
+- Field `ClientEnableResult` of struct `ClientEnableResponse` has been removed
+- Field `RawResponse` of struct `ClientEnableResponse` has been removed
+- Field `PolicyClientAddUpdatePolicyForTenantResult` of struct `PolicyClientAddUpdatePolicyForTenantResponse` has been removed
+- Field `RawResponse` of struct `PolicyClientAddUpdatePolicyForTenantResponse` has been removed
+- Field `TenantsClientListResult` of struct `TenantsClientListResponse` has been removed
+- Field `RawResponse` of struct `TenantsClientListResponse` has been removed
+- Field `ClientCancelResult` of struct `ClientCancelResponse` has been removed
+- Field `RawResponse` of struct `ClientCancelResponse` has been removed
+- Field `AliasClientGetResult` of struct `AliasClientGetResponse` has been removed
+- Field `RawResponse` of struct `AliasClientGetResponse` has been removed
+- Field `RawResponse` of struct `ClientAcceptOwnershipResponse` has been removed
+- Field `PolicyClientListPolicyForTenantResult` of struct `PolicyClientListPolicyForTenantResponse` has been removed
+- Field `RawResponse` of struct `PolicyClientListPolicyForTenantResponse` has been removed
+- Field `BillingAccountClientGetPolicyResult` of struct `BillingAccountClientGetPolicyResponse` has been removed
+- Field `RawResponse` of struct `BillingAccountClientGetPolicyResponse` has been removed
+- Field `RawResponse` of struct `AliasClientDeleteResponse` has been removed
+- Field `SubscriptionsClientListResult` of struct `SubscriptionsClientListResponse` has been removed
+- Field `RawResponse` of struct `SubscriptionsClientListResponse` has been removed
+
+### Features Added
+
+- New anonymous field `EnabledSubscriptionID` in struct `ClientEnableResponse`
+- New anonymous field `AliasListResult` in struct `AliasClientListResponse`
+- New field `ResumeToken` in struct `ClientBeginAcceptOwnershipOptions`
+- New anonymous field `AliasResponse` in struct `AliasClientCreateResponse`
+- New anonymous field `GetTenantPolicyResponse` in struct `PolicyClientGetPolicyForTenantResponse`
+- New anonymous field `GetTenantPolicyResponse` in struct `PolicyClientAddUpdatePolicyForTenantResponse`
+- New anonymous field `ListResult` in struct `SubscriptionsClientListResponse`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+- New anonymous field `TenantListResult` in struct `TenantsClientListResponse`
+- New anonymous field `RenamedSubscriptionID` in struct `ClientRenameResponse`
+- New anonymous field `CanceledSubscriptionID` in struct `ClientCancelResponse`
+- New anonymous field `Subscription` in struct `SubscriptionsClientGetResponse`
+- New field `ResumeToken` in struct `AliasClientBeginCreateOptions`
+- New anonymous field `BillingAccountPoliciesResponse` in struct `BillingAccountClientGetPolicyResponse`
+- New anonymous field `LocationListResult` in struct `SubscriptionsClientListLocationsResponse`
+- New anonymous field `AcceptOwnershipStatusResponse` in struct `ClientAcceptOwnershipStatusResponse`
+- New anonymous field `AliasResponse` in struct `AliasClientGetResponse`
+- New anonymous field `GetTenantPolicyListResponse` in struct `PolicyClientListPolicyForTenantResponse`
+
+
+## 0.2.1 (2022-02-22)
+
+### Other Changes
+
+- Remove the go_mod_tidy_hack.go file.
+
 ## 0.2.0 (2022-01-13)
 ### Breaking Changes
 

@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -11,74 +14,76 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
+// BlobLeaseClient represents lease client on blob
 type BlobLeaseClient struct {
 	BlobClient
 	leaseID *string
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
+// NewBlobLeaseClient is constructor for BlobLeaseClient
+func (b *BlobClient) NewBlobLeaseClient(leaseID *string) (*BlobLeaseClient, error) {
 	if leaseID == nil {
 		generatedUuid, err := uuid.New()
 		if err != nil {
-			return BlobLeaseClient{}, err
+			return nil, err
 		}
-		leaseID = to.StringPtr(generatedUuid.String())
+		leaseID = to.Ptr(generatedUuid.String())
 	}
-	return BlobLeaseClient{
-		BlobClient: b,
+	return &BlobLeaseClient{
+		BlobClient: *b,
 		leaseID:    leaseID,
 	}, nil
 }
 
-// AcquireLease acquires a lease on the blob for write and delete operations. The lease Duration must be between
-// 15 to 60 seconds, or infinite (-1).
+// AcquireLease acquires a lease on the blob for write and delete operations.
+//The lease Duration must be between 15 and 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *AcquireLeaseBlobOptions) (BlobAcquireLeaseResponse, error) {
-	blobAcquireLeaseOptions, modifiedAccessConditions := options.pointers()
+func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *BlobAcquireLeaseOptions) (BlobAcquireLeaseResponse, error) {
+	blobAcquireLeaseOptions, modifiedAccessConditions := options.format()
 	blobAcquireLeaseOptions.ProposedLeaseID = blc.leaseID
 
-	resp, err := blc.client.AcquireLease(ctx, blobAcquireLeaseOptions, modifiedAccessConditions)
-	return resp, handleError(err)
+	resp, err := blc.client.AcquireLease(ctx, &blobAcquireLeaseOptions, modifiedAccessConditions)
+	return toBlobAcquireLeaseResponse(resp), handleError(err)
 }
 
 // BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
 // constant to break a fixed-Duration lease when it expires or an infinite lease immediately.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (blc *BlobLeaseClient) BreakLease(ctx context.Context, options *BreakLeaseBlobOptions) (BlobBreakLeaseResponse, error) {
-	blobBreakLeaseOptions, modifiedAccessConditions := options.pointers()
+func (blc *BlobLeaseClient) BreakLease(ctx context.Context, options *BlobBreakLeaseOptions) (BlobBreakLeaseResponse, error) {
+	blobBreakLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.BreakLease(ctx, blobBreakLeaseOptions, modifiedAccessConditions)
-	return resp, handleError(err)
+	return toBlobBreakLeaseResponse(resp), handleError(err)
 }
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (blc *BlobLeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseBlobOptions) (BlobChangeLeaseResponse, error) {
+func (blc *BlobLeaseClient) ChangeLease(ctx context.Context, options *BlobChangeLeaseOptions) (BlobChangeLeaseResponse, error) {
 	if blc.leaseID == nil {
 		return BlobChangeLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
-	proposedLeaseID, modifiedAccessConditions, err := options.pointers()
+	proposedLeaseID, changeLeaseOptions, modifiedAccessConditions, err := options.format()
 	if err != nil {
 		return BlobChangeLeaseResponse{}, err
 	}
-	resp, err := blc.client.ChangeLease(ctx, *blc.leaseID, *proposedLeaseID, nil, modifiedAccessConditions)
+	resp, err := blc.client.ChangeLease(ctx, *blc.leaseID, *proposedLeaseID, changeLeaseOptions, modifiedAccessConditions)
 
 	// If lease has been changed successfully, set the leaseID in client
 	if err == nil {
 		blc.leaseID = proposedLeaseID
 	}
 
-	return resp, handleError(err)
+	return toBlobChangeLeaseResponse(resp), handleError(err)
 }
 
 // RenewLease renews the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (blc *BlobLeaseClient) RenewLease(ctx context.Context, options *RenewLeaseBlobOptions) (BlobRenewLeaseResponse, error) {
+func (blc *BlobLeaseClient) RenewLease(ctx context.Context, options *BlobRenewLeaseOptions) (BlobRenewLeaseResponse, error) {
 	if blc.leaseID == nil {
 		return BlobRenewLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
-	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
+	renewLeaseBlobOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.RenewLease(ctx, *blc.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)
-	return resp, handleError(err)
+	return toBlobRenewLeaseResponse(resp), handleError(err)
 }
 
 // ReleaseLease releases the blob's previously-acquired lease.
@@ -87,7 +92,7 @@ func (blc *BlobLeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLe
 	if blc.leaseID == nil {
 		return BlobReleaseLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
-	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
+	renewLeaseBlobOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.ReleaseLease(ctx, *blc.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)
-	return resp, handleError(err)
+	return toBlobReleaseLeaseResponse(resp), handleError(err)
 }

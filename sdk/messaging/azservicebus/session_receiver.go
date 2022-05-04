@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
 
@@ -47,52 +49,37 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 	}
 }
 
-func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
-	const sessionFilterName = "com.microsoft:session-filter"
-	const code = uint64(0x00000137000000C)
+type newSessionReceiverArgs struct {
+	sessionID      *string
+	ns             internal.NamespaceWithNewAMQPLinks
+	entity         entity
+	cleanupOnClose func()
+	retryOptions   RetryOptions
+}
 
+func newSessionReceiver(ctx context.Context, args newSessionReceiverArgs, options *ReceiverOptions) (*SessionReceiver, error) {
 	sessionReceiver := &SessionReceiver{
-		sessionID:   sessionID,
+		sessionID:   args.sessionID,
 		lockedUntil: time.Time{},
 	}
 
-	var err error
-
-	sessionReceiver.inner, err = newReceiver(ns, entity, cleanupOnClose, options, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-		linkOptions := createLinkOptions(sessionReceiver.inner.receiveMode, sessionReceiver.inner.amqpLinks.EntityPath())
-
-		if sessionID == nil {
-			linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, nil))
-		} else {
-			linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, sessionID))
-		}
-
-		_, link, err := createReceiverLink(ctx, session, linkOptions)
-
-		if err != nil {
-			return nil, nil, err
-		}
-
-		// check the session ID that came back - if we asked for a named session ID and didn't get it then
-		// we failed to get the lock.
-		// if we specified nil then we can _set_ our internally held session ID now that we know the value.
-		receivedSessionID := link.LinkSourceFilterValue(sessionFilterName)
-		asStr, ok := receivedSessionID.(string)
-
-		if !ok || (sessionID != nil && asStr != *sessionID) {
-			return nil, nil, fmt.Errorf("invalid type/value for returned sessionID(type:%T, value:%v)", receivedSessionID, receivedSessionID)
-		}
-
-		sessionReceiver.sessionID = &asStr
-		return nil, link, nil
-	})
+	r, err := newReceiver(newReceiverArgs{
+		ns:                  args.ns,
+		entity:              args.entity,
+		cleanupOnClose:      args.cleanupOnClose,
+		newLinkFn:           sessionReceiver.newLink,
+		getRecoveryKindFunc: internal.GetRecoveryKindForSession,
+		retryOptions:        args.retryOptions,
+	}, options)
 
 	if err != nil {
 		return nil, err
 	}
 
+	sessionReceiver.inner = r
+
 	// temp workaround until we expose the session expiration time from the receiver in go-amqp
-	if err := sessionReceiver.RenewSessionLock(ctx); err != nil {
+	if err := sessionReceiver.RenewSessionLock(ctx, nil); err != nil {
 		_ = sessionReceiver.Close(context.Background())
 		return nil, err
 	}
@@ -100,7 +87,39 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	return sessionReceiver, nil
 }
 
-// ReceiveMessages receives a fixed number of messages, up to numMessages.
+func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+	const sessionFilterName = "com.microsoft:session-filter"
+	const code = uint64(0x00000137000000C)
+
+	linkOptions := createLinkOptions(r.inner.receiveMode, r.inner.amqpLinks.EntityPath())
+
+	if r.sessionID == nil {
+		linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, nil))
+	} else {
+		linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, r.sessionID))
+	}
+
+	link, err := createReceiverLink(ctx, session, linkOptions)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// check the session ID that came back - if we asked for a named session ID and didn't get it then
+	// we failed to get the lock.
+	// if we specified nil then we can _set_ our internally held session ID now that we know the value.
+	receivedSessionID := link.LinkSourceFilterValue(sessionFilterName)
+	receivedSessionIDStr, ok := receivedSessionID.(string)
+
+	if !ok || (r.sessionID != nil && receivedSessionIDStr != *r.sessionID) {
+		return nil, nil, fmt.Errorf("invalid type/value for returned sessionID(type:%T, value:%v)", receivedSessionID, receivedSessionID)
+	}
+
+	r.sessionID = &receivedSessionIDStr
+	return nil, link, nil
+}
+
+// ReceiveMessages receives a fixed number of messages, up to maxMessages.
 // There are two ways to stop receiving messages:
 // 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
@@ -110,8 +129,8 @@ func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, 
 }
 
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
-func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
-	return r.inner.ReceiveDeferredMessages(ctx, sequenceNumbers)
+func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
+	return r.inner.ReceiveDeferredMessages(ctx, sequenceNumbers, options)
 }
 
 // PeekMessages will peek messages without locking or deleting messages.
@@ -122,19 +141,14 @@ func (r *SessionReceiver) PeekMessages(ctx context.Context, maxMessageCount int,
 	return r.inner.PeekMessages(ctx, maxMessageCount, options)
 }
 
-// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
-func (r *SessionReceiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
-	return r.inner.RenewMessageLock(ctx, msg)
-}
-
 // Close permanently closes the receiver.
 func (r *SessionReceiver) Close(ctx context.Context) error {
 	return r.inner.Close(ctx)
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (r *SessionReceiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return r.inner.CompleteMessage(ctx, message)
+func (r *SessionReceiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
+	return r.inner.CompleteMessage(ctx, message, options)
 }
 
 // AbandonMessage will cause a message to be returned to the queue or subscription.
@@ -170,50 +184,64 @@ func (sr *SessionReceiver) LockedUntil() time.Time {
 	return sr.lockedUntil
 }
 
+// GetSessionStateOptions contains optional parameters for the GetSessionState function.
+type GetSessionStateOptions struct {
+	// For future expansion
+}
+
 // GetSessionState retrieves state associated with the session.
-func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) {
-	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
+func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSessionStateOptions) ([]byte, error) {
+	var sessionState []byte
 
-	if err != nil {
-		return nil, err
-	}
+	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		s, err := internal.GetSessionState(ctx, lwv.RPC, sr.SessionID())
 
-	return mgmt.GetSessionState(ctx, sr.SessionID())
+		if err != nil {
+			return err
+		}
+
+		sessionState = s
+		return nil
+	}, sr.inner.retryOptions)
+
+	return sessionState, err
+}
+
+// SetSessionStateOptions contains optional parameters for the SetSessionState function.
+type SetSessionStateOptions struct {
+	// For future expansion
 }
 
 // SetSessionState sets the state associated with the session.
-func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) error {
-	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
+func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
+	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
+	}, sr.inner.retryOptions)
+}
 
-	if err != nil {
-		return err
-	}
-
-	return mgmt.SetSessionState(ctx, sr.SessionID(), state)
+// RenewSessionLockOptions contains optional parameters for the RenewSessionLock function.
+type RenewSessionLockOptions struct {
+	// For future expansion
 }
 
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
-func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
-	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
+func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
+	return sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
 
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return err
+		}
 
-	newLockedUntil, err := mgmt.RenewSessionLock(ctx, *sr.sessionID)
-
-	if err != nil {
-		return err
-	}
-
-	sr.lockedUntil = newLockedUntil
-	return nil
+		sr.lockedUntil = newLockedUntil
+		return nil
+	}, sr.inner.retryOptions)
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.
 func (sr *SessionReceiver) init(ctx context.Context) error {
 	// initialize the links
-	_, _, _, _, err := sr.inner.amqpLinks.Get(ctx)
+	_, err := sr.inner.amqpLinks.Get(ctx)
 	return err
 }

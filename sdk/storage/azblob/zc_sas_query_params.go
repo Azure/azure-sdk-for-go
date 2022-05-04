@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -76,128 +79,173 @@ func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) 
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-// A SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
+// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
-//
 // This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
 type SASQueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
-	version            string      `param:"sv"`
-	services           string      `param:"ss"`
-	resourceTypes      string      `param:"srt"`
-	protocol           SASProtocol `param:"spr"`
-	startTime          time.Time   `param:"st"`
-	expiryTime         time.Time   `param:"se"`
-	snapshotTime       time.Time   `param:"snapshot"`
-	ipRange            IPRange     `param:"sip"`
-	identifier         string      `param:"si"`
-	resource           string      `param:"sr"`
-	permissions        string      `param:"sp"`
-	signature          string      `param:"sig"`
-	cacheControl       string      `param:"rscc"`
-	contentDisposition string      `param:"rscd"`
-	contentEncoding    string      `param:"rsce"`
-	contentLanguage    string      `param:"rscl"`
-	contentType        string      `param:"rsct"`
-	signedOid          string      `param:"skoid"`
-	signedTid          string      `param:"sktid"`
-	signedStart        time.Time   `param:"skt"`
-	signedExpiry       time.Time   `param:"ske"`
-	signedService      string      `param:"sks"`
-	signedVersion      string      `param:"skv"`
-
+	version                    string      `param:"sv"`
+	services                   string      `param:"ss"`
+	resourceTypes              string      `param:"srt"`
+	protocol                   SASProtocol `param:"spr"`
+	startTime                  time.Time   `param:"st"`
+	expiryTime                 time.Time   `param:"se"`
+	snapshotTime               time.Time   `param:"snapshot"`
+	ipRange                    IPRange     `param:"sip"`
+	identifier                 string      `param:"si"`
+	resource                   string      `param:"sr"`
+	permissions                string      `param:"sp"`
+	signature                  string      `param:"sig"`
+	cacheControl               string      `param:"rscc"`
+	contentDisposition         string      `param:"rscd"`
+	contentEncoding            string      `param:"rsce"`
+	contentLanguage            string      `param:"rscl"`
+	contentType                string      `param:"rsct"`
+	signedOid                  string      `param:"skoid"`
+	signedTid                  string      `param:"sktid"`
+	signedStart                time.Time   `param:"skt"`
+	signedService              string      `param:"sks"`
+	signedExpiry               time.Time   `param:"ske"`
+	signedVersion              string      `param:"skv"`
+	signedDirectoryDepth       string      `param:"sdd"`
+	preauthorizedAgentObjectId string      `param:"saoid"`
+	agentObjectId              string      `param:"suoid"`
+	correlationId              string      `param:"scid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
 }
 
-func (p *SASQueryParameters) SignedOid() string {
-	return p.signedOid
+// PreauthorizedAgentObjectId returns preauthorizedAgentObjectId
+func (p *SASQueryParameters) PreauthorizedAgentObjectId() string {
+	return p.preauthorizedAgentObjectId
 }
 
+// AgentObjectId returns agentObjectId
+func (p *SASQueryParameters) AgentObjectId() string {
+	return p.agentObjectId
+}
+
+// SignedCorrelationId returns signedCorrelationId
+func (p *SASQueryParameters) SignedCorrelationId() string {
+	return p.correlationId
+}
+
+// SignedTid returns aignedTid
 func (p *SASQueryParameters) SignedTid() string {
 	return p.signedTid
 }
 
+// SignedStart returns signedStart
 func (p *SASQueryParameters) SignedStart() time.Time {
 	return p.signedStart
 }
 
+// SignedExpiry returns signedExpiry
 func (p *SASQueryParameters) SignedExpiry() time.Time {
 	return p.signedExpiry
 }
 
+// SignedService returns signedService
 func (p *SASQueryParameters) SignedService() string {
 	return p.signedService
 }
 
+// SignedVersion returns signedVersion
 func (p *SASQueryParameters) SignedVersion() string {
 	return p.signedVersion
 }
 
+// SnapshotTime returns snapshotTime
 func (p *SASQueryParameters) SnapshotTime() time.Time {
 	return p.snapshotTime
 }
 
+// Version returns version
 func (p *SASQueryParameters) Version() string {
 	return p.version
 }
 
+// Services returns services
 func (p *SASQueryParameters) Services() string {
 	return p.services
 }
+
+// ResourceTypes returns resourceTypes
 func (p *SASQueryParameters) ResourceTypes() string {
 	return p.resourceTypes
 }
+
+// Protocol returns protocol
 func (p *SASQueryParameters) Protocol() SASProtocol {
 	return p.protocol
 }
+
+// StartTime returns startTime
 func (p *SASQueryParameters) StartTime() time.Time {
 	return p.startTime
 }
+
+// ExpiryTime returns expiryTime
 func (p *SASQueryParameters) ExpiryTime() time.Time {
 	return p.expiryTime
 }
 
+// IPRange returns ipRange
 func (p *SASQueryParameters) IPRange() IPRange {
 	return p.ipRange
 }
 
+// Identifier returns identifier
 func (p *SASQueryParameters) Identifier() string {
 	return p.identifier
 }
 
+// Resource returns resource
 func (p *SASQueryParameters) Resource() string {
 	return p.resource
 }
+
+// Permissions returns permissions
 func (p *SASQueryParameters) Permissions() string {
 	return p.permissions
 }
 
+// Signature returns signature
 func (p *SASQueryParameters) Signature() string {
 	return p.signature
 }
 
+// CacheControl returns cacheControl
 func (p *SASQueryParameters) CacheControl() string {
 	return p.cacheControl
 }
 
+// ContentDisposition returns contentDisposition
 func (p *SASQueryParameters) ContentDisposition() string {
 	return p.contentDisposition
 }
 
+// ContentEncoding returns contentEncoding
 func (p *SASQueryParameters) ContentEncoding() string {
 	return p.contentEncoding
 }
 
+// ContentLanguage returns contentLanguage
 func (p *SASQueryParameters) ContentLanguage() string {
 	return p.contentLanguage
 }
 
+// ContentType returns sontentType
 func (p *SASQueryParameters) ContentType() string {
 	return p.contentType
+}
+
+// SignedDirectoryDepth returns signedDirectoryDepth
+func (p *SASQueryParameters) SignedDirectoryDepth() string {
+	return p.signedDirectoryDepth
 }
 
 // IPRange represents a SAS IP range's start IP and (optionally) end IP.
@@ -280,6 +328,14 @@ func newSASQueryParameters(values url.Values, deleteSASParametersFromValues bool
 			p.signedService = val
 		case "skv":
 			p.signedVersion = val
+		case "sdd":
+			p.signedDirectoryDepth = val
+		case "saoid":
+			p.preauthorizedAgentObjectId = val
+		case "suoid":
+			p.agentObjectId = val
+		case "scid":
+			p.correlationId = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}
@@ -347,6 +403,18 @@ func (p *SASQueryParameters) addToValues(v url.Values) url.Values {
 	}
 	if p.contentType != "" {
 		v.Add("rsct", p.contentType)
+	}
+	if p.signedDirectoryDepth != "" {
+		v.Add("sdd", p.signedDirectoryDepth)
+	}
+	if p.preauthorizedAgentObjectId != "" {
+		v.Add("saoid", p.preauthorizedAgentObjectId)
+	}
+	if p.agentObjectId != "" {
+		v.Add("suoid", p.agentObjectId)
+	}
+	if p.correlationId != "" {
+		v.Add("scid", p.correlationId)
 	}
 	return v
 }

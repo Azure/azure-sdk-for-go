@@ -61,7 +61,7 @@ func ISO8601StringToDuration(durationStr *string) (*time.Duration, error) {
 	matches := iso8601Regex.FindAllStringSubmatch(*durationStr, -1)
 
 	if matches == nil || len(matches) != 1 {
-		return nil, fmt.Errorf("Duration (%s) didn't match the regexp", *durationStr)
+		return nil, fmt.Errorf("duration (%s) didn't match the regexp", *durationStr)
 	}
 
 	var sum float64

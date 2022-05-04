@@ -8,381 +8,62 @@
 
 package internal
 
-import (
-	"context"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"net/http"
-	"time"
-)
-
-// HSMSecurityDomainClientDownloadPendingResponse contains the response from method HSMSecurityDomainClient.DownloadPending.
-type HSMSecurityDomainClientDownloadPendingResponse struct {
-	HSMSecurityDomainClientDownloadPendingResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HSMSecurityDomainClientDownloadPendingResult contains the result from method HSMSecurityDomainClient.DownloadPending.
-type HSMSecurityDomainClientDownloadPendingResult struct {
-	SecurityDomainOperationStatus
-}
-
-// HSMSecurityDomainClientDownloadPollerResponse contains the response from method HSMSecurityDomainClient.Download.
-type HSMSecurityDomainClientDownloadPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *HSMSecurityDomainClientDownloadPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-func (l HSMSecurityDomainClientDownloadPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (HSMSecurityDomainClientDownloadResponse, error) {
-	respType := HSMSecurityDomainClientDownloadResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityDomainObject)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a HSMSecurityDomainClientDownloadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainClientDownloadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("HSMSecurityDomainClient.Download", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &HSMSecurityDomainClientDownloadPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// HSMSecurityDomainClientDownloadResponse contains the response from method HSMSecurityDomainClient.Download.
-type HSMSecurityDomainClientDownloadResponse struct {
-	HSMSecurityDomainClientDownloadResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HSMSecurityDomainClientDownloadResult contains the result from method HSMSecurityDomainClient.Download.
-type HSMSecurityDomainClientDownloadResult struct {
-	SecurityDomainObject
-}
-
-// HSMSecurityDomainClientTransferKeyResponse contains the response from method HSMSecurityDomainClient.TransferKey.
-type HSMSecurityDomainClientTransferKeyResponse struct {
-	HSMSecurityDomainClientTransferKeyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HSMSecurityDomainClientTransferKeyResult contains the result from method HSMSecurityDomainClient.TransferKey.
-type HSMSecurityDomainClientTransferKeyResult struct {
-	TransferKey
-}
-
-// HSMSecurityDomainClientUploadPendingResponse contains the response from method HSMSecurityDomainClient.UploadPending.
-type HSMSecurityDomainClientUploadPendingResponse struct {
-	HSMSecurityDomainClientUploadPendingResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HSMSecurityDomainClientUploadPendingResult contains the result from method HSMSecurityDomainClient.UploadPending.
-type HSMSecurityDomainClientUploadPendingResult struct {
-	SecurityDomainOperationStatus
-}
-
-// HSMSecurityDomainClientUploadPollerResponse contains the response from method HSMSecurityDomainClient.Upload.
-type HSMSecurityDomainClientUploadPollerResponse struct {
-	// Poller contains an initialized poller.
-	Poller *HSMSecurityDomainClientUploadPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
-// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
-func (l HSMSecurityDomainClientUploadPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (HSMSecurityDomainClientUploadResponse, error) {
-	respType := HSMSecurityDomainClientUploadResponse{}
-	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityDomainOperationStatus)
-	if err != nil {
-		return respType, err
-	}
-	respType.RawResponse = resp
-	return respType, nil
-}
-
-// Resume rehydrates a HSMSecurityDomainClientUploadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainClientUploadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
-	pt, err := armruntime.NewPollerFromResumeToken("HSMSecurityDomainClient.Upload", token, client.pl)
-	if err != nil {
-		return err
-	}
-	poller := &HSMSecurityDomainClientUploadPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return err
-	}
-	l.Poller = poller
-	l.RawResponse = resp
-	return nil
-}
-
-// HSMSecurityDomainClientUploadResponse contains the response from method HSMSecurityDomainClient.Upload.
-type HSMSecurityDomainClientUploadResponse struct {
-	HSMSecurityDomainClientUploadResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HSMSecurityDomainClientUploadResult contains the result from method HSMSecurityDomainClient.Upload.
-type HSMSecurityDomainClientUploadResult struct {
-	SecurityDomainOperationStatus
-}
-
 // KeyVaultClientBackupSecretResponse contains the response from method KeyVaultClient.BackupSecret.
 type KeyVaultClientBackupSecretResponse struct {
-	KeyVaultClientBackupSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientBackupSecretResult contains the result from method KeyVaultClient.BackupSecret.
-type KeyVaultClientBackupSecretResult struct {
 	BackupSecretResult
 }
 
 // KeyVaultClientDeleteSecretResponse contains the response from method KeyVaultClient.DeleteSecret.
 type KeyVaultClientDeleteSecretResponse struct {
-	KeyVaultClientDeleteSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientDeleteSecretResult contains the result from method KeyVaultClient.DeleteSecret.
-type KeyVaultClientDeleteSecretResult struct {
 	DeletedSecretBundle
 }
 
 // KeyVaultClientGetDeletedSecretResponse contains the response from method KeyVaultClient.GetDeletedSecret.
 type KeyVaultClientGetDeletedSecretResponse struct {
-	KeyVaultClientGetDeletedSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedSecretResult contains the result from method KeyVaultClient.GetDeletedSecret.
-type KeyVaultClientGetDeletedSecretResult struct {
 	DeletedSecretBundle
 }
 
 // KeyVaultClientGetDeletedSecretsResponse contains the response from method KeyVaultClient.GetDeletedSecrets.
 type KeyVaultClientGetDeletedSecretsResponse struct {
-	KeyVaultClientGetDeletedSecretsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetDeletedSecretsResult contains the result from method KeyVaultClient.GetDeletedSecrets.
-type KeyVaultClientGetDeletedSecretsResult struct {
 	DeletedSecretListResult
 }
 
 // KeyVaultClientGetSecretResponse contains the response from method KeyVaultClient.GetSecret.
 type KeyVaultClientGetSecretResponse struct {
-	KeyVaultClientGetSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretResult contains the result from method KeyVaultClient.GetSecret.
-type KeyVaultClientGetSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientGetSecretVersionsResponse contains the response from method KeyVaultClient.GetSecretVersions.
 type KeyVaultClientGetSecretVersionsResponse struct {
-	KeyVaultClientGetSecretVersionsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretVersionsResult contains the result from method KeyVaultClient.GetSecretVersions.
-type KeyVaultClientGetSecretVersionsResult struct {
 	SecretListResult
 }
 
 // KeyVaultClientGetSecretsResponse contains the response from method KeyVaultClient.GetSecrets.
 type KeyVaultClientGetSecretsResponse struct {
-	KeyVaultClientGetSecretsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientGetSecretsResult contains the result from method KeyVaultClient.GetSecrets.
-type KeyVaultClientGetSecretsResult struct {
 	SecretListResult
 }
 
 // KeyVaultClientPurgeDeletedSecretResponse contains the response from method KeyVaultClient.PurgeDeletedSecret.
 type KeyVaultClientPurgeDeletedSecretResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // KeyVaultClientRecoverDeletedSecretResponse contains the response from method KeyVaultClient.RecoverDeletedSecret.
 type KeyVaultClientRecoverDeletedSecretResponse struct {
-	KeyVaultClientRecoverDeletedSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRecoverDeletedSecretResult contains the result from method KeyVaultClient.RecoverDeletedSecret.
-type KeyVaultClientRecoverDeletedSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientRestoreSecretResponse contains the response from method KeyVaultClient.RestoreSecret.
 type KeyVaultClientRestoreSecretResponse struct {
-	KeyVaultClientRestoreSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientRestoreSecretResult contains the result from method KeyVaultClient.RestoreSecret.
-type KeyVaultClientRestoreSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientSetSecretResponse contains the response from method KeyVaultClient.SetSecret.
 type KeyVaultClientSetSecretResponse struct {
-	KeyVaultClientSetSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientSetSecretResult contains the result from method KeyVaultClient.SetSecret.
-type KeyVaultClientSetSecretResult struct {
 	SecretBundle
 }
 
 // KeyVaultClientUpdateSecretResponse contains the response from method KeyVaultClient.UpdateSecret.
 type KeyVaultClientUpdateSecretResponse struct {
-	KeyVaultClientUpdateSecretResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// KeyVaultClientUpdateSecretResult contains the result from method KeyVaultClient.UpdateSecret.
-type KeyVaultClientUpdateSecretResult struct {
 	SecretBundle
-}
-
-// RoleAssignmentsClientCreateResponse contains the response from method RoleAssignmentsClient.Create.
-type RoleAssignmentsClientCreateResponse struct {
-	RoleAssignmentsClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleAssignmentsClientCreateResult contains the result from method RoleAssignmentsClient.Create.
-type RoleAssignmentsClientCreateResult struct {
-	RoleAssignment
-}
-
-// RoleAssignmentsClientDeleteResponse contains the response from method RoleAssignmentsClient.Delete.
-type RoleAssignmentsClientDeleteResponse struct {
-	RoleAssignmentsClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleAssignmentsClientDeleteResult contains the result from method RoleAssignmentsClient.Delete.
-type RoleAssignmentsClientDeleteResult struct {
-	RoleAssignment
-}
-
-// RoleAssignmentsClientGetResponse contains the response from method RoleAssignmentsClient.Get.
-type RoleAssignmentsClientGetResponse struct {
-	RoleAssignmentsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleAssignmentsClientGetResult contains the result from method RoleAssignmentsClient.Get.
-type RoleAssignmentsClientGetResult struct {
-	RoleAssignment
-}
-
-// RoleAssignmentsClientListForScopeResponse contains the response from method RoleAssignmentsClient.ListForScope.
-type RoleAssignmentsClientListForScopeResponse struct {
-	RoleAssignmentsClientListForScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleAssignmentsClientListForScopeResult contains the result from method RoleAssignmentsClient.ListForScope.
-type RoleAssignmentsClientListForScopeResult struct {
-	RoleAssignmentListResult
-}
-
-// RoleDefinitionsClientCreateOrUpdateResponse contains the response from method RoleDefinitionsClient.CreateOrUpdate.
-type RoleDefinitionsClientCreateOrUpdateResponse struct {
-	RoleDefinitionsClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleDefinitionsClientCreateOrUpdateResult contains the result from method RoleDefinitionsClient.CreateOrUpdate.
-type RoleDefinitionsClientCreateOrUpdateResult struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientDeleteResponse contains the response from method RoleDefinitionsClient.Delete.
-type RoleDefinitionsClientDeleteResponse struct {
-	RoleDefinitionsClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleDefinitionsClientDeleteResult contains the result from method RoleDefinitionsClient.Delete.
-type RoleDefinitionsClientDeleteResult struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientGetResponse contains the response from method RoleDefinitionsClient.Get.
-type RoleDefinitionsClientGetResponse struct {
-	RoleDefinitionsClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleDefinitionsClientGetResult contains the result from method RoleDefinitionsClient.Get.
-type RoleDefinitionsClientGetResult struct {
-	RoleDefinition
-}
-
-// RoleDefinitionsClientListResponse contains the response from method RoleDefinitionsClient.List.
-type RoleDefinitionsClientListResponse struct {
-	RoleDefinitionsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RoleDefinitionsClientListResult contains the result from method RoleDefinitionsClient.List.
-type RoleDefinitionsClientListResult struct {
-	RoleDefinitionListResult
 }

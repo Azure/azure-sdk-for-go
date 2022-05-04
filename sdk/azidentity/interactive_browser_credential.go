@@ -13,6 +13,8 @@ import (
 	"github.com/AzureAD/microsoft-authentication-library-for-go/apps/public"
 )
 
+const credNameBrowser = "InteractiveBrowserCredentiall"
+
 // InteractiveBrowserCredentialOptions contains optional parameters for InteractiveBrowserCredential.
 type InteractiveBrowserCredentialOptions struct {
 	azcore.ClientOptions
@@ -26,9 +28,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
 	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
 	RedirectURL string
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 }
 
 func (o *InteractiveBrowserCredentialOptions) init() {
@@ -47,8 +46,7 @@ type InteractiveBrowserCredential struct {
 	account public.Account
 }
 
-// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential.
-// options: Optional configuration.
+// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential. Pass nil to accept default options.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	cp := InteractiveBrowserCredentialOptions{}
 	if options != nil {
@@ -58,7 +56,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	if !validTenantID(cp.TenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
-	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.Cloud)
 	if err != nil {
 		return nil, err
 	}
@@ -72,10 +70,11 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	return &InteractiveBrowserCredential{options: cp, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, errors.New(credNameBrowser + ": GetToken() requires at least one scope")
+	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
 	if err == nil {
 		logGetTokenSuccess(c, opts)
@@ -88,8 +87,7 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		addGetTokenFailureLogs("Interactive Browser Credential", err, true)
-		return nil, newAuthenticationFailedError(err, nil)
+		return nil, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)

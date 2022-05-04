@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armrelay
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AccessKeys - Namespace/Relay Connection String
 type AccessKeys struct {
@@ -57,25 +52,10 @@ type AuthorizationRuleListResult struct {
 	Value []*AuthorizationRule `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AuthorizationRuleListResult.
-func (a AuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AuthorizationRuleProperties - Authorization rule properties.
 type AuthorizationRuleProperties struct {
 	// REQUIRED; The rights associated with the rule.
 	Rights []*AccessRights `json:"rights,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AuthorizationRuleProperties.
-func (a AuthorizationRuleProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "rights", a.Rights)
-	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailability - Description of the check name availability request properties.
@@ -131,14 +111,6 @@ type HybridConnectionListResult struct {
 	Value []*HybridConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HybridConnectionListResult.
-func (h HybridConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
 // HybridConnectionProperties - Properties of the HybridConnection.
 type HybridConnectionProperties struct {
 	// Returns true if client authorization is needed for this hybrid connection; otherwise, false.
@@ -157,49 +129,6 @@ type HybridConnectionProperties struct {
 
 	// READ-ONLY; The time the namespace was updated.
 	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HybridConnectionProperties.
-func (h HybridConnectionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", h.CreatedAt)
-	populate(objectMap, "listenerCount", h.ListenerCount)
-	populate(objectMap, "requiresClientAuthorization", h.RequiresClientAuthorization)
-	populateTimeRFC3339(objectMap, "updatedAt", h.UpdatedAt)
-	populate(objectMap, "userMetadata", h.UserMetadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HybridConnectionProperties.
-func (h *HybridConnectionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &h.CreatedAt)
-			delete(rawMsg, key)
-		case "listenerCount":
-			err = unpopulate(val, &h.ListenerCount)
-			delete(rawMsg, key)
-		case "requiresClientAuthorization":
-			err = unpopulate(val, &h.RequiresClientAuthorization)
-			delete(rawMsg, key)
-		case "updatedAt":
-			err = unpopulateTimeRFC3339(val, &h.UpdatedAt)
-			delete(rawMsg, key)
-		case "userMetadata":
-			err = unpopulate(val, &h.UserMetadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.CreateOrUpdateAuthorizationRule
@@ -283,19 +212,6 @@ type Namespace struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Namespace.
-func (n Namespace) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", n.ID)
-	populate(objectMap, "location", n.Location)
-	populate(objectMap, "name", n.Name)
-	populate(objectMap, "properties", n.Properties)
-	populate(objectMap, "sku", n.SKU)
-	populate(objectMap, "tags", n.Tags)
-	populate(objectMap, "type", n.Type)
-	return json.Marshal(objectMap)
-}
-
 // NamespaceListResult - The response from the list namespace operation.
 type NamespaceListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list of namespaces.
@@ -303,14 +219,6 @@ type NamespaceListResult struct {
 
 	// Result of the list namespace operation.
 	Value []*Namespace `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NamespaceListResult.
-func (n NamespaceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
 }
 
 // NamespaceProperties - Properties of the namespace.
@@ -331,58 +239,17 @@ type NamespaceProperties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
-func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", n.CreatedAt)
-	populate(objectMap, "metricId", n.MetricID)
-	populate(objectMap, "provisioningState", n.ProvisioningState)
-	populate(objectMap, "serviceBusEndpoint", n.ServiceBusEndpoint)
-	populateTimeRFC3339(objectMap, "updatedAt", n.UpdatedAt)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NamespaceProperties.
-func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &n.CreatedAt)
-			delete(rawMsg, key)
-		case "metricId":
-			err = unpopulate(val, &n.MetricID)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &n.ProvisioningState)
-			delete(rawMsg, key)
-		case "serviceBusEndpoint":
-			err = unpopulate(val, &n.ServiceBusEndpoint)
-			delete(rawMsg, key)
-		case "updatedAt":
-			err = unpopulateTimeRFC3339(val, &n.UpdatedAt)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
 // method.
 type NamespacesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
 type NamespacesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
@@ -477,14 +344,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -527,16 +386,6 @@ type ResourceNamespacePatch struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceNamespacePatch.
-func (r ResourceNamespacePatch) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // SKU of the namespace.
 type SKU struct {
 	// REQUIRED; Name of this SKU.
@@ -564,17 +413,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // UpdateParameters - Description of a namespace resource.
 type UpdateParameters struct {
 	// Description of Relay namespace.
@@ -594,18 +432,6 @@ type UpdateParameters struct {
 
 	// READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateParameters.
-func (u UpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", u.ID)
-	populate(objectMap, "name", u.Name)
-	populate(objectMap, "properties", u.Properties)
-	populate(objectMap, "sku", u.SKU)
-	populate(objectMap, "tags", u.Tags)
-	populate(objectMap, "type", u.Type)
-	return json.Marshal(objectMap)
 }
 
 // WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdateAuthorizationRule
@@ -706,61 +532,6 @@ type WcfRelayProperties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WcfRelayProperties.
-func (w WcfRelayProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", w.CreatedAt)
-	populate(objectMap, "isDynamic", w.IsDynamic)
-	populate(objectMap, "listenerCount", w.ListenerCount)
-	populate(objectMap, "relayType", w.RelayType)
-	populate(objectMap, "requiresClientAuthorization", w.RequiresClientAuthorization)
-	populate(objectMap, "requiresTransportSecurity", w.RequiresTransportSecurity)
-	populateTimeRFC3339(objectMap, "updatedAt", w.UpdatedAt)
-	populate(objectMap, "userMetadata", w.UserMetadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type WcfRelayProperties.
-func (w *WcfRelayProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &w.CreatedAt)
-			delete(rawMsg, key)
-		case "isDynamic":
-			err = unpopulate(val, &w.IsDynamic)
-			delete(rawMsg, key)
-		case "listenerCount":
-			err = unpopulate(val, &w.ListenerCount)
-			delete(rawMsg, key)
-		case "relayType":
-			err = unpopulate(val, &w.RelayType)
-			delete(rawMsg, key)
-		case "requiresClientAuthorization":
-			err = unpopulate(val, &w.RequiresClientAuthorization)
-			delete(rawMsg, key)
-		case "requiresTransportSecurity":
-			err = unpopulate(val, &w.RequiresTransportSecurity)
-			delete(rawMsg, key)
-		case "updatedAt":
-			err = unpopulateTimeRFC3339(val, &w.UpdatedAt)
-			delete(rawMsg, key)
-		case "userMetadata":
-			err = unpopulate(val, &w.UserMetadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // WcfRelaysListResult - The response of the list WCF relay operation.
 type WcfRelaysListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list of WCF relays.
@@ -768,29 +539,4 @@ type WcfRelaysListResult struct {
 
 	// Result of the list WCF relay operation.
 	Value []*WcfRelay `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WcfRelaysListResult.
-func (w WcfRelaysListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

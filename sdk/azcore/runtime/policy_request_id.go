@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -15,6 +15,7 @@ import (
 
 type requestIdPolicy struct{}
 
+// NewRequestIdPolicy returns a policy that add the x-ms-client-request-id header
 func NewRequestIdPolicy() policy.Policy {
 	return &requestIdPolicy{}
 }

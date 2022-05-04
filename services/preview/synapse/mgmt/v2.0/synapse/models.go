@@ -2529,6 +2529,268 @@ func (dwuap DataWarehouseUserActivitiesProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
+// DedicatedSQLminimalTLSSettings dedicated Sql Minimal Tls Settings Info
+type DedicatedSQLminimalTLSSettings struct {
+	autorest.Response `json:"-"`
+	// Location - READ-ONLY; Resource location.
+	Location *string `json:"location,omitempty"`
+	// DedicatedSQLminimalTLSSettingsProperties - Resource properties.
+	*DedicatedSQLminimalTLSSettingsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedSQLminimalTLSSettings.
+func (dslts DedicatedSQLminimalTLSSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dslts.DedicatedSQLminimalTLSSettingsProperties != nil {
+		objectMap["properties"] = dslts.DedicatedSQLminimalTLSSettingsProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedSQLminimalTLSSettings struct.
+func (dslts *DedicatedSQLminimalTLSSettings) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dslts.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var dedicatedSQLminimalTLSSettingsProperties DedicatedSQLminimalTLSSettingsProperties
+				err = json.Unmarshal(*v, &dedicatedSQLminimalTLSSettingsProperties)
+				if err != nil {
+					return err
+				}
+				dslts.DedicatedSQLminimalTLSSettingsProperties = &dedicatedSQLminimalTLSSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dslts.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dslts.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dslts.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DedicatedSQLminimalTLSSettingsListResult a list of the server's dedicated sql minimal tls settings.
+type DedicatedSQLminimalTLSSettingsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]DedicatedSQLminimalTLSSettings `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedSQLminimalTLSSettingsListResult.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DedicatedSQLminimalTLSSettingsListResultIterator provides access to a complete listing of
+// DedicatedSQLminimalTLSSettings values.
+type DedicatedSQLminimalTLSSettingsListResultIterator struct {
+	i    int
+	page DedicatedSQLminimalTLSSettingsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DedicatedSQLminimalTLSSettingsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedSQLminimalTLSSettingsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DedicatedSQLminimalTLSSettingsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) Response() DedicatedSQLminimalTLSSettingsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DedicatedSQLminimalTLSSettingsListResultIterator) Value() DedicatedSQLminimalTLSSettings {
+	if !iter.page.NotDone() {
+		return DedicatedSQLminimalTLSSettings{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DedicatedSQLminimalTLSSettingsListResultIterator type.
+func NewDedicatedSQLminimalTLSSettingsListResultIterator(page DedicatedSQLminimalTLSSettingsListResultPage) DedicatedSQLminimalTLSSettingsListResultIterator {
+	return DedicatedSQLminimalTLSSettingsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) IsEmpty() bool {
+	return dsltslr.Value == nil || len(*dsltslr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) hasNextLink() bool {
+	return dsltslr.NextLink != nil && len(*dsltslr.NextLink) != 0
+}
+
+// dedicatedSQLminimalTLSSettingsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsltslr DedicatedSQLminimalTLSSettingsListResult) dedicatedSQLminimalTLSSettingsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !dsltslr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsltslr.NextLink)))
+}
+
+// DedicatedSQLminimalTLSSettingsListResultPage contains a page of DedicatedSQLminimalTLSSettings values.
+type DedicatedSQLminimalTLSSettingsListResultPage struct {
+	fn      func(context.Context, DedicatedSQLminimalTLSSettingsListResult) (DedicatedSQLminimalTLSSettingsListResult, error)
+	dsltslr DedicatedSQLminimalTLSSettingsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DedicatedSQLminimalTLSSettingsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedSQLminimalTLSSettingsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.dsltslr)
+		if err != nil {
+			return err
+		}
+		page.dsltslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DedicatedSQLminimalTLSSettingsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) NotDone() bool {
+	return !page.dsltslr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) Response() DedicatedSQLminimalTLSSettingsListResult {
+	return page.dsltslr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DedicatedSQLminimalTLSSettingsListResultPage) Values() []DedicatedSQLminimalTLSSettings {
+	if page.dsltslr.IsEmpty() {
+		return nil
+	}
+	return *page.dsltslr.Value
+}
+
+// Creates a new instance of the DedicatedSQLminimalTLSSettingsListResultPage type.
+func NewDedicatedSQLminimalTLSSettingsListResultPage(cur DedicatedSQLminimalTLSSettingsListResult, getNextPage func(context.Context, DedicatedSQLminimalTLSSettingsListResult) (DedicatedSQLminimalTLSSettingsListResult, error)) DedicatedSQLminimalTLSSettingsListResultPage {
+	return DedicatedSQLminimalTLSSettingsListResultPage{
+		fn:      getNextPage,
+		dsltslr: cur,
+	}
+}
+
+// DedicatedSQLminimalTLSSettingsPatchInfo dedicated SQL minimal tls settings patch info
+type DedicatedSQLminimalTLSSettingsPatchInfo struct {
+	// MinimalTLSVersion - minimal tls version
+	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+}
+
+// DedicatedSQLminimalTLSSettingsProperties properties of a dedicated sql minimal tls settings.
+type DedicatedSQLminimalTLSSettingsProperties struct {
+	// MinimalTLSVersion - The minimal tls version of the sql server.
+	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+}
+
 // DynamicExecutorAllocation dynamic Executor Allocation Properties
 type DynamicExecutorAllocation struct {
 	// Enabled - Indicates whether Dynamic Executor Allocation is enabled or not.
@@ -19603,6 +19865,49 @@ func (future *WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture)
 		sbap, err = client.CreateOrUpdateResponder(sbap.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", sbap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
+type WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) (DedicatedSQLminimalTLSSettings, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture.Result.
+func (future *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture) result(client WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) (dslts DedicatedSQLminimalTLSSettings, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		dslts.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dslts.Response.Response, err = future.GetResult(sender); err == nil && dslts.Response.Response.StatusCode != http.StatusNoContent {
+		dslts, err = client.UpdateResponder(dslts.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsUpdateFuture", "Result", dslts.Response.Response, "Failure responding to request")
 		}
 	}
 	return

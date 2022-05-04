@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armlinks
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // Operation - Microsoft.Resources operation
 type Operation struct {
@@ -48,14 +42,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -73,7 +59,7 @@ type ResourceLink struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource link object.
-	Type map[string]interface{} `json:"type,omitempty" azure:"ro"`
+	Type interface{} `json:"type,omitempty" azure:"ro"`
 }
 
 // ResourceLinkFilter - Resource link filter.
@@ -101,14 +87,6 @@ type ResourceLinkResult struct {
 
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceLinkResult.
-func (r ResourceLinkResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ResourceLinksClientCreateOrUpdateOptions contains the optional parameters for the ResourceLinksClient.CreateOrUpdate method.
@@ -140,14 +118,4 @@ type ResourceLinksClientListAtSubscriptionOptions struct {
 	// The filter to apply on the list resource links operation. The supported filter for list resource links is targetId. For
 	// example, $filter=targetId eq {value}
 	Filter *string
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

@@ -76,7 +76,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.16", "Go version")
+	flagSet.String("go-version", "1.18", "Go version")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {

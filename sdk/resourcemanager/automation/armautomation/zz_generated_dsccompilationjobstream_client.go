@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type DscCompilationJobStreamClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewDscCompilationJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscCompilationJobStreamClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewDscCompilationJobStreamClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DscCompilationJobStreamClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &DscCompilationJobStreamClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // ListByJob - Retrieve all the job streams for the compilation Job.
@@ -101,7 +106,7 @@ func (client *DscCompilationJobStreamClient) listByJobCreateRequest(ctx context.
 
 // listByJobHandleResponse handles the ListByJob response.
 func (client *DscCompilationJobStreamClient) listByJobHandleResponse(resp *http.Response) (DscCompilationJobStreamClientListByJobResponse, error) {
-	result := DscCompilationJobStreamClientListByJobResponse{RawResponse: resp}
+	result := DscCompilationJobStreamClientListByJobResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
 		return DscCompilationJobStreamClientListByJobResponse{}, err
 	}

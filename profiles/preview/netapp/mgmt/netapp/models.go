@@ -12,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-08-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-10-01/netapp"
 )
 
 const (
@@ -81,6 +81,13 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type EnableSubvolumes = original.EnableSubvolumes
+
+const (
+	EnableSubvolumesDisabled EnableSubvolumes = original.EnableSubvolumesDisabled
+	EnableSubvolumesEnabled  EnableSubvolumes = original.EnableSubvolumesEnabled
 )
 
 type EncryptionType = original.EncryptionType
@@ -220,6 +227,7 @@ type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
 type FilePathAvailabilityRequest = original.FilePathAvailabilityRequest
 type HourlySchedule = original.HourlySchedule
+type LdapSearchScopeOpt = original.LdapSearchScopeOpt
 type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type MonthlySchedule = original.MonthlySchedule
@@ -260,14 +268,30 @@ type SnapshotPolicyPatch = original.SnapshotPolicyPatch
 type SnapshotPolicyProperties = original.SnapshotPolicyProperties
 type SnapshotPolicyVolumeList = original.SnapshotPolicyVolumeList
 type SnapshotProperties = original.SnapshotProperties
+type SnapshotRestoreFiles = original.SnapshotRestoreFiles
 type SnapshotsClient = original.SnapshotsClient
 type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
+type SnapshotsRestoreFilesFuture = original.SnapshotsRestoreFilesFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
 type SubscriptionQuotaItem = original.SubscriptionQuotaItem
 type SubscriptionQuotaItemList = original.SubscriptionQuotaItemList
 type SubscriptionQuotaItemProperties = original.SubscriptionQuotaItemProperties
+type SubvolumeInfo = original.SubvolumeInfo
+type SubvolumeModel = original.SubvolumeModel
+type SubvolumeModelProperties = original.SubvolumeModelProperties
+type SubvolumePatchParams = original.SubvolumePatchParams
+type SubvolumePatchRequest = original.SubvolumePatchRequest
+type SubvolumeProperties = original.SubvolumeProperties
+type SubvolumesClient = original.SubvolumesClient
+type SubvolumesCreateFuture = original.SubvolumesCreateFuture
+type SubvolumesDeleteFuture = original.SubvolumesDeleteFuture
+type SubvolumesGetMetadataFuture = original.SubvolumesGetMetadataFuture
+type SubvolumesList = original.SubvolumesList
+type SubvolumesListIterator = original.SubvolumesListIterator
+type SubvolumesListPage = original.SubvolumesListPage
+type SubvolumesUpdateFuture = original.SubvolumesUpdateFuture
 type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type Vault = original.Vault
@@ -387,6 +411,18 @@ func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
 func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSubvolumesClient(subscriptionID string) SubvolumesClient {
+	return original.NewSubvolumesClient(subscriptionID)
+}
+func NewSubvolumesClientWithBaseURI(baseURI string, subscriptionID string) SubvolumesClient {
+	return original.NewSubvolumesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSubvolumesListIterator(page SubvolumesListPage) SubvolumesListIterator {
+	return original.NewSubvolumesListIterator(page)
+}
+func NewSubvolumesListPage(cur SubvolumesList, getNextPage func(context.Context, SubvolumesList) (SubvolumesList, error)) SubvolumesListPage {
+	return original.NewSubvolumesListPage(cur, getNextPage)
+}
 func NewVaultsClient(subscriptionID string) VaultsClient {
 	return original.NewVaultsClient(subscriptionID)
 }
@@ -437,6 +473,9 @@ func PossibleChownModeValues() []ChownMode {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleEnableSubvolumesValues() []EnableSubvolumes {
+	return original.PossibleEnableSubvolumesValues()
 }
 func PossibleEncryptionTypeValues() []EncryptionType {
 	return original.PossibleEncryptionTypeValues()

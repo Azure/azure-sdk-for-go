@@ -11,7 +11,7 @@ The `armapimanagement` module provides operations for working with Azure API Man
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.16 or above
+- Go 1.18 or above
 
 ## Install the package
 
@@ -38,17 +38,35 @@ For more information on authentication, please see the documentation for `aziden
 Azure API Management modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armapimanagement.NewTagClient(<subscription ID>, cred, nil)
+client, err := armapimanagement.NewTagClient(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ```go
-options = arm.ClientOptions{
-    Host: arm.AzureChina,
+options := arm.ClientOptions {
+    ClientOptions: azcore.ClientOptions {
+        Cloud: cloud.AzureChina,
+    },
 }
-client := armapimanagement.NewTagClient(<subscription ID>, cred, &options)
+client, err := armapimanagement.NewTagClient(<subscription ID>, cred, &options)
 ```
+
+## More sample code
+
+- [API Management Service](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apimanagement_service)
+- [API Operation](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apioperation)
+- [API Operation Policy](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apioperationpolicy)
+- [API Policy](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apipolicy)
+- [API Release](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apirelease)
+- [API Schema](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apischema)
+- [API Tag Description](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apitagdescription)
+- [API Version Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/apiversionset)
+- [Deleted Service](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/deleted_service)
+- [Logger](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/logger)
+- [Sign In Setting](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/signin_setting)
+- [Sign up Setting](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/signup_setting)
+- [User](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/apimanagement/user)
 
 ## Provide Feedback
 

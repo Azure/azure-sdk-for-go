@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armmanagementpartner
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Error - this is the management partner operations error
 type Error struct {
@@ -63,14 +58,6 @@ type OperationList struct {
 
 	// this is the operation response list
 	Value []*OperationResponse `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationList.
-func (o OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationResponse - this is the management partner operations response
@@ -132,61 +119,6 @@ type PartnerProperties struct {
 	Version *int32 `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PartnerProperties.
-func (p PartnerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTime", p.CreatedTime)
-	populate(objectMap, "objectId", p.ObjectID)
-	populate(objectMap, "partnerId", p.PartnerID)
-	populate(objectMap, "partnerName", p.PartnerName)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "tenantId", p.TenantID)
-	populateTimeRFC3339(objectMap, "updatedTime", p.UpdatedTime)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PartnerProperties.
-func (p *PartnerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTime":
-			err = unpopulateTimeRFC3339(val, &p.CreatedTime)
-			delete(rawMsg, key)
-		case "objectId":
-			err = unpopulate(val, &p.ObjectID)
-			delete(rawMsg, key)
-		case "partnerId":
-			err = unpopulate(val, &p.PartnerID)
-			delete(rawMsg, key)
-		case "partnerName":
-			err = unpopulate(val, &p.PartnerName)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "tenantId":
-			err = unpopulate(val, &p.TenantID)
-			delete(rawMsg, key)
-		case "updatedTime":
-			err = unpopulateTimeRFC3339(val, &p.UpdatedTime)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &p.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PartnerResponse - this is the management partner operations response
 type PartnerResponse struct {
 	// Type of the partner
@@ -208,21 +140,4 @@ type PartnerResponse struct {
 // PartnersClientGetOptions contains the optional parameters for the PartnersClient.Get method.
 type PartnersClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

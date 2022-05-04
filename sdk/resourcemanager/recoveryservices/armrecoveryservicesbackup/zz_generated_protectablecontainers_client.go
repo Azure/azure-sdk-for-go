@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,38 +34,58 @@ type ProtectableContainersClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProtectableContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectableContainersClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProtectableContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectableContainersClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProtectableContainersClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
-// List - Lists the containers that can be registered to Recovery Services Vault.
+// NewListPager - Lists the containers that can be registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.List
 // method.
-func (client *ProtectableContainersClient) List(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) *ProtectableContainersClientListPager {
-	return &ProtectableContainersClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
+func (client *ProtectableContainersClient) NewListPager(vaultName string, resourceGroupName string, fabricName string, options *ProtectableContainersClientListOptions) *runtime.Pager[ProtectableContainersClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[ProtectableContainersClientListResponse]{
+		More: func(page ProtectableContainersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp ProtectableContainersClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProtectableContainerResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *ProtectableContainersClientListResponse) (ProtectableContainersClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, fabricName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ProtectableContainersClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ProtectableContainersClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ProtectableContainersClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -91,7 +112,7 @@ func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -102,7 +123,7 @@ func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context
 
 // listHandleResponse handles the List response.
 func (client *ProtectableContainersClient) listHandleResponse(resp *http.Response) (ProtectableContainersClientListResponse, error) {
-	result := ProtectableContainersClientListResponse{RawResponse: resp}
+	result := ProtectableContainersClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectableContainerResourceList); err != nil {
 		return ProtectableContainersClientListResponse{}, err
 	}

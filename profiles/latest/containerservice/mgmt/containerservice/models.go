@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-10-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2022-03-01/containerservice"
 )
 
 const (
@@ -71,6 +71,13 @@ type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+)
+
+type Format = original.Format
+
+const (
+	FormatAzure Format = original.FormatAzure
+	FormatExec  Format = original.FormatExec
 )
 
 type GPUInstanceProfile = original.GPUInstanceProfile
@@ -466,6 +473,7 @@ type AgentPoolsClient = original.AgentPoolsClient
 type AgentPoolsCreateOrUpdateFuture = original.AgentPoolsCreateOrUpdateFuture
 type AgentPoolsDeleteFuture = original.AgentPoolsDeleteFuture
 type AgentPoolsUpgradeNodeImageVersionFuture = original.AgentPoolsUpgradeNodeImageVersionFuture
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -521,6 +529,10 @@ type ManagedClusterSKU = original.ManagedClusterSKU
 type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
 type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
+type ManagedClusterStorageProfile = original.ManagedClusterStorageProfile
+type ManagedClusterStorageProfileDiskCSIDriver = original.ManagedClusterStorageProfileDiskCSIDriver
+type ManagedClusterStorageProfileFileCSIDriver = original.ManagedClusterStorageProfileFileCSIDriver
+type ManagedClusterStorageProfileSnapshotController = original.ManagedClusterStorageProfileSnapshotController
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
 type ManagedClusterWindowsProfile = original.ManagedClusterWindowsProfile
@@ -558,6 +570,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
 type ResolvePrivateLinkServiceIDClient = original.ResolvePrivateLinkServiceIDClient
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
@@ -577,6 +590,7 @@ type SystemData = original.SystemData
 type TagsObject = original.TagsObject
 type TimeInWeek = original.TimeInWeek
 type TimeSpan = original.TimeSpan
+type TrackedResource = original.TrackedResource
 type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
 type WindowsGmsaProfile = original.WindowsGmsaProfile
@@ -685,6 +699,9 @@ func PossibleExpanderValues() []Expander {
 }
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleFormatValues() []Format {
+	return original.PossibleFormatValues()
 }
 func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
 	return original.PossibleGPUInstanceProfileValues()

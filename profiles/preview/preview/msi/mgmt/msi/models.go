@@ -12,19 +12,23 @@ package msi
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2015-08-31-preview/msi"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2021-09-30-preview/msi"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AssociatedResourcesListResult = original.AssociatedResourcesListResult
+type AssociatedResourcesListResultIterator = original.AssociatedResourcesListResultIterator
+type AssociatedResourcesListResultPage = original.AssociatedResourcesListResultPage
 type AzureEntityResource = original.AzureEntityResource
+type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Identity = original.Identity
-type IdentityProperties = original.IdentityProperties
+type IdentityUpdate = original.IdentityUpdate
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -35,14 +39,22 @@ type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type SystemAssignedIdentitiesClient = original.SystemAssignedIdentitiesClient
 type SystemAssignedIdentity = original.SystemAssignedIdentity
+type SystemAssignedIdentityProperties = original.SystemAssignedIdentityProperties
 type TrackedResource = original.TrackedResource
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
 type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListResultPage
+type UserAssignedIdentityProperties = original.UserAssignedIdentityProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAssociatedResourcesListResultIterator(page AssociatedResourcesListResultPage) AssociatedResourcesListResultIterator {
+	return original.NewAssociatedResourcesListResultIterator(page)
+}
+func NewAssociatedResourcesListResultPage(cur AssociatedResourcesListResult, getNextPage func(context.Context, AssociatedResourcesListResult) (AssociatedResourcesListResult, error)) AssociatedResourcesListResultPage {
+	return original.NewAssociatedResourcesListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

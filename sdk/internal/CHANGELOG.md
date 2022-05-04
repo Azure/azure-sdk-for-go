@@ -1,14 +1,26 @@
 # Release History
 
-## 0.9.1 (Unreleased)
+## 0.10.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Removed logging constants from the `log` package.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.9.2 (2022-04-04)
+
+### Features Added
+* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
+* Added the `perf` library for performance testing client SDKs
+
+## 0.9.1 (2022-02-01)
+
+### Features Added
+* Adds a `CustomDefaultMatcher` that adds headers `:path`, `:authority`, `:method`, and `:scheme` to the default matcher.
 
 ## 0.9.0 (2022-01-24)
 

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,39 +34,59 @@ type BackupProtectableItemsClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewBackupProtectableItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BackupProtectableItemsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewBackupProtectableItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupProtectableItemsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &BackupProtectableItemsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
-// List - Provides a pageable list of protectable objects within your subscription according to the query filter and the pagination
-// parameters.
+// NewListPager - Provides a pageable list of protectable objects within your subscription according to the query filter and
+// the pagination parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupProtectableItemsClientListOptions contains the optional parameters for the BackupProtectableItemsClient.List
 // method.
-func (client *BackupProtectableItemsClient) List(vaultName string, resourceGroupName string, options *BackupProtectableItemsClientListOptions) *BackupProtectableItemsClientListPager {
-	return &BackupProtectableItemsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
+func (client *BackupProtectableItemsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupProtectableItemsClientListOptions) *runtime.Pager[BackupProtectableItemsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[BackupProtectableItemsClientListResponse]{
+		More: func(page BackupProtectableItemsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp BackupProtectableItemsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkloadProtectableItemResourceList.NextLink)
+		Fetcher: func(ctx context.Context, page *BackupProtectableItemsClientListResponse) (BackupProtectableItemsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return BackupProtectableItemsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return BackupProtectableItemsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return BackupProtectableItemsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -88,7 +109,7 @@ func (client *BackupProtectableItemsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -102,7 +123,7 @@ func (client *BackupProtectableItemsClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *BackupProtectableItemsClient) listHandleResponse(resp *http.Response) (BackupProtectableItemsClientListResponse, error) {
-	result := BackupProtectableItemsClientListResponse{RawResponse: resp}
+	result := BackupProtectableItemsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadProtectableItemResourceList); err != nil {
 		return BackupProtectableItemsClientListResponse{}, err
 	}

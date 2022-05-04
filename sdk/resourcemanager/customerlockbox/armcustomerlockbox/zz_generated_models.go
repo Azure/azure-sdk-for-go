@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armcustomerlockbox
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Approval - Request content object, in the use of Approve or Deny a Lockbox request.
 type Approval struct {
@@ -52,16 +47,6 @@ type ErrorBody struct {
 
 	// The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorBody.
-func (e ErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // ErrorResponse - An error response from the Lockbox service.
@@ -132,81 +117,6 @@ type LockboxRequestResponseProperties struct {
 	Workitemsource *string `json:"workitemsource,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LockboxRequestResponseProperties.
-func (l LockboxRequestResponseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessLevel", l.AccessLevel)
-	populateTimeRFC3339(objectMap, "createdDateTime", l.CreatedDateTime)
-	populate(objectMap, "duration", l.Duration)
-	populateTimeRFC3339(objectMap, "expirationDateTime", l.ExpirationDateTime)
-	populate(objectMap, "justification", l.Justification)
-	populate(objectMap, "requestId", l.RequestID)
-	populate(objectMap, "resourceIds", l.ResourceIDs)
-	populate(objectMap, "resourceType", l.ResourceType)
-	populate(objectMap, "status", l.Status)
-	populate(objectMap, "subscriptionId", l.SubscriptionID)
-	populate(objectMap, "supportCaseUrl", l.SupportCaseURL)
-	populate(objectMap, "supportRequest", l.SupportRequest)
-	populate(objectMap, "workitemsource", l.Workitemsource)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LockboxRequestResponseProperties.
-func (l *LockboxRequestResponseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accessLevel":
-			err = unpopulate(val, &l.AccessLevel)
-			delete(rawMsg, key)
-		case "createdDateTime":
-			err = unpopulateTimeRFC3339(val, &l.CreatedDateTime)
-			delete(rawMsg, key)
-		case "duration":
-			err = unpopulate(val, &l.Duration)
-			delete(rawMsg, key)
-		case "expirationDateTime":
-			err = unpopulateTimeRFC3339(val, &l.ExpirationDateTime)
-			delete(rawMsg, key)
-		case "justification":
-			err = unpopulate(val, &l.Justification)
-			delete(rawMsg, key)
-		case "requestId":
-			err = unpopulate(val, &l.RequestID)
-			delete(rawMsg, key)
-		case "resourceIds":
-			err = unpopulate(val, &l.ResourceIDs)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &l.ResourceType)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &l.Status)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &l.SubscriptionID)
-			delete(rawMsg, key)
-		case "supportCaseUrl":
-			err = unpopulate(val, &l.SupportCaseURL)
-			delete(rawMsg, key)
-		case "supportRequest":
-			err = unpopulate(val, &l.SupportRequest)
-			delete(rawMsg, key)
-		case "workitemsource":
-			err = unpopulate(val, &l.Workitemsource)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Operation result model for ARM RP
 type Operation struct {
 	// READ-ONLY; Contains the localized display information for this particular operation / action.
@@ -249,14 +159,6 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -281,14 +183,6 @@ type RequestListResult struct {
 	Value []*LockboxRequestResponse `json:"value,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RequestListResult.
-func (r RequestListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RequestsClientGetOptions contains the optional parameters for the RequestsClient.Get method.
 type RequestsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -309,21 +203,4 @@ type RequestsClientUpdateStatusOptions struct {
 type TenantOptInResponse struct {
 	// READ-ONLY; True if tenant is opted in, false otherwise
 	IsOptedIn *bool `json:"isOptedIn,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

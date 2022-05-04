@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armtrafficmanager
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // CheckTrafficManagerRelativeDNSNameAvailabilityParameters - Parameters supplied to check Traffic Manager name operation.
 type CheckTrafficManagerRelativeDNSNameAvailabilityParameters struct {
@@ -43,16 +38,6 @@ type CloudErrorBody struct {
 
 	// Error target
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudErrorBody.
-func (c CloudErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // DNSConfig - Class containing DNS settings in a Traffic Manager profile.
@@ -90,16 +75,6 @@ type Endpoint struct {
 
 	// The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Endpoint.
-func (e Endpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", e.ID)
-	populate(objectMap, "name", e.Name)
-	populate(objectMap, "properties", e.Properties)
-	populate(objectMap, "type", e.Type)
-	return json.Marshal(objectMap)
 }
 
 // EndpointProperties - Class representing a Traffic Manager endpoint properties.
@@ -153,25 +128,6 @@ type EndpointProperties struct {
 
 	// The weight of this endpoint when using the 'Weighted' traffic routing method. Possible values are from 1 to 1000.
 	Weight *int64 `json:"weight,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EndpointProperties.
-func (e EndpointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customHeaders", e.CustomHeaders)
-	populate(objectMap, "endpointLocation", e.EndpointLocation)
-	populate(objectMap, "endpointMonitorStatus", e.EndpointMonitorStatus)
-	populate(objectMap, "endpointStatus", e.EndpointStatus)
-	populate(objectMap, "geoMapping", e.GeoMapping)
-	populate(objectMap, "minChildEndpoints", e.MinChildEndpoints)
-	populate(objectMap, "minChildEndpointsIPv4", e.MinChildEndpointsIPv4)
-	populate(objectMap, "minChildEndpointsIPv6", e.MinChildEndpointsIPv6)
-	populate(objectMap, "priority", e.Priority)
-	populate(objectMap, "subnets", e.Subnets)
-	populate(objectMap, "target", e.Target)
-	populate(objectMap, "targetResourceId", e.TargetResourceID)
-	populate(objectMap, "weight", e.Weight)
-	return json.Marshal(objectMap)
 }
 
 // EndpointPropertiesCustomHeadersItem - Custom header name and value.
@@ -290,45 +246,6 @@ type HeatMapProperties struct {
 	TrafficFlows []*TrafficFlow `json:"trafficFlows,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HeatMapProperties.
-func (h HeatMapProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", h.EndTime)
-	populate(objectMap, "endpoints", h.Endpoints)
-	populateTimeRFC3339(objectMap, "startTime", h.StartTime)
-	populate(objectMap, "trafficFlows", h.TrafficFlows)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HeatMapProperties.
-func (h *HeatMapProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &h.EndTime)
-			delete(rawMsg, key)
-		case "endpoints":
-			err = unpopulate(val, &h.Endpoints)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &h.StartTime)
-			delete(rawMsg, key)
-		case "trafficFlows":
-			err = unpopulate(val, &h.TrafficFlows)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MonitorConfig - Class containing endpoint monitoring settings in a Traffic Manager profile.
 type MonitorConfig struct {
 	// List of custom headers.
@@ -360,21 +277,6 @@ type MonitorConfig struct {
 	// The number of consecutive failed health check that Traffic Manager tolerates before declaring an endpoint in this profile
 	// Degraded after the next failed health check.
 	ToleratedNumberOfFailures *int64 `json:"toleratedNumberOfFailures,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MonitorConfig.
-func (m MonitorConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customHeaders", m.CustomHeaders)
-	populate(objectMap, "expectedStatusCodeRanges", m.ExpectedStatusCodeRanges)
-	populate(objectMap, "intervalInSeconds", m.IntervalInSeconds)
-	populate(objectMap, "path", m.Path)
-	populate(objectMap, "port", m.Port)
-	populate(objectMap, "profileMonitorStatus", m.ProfileMonitorStatus)
-	populate(objectMap, "protocol", m.Protocol)
-	populate(objectMap, "timeoutInSeconds", m.TimeoutInSeconds)
-	populate(objectMap, "toleratedNumberOfFailures", m.ToleratedNumberOfFailures)
-	return json.Marshal(objectMap)
 }
 
 // MonitorConfigCustomHeadersItem - Custom header name and value.
@@ -434,29 +336,10 @@ type Profile struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Profile.
-func (p Profile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "location", p.Location)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", p.Tags)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // ProfileListResult - The list Traffic Manager profiles operation response.
 type ProfileListResult struct {
 	// Gets the list of Traffic manager profiles.
 	Value []*Profile `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProfileListResult.
-func (p ProfileListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // ProfileProperties - Class representing the Traffic Manager profile properties.
@@ -485,20 +368,6 @@ type ProfileProperties struct {
 	// Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'.
 	// Enabling this feature will increase the cost of the Traffic Manage profile.
 	TrafficViewEnrollmentStatus *TrafficViewEnrollmentStatus `json:"trafficViewEnrollmentStatus,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProfileProperties.
-func (p ProfileProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedEndpointRecordTypes", p.AllowedEndpointRecordTypes)
-	populate(objectMap, "dnsConfig", p.DNSConfig)
-	populate(objectMap, "endpoints", p.Endpoints)
-	populate(objectMap, "maxReturn", p.MaxReturn)
-	populate(objectMap, "monitorConfig", p.MonitorConfig)
-	populate(objectMap, "profileStatus", p.ProfileStatus)
-	populate(objectMap, "trafficRoutingMethod", p.TrafficRoutingMethod)
-	populate(objectMap, "trafficViewEnrollmentStatus", p.TrafficViewEnrollmentStatus)
-	return json.Marshal(objectMap)
 }
 
 // ProfilesClientCheckTrafficManagerRelativeDNSNameAvailabilityOptions contains the optional parameters for the ProfilesClient.CheckTrafficManagerRelativeDNSNameAvailability
@@ -574,15 +443,6 @@ type Region struct {
 	Regions []*Region `json:"regions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Region.
-func (r Region) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", r.Code)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "regions", r.Regions)
-	return json.Marshal(objectMap)
-}
-
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
@@ -613,17 +473,6 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // TrafficFlow - Class representing a Traffic Manager HeatMap traffic flow properties.
 type TrafficFlow struct {
 	// The approximate latitude that these queries originated from.
@@ -637,16 +486,6 @@ type TrafficFlow struct {
 
 	// The IP address that this query experience originated from.
 	SourceIP *string `json:"sourceIp,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrafficFlow.
-func (t TrafficFlow) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "latitude", t.Latitude)
-	populate(objectMap, "longitude", t.Longitude)
-	populate(objectMap, "queryExperiences", t.QueryExperiences)
-	populate(objectMap, "sourceIp", t.SourceIP)
-	return json.Marshal(objectMap)
 }
 
 // UserMetricsKeysClientCreateOrUpdateOptions contains the optional parameters for the UserMetricsKeysClient.CreateOrUpdate
@@ -684,21 +523,4 @@ type UserMetricsModel struct {
 type UserMetricsProperties struct {
 	// The key returned by the User Metrics operation.
 	Key *string `json:"key,omitempty"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

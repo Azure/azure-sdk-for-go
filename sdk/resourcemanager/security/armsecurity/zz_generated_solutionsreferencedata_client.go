@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,30 +27,31 @@ import (
 type SolutionsReferenceDataClient struct {
 	host           string
 	subscriptionID string
-	ascLocation    string
 	pl             runtime.Pipeline
 }
 
 // NewSolutionsReferenceDataClient creates a new instance of SolutionsReferenceDataClient with the specified values.
 // subscriptionID - Azure subscription ID
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSolutionsReferenceDataClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *SolutionsReferenceDataClient {
+func NewSolutionsReferenceDataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsReferenceDataClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SolutionsReferenceDataClient{
 		subscriptionID: subscriptionID,
-		ascLocation:    ascLocation,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // List - Gets a list of all supported Security Solutions for the subscription.
@@ -91,7 +93,7 @@ func (client *SolutionsReferenceDataClient) listCreateRequest(ctx context.Contex
 
 // listHandleResponse handles the List response.
 func (client *SolutionsReferenceDataClient) listHandleResponse(resp *http.Response) (SolutionsReferenceDataClientListResponse, error) {
-	result := SolutionsReferenceDataClientListResponse{RawResponse: resp}
+	result := SolutionsReferenceDataClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionsReferenceDataList); err != nil {
 		return SolutionsReferenceDataClientListResponse{}, err
 	}
@@ -100,10 +102,11 @@ func (client *SolutionsReferenceDataClient) listHandleResponse(resp *http.Respon
 
 // ListByHomeRegion - Gets list of all supported Security Solutions for subscription and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - SolutionsReferenceDataClientListByHomeRegionOptions contains the optional parameters for the SolutionsReferenceDataClient.ListByHomeRegion
 // method.
-func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context, options *SolutionsReferenceDataClientListByHomeRegionOptions) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
-	req, err := client.listByHomeRegionCreateRequest(ctx, options)
+func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context, ascLocation string, options *SolutionsReferenceDataClientListByHomeRegionOptions) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
+	req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
 	if err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}
@@ -118,16 +121,16 @@ func (client *SolutionsReferenceDataClient) ListByHomeRegion(ctx context.Context
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, options *SolutionsReferenceDataClientListByHomeRegionOptions) (*policy.Request, error) {
+func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *SolutionsReferenceDataClientListByHomeRegionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/securitySolutionsReferenceData"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
+	if ascLocation == "" {
+		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
+	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -141,7 +144,7 @@ func (client *SolutionsReferenceDataClient) listByHomeRegionCreateRequest(ctx co
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
 func (client *SolutionsReferenceDataClient) listByHomeRegionHandleResponse(resp *http.Response) (SolutionsReferenceDataClientListByHomeRegionResponse, error) {
-	result := SolutionsReferenceDataClientListByHomeRegionResponse{RawResponse: resp}
+	result := SolutionsReferenceDataClientListByHomeRegionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionsReferenceDataList); err != nil {
 		return SolutionsReferenceDataClientListByHomeRegionResponse{}, err
 	}

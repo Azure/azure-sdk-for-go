@@ -2,9 +2,6 @@
 
 These settings apply only when `--go` is specified on the command line.
 
-<!-- Original autorest command used by Chris Scott -->
-<!-- autorest --use=@autorest/go@4.0.0-preview.20 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cosmos-db/data-plane/readme.md --tag=package-2019-02 --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=aztables --module=aztables --openapi-type="data-plane" --credential-scope=none -->
-
 ``` yaml
 go: true
 version: "^3.0.0"
@@ -14,12 +11,27 @@ clear-output-folder: false
 output-folder: internal
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.35"
-module-version: 0.1.0
+use: "@autorest/go@4.0.0-preview.39"
+module-version: 0.8.0
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 modelerfour:
   group-parameters: false
+
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/moduleName\s+=\s+"internal"/, `moduleName = "aztables"`).
+        replace(/\(client \*TableClient\) deleteEntityCreateRequest\(/, `(client *TableClient) DeleteEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) insertEntityCreateRequest\(/, `(client *TableClient) InsertEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) mergeEntityCreateRequest\(/, `(client *TableClient) MergeEntityCreateRequest(`).
+        replace(/\(client \*TableClient\) updateEntityCreateRequest\(/, `(client *TableClient) UpdateEntityCreateRequest(`).
+        replace(/= client\.deleteEntityCreateRequest\(/, `= client.DeleteEntityCreateRequest(`).
+        replace(/= client\.insertEntityCreateRequest\(/, `= client.InsertEntityCreateRequest(`).
+        replace(/= client\.mergeEntityCreateRequest\(/, `= client.MergeEntityCreateRequest(`).
+        replace(/= client\.updateEntityCreateRequest\(/, `= client.UpdateEntityCreateRequest(`);
 ```
 
 ### Go multi-api

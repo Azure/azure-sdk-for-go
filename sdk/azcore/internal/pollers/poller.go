@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -11,14 +11,30 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+)
+
+// FinalStateVia is the enumerated type for the possible final-state-via values.
+type FinalStateVia string
+
+const (
+	// FinalStateViaAzureAsyncOp indicates the final payload comes from the Azure-AsyncOperation URL.
+	FinalStateViaAzureAsyncOp FinalStateVia = "azure-async-operation"
+
+	// FinalStateViaLocation indicates the final payload comes from the Location URL.
+	FinalStateViaLocation FinalStateVia = "location"
+
+	// FinalStateViaOriginalURI indicates the final payload comes from the original URL.
+	FinalStateViaOriginalURI FinalStateVia = "original-uri"
+
+	// FinalStateViaOpLocation indicates the final payload comes from the Operation-Location URL.
+	FinalStateViaOpLocation FinalStateVia = "operation-location"
 )
 
 // KindFromToken extracts the poller kind from the provided token.
@@ -55,14 +71,14 @@ func PollerType(p *Poller) reflect.Type {
 }
 
 // NewPoller creates a Poller from the specified input.
-func NewPoller(lro Operation, resp *http.Response, pl pipeline.Pipeline) *Poller {
+func NewPoller(lro Operation, resp *http.Response, pl exported.Pipeline) *Poller {
 	return &Poller{lro: lro, pl: pl, resp: resp}
 }
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller struct {
 	lro  Operation
-	pl   pipeline.Pipeline
+	pl   exported.Pipeline
 	resp *http.Response
 	err  error
 }
@@ -72,7 +88,7 @@ func (l *Poller) Done() bool {
 	if l.err != nil {
 		return true
 	}
-	return l.lro.Done()
+	return l.lro.State() != OperationStateInProgress
 }
 
 // Poll sends a polling request to the polling endpoint and returns the response or error.
@@ -84,7 +100,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		}
 		return nil, l.err
 	}
-	req, err := pipeline.NewRequest(ctx, http.MethodGet, l.lro.URL())
+	req, err := exported.NewRequest(ctx, http.MethodGet, l.lro.URL())
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +112,7 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 	defer resp.Body.Close()
 	if !StatusCodeValid(resp) {
 		// the LRO failed.  unmarshall the error and update state
-		l.err = shared.NewResponseError(resp)
+		l.err = exported.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -104,9 +120,9 @@ func (l *Poller) Poll(ctx context.Context) (*http.Response, error) {
 		return nil, err
 	}
 	l.resp = resp
-	log.Writef(log.EventLRO, "Status %s", l.lro.Status())
-	if Failed(l.lro.Status()) {
-		l.err = shared.NewResponseError(resp)
+	log.Writef(log.EventLRO, "State %s", l.lro.State())
+	if l.lro.State() == OperationStateFailed {
+		l.err = exported.NewResponseError(resp)
 		l.resp = nil
 		return nil, l.err
 	}
@@ -134,7 +150,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 	// update l.resp with the content from final GET if applicable
 	if u := l.lro.FinalGetURL(); u != "" {
 		log.Write(log.EventLRO, "Performing final GET.")
-		req, err := pipeline.NewRequest(ctx, http.MethodGet, u)
+		req, err := exported.NewRequest(ctx, http.MethodGet, u)
 		if err != nil {
 			return nil, err
 		}
@@ -143,7 +159,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 			return nil, err
 		}
 		if !StatusCodeValid(resp) {
-			return nil, shared.NewResponseError(resp)
+			return nil, exported.NewResponseError(resp)
 		}
 		l.resp = resp
 	}
@@ -154,8 +170,7 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 		log.Write(log.EventLRO, "final response specifies a response type but no payload was received")
 		return l.resp, nil
 	}
-	body, err := ioutil.ReadAll(l.resp.Body)
-	l.resp.Body.Close()
+	body, err := exported.Payload(l.resp)
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +211,7 @@ func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType
 			return nil, err
 		}
 		if l.Done() {
-			logPollUntilDoneExit(l.lro.Status())
+			logPollUntilDoneExit(l.lro.State())
 			return l.FinalResponse(ctx, respType)
 		}
 		d := freq

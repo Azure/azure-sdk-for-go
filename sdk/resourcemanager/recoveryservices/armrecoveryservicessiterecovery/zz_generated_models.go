@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armrecoveryservicessiterecovery
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // A2AAddDisksInput - A2A add disk(s) input.
 type A2AAddDisksInput struct {
@@ -27,128 +22,16 @@ type A2AAddDisksInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
-// GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type A2AAddDisksInput.
-func (a *A2AAddDisksInput) GetAddDisksProviderSpecificInput() *AddDisksProviderSpecificInput {
-	return &AddDisksProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AAddDisksInput.
-func (a A2AAddDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "vmDisks", a.VMDisks)
-	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AAddDisksInput.
-func (a *A2AAddDisksInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		case "vmManagedDisks":
-			err = unpopulate(val, &a.VMManagedDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2A provider.
 type A2AApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type A2AApplyRecoveryPointInput.
-func (a *A2AApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return &ApplyRecoveryPointProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AApplyRecoveryPointInput.
-func (a A2AApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AApplyRecoveryPointInput.
-func (a *A2AApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AContainerCreationInput - A2A cloud creation input.
 type A2AContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
-// interface for type A2AContainerCreationInput.
-func (a *A2AContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
-	return &ReplicationProviderSpecificContainerCreationInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AContainerCreationInput.
-func (a A2AContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AContainerCreationInput.
-func (a *A2AContainerCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AContainerMappingInput - A2A container mapping input.
@@ -164,53 +47,6 @@ type A2AContainerMappingInput struct {
 
 	// A value indicating the type authentication to use for automation Account.
 	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
-}
-
-// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
-// interface for type A2AContainerMappingInput.
-func (a *A2AContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
-	return &ReplicationProviderSpecificContainerMappingInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AContainerMappingInput.
-func (a A2AContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
-	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
-	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
-	objectMap["instanceType"] = "A2A"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AContainerMappingInput.
-func (a *A2AContainerMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentAutoUpdateStatus":
-			err = unpopulate(val, &a.AgentAutoUpdateStatus)
-			delete(rawMsg, key)
-		case "automationAccountArmId":
-			err = unpopulate(val, &a.AutomationAccountArmID)
-			delete(rawMsg, key)
-		case "automationAccountAuthenticationType":
-			err = unpopulate(val, &a.AutomationAccountAuthenticationType)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2ACreateProtectionIntentInput - A2A create protection intent input.
@@ -285,209 +121,16 @@ type A2ACreateProtectionIntentInput struct {
 	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
-// GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
-// interface for type A2ACreateProtectionIntentInput.
-func (a *A2ACreateProtectionIntentInput) GetCreateProtectionIntentProviderSpecificDetails() *CreateProtectionIntentProviderSpecificDetails {
-	return &CreateProtectionIntentProviderSpecificDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACreateProtectionIntentInput.
-func (a A2ACreateProtectionIntentInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
-	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
-	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
-	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
-	populate(objectMap, "primaryLocation", a.PrimaryLocation)
-	populate(objectMap, "primaryStagingStorageAccountCustomInput", a.PrimaryStagingStorageAccountCustomInput)
-	populate(objectMap, "protectionProfileCustomInput", a.ProtectionProfileCustomInput)
-	populate(objectMap, "recoveryAvailabilitySetCustomInput", a.RecoveryAvailabilitySetCustomInput)
-	populate(objectMap, "recoveryAvailabilityType", a.RecoveryAvailabilityType)
-	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
-	populate(objectMap, "recoveryBootDiagStorageAccount", a.RecoveryBootDiagStorageAccount)
-	populate(objectMap, "recoveryLocation", a.RecoveryLocation)
-	populate(objectMap, "recoveryProximityPlacementGroupCustomInput", a.RecoveryProximityPlacementGroupCustomInput)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoverySubscriptionId", a.RecoverySubscriptionID)
-	populate(objectMap, "recoveryVirtualNetworkCustomInput", a.RecoveryVirtualNetworkCustomInput)
-	populate(objectMap, "vmDisks", a.VMDisks)
-	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACreateProtectionIntentInput.
-func (a *A2ACreateProtectionIntentInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentAutoUpdateStatus":
-			err = unpopulate(val, &a.AgentAutoUpdateStatus)
-			delete(rawMsg, key)
-		case "autoProtectionOfDataDisk":
-			err = unpopulate(val, &a.AutoProtectionOfDataDisk)
-			delete(rawMsg, key)
-		case "automationAccountArmId":
-			err = unpopulate(val, &a.AutomationAccountArmID)
-			delete(rawMsg, key)
-		case "automationAccountAuthenticationType":
-			err = unpopulate(val, &a.AutomationAccountAuthenticationType)
-			delete(rawMsg, key)
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &a.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &a.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "primaryLocation":
-			err = unpopulate(val, &a.PrimaryLocation)
-			delete(rawMsg, key)
-		case "primaryStagingStorageAccountCustomInput":
-			a.PrimaryStagingStorageAccountCustomInput, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "protectionProfileCustomInput":
-			a.ProtectionProfileCustomInput, err = unmarshalProtectionProfileCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetCustomInput":
-			a.RecoveryAvailabilitySetCustomInput, err = unmarshalRecoveryAvailabilitySetCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityType":
-			err = unpopulate(val, &a.RecoveryAvailabilityType)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityZone":
-			err = unpopulate(val, &a.RecoveryAvailabilityZone)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccount":
-			a.RecoveryBootDiagStorageAccount, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryLocation":
-			err = unpopulate(val, &a.RecoveryLocation)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroupCustomInput":
-			a.RecoveryProximityPlacementGroupCustomInput, err = unmarshalRecoveryProximityPlacementGroupCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "recoverySubscriptionId":
-			err = unpopulate(val, &a.RecoverySubscriptionID)
-			delete(rawMsg, key)
-		case "recoveryVirtualNetworkCustomInput":
-			a.RecoveryVirtualNetworkCustomInput, err = unmarshalRecoveryVirtualNetworkCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		case "vmManagedDisks":
-			err = unpopulate(val, &a.VMManagedDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ACrossClusterMigrationApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider.
 type A2ACrossClusterMigrationApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type A2ACrossClusterMigrationApplyRecoveryPointInput.
-func (a *A2ACrossClusterMigrationApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return &ApplyRecoveryPointProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationApplyRecoveryPointInput.
-func (a A2ACrossClusterMigrationApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2ACrossClusterMigration"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACrossClusterMigrationApplyRecoveryPointInput.
-func (a *A2ACrossClusterMigrationApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ACrossClusterMigrationContainerCreationInput - A2ACrossClusterMigration cloud creation input.
 type A2ACrossClusterMigrationContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
-// interface for type A2ACrossClusterMigrationContainerCreationInput.
-func (a *A2ACrossClusterMigrationContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
-	return &ReplicationProviderSpecificContainerCreationInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationContainerCreationInput.
-func (a A2ACrossClusterMigrationContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2ACrossClusterMigration"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACrossClusterMigrationContainerCreationInput.
-func (a *A2ACrossClusterMigrationContainerCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2ACrossClusterMigrationEnableProtectionInput - A2A Cross-Cluster Migration enable protection input.
@@ -502,87 +145,10 @@ type A2ACrossClusterMigrationEnableProtectionInput struct {
 	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type A2ACrossClusterMigrationEnableProtectionInput.
-func (a *A2ACrossClusterMigrationEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationEnableProtectionInput.
-func (a A2ACrossClusterMigrationEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2ACrossClusterMigration"
-	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACrossClusterMigrationEnableProtectionInput.
-func (a *A2ACrossClusterMigrationEnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryContainerId":
-			err = unpopulate(val, &a.RecoveryContainerID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ACrossClusterMigrationPolicyCreationInput - A2A Cross-Cluster Migration Policy creation input.
 type A2ACrossClusterMigrationPolicyCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2ACrossClusterMigrationPolicyCreationInput.
-func (a *A2ACrossClusterMigrationPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationPolicyCreationInput.
-func (a A2ACrossClusterMigrationPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2ACrossClusterMigration"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACrossClusterMigrationPolicyCreationInput.
-func (a *A2ACrossClusterMigrationPolicyCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2ACrossClusterMigrationReplicationDetails - A2A provider specific settings.
@@ -609,65 +175,6 @@ type A2ACrossClusterMigrationReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
-}
-
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// A2ACrossClusterMigrationReplicationDetails.
-func (a *A2ACrossClusterMigrationReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationReplicationDetails.
-func (a A2ACrossClusterMigrationReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2ACrossClusterMigration"
-	populate(objectMap, "lifecycleId", a.LifecycleID)
-	populate(objectMap, "osType", a.OSType)
-	populate(objectMap, "primaryFabricLocation", a.PrimaryFabricLocation)
-	populate(objectMap, "vmProtectionState", a.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", a.VMProtectionStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ACrossClusterMigrationReplicationDetails.
-func (a *A2ACrossClusterMigrationReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "lifecycleId":
-			err = unpopulate(val, &a.LifecycleID)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &a.OSType)
-			delete(rawMsg, key)
-		case "primaryFabricLocation":
-			err = unpopulate(val, &a.PrimaryFabricLocation)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &a.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &a.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AEnableProtectionInput - A2A enable protection input.
@@ -730,113 +237,6 @@ type A2AEnableProtectionInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type A2AEnableProtectionInput.
-func (a *A2AEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AEnableProtectionInput.
-func (a A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
-	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
-	populate(objectMap, "recoveryAzureNetworkId", a.RecoveryAzureNetworkID)
-	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
-	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
-	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
-	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
-	populate(objectMap, "recoveryExtendedLocation", a.RecoveryExtendedLocation)
-	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoverySubnetName", a.RecoverySubnetName)
-	populate(objectMap, "recoveryVirtualMachineScaleSetId", a.RecoveryVirtualMachineScaleSetID)
-	populate(objectMap, "vmDisks", a.VMDisks)
-	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AEnableProtectionInput.
-func (a *A2AEnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &a.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &a.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &a.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityZone":
-			err = unpopulate(val, &a.RecoveryAvailabilityZone)
-			delete(rawMsg, key)
-		case "recoveryAzureNetworkId":
-			err = unpopulate(val, &a.RecoveryAzureNetworkID)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccountId":
-			err = unpopulate(val, &a.RecoveryBootDiagStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryCapacityReservationGroupId":
-			err = unpopulate(val, &a.RecoveryCapacityReservationGroupID)
-			delete(rawMsg, key)
-		case "recoveryCloudServiceId":
-			err = unpopulate(val, &a.RecoveryCloudServiceID)
-			delete(rawMsg, key)
-		case "recoveryContainerId":
-			err = unpopulate(val, &a.RecoveryContainerID)
-			delete(rawMsg, key)
-		case "recoveryExtendedLocation":
-			err = unpopulate(val, &a.RecoveryExtendedLocation)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroupId":
-			err = unpopulate(val, &a.RecoveryProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "recoverySubnetName":
-			err = unpopulate(val, &a.RecoverySubnetName)
-			delete(rawMsg, key)
-		case "recoveryVirtualMachineScaleSetId":
-			err = unpopulate(val, &a.RecoveryVirtualMachineScaleSetID)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		case "vmManagedDisks":
-			err = unpopulate(val, &a.VMManagedDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AEventDetails - Model class for event details of a A2A event.
 type A2AEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -861,64 +261,6 @@ type A2AEventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type A2AEventDetails.
-func (a *A2AEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AEventDetails.
-func (a A2AEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricLocation", a.FabricLocation)
-	populate(objectMap, "fabricName", a.FabricName)
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "protectedItemName", a.ProtectedItemName)
-	populate(objectMap, "remoteFabricLocation", a.RemoteFabricLocation)
-	populate(objectMap, "remoteFabricName", a.RemoteFabricName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AEventDetails.
-func (a *A2AEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricLocation":
-			err = unpopulate(val, &a.FabricLocation)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &a.FabricName)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "protectedItemName":
-			err = unpopulate(val, &a.ProtectedItemName)
-			delete(rawMsg, key)
-		case "remoteFabricLocation":
-			err = unpopulate(val, &a.RemoteFabricLocation)
-			delete(rawMsg, key)
-		case "remoteFabricName":
-			err = unpopulate(val, &a.RemoteFabricName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2APolicyCreationInput - A2A Policy creation input.
 type A2APolicyCreationInput struct {
 	// REQUIRED; The class type.
@@ -935,56 +277,6 @@ type A2APolicyCreationInput struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2APolicyCreationInput.
-func (a *A2APolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2APolicyCreationInput.
-func (a A2APolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", a.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", a.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmSyncStatus", a.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", a.RecoveryPointHistory)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2APolicyCreationInput.
-func (a *A2APolicyCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &a.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &a.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &a.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &a.RecoveryPointHistory)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2APolicyDetails - A2A specific policy details.
@@ -1006,60 +298,6 @@ type A2APolicyDetails struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type A2APolicyDetails.
-func (a *A2APolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2APolicyDetails.
-func (a A2APolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", a.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", a.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmSyncStatus", a.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", a.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", a.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2APolicyDetails.
-func (a *A2APolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &a.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &a.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &a.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &a.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &a.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AProtectedDiskDetails - A2A protected disk details.
@@ -1132,35 +370,6 @@ type A2AProtectedDiskDetails struct {
 
 	// The test failover name for the managed disk.
 	TfoDiskName *string `json:"tfoDiskName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AProtectedDiskDetails.
-func (a A2AProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedDiskLevelOperation", a.AllowedDiskLevelOperation)
-	populate(objectMap, "dataPendingAtSourceAgentInMB", a.DataPendingAtSourceAgentInMB)
-	populate(objectMap, "dataPendingInStagingStorageAccountInMB", a.DataPendingInStagingStorageAccountInMB)
-	populate(objectMap, "dekKeyVaultArmId", a.DekKeyVaultArmID)
-	populate(objectMap, "diskCapacityInBytes", a.DiskCapacityInBytes)
-	populate(objectMap, "diskName", a.DiskName)
-	populate(objectMap, "diskState", a.DiskState)
-	populate(objectMap, "diskType", a.DiskType)
-	populate(objectMap, "diskUri", a.DiskURI)
-	populate(objectMap, "failoverDiskName", a.FailoverDiskName)
-	populate(objectMap, "isDiskEncrypted", a.IsDiskEncrypted)
-	populate(objectMap, "isDiskKeyEncrypted", a.IsDiskKeyEncrypted)
-	populate(objectMap, "kekKeyVaultArmId", a.KekKeyVaultArmID)
-	populate(objectMap, "keyIdentifier", a.KeyIdentifier)
-	populate(objectMap, "monitoringJobType", a.MonitoringJobType)
-	populate(objectMap, "monitoringPercentageCompletion", a.MonitoringPercentageCompletion)
-	populate(objectMap, "primaryDiskAzureStorageAccountId", a.PrimaryDiskAzureStorageAccountID)
-	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
-	populate(objectMap, "recoveryAzureStorageAccountId", a.RecoveryAzureStorageAccountID)
-	populate(objectMap, "recoveryDiskUri", a.RecoveryDiskURI)
-	populate(objectMap, "resyncRequired", a.ResyncRequired)
-	populate(objectMap, "secretIdentifier", a.SecretIdentifier)
-	populate(objectMap, "tfoDiskName", a.TfoDiskName)
-	return json.Marshal(objectMap)
 }
 
 // A2AProtectedManagedDiskDetails - A2A protected managed disk details.
@@ -1250,40 +459,6 @@ type A2AProtectedManagedDiskDetails struct {
 	TfoDiskName *string `json:"tfoDiskName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type A2AProtectedManagedDiskDetails.
-func (a A2AProtectedManagedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedDiskLevelOperation", a.AllowedDiskLevelOperation)
-	populate(objectMap, "dataPendingAtSourceAgentInMB", a.DataPendingAtSourceAgentInMB)
-	populate(objectMap, "dataPendingInStagingStorageAccountInMB", a.DataPendingInStagingStorageAccountInMB)
-	populate(objectMap, "dekKeyVaultArmId", a.DekKeyVaultArmID)
-	populate(objectMap, "diskCapacityInBytes", a.DiskCapacityInBytes)
-	populate(objectMap, "diskId", a.DiskID)
-	populate(objectMap, "diskName", a.DiskName)
-	populate(objectMap, "diskState", a.DiskState)
-	populate(objectMap, "diskType", a.DiskType)
-	populate(objectMap, "failoverDiskName", a.FailoverDiskName)
-	populate(objectMap, "isDiskEncrypted", a.IsDiskEncrypted)
-	populate(objectMap, "isDiskKeyEncrypted", a.IsDiskKeyEncrypted)
-	populate(objectMap, "kekKeyVaultArmId", a.KekKeyVaultArmID)
-	populate(objectMap, "keyIdentifier", a.KeyIdentifier)
-	populate(objectMap, "monitoringJobType", a.MonitoringJobType)
-	populate(objectMap, "monitoringPercentageCompletion", a.MonitoringPercentageCompletion)
-	populate(objectMap, "primaryDiskEncryptionSetId", a.PrimaryDiskEncryptionSetID)
-	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
-	populate(objectMap, "recoveryDiskEncryptionSetId", a.RecoveryDiskEncryptionSetID)
-	populate(objectMap, "recoveryOrignalTargetDiskId", a.RecoveryOrignalTargetDiskID)
-	populate(objectMap, "recoveryReplicaDiskAccountType", a.RecoveryReplicaDiskAccountType)
-	populate(objectMap, "recoveryReplicaDiskId", a.RecoveryReplicaDiskID)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoveryTargetDiskAccountType", a.RecoveryTargetDiskAccountType)
-	populate(objectMap, "recoveryTargetDiskId", a.RecoveryTargetDiskID)
-	populate(objectMap, "resyncRequired", a.ResyncRequired)
-	populate(objectMap, "secretIdentifier", a.SecretIdentifier)
-	populate(objectMap, "tfoDiskName", a.TfoDiskName)
-	return json.Marshal(objectMap)
-}
-
 // A2AProtectionContainerMappingDetails - A2A provider specific settings.
 type A2AProtectionContainerMappingDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -1305,61 +480,6 @@ type A2AProtectionContainerMappingDetails struct {
 	ScheduleName *string `json:"scheduleName,omitempty"`
 }
 
-// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
-// interface for type A2AProtectionContainerMappingDetails.
-func (a *A2AProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
-	return &ProtectionContainerMappingProviderSpecificDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AProtectionContainerMappingDetails.
-func (a A2AProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
-	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
-	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "jobScheduleName", a.JobScheduleName)
-	populate(objectMap, "scheduleName", a.ScheduleName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AProtectionContainerMappingDetails.
-func (a *A2AProtectionContainerMappingDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentAutoUpdateStatus":
-			err = unpopulate(val, &a.AgentAutoUpdateStatus)
-			delete(rawMsg, key)
-		case "automationAccountArmId":
-			err = unpopulate(val, &a.AutomationAccountArmID)
-			delete(rawMsg, key)
-		case "automationAccountAuthenticationType":
-			err = unpopulate(val, &a.AutomationAccountAuthenticationType)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "jobScheduleName":
-			err = unpopulate(val, &a.JobScheduleName)
-			delete(rawMsg, key)
-		case "scheduleName":
-			err = unpopulate(val, &a.ScheduleName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AProtectionIntentDiskInputDetails - Azure VM unmanaged disk input details.
 type A2AProtectionIntentDiskInputDetails struct {
 	// REQUIRED; The disk Uri.
@@ -1370,41 +490,6 @@ type A2AProtectionIntentDiskInputDetails struct {
 
 	// The recovery VHD storage account input.
 	RecoveryAzureStorageAccountCustomInput StorageAccountCustomDetailsClassification `json:"recoveryAzureStorageAccountCustomInput,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AProtectionIntentDiskInputDetails.
-func (a A2AProtectionIntentDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskUri", a.DiskURI)
-	populate(objectMap, "primaryStagingStorageAccountCustomInput", a.PrimaryStagingStorageAccountCustomInput)
-	populate(objectMap, "recoveryAzureStorageAccountCustomInput", a.RecoveryAzureStorageAccountCustomInput)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AProtectionIntentDiskInputDetails.
-func (a *A2AProtectionIntentDiskInputDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskUri":
-			err = unpopulate(val, &a.DiskURI)
-			delete(rawMsg, key)
-		case "primaryStagingStorageAccountCustomInput":
-			a.PrimaryStagingStorageAccountCustomInput, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAzureStorageAccountCustomInput":
-			a.RecoveryAzureStorageAccountCustomInput, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AProtectionIntentManagedDiskInputDetails - Azure VM managed disk input details.
@@ -1431,57 +516,6 @@ type A2AProtectionIntentManagedDiskInputDetails struct {
 	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type A2AProtectionIntentManagedDiskInputDetails.
-func (a A2AProtectionIntentManagedDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	populate(objectMap, "diskId", a.DiskID)
-	populate(objectMap, "primaryStagingStorageAccountCustomInput", a.PrimaryStagingStorageAccountCustomInput)
-	populate(objectMap, "recoveryDiskEncryptionSetId", a.RecoveryDiskEncryptionSetID)
-	populate(objectMap, "recoveryReplicaDiskAccountType", a.RecoveryReplicaDiskAccountType)
-	populate(objectMap, "recoveryResourceGroupCustomInput", a.RecoveryResourceGroupCustomInput)
-	populate(objectMap, "recoveryTargetDiskAccountType", a.RecoveryTargetDiskAccountType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AProtectionIntentManagedDiskInputDetails.
-func (a *A2AProtectionIntentManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "diskId":
-			err = unpopulate(val, &a.DiskID)
-			delete(rawMsg, key)
-		case "primaryStagingStorageAccountCustomInput":
-			a.PrimaryStagingStorageAccountCustomInput, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryDiskEncryptionSetId":
-			err = unpopulate(val, &a.RecoveryDiskEncryptionSetID)
-			delete(rawMsg, key)
-		case "recoveryReplicaDiskAccountType":
-			err = unpopulate(val, &a.RecoveryReplicaDiskAccountType)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupCustomInput":
-			a.RecoveryResourceGroupCustomInput, err = unmarshalRecoveryResourceGroupCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryTargetDiskAccountType":
-			err = unpopulate(val, &a.RecoveryTargetDiskAccountType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ARecoveryPointDetails - A2A provider specific recovery point details.
 type A2ARecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
@@ -1494,49 +528,6 @@ type A2ARecoveryPointDetails struct {
 	RecoveryPointSyncType *RecoveryPointSyncType `json:"recoveryPointSyncType,omitempty"`
 }
 
-// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
-// type A2ARecoveryPointDetails.
-func (a *A2ARecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
-	return &ProviderSpecificRecoveryPointDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ARecoveryPointDetails.
-func (a A2ARecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disks", a.Disks)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "recoveryPointSyncType", a.RecoveryPointSyncType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ARecoveryPointDetails.
-func (a *A2ARecoveryPointDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "disks":
-			err = unpopulate(val, &a.Disks)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointSyncType":
-			err = unpopulate(val, &a.RecoveryPointSyncType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ARemoveDisksInput - A2A remove disk(s) input.
 type A2ARemoveDisksInput struct {
 	// REQUIRED; The class type.
@@ -1547,48 +538,6 @@ type A2ARemoveDisksInput struct {
 
 	// The list of vm managed disk Ids.
 	VMManagedDisksIDs []*string `json:"vmManagedDisksIds,omitempty"`
-}
-
-// GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type A2ARemoveDisksInput.
-func (a *A2ARemoveDisksInput) GetRemoveDisksProviderSpecificInput() *RemoveDisksProviderSpecificInput {
-	return &RemoveDisksProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ARemoveDisksInput.
-func (a A2ARemoveDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "vmDisksUris", a.VMDisksUris)
-	populate(objectMap, "vmManagedDisksIds", a.VMManagedDisksIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ARemoveDisksInput.
-func (a *A2ARemoveDisksInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "vmDisksUris":
-			err = unpopulate(val, &a.VMDisksUris)
-			delete(rawMsg, key)
-		case "vmManagedDisksIds":
-			err = unpopulate(val, &a.VMManagedDisksIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AReplicationDetails - A2A provider specific settings.
@@ -1758,253 +707,6 @@ type A2AReplicationDetails struct {
 	VMEncryptionType *VMEncryptionType `json:"vmEncryptionType,omitempty" azure:"ro"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// A2AReplicationDetails.
-func (a *A2AReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AReplicationDetails.
-func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentCertificateExpiryDate", a.AgentCertificateExpiryDate)
-	populateTimeRFC3339(objectMap, "agentExpiryDate", a.AgentExpiryDate)
-	populate(objectMap, "agentVersion", a.AgentVersion)
-	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	populate(objectMap, "initialPrimaryExtendedLocation", a.InitialPrimaryExtendedLocation)
-	populate(objectMap, "initialPrimaryFabricLocation", a.InitialPrimaryFabricLocation)
-	populate(objectMap, "initialPrimaryZone", a.InitialPrimaryZone)
-	populate(objectMap, "initialRecoveryExtendedLocation", a.InitialRecoveryExtendedLocation)
-	populate(objectMap, "initialRecoveryFabricLocation", a.InitialRecoveryFabricLocation)
-	populate(objectMap, "initialRecoveryZone", a.InitialRecoveryZone)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "isReplicationAgentCertificateUpdateRequired", a.IsReplicationAgentCertificateUpdateRequired)
-	populate(objectMap, "isReplicationAgentUpdateRequired", a.IsReplicationAgentUpdateRequired)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", a.LastHeartbeat)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", a.LastRpoCalculatedTime)
-	populate(objectMap, "lifecycleId", a.LifecycleID)
-	populate(objectMap, "managementId", a.ManagementID)
-	populate(objectMap, "monitoringJobType", a.MonitoringJobType)
-	populate(objectMap, "monitoringPercentageCompletion", a.MonitoringPercentageCompletion)
-	populate(objectMap, "multiVmGroupCreateOption", a.MultiVMGroupCreateOption)
-	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
-	populate(objectMap, "osType", a.OSType)
-	populate(objectMap, "primaryAvailabilityZone", a.PrimaryAvailabilityZone)
-	populate(objectMap, "primaryExtendedLocation", a.PrimaryExtendedLocation)
-	populate(objectMap, "primaryFabricLocation", a.PrimaryFabricLocation)
-	populate(objectMap, "protectedDisks", a.ProtectedDisks)
-	populate(objectMap, "protectedManagedDisks", a.ProtectedManagedDisks)
-	populate(objectMap, "recoveryAvailabilitySet", a.RecoveryAvailabilitySet)
-	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
-	populate(objectMap, "recoveryAzureGeneration", a.RecoveryAzureGeneration)
-	populate(objectMap, "recoveryAzureResourceGroupId", a.RecoveryAzureResourceGroupID)
-	populate(objectMap, "recoveryAzureVMName", a.RecoveryAzureVMName)
-	populate(objectMap, "recoveryAzureVMSize", a.RecoveryAzureVMSize)
-	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
-	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
-	populate(objectMap, "recoveryCloudService", a.RecoveryCloudService)
-	populate(objectMap, "recoveryExtendedLocation", a.RecoveryExtendedLocation)
-	populate(objectMap, "recoveryFabricLocation", a.RecoveryFabricLocation)
-	populate(objectMap, "recoveryFabricObjectId", a.RecoveryFabricObjectID)
-	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
-	populate(objectMap, "recoveryVirtualMachineScaleSetId", a.RecoveryVirtualMachineScaleSetID)
-	populate(objectMap, "rpoInSeconds", a.RpoInSeconds)
-	populate(objectMap, "selectedRecoveryAzureNetworkId", a.SelectedRecoveryAzureNetworkID)
-	populate(objectMap, "selectedTfoAzureNetworkId", a.SelectedTfoAzureNetworkID)
-	populate(objectMap, "testFailoverRecoveryFabricObjectId", a.TestFailoverRecoveryFabricObjectID)
-	populate(objectMap, "tfoAzureVMName", a.TfoAzureVMName)
-	populate(objectMap, "unprotectedDisks", a.UnprotectedDisks)
-	populate(objectMap, "vmEncryptionType", a.VMEncryptionType)
-	populate(objectMap, "vmNics", a.VMNics)
-	populate(objectMap, "vmProtectionState", a.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", a.VMProtectionStateDescription)
-	populate(objectMap, "vmSyncedConfigDetails", a.VMSyncedConfigDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AReplicationDetails.
-func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentCertificateExpiryDate":
-			err = unpopulateTimeRFC3339(val, &a.AgentCertificateExpiryDate)
-			delete(rawMsg, key)
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &a.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &a.AgentVersion)
-			delete(rawMsg, key)
-		case "autoProtectionOfDataDisk":
-			err = unpopulate(val, &a.AutoProtectionOfDataDisk)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "initialPrimaryExtendedLocation":
-			err = unpopulate(val, &a.InitialPrimaryExtendedLocation)
-			delete(rawMsg, key)
-		case "initialPrimaryFabricLocation":
-			err = unpopulate(val, &a.InitialPrimaryFabricLocation)
-			delete(rawMsg, key)
-		case "initialPrimaryZone":
-			err = unpopulate(val, &a.InitialPrimaryZone)
-			delete(rawMsg, key)
-		case "initialRecoveryExtendedLocation":
-			err = unpopulate(val, &a.InitialRecoveryExtendedLocation)
-			delete(rawMsg, key)
-		case "initialRecoveryFabricLocation":
-			err = unpopulate(val, &a.InitialRecoveryFabricLocation)
-			delete(rawMsg, key)
-		case "initialRecoveryZone":
-			err = unpopulate(val, &a.InitialRecoveryZone)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "isReplicationAgentCertificateUpdateRequired":
-			err = unpopulate(val, &a.IsReplicationAgentCertificateUpdateRequired)
-			delete(rawMsg, key)
-		case "isReplicationAgentUpdateRequired":
-			err = unpopulate(val, &a.IsReplicationAgentUpdateRequired)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &a.LastHeartbeat)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "lifecycleId":
-			err = unpopulate(val, &a.LifecycleID)
-			delete(rawMsg, key)
-		case "managementId":
-			err = unpopulate(val, &a.ManagementID)
-			delete(rawMsg, key)
-		case "monitoringJobType":
-			err = unpopulate(val, &a.MonitoringJobType)
-			delete(rawMsg, key)
-		case "monitoringPercentageCompletion":
-			err = unpopulate(val, &a.MonitoringPercentageCompletion)
-			delete(rawMsg, key)
-		case "multiVmGroupCreateOption":
-			err = unpopulate(val, &a.MultiVMGroupCreateOption)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &a.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &a.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &a.OSType)
-			delete(rawMsg, key)
-		case "primaryAvailabilityZone":
-			err = unpopulate(val, &a.PrimaryAvailabilityZone)
-			delete(rawMsg, key)
-		case "primaryExtendedLocation":
-			err = unpopulate(val, &a.PrimaryExtendedLocation)
-			delete(rawMsg, key)
-		case "primaryFabricLocation":
-			err = unpopulate(val, &a.PrimaryFabricLocation)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &a.ProtectedDisks)
-			delete(rawMsg, key)
-		case "protectedManagedDisks":
-			err = unpopulate(val, &a.ProtectedManagedDisks)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySet":
-			err = unpopulate(val, &a.RecoveryAvailabilitySet)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityZone":
-			err = unpopulate(val, &a.RecoveryAvailabilityZone)
-			delete(rawMsg, key)
-		case "recoveryAzureGeneration":
-			err = unpopulate(val, &a.RecoveryAzureGeneration)
-			delete(rawMsg, key)
-		case "recoveryAzureResourceGroupId":
-			err = unpopulate(val, &a.RecoveryAzureResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryAzureVMName":
-			err = unpopulate(val, &a.RecoveryAzureVMName)
-			delete(rawMsg, key)
-		case "recoveryAzureVMSize":
-			err = unpopulate(val, &a.RecoveryAzureVMSize)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccountId":
-			err = unpopulate(val, &a.RecoveryBootDiagStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryCapacityReservationGroupId":
-			err = unpopulate(val, &a.RecoveryCapacityReservationGroupID)
-			delete(rawMsg, key)
-		case "recoveryCloudService":
-			err = unpopulate(val, &a.RecoveryCloudService)
-			delete(rawMsg, key)
-		case "recoveryExtendedLocation":
-			err = unpopulate(val, &a.RecoveryExtendedLocation)
-			delete(rawMsg, key)
-		case "recoveryFabricLocation":
-			err = unpopulate(val, &a.RecoveryFabricLocation)
-			delete(rawMsg, key)
-		case "recoveryFabricObjectId":
-			err = unpopulate(val, &a.RecoveryFabricObjectID)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroupId":
-			err = unpopulate(val, &a.RecoveryProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "recoveryVirtualMachineScaleSetId":
-			err = unpopulate(val, &a.RecoveryVirtualMachineScaleSetID)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &a.RpoInSeconds)
-			delete(rawMsg, key)
-		case "selectedRecoveryAzureNetworkId":
-			err = unpopulate(val, &a.SelectedRecoveryAzureNetworkID)
-			delete(rawMsg, key)
-		case "selectedTfoAzureNetworkId":
-			err = unpopulate(val, &a.SelectedTfoAzureNetworkID)
-			delete(rawMsg, key)
-		case "testFailoverRecoveryFabricObjectId":
-			err = unpopulate(val, &a.TestFailoverRecoveryFabricObjectID)
-			delete(rawMsg, key)
-		case "tfoAzureVMName":
-			err = unpopulate(val, &a.TfoAzureVMName)
-			delete(rawMsg, key)
-		case "unprotectedDisks":
-			err = unpopulate(val, &a.UnprotectedDisks)
-			delete(rawMsg, key)
-		case "vmEncryptionType":
-			err = unpopulate(val, &a.VMEncryptionType)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &a.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &a.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &a.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		case "vmSyncedConfigDetails":
-			err = unpopulate(val, &a.VMSyncedConfigDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AReplicationIntentDetails - A2A provider specific settings.
 type A2AReplicationIntentDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -2077,129 +779,6 @@ type A2AReplicationIntentDetails struct {
 	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
-// GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
-// interface for type A2AReplicationIntentDetails.
-func (a *A2AReplicationIntentDetails) GetReplicationProtectionIntentProviderSpecificSettings() *ReplicationProtectionIntentProviderSpecificSettings {
-	return &ReplicationProtectionIntentProviderSpecificSettings{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AReplicationIntentDetails.
-func (a A2AReplicationIntentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
-	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
-	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
-	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	populate(objectMap, "fabricObjectId", a.FabricObjectID)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmGroupId", a.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", a.MultiVMGroupName)
-	populate(objectMap, "primaryLocation", a.PrimaryLocation)
-	populate(objectMap, "primaryStagingStorageAccount", a.PrimaryStagingStorageAccount)
-	populate(objectMap, "protectionProfile", a.ProtectionProfile)
-	populate(objectMap, "recoveryAvailabilitySet", a.RecoveryAvailabilitySet)
-	populate(objectMap, "recoveryAvailabilityType", a.RecoveryAvailabilityType)
-	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
-	populate(objectMap, "recoveryBootDiagStorageAccount", a.RecoveryBootDiagStorageAccount)
-	populate(objectMap, "recoveryLocation", a.RecoveryLocation)
-	populate(objectMap, "recoveryProximityPlacementGroup", a.RecoveryProximityPlacementGroup)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoverySubscriptionId", a.RecoverySubscriptionID)
-	populate(objectMap, "recoveryVirtualNetwork", a.RecoveryVirtualNetwork)
-	populate(objectMap, "vmDisks", a.VMDisks)
-	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AReplicationIntentDetails.
-func (a *A2AReplicationIntentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentAutoUpdateStatus":
-			err = unpopulate(val, &a.AgentAutoUpdateStatus)
-			delete(rawMsg, key)
-		case "autoProtectionOfDataDisk":
-			err = unpopulate(val, &a.AutoProtectionOfDataDisk)
-			delete(rawMsg, key)
-		case "automationAccountArmId":
-			err = unpopulate(val, &a.AutomationAccountArmID)
-			delete(rawMsg, key)
-		case "automationAccountAuthenticationType":
-			err = unpopulate(val, &a.AutomationAccountAuthenticationType)
-			delete(rawMsg, key)
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &a.FabricObjectID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &a.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &a.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "primaryLocation":
-			err = unpopulate(val, &a.PrimaryLocation)
-			delete(rawMsg, key)
-		case "primaryStagingStorageAccount":
-			a.PrimaryStagingStorageAccount, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "protectionProfile":
-			a.ProtectionProfile, err = unmarshalProtectionProfileCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySet":
-			a.RecoveryAvailabilitySet, err = unmarshalRecoveryAvailabilitySetCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityType":
-			err = unpopulate(val, &a.RecoveryAvailabilityType)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityZone":
-			err = unpopulate(val, &a.RecoveryAvailabilityZone)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccount":
-			a.RecoveryBootDiagStorageAccount, err = unmarshalStorageAccountCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryLocation":
-			err = unpopulate(val, &a.RecoveryLocation)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroup":
-			a.RecoveryProximityPlacementGroup, err = unmarshalRecoveryProximityPlacementGroupCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "recoverySubscriptionId":
-			err = unpopulate(val, &a.RecoverySubscriptionID)
-			delete(rawMsg, key)
-		case "recoveryVirtualNetwork":
-			a.RecoveryVirtualNetwork, err = unmarshalRecoveryVirtualNetworkCustomDetailsClassification(val)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		case "vmManagedDisks":
-			err = unpopulate(val, &a.VMManagedDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AReprotectInput - Azure specific reprotect input.
 type A2AReprotectInput struct {
 	// REQUIRED; The class type.
@@ -2222,65 +801,6 @@ type A2AReprotectInput struct {
 
 	// The list of vm disk details.
 	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
-}
-
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type A2AReprotectInput.
-func (a *A2AReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AReprotectInput.
-func (a A2AReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "policyId", a.PolicyID)
-	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
-	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "vmDisks", a.VMDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AReprotectInput.
-func (a *A2AReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &a.PolicyID)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &a.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryCloudServiceId":
-			err = unpopulate(val, &a.RecoveryCloudServiceID)
-			delete(rawMsg, key)
-		case "recoveryContainerId":
-			err = unpopulate(val, &a.RecoveryContainerID)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2ASwitchProtectionInput - A2A specific switch protection input.
@@ -2328,93 +848,6 @@ type A2ASwitchProtectionInput struct {
 	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
 }
 
-// GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
-// type A2ASwitchProtectionInput.
-func (a *A2ASwitchProtectionInput) GetSwitchProtectionProviderSpecificInput() *SwitchProtectionProviderSpecificInput {
-	return &SwitchProtectionProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ASwitchProtectionInput.
-func (a A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "policyId", a.PolicyID)
-	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryAvailabilityZone", a.RecoveryAvailabilityZone)
-	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
-	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
-	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
-	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
-	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoveryVirtualMachineScaleSetId", a.RecoveryVirtualMachineScaleSetID)
-	populate(objectMap, "vmDisks", a.VMDisks)
-	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ASwitchProtectionInput.
-func (a *A2ASwitchProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &a.PolicyID)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &a.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryAvailabilityZone":
-			err = unpopulate(val, &a.RecoveryAvailabilityZone)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccountId":
-			err = unpopulate(val, &a.RecoveryBootDiagStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryCapacityReservationGroupId":
-			err = unpopulate(val, &a.RecoveryCapacityReservationGroupID)
-			delete(rawMsg, key)
-		case "recoveryCloudServiceId":
-			err = unpopulate(val, &a.RecoveryCloudServiceID)
-			delete(rawMsg, key)
-		case "recoveryContainerId":
-			err = unpopulate(val, &a.RecoveryContainerID)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroupId":
-			err = unpopulate(val, &a.RecoveryProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryVirtualMachineScaleSetId":
-			err = unpopulate(val, &a.RecoveryVirtualMachineScaleSetID)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &a.VMDisks)
-			delete(rawMsg, key)
-		case "vmManagedDisks":
-			err = unpopulate(val, &a.VMManagedDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2ATestFailoverInput - A2A provider specific input for test failover.
 type A2ATestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -2428,49 +861,6 @@ type A2ATestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// A2ATestFailoverInput.
-func (a *A2ATestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return &TestFailoverProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2ATestFailoverInput.
-func (a A2ATestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloudServiceCreationOption", a.CloudServiceCreationOption)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2ATestFailoverInput.
-func (a *A2ATestFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cloudServiceCreationOption":
-			err = unpopulate(val, &a.CloudServiceCreationOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &a.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // A2AUnplannedFailoverInput - A2A provider specific input for unplanned failover.
 type A2AUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -2482,49 +872,6 @@ type A2AUnplannedFailoverInput struct {
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-}
-
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type A2AUnplannedFailoverInput.
-func (a *A2AUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return &UnplannedFailoverProviderSpecificInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AUnplannedFailoverInput.
-func (a A2AUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloudServiceCreationOption", a.CloudServiceCreationOption)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AUnplannedFailoverInput.
-func (a *A2AUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cloudServiceCreationOption":
-			err = unpopulate(val, &a.CloudServiceCreationOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &a.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AUnprotectedDiskDetails - A2A unprotected disk details.
@@ -2549,53 +896,6 @@ type A2AUpdateContainerMappingInput struct {
 
 	// A value indicating the type authentication to use for automation Account.
 	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
-}
-
-// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
-// interface for type A2AUpdateContainerMappingInput.
-func (a *A2AUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
-	return &ReplicationProviderSpecificUpdateContainerMappingInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AUpdateContainerMappingInput.
-func (a A2AUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
-	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
-	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
-	objectMap["instanceType"] = "A2A"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AUpdateContainerMappingInput.
-func (a *A2AUpdateContainerMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentAutoUpdateStatus":
-			err = unpopulate(val, &a.AgentAutoUpdateStatus)
-			delete(rawMsg, key)
-		case "automationAccountArmId":
-			err = unpopulate(val, &a.AutomationAccountArmID)
-			delete(rawMsg, key)
-		case "automationAccountAuthenticationType":
-			err = unpopulate(val, &a.AutomationAccountAuthenticationType)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AUpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
@@ -2629,77 +929,6 @@ type A2AUpdateReplicationProtectedItemInput struct {
 
 	// The user given name for Test Failover VM.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
-}
-
-// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
-// interface for type A2AUpdateReplicationProtectedItemInput.
-func (a *A2AUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
-	return &UpdateReplicationProtectedItemProviderInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type A2AUpdateReplicationProtectedItemInput.
-func (a A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "managedDiskUpdateDetails", a.ManagedDiskUpdateDetails)
-	populate(objectMap, "recoveryBootDiagStorageAccountId", a.RecoveryBootDiagStorageAccountID)
-	populate(objectMap, "recoveryCapacityReservationGroupId", a.RecoveryCapacityReservationGroupID)
-	populate(objectMap, "recoveryCloudServiceId", a.RecoveryCloudServiceID)
-	populate(objectMap, "recoveryProximityPlacementGroupId", a.RecoveryProximityPlacementGroupID)
-	populate(objectMap, "recoveryResourceGroupId", a.RecoveryResourceGroupID)
-	populate(objectMap, "recoveryVirtualMachineScaleSetId", a.RecoveryVirtualMachineScaleSetID)
-	populate(objectMap, "tfoAzureVMName", a.TfoAzureVMName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type A2AUpdateReplicationProtectedItemInput.
-func (a *A2AUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionInfo":
-			err = unpopulate(val, &a.DiskEncryptionInfo)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "managedDiskUpdateDetails":
-			err = unpopulate(val, &a.ManagedDiskUpdateDetails)
-			delete(rawMsg, key)
-		case "recoveryBootDiagStorageAccountId":
-			err = unpopulate(val, &a.RecoveryBootDiagStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryCapacityReservationGroupId":
-			err = unpopulate(val, &a.RecoveryCapacityReservationGroupID)
-			delete(rawMsg, key)
-		case "recoveryCloudServiceId":
-			err = unpopulate(val, &a.RecoveryCloudServiceID)
-			delete(rawMsg, key)
-		case "recoveryProximityPlacementGroupId":
-			err = unpopulate(val, &a.RecoveryProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &a.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryVirtualMachineScaleSetId":
-			err = unpopulate(val, &a.RecoveryVirtualMachineScaleSetID)
-			delete(rawMsg, key)
-		case "tfoAzureVMName":
-			err = unpopulate(val, &a.TfoAzureVMName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // A2AVMDiskInputDetails - A2A disk input details.
@@ -2808,77 +1037,6 @@ type ASRTask struct {
 	TaskType *string `json:"taskType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ASRTask.
-func (a ASRTask) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedActions", a.AllowedActions)
-	populate(objectMap, "customDetails", a.CustomDetails)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "errors", a.Errors)
-	populate(objectMap, "friendlyName", a.FriendlyName)
-	populate(objectMap, "groupTaskCustomDetails", a.GroupTaskCustomDetails)
-	populate(objectMap, "name", a.Name)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "stateDescription", a.StateDescription)
-	populate(objectMap, "taskId", a.TaskID)
-	populate(objectMap, "taskType", a.TaskType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ASRTask.
-func (a *ASRTask) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedActions":
-			err = unpopulate(val, &a.AllowedActions)
-			delete(rawMsg, key)
-		case "customDetails":
-			a.CustomDetails, err = unmarshalTaskTypeDetailsClassification(val)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &a.EndTime)
-			delete(rawMsg, key)
-		case "errors":
-			err = unpopulate(val, &a.Errors)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &a.FriendlyName)
-			delete(rawMsg, key)
-		case "groupTaskCustomDetails":
-			a.GroupTaskCustomDetails, err = unmarshalGroupTaskDetailsClassification(val)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &a.State)
-			delete(rawMsg, key)
-		case "stateDescription":
-			err = unpopulate(val, &a.StateDescription)
-			delete(rawMsg, key)
-		case "taskId":
-			err = unpopulate(val, &a.TaskID)
-			delete(rawMsg, key)
-		case "taskType":
-			err = unpopulate(val, &a.TaskType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AddDisksInput - Input for add disk(s) operation.
 type AddDisksInput struct {
 	// Add disks input properties.
@@ -2891,33 +1049,6 @@ type AddDisksInputProperties struct {
 	// For San provider, it will be SanEnableProtectionInput object. For HyperVReplicaAzure
 	// provider, it can be null.
 	ProviderSpecificDetails AddDisksProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AddDisksInputProperties.
-func (a AddDisksInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", a.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AddDisksInputProperties.
-func (a *AddDisksInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			a.ProviderSpecificDetails, err = unmarshalAddDisksProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AddDisksProviderSpecificInputClassification provides polymorphic access to related types.
@@ -2933,11 +1064,6 @@ type AddDisksProviderSpecificInputClassification interface {
 type AddDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type AddDisksProviderSpecificInput.
-func (a *AddDisksProviderSpecificInput) GetAddDisksProviderSpecificInput() *AddDisksProviderSpecificInput {
-	return a
 }
 
 // AddRecoveryServicesProviderInput - Input required to add a provider.
@@ -3009,17 +1135,6 @@ type AgentDetails struct {
 	MachineID *string `json:"machineId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AgentDetails.
-func (a AgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentId", a.AgentID)
-	populate(objectMap, "biosId", a.BiosID)
-	populate(objectMap, "disks", a.Disks)
-	populate(objectMap, "fqdn", a.Fqdn)
-	populate(objectMap, "machineId", a.MachineID)
-	return json.Marshal(objectMap)
-}
-
 // AgentDiskDetails - Agent disk details.
 type AgentDiskDetails struct {
 	// READ-ONLY; The disk capacity in bytes.
@@ -3065,14 +1180,6 @@ type AlertCollection struct {
 	Value []*Alert `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AlertCollection.
-func (a AlertCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AlertProperties - The properties of an alert.
 type AlertProperties struct {
 	// The custom email address for sending emails.
@@ -3085,15 +1192,6 @@ type AlertProperties struct {
 	SendToOwners *string `json:"sendToOwners,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AlertProperties.
-func (a AlertProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customEmailAddresses", a.CustomEmailAddresses)
-	populate(objectMap, "locale", a.Locale)
-	populate(objectMap, "sendToOwners", a.SendToOwners)
-	return json.Marshal(objectMap)
-}
-
 // ApplianceCollection - Collection of appliance details.
 type ApplianceCollection struct {
 	// The value of next link.
@@ -3101,14 +1199,6 @@ type ApplianceCollection struct {
 
 	// The appliance details.
 	Value []*ReplicationAppliance `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplianceCollection.
-func (a ApplianceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // ApplianceQueryParameter - Query parameter to get appliance.
@@ -3132,9 +1222,6 @@ type ApplianceSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type ApplianceSpecificDetails.
-func (a *ApplianceSpecificDetails) GetApplianceSpecificDetails() *ApplianceSpecificDetails { return a }
-
 // ApplyRecoveryPointInput - Input to apply recovery point.
 type ApplyRecoveryPointInput struct {
 	// REQUIRED; The input properties to apply recovery point.
@@ -3148,37 +1235,6 @@ type ApplyRecoveryPointInputProperties struct {
 
 	// The recovery point Id.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ApplyRecoveryPointInputProperties.
-func (a ApplyRecoveryPointInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", a.ProviderSpecificDetails)
-	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ApplyRecoveryPointInputProperties.
-func (a *ApplyRecoveryPointInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			a.ProviderSpecificDetails, err = unmarshalApplyRecoveryPointProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &a.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ApplyRecoveryPointProviderSpecificInputClassification provides polymorphic access to related types.
@@ -3197,12 +1253,6 @@ type ApplyRecoveryPointProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type ApplyRecoveryPointProviderSpecificInput.
-func (a *ApplyRecoveryPointProviderSpecificInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return a
-}
-
 // AsrJobDetails - This class represents job details based on specific job type.
 type AsrJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -3211,45 +1261,6 @@ type AsrJobDetails struct {
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
 	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
-}
-
-// GetJobDetails implements the JobDetailsClassification interface for type AsrJobDetails.
-func (a *AsrJobDetails) GetJobDetails() *JobDetails {
-	return &JobDetails{
-		InstanceType:          a.InstanceType,
-		AffectedObjectDetails: a.AffectedObjectDetails,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AsrJobDetails.
-func (a AsrJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", a.AffectedObjectDetails)
-	objectMap["instanceType"] = "AsrJobDetails"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AsrJobDetails.
-func (a *AsrJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectDetails":
-			err = unpopulate(val, &a.AffectedObjectDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AutomationRunbookTaskDetails - This class represents the task details for an automation runbook.
@@ -3285,76 +1296,6 @@ type AutomationRunbookTaskDetails struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type AutomationRunbookTaskDetails.
-func (a *AutomationRunbookTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AutomationRunbookTaskDetails.
-func (a AutomationRunbookTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountName", a.AccountName)
-	populate(objectMap, "cloudServiceName", a.CloudServiceName)
-	objectMap["instanceType"] = "AutomationRunbookTaskDetails"
-	populate(objectMap, "isPrimarySideScript", a.IsPrimarySideScript)
-	populate(objectMap, "jobId", a.JobID)
-	populate(objectMap, "jobOutput", a.JobOutput)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "runbookId", a.RunbookID)
-	populate(objectMap, "runbookName", a.RunbookName)
-	populate(objectMap, "subscriptionId", a.SubscriptionID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AutomationRunbookTaskDetails.
-func (a *AutomationRunbookTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, &a.AccountName)
-			delete(rawMsg, key)
-		case "cloudServiceName":
-			err = unpopulate(val, &a.CloudServiceName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "isPrimarySideScript":
-			err = unpopulate(val, &a.IsPrimarySideScript)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &a.JobID)
-			delete(rawMsg, key)
-		case "jobOutput":
-			err = unpopulate(val, &a.JobOutput)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "runbookId":
-			err = unpopulate(val, &a.RunbookID)
-			delete(rawMsg, key)
-		case "runbookName":
-			err = unpopulate(val, &a.RunbookName)
-			delete(rawMsg, key)
-		case "subscriptionId":
-			err = unpopulate(val, &a.SubscriptionID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureFabricCreationInput - Fabric provider specific settings.
 type AzureFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -3362,44 +1303,6 @@ type AzureFabricCreationInput struct {
 
 	// The Location.
 	Location *string `json:"location,omitempty"`
-}
-
-// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type AzureFabricCreationInput.
-func (a *AzureFabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
-	return &FabricSpecificCreationInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureFabricCreationInput.
-func (a AzureFabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "Azure"
-	populate(objectMap, "location", a.Location)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureFabricCreationInput.
-func (a *AzureFabricCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureFabricSpecificDetails - Azure Fabric Specific Details.
@@ -3417,52 +1320,6 @@ type AzureFabricSpecificDetails struct {
 	Zones []*A2AZoneDetails `json:"zones,omitempty"`
 }
 
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type AzureFabricSpecificDetails.
-func (a *AzureFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureFabricSpecificDetails.
-func (a AzureFabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerIds", a.ContainerIDs)
-	objectMap["instanceType"] = "Azure"
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "zones", a.Zones)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureFabricSpecificDetails.
-func (a *AzureFabricSpecificDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerIds":
-			err = unpopulate(val, &a.ContainerIDs)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "location":
-			err = unpopulate(val, &a.Location)
-			delete(rawMsg, key)
-		case "zones":
-			err = unpopulate(val, &a.Zones)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureToAzureCreateNetworkMappingInput - Create network mappings input properties/behavior specific to Azure to Azure Network
 // mapping.
 type AzureToAzureCreateNetworkMappingInput struct {
@@ -3471,45 +1328,6 @@ type AzureToAzureCreateNetworkMappingInput struct {
 
 	// REQUIRED; The primary azure vnet Id.
 	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
-}
-
-// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
-// for type AzureToAzureCreateNetworkMappingInput.
-func (a *AzureToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
-	return &FabricSpecificCreateNetworkMappingInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureToAzureCreateNetworkMappingInput.
-func (a AzureToAzureCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "AzureToAzure"
-	populate(objectMap, "primaryNetworkId", a.PrimaryNetworkID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureToAzureCreateNetworkMappingInput.
-func (a *AzureToAzureCreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "primaryNetworkId":
-			err = unpopulate(val, &a.PrimaryNetworkID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // AzureToAzureNetworkMappingSettings - A2A Network Mapping fabric specific settings.
@@ -3524,49 +1342,6 @@ type AzureToAzureNetworkMappingSettings struct {
 	RecoveryFabricLocation *string `json:"recoveryFabricLocation,omitempty"`
 }
 
-// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
-// type AzureToAzureNetworkMappingSettings.
-func (a *AzureToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
-	return &NetworkMappingFabricSpecificSettings{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureToAzureNetworkMappingSettings.
-func (a AzureToAzureNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "AzureToAzure"
-	populate(objectMap, "primaryFabricLocation", a.PrimaryFabricLocation)
-	populate(objectMap, "recoveryFabricLocation", a.RecoveryFabricLocation)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureToAzureNetworkMappingSettings.
-func (a *AzureToAzureNetworkMappingSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "primaryFabricLocation":
-			err = unpopulate(val, &a.PrimaryFabricLocation)
-			delete(rawMsg, key)
-		case "recoveryFabricLocation":
-			err = unpopulate(val, &a.RecoveryFabricLocation)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureToAzureUpdateNetworkMappingInput - Updates network mappings input.
 type AzureToAzureUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
@@ -3576,45 +1351,6 @@ type AzureToAzureUpdateNetworkMappingInput struct {
 	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
 }
 
-// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
-// for type AzureToAzureUpdateNetworkMappingInput.
-func (a *AzureToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
-	return &FabricSpecificUpdateNetworkMappingInput{
-		InstanceType: a.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureToAzureUpdateNetworkMappingInput.
-func (a AzureToAzureUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "AzureToAzure"
-	populate(objectMap, "primaryNetworkId", a.PrimaryNetworkID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureToAzureUpdateNetworkMappingInput.
-func (a *AzureToAzureUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &a.InstanceType)
-			delete(rawMsg, key)
-		case "primaryNetworkId":
-			err = unpopulate(val, &a.PrimaryNetworkID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // AzureToAzureVMSyncedConfigDetails - Azure to Azure VM synced configuration details.
 type AzureToAzureVMSyncedConfigDetails struct {
 	// The Azure VM input endpoints.
@@ -3622,14 +1358,6 @@ type AzureToAzureVMSyncedConfigDetails struct {
 
 	// The Azure VM tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureToAzureVMSyncedConfigDetails.
-func (a AzureToAzureVMSyncedConfigDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "inputEndpoints", a.InputEndpoints)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
 }
 
 // AzureVMDiskDetails - Disk details for E2A provider.
@@ -3689,9 +1417,6 @@ type ConfigurationSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ConfigurationSettings.
-func (c *ConfigurationSettings) GetConfigurationSettings() *ConfigurationSettings { return c }
-
 // ConfigureAlertRequest - Request to configure alerts for the system.
 type ConfigureAlertRequest struct {
 	// The properties of a configure alert request.
@@ -3710,15 +1435,6 @@ type ConfigureAlertRequestProperties struct {
 	SendToOwners *string `json:"sendToOwners,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConfigureAlertRequestProperties.
-func (c ConfigureAlertRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customEmailAddresses", c.CustomEmailAddresses)
-	populate(objectMap, "locale", c.Locale)
-	populate(objectMap, "sendToOwners", c.SendToOwners)
-	return json.Marshal(objectMap)
-}
-
 // ConsistencyCheckTaskDetails - This class contains monitoring details of all the inconsistent Protected Entities in Vmm.
 type ConsistencyCheckTaskDetails struct {
 	// REQUIRED; The type of task details.
@@ -3726,44 +1442,6 @@ type ConsistencyCheckTaskDetails struct {
 
 	// The list of inconsistent Vm details.
 	VMDetails []*InconsistentVMDetails `json:"vmDetails,omitempty"`
-}
-
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ConsistencyCheckTaskDetails.
-func (c *ConsistencyCheckTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: c.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsistencyCheckTaskDetails.
-func (c ConsistencyCheckTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "ConsistencyCheckTaskDetails"
-	populate(objectMap, "vmDetails", c.VMDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConsistencyCheckTaskDetails.
-func (c *ConsistencyCheckTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &c.InstanceType)
-			delete(rawMsg, key)
-		case "vmDetails":
-			err = unpopulate(val, &c.VMDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CreateNetworkMappingInput - Create network mappings input.
@@ -3784,41 +1462,6 @@ type CreateNetworkMappingInputProperties struct {
 	RecoveryFabricName *string `json:"recoveryFabricName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateNetworkMappingInputProperties.
-func (c CreateNetworkMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricSpecificDetails", c.FabricSpecificDetails)
-	populate(objectMap, "recoveryFabricName", c.RecoveryFabricName)
-	populate(objectMap, "recoveryNetworkId", c.RecoveryNetworkID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateNetworkMappingInputProperties.
-func (c *CreateNetworkMappingInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricSpecificDetails":
-			c.FabricSpecificDetails, err = unmarshalFabricSpecificCreateNetworkMappingInputClassification(val)
-			delete(rawMsg, key)
-		case "recoveryFabricName":
-			err = unpopulate(val, &c.RecoveryFabricName)
-			delete(rawMsg, key)
-		case "recoveryNetworkId":
-			err = unpopulate(val, &c.RecoveryNetworkID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CreatePolicyInput - Protection Policy input.
 type CreatePolicyInput struct {
 	// Policy creation properties.
@@ -3831,33 +1474,6 @@ type CreatePolicyInputProperties struct {
 	ProviderSpecificInput PolicyProviderSpecificInputClassification `json:"providerSpecificInput,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreatePolicyInputProperties.
-func (c CreatePolicyInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreatePolicyInputProperties.
-func (c *CreatePolicyInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificInput":
-			c.ProviderSpecificInput, err = unmarshalPolicyProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CreateProtectionContainerInput - Create protection container input.
 type CreateProtectionContainerInput struct {
 	// Create protection container input properties.
@@ -3868,33 +1484,6 @@ type CreateProtectionContainerInput struct {
 type CreateProtectionContainerInputProperties struct {
 	// Provider specific inputs for container creation.
 	ProviderSpecificInput []ReplicationProviderSpecificContainerCreationInputClassification `json:"providerSpecificInput,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerInputProperties.
-func (c CreateProtectionContainerInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateProtectionContainerInputProperties.
-func (c *CreateProtectionContainerInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificInput":
-			c.ProviderSpecificInput, err = unmarshalReplicationProviderSpecificContainerCreationInputClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CreateProtectionContainerMappingInput - Configure pairing input.
@@ -3915,41 +1504,6 @@ type CreateProtectionContainerMappingInputProperties struct {
 	TargetProtectionContainerID *string `json:"targetProtectionContainerId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerMappingInputProperties.
-func (c CreateProtectionContainerMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyId", c.PolicyID)
-	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
-	populate(objectMap, "targetProtectionContainerId", c.TargetProtectionContainerID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateProtectionContainerMappingInputProperties.
-func (c *CreateProtectionContainerMappingInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "policyId":
-			err = unpopulate(val, &c.PolicyID)
-			delete(rawMsg, key)
-		case "providerSpecificInput":
-			c.ProviderSpecificInput, err = unmarshalReplicationProviderSpecificContainerMappingInputClassification(val)
-			delete(rawMsg, key)
-		case "targetProtectionContainerId":
-			err = unpopulate(val, &c.TargetProtectionContainerID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CreateProtectionIntentInput - Create protection intent input.
 type CreateProtectionIntentInput struct {
 	// Create protection intent input properties.
@@ -3960,33 +1514,6 @@ type CreateProtectionIntentInput struct {
 type CreateProtectionIntentProperties struct {
 	// The ReplicationProviderInput. For A2A provider, it will be A2ACreateProtectionIntentInput object.
 	ProviderSpecificDetails CreateProtectionIntentProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CreateProtectionIntentProperties.
-func (c CreateProtectionIntentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", c.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateProtectionIntentProperties.
-func (c *CreateProtectionIntentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			c.ProviderSpecificDetails, err = unmarshalCreateProtectionIntentProviderSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // CreateProtectionIntentProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -4002,12 +1529,6 @@ type CreateProtectionIntentProviderSpecificDetailsClassification interface {
 type CreateProtectionIntentProviderSpecificDetails struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
-// interface for type CreateProtectionIntentProviderSpecificDetails.
-func (c *CreateProtectionIntentProviderSpecificDetails) GetCreateProtectionIntentProviderSpecificDetails() *CreateProtectionIntentProviderSpecificDetails {
-	return c
 }
 
 // CreateRecoveryPlanInput - Create recovery plan input class.
@@ -4034,49 +1555,6 @@ type CreateRecoveryPlanInputProperties struct {
 	ProviderSpecificInput []RecoveryPlanProviderSpecificInputClassification `json:"providerSpecificInput,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateRecoveryPlanInputProperties.
-func (c CreateRecoveryPlanInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDeploymentModel", c.FailoverDeploymentModel)
-	populate(objectMap, "groups", c.Groups)
-	populate(objectMap, "primaryFabricId", c.PrimaryFabricID)
-	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
-	populate(objectMap, "recoveryFabricId", c.RecoveryFabricID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateRecoveryPlanInputProperties.
-func (c *CreateRecoveryPlanInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDeploymentModel":
-			err = unpopulate(val, &c.FailoverDeploymentModel)
-			delete(rawMsg, key)
-		case "groups":
-			err = unpopulate(val, &c.Groups)
-			delete(rawMsg, key)
-		case "primaryFabricId":
-			err = unpopulate(val, &c.PrimaryFabricID)
-			delete(rawMsg, key)
-		case "providerSpecificInput":
-			c.ProviderSpecificInput, err = unmarshalRecoveryPlanProviderSpecificInputClassificationArray(val)
-			delete(rawMsg, key)
-		case "recoveryFabricId":
-			err = unpopulate(val, &c.RecoveryFabricID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CurrentJobDetails - Current job details of the migration item.
 type CurrentJobDetails struct {
 	// READ-ONLY; The ARM Id of the job being executed.
@@ -4089,41 +1567,6 @@ type CurrentJobDetails struct {
 	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CurrentJobDetails.
-func (c CurrentJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "jobId", c.JobID)
-	populate(objectMap, "jobName", c.JobName)
-	populateTimeRFC3339(objectMap, "startTime", c.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CurrentJobDetails.
-func (c *CurrentJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "jobId":
-			err = unpopulate(val, &c.JobID)
-			delete(rawMsg, key)
-		case "jobName":
-			err = unpopulate(val, &c.JobName)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &c.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // CurrentScenarioDetails - Current scenario details of the protected entity.
 type CurrentScenarioDetails struct {
 	// ARM Id of the job being executed.
@@ -4134,41 +1577,6 @@ type CurrentScenarioDetails struct {
 
 	// Start time of the workflow.
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CurrentScenarioDetails.
-func (c CurrentScenarioDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "jobId", c.JobID)
-	populate(objectMap, "scenarioName", c.ScenarioName)
-	populateTimeRFC3339(objectMap, "startTime", c.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type CurrentScenarioDetails.
-func (c *CurrentScenarioDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "jobId":
-			err = unpopulate(val, &c.JobID)
-			delete(rawMsg, key)
-		case "scenarioName":
-			err = unpopulate(val, &c.ScenarioName)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &c.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // DataStore - The datastore details of the MT.
@@ -4204,37 +1612,6 @@ type DisableProtectionInputProperties struct {
 	ReplicationProviderInput DisableProtectionProviderSpecificInputClassification `json:"replicationProviderInput,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DisableProtectionInputProperties.
-func (d DisableProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableProtectionReason", d.DisableProtectionReason)
-	populate(objectMap, "replicationProviderInput", d.ReplicationProviderInput)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DisableProtectionInputProperties.
-func (d *DisableProtectionInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "disableProtectionReason":
-			err = unpopulate(val, &d.DisableProtectionReason)
-			delete(rawMsg, key)
-		case "replicationProviderInput":
-			d.ReplicationProviderInput, err = unmarshalDisableProtectionProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DisableProtectionProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetDisableProtectionProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4248,12 +1625,6 @@ type DisableProtectionProviderSpecificInputClassification interface {
 type DisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
-// for type DisableProtectionProviderSpecificInput.
-func (d *DisableProtectionProviderSpecificInput) GetDisableProtectionProviderSpecificInput() *DisableProtectionProviderSpecificInput {
-	return d
 }
 
 // DiscoverProtectableItemRequest - Request to add a physical machine as a protectable item in a container.
@@ -4377,65 +1748,6 @@ type DraDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DraDetails.
-func (d DraDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "biosId", d.BiosID)
-	populate(objectMap, "forwardProtectedItemCount", d.ForwardProtectedItemCount)
-	populate(objectMap, "health", d.Health)
-	populate(objectMap, "healthErrors", d.HealthErrors)
-	populate(objectMap, "id", d.ID)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", d.LastHeartbeatUTC)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "reverseProtectedItemCount", d.ReverseProtectedItemCount)
-	populate(objectMap, "version", d.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DraDetails.
-func (d *DraDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "biosId":
-			err = unpopulate(val, &d.BiosID)
-			delete(rawMsg, key)
-		case "forwardProtectedItemCount":
-			err = unpopulate(val, &d.ForwardProtectedItemCount)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &d.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &d.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &d.ID)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &d.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &d.Name)
-			delete(rawMsg, key)
-		case "reverseProtectedItemCount":
-			err = unpopulate(val, &d.ReverseProtectedItemCount)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &d.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EnableMigrationInput - Enable migration input.
 type EnableMigrationInput struct {
 	// REQUIRED; Enable migration input properties.
@@ -4451,37 +1763,6 @@ type EnableMigrationInputProperties struct {
 	ProviderSpecificDetails EnableMigrationProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EnableMigrationInputProperties.
-func (e EnableMigrationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyId", e.PolicyID)
-	populate(objectMap, "providerSpecificDetails", e.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EnableMigrationInputProperties.
-func (e *EnableMigrationInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "policyId":
-			err = unpopulate(val, &e.PolicyID)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			e.ProviderSpecificDetails, err = unmarshalEnableMigrationProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EnableMigrationProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetEnableMigrationProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4495,12 +1776,6 @@ type EnableMigrationProviderSpecificInputClassification interface {
 type EnableMigrationProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
-// type EnableMigrationProviderSpecificInput.
-func (e *EnableMigrationProviderSpecificInput) GetEnableMigrationProviderSpecificInput() *EnableMigrationProviderSpecificInput {
-	return e
 }
 
 // EnableProtectionInput - Enable protection input.
@@ -4523,41 +1798,6 @@ type EnableProtectionInputProperties struct {
 	ProviderSpecificDetails EnableProtectionProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EnableProtectionInputProperties.
-func (e EnableProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "policyId", e.PolicyID)
-	populate(objectMap, "protectableItemId", e.ProtectableItemID)
-	populate(objectMap, "providerSpecificDetails", e.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EnableProtectionInputProperties.
-func (e *EnableProtectionInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "policyId":
-			err = unpopulate(val, &e.PolicyID)
-			delete(rawMsg, key)
-		case "protectableItemId":
-			err = unpopulate(val, &e.ProtectableItemID)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			e.ProviderSpecificDetails, err = unmarshalEnableProtectionProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EnableProtectionProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetEnableProtectionProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4574,12 +1814,6 @@ type EnableProtectionProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type EnableProtectionProviderSpecificInput.
-func (e *EnableProtectionProviderSpecificInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return e
-}
-
 // EncryptionDetails - Encryption details for the fabric.
 type EncryptionDetails struct {
 	// The key encryption key certificate expiry date.
@@ -4590,41 +1824,6 @@ type EncryptionDetails struct {
 
 	// The key encryption key state for the Vmm.
 	KekState *string `json:"kekState,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncryptionDetails.
-func (e EncryptionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "kekCertExpiryDate", e.KekCertExpiryDate)
-	populate(objectMap, "kekCertThumbprint", e.KekCertThumbprint)
-	populate(objectMap, "kekState", e.KekState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncryptionDetails.
-func (e *EncryptionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "kekCertExpiryDate":
-			err = unpopulateTimeRFC3339(val, &e.KekCertExpiryDate)
-			delete(rawMsg, key)
-		case "kekCertThumbprint":
-			err = unpopulate(val, &e.KekCertThumbprint)
-			delete(rawMsg, key)
-		case "kekState":
-			err = unpopulate(val, &e.KekState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Event - Implements the Event class.
@@ -4652,14 +1851,6 @@ type EventCollection struct {
 
 	// The list of events.
 	Value []*Event `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventCollection.
-func (e EventCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // EventProperties - The properties of a monitoring event.
@@ -4698,73 +1889,6 @@ type EventProperties struct {
 	TimeOfOccurrence *time.Time `json:"timeOfOccurrence,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventProperties.
-func (e EventProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectCorrelationId", e.AffectedObjectCorrelationID)
-	populate(objectMap, "affectedObjectFriendlyName", e.AffectedObjectFriendlyName)
-	populate(objectMap, "description", e.Description)
-	populate(objectMap, "eventCode", e.EventCode)
-	populate(objectMap, "eventSpecificDetails", e.EventSpecificDetails)
-	populate(objectMap, "eventType", e.EventType)
-	populate(objectMap, "fabricId", e.FabricID)
-	populate(objectMap, "healthErrors", e.HealthErrors)
-	populate(objectMap, "providerSpecificDetails", e.ProviderSpecificDetails)
-	populate(objectMap, "severity", e.Severity)
-	populateTimeRFC3339(objectMap, "timeOfOccurrence", e.TimeOfOccurrence)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventProperties.
-func (e *EventProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectCorrelationId":
-			err = unpopulate(val, &e.AffectedObjectCorrelationID)
-			delete(rawMsg, key)
-		case "affectedObjectFriendlyName":
-			err = unpopulate(val, &e.AffectedObjectFriendlyName)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &e.Description)
-			delete(rawMsg, key)
-		case "eventCode":
-			err = unpopulate(val, &e.EventCode)
-			delete(rawMsg, key)
-		case "eventSpecificDetails":
-			e.EventSpecificDetails, err = unmarshalEventSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &e.EventType)
-			delete(rawMsg, key)
-		case "fabricId":
-			err = unpopulate(val, &e.FabricID)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &e.HealthErrors)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			e.ProviderSpecificDetails, err = unmarshalEventProviderSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &e.Severity)
-			delete(rawMsg, key)
-		case "timeOfOccurrence":
-			err = unpopulateTimeRFC3339(val, &e.TimeOfOccurrence)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventProviderSpecificDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetEventProviderSpecificDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4779,11 +1903,6 @@ type EventProviderSpecificDetailsClassification interface {
 type EventProviderSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type EventProviderSpecificDetails.
-func (e *EventProviderSpecificDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return e
 }
 
 // EventQueryParameter - Implements the event query parameter.
@@ -4813,61 +1932,6 @@ type EventQueryParameter struct {
 	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventQueryParameter.
-func (e EventQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectCorrelationId", e.AffectedObjectCorrelationID)
-	populate(objectMap, "affectedObjectFriendlyName", e.AffectedObjectFriendlyName)
-	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
-	populate(objectMap, "eventCode", e.EventCode)
-	populate(objectMap, "eventType", e.EventType)
-	populate(objectMap, "fabricName", e.FabricName)
-	populate(objectMap, "severity", e.Severity)
-	populateTimeRFC3339(objectMap, "startTime", e.StartTime)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventQueryParameter.
-func (e *EventQueryParameter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectCorrelationId":
-			err = unpopulate(val, &e.AffectedObjectCorrelationID)
-			delete(rawMsg, key)
-		case "affectedObjectFriendlyName":
-			err = unpopulate(val, &e.AffectedObjectFriendlyName)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &e.EndTime)
-			delete(rawMsg, key)
-		case "eventCode":
-			err = unpopulate(val, &e.EventCode)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &e.EventType)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &e.FabricName)
-			delete(rawMsg, key)
-		case "severity":
-			err = unpopulate(val, &e.Severity)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &e.StartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventSpecificDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetEventSpecificDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4883,9 +1947,6 @@ type EventSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type EventSpecificDetails.
-func (e *EventSpecificDetails) GetEventSpecificDetails() *EventSpecificDetails { return e }
-
 // ExistingProtectionProfile - Existing storage account input.
 type ExistingProtectionProfile struct {
 	// REQUIRED; The protection profile Arm Id. Throw error, if resource does not exists.
@@ -4893,44 +1954,6 @@ type ExistingProtectionProfile struct {
 
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ExistingProtectionProfile.
-func (e *ExistingProtectionProfile) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
-	return &ProtectionProfileCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingProtectionProfile.
-func (e ExistingProtectionProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "protectionProfileId", e.ProtectionProfileID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingProtectionProfile.
-func (e *ExistingProtectionProfile) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "protectionProfileId":
-			err = unpopulate(val, &e.ProtectionProfileID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ExistingRecoveryAvailabilitySet - Existing recovery availability set input.
@@ -4942,45 +1965,6 @@ type ExistingRecoveryAvailabilitySet struct {
 	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
 }
 
-// GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
-// type ExistingRecoveryAvailabilitySet.
-func (e *ExistingRecoveryAvailabilitySet) GetRecoveryAvailabilitySetCustomDetails() *RecoveryAvailabilitySetCustomDetails {
-	return &RecoveryAvailabilitySetCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryAvailabilitySet.
-func (e ExistingRecoveryAvailabilitySet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recoveryAvailabilitySetId", e.RecoveryAvailabilitySetID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingRecoveryAvailabilitySet.
-func (e *ExistingRecoveryAvailabilitySet) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &e.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExistingRecoveryProximityPlacementGroup - Existing recovery proximity placement group input.
 type ExistingRecoveryProximityPlacementGroup struct {
 	// REQUIRED; The class type.
@@ -4990,45 +1974,6 @@ type ExistingRecoveryProximityPlacementGroup struct {
 	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 }
 
-// GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
-// interface for type ExistingRecoveryProximityPlacementGroup.
-func (e *ExistingRecoveryProximityPlacementGroup) GetRecoveryProximityPlacementGroupCustomDetails() *RecoveryProximityPlacementGroupCustomDetails {
-	return &RecoveryProximityPlacementGroupCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryProximityPlacementGroup.
-func (e ExistingRecoveryProximityPlacementGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recoveryProximityPlacementGroupId", e.RecoveryProximityPlacementGroupID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingRecoveryProximityPlacementGroup.
-func (e *ExistingRecoveryProximityPlacementGroup) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoveryProximityPlacementGroupId":
-			err = unpopulate(val, &e.RecoveryProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExistingRecoveryResourceGroup - Existing recovery resource group input.
 type ExistingRecoveryResourceGroup struct {
 	// REQUIRED; The class type.
@@ -5036,45 +1981,6 @@ type ExistingRecoveryResourceGroup struct {
 
 	// The recovery resource group Id. Valid for V2 scenarios.
 	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
-}
-
-// GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
-// ExistingRecoveryResourceGroup.
-func (e *ExistingRecoveryResourceGroup) GetRecoveryResourceGroupCustomDetails() *RecoveryResourceGroupCustomDetails {
-	return &RecoveryResourceGroupCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryResourceGroup.
-func (e ExistingRecoveryResourceGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recoveryResourceGroupId", e.RecoveryResourceGroupID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingRecoveryResourceGroup.
-func (e *ExistingRecoveryResourceGroup) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoveryResourceGroupId":
-			err = unpopulate(val, &e.RecoveryResourceGroupID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ExistingRecoveryVirtualNetwork - Existing recovery virtual network input.
@@ -5089,49 +1995,6 @@ type ExistingRecoveryVirtualNetwork struct {
 	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
 }
 
-// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
-// ExistingRecoveryVirtualNetwork.
-func (e *ExistingRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
-	return &RecoveryVirtualNetworkCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryVirtualNetwork.
-func (e ExistingRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recoverySubnetName", e.RecoverySubnetName)
-	populate(objectMap, "recoveryVirtualNetworkId", e.RecoveryVirtualNetworkID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingRecoveryVirtualNetwork.
-func (e *ExistingRecoveryVirtualNetwork) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoverySubnetName":
-			err = unpopulate(val, &e.RecoverySubnetName)
-			delete(rawMsg, key)
-		case "recoveryVirtualNetworkId":
-			err = unpopulate(val, &e.RecoveryVirtualNetworkID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ExistingStorageAccount - Existing storage account input.
 type ExistingStorageAccount struct {
 	// REQUIRED; The storage account Arm Id. Throw error, if resource does not exists.
@@ -5139,44 +2002,6 @@ type ExistingStorageAccount struct {
 
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type ExistingStorageAccount.
-func (e *ExistingStorageAccount) GetStorageAccountCustomDetails() *StorageAccountCustomDetails {
-	return &StorageAccountCustomDetails{
-		ResourceType: e.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExistingStorageAccount.
-func (e ExistingStorageAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureStorageAccountId", e.AzureStorageAccountID)
-	objectMap["resourceType"] = "Existing"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExistingStorageAccount.
-func (e *ExistingStorageAccount) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureStorageAccountId":
-			err = unpopulate(val, &e.AzureStorageAccountID)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &e.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ExportJobDetails - This class represents details for export jobs workflow.
@@ -5193,53 +2018,6 @@ type ExportJobDetails struct {
 
 	// The sas token to access blob.
 	SasToken *string `json:"sasToken,omitempty"`
-}
-
-// GetJobDetails implements the JobDetailsClassification interface for type ExportJobDetails.
-func (e *ExportJobDetails) GetJobDetails() *JobDetails {
-	return &JobDetails{
-		InstanceType:          e.InstanceType,
-		AffectedObjectDetails: e.AffectedObjectDetails,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExportJobDetails.
-func (e ExportJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", e.AffectedObjectDetails)
-	populate(objectMap, "blobUri", e.BlobURI)
-	objectMap["instanceType"] = "ExportJobDetails"
-	populate(objectMap, "sasToken", e.SasToken)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExportJobDetails.
-func (e *ExportJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectDetails":
-			err = unpopulate(val, &e.AffectedObjectDetails)
-			delete(rawMsg, key)
-		case "blobUri":
-			err = unpopulate(val, &e.BlobURI)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &e.InstanceType)
-			delete(rawMsg, key)
-		case "sasToken":
-			err = unpopulate(val, &e.SasToken)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ExtendedLocation - Extended location of the resource.
@@ -5278,14 +2056,6 @@ type FabricCollection struct {
 	Value []*Fabric `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FabricCollection.
-func (f FabricCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
 // FabricCreationInput - Site details provided during the time of site creation.
 type FabricCreationInput struct {
 	// Fabric creation input.
@@ -5296,33 +2066,6 @@ type FabricCreationInput struct {
 type FabricCreationInputProperties struct {
 	// Fabric provider specific creation input.
 	CustomDetails FabricSpecificCreationInputClassification `json:"customDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FabricCreationInputProperties.
-func (f FabricCreationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customDetails", f.CustomDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FabricCreationInputProperties.
-func (f *FabricCreationInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "customDetails":
-			f.CustomDetails, err = unmarshalFabricSpecificCreationInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FabricProperties - Fabric properties.
@@ -5350,61 +2093,6 @@ type FabricProperties struct {
 
 	// Rollover encryption details for the fabric.
 	RolloverEncryptionDetails *EncryptionDetails `json:"rolloverEncryptionDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FabricProperties.
-func (f FabricProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "bcdrState", f.BcdrState)
-	populate(objectMap, "customDetails", f.CustomDetails)
-	populate(objectMap, "encryptionDetails", f.EncryptionDetails)
-	populate(objectMap, "friendlyName", f.FriendlyName)
-	populate(objectMap, "health", f.Health)
-	populate(objectMap, "healthErrorDetails", f.HealthErrorDetails)
-	populate(objectMap, "internalIdentifier", f.InternalIdentifier)
-	populate(objectMap, "rolloverEncryptionDetails", f.RolloverEncryptionDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FabricProperties.
-func (f *FabricProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "bcdrState":
-			err = unpopulate(val, &f.BcdrState)
-			delete(rawMsg, key)
-		case "customDetails":
-			f.CustomDetails, err = unmarshalFabricSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		case "encryptionDetails":
-			err = unpopulate(val, &f.EncryptionDetails)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &f.FriendlyName)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &f.Health)
-			delete(rawMsg, key)
-		case "healthErrorDetails":
-			err = unpopulate(val, &f.HealthErrorDetails)
-			delete(rawMsg, key)
-		case "internalIdentifier":
-			err = unpopulate(val, &f.InternalIdentifier)
-			delete(rawMsg, key)
-		case "rolloverEncryptionDetails":
-			err = unpopulate(val, &f.RolloverEncryptionDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FabricQueryParameter - Query parameter to get fabric.
@@ -5443,60 +2131,6 @@ type FabricReplicationGroupTaskDetails struct {
 	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
 }
 
-// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type FabricReplicationGroupTaskDetails.
-func (f *FabricReplicationGroupTaskDetails) GetJobTaskDetails() *JobTaskDetails {
-	return &JobTaskDetails{
-		JobTask:      f.JobTask,
-		InstanceType: f.InstanceType,
-	}
-}
-
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type FabricReplicationGroupTaskDetails.
-func (f *FabricReplicationGroupTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: f.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FabricReplicationGroupTaskDetails.
-func (f FabricReplicationGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "FabricReplicationGroupTaskDetails"
-	populate(objectMap, "jobTask", f.JobTask)
-	populate(objectMap, "skippedReason", f.SkippedReason)
-	populate(objectMap, "skippedReasonString", f.SkippedReasonString)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FabricReplicationGroupTaskDetails.
-func (f *FabricReplicationGroupTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &f.InstanceType)
-			delete(rawMsg, key)
-		case "jobTask":
-			err = unpopulate(val, &f.JobTask)
-			delete(rawMsg, key)
-		case "skippedReason":
-			err = unpopulate(val, &f.SkippedReason)
-			delete(rawMsg, key)
-		case "skippedReasonString":
-			err = unpopulate(val, &f.SkippedReasonString)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FabricSpecificCreateNetworkMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificCreateNetworkMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5513,12 +2147,6 @@ type FabricSpecificCreateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
-// for type FabricSpecificCreateNetworkMappingInput.
-func (f *FabricSpecificCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
-	return f
-}
-
 // FabricSpecificCreationInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificCreationInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5532,11 +2160,6 @@ type FabricSpecificCreationInputClassification interface {
 type FabricSpecificCreationInput struct {
 	// REQUIRED; Gets the class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type FabricSpecificCreationInput.
-func (f *FabricSpecificCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
-	return f
 }
 
 // FabricSpecificDetailsClassification provides polymorphic access to related types.
@@ -5555,9 +2178,6 @@ type FabricSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type FabricSpecificDetails.
-func (f *FabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails { return f }
-
 // FabricSpecificUpdateNetworkMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetFabricSpecificUpdateNetworkMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5574,12 +2194,6 @@ type FabricSpecificUpdateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
-// for type FabricSpecificUpdateNetworkMappingInput.
-func (f *FabricSpecificUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
-	return f
-}
-
 // FailoverJobDetails - This class represents the details for a failover job.
 type FailoverJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -5591,49 +2205,6 @@ type FailoverJobDetails struct {
 
 	// The test VM details.
 	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails `json:"protectedItemDetails,omitempty"`
-}
-
-// GetJobDetails implements the JobDetailsClassification interface for type FailoverJobDetails.
-func (f *FailoverJobDetails) GetJobDetails() *JobDetails {
-	return &JobDetails{
-		InstanceType:          f.InstanceType,
-		AffectedObjectDetails: f.AffectedObjectDetails,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FailoverJobDetails.
-func (f FailoverJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", f.AffectedObjectDetails)
-	objectMap["instanceType"] = "FailoverJobDetails"
-	populate(objectMap, "protectedItemDetails", f.ProtectedItemDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FailoverJobDetails.
-func (f *FailoverJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectDetails":
-			err = unpopulate(val, &f.AffectedObjectDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &f.InstanceType)
-			delete(rawMsg, key)
-		case "protectedItemDetails":
-			err = unpopulate(val, &f.ProtectedItemDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // FailoverProcessServerRequest - Request to failover a process server.
@@ -5658,17 +2229,6 @@ type FailoverProcessServerRequestProperties struct {
 
 	// The VMS to migrate.
 	VMsToMigrate []*string `json:"vmsToMigrate,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FailoverProcessServerRequestProperties.
-func (f FailoverProcessServerRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerName", f.ContainerName)
-	populate(objectMap, "sourceProcessServerId", f.SourceProcessServerID)
-	populate(objectMap, "targetProcessServerId", f.TargetProcessServerID)
-	populate(objectMap, "updateType", f.UpdateType)
-	populate(objectMap, "vmsToMigrate", f.VMsToMigrate)
-	return json.Marshal(objectMap)
 }
 
 // FailoverReplicationProtectedItemDetails - Failover details for a replication protected item.
@@ -5701,65 +2261,6 @@ type FailoverReplicationProtectedItemDetails struct {
 	TestVMName *string `json:"testVmName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FailoverReplicationProtectedItemDetails.
-func (f FailoverReplicationProtectedItemDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "friendlyName", f.FriendlyName)
-	populate(objectMap, "name", f.Name)
-	populate(objectMap, "networkConnectionStatus", f.NetworkConnectionStatus)
-	populate(objectMap, "networkFriendlyName", f.NetworkFriendlyName)
-	populate(objectMap, "recoveryPointId", f.RecoveryPointID)
-	populateTimeRFC3339(objectMap, "recoveryPointTime", f.RecoveryPointTime)
-	populate(objectMap, "subnet", f.Subnet)
-	populate(objectMap, "testVmFriendlyName", f.TestVMFriendlyName)
-	populate(objectMap, "testVmName", f.TestVMName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FailoverReplicationProtectedItemDetails.
-func (f *FailoverReplicationProtectedItemDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "friendlyName":
-			err = unpopulate(val, &f.FriendlyName)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &f.Name)
-			delete(rawMsg, key)
-		case "networkConnectionStatus":
-			err = unpopulate(val, &f.NetworkConnectionStatus)
-			delete(rawMsg, key)
-		case "networkFriendlyName":
-			err = unpopulate(val, &f.NetworkFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &f.RecoveryPointID)
-			delete(rawMsg, key)
-		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, &f.RecoveryPointTime)
-			delete(rawMsg, key)
-		case "subnet":
-			err = unpopulate(val, &f.Subnet)
-			delete(rawMsg, key)
-		case "testVmFriendlyName":
-			err = unpopulate(val, &f.TestVMFriendlyName)
-			delete(rawMsg, key)
-		case "testVmName":
-			err = unpopulate(val, &f.TestVMName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // GroupTaskDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetGroupTaskDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5776,17 +2277,6 @@ type GroupTaskDetails struct {
 
 	// The child tasks.
 	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
-}
-
-// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type GroupTaskDetails.
-func (g *GroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails { return g }
-
-// MarshalJSON implements the json.Marshaller interface for type GroupTaskDetails.
-func (g GroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "childTasks", g.ChildTasks)
-	objectMap["instanceType"] = g.InstanceType
-	return json.Marshal(objectMap)
 }
 
 // HealthError - Health Error.
@@ -5840,89 +2330,6 @@ type HealthError struct {
 	SummaryMessage *string `json:"summaryMessage,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type HealthError.
-func (h HealthError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationTimeUtc", h.CreationTimeUTC)
-	populate(objectMap, "customerResolvability", h.CustomerResolvability)
-	populate(objectMap, "entityId", h.EntityID)
-	populate(objectMap, "errorCategory", h.ErrorCategory)
-	populate(objectMap, "errorCode", h.ErrorCode)
-	populate(objectMap, "errorId", h.ErrorID)
-	populate(objectMap, "errorLevel", h.ErrorLevel)
-	populate(objectMap, "errorMessage", h.ErrorMessage)
-	populate(objectMap, "errorSource", h.ErrorSource)
-	populate(objectMap, "errorType", h.ErrorType)
-	populate(objectMap, "innerHealthErrors", h.InnerHealthErrors)
-	populate(objectMap, "possibleCauses", h.PossibleCauses)
-	populate(objectMap, "recommendedAction", h.RecommendedAction)
-	populate(objectMap, "recoveryProviderErrorMessage", h.RecoveryProviderErrorMessage)
-	populate(objectMap, "summaryMessage", h.SummaryMessage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HealthError.
-func (h *HealthError) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTimeUtc":
-			err = unpopulateTimeRFC3339(val, &h.CreationTimeUTC)
-			delete(rawMsg, key)
-		case "customerResolvability":
-			err = unpopulate(val, &h.CustomerResolvability)
-			delete(rawMsg, key)
-		case "entityId":
-			err = unpopulate(val, &h.EntityID)
-			delete(rawMsg, key)
-		case "errorCategory":
-			err = unpopulate(val, &h.ErrorCategory)
-			delete(rawMsg, key)
-		case "errorCode":
-			err = unpopulate(val, &h.ErrorCode)
-			delete(rawMsg, key)
-		case "errorId":
-			err = unpopulate(val, &h.ErrorID)
-			delete(rawMsg, key)
-		case "errorLevel":
-			err = unpopulate(val, &h.ErrorLevel)
-			delete(rawMsg, key)
-		case "errorMessage":
-			err = unpopulate(val, &h.ErrorMessage)
-			delete(rawMsg, key)
-		case "errorSource":
-			err = unpopulate(val, &h.ErrorSource)
-			delete(rawMsg, key)
-		case "errorType":
-			err = unpopulate(val, &h.ErrorType)
-			delete(rawMsg, key)
-		case "innerHealthErrors":
-			err = unpopulate(val, &h.InnerHealthErrors)
-			delete(rawMsg, key)
-		case "possibleCauses":
-			err = unpopulate(val, &h.PossibleCauses)
-			delete(rawMsg, key)
-		case "recommendedAction":
-			err = unpopulate(val, &h.RecommendedAction)
-			delete(rawMsg, key)
-		case "recoveryProviderErrorMessage":
-			err = unpopulate(val, &h.RecoveryProviderErrorMessage)
-			delete(rawMsg, key)
-		case "summaryMessage":
-			err = unpopulate(val, &h.SummaryMessage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HealthErrorSummary - class to define the summary of the health error details.
 type HealthErrorSummary struct {
 	// The list of affected resource correlation Ids. This can be used to uniquely identify the count of items affected by a specific
@@ -5947,19 +2354,6 @@ type HealthErrorSummary struct {
 
 	// The summary message of the health error.
 	SummaryMessage *string `json:"summaryMessage,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HealthErrorSummary.
-func (h HealthErrorSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedResourceCorrelationIds", h.AffectedResourceCorrelationIDs)
-	populate(objectMap, "affectedResourceSubtype", h.AffectedResourceSubtype)
-	populate(objectMap, "affectedResourceType", h.AffectedResourceType)
-	populate(objectMap, "category", h.Category)
-	populate(objectMap, "severity", h.Severity)
-	populate(objectMap, "summaryCode", h.SummaryCode)
-	populate(objectMap, "summaryMessage", h.SummaryMessage)
-	return json.Marshal(objectMap)
 }
 
 // HyperVHostDetails - Hyper-V host details.
@@ -5992,56 +2386,6 @@ type HyperVReplica2012EventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012EventDetails.
-func (h *HyperVReplica2012EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplica2012EventDetails.
-func (h HyperVReplica2012EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerName", h.ContainerName)
-	populate(objectMap, "fabricName", h.FabricName)
-	objectMap["instanceType"] = "HyperVReplica2012"
-	populate(objectMap, "remoteContainerName", h.RemoteContainerName)
-	populate(objectMap, "remoteFabricName", h.RemoteFabricName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplica2012EventDetails.
-func (h *HyperVReplica2012EventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerName":
-			err = unpopulate(val, &h.ContainerName)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &h.FabricName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "remoteContainerName":
-			err = unpopulate(val, &h.RemoteContainerName)
-			delete(rawMsg, key)
-		case "remoteFabricName":
-			err = unpopulate(val, &h.RemoteFabricName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplica2012R2EventDetails - Model class for event details of a HyperVReplica blue E2E event.
 type HyperVReplica2012R2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -6060,56 +2404,6 @@ type HyperVReplica2012R2EventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012R2EventDetails.
-func (h *HyperVReplica2012R2EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplica2012R2EventDetails.
-func (h HyperVReplica2012R2EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerName", h.ContainerName)
-	populate(objectMap, "fabricName", h.FabricName)
-	objectMap["instanceType"] = "HyperVReplica2012R2"
-	populate(objectMap, "remoteContainerName", h.RemoteContainerName)
-	populate(objectMap, "remoteFabricName", h.RemoteFabricName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplica2012R2EventDetails.
-func (h *HyperVReplica2012R2EventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerName":
-			err = unpopulate(val, &h.ContainerName)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &h.FabricName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "remoteContainerName":
-			err = unpopulate(val, &h.RemoteContainerName)
-			delete(rawMsg, key)
-		case "remoteFabricName":
-			err = unpopulate(val, &h.RemoteFabricName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureApplyRecoveryPointInput - ApplyRecoveryPoint input specific to HyperVReplicaAzure provider.
 type HyperVReplicaAzureApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
@@ -6120,49 +2414,6 @@ type HyperVReplicaAzureApplyRecoveryPointInput struct {
 
 	// The secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
-}
-
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type HyperVReplicaAzureApplyRecoveryPointInput.
-func (h *HyperVReplicaAzureApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return &ApplyRecoveryPointProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureApplyRecoveryPointInput.
-func (h HyperVReplicaAzureApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
-	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureApplyRecoveryPointInput.
-func (h *HyperVReplicaAzureApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "primaryKekCertificatePfx":
-			err = unpopulate(val, &h.PrimaryKekCertificatePfx)
-			delete(rawMsg, key)
-		case "secondaryKekCertificatePfx":
-			err = unpopulate(val, &h.SecondaryKekCertificatePfx)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaAzureDiskInputDetails - Disk input details.
@@ -6271,153 +2522,6 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 	VhdID *string `json:"vhdId,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type HyperVReplicaAzureEnableProtectionInput.
-func (h *HyperVReplicaAzureEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureEnableProtectionInput.
-func (h HyperVReplicaAzureEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
-	populate(objectMap, "diskType", h.DiskType)
-	populate(objectMap, "disksToInclude", h.DisksToInclude)
-	populate(objectMap, "disksToIncludeForManagedDisks", h.DisksToIncludeForManagedDisks)
-	populate(objectMap, "enableRdpOnTargetOption", h.EnableRdpOnTargetOption)
-	populate(objectMap, "hvHostVmId", h.HvHostVMID)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "licenseType", h.LicenseType)
-	populate(objectMap, "logStorageAccountId", h.LogStorageAccountID)
-	populate(objectMap, "osType", h.OSType)
-	populate(objectMap, "sqlServerLicenseType", h.SQLServerLicenseType)
-	populate(objectMap, "seedManagedDiskTags", h.SeedManagedDiskTags)
-	populate(objectMap, "targetAvailabilitySetId", h.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", h.TargetAvailabilityZone)
-	populate(objectMap, "targetAzureNetworkId", h.TargetAzureNetworkID)
-	populate(objectMap, "targetAzureSubnetId", h.TargetAzureSubnetID)
-	populate(objectMap, "targetAzureV1ResourceGroupId", h.TargetAzureV1ResourceGroupID)
-	populate(objectMap, "targetAzureV2ResourceGroupId", h.TargetAzureV2ResourceGroupID)
-	populate(objectMap, "targetAzureVmName", h.TargetAzureVMName)
-	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", h.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetStorageAccountId", h.TargetStorageAccountID)
-	populate(objectMap, "targetVmSize", h.TargetVMSize)
-	populate(objectMap, "targetVmTags", h.TargetVMTags)
-	populate(objectMap, "useManagedDisks", h.UseManagedDisks)
-	populate(objectMap, "useManagedDisksForReplication", h.UseManagedDisksForReplication)
-	populate(objectMap, "vmName", h.VMName)
-	populate(objectMap, "vhdId", h.VhdID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureEnableProtectionInput.
-func (h *HyperVReplicaAzureEnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionSetId":
-			err = unpopulate(val, &h.DiskEncryptionSetID)
-			delete(rawMsg, key)
-		case "diskType":
-			err = unpopulate(val, &h.DiskType)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &h.DisksToInclude)
-			delete(rawMsg, key)
-		case "disksToIncludeForManagedDisks":
-			err = unpopulate(val, &h.DisksToIncludeForManagedDisks)
-			delete(rawMsg, key)
-		case "enableRdpOnTargetOption":
-			err = unpopulate(val, &h.EnableRdpOnTargetOption)
-			delete(rawMsg, key)
-		case "hvHostVmId":
-			err = unpopulate(val, &h.HvHostVMID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &h.LicenseType)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &h.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &h.OSType)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &h.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedManagedDiskTags":
-			err = unpopulate(val, &h.SeedManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &h.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &h.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetAzureNetworkId":
-			err = unpopulate(val, &h.TargetAzureNetworkID)
-			delete(rawMsg, key)
-		case "targetAzureSubnetId":
-			err = unpopulate(val, &h.TargetAzureSubnetID)
-			delete(rawMsg, key)
-		case "targetAzureV1ResourceGroupId":
-			err = unpopulate(val, &h.TargetAzureV1ResourceGroupID)
-			delete(rawMsg, key)
-		case "targetAzureV2ResourceGroupId":
-			err = unpopulate(val, &h.TargetAzureV2ResourceGroupID)
-			delete(rawMsg, key)
-		case "targetAzureVmName":
-			err = unpopulate(val, &h.TargetAzureVMName)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &h.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &h.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &h.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetStorageAccountId":
-			err = unpopulate(val, &h.TargetStorageAccountID)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &h.TargetVMSize)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &h.TargetVMTags)
-			delete(rawMsg, key)
-		case "useManagedDisks":
-			err = unpopulate(val, &h.UseManagedDisks)
-			delete(rawMsg, key)
-		case "useManagedDisksForReplication":
-			err = unpopulate(val, &h.UseManagedDisksForReplication)
-			delete(rawMsg, key)
-		case "vmName":
-			err = unpopulate(val, &h.VMName)
-			delete(rawMsg, key)
-		case "vhdId":
-			err = unpopulate(val, &h.VhdID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureEventDetails - Model class for event details of a HyperVReplica E2A event.
 type HyperVReplicaAzureEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -6433,52 +2537,6 @@ type HyperVReplicaAzureEventDetails struct {
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaAzureEventDetails.
-func (h *HyperVReplicaAzureEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureEventDetails.
-func (h HyperVReplicaAzureEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerName", h.ContainerName)
-	populate(objectMap, "fabricName", h.FabricName)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "remoteContainerName", h.RemoteContainerName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureEventDetails.
-func (h *HyperVReplicaAzureEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerName":
-			err = unpopulate(val, &h.ContainerName)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &h.FabricName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "remoteContainerName":
-			err = unpopulate(val, &h.RemoteContainerName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureFailbackProviderInput - HyperVReplicaAzureFailback specific planned failover input.
 type HyperVReplicaAzureFailbackProviderInput struct {
 	// REQUIRED; The class type.
@@ -6492,53 +2550,6 @@ type HyperVReplicaAzureFailbackProviderInput struct {
 
 	// ALR options to create alternate recovery.
 	RecoveryVMCreationOption *string `json:"recoveryVmCreationOption,omitempty"`
-}
-
-// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
-// interface for type HyperVReplicaAzureFailbackProviderInput.
-func (h *HyperVReplicaAzureFailbackProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
-	return &PlannedFailoverProviderSpecificFailoverInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureFailbackProviderInput.
-func (h HyperVReplicaAzureFailbackProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSyncOption", h.DataSyncOption)
-	objectMap["instanceType"] = "HyperVReplicaAzureFailback"
-	populate(objectMap, "providerIdForAlternateRecovery", h.ProviderIDForAlternateRecovery)
-	populate(objectMap, "recoveryVmCreationOption", h.RecoveryVMCreationOption)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureFailbackProviderInput.
-func (h *HyperVReplicaAzureFailbackProviderInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataSyncOption":
-			err = unpopulate(val, &h.DataSyncOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "providerIdForAlternateRecovery":
-			err = unpopulate(val, &h.ProviderIDForAlternateRecovery)
-			delete(rawMsg, key)
-		case "recoveryVmCreationOption":
-			err = unpopulate(val, &h.RecoveryVMCreationOption)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaAzureManagedDiskDetails - Hyper-V Managed disk details.
@@ -6572,53 +2583,6 @@ type HyperVReplicaAzurePlannedFailoverProviderInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
-// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
-// interface for type HyperVReplicaAzurePlannedFailoverProviderInput.
-func (h *HyperVReplicaAzurePlannedFailoverProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
-	return &PlannedFailoverProviderSpecificFailoverInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePlannedFailoverProviderInput.
-func (h HyperVReplicaAzurePlannedFailoverProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
-	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
-	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzurePlannedFailoverProviderInput.
-func (h *HyperVReplicaAzurePlannedFailoverProviderInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "primaryKekCertificatePfx":
-			err = unpopulate(val, &h.PrimaryKekCertificatePfx)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &h.RecoveryPointID)
-			delete(rawMsg, key)
-		case "secondaryKekCertificatePfx":
-			err = unpopulate(val, &h.SecondaryKekCertificatePfx)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzurePolicyDetails - Hyper-V Replica Azure specific protection profile details.
 type HyperVReplicaAzurePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -6643,64 +2607,6 @@ type HyperVReplicaAzurePolicyDetails struct {
 	ReplicationInterval *int32 `json:"replicationInterval,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaAzurePolicyDetails.
-func (h *HyperVReplicaAzurePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePolicyDetails.
-func (h HyperVReplicaAzurePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activeStorageAccountId", h.ActiveStorageAccountID)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "encryption", h.Encryption)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPointHistoryDurationInHours", h.RecoveryPointHistoryDurationInHours)
-	populate(objectMap, "replicationInterval", h.ReplicationInterval)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzurePolicyDetails.
-func (h *HyperVReplicaAzurePolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activeStorageAccountId":
-			err = unpopulate(val, &h.ActiveStorageAccountID)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &h.Encryption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryDurationInHours":
-			err = unpopulate(val, &h.RecoveryPointHistoryDurationInHours)
-			delete(rawMsg, key)
-		case "replicationInterval":
-			err = unpopulate(val, &h.ReplicationInterval)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzurePolicyInput - Hyper-V Replica Azure specific input for creating a protection profile.
 type HyperVReplicaAzurePolicyInput struct {
 	// REQUIRED; The class type.
@@ -6720,60 +2626,6 @@ type HyperVReplicaAzurePolicyInput struct {
 
 	// The list of storage accounts to which the VMs in the primary cloud can replicate to.
 	StorageAccounts []*string `json:"storageAccounts,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaAzurePolicyInput.
-func (h *HyperVReplicaAzurePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePolicyInput.
-func (h HyperVReplicaAzurePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPointHistoryDuration", h.RecoveryPointHistoryDuration)
-	populate(objectMap, "replicationInterval", h.ReplicationInterval)
-	populate(objectMap, "storageAccounts", h.StorageAccounts)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzurePolicyInput.
-func (h *HyperVReplicaAzurePolicyInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryDuration":
-			err = unpopulate(val, &h.RecoveryPointHistoryDuration)
-			delete(rawMsg, key)
-		case "replicationInterval":
-			err = unpopulate(val, &h.ReplicationInterval)
-			delete(rawMsg, key)
-		case "storageAccounts":
-			err = unpopulate(val, &h.StorageAccounts)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaAzureReplicationDetails - Hyper V Replica Azure provider specific settings.
@@ -6883,173 +2735,6 @@ type HyperVReplicaAzureReplicationDetails struct {
 	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// HyperVReplicaAzureReplicationDetails.
-func (h *HyperVReplicaAzureReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureReplicationDetails.
-func (h HyperVReplicaAzureReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureVmDiskDetails", h.AzureVMDiskDetails)
-	populate(objectMap, "enableRdpOnTargetOption", h.EnableRdpOnTargetOption)
-	populate(objectMap, "encryption", h.Encryption)
-	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populateTimeRFC3339(objectMap, "lastRecoveryPointReceived", h.LastRecoveryPointReceived)
-	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", h.LastRpoCalculatedTime)
-	populate(objectMap, "licenseType", h.LicenseType)
-	populate(objectMap, "oSDetails", h.OSDetails)
-	populate(objectMap, "protectedManagedDisks", h.ProtectedManagedDisks)
-	populate(objectMap, "recoveryAvailabilitySetId", h.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryAzureLogStorageAccountId", h.RecoveryAzureLogStorageAccountID)
-	populate(objectMap, "recoveryAzureResourceGroupId", h.RecoveryAzureResourceGroupID)
-	populate(objectMap, "recoveryAzureStorageAccount", h.RecoveryAzureStorageAccount)
-	populate(objectMap, "recoveryAzureVmName", h.RecoveryAzureVMName)
-	populate(objectMap, "recoveryAzureVMSize", h.RecoveryAzureVMSize)
-	populate(objectMap, "rpoInSeconds", h.RpoInSeconds)
-	populate(objectMap, "sqlServerLicenseType", h.SQLServerLicenseType)
-	populate(objectMap, "seedManagedDiskTags", h.SeedManagedDiskTags)
-	populate(objectMap, "selectedRecoveryAzureNetworkId", h.SelectedRecoveryAzureNetworkID)
-	populate(objectMap, "selectedSourceNicId", h.SelectedSourceNicID)
-	populate(objectMap, "sourceVmCpuCount", h.SourceVMCPUCount)
-	populate(objectMap, "sourceVmRamSizeInMB", h.SourceVMRAMSizeInMB)
-	populate(objectMap, "targetAvailabilityZone", h.TargetAvailabilityZone)
-	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", h.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetVmTags", h.TargetVMTags)
-	populate(objectMap, "useManagedDisks", h.UseManagedDisks)
-	populate(objectMap, "vmId", h.VMID)
-	populate(objectMap, "vmNics", h.VMNics)
-	populate(objectMap, "vmProtectionState", h.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", h.VMProtectionStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureReplicationDetails.
-func (h *HyperVReplicaAzureReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureVmDiskDetails":
-			err = unpopulate(val, &h.AzureVMDiskDetails)
-			delete(rawMsg, key)
-		case "enableRdpOnTargetOption":
-			err = unpopulate(val, &h.EnableRdpOnTargetOption)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &h.Encryption)
-			delete(rawMsg, key)
-		case "initialReplicationDetails":
-			err = unpopulate(val, &h.InitialReplicationDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "lastRecoveryPointReceived":
-			err = unpopulateTimeRFC3339(val, &h.LastRecoveryPointReceived)
-			delete(rawMsg, key)
-		case "lastReplicatedTime":
-			err = unpopulateTimeRFC3339(val, &h.LastReplicatedTime)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &h.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &h.LicenseType)
-			delete(rawMsg, key)
-		case "oSDetails":
-			err = unpopulate(val, &h.OSDetails)
-			delete(rawMsg, key)
-		case "protectedManagedDisks":
-			err = unpopulate(val, &h.ProtectedManagedDisks)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &h.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryAzureLogStorageAccountId":
-			err = unpopulate(val, &h.RecoveryAzureLogStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryAzureResourceGroupId":
-			err = unpopulate(val, &h.RecoveryAzureResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryAzureStorageAccount":
-			err = unpopulate(val, &h.RecoveryAzureStorageAccount)
-			delete(rawMsg, key)
-		case "recoveryAzureVmName":
-			err = unpopulate(val, &h.RecoveryAzureVMName)
-			delete(rawMsg, key)
-		case "recoveryAzureVMSize":
-			err = unpopulate(val, &h.RecoveryAzureVMSize)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &h.RpoInSeconds)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &h.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedManagedDiskTags":
-			err = unpopulate(val, &h.SeedManagedDiskTags)
-			delete(rawMsg, key)
-		case "selectedRecoveryAzureNetworkId":
-			err = unpopulate(val, &h.SelectedRecoveryAzureNetworkID)
-			delete(rawMsg, key)
-		case "selectedSourceNicId":
-			err = unpopulate(val, &h.SelectedSourceNicID)
-			delete(rawMsg, key)
-		case "sourceVmCpuCount":
-			err = unpopulate(val, &h.SourceVMCPUCount)
-			delete(rawMsg, key)
-		case "sourceVmRamSizeInMB":
-			err = unpopulate(val, &h.SourceVMRAMSizeInMB)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &h.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &h.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &h.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &h.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &h.TargetVMTags)
-			delete(rawMsg, key)
-		case "useManagedDisks":
-			err = unpopulate(val, &h.UseManagedDisks)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &h.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &h.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &h.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &h.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureReprotectInput - Azure specific reprotect input.
 type HyperVReplicaAzureReprotectInput struct {
 	// REQUIRED; The class type.
@@ -7074,65 +2759,6 @@ type HyperVReplicaAzureReprotectInput struct {
 	VMName *string `json:"vmName,omitempty"`
 }
 
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type HyperVReplicaAzureReprotectInput.
-func (h *HyperVReplicaAzureReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureReprotectInput.
-func (h HyperVReplicaAzureReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hvHostVmId", h.HvHostVMID)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "logStorageAccountId", h.LogStorageAccountID)
-	populate(objectMap, "osType", h.OSType)
-	populate(objectMap, "storageAccountId", h.StorageAccountID)
-	populate(objectMap, "vHDId", h.VHDID)
-	populate(objectMap, "vmName", h.VMName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureReprotectInput.
-func (h *HyperVReplicaAzureReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "hvHostVmId":
-			err = unpopulate(val, &h.HvHostVMID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &h.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &h.OSType)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &h.StorageAccountID)
-			delete(rawMsg, key)
-		case "vHDId":
-			err = unpopulate(val, &h.VHDID)
-			delete(rawMsg, key)
-		case "vmName":
-			err = unpopulate(val, &h.VMName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureTestFailoverInput - HvrA provider specific input for test failover.
 type HyperVReplicaAzureTestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -7149,53 +2775,6 @@ type HyperVReplicaAzureTestFailoverInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// HyperVReplicaAzureTestFailoverInput.
-func (h *HyperVReplicaAzureTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return &TestFailoverProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureTestFailoverInput.
-func (h HyperVReplicaAzureTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
-	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
-	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureTestFailoverInput.
-func (h *HyperVReplicaAzureTestFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "primaryKekCertificatePfx":
-			err = unpopulate(val, &h.PrimaryKekCertificatePfx)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &h.RecoveryPointID)
-			delete(rawMsg, key)
-		case "secondaryKekCertificatePfx":
-			err = unpopulate(val, &h.SecondaryKekCertificatePfx)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaAzureUnplannedFailoverInput - HvrA provider specific input for unplanned failover.
 type HyperVReplicaAzureUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -7210,53 +2789,6 @@ type HyperVReplicaAzureUnplannedFailoverInput struct {
 
 	// Secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
-}
-
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type HyperVReplicaAzureUnplannedFailoverInput.
-func (h *HyperVReplicaAzureUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return &UnplannedFailoverProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureUnplannedFailoverInput.
-func (h HyperVReplicaAzureUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
-	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
-	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureUnplannedFailoverInput.
-func (h *HyperVReplicaAzureUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "primaryKekCertificatePfx":
-			err = unpopulate(val, &h.PrimaryKekCertificatePfx)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &h.RecoveryPointID)
-			delete(rawMsg, key)
-		case "secondaryKekCertificatePfx":
-			err = unpopulate(val, &h.SecondaryKekCertificatePfx)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaAzureUpdateReplicationProtectedItemInput - HyperV replica Azure input to update replication protected item.
@@ -7298,85 +2830,6 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
 }
 
-// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
-// interface for type HyperVReplicaAzureUpdateReplicationProtectedItemInput.
-func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
-	return &UpdateReplicationProtectedItemProviderInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureUpdateReplicationProtectedItemInput.
-func (h HyperVReplicaAzureUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskIdToDiskEncryptionMap", h.DiskIDToDiskEncryptionMap)
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "recoveryAzureV1ResourceGroupId", h.RecoveryAzureV1ResourceGroupID)
-	populate(objectMap, "recoveryAzureV2ResourceGroupId", h.RecoveryAzureV2ResourceGroupID)
-	populate(objectMap, "sqlServerLicenseType", h.SQLServerLicenseType)
-	populate(objectMap, "targetAvailabilityZone", h.TargetAvailabilityZone)
-	populate(objectMap, "targetManagedDiskTags", h.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", h.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", h.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetVmTags", h.TargetVMTags)
-	populate(objectMap, "useManagedDisks", h.UseManagedDisks)
-	populate(objectMap, "vmDisks", h.VMDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaAzureUpdateReplicationProtectedItemInput.
-func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskIdToDiskEncryptionMap":
-			err = unpopulate(val, &h.DiskIDToDiskEncryptionMap)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryAzureV1ResourceGroupId":
-			err = unpopulate(val, &h.RecoveryAzureV1ResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryAzureV2ResourceGroupId":
-			err = unpopulate(val, &h.RecoveryAzureV2ResourceGroupID)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &h.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &h.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &h.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &h.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &h.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &h.TargetVMTags)
-			delete(rawMsg, key)
-		case "useManagedDisks":
-			err = unpopulate(val, &h.UseManagedDisks)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &h.VMDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaBaseEventDetails - Abstract model class for event details of a HyperVReplica E2E event.
 type HyperVReplicaBaseEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -7393,56 +2846,6 @@ type HyperVReplicaBaseEventDetails struct {
 
 	// The remote fabric name.
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
-}
-
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaBaseEventDetails.
-func (h *HyperVReplicaBaseEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBaseEventDetails.
-func (h HyperVReplicaBaseEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containerName", h.ContainerName)
-	populate(objectMap, "fabricName", h.FabricName)
-	objectMap["instanceType"] = "HyperVReplicaBaseEventDetails"
-	populate(objectMap, "remoteContainerName", h.RemoteContainerName)
-	populate(objectMap, "remoteFabricName", h.RemoteFabricName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBaseEventDetails.
-func (h *HyperVReplicaBaseEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "containerName":
-			err = unpopulate(val, &h.ContainerName)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &h.FabricName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "remoteContainerName":
-			err = unpopulate(val, &h.RemoteContainerName)
-			delete(rawMsg, key)
-		case "remoteFabricName":
-			err = unpopulate(val, &h.RemoteFabricName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaBasePolicyDetails - Base class for HyperVReplica policy details.
@@ -7481,80 +2884,6 @@ type HyperVReplicaBasePolicyDetails struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBasePolicyDetails.
-func (h *HyperVReplicaBasePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBasePolicyDetails.
-func (h HyperVReplicaBasePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "compression", h.Compression)
-	populate(objectMap, "initialReplicationMethod", h.InitialReplicationMethod)
-	objectMap["instanceType"] = "HyperVReplicaBasePolicyDetails"
-	populate(objectMap, "offlineReplicationExportPath", h.OfflineReplicationExportPath)
-	populate(objectMap, "offlineReplicationImportPath", h.OfflineReplicationImportPath)
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPoints", h.RecoveryPoints)
-	populate(objectMap, "replicaDeletionOption", h.ReplicaDeletionOption)
-	populate(objectMap, "replicationPort", h.ReplicationPort)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBasePolicyDetails.
-func (h *HyperVReplicaBasePolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedAuthenticationType":
-			err = unpopulate(val, &h.AllowedAuthenticationType)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "compression":
-			err = unpopulate(val, &h.Compression)
-			delete(rawMsg, key)
-		case "initialReplicationMethod":
-			err = unpopulate(val, &h.InitialReplicationMethod)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "offlineReplicationExportPath":
-			err = unpopulate(val, &h.OfflineReplicationExportPath)
-			delete(rawMsg, key)
-		case "offlineReplicationImportPath":
-			err = unpopulate(val, &h.OfflineReplicationImportPath)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPoints":
-			err = unpopulate(val, &h.RecoveryPoints)
-			delete(rawMsg, key)
-		case "replicaDeletionOption":
-			err = unpopulate(val, &h.ReplicaDeletionOption)
-			delete(rawMsg, key)
-		case "replicationPort":
-			err = unpopulate(val, &h.ReplicationPort)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaBaseReplicationDetails - Hyper V replica provider specific settings base class.
 type HyperVReplicaBaseReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -7580,69 +2909,6 @@ type HyperVReplicaBaseReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
-}
-
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// HyperVReplicaBaseReplicationDetails.
-func (h *HyperVReplicaBaseReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBaseReplicationDetails.
-func (h HyperVReplicaBaseReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
-	objectMap["instanceType"] = "HyperVReplicaBaseReplicationDetails"
-	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
-	populate(objectMap, "vMDiskDetails", h.VMDiskDetails)
-	populate(objectMap, "vmId", h.VMID)
-	populate(objectMap, "vmNics", h.VMNics)
-	populate(objectMap, "vmProtectionState", h.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", h.VMProtectionStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBaseReplicationDetails.
-func (h *HyperVReplicaBaseReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "initialReplicationDetails":
-			err = unpopulate(val, &h.InitialReplicationDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "lastReplicatedTime":
-			err = unpopulateTimeRFC3339(val, &h.LastReplicatedTime)
-			delete(rawMsg, key)
-		case "vMDiskDetails":
-			err = unpopulate(val, &h.VMDiskDetails)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &h.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &h.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &h.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &h.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaBluePolicyDetails - Hyper-V Replica Blue specific protection profile details.
@@ -7684,84 +2950,6 @@ type HyperVReplicaBluePolicyDetails struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBluePolicyDetails.
-func (h *HyperVReplicaBluePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBluePolicyDetails.
-func (h HyperVReplicaBluePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "compression", h.Compression)
-	populate(objectMap, "initialReplicationMethod", h.InitialReplicationMethod)
-	objectMap["instanceType"] = "HyperVReplica2012R2"
-	populate(objectMap, "offlineReplicationExportPath", h.OfflineReplicationExportPath)
-	populate(objectMap, "offlineReplicationImportPath", h.OfflineReplicationImportPath)
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPoints", h.RecoveryPoints)
-	populate(objectMap, "replicaDeletionOption", h.ReplicaDeletionOption)
-	populate(objectMap, "replicationFrequencyInSeconds", h.ReplicationFrequencyInSeconds)
-	populate(objectMap, "replicationPort", h.ReplicationPort)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBluePolicyDetails.
-func (h *HyperVReplicaBluePolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedAuthenticationType":
-			err = unpopulate(val, &h.AllowedAuthenticationType)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "compression":
-			err = unpopulate(val, &h.Compression)
-			delete(rawMsg, key)
-		case "initialReplicationMethod":
-			err = unpopulate(val, &h.InitialReplicationMethod)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "offlineReplicationExportPath":
-			err = unpopulate(val, &h.OfflineReplicationExportPath)
-			delete(rawMsg, key)
-		case "offlineReplicationImportPath":
-			err = unpopulate(val, &h.OfflineReplicationImportPath)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPoints":
-			err = unpopulate(val, &h.RecoveryPoints)
-			delete(rawMsg, key)
-		case "replicaDeletionOption":
-			err = unpopulate(val, &h.ReplicaDeletionOption)
-			delete(rawMsg, key)
-		case "replicationFrequencyInSeconds":
-			err = unpopulate(val, &h.ReplicationFrequencyInSeconds)
-			delete(rawMsg, key)
-		case "replicationPort":
-			err = unpopulate(val, &h.ReplicationPort)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaBluePolicyInput - HyperV Replica Blue policy input.
 type HyperVReplicaBluePolicyInput struct {
 	// REQUIRED; The class type.
@@ -7801,101 +2989,6 @@ type HyperVReplicaBluePolicyInput struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
-// GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaBluePolicyInput.
-func (h *HyperVReplicaBluePolicyInput) GetHyperVReplicaPolicyInput() *HyperVReplicaPolicyInput {
-	return &HyperVReplicaPolicyInput{
-		RecoveryPoints: h.RecoveryPoints,
-		ApplicationConsistentSnapshotFrequencyInHours: h.ApplicationConsistentSnapshotFrequencyInHours,
-		Compression:                  h.Compression,
-		InitialReplicationMethod:     h.InitialReplicationMethod,
-		OnlineReplicationStartTime:   h.OnlineReplicationStartTime,
-		OfflineReplicationImportPath: h.OfflineReplicationImportPath,
-		OfflineReplicationExportPath: h.OfflineReplicationExportPath,
-		ReplicationPort:              h.ReplicationPort,
-		AllowedAuthenticationType:    h.AllowedAuthenticationType,
-		ReplicaDeletion:              h.ReplicaDeletion,
-		InstanceType:                 h.InstanceType,
-	}
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaBluePolicyInput.
-func (h *HyperVReplicaBluePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBluePolicyInput.
-func (h HyperVReplicaBluePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "compression", h.Compression)
-	populate(objectMap, "initialReplicationMethod", h.InitialReplicationMethod)
-	objectMap["instanceType"] = "HyperVReplica2012R2"
-	populate(objectMap, "offlineReplicationExportPath", h.OfflineReplicationExportPath)
-	populate(objectMap, "offlineReplicationImportPath", h.OfflineReplicationImportPath)
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPoints", h.RecoveryPoints)
-	populate(objectMap, "replicaDeletion", h.ReplicaDeletion)
-	populate(objectMap, "replicationFrequencyInSeconds", h.ReplicationFrequencyInSeconds)
-	populate(objectMap, "replicationPort", h.ReplicationPort)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBluePolicyInput.
-func (h *HyperVReplicaBluePolicyInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedAuthenticationType":
-			err = unpopulate(val, &h.AllowedAuthenticationType)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "compression":
-			err = unpopulate(val, &h.Compression)
-			delete(rawMsg, key)
-		case "initialReplicationMethod":
-			err = unpopulate(val, &h.InitialReplicationMethod)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "offlineReplicationExportPath":
-			err = unpopulate(val, &h.OfflineReplicationExportPath)
-			delete(rawMsg, key)
-		case "offlineReplicationImportPath":
-			err = unpopulate(val, &h.OfflineReplicationImportPath)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPoints":
-			err = unpopulate(val, &h.RecoveryPoints)
-			delete(rawMsg, key)
-		case "replicaDeletion":
-			err = unpopulate(val, &h.ReplicaDeletion)
-			delete(rawMsg, key)
-		case "replicationFrequencyInSeconds":
-			err = unpopulate(val, &h.ReplicationFrequencyInSeconds)
-			delete(rawMsg, key)
-		case "replicationPort":
-			err = unpopulate(val, &h.ReplicationPort)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaBlueReplicationDetails - HyperV replica 2012 R2 (Blue) replication details.
 type HyperVReplicaBlueReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -7921,69 +3014,6 @@ type HyperVReplicaBlueReplicationDetails struct {
 
 	// The protection state description for the vm.
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
-}
-
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// HyperVReplicaBlueReplicationDetails.
-func (h *HyperVReplicaBlueReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBlueReplicationDetails.
-func (h HyperVReplicaBlueReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
-	objectMap["instanceType"] = "HyperVReplica2012R2"
-	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
-	populate(objectMap, "vMDiskDetails", h.VMDiskDetails)
-	populate(objectMap, "vmId", h.VMID)
-	populate(objectMap, "vmNics", h.VMNics)
-	populate(objectMap, "vmProtectionState", h.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", h.VMProtectionStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaBlueReplicationDetails.
-func (h *HyperVReplicaBlueReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "initialReplicationDetails":
-			err = unpopulate(val, &h.InitialReplicationDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "lastReplicatedTime":
-			err = unpopulateTimeRFC3339(val, &h.LastReplicatedTime)
-			delete(rawMsg, key)
-		case "vMDiskDetails":
-			err = unpopulate(val, &h.VMDiskDetails)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &h.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &h.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &h.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &h.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaPolicyDetails - Hyper-V Replica Blue specific protection profile details.
@@ -8020,80 +3050,6 @@ type HyperVReplicaPolicyDetails struct {
 
 	// A value indicating the recovery HTTPS port.
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
-}
-
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaPolicyDetails.
-func (h *HyperVReplicaPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaPolicyDetails.
-func (h HyperVReplicaPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "compression", h.Compression)
-	populate(objectMap, "initialReplicationMethod", h.InitialReplicationMethod)
-	objectMap["instanceType"] = "HyperVReplica2012"
-	populate(objectMap, "offlineReplicationExportPath", h.OfflineReplicationExportPath)
-	populate(objectMap, "offlineReplicationImportPath", h.OfflineReplicationImportPath)
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPoints", h.RecoveryPoints)
-	populate(objectMap, "replicaDeletionOption", h.ReplicaDeletionOption)
-	populate(objectMap, "replicationPort", h.ReplicationPort)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaPolicyDetails.
-func (h *HyperVReplicaPolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedAuthenticationType":
-			err = unpopulate(val, &h.AllowedAuthenticationType)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "compression":
-			err = unpopulate(val, &h.Compression)
-			delete(rawMsg, key)
-		case "initialReplicationMethod":
-			err = unpopulate(val, &h.InitialReplicationMethod)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "offlineReplicationExportPath":
-			err = unpopulate(val, &h.OfflineReplicationExportPath)
-			delete(rawMsg, key)
-		case "offlineReplicationImportPath":
-			err = unpopulate(val, &h.OfflineReplicationImportPath)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPoints":
-			err = unpopulate(val, &h.RecoveryPoints)
-			delete(rawMsg, key)
-		case "replicaDeletionOption":
-			err = unpopulate(val, &h.ReplicaDeletionOption)
-			delete(rawMsg, key)
-		case "replicationPort":
-			err = unpopulate(val, &h.ReplicationPort)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVReplicaPolicyInputClassification provides polymorphic access to related types.
@@ -8142,83 +3098,6 @@ type HyperVReplicaPolicyInput struct {
 	ReplicationPort *int32 `json:"replicationPort,omitempty"`
 }
 
-// GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaPolicyInput.
-func (h *HyperVReplicaPolicyInput) GetHyperVReplicaPolicyInput() *HyperVReplicaPolicyInput { return h }
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaPolicyInput.
-func (h *HyperVReplicaPolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaPolicyInput.
-func (h HyperVReplicaPolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
-	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
-	populate(objectMap, "compression", h.Compression)
-	populate(objectMap, "initialReplicationMethod", h.InitialReplicationMethod)
-	objectMap["instanceType"] = "HyperVReplica2012"
-	populate(objectMap, "offlineReplicationExportPath", h.OfflineReplicationExportPath)
-	populate(objectMap, "offlineReplicationImportPath", h.OfflineReplicationImportPath)
-	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
-	populate(objectMap, "recoveryPoints", h.RecoveryPoints)
-	populate(objectMap, "replicaDeletion", h.ReplicaDeletion)
-	populate(objectMap, "replicationPort", h.ReplicationPort)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaPolicyInput.
-func (h *HyperVReplicaPolicyInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedAuthenticationType":
-			err = unpopulate(val, &h.AllowedAuthenticationType)
-			delete(rawMsg, key)
-		case "applicationConsistentSnapshotFrequencyInHours":
-			err = unpopulate(val, &h.ApplicationConsistentSnapshotFrequencyInHours)
-			delete(rawMsg, key)
-		case "compression":
-			err = unpopulate(val, &h.Compression)
-			delete(rawMsg, key)
-		case "initialReplicationMethod":
-			err = unpopulate(val, &h.InitialReplicationMethod)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "offlineReplicationExportPath":
-			err = unpopulate(val, &h.OfflineReplicationExportPath)
-			delete(rawMsg, key)
-		case "offlineReplicationImportPath":
-			err = unpopulate(val, &h.OfflineReplicationImportPath)
-			delete(rawMsg, key)
-		case "onlineReplicationStartTime":
-			err = unpopulate(val, &h.OnlineReplicationStartTime)
-			delete(rawMsg, key)
-		case "recoveryPoints":
-			err = unpopulate(val, &h.RecoveryPoints)
-			delete(rawMsg, key)
-		case "replicaDeletion":
-			err = unpopulate(val, &h.ReplicaDeletion)
-			delete(rawMsg, key)
-		case "replicationPort":
-			err = unpopulate(val, &h.ReplicationPort)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVReplicaReplicationDetails - HyperV replica 2012 replication details.
 type HyperVReplicaReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
@@ -8246,69 +3125,6 @@ type HyperVReplicaReplicationDetails struct {
 	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// HyperVReplicaReplicationDetails.
-func (h *HyperVReplicaReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVReplicaReplicationDetails.
-func (h HyperVReplicaReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
-	objectMap["instanceType"] = "HyperVReplica2012"
-	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
-	populate(objectMap, "vMDiskDetails", h.VMDiskDetails)
-	populate(objectMap, "vmId", h.VMID)
-	populate(objectMap, "vmNics", h.VMNics)
-	populate(objectMap, "vmProtectionState", h.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", h.VMProtectionStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVReplicaReplicationDetails.
-func (h *HyperVReplicaReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "initialReplicationDetails":
-			err = unpopulate(val, &h.InitialReplicationDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "lastReplicatedTime":
-			err = unpopulateTimeRFC3339(val, &h.LastReplicatedTime)
-			delete(rawMsg, key)
-		case "vMDiskDetails":
-			err = unpopulate(val, &h.VMDiskDetails)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &h.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &h.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &h.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &h.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // HyperVSiteDetails - HyperVSite fabric specific details.
 type HyperVSiteDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -8316,44 +3132,6 @@ type HyperVSiteDetails struct {
 
 	// The list of Hyper-V hosts associated with the fabric.
 	HyperVHosts []*HyperVHostDetails `json:"hyperVHosts,omitempty"`
-}
-
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type HyperVSiteDetails.
-func (h *HyperVSiteDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVSiteDetails.
-func (h HyperVSiteDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hyperVHosts", h.HyperVHosts)
-	objectMap["instanceType"] = "HyperVSite"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVSiteDetails.
-func (h *HyperVSiteDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "hyperVHosts":
-			err = unpopulate(val, &h.HyperVHosts)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // HyperVVirtualMachineDetailsClassification provides polymorphic access to related types.
@@ -8397,77 +3175,6 @@ type HyperVVirtualMachineDetails struct {
 	SourceItemID *string `json:"sourceItemId,omitempty"`
 }
 
-// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type HyperVVirtualMachineDetails.
-func (h *HyperVVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
-	return &ConfigurationSettings{
-		InstanceType: h.InstanceType,
-	}
-}
-
-// GetHyperVVirtualMachineDetails implements the HyperVVirtualMachineDetailsClassification interface for type HyperVVirtualMachineDetails.
-func (h *HyperVVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVirtualMachineDetails {
-	return h
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HyperVVirtualMachineDetails.
-func (h HyperVVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskDetails", h.DiskDetails)
-	populate(objectMap, "generation", h.Generation)
-	populate(objectMap, "hasFibreChannelAdapter", h.HasFibreChannelAdapter)
-	populate(objectMap, "hasPhysicalDisk", h.HasPhysicalDisk)
-	populate(objectMap, "hasSharedVhd", h.HasSharedVhd)
-	populate(objectMap, "hyperVHostId", h.HyperVHostID)
-	objectMap["instanceType"] = "HyperVVirtualMachine"
-	populate(objectMap, "osDetails", h.OSDetails)
-	populate(objectMap, "sourceItemId", h.SourceItemID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type HyperVVirtualMachineDetails.
-func (h *HyperVVirtualMachineDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskDetails":
-			err = unpopulate(val, &h.DiskDetails)
-			delete(rawMsg, key)
-		case "generation":
-			err = unpopulate(val, &h.Generation)
-			delete(rawMsg, key)
-		case "hasFibreChannelAdapter":
-			err = unpopulate(val, &h.HasFibreChannelAdapter)
-			delete(rawMsg, key)
-		case "hasPhysicalDisk":
-			err = unpopulate(val, &h.HasPhysicalDisk)
-			delete(rawMsg, key)
-		case "hasSharedVhd":
-			err = unpopulate(val, &h.HasSharedVhd)
-			delete(rawMsg, key)
-		case "hyperVHostId":
-			err = unpopulate(val, &h.HyperVHostID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &h.InstanceType)
-			delete(rawMsg, key)
-		case "osDetails":
-			err = unpopulate(val, &h.OSDetails)
-			delete(rawMsg, key)
-		case "sourceItemId":
-			err = unpopulate(val, &h.SourceItemID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type IPConfigDetails struct {
 	IPAddressType                   *string   `json:"ipAddressType,omitempty"`
 	IsPrimary                       *bool     `json:"isPrimary,omitempty"`
@@ -8486,27 +3193,6 @@ type IPConfigDetails struct {
 	TfoSubnetName                   *string   `json:"tfoSubnetName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IPConfigDetails.
-func (i IPConfigDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipAddressType", i.IPAddressType)
-	populate(objectMap, "isPrimary", i.IsPrimary)
-	populate(objectMap, "isSeletedForFailover", i.IsSeletedForFailover)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "recoveryIPAddressType", i.RecoveryIPAddressType)
-	populate(objectMap, "recoveryLBBackendAddressPoolIds", i.RecoveryLBBackendAddressPoolIDs)
-	populate(objectMap, "recoveryPublicIPAddressId", i.RecoveryPublicIPAddressID)
-	populate(objectMap, "recoveryStaticIPAddress", i.RecoveryStaticIPAddress)
-	populate(objectMap, "recoverySubnetName", i.RecoverySubnetName)
-	populate(objectMap, "staticIPAddress", i.StaticIPAddress)
-	populate(objectMap, "subnetName", i.SubnetName)
-	populate(objectMap, "tfoLBBackendAddressPoolIds", i.TfoLBBackendAddressPoolIDs)
-	populate(objectMap, "tfoPublicIPAddressId", i.TfoPublicIPAddressID)
-	populate(objectMap, "tfoStaticIPAddress", i.TfoStaticIPAddress)
-	populate(objectMap, "tfoSubnetName", i.TfoSubnetName)
-	return json.Marshal(objectMap)
-}
-
 type IPConfigInputDetails struct {
 	IPConfigName                    *string   `json:"ipConfigName,omitempty"`
 	IsPrimary                       *bool     `json:"isPrimary,omitempty"`
@@ -8519,23 +3205,6 @@ type IPConfigInputDetails struct {
 	TfoPublicIPAddressID            *string   `json:"tfoPublicIPAddressId,omitempty"`
 	TfoStaticIPAddress              *string   `json:"tfoStaticIPAddress,omitempty"`
 	TfoSubnetName                   *string   `json:"tfoSubnetName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IPConfigInputDetails.
-func (i IPConfigInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "ipConfigName", i.IPConfigName)
-	populate(objectMap, "isPrimary", i.IsPrimary)
-	populate(objectMap, "isSeletedForFailover", i.IsSeletedForFailover)
-	populate(objectMap, "recoveryLBBackendAddressPoolIds", i.RecoveryLBBackendAddressPoolIDs)
-	populate(objectMap, "recoveryPublicIPAddressId", i.RecoveryPublicIPAddressID)
-	populate(objectMap, "recoveryStaticIPAddress", i.RecoveryStaticIPAddress)
-	populate(objectMap, "recoverySubnetName", i.RecoverySubnetName)
-	populate(objectMap, "tfoLBBackendAddressPoolIds", i.TfoLBBackendAddressPoolIDs)
-	populate(objectMap, "tfoPublicIPAddressId", i.TfoPublicIPAddressID)
-	populate(objectMap, "tfoStaticIPAddress", i.TfoStaticIPAddress)
-	populate(objectMap, "tfoSubnetName", i.TfoSubnetName)
-	return json.Marshal(objectMap)
 }
 
 // IdentityProviderDetails - Identity provider details.
@@ -8597,84 +3266,10 @@ type InMageAgentDetails struct {
 	PostUpdateRebootStatus *string `json:"postUpdateRebootStatus,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageAgentDetails.
-func (i InMageAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentExpiryDate", i.AgentExpiryDate)
-	populate(objectMap, "agentUpdateStatus", i.AgentUpdateStatus)
-	populate(objectMap, "agentVersion", i.AgentVersion)
-	populate(objectMap, "postUpdateRebootStatus", i.PostUpdateRebootStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAgentDetails.
-func (i *InMageAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentUpdateStatus":
-			err = unpopulate(val, &i.AgentUpdateStatus)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &i.AgentVersion)
-			delete(rawMsg, key)
-		case "postUpdateRebootStatus":
-			err = unpopulate(val, &i.PostUpdateRebootStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2ApplyRecoveryPointInput - ApplyRecoveryPoint input specific to InMageAzureV2 provider.
 type InMageAzureV2ApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type InMageAzureV2ApplyRecoveryPointInput.
-func (i *InMageAzureV2ApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return &ApplyRecoveryPointProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ApplyRecoveryPointInput.
-func (i InMageAzureV2ApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2ApplyRecoveryPointInput.
-func (i *InMageAzureV2ApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageAzureV2DiskInputDetails - Disk input details.
@@ -8777,145 +3372,6 @@ type InMageAzureV2EnableProtectionInput struct {
 	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type InMageAzureV2EnableProtectionInput.
-func (i *InMageAzureV2EnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2EnableProtectionInput.
-func (i InMageAzureV2EnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
-	populate(objectMap, "diskType", i.DiskType)
-	populate(objectMap, "disksToInclude", i.DisksToInclude)
-	populate(objectMap, "enableRdpOnTargetOption", i.EnableRdpOnTargetOption)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "licenseType", i.LicenseType)
-	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "multiVmGroupId", i.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	populate(objectMap, "sqlServerLicenseType", i.SQLServerLicenseType)
-	populate(objectMap, "seedManagedDiskTags", i.SeedManagedDiskTags)
-	populate(objectMap, "storageAccountId", i.StorageAccountID)
-	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetAzureNetworkId", i.TargetAzureNetworkID)
-	populate(objectMap, "targetAzureSubnetId", i.TargetAzureSubnetID)
-	populate(objectMap, "targetAzureV1ResourceGroupId", i.TargetAzureV1ResourceGroupID)
-	populate(objectMap, "targetAzureV2ResourceGroupId", i.TargetAzureV2ResourceGroupID)
-	populate(objectMap, "targetAzureVmName", i.TargetAzureVMName)
-	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", i.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetVmSize", i.TargetVMSize)
-	populate(objectMap, "targetVmTags", i.TargetVMTags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2EnableProtectionInput.
-func (i *InMageAzureV2EnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskEncryptionSetId":
-			err = unpopulate(val, &i.DiskEncryptionSetID)
-			delete(rawMsg, key)
-		case "diskType":
-			err = unpopulate(val, &i.DiskType)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &i.DisksToInclude)
-			delete(rawMsg, key)
-		case "enableRdpOnTargetOption":
-			err = unpopulate(val, &i.EnableRdpOnTargetOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &i.LicenseType)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &i.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &i.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &i.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedManagedDiskTags":
-			err = unpopulate(val, &i.SeedManagedDiskTags)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &i.StorageAccountID)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &i.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetAzureNetworkId":
-			err = unpopulate(val, &i.TargetAzureNetworkID)
-			delete(rawMsg, key)
-		case "targetAzureSubnetId":
-			err = unpopulate(val, &i.TargetAzureSubnetID)
-			delete(rawMsg, key)
-		case "targetAzureV1ResourceGroupId":
-			err = unpopulate(val, &i.TargetAzureV1ResourceGroupID)
-			delete(rawMsg, key)
-		case "targetAzureV2ResourceGroupId":
-			err = unpopulate(val, &i.TargetAzureV2ResourceGroupID)
-			delete(rawMsg, key)
-		case "targetAzureVmName":
-			err = unpopulate(val, &i.TargetAzureVMName)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &i.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &i.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &i.TargetVMSize)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &i.TargetVMTags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2EventDetails - Model class for event details of a VMwareAzureV2 event.
 type InMageAzureV2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -8941,68 +3397,6 @@ type InMageAzureV2EventDetails struct {
 
 	// InMage Event Summary.
 	Summary *string `json:"summary,omitempty"`
-}
-
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageAzureV2EventDetails.
-func (i *InMageAzureV2EventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2EventDetails.
-func (i InMageAzureV2EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "category", i.Category)
-	populate(objectMap, "component", i.Component)
-	populate(objectMap, "correctiveAction", i.CorrectiveAction)
-	populate(objectMap, "details", i.Details)
-	populate(objectMap, "eventType", i.EventType)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "siteName", i.SiteName)
-	populate(objectMap, "summary", i.Summary)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2EventDetails.
-func (i *InMageAzureV2EventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "category":
-			err = unpopulate(val, &i.Category)
-			delete(rawMsg, key)
-		case "component":
-			err = unpopulate(val, &i.Component)
-			delete(rawMsg, key)
-		case "correctiveAction":
-			err = unpopulate(val, &i.CorrectiveAction)
-			delete(rawMsg, key)
-		case "details":
-			err = unpopulate(val, &i.Details)
-			delete(rawMsg, key)
-		case "eventType":
-			err = unpopulate(val, &i.EventType)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "siteName":
-			err = unpopulate(val, &i.SiteName)
-			delete(rawMsg, key)
-		case "summary":
-			err = unpopulate(val, &i.Summary)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageAzureV2ManagedDiskDetails - InMageAzureV2 Managed disk details.
@@ -9044,60 +3438,6 @@ type InMageAzureV2PolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageAzureV2PolicyDetails.
-func (i *InMageAzureV2PolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2PolicyDetails.
-func (i InMageAzureV2PolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", i.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", i.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2PolicyDetails.
-func (i *InMageAzureV2PolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &i.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &i.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2PolicyInput - VMWare Azure specific policy Input.
 type InMageAzureV2PolicyInput struct {
 	// REQUIRED; The class type.
@@ -9117,60 +3457,6 @@ type InMageAzureV2PolicyInput struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageAzureV2PolicyInput.
-func (i *InMageAzureV2PolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2PolicyInput.
-func (i InMageAzureV2PolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", i.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", i.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2PolicyInput.
-func (i *InMageAzureV2PolicyInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &i.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &i.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageAzureV2ProtectedDiskDetails - InMageAzureV2 protected disk details.
@@ -9245,121 +3531,6 @@ type InMageAzureV2ProtectedDiskDetails struct {
 	TargetDataInMegaBytes *float64 `json:"targetDataInMegaBytes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ProtectedDiskDetails.
-func (i InMageAzureV2ProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskCapacityInBytes", i.DiskCapacityInBytes)
-	populate(objectMap, "diskId", i.DiskID)
-	populate(objectMap, "diskName", i.DiskName)
-	populate(objectMap, "diskResized", i.DiskResized)
-	populate(objectMap, "fileSystemCapacityInBytes", i.FileSystemCapacityInBytes)
-	populate(objectMap, "healthErrorCode", i.HealthErrorCode)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", i.LastRpoCalculatedTime)
-	populate(objectMap, "progressHealth", i.ProgressHealth)
-	populate(objectMap, "progressStatus", i.ProgressStatus)
-	populate(objectMap, "protectionStage", i.ProtectionStage)
-	populate(objectMap, "psDataInMegaBytes", i.PsDataInMegaBytes)
-	populate(objectMap, "resyncDurationInSeconds", i.ResyncDurationInSeconds)
-	populate(objectMap, "resyncLast15MinutesTransferredBytes", i.ResyncLast15MinutesTransferredBytes)
-	populateTimeRFC3339(objectMap, "resyncLastDataTransferTimeUTC", i.ResyncLastDataTransferTimeUTC)
-	populate(objectMap, "resyncProcessedBytes", i.ResyncProcessedBytes)
-	populate(objectMap, "resyncProgressPercentage", i.ResyncProgressPercentage)
-	populate(objectMap, "resyncRequired", i.ResyncRequired)
-	populateTimeRFC3339(objectMap, "resyncStartTime", i.ResyncStartTime)
-	populate(objectMap, "resyncTotalTransferredBytes", i.ResyncTotalTransferredBytes)
-	populate(objectMap, "rpoInSeconds", i.RpoInSeconds)
-	populate(objectMap, "secondsToTakeSwitchProvider", i.SecondsToTakeSwitchProvider)
-	populate(objectMap, "sourceDataInMegaBytes", i.SourceDataInMegaBytes)
-	populate(objectMap, "targetDataInMegaBytes", i.TargetDataInMegaBytes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2ProtectedDiskDetails.
-func (i *InMageAzureV2ProtectedDiskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskCapacityInBytes":
-			err = unpopulate(val, &i.DiskCapacityInBytes)
-			delete(rawMsg, key)
-		case "diskId":
-			err = unpopulate(val, &i.DiskID)
-			delete(rawMsg, key)
-		case "diskName":
-			err = unpopulate(val, &i.DiskName)
-			delete(rawMsg, key)
-		case "diskResized":
-			err = unpopulate(val, &i.DiskResized)
-			delete(rawMsg, key)
-		case "fileSystemCapacityInBytes":
-			err = unpopulate(val, &i.FileSystemCapacityInBytes)
-			delete(rawMsg, key)
-		case "healthErrorCode":
-			err = unpopulate(val, &i.HealthErrorCode)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "progressHealth":
-			err = unpopulate(val, &i.ProgressHealth)
-			delete(rawMsg, key)
-		case "progressStatus":
-			err = unpopulate(val, &i.ProgressStatus)
-			delete(rawMsg, key)
-		case "protectionStage":
-			err = unpopulate(val, &i.ProtectionStage)
-			delete(rawMsg, key)
-		case "psDataInMegaBytes":
-			err = unpopulate(val, &i.PsDataInMegaBytes)
-			delete(rawMsg, key)
-		case "resyncDurationInSeconds":
-			err = unpopulate(val, &i.ResyncDurationInSeconds)
-			delete(rawMsg, key)
-		case "resyncLast15MinutesTransferredBytes":
-			err = unpopulate(val, &i.ResyncLast15MinutesTransferredBytes)
-			delete(rawMsg, key)
-		case "resyncLastDataTransferTimeUTC":
-			err = unpopulateTimeRFC3339(val, &i.ResyncLastDataTransferTimeUTC)
-			delete(rawMsg, key)
-		case "resyncProcessedBytes":
-			err = unpopulate(val, &i.ResyncProcessedBytes)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &i.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "resyncRequired":
-			err = unpopulate(val, &i.ResyncRequired)
-			delete(rawMsg, key)
-		case "resyncStartTime":
-			err = unpopulateTimeRFC3339(val, &i.ResyncStartTime)
-			delete(rawMsg, key)
-		case "resyncTotalTransferredBytes":
-			err = unpopulate(val, &i.ResyncTotalTransferredBytes)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &i.RpoInSeconds)
-			delete(rawMsg, key)
-		case "secondsToTakeSwitchProvider":
-			err = unpopulate(val, &i.SecondsToTakeSwitchProvider)
-			delete(rawMsg, key)
-		case "sourceDataInMegaBytes":
-			err = unpopulate(val, &i.SourceDataInMegaBytes)
-			delete(rawMsg, key)
-		case "targetDataInMegaBytes":
-			err = unpopulate(val, &i.TargetDataInMegaBytes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2RecoveryPointDetails - InMage Azure V2 provider specific recovery point details.
 type InMageAzureV2RecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
@@ -9367,45 +3538,6 @@ type InMageAzureV2RecoveryPointDetails struct {
 
 	// A value indicating whether the recovery point is multi VM consistent.
 	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty"`
-}
-
-// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
-// type InMageAzureV2RecoveryPointDetails.
-func (i *InMageAzureV2RecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
-	return &ProviderSpecificRecoveryPointDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2RecoveryPointDetails.
-func (i InMageAzureV2RecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "isMultiVmSyncPoint", i.IsMultiVMSyncPoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2RecoveryPointDetails.
-func (i *InMageAzureV2RecoveryPointDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "isMultiVmSyncPoint":
-			err = unpopulate(val, &i.IsMultiVMSyncPoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageAzureV2ReplicationDetails - InMageAzureV2 provider specific settings.
@@ -9618,309 +3750,6 @@ type InMageAzureV2ReplicationDetails struct {
 	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// InMageAzureV2ReplicationDetails.
-func (i *InMageAzureV2ReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ReplicationDetails.
-func (i InMageAzureV2ReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentExpiryDate", i.AgentExpiryDate)
-	populate(objectMap, "agentVersion", i.AgentVersion)
-	populate(objectMap, "azureVMDiskDetails", i.AzureVMDiskDetails)
-	populate(objectMap, "azureVmGeneration", i.AzureVMGeneration)
-	populate(objectMap, "compressedDataRateInMB", i.CompressedDataRateInMB)
-	populate(objectMap, "datastores", i.Datastores)
-	populate(objectMap, "discoveryType", i.DiscoveryType)
-	populate(objectMap, "diskResized", i.DiskResized)
-	populate(objectMap, "enableRdpOnTargetOption", i.EnableRdpOnTargetOption)
-	populate(objectMap, "firmwareType", i.FirmwareType)
-	populate(objectMap, "ipAddress", i.IPAddress)
-	populate(objectMap, "infrastructureVmId", i.InfrastructureVMID)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "isAdditionalStatsAvailable", i.IsAdditionalStatsAvailable)
-	populate(objectMap, "isAgentUpdateRequired", i.IsAgentUpdateRequired)
-	populate(objectMap, "isRebootAfterUpdateRequired", i.IsRebootAfterUpdateRequired)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", i.LastHeartbeat)
-	populateTimeRFC3339(objectMap, "lastRecoveryPointReceived", i.LastRecoveryPointReceived)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", i.LastRpoCalculatedTime)
-	populateTimeRFC3339(objectMap, "lastUpdateReceivedTime", i.LastUpdateReceivedTime)
-	populate(objectMap, "licenseType", i.LicenseType)
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "multiVmGroupId", i.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "osDiskId", i.OSDiskID)
-	populate(objectMap, "osType", i.OSType)
-	populate(objectMap, "osVersion", i.OSVersion)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "processServerName", i.ProcessServerName)
-	populate(objectMap, "protectedDisks", i.ProtectedDisks)
-	populate(objectMap, "protectedManagedDisks", i.ProtectedManagedDisks)
-	populate(objectMap, "protectionStage", i.ProtectionStage)
-	populate(objectMap, "recoveryAvailabilitySetId", i.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryAzureLogStorageAccountId", i.RecoveryAzureLogStorageAccountID)
-	populate(objectMap, "recoveryAzureResourceGroupId", i.RecoveryAzureResourceGroupID)
-	populate(objectMap, "recoveryAzureStorageAccount", i.RecoveryAzureStorageAccount)
-	populate(objectMap, "recoveryAzureVMName", i.RecoveryAzureVMName)
-	populate(objectMap, "recoveryAzureVMSize", i.RecoveryAzureVMSize)
-	populate(objectMap, "replicaId", i.ReplicaID)
-	populate(objectMap, "resyncProgressPercentage", i.ResyncProgressPercentage)
-	populate(objectMap, "rpoInSeconds", i.RpoInSeconds)
-	populate(objectMap, "sqlServerLicenseType", i.SQLServerLicenseType)
-	populate(objectMap, "seedManagedDiskTags", i.SeedManagedDiskTags)
-	populate(objectMap, "selectedRecoveryAzureNetworkId", i.SelectedRecoveryAzureNetworkID)
-	populate(objectMap, "selectedSourceNicId", i.SelectedSourceNicID)
-	populate(objectMap, "selectedTfoAzureNetworkId", i.SelectedTfoAzureNetworkID)
-	populate(objectMap, "sourceVmCpuCount", i.SourceVMCPUCount)
-	populate(objectMap, "sourceVmRamSizeInMB", i.SourceVMRAMSizeInMB)
-	populate(objectMap, "switchProviderBlockingErrorDetails", i.SwitchProviderBlockingErrorDetails)
-	populate(objectMap, "switchProviderDetails", i.SwitchProviderDetails)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", i.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetVmId", i.TargetVMID)
-	populate(objectMap, "targetVmTags", i.TargetVMTags)
-	populate(objectMap, "totalDataTransferred", i.TotalDataTransferred)
-	populate(objectMap, "totalProgressHealth", i.TotalProgressHealth)
-	populate(objectMap, "uncompressedDataRateInMB", i.UncompressedDataRateInMB)
-	populate(objectMap, "useManagedDisks", i.UseManagedDisks)
-	populate(objectMap, "vCenterInfrastructureId", i.VCenterInfrastructureID)
-	populate(objectMap, "vmId", i.VMID)
-	populate(objectMap, "vmNics", i.VMNics)
-	populate(objectMap, "vmProtectionState", i.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", i.VMProtectionStateDescription)
-	populate(objectMap, "validationErrors", i.ValidationErrors)
-	populate(objectMap, "vhdName", i.VhdName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2ReplicationDetails.
-func (i *InMageAzureV2ReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &i.AgentVersion)
-			delete(rawMsg, key)
-		case "azureVMDiskDetails":
-			err = unpopulate(val, &i.AzureVMDiskDetails)
-			delete(rawMsg, key)
-		case "azureVmGeneration":
-			err = unpopulate(val, &i.AzureVMGeneration)
-			delete(rawMsg, key)
-		case "compressedDataRateInMB":
-			err = unpopulate(val, &i.CompressedDataRateInMB)
-			delete(rawMsg, key)
-		case "datastores":
-			err = unpopulate(val, &i.Datastores)
-			delete(rawMsg, key)
-		case "discoveryType":
-			err = unpopulate(val, &i.DiscoveryType)
-			delete(rawMsg, key)
-		case "diskResized":
-			err = unpopulate(val, &i.DiskResized)
-			delete(rawMsg, key)
-		case "enableRdpOnTargetOption":
-			err = unpopulate(val, &i.EnableRdpOnTargetOption)
-			delete(rawMsg, key)
-		case "firmwareType":
-			err = unpopulate(val, &i.FirmwareType)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &i.IPAddress)
-			delete(rawMsg, key)
-		case "infrastructureVmId":
-			err = unpopulate(val, &i.InfrastructureVMID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "isAdditionalStatsAvailable":
-			err = unpopulate(val, &i.IsAdditionalStatsAvailable)
-			delete(rawMsg, key)
-		case "isAgentUpdateRequired":
-			err = unpopulate(val, &i.IsAgentUpdateRequired)
-			delete(rawMsg, key)
-		case "isRebootAfterUpdateRequired":
-			err = unpopulate(val, &i.IsRebootAfterUpdateRequired)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &i.LastHeartbeat)
-			delete(rawMsg, key)
-		case "lastRecoveryPointReceived":
-			err = unpopulateTimeRFC3339(val, &i.LastRecoveryPointReceived)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "lastUpdateReceivedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastUpdateReceivedTime)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &i.LicenseType)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &i.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "osDiskId":
-			err = unpopulate(val, &i.OSDiskID)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &i.OSType)
-			delete(rawMsg, key)
-		case "osVersion":
-			err = unpopulate(val, &i.OSVersion)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "processServerName":
-			err = unpopulate(val, &i.ProcessServerName)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &i.ProtectedDisks)
-			delete(rawMsg, key)
-		case "protectedManagedDisks":
-			err = unpopulate(val, &i.ProtectedManagedDisks)
-			delete(rawMsg, key)
-		case "protectionStage":
-			err = unpopulate(val, &i.ProtectionStage)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &i.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryAzureLogStorageAccountId":
-			err = unpopulate(val, &i.RecoveryAzureLogStorageAccountID)
-			delete(rawMsg, key)
-		case "recoveryAzureResourceGroupId":
-			err = unpopulate(val, &i.RecoveryAzureResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryAzureStorageAccount":
-			err = unpopulate(val, &i.RecoveryAzureStorageAccount)
-			delete(rawMsg, key)
-		case "recoveryAzureVMName":
-			err = unpopulate(val, &i.RecoveryAzureVMName)
-			delete(rawMsg, key)
-		case "recoveryAzureVMSize":
-			err = unpopulate(val, &i.RecoveryAzureVMSize)
-			delete(rawMsg, key)
-		case "replicaId":
-			err = unpopulate(val, &i.ReplicaID)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &i.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &i.RpoInSeconds)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &i.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedManagedDiskTags":
-			err = unpopulate(val, &i.SeedManagedDiskTags)
-			delete(rawMsg, key)
-		case "selectedRecoveryAzureNetworkId":
-			err = unpopulate(val, &i.SelectedRecoveryAzureNetworkID)
-			delete(rawMsg, key)
-		case "selectedSourceNicId":
-			err = unpopulate(val, &i.SelectedSourceNicID)
-			delete(rawMsg, key)
-		case "selectedTfoAzureNetworkId":
-			err = unpopulate(val, &i.SelectedTfoAzureNetworkID)
-			delete(rawMsg, key)
-		case "sourceVmCpuCount":
-			err = unpopulate(val, &i.SourceVMCPUCount)
-			delete(rawMsg, key)
-		case "sourceVmRamSizeInMB":
-			err = unpopulate(val, &i.SourceVMRAMSizeInMB)
-			delete(rawMsg, key)
-		case "switchProviderBlockingErrorDetails":
-			err = unpopulate(val, &i.SwitchProviderBlockingErrorDetails)
-			delete(rawMsg, key)
-		case "switchProviderDetails":
-			err = unpopulate(val, &i.SwitchProviderDetails)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &i.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &i.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetVmId":
-			err = unpopulate(val, &i.TargetVMID)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &i.TargetVMTags)
-			delete(rawMsg, key)
-		case "totalDataTransferred":
-			err = unpopulate(val, &i.TotalDataTransferred)
-			delete(rawMsg, key)
-		case "totalProgressHealth":
-			err = unpopulate(val, &i.TotalProgressHealth)
-			delete(rawMsg, key)
-		case "uncompressedDataRateInMB":
-			err = unpopulate(val, &i.UncompressedDataRateInMB)
-			delete(rawMsg, key)
-		case "useManagedDisks":
-			err = unpopulate(val, &i.UseManagedDisks)
-			delete(rawMsg, key)
-		case "vCenterInfrastructureId":
-			err = unpopulate(val, &i.VCenterInfrastructureID)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &i.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &i.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &i.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &i.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		case "validationErrors":
-			err = unpopulate(val, &i.ValidationErrors)
-			delete(rawMsg, key)
-		case "vhdName":
-			err = unpopulate(val, &i.VhdName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2ReprotectInput - InMageAzureV2 specific provider input.
 type InMageAzureV2ReprotectInput struct {
 	// REQUIRED; The class type.
@@ -9948,69 +3777,6 @@ type InMageAzureV2ReprotectInput struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type InMageAzureV2ReprotectInput.
-func (i *InMageAzureV2ReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ReprotectInput.
-func (i InMageAzureV2ReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disksToInclude", i.DisksToInclude)
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "policyId", i.PolicyID)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	populate(objectMap, "storageAccountId", i.StorageAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2ReprotectInput.
-func (i *InMageAzureV2ReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "disksToInclude":
-			err = unpopulate(val, &i.DisksToInclude)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &i.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &i.PolicyID)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &i.StorageAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2SwitchProviderBlockingErrorDetails - InMageAzureV2 switch provider blocking error details.
 type InMageAzureV2SwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -10030,18 +3796,6 @@ type InMageAzureV2SwitchProviderBlockingErrorDetails struct {
 
 	// READ-ONLY; The recommended action.
 	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2SwitchProviderBlockingErrorDetails.
-func (i InMageAzureV2SwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
-	populate(objectMap, "errorTags", i.ErrorTags)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	return json.Marshal(objectMap)
 }
 
 // InMageAzureV2SwitchProviderDetails - InMageAzureV2 switch provider details.
@@ -10074,52 +3828,6 @@ type InMageAzureV2SwitchProviderInput struct {
 	TargetVaultID *string `json:"targetVaultID,omitempty"`
 }
 
-// GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type InMageAzureV2SwitchProviderInput.
-func (i *InMageAzureV2SwitchProviderInput) GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput {
-	return &SwitchProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2SwitchProviderInput.
-func (i InMageAzureV2SwitchProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "targetApplianceID", i.TargetApplianceID)
-	populate(objectMap, "targetFabricID", i.TargetFabricID)
-	populate(objectMap, "targetVaultID", i.TargetVaultID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2SwitchProviderInput.
-func (i *InMageAzureV2SwitchProviderInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "targetApplianceID":
-			err = unpopulate(val, &i.TargetApplianceID)
-			delete(rawMsg, key)
-		case "targetFabricID":
-			err = unpopulate(val, &i.TargetFabricID)
-			delete(rawMsg, key)
-		case "targetVaultID":
-			err = unpopulate(val, &i.TargetVaultID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2TestFailoverInput - InMageAzureV2 provider specific input for test failover.
 type InMageAzureV2TestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -10130,45 +3838,6 @@ type InMageAzureV2TestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// InMageAzureV2TestFailoverInput.
-func (i *InMageAzureV2TestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return &TestFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2TestFailoverInput.
-func (i InMageAzureV2TestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2TestFailoverInput.
-func (i *InMageAzureV2TestFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageAzureV2UnplannedFailoverInput - InMageAzureV2 provider specific input for unplanned failover.
 type InMageAzureV2UnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -10177,45 +3846,6 @@ type InMageAzureV2UnplannedFailoverInput struct {
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-}
-
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type InMageAzureV2UnplannedFailoverInput.
-func (i *InMageAzureV2UnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return &UnplannedFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2UnplannedFailoverInput.
-func (i InMageAzureV2UnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2UnplannedFailoverInput.
-func (i *InMageAzureV2UnplannedFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageAzureV2UpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
@@ -10254,81 +3884,6 @@ type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
 }
 
-// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
-// interface for type InMageAzureV2UpdateReplicationProtectedItemInput.
-func (i *InMageAzureV2UpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
-	return &UpdateReplicationProtectedItemProviderInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageAzureV2UpdateReplicationProtectedItemInput.
-func (i InMageAzureV2UpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "recoveryAzureV1ResourceGroupId", i.RecoveryAzureV1ResourceGroupID)
-	populate(objectMap, "recoveryAzureV2ResourceGroupId", i.RecoveryAzureV2ResourceGroupID)
-	populate(objectMap, "sqlServerLicenseType", i.SQLServerLicenseType)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetManagedDiskTags", i.TargetManagedDiskTags)
-	populate(objectMap, "targetNicTags", i.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetVmTags", i.TargetVMTags)
-	populate(objectMap, "useManagedDisks", i.UseManagedDisks)
-	populate(objectMap, "vmDisks", i.VMDisks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageAzureV2UpdateReplicationProtectedItemInput.
-func (i *InMageAzureV2UpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryAzureV1ResourceGroupId":
-			err = unpopulate(val, &i.RecoveryAzureV1ResourceGroupID)
-			delete(rawMsg, key)
-		case "recoveryAzureV2ResourceGroupId":
-			err = unpopulate(val, &i.RecoveryAzureV2ResourceGroupID)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &i.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetManagedDiskTags":
-			err = unpopulate(val, &i.TargetManagedDiskTags)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &i.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &i.TargetVMTags)
-			delete(rawMsg, key)
-		case "useManagedDisks":
-			err = unpopulate(val, &i.UseManagedDisks)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &i.VMDisks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageBasePolicyDetails - Base class for the policies of providers using InMage replication.
 type InMageBasePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -10347,56 +3902,6 @@ type InMageBasePolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageBasePolicyDetails.
-func (i *InMageBasePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageBasePolicyDetails.
-func (i InMageBasePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMageBasePolicyDetails"
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", i.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", i.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageBasePolicyDetails.
-func (i *InMageBasePolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &i.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &i.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageDisableProtectionProviderSpecificInput - InMage disable protection provider specific input.
 type InMageDisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
@@ -10404,45 +3909,6 @@ type InMageDisableProtectionProviderSpecificInput struct {
 
 	// A value indicating whether the replica VM should be destroyed or retained. Values from Delete and Retain.
 	ReplicaVMDeletionStatus *string `json:"replicaVmDeletionStatus,omitempty"`
-}
-
-// GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
-// for type InMageDisableProtectionProviderSpecificInput.
-func (i *InMageDisableProtectionProviderSpecificInput) GetDisableProtectionProviderSpecificInput() *DisableProtectionProviderSpecificInput {
-	return &DisableProtectionProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageDisableProtectionProviderSpecificInput.
-func (i InMageDisableProtectionProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "replicaVmDeletionStatus", i.ReplicaVMDeletionStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageDisableProtectionProviderSpecificInput.
-func (i *InMageDisableProtectionProviderSpecificInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "replicaVmDeletionStatus":
-			err = unpopulate(val, &i.ReplicaVMDeletionStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageDiskDetails - VMware/Physical specific Disk Details.
@@ -10466,18 +3932,6 @@ type InMageDiskDetails struct {
 	VolumeList []*DiskVolumeDetails `json:"volumeList,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageDiskDetails.
-func (i InMageDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskConfiguration", i.DiskConfiguration)
-	populate(objectMap, "diskId", i.DiskID)
-	populate(objectMap, "diskName", i.DiskName)
-	populate(objectMap, "diskSizeInMB", i.DiskSizeInMB)
-	populate(objectMap, "diskType", i.DiskType)
-	populate(objectMap, "volumeList", i.VolumeList)
-	return json.Marshal(objectMap)
-}
-
 // InMageDiskExclusionInput - DiskExclusionInput when doing enable protection of virtual machine in InMage provider.
 type InMageDiskExclusionInput struct {
 	// The guest disk signature based option for disk exclusion.
@@ -10485,14 +3939,6 @@ type InMageDiskExclusionInput struct {
 
 	// The volume label based option for disk exclusion.
 	VolumeOptions []*InMageVolumeExclusionOptions `json:"volumeOptions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageDiskExclusionInput.
-func (i InMageDiskExclusionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskSignatureOptions", i.DiskSignatureOptions)
-	populate(objectMap, "volumeOptions", i.VolumeOptions)
-	return json.Marshal(objectMap)
 }
 
 // InMageDiskSignatureExclusionOptions - Guest disk signature based disk exclusion option when doing enable protection of
@@ -10538,81 +3984,6 @@ type InMageEnableProtectionInput struct {
 	VMFriendlyName *string `json:"vmFriendlyName,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type InMageEnableProtectionInput.
-func (i *InMageEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageEnableProtectionInput.
-func (i InMageEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "datastoreName", i.DatastoreName)
-	populate(objectMap, "diskExclusionInput", i.DiskExclusionInput)
-	populate(objectMap, "disksToInclude", i.DisksToInclude)
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "multiVmGroupId", i.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "retentionDrive", i.RetentionDrive)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	populate(objectMap, "vmFriendlyName", i.VMFriendlyName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageEnableProtectionInput.
-func (i *InMageEnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "datastoreName":
-			err = unpopulate(val, &i.DatastoreName)
-			delete(rawMsg, key)
-		case "diskExclusionInput":
-			err = unpopulate(val, &i.DiskExclusionInput)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &i.DisksToInclude)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &i.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "retentionDrive":
-			err = unpopulate(val, &i.RetentionDrive)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		case "vmFriendlyName":
-			err = unpopulate(val, &i.VMFriendlyName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageFabricSwitchProviderBlockingErrorDetails - InMageFabric switch provider blocking error details.
 type InMageFabricSwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -10634,18 +4005,6 @@ type InMageFabricSwitchProviderBlockingErrorDetails struct {
 	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageFabricSwitchProviderBlockingErrorDetails.
-func (i InMageFabricSwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
-	populate(objectMap, "errorTags", i.ErrorTags)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	return json.Marshal(objectMap)
-}
-
 // InMagePolicyDetails - InMage specific protection profile details.
 type InMagePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -10664,56 +4023,6 @@ type InMagePolicyDetails struct {
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMagePolicyDetails.
-func (i *InMagePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMagePolicyDetails.
-func (i InMagePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", i.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", i.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMagePolicyDetails.
-func (i *InMagePolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &i.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &i.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMagePolicyInput - VMWare Azure specific protection profile Input.
 type InMagePolicyInput struct {
 	// REQUIRED; The class type.
@@ -10730,56 +4039,6 @@ type InMagePolicyInput struct {
 
 	// The recovery point threshold in minutes.
 	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMagePolicyInput.
-func (i *InMagePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMagePolicyInput.
-func (i InMagePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "recoveryPointHistory", i.RecoveryPointHistory)
-	populate(objectMap, "recoveryPointThresholdInMinutes", i.RecoveryPointThresholdInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMagePolicyInput.
-func (i *InMagePolicyInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &i.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "recoveryPointThresholdInMinutes":
-			err = unpopulate(val, &i.RecoveryPointThresholdInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageProtectedDiskDetails - InMage protected disk details.
@@ -10851,117 +4110,6 @@ type InMageProtectedDiskDetails struct {
 	TargetDataInMB *float64 `json:"targetDataInMB,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageProtectedDiskDetails.
-func (i InMageProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskCapacityInBytes", i.DiskCapacityInBytes)
-	populate(objectMap, "diskId", i.DiskID)
-	populate(objectMap, "diskName", i.DiskName)
-	populate(objectMap, "diskResized", i.DiskResized)
-	populate(objectMap, "fileSystemCapacityInBytes", i.FileSystemCapacityInBytes)
-	populate(objectMap, "healthErrorCode", i.HealthErrorCode)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", i.LastRpoCalculatedTime)
-	populate(objectMap, "progressHealth", i.ProgressHealth)
-	populate(objectMap, "progressStatus", i.ProgressStatus)
-	populate(objectMap, "protectionStage", i.ProtectionStage)
-	populate(objectMap, "psDataInMB", i.PsDataInMB)
-	populate(objectMap, "resyncDurationInSeconds", i.ResyncDurationInSeconds)
-	populate(objectMap, "resyncLast15MinutesTransferredBytes", i.ResyncLast15MinutesTransferredBytes)
-	populateTimeRFC3339(objectMap, "resyncLastDataTransferTimeUTC", i.ResyncLastDataTransferTimeUTC)
-	populate(objectMap, "resyncProcessedBytes", i.ResyncProcessedBytes)
-	populate(objectMap, "resyncProgressPercentage", i.ResyncProgressPercentage)
-	populate(objectMap, "resyncRequired", i.ResyncRequired)
-	populateTimeRFC3339(objectMap, "resyncStartTime", i.ResyncStartTime)
-	populate(objectMap, "resyncTotalTransferredBytes", i.ResyncTotalTransferredBytes)
-	populate(objectMap, "rpoInSeconds", i.RpoInSeconds)
-	populate(objectMap, "sourceDataInMB", i.SourceDataInMB)
-	populate(objectMap, "targetDataInMB", i.TargetDataInMB)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageProtectedDiskDetails.
-func (i *InMageProtectedDiskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskCapacityInBytes":
-			err = unpopulate(val, &i.DiskCapacityInBytes)
-			delete(rawMsg, key)
-		case "diskId":
-			err = unpopulate(val, &i.DiskID)
-			delete(rawMsg, key)
-		case "diskName":
-			err = unpopulate(val, &i.DiskName)
-			delete(rawMsg, key)
-		case "diskResized":
-			err = unpopulate(val, &i.DiskResized)
-			delete(rawMsg, key)
-		case "fileSystemCapacityInBytes":
-			err = unpopulate(val, &i.FileSystemCapacityInBytes)
-			delete(rawMsg, key)
-		case "healthErrorCode":
-			err = unpopulate(val, &i.HealthErrorCode)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "progressHealth":
-			err = unpopulate(val, &i.ProgressHealth)
-			delete(rawMsg, key)
-		case "progressStatus":
-			err = unpopulate(val, &i.ProgressStatus)
-			delete(rawMsg, key)
-		case "protectionStage":
-			err = unpopulate(val, &i.ProtectionStage)
-			delete(rawMsg, key)
-		case "psDataInMB":
-			err = unpopulate(val, &i.PsDataInMB)
-			delete(rawMsg, key)
-		case "resyncDurationInSeconds":
-			err = unpopulate(val, &i.ResyncDurationInSeconds)
-			delete(rawMsg, key)
-		case "resyncLast15MinutesTransferredBytes":
-			err = unpopulate(val, &i.ResyncLast15MinutesTransferredBytes)
-			delete(rawMsg, key)
-		case "resyncLastDataTransferTimeUTC":
-			err = unpopulateTimeRFC3339(val, &i.ResyncLastDataTransferTimeUTC)
-			delete(rawMsg, key)
-		case "resyncProcessedBytes":
-			err = unpopulate(val, &i.ResyncProcessedBytes)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &i.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "resyncRequired":
-			err = unpopulate(val, &i.ResyncRequired)
-			delete(rawMsg, key)
-		case "resyncStartTime":
-			err = unpopulateTimeRFC3339(val, &i.ResyncStartTime)
-			delete(rawMsg, key)
-		case "resyncTotalTransferredBytes":
-			err = unpopulate(val, &i.ResyncTotalTransferredBytes)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &i.RpoInSeconds)
-			delete(rawMsg, key)
-		case "sourceDataInMB":
-			err = unpopulate(val, &i.SourceDataInMB)
-			delete(rawMsg, key)
-		case "targetDataInMB":
-			err = unpopulate(val, &i.TargetDataInMB)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmAgentUpgradeBlockingErrorDetails - InMageRcm source agent upgrade blocking error details.
 type InMageRcmAgentUpgradeBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -10981,18 +4129,6 @@ type InMageRcmAgentUpgradeBlockingErrorDetails struct {
 
 	// READ-ONLY; The recommended action.
 	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmAgentUpgradeBlockingErrorDetails.
-func (i InMageRcmAgentUpgradeBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
-	populate(objectMap, "errorTags", i.ErrorTags)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	return json.Marshal(objectMap)
 }
 
 // InMageRcmApplianceDetails - InMageRcm appliance details.
@@ -11031,23 +4167,6 @@ type InMageRcmApplianceDetails struct {
 	SwitchProviderBlockingErrorDetails []*InMageRcmFabricSwitchProviderBlockingErrorDetails `json:"switchProviderBlockingErrorDetails,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmApplianceDetails.
-func (i InMageRcmApplianceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dra", i.Dra)
-	populate(objectMap, "fabricArmId", i.FabricArmID)
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "marsAgent", i.MarsAgent)
-	populate(objectMap, "name", i.Name)
-	populate(objectMap, "processServer", i.ProcessServer)
-	populate(objectMap, "pushInstaller", i.PushInstaller)
-	populate(objectMap, "rcmProxy", i.RcmProxy)
-	populate(objectMap, "replicationAgent", i.ReplicationAgent)
-	populate(objectMap, "reprotectAgent", i.ReprotectAgent)
-	populate(objectMap, "switchProviderBlockingErrorDetails", i.SwitchProviderBlockingErrorDetails)
-	return json.Marshal(objectMap)
-}
-
 // InMageRcmApplianceSpecificDetails - InMageRcm appliance specific details.
 type InMageRcmApplianceSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -11057,44 +4176,6 @@ type InMageRcmApplianceSpecificDetails struct {
 	Appliances []*InMageRcmApplianceDetails `json:"appliances,omitempty" azure:"ro"`
 }
 
-// GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type InMageRcmApplianceSpecificDetails.
-func (i *InMageRcmApplianceSpecificDetails) GetApplianceSpecificDetails() *ApplianceSpecificDetails {
-	return &ApplianceSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmApplianceSpecificDetails.
-func (i InMageRcmApplianceSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appliances", i.Appliances)
-	objectMap["instanceType"] = "InMageRcm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmApplianceSpecificDetails.
-func (i *InMageRcmApplianceSpecificDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appliances":
-			err = unpopulate(val, &i.Appliances)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmApplyRecoveryPointInput - ApplyRecoveryPoint input specific to InMageRcm provider.
 type InMageRcmApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
@@ -11102,45 +4183,6 @@ type InMageRcmApplyRecoveryPointInput struct {
 
 	// REQUIRED; The recovery point Id.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-}
-
-// GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
-// for type InMageRcmApplyRecoveryPointInput.
-func (i *InMageRcmApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput() *ApplyRecoveryPointProviderSpecificInput {
-	return &ApplyRecoveryPointProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmApplyRecoveryPointInput.
-func (i InMageRcmApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmApplyRecoveryPointInput.
-func (i *InMageRcmApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmDiscoveredProtectedVMDetails - InMageRcm discovered protected VM details.
@@ -11180,77 +4222,6 @@ type InMageRcmDiscoveredProtectedVMDetails struct {
 
 	// READ-ONLY; The VMware tools status.
 	VmwareToolsStatus *string `json:"vmwareToolsStatus,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmDiscoveredProtectedVMDetails.
-func (i InMageRcmDiscoveredProtectedVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTimestamp", i.CreatedTimestamp)
-	populate(objectMap, "datastores", i.Datastores)
-	populate(objectMap, "ipAddresses", i.IPAddresses)
-	populate(objectMap, "isDeleted", i.IsDeleted)
-	populateTimeRFC3339(objectMap, "lastDiscoveryTimeInUtc", i.LastDiscoveryTimeInUTC)
-	populate(objectMap, "osName", i.OSName)
-	populate(objectMap, "powerStatus", i.PowerStatus)
-	populateTimeRFC3339(objectMap, "updatedTimestamp", i.UpdatedTimestamp)
-	populate(objectMap, "vCenterFqdn", i.VCenterFqdn)
-	populate(objectMap, "vCenterId", i.VCenterID)
-	populate(objectMap, "vmFqdn", i.VMFqdn)
-	populate(objectMap, "vmwareToolsStatus", i.VmwareToolsStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmDiscoveredProtectedVMDetails.
-func (i *InMageRcmDiscoveredProtectedVMDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTimestamp":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTimestamp)
-			delete(rawMsg, key)
-		case "datastores":
-			err = unpopulate(val, &i.Datastores)
-			delete(rawMsg, key)
-		case "ipAddresses":
-			err = unpopulate(val, &i.IPAddresses)
-			delete(rawMsg, key)
-		case "isDeleted":
-			err = unpopulate(val, &i.IsDeleted)
-			delete(rawMsg, key)
-		case "lastDiscoveryTimeInUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastDiscoveryTimeInUTC)
-			delete(rawMsg, key)
-		case "osName":
-			err = unpopulate(val, &i.OSName)
-			delete(rawMsg, key)
-		case "powerStatus":
-			err = unpopulate(val, &i.PowerStatus)
-			delete(rawMsg, key)
-		case "updatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &i.UpdatedTimestamp)
-			delete(rawMsg, key)
-		case "vCenterFqdn":
-			err = unpopulate(val, &i.VCenterFqdn)
-			delete(rawMsg, key)
-		case "vCenterId":
-			err = unpopulate(val, &i.VCenterID)
-			delete(rawMsg, key)
-		case "vmFqdn":
-			err = unpopulate(val, &i.VMFqdn)
-			delete(rawMsg, key)
-		case "vmwareToolsStatus":
-			err = unpopulate(val, &i.VmwareToolsStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmDiskInput - InMageRcm disk input.
@@ -11340,113 +4311,6 @@ type InMageRcmEnableProtectionInput struct {
 	TestSubnetName *string `json:"testSubnetName,omitempty"`
 }
 
-// GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
-// type InMageRcmEnableProtectionInput.
-func (i *InMageRcmEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *EnableProtectionProviderSpecificInput {
-	return &EnableProtectionProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmEnableProtectionInput.
-func (i InMageRcmEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disksDefault", i.DisksDefault)
-	populate(objectMap, "disksToInclude", i.DisksToInclude)
-	populate(objectMap, "fabricDiscoveryMachineId", i.FabricDiscoveryMachineID)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "licenseType", i.LicenseType)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
-	populate(objectMap, "targetSubnetName", i.TargetSubnetName)
-	populate(objectMap, "targetVmName", i.TargetVMName)
-	populate(objectMap, "targetVmSize", i.TargetVMSize)
-	populate(objectMap, "testNetworkId", i.TestNetworkID)
-	populate(objectMap, "testSubnetName", i.TestSubnetName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmEnableProtectionInput.
-func (i *InMageRcmEnableProtectionInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "disksDefault":
-			err = unpopulate(val, &i.DisksDefault)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &i.DisksToInclude)
-			delete(rawMsg, key)
-		case "fabricDiscoveryMachineId":
-			err = unpopulate(val, &i.FabricDiscoveryMachineID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &i.LicenseType)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &i.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &i.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &i.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &i.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetSubnetName":
-			err = unpopulate(val, &i.TargetSubnetName)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &i.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &i.TargetVMSize)
-			delete(rawMsg, key)
-		case "testNetworkId":
-			err = unpopulate(val, &i.TestNetworkID)
-			delete(rawMsg, key)
-		case "testSubnetName":
-			err = unpopulate(val, &i.TestSubnetName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmEventDetails - Event details for InMageRcm provider.
 type InMageRcmEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -11477,72 +4341,6 @@ type InMageRcmEventDetails struct {
 	VMName *string `json:"vmName,omitempty" azure:"ro"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmEventDetails.
-func (i *InMageRcmEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmEventDetails.
-func (i InMageRcmEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applianceName", i.ApplianceName)
-	populate(objectMap, "componentDisplayName", i.ComponentDisplayName)
-	populate(objectMap, "fabricName", i.FabricName)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "jobId", i.JobID)
-	populate(objectMap, "latestAgentVersion", i.LatestAgentVersion)
-	populate(objectMap, "protectedItemName", i.ProtectedItemName)
-	populate(objectMap, "serverType", i.ServerType)
-	populate(objectMap, "vmName", i.VMName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmEventDetails.
-func (i *InMageRcmEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "applianceName":
-			err = unpopulate(val, &i.ApplianceName)
-			delete(rawMsg, key)
-		case "componentDisplayName":
-			err = unpopulate(val, &i.ComponentDisplayName)
-			delete(rawMsg, key)
-		case "fabricName":
-			err = unpopulate(val, &i.FabricName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &i.JobID)
-			delete(rawMsg, key)
-		case "latestAgentVersion":
-			err = unpopulate(val, &i.LatestAgentVersion)
-			delete(rawMsg, key)
-		case "protectedItemName":
-			err = unpopulate(val, &i.ProtectedItemName)
-			delete(rawMsg, key)
-		case "serverType":
-			err = unpopulate(val, &i.ServerType)
-			delete(rawMsg, key)
-		case "vmName":
-			err = unpopulate(val, &i.VMName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFabricCreationInput - InMageRcm fabric provider specific settings.
 type InMageRcmFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -11556,52 +4354,6 @@ type InMageRcmFabricCreationInput struct {
 
 	// REQUIRED; The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
-}
-
-// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type InMageRcmFabricCreationInput.
-func (i *InMageRcmFabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
-	return &FabricSpecificCreationInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricCreationInput.
-func (i InMageRcmFabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "physicalSiteId", i.PhysicalSiteID)
-	populate(objectMap, "sourceAgentIdentity", i.SourceAgentIdentity)
-	populate(objectMap, "vmwareSiteId", i.VmwareSiteID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFabricCreationInput.
-func (i *InMageRcmFabricCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "physicalSiteId":
-			err = unpopulate(val, &i.PhysicalSiteID)
-			delete(rawMsg, key)
-		case "sourceAgentIdentity":
-			err = unpopulate(val, &i.SourceAgentIdentity)
-			delete(rawMsg, key)
-		case "vmwareSiteId":
-			err = unpopulate(val, &i.VmwareSiteID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmFabricSpecificDetails - InMageRcm fabric specific details.
@@ -11658,104 +4410,6 @@ type InMageRcmFabricSpecificDetails struct {
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
 }
 
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type InMageRcmFabricSpecificDetails.
-func (i *InMageRcmFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricSpecificDetails.
-func (i InMageRcmFabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentDetails", i.AgentDetails)
-	populate(objectMap, "controlPlaneUri", i.ControlPlaneURI)
-	populate(objectMap, "dataPlaneUri", i.DataPlaneURI)
-	populate(objectMap, "dras", i.Dras)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "marsAgents", i.MarsAgents)
-	populate(objectMap, "physicalSiteId", i.PhysicalSiteID)
-	populate(objectMap, "processServers", i.ProcessServers)
-	populate(objectMap, "pushInstallers", i.PushInstallers)
-	populate(objectMap, "rcmProxies", i.RcmProxies)
-	populate(objectMap, "replicationAgents", i.ReplicationAgents)
-	populate(objectMap, "reprotectAgents", i.ReprotectAgents)
-	populate(objectMap, "serviceContainerId", i.ServiceContainerID)
-	populate(objectMap, "serviceEndpoint", i.ServiceEndpoint)
-	populate(objectMap, "serviceResourceId", i.ServiceResourceID)
-	populate(objectMap, "sourceAgentIdentityDetails", i.SourceAgentIdentityDetails)
-	populate(objectMap, "vmwareSiteId", i.VmwareSiteID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFabricSpecificDetails.
-func (i *InMageRcmFabricSpecificDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentDetails":
-			err = unpopulate(val, &i.AgentDetails)
-			delete(rawMsg, key)
-		case "controlPlaneUri":
-			err = unpopulate(val, &i.ControlPlaneURI)
-			delete(rawMsg, key)
-		case "dataPlaneUri":
-			err = unpopulate(val, &i.DataPlaneURI)
-			delete(rawMsg, key)
-		case "dras":
-			err = unpopulate(val, &i.Dras)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "marsAgents":
-			err = unpopulate(val, &i.MarsAgents)
-			delete(rawMsg, key)
-		case "physicalSiteId":
-			err = unpopulate(val, &i.PhysicalSiteID)
-			delete(rawMsg, key)
-		case "processServers":
-			err = unpopulate(val, &i.ProcessServers)
-			delete(rawMsg, key)
-		case "pushInstallers":
-			err = unpopulate(val, &i.PushInstallers)
-			delete(rawMsg, key)
-		case "rcmProxies":
-			err = unpopulate(val, &i.RcmProxies)
-			delete(rawMsg, key)
-		case "replicationAgents":
-			err = unpopulate(val, &i.ReplicationAgents)
-			delete(rawMsg, key)
-		case "reprotectAgents":
-			err = unpopulate(val, &i.ReprotectAgents)
-			delete(rawMsg, key)
-		case "serviceContainerId":
-			err = unpopulate(val, &i.ServiceContainerID)
-			delete(rawMsg, key)
-		case "serviceEndpoint":
-			err = unpopulate(val, &i.ServiceEndpoint)
-			delete(rawMsg, key)
-		case "serviceResourceId":
-			err = unpopulate(val, &i.ServiceResourceID)
-			delete(rawMsg, key)
-		case "sourceAgentIdentityDetails":
-			err = unpopulate(val, &i.SourceAgentIdentityDetails)
-			delete(rawMsg, key)
-		case "vmwareSiteId":
-			err = unpopulate(val, &i.VmwareSiteID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFabricSwitchProviderBlockingErrorDetails - InMageRcmFabric switch provider blocking error details.
 type InMageRcmFabricSwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -11775,18 +4429,6 @@ type InMageRcmFabricSwitchProviderBlockingErrorDetails struct {
 
 	// READ-ONLY; The recommended action.
 	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricSwitchProviderBlockingErrorDetails.
-func (i InMageRcmFabricSwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
-	populate(objectMap, "errorTags", i.ErrorTags)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	return json.Marshal(objectMap)
 }
 
 // InMageRcmFailbackDiscoveredProtectedVMDetails - InMageRcmFailback discovered VM details.
@@ -11828,77 +4470,6 @@ type InMageRcmFailbackDiscoveredProtectedVMDetails struct {
 	VmwareToolsStatus *string `json:"vmwareToolsStatus,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackDiscoveredProtectedVMDetails.
-func (i InMageRcmFailbackDiscoveredProtectedVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdTimestamp", i.CreatedTimestamp)
-	populate(objectMap, "datastores", i.Datastores)
-	populate(objectMap, "ipAddresses", i.IPAddresses)
-	populate(objectMap, "isDeleted", i.IsDeleted)
-	populateTimeRFC3339(objectMap, "lastDiscoveryTimeInUtc", i.LastDiscoveryTimeInUTC)
-	populate(objectMap, "osName", i.OSName)
-	populate(objectMap, "powerStatus", i.PowerStatus)
-	populateTimeRFC3339(objectMap, "updatedTimestamp", i.UpdatedTimestamp)
-	populate(objectMap, "vCenterFqdn", i.VCenterFqdn)
-	populate(objectMap, "vCenterId", i.VCenterID)
-	populate(objectMap, "vmFqdn", i.VMFqdn)
-	populate(objectMap, "vmwareToolsStatus", i.VmwareToolsStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackDiscoveredProtectedVMDetails.
-func (i *InMageRcmFailbackDiscoveredProtectedVMDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdTimestamp":
-			err = unpopulateTimeRFC3339(val, &i.CreatedTimestamp)
-			delete(rawMsg, key)
-		case "datastores":
-			err = unpopulate(val, &i.Datastores)
-			delete(rawMsg, key)
-		case "ipAddresses":
-			err = unpopulate(val, &i.IPAddresses)
-			delete(rawMsg, key)
-		case "isDeleted":
-			err = unpopulate(val, &i.IsDeleted)
-			delete(rawMsg, key)
-		case "lastDiscoveryTimeInUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastDiscoveryTimeInUTC)
-			delete(rawMsg, key)
-		case "osName":
-			err = unpopulate(val, &i.OSName)
-			delete(rawMsg, key)
-		case "powerStatus":
-			err = unpopulate(val, &i.PowerStatus)
-			delete(rawMsg, key)
-		case "updatedTimestamp":
-			err = unpopulateTimeRFC3339(val, &i.UpdatedTimestamp)
-			delete(rawMsg, key)
-		case "vCenterFqdn":
-			err = unpopulate(val, &i.VCenterFqdn)
-			delete(rawMsg, key)
-		case "vCenterId":
-			err = unpopulate(val, &i.VCenterID)
-			delete(rawMsg, key)
-		case "vmFqdn":
-			err = unpopulate(val, &i.VMFqdn)
-			delete(rawMsg, key)
-		case "vmwareToolsStatus":
-			err = unpopulate(val, &i.VmwareToolsStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFailbackEventDetails - Event details for InMageRcmFailback provider.
 type InMageRcmFailbackEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -11918,60 +4489,6 @@ type InMageRcmFailbackEventDetails struct {
 
 	// READ-ONLY; The protected item name.
 	VMName *string `json:"vmName,omitempty" azure:"ro"`
-}
-
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmFailbackEventDetails.
-func (i *InMageRcmFailbackEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackEventDetails.
-func (i InMageRcmFailbackEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "applianceName", i.ApplianceName)
-	populate(objectMap, "componentDisplayName", i.ComponentDisplayName)
-	objectMap["instanceType"] = "InMageRcmFailback"
-	populate(objectMap, "protectedItemName", i.ProtectedItemName)
-	populate(objectMap, "serverType", i.ServerType)
-	populate(objectMap, "vmName", i.VMName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackEventDetails.
-func (i *InMageRcmFailbackEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "applianceName":
-			err = unpopulate(val, &i.ApplianceName)
-			delete(rawMsg, key)
-		case "componentDisplayName":
-			err = unpopulate(val, &i.ComponentDisplayName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "protectedItemName":
-			err = unpopulate(val, &i.ProtectedItemName)
-			delete(rawMsg, key)
-		case "serverType":
-			err = unpopulate(val, &i.ServerType)
-			delete(rawMsg, key)
-		case "vmName":
-			err = unpopulate(val, &i.VMName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmFailbackMobilityAgentDetails - InMageRcmFailback mobility agent details.
@@ -12004,65 +4521,6 @@ type InMageRcmFailbackMobilityAgentDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackMobilityAgentDetails.
-func (i InMageRcmFailbackMobilityAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentVersionExpiryDate", i.AgentVersionExpiryDate)
-	populate(objectMap, "driverVersion", i.DriverVersion)
-	populateTimeRFC3339(objectMap, "driverVersionExpiryDate", i.DriverVersionExpiryDate)
-	populate(objectMap, "isUpgradeable", i.IsUpgradeable)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", i.LastHeartbeatUTC)
-	populate(objectMap, "latestUpgradableVersionWithoutReboot", i.LatestUpgradableVersionWithoutReboot)
-	populate(objectMap, "latestVersion", i.LatestVersion)
-	populate(objectMap, "reasonsBlockingUpgrade", i.ReasonsBlockingUpgrade)
-	populate(objectMap, "version", i.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackMobilityAgentDetails.
-func (i *InMageRcmFailbackMobilityAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentVersionExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.AgentVersionExpiryDate)
-			delete(rawMsg, key)
-		case "driverVersion":
-			err = unpopulate(val, &i.DriverVersion)
-			delete(rawMsg, key)
-		case "driverVersionExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.DriverVersionExpiryDate)
-			delete(rawMsg, key)
-		case "isUpgradeable":
-			err = unpopulate(val, &i.IsUpgradeable)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "latestUpgradableVersionWithoutReboot":
-			err = unpopulate(val, &i.LatestUpgradableVersionWithoutReboot)
-			delete(rawMsg, key)
-		case "latestVersion":
-			err = unpopulate(val, &i.LatestVersion)
-			delete(rawMsg, key)
-		case "reasonsBlockingUpgrade":
-			err = unpopulate(val, &i.ReasonsBlockingUpgrade)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &i.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFailbackNicDetails - InMageRcmFailback NIC details.
 type InMageRcmFailbackNicDetails struct {
 	// READ-ONLY; The adapter type.
@@ -12087,45 +4545,6 @@ type InMageRcmFailbackPlannedFailoverProviderInput struct {
 	RecoveryPointType *InMageRcmFailbackRecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
-// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
-// interface for type InMageRcmFailbackPlannedFailoverProviderInput.
-func (i *InMageRcmFailbackPlannedFailoverProviderInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
-	return &PlannedFailoverProviderSpecificFailoverInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPlannedFailoverProviderInput.
-func (i InMageRcmFailbackPlannedFailoverProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcmFailback"
-	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackPlannedFailoverProviderInput.
-func (i *InMageRcmFailbackPlannedFailoverProviderInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &i.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFailbackPolicyCreationInput - InMageRcmFailback policy creation input.
 type InMageRcmFailbackPolicyCreationInput struct {
 	// REQUIRED; The class type.
@@ -12138,48 +4557,6 @@ type InMageRcmFailbackPolicyCreationInput struct {
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
 }
 
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmFailbackPolicyCreationInput.
-func (i *InMageRcmFailbackPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPolicyCreationInput.
-func (i InMageRcmFailbackPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMageRcmFailback"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackPolicyCreationInput.
-func (i *InMageRcmFailbackPolicyCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFailbackPolicyDetails - InMageRcm failback specific policy details.
 type InMageRcmFailbackPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -12190,48 +4567,6 @@ type InMageRcmFailbackPolicyDetails struct {
 
 	// The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmFailbackPolicyDetails.
-func (i *InMageRcmFailbackPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPolicyDetails.
-func (i InMageRcmFailbackPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "InMageRcmFailback"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackPolicyDetails.
-func (i *InMageRcmFailbackPolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmFailbackProtectedDiskDetails - InMageRcmFailback protected disk details.
@@ -12268,73 +4603,6 @@ type InMageRcmFailbackProtectedDiskDetails struct {
 
 	// READ-ONLY; The last sync time.
 	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackProtectedDiskDetails.
-func (i InMageRcmFailbackProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "capacityInBytes", i.CapacityInBytes)
-	populate(objectMap, "dataPendingAtSourceAgentInMB", i.DataPendingAtSourceAgentInMB)
-	populate(objectMap, "dataPendingInLogDataStoreInMB", i.DataPendingInLogDataStoreInMB)
-	populate(objectMap, "diskId", i.DiskID)
-	populate(objectMap, "diskName", i.DiskName)
-	populate(objectMap, "diskUuid", i.DiskUUID)
-	populate(objectMap, "irDetails", i.IrDetails)
-	populate(objectMap, "isInitialReplicationComplete", i.IsInitialReplicationComplete)
-	populate(objectMap, "isOSDisk", i.IsOSDisk)
-	populateTimeRFC3339(objectMap, "lastSyncTime", i.LastSyncTime)
-	populate(objectMap, "resyncDetails", i.ResyncDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackProtectedDiskDetails.
-func (i *InMageRcmFailbackProtectedDiskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "capacityInBytes":
-			err = unpopulate(val, &i.CapacityInBytes)
-			delete(rawMsg, key)
-		case "dataPendingAtSourceAgentInMB":
-			err = unpopulate(val, &i.DataPendingAtSourceAgentInMB)
-			delete(rawMsg, key)
-		case "dataPendingInLogDataStoreInMB":
-			err = unpopulate(val, &i.DataPendingInLogDataStoreInMB)
-			delete(rawMsg, key)
-		case "diskId":
-			err = unpopulate(val, &i.DiskID)
-			delete(rawMsg, key)
-		case "diskName":
-			err = unpopulate(val, &i.DiskName)
-			delete(rawMsg, key)
-		case "diskUuid":
-			err = unpopulate(val, &i.DiskUUID)
-			delete(rawMsg, key)
-		case "irDetails":
-			err = unpopulate(val, &i.IrDetails)
-			delete(rawMsg, key)
-		case "isInitialReplicationComplete":
-			err = unpopulate(val, &i.IsInitialReplicationComplete)
-			delete(rawMsg, key)
-		case "isOSDisk":
-			err = unpopulate(val, &i.IsOSDisk)
-			delete(rawMsg, key)
-		case "lastSyncTime":
-			err = unpopulateTimeRFC3339(val, &i.LastSyncTime)
-			delete(rawMsg, key)
-		case "resyncDetails":
-			err = unpopulate(val, &i.ResyncDetails)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmFailbackReplicationDetails - InMageRcmFailback provider specific details.
@@ -12432,157 +4700,6 @@ type InMageRcmFailbackReplicationDetails struct {
 	TargetvCenterID *string `json:"targetvCenterId,omitempty" azure:"ro"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// InMageRcmFailbackReplicationDetails.
-func (i *InMageRcmFailbackReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackReplicationDetails.
-func (i InMageRcmFailbackReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "azureVirtualMachineId", i.AzureVirtualMachineID)
-	populate(objectMap, "discoveredVmDetails", i.DiscoveredVMDetails)
-	populate(objectMap, "initialReplicationProcessedBytes", i.InitialReplicationProcessedBytes)
-	populate(objectMap, "initialReplicationProgressHealth", i.InitialReplicationProgressHealth)
-	populate(objectMap, "initialReplicationProgressPercentage", i.InitialReplicationProgressPercentage)
-	populate(objectMap, "initialReplicationTransferredBytes", i.InitialReplicationTransferredBytes)
-	objectMap["instanceType"] = "InMageRcmFailback"
-	populate(objectMap, "internalIdentifier", i.InternalIdentifier)
-	populate(objectMap, "isAgentRegistrationSuccessfulAfterFailover", i.IsAgentRegistrationSuccessfulAfterFailover)
-	populateTimeRFC3339(objectMap, "lastPlannedFailoverStartTime", i.LastPlannedFailoverStartTime)
-	populate(objectMap, "lastPlannedFailoverStatus", i.LastPlannedFailoverStatus)
-	populate(objectMap, "lastUsedPolicyFriendlyName", i.LastUsedPolicyFriendlyName)
-	populate(objectMap, "lastUsedPolicyId", i.LastUsedPolicyID)
-	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
-	populate(objectMap, "mobilityAgentDetails", i.MobilityAgentDetails)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "osType", i.OSType)
-	populate(objectMap, "protectedDisks", i.ProtectedDisks)
-	populate(objectMap, "reprotectAgentId", i.ReprotectAgentID)
-	populate(objectMap, "reprotectAgentName", i.ReprotectAgentName)
-	populate(objectMap, "resyncProcessedBytes", i.ResyncProcessedBytes)
-	populate(objectMap, "resyncProgressHealth", i.ResyncProgressHealth)
-	populate(objectMap, "resyncProgressPercentage", i.ResyncProgressPercentage)
-	populate(objectMap, "resyncRequired", i.ResyncRequired)
-	populate(objectMap, "resyncState", i.ResyncState)
-	populate(objectMap, "resyncTransferredBytes", i.ResyncTransferredBytes)
-	populate(objectMap, "targetDataStoreName", i.TargetDataStoreName)
-	populate(objectMap, "targetVmName", i.TargetVMName)
-	populate(objectMap, "targetvCenterId", i.TargetvCenterID)
-	populate(objectMap, "vmNics", i.VMNics)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackReplicationDetails.
-func (i *InMageRcmFailbackReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "azureVirtualMachineId":
-			err = unpopulate(val, &i.AzureVirtualMachineID)
-			delete(rawMsg, key)
-		case "discoveredVmDetails":
-			err = unpopulate(val, &i.DiscoveredVMDetails)
-			delete(rawMsg, key)
-		case "initialReplicationProcessedBytes":
-			err = unpopulate(val, &i.InitialReplicationProcessedBytes)
-			delete(rawMsg, key)
-		case "initialReplicationProgressHealth":
-			err = unpopulate(val, &i.InitialReplicationProgressHealth)
-			delete(rawMsg, key)
-		case "initialReplicationProgressPercentage":
-			err = unpopulate(val, &i.InitialReplicationProgressPercentage)
-			delete(rawMsg, key)
-		case "initialReplicationTransferredBytes":
-			err = unpopulate(val, &i.InitialReplicationTransferredBytes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "internalIdentifier":
-			err = unpopulate(val, &i.InternalIdentifier)
-			delete(rawMsg, key)
-		case "isAgentRegistrationSuccessfulAfterFailover":
-			err = unpopulate(val, &i.IsAgentRegistrationSuccessfulAfterFailover)
-			delete(rawMsg, key)
-		case "lastPlannedFailoverStartTime":
-			err = unpopulateTimeRFC3339(val, &i.LastPlannedFailoverStartTime)
-			delete(rawMsg, key)
-		case "lastPlannedFailoverStatus":
-			err = unpopulate(val, &i.LastPlannedFailoverStatus)
-			delete(rawMsg, key)
-		case "lastUsedPolicyFriendlyName":
-			err = unpopulate(val, &i.LastUsedPolicyFriendlyName)
-			delete(rawMsg, key)
-		case "lastUsedPolicyId":
-			err = unpopulate(val, &i.LastUsedPolicyID)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &i.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "mobilityAgentDetails":
-			err = unpopulate(val, &i.MobilityAgentDetails)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &i.OSType)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &i.ProtectedDisks)
-			delete(rawMsg, key)
-		case "reprotectAgentId":
-			err = unpopulate(val, &i.ReprotectAgentID)
-			delete(rawMsg, key)
-		case "reprotectAgentName":
-			err = unpopulate(val, &i.ReprotectAgentName)
-			delete(rawMsg, key)
-		case "resyncProcessedBytes":
-			err = unpopulate(val, &i.ResyncProcessedBytes)
-			delete(rawMsg, key)
-		case "resyncProgressHealth":
-			err = unpopulate(val, &i.ResyncProgressHealth)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &i.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "resyncRequired":
-			err = unpopulate(val, &i.ResyncRequired)
-			delete(rawMsg, key)
-		case "resyncState":
-			err = unpopulate(val, &i.ResyncState)
-			delete(rawMsg, key)
-		case "resyncTransferredBytes":
-			err = unpopulate(val, &i.ResyncTransferredBytes)
-			delete(rawMsg, key)
-		case "targetDataStoreName":
-			err = unpopulate(val, &i.TargetDataStoreName)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &i.TargetVMName)
-			delete(rawMsg, key)
-		case "targetvCenterId":
-			err = unpopulate(val, &i.TargetvCenterID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &i.VMNics)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmFailbackReprotectInput - InMageRcmFailback specific provider input.
 type InMageRcmFailbackReprotectInput struct {
 	// REQUIRED; The class type.
@@ -12596,53 +4713,6 @@ type InMageRcmFailbackReprotectInput struct {
 
 	// The run as account Id.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
-}
-
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type InMageRcmFailbackReprotectInput.
-func (i *InMageRcmFailbackReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackReprotectInput.
-func (i InMageRcmFailbackReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcmFailback"
-	populate(objectMap, "policyId", i.PolicyID)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmFailbackReprotectInput.
-func (i *InMageRcmFailbackReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &i.PolicyID)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmFailbackSyncDetails - InMageRcmFailback disk level sync details.
@@ -12693,18 +4763,6 @@ type InMageRcmLastAgentUpgradeErrorDetails struct {
 	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmLastAgentUpgradeErrorDetails.
-func (i InMageRcmLastAgentUpgradeErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
-	populate(objectMap, "errorTags", i.ErrorTags)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	return json.Marshal(objectMap)
-}
-
 // InMageRcmMobilityAgentDetails - InMageRcm mobility agent details.
 type InMageRcmMobilityAgentDetails struct {
 	// READ-ONLY; The agent version expiry date.
@@ -12736,69 +4794,6 @@ type InMageRcmMobilityAgentDetails struct {
 
 	// READ-ONLY; The agent version.
 	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmMobilityAgentDetails.
-func (i InMageRcmMobilityAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentVersionExpiryDate", i.AgentVersionExpiryDate)
-	populate(objectMap, "driverVersion", i.DriverVersion)
-	populateTimeRFC3339(objectMap, "driverVersionExpiryDate", i.DriverVersionExpiryDate)
-	populate(objectMap, "isUpgradeable", i.IsUpgradeable)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", i.LastHeartbeatUTC)
-	populate(objectMap, "latestAgentReleaseDate", i.LatestAgentReleaseDate)
-	populate(objectMap, "latestUpgradableVersionWithoutReboot", i.LatestUpgradableVersionWithoutReboot)
-	populate(objectMap, "latestVersion", i.LatestVersion)
-	populate(objectMap, "reasonsBlockingUpgrade", i.ReasonsBlockingUpgrade)
-	populate(objectMap, "version", i.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmMobilityAgentDetails.
-func (i *InMageRcmMobilityAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentVersionExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.AgentVersionExpiryDate)
-			delete(rawMsg, key)
-		case "driverVersion":
-			err = unpopulate(val, &i.DriverVersion)
-			delete(rawMsg, key)
-		case "driverVersionExpiryDate":
-			err = unpopulateTimeRFC3339(val, &i.DriverVersionExpiryDate)
-			delete(rawMsg, key)
-		case "isUpgradeable":
-			err = unpopulate(val, &i.IsUpgradeable)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &i.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "latestAgentReleaseDate":
-			err = unpopulate(val, &i.LatestAgentReleaseDate)
-			delete(rawMsg, key)
-		case "latestUpgradableVersionWithoutReboot":
-			err = unpopulate(val, &i.LatestUpgradableVersionWithoutReboot)
-			delete(rawMsg, key)
-		case "latestVersion":
-			err = unpopulate(val, &i.LatestVersion)
-			delete(rawMsg, key)
-		case "reasonsBlockingUpgrade":
-			err = unpopulate(val, &i.ReasonsBlockingUpgrade)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &i.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmNicDetails - InMageRcm NIC details.
@@ -12885,56 +4880,6 @@ type InMageRcmPolicyCreationInput struct {
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
 }
 
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmPolicyCreationInput.
-func (i *InMageRcmPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmPolicyCreationInput.
-func (i InMageRcmPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	populate(objectMap, "enableMultiVmSync", i.EnableMultiVMSync)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "recoveryPointHistoryInMinutes", i.RecoveryPointHistoryInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmPolicyCreationInput.
-func (i *InMageRcmPolicyCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "enableMultiVmSync":
-			err = unpopulate(val, &i.EnableMultiVMSync)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryInMinutes":
-			err = unpopulate(val, &i.RecoveryPointHistoryInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmPolicyDetails - InMageRcm specific policy details.
 type InMageRcmPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -12951,56 +4896,6 @@ type InMageRcmPolicyDetails struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmPolicyDetails.
-func (i *InMageRcmPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmPolicyDetails.
-func (i InMageRcmPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
-	populate(objectMap, "enableMultiVmSync", i.EnableMultiVMSync)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "recoveryPointHistoryInMinutes", i.RecoveryPointHistoryInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmPolicyDetails.
-func (i *InMageRcmPolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &i.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "enableMultiVmSync":
-			err = unpopulate(val, &i.EnableMultiVMSync)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryInMinutes":
-			err = unpopulate(val, &i.RecoveryPointHistoryInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmProtectedDiskDetails - InMageRcm protected disk details.
@@ -13057,45 +4952,6 @@ type InMageRcmProtectionContainerMappingDetails struct {
 	EnableAgentAutoUpgrade *string `json:"enableAgentAutoUpgrade,omitempty" azure:"ro"`
 }
 
-// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
-// interface for type InMageRcmProtectionContainerMappingDetails.
-func (i *InMageRcmProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
-	return &ProtectionContainerMappingProviderSpecificDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmProtectionContainerMappingDetails.
-func (i InMageRcmProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableAgentAutoUpgrade", i.EnableAgentAutoUpgrade)
-	objectMap["instanceType"] = "InMageRcm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmProtectionContainerMappingDetails.
-func (i *InMageRcmProtectionContainerMappingDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableAgentAutoUpgrade":
-			err = unpopulate(val, &i.EnableAgentAutoUpgrade)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmRecoveryPointDetails - InMageRcm provider specific recovery point details.
 type InMageRcmRecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
@@ -13103,45 +4959,6 @@ type InMageRcmRecoveryPointDetails struct {
 
 	// READ-ONLY; A value indicating whether the recovery point is multi VM consistent.
 	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty" azure:"ro"`
-}
-
-// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
-// type InMageRcmRecoveryPointDetails.
-func (i *InMageRcmRecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
-	return &ProviderSpecificRecoveryPointDetails{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmRecoveryPointDetails.
-func (i InMageRcmRecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "isMultiVmSyncPoint", i.IsMultiVMSyncPoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmRecoveryPointDetails.
-func (i *InMageRcmRecoveryPointDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "isMultiVmSyncPoint":
-			err = unpopulate(val, &i.IsMultiVMSyncPoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmReplicationDetails - InMageRcm provider specific details.
@@ -13307,245 +5124,6 @@ type InMageRcmReplicationDetails struct {
 	TargetGeneration *string `json:"targetGeneration,omitempty" azure:"ro"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// InMageRcmReplicationDetails.
-func (i *InMageRcmReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmReplicationDetails.
-func (i InMageRcmReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentUpgradeAttemptToVersion", i.AgentUpgradeAttemptToVersion)
-	populate(objectMap, "agentUpgradeBlockingErrorDetails", i.AgentUpgradeBlockingErrorDetails)
-	populate(objectMap, "agentUpgradeJobId", i.AgentUpgradeJobID)
-	populate(objectMap, "agentUpgradeState", i.AgentUpgradeState)
-	populate(objectMap, "allocatedMemoryInMB", i.AllocatedMemoryInMB)
-	populate(objectMap, "discoveredVmDetails", i.DiscoveredVMDetails)
-	populate(objectMap, "discoveryType", i.DiscoveryType)
-	populate(objectMap, "fabricDiscoveryMachineId", i.FabricDiscoveryMachineID)
-	populate(objectMap, "failoverRecoveryPointId", i.FailoverRecoveryPointID)
-	populate(objectMap, "firmwareType", i.FirmwareType)
-	populate(objectMap, "initialReplicationProcessedBytes", i.InitialReplicationProcessedBytes)
-	populate(objectMap, "initialReplicationProgressHealth", i.InitialReplicationProgressHealth)
-	populate(objectMap, "initialReplicationProgressPercentage", i.InitialReplicationProgressPercentage)
-	populate(objectMap, "initialReplicationTransferredBytes", i.InitialReplicationTransferredBytes)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "internalIdentifier", i.InternalIdentifier)
-	populate(objectMap, "isAgentRegistrationSuccessfulAfterFailover", i.IsAgentRegistrationSuccessfulAfterFailover)
-	populate(objectMap, "isLastUpgradeSuccessful", i.IsLastUpgradeSuccessful)
-	populate(objectMap, "lastAgentUpgradeErrorDetails", i.LastAgentUpgradeErrorDetails)
-	populate(objectMap, "lastAgentUpgradeType", i.LastAgentUpgradeType)
-	populate(objectMap, "lastRecoveryPointId", i.LastRecoveryPointID)
-	populateTimeRFC3339(objectMap, "lastRecoveryPointReceived", i.LastRecoveryPointReceived)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", i.LastRpoCalculatedTime)
-	populate(objectMap, "lastRpoInSeconds", i.LastRpoInSeconds)
-	populate(objectMap, "licenseType", i.LicenseType)
-	populate(objectMap, "mobilityAgentDetails", i.MobilityAgentDetails)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "osType", i.OSType)
-	populate(objectMap, "primaryNicIpAddress", i.PrimaryNicIPAddress)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "processServerName", i.ProcessServerName)
-	populate(objectMap, "processorCoreCount", i.ProcessorCoreCount)
-	populate(objectMap, "protectedDisks", i.ProtectedDisks)
-	populate(objectMap, "resyncProcessedBytes", i.ResyncProcessedBytes)
-	populate(objectMap, "resyncProgressHealth", i.ResyncProgressHealth)
-	populate(objectMap, "resyncProgressPercentage", i.ResyncProgressPercentage)
-	populate(objectMap, "resyncRequired", i.ResyncRequired)
-	populate(objectMap, "resyncState", i.ResyncState)
-	populate(objectMap, "resyncTransferredBytes", i.ResyncTransferredBytes)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetGeneration", i.TargetGeneration)
-	populate(objectMap, "targetLocation", i.TargetLocation)
-	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
-	populate(objectMap, "targetVmName", i.TargetVMName)
-	populate(objectMap, "targetVmSize", i.TargetVMSize)
-	populate(objectMap, "testNetworkId", i.TestNetworkID)
-	populate(objectMap, "vmNics", i.VMNics)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmReplicationDetails.
-func (i *InMageRcmReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentUpgradeAttemptToVersion":
-			err = unpopulate(val, &i.AgentUpgradeAttemptToVersion)
-			delete(rawMsg, key)
-		case "agentUpgradeBlockingErrorDetails":
-			err = unpopulate(val, &i.AgentUpgradeBlockingErrorDetails)
-			delete(rawMsg, key)
-		case "agentUpgradeJobId":
-			err = unpopulate(val, &i.AgentUpgradeJobID)
-			delete(rawMsg, key)
-		case "agentUpgradeState":
-			err = unpopulate(val, &i.AgentUpgradeState)
-			delete(rawMsg, key)
-		case "allocatedMemoryInMB":
-			err = unpopulate(val, &i.AllocatedMemoryInMB)
-			delete(rawMsg, key)
-		case "discoveredVmDetails":
-			err = unpopulate(val, &i.DiscoveredVMDetails)
-			delete(rawMsg, key)
-		case "discoveryType":
-			err = unpopulate(val, &i.DiscoveryType)
-			delete(rawMsg, key)
-		case "fabricDiscoveryMachineId":
-			err = unpopulate(val, &i.FabricDiscoveryMachineID)
-			delete(rawMsg, key)
-		case "failoverRecoveryPointId":
-			err = unpopulate(val, &i.FailoverRecoveryPointID)
-			delete(rawMsg, key)
-		case "firmwareType":
-			err = unpopulate(val, &i.FirmwareType)
-			delete(rawMsg, key)
-		case "initialReplicationProcessedBytes":
-			err = unpopulate(val, &i.InitialReplicationProcessedBytes)
-			delete(rawMsg, key)
-		case "initialReplicationProgressHealth":
-			err = unpopulate(val, &i.InitialReplicationProgressHealth)
-			delete(rawMsg, key)
-		case "initialReplicationProgressPercentage":
-			err = unpopulate(val, &i.InitialReplicationProgressPercentage)
-			delete(rawMsg, key)
-		case "initialReplicationTransferredBytes":
-			err = unpopulate(val, &i.InitialReplicationTransferredBytes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "internalIdentifier":
-			err = unpopulate(val, &i.InternalIdentifier)
-			delete(rawMsg, key)
-		case "isAgentRegistrationSuccessfulAfterFailover":
-			err = unpopulate(val, &i.IsAgentRegistrationSuccessfulAfterFailover)
-			delete(rawMsg, key)
-		case "isLastUpgradeSuccessful":
-			err = unpopulate(val, &i.IsLastUpgradeSuccessful)
-			delete(rawMsg, key)
-		case "lastAgentUpgradeErrorDetails":
-			err = unpopulate(val, &i.LastAgentUpgradeErrorDetails)
-			delete(rawMsg, key)
-		case "lastAgentUpgradeType":
-			err = unpopulate(val, &i.LastAgentUpgradeType)
-			delete(rawMsg, key)
-		case "lastRecoveryPointId":
-			err = unpopulate(val, &i.LastRecoveryPointID)
-			delete(rawMsg, key)
-		case "lastRecoveryPointReceived":
-			err = unpopulateTimeRFC3339(val, &i.LastRecoveryPointReceived)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "lastRpoInSeconds":
-			err = unpopulate(val, &i.LastRpoInSeconds)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &i.LicenseType)
-			delete(rawMsg, key)
-		case "mobilityAgentDetails":
-			err = unpopulate(val, &i.MobilityAgentDetails)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &i.OSType)
-			delete(rawMsg, key)
-		case "primaryNicIpAddress":
-			err = unpopulate(val, &i.PrimaryNicIPAddress)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "processServerName":
-			err = unpopulate(val, &i.ProcessServerName)
-			delete(rawMsg, key)
-		case "processorCoreCount":
-			err = unpopulate(val, &i.ProcessorCoreCount)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &i.ProtectedDisks)
-			delete(rawMsg, key)
-		case "resyncProcessedBytes":
-			err = unpopulate(val, &i.ResyncProcessedBytes)
-			delete(rawMsg, key)
-		case "resyncProgressHealth":
-			err = unpopulate(val, &i.ResyncProgressHealth)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &i.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "resyncRequired":
-			err = unpopulate(val, &i.ResyncRequired)
-			delete(rawMsg, key)
-		case "resyncState":
-			err = unpopulate(val, &i.ResyncState)
-			delete(rawMsg, key)
-		case "resyncTransferredBytes":
-			err = unpopulate(val, &i.ResyncTransferredBytes)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &i.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &i.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetGeneration":
-			err = unpopulate(val, &i.TargetGeneration)
-			delete(rawMsg, key)
-		case "targetLocation":
-			err = unpopulate(val, &i.TargetLocation)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &i.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &i.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &i.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &i.TargetVMSize)
-			delete(rawMsg, key)
-		case "testNetworkId":
-			err = unpopulate(val, &i.TestNetworkID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &i.VMNics)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmReprotectInput - InMageRcm specific provider input.
 type InMageRcmReprotectInput struct {
 	// REQUIRED; The target datastore name.
@@ -13562,57 +5140,6 @@ type InMageRcmReprotectInput struct {
 
 	// The Policy Id.
 	PolicyID *string `json:"policyId,omitempty"`
-}
-
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type InMageRcmReprotectInput.
-func (i *InMageRcmReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmReprotectInput.
-func (i InMageRcmReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "datastoreName", i.DatastoreName)
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
-	populate(objectMap, "policyId", i.PolicyID)
-	populate(objectMap, "reprotectAgentId", i.ReprotectAgentID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmReprotectInput.
-func (i *InMageRcmReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "datastoreName":
-			err = unpopulate(val, &i.DatastoreName)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "logStorageAccountId":
-			err = unpopulate(val, &i.LogStorageAccountID)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &i.PolicyID)
-			delete(rawMsg, key)
-		case "reprotectAgentId":
-			err = unpopulate(val, &i.ReprotectAgentID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmSyncDetails - InMageRcm disk level sync details.
@@ -13655,49 +5182,6 @@ type InMageRcmTestFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// InMageRcmTestFailoverInput.
-func (i *InMageRcmTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return &TestFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmTestFailoverInput.
-func (i InMageRcmTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "networkId", i.NetworkID)
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmTestFailoverInput.
-func (i *InMageRcmTestFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "networkId":
-			err = unpopulate(val, &i.NetworkID)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmUnplannedFailoverInput - InMageRcm provider specific input for unplanned failover.
 type InMageRcmUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -13711,49 +5195,6 @@ type InMageRcmUnplannedFailoverInput struct {
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
 }
 
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type InMageRcmUnplannedFailoverInput.
-func (i *InMageRcmUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return &UnplannedFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmUnplannedFailoverInput.
-func (i InMageRcmUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "performShutdown", i.PerformShutdown)
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmUnplannedFailoverInput.
-func (i *InMageRcmUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "performShutdown":
-			err = unpopulate(val, &i.PerformShutdown)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmUpdateApplianceForReplicationProtectedItemInput - InMageRcm provider specific input to update appliance for replication
 // protected item.
 type InMageRcmUpdateApplianceForReplicationProtectedItemInput struct {
@@ -13764,45 +5205,6 @@ type InMageRcmUpdateApplianceForReplicationProtectedItemInput struct {
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
 }
 
-// GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
-// interface for type InMageRcmUpdateApplianceForReplicationProtectedItemInput.
-func (i *InMageRcmUpdateApplianceForReplicationProtectedItemInput) GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() *UpdateApplianceForReplicationProtectedItemProviderSpecificInput {
-	return &UpdateApplianceForReplicationProtectedItemProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateApplianceForReplicationProtectedItemInput.
-func (i InMageRcmUpdateApplianceForReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmUpdateApplianceForReplicationProtectedItemInput.
-func (i *InMageRcmUpdateApplianceForReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageRcmUpdateContainerMappingInput - InMageRcm update protection container mapping.
 type InMageRcmUpdateContainerMappingInput struct {
 	// REQUIRED; A value indicating whether agent auto upgrade has to be enabled.
@@ -13810,45 +5212,6 @@ type InMageRcmUpdateContainerMappingInput struct {
 
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
-// interface for type InMageRcmUpdateContainerMappingInput.
-func (i *InMageRcmUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
-	return &ReplicationProviderSpecificUpdateContainerMappingInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateContainerMappingInput.
-func (i InMageRcmUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableAgentAutoUpgrade", i.EnableAgentAutoUpgrade)
-	objectMap["instanceType"] = "InMageRcm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmUpdateContainerMappingInput.
-func (i *InMageRcmUpdateContainerMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableAgentAutoUpgrade":
-			err = unpopulate(val, &i.EnableAgentAutoUpgrade)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageRcmUpdateReplicationProtectedItemInput - InMageRcm provider specific input to update replication protected item.
@@ -13888,85 +5251,6 @@ type InMageRcmUpdateReplicationProtectedItemInput struct {
 
 	// The list of NIC details.
 	VMNics []*InMageRcmNicInput `json:"vmNics,omitempty"`
-}
-
-// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
-// interface for type InMageRcmUpdateReplicationProtectedItemInput.
-func (i *InMageRcmUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
-	return &UpdateReplicationProtectedItemProviderInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateReplicationProtectedItemInput.
-func (i InMageRcmUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "licenseType", i.LicenseType)
-	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", i.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", i.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetNetworkId", i.TargetNetworkID)
-	populate(objectMap, "targetProximityPlacementGroupId", i.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", i.TargetResourceGroupID)
-	populate(objectMap, "targetVmName", i.TargetVMName)
-	populate(objectMap, "targetVmSize", i.TargetVMSize)
-	populate(objectMap, "testNetworkId", i.TestNetworkID)
-	populate(objectMap, "vmNics", i.VMNics)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageRcmUpdateReplicationProtectedItemInput.
-func (i *InMageRcmUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &i.LicenseType)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &i.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &i.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &i.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &i.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &i.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &i.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &i.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &i.TargetVMSize)
-			delete(rawMsg, key)
-		case "testNetworkId":
-			err = unpopulate(val, &i.TestNetworkID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &i.VMNics)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageReplicationDetails - InMage provider specific settings.
@@ -14098,201 +5382,6 @@ type InMageReplicationDetails struct {
 	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// InMageReplicationDetails.
-func (i *InMageReplicationDetails) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return &ReplicationProviderSpecificSettings{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageReplicationDetails.
-func (i InMageReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activeSiteType", i.ActiveSiteType)
-	populate(objectMap, "agentDetails", i.AgentDetails)
-	populate(objectMap, "azureStorageAccountId", i.AzureStorageAccountID)
-	populate(objectMap, "compressedDataRateInMB", i.CompressedDataRateInMB)
-	populate(objectMap, "consistencyPoints", i.ConsistencyPoints)
-	populate(objectMap, "datastores", i.Datastores)
-	populate(objectMap, "discoveryType", i.DiscoveryType)
-	populate(objectMap, "diskResized", i.DiskResized)
-	populate(objectMap, "ipAddress", i.IPAddress)
-	populate(objectMap, "infrastructureVmId", i.InfrastructureVMID)
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "isAdditionalStatsAvailable", i.IsAdditionalStatsAvailable)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", i.LastHeartbeat)
-	populateTimeRFC3339(objectMap, "lastRpoCalculatedTime", i.LastRpoCalculatedTime)
-	populateTimeRFC3339(objectMap, "lastUpdateReceivedTime", i.LastUpdateReceivedTime)
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "multiVmGroupId", i.MultiVMGroupID)
-	populate(objectMap, "multiVmGroupName", i.MultiVMGroupName)
-	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
-	populate(objectMap, "osDetails", i.OSDetails)
-	populate(objectMap, "osVersion", i.OSVersion)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "protectedDisks", i.ProtectedDisks)
-	populate(objectMap, "protectionStage", i.ProtectionStage)
-	populate(objectMap, "rebootAfterUpdateStatus", i.RebootAfterUpdateStatus)
-	populate(objectMap, "replicaId", i.ReplicaID)
-	populate(objectMap, "resyncDetails", i.ResyncDetails)
-	populateTimeRFC3339(objectMap, "retentionWindowEnd", i.RetentionWindowEnd)
-	populateTimeRFC3339(objectMap, "retentionWindowStart", i.RetentionWindowStart)
-	populate(objectMap, "rpoInSeconds", i.RpoInSeconds)
-	populate(objectMap, "sourceVmCpuCount", i.SourceVMCPUCount)
-	populate(objectMap, "sourceVmRamSizeInMB", i.SourceVMRAMSizeInMB)
-	populate(objectMap, "totalDataTransferred", i.TotalDataTransferred)
-	populate(objectMap, "totalProgressHealth", i.TotalProgressHealth)
-	populate(objectMap, "uncompressedDataRateInMB", i.UncompressedDataRateInMB)
-	populate(objectMap, "vCenterInfrastructureId", i.VCenterInfrastructureID)
-	populate(objectMap, "vmId", i.VMID)
-	populate(objectMap, "vmNics", i.VMNics)
-	populate(objectMap, "vmProtectionState", i.VMProtectionState)
-	populate(objectMap, "vmProtectionStateDescription", i.VMProtectionStateDescription)
-	populate(objectMap, "validationErrors", i.ValidationErrors)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageReplicationDetails.
-func (i *InMageReplicationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activeSiteType":
-			err = unpopulate(val, &i.ActiveSiteType)
-			delete(rawMsg, key)
-		case "agentDetails":
-			err = unpopulate(val, &i.AgentDetails)
-			delete(rawMsg, key)
-		case "azureStorageAccountId":
-			err = unpopulate(val, &i.AzureStorageAccountID)
-			delete(rawMsg, key)
-		case "compressedDataRateInMB":
-			err = unpopulate(val, &i.CompressedDataRateInMB)
-			delete(rawMsg, key)
-		case "consistencyPoints":
-			err = unpopulate(val, &i.ConsistencyPoints)
-			delete(rawMsg, key)
-		case "datastores":
-			err = unpopulate(val, &i.Datastores)
-			delete(rawMsg, key)
-		case "discoveryType":
-			err = unpopulate(val, &i.DiscoveryType)
-			delete(rawMsg, key)
-		case "diskResized":
-			err = unpopulate(val, &i.DiskResized)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &i.IPAddress)
-			delete(rawMsg, key)
-		case "infrastructureVmId":
-			err = unpopulate(val, &i.InfrastructureVMID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "isAdditionalStatsAvailable":
-			err = unpopulate(val, &i.IsAdditionalStatsAvailable)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &i.LastHeartbeat)
-			delete(rawMsg, key)
-		case "lastRpoCalculatedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastRpoCalculatedTime)
-			delete(rawMsg, key)
-		case "lastUpdateReceivedTime":
-			err = unpopulateTimeRFC3339(val, &i.LastUpdateReceivedTime)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "multiVmGroupId":
-			err = unpopulate(val, &i.MultiVMGroupID)
-			delete(rawMsg, key)
-		case "multiVmGroupName":
-			err = unpopulate(val, &i.MultiVMGroupName)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &i.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "osDetails":
-			err = unpopulate(val, &i.OSDetails)
-			delete(rawMsg, key)
-		case "osVersion":
-			err = unpopulate(val, &i.OSVersion)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &i.ProtectedDisks)
-			delete(rawMsg, key)
-		case "protectionStage":
-			err = unpopulate(val, &i.ProtectionStage)
-			delete(rawMsg, key)
-		case "rebootAfterUpdateStatus":
-			err = unpopulate(val, &i.RebootAfterUpdateStatus)
-			delete(rawMsg, key)
-		case "replicaId":
-			err = unpopulate(val, &i.ReplicaID)
-			delete(rawMsg, key)
-		case "resyncDetails":
-			err = unpopulate(val, &i.ResyncDetails)
-			delete(rawMsg, key)
-		case "retentionWindowEnd":
-			err = unpopulateTimeRFC3339(val, &i.RetentionWindowEnd)
-			delete(rawMsg, key)
-		case "retentionWindowStart":
-			err = unpopulateTimeRFC3339(val, &i.RetentionWindowStart)
-			delete(rawMsg, key)
-		case "rpoInSeconds":
-			err = unpopulate(val, &i.RpoInSeconds)
-			delete(rawMsg, key)
-		case "sourceVmCpuCount":
-			err = unpopulate(val, &i.SourceVMCPUCount)
-			delete(rawMsg, key)
-		case "sourceVmRamSizeInMB":
-			err = unpopulate(val, &i.SourceVMRAMSizeInMB)
-			delete(rawMsg, key)
-		case "totalDataTransferred":
-			err = unpopulate(val, &i.TotalDataTransferred)
-			delete(rawMsg, key)
-		case "totalProgressHealth":
-			err = unpopulate(val, &i.TotalProgressHealth)
-			delete(rawMsg, key)
-		case "uncompressedDataRateInMB":
-			err = unpopulate(val, &i.UncompressedDataRateInMB)
-			delete(rawMsg, key)
-		case "vCenterInfrastructureId":
-			err = unpopulate(val, &i.VCenterInfrastructureID)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &i.VMID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &i.VMNics)
-			delete(rawMsg, key)
-		case "vmProtectionState":
-			err = unpopulate(val, &i.VMProtectionState)
-			delete(rawMsg, key)
-		case "vmProtectionStateDescription":
-			err = unpopulate(val, &i.VMProtectionStateDescription)
-			delete(rawMsg, key)
-		case "validationErrors":
-			err = unpopulate(val, &i.ValidationErrors)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageReprotectInput - InMageAzureV2 specific provider input.
 type InMageReprotectInput struct {
 	// REQUIRED; The class type.
@@ -14323,73 +5412,6 @@ type InMageReprotectInput struct {
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
 }
 
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type InMageReprotectInput.
-func (i *InMageReprotectInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return &ReverseReplicationProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageReprotectInput.
-func (i InMageReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "datastoreName", i.DatastoreName)
-	populate(objectMap, "diskExclusionInput", i.DiskExclusionInput)
-	populate(objectMap, "disksToInclude", i.DisksToInclude)
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "masterTargetId", i.MasterTargetID)
-	populate(objectMap, "processServerId", i.ProcessServerID)
-	populate(objectMap, "profileId", i.ProfileID)
-	populate(objectMap, "retentionDrive", i.RetentionDrive)
-	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageReprotectInput.
-func (i *InMageReprotectInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "datastoreName":
-			err = unpopulate(val, &i.DatastoreName)
-			delete(rawMsg, key)
-		case "diskExclusionInput":
-			err = unpopulate(val, &i.DiskExclusionInput)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &i.DisksToInclude)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "masterTargetId":
-			err = unpopulate(val, &i.MasterTargetID)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &i.ProcessServerID)
-			delete(rawMsg, key)
-		case "profileId":
-			err = unpopulate(val, &i.ProfileID)
-			delete(rawMsg, key)
-		case "retentionDrive":
-			err = unpopulate(val, &i.RetentionDrive)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &i.RunAsAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageTestFailoverInput - Provider specific input for InMage test failover.
 type InMageTestFailoverInput struct {
 	// REQUIRED; The class type.
@@ -14405,49 +5427,6 @@ type InMageTestFailoverInput struct {
 	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// InMageTestFailoverInput.
-func (i *InMageTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return &TestFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageTestFailoverInput.
-func (i InMageTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageTestFailoverInput.
-func (i *InMageTestFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &i.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // InMageUnplannedFailoverInput - Provider specific input for InMage unplanned failover.
 type InMageUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
@@ -14461,49 +5440,6 @@ type InMageUnplannedFailoverInput struct {
 	// by RecoveryPointId will be used. In the other two cases, recovery point id will
 	// be ignored.
 	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
-}
-
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type InMageUnplannedFailoverInput.
-func (i *InMageUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return &UnplannedFailoverProviderSpecificInput{
-		InstanceType: i.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InMageUnplannedFailoverInput.
-func (i InMageUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
-	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InMageUnplannedFailoverInput.
-func (i *InMageUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &i.RecoveryPointID)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &i.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InMageVolumeExclusionOptions - Guest disk signature based disk exclusion option when doing enable protection of virtual
@@ -14533,16 +5469,6 @@ type InconsistentVMDetails struct {
 	VMName *string `json:"vmName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InconsistentVMDetails.
-func (i InconsistentVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloudName", i.CloudName)
-	populate(objectMap, "details", i.Details)
-	populate(objectMap, "errorIds", i.ErrorIDs)
-	populate(objectMap, "vmName", i.VMName)
-	return json.Marshal(objectMap)
-}
-
 // InitialReplicationDetails - Initial replication details.
 type InitialReplicationDetails struct {
 	// The initial replication progress percentage.
@@ -14562,49 +5488,6 @@ type InlineWorkflowTaskDetails struct {
 
 	// The list of child workflow ids.
 	WorkflowIDs []*string `json:"workflowIds,omitempty"`
-}
-
-// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type InlineWorkflowTaskDetails.
-func (i *InlineWorkflowTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
-	return &GroupTaskDetails{
-		InstanceType: i.InstanceType,
-		ChildTasks:   i.ChildTasks,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InlineWorkflowTaskDetails.
-func (i InlineWorkflowTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "childTasks", i.ChildTasks)
-	objectMap["instanceType"] = "InlineWorkflowTaskDetails"
-	populate(objectMap, "workflowIds", i.WorkflowIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InlineWorkflowTaskDetails.
-func (i *InlineWorkflowTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "childTasks":
-			err = unpopulate(val, &i.ChildTasks)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &i.InstanceType)
-			delete(rawMsg, key)
-		case "workflowIds":
-			err = unpopulate(val, &i.WorkflowIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // InnerHealthError - Implements InnerHealthError class. HealthError object has a list of InnerHealthErrors as child errors.
@@ -14655,85 +5538,6 @@ type InnerHealthError struct {
 	SummaryMessage *string `json:"summaryMessage,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InnerHealthError.
-func (i InnerHealthError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationTimeUtc", i.CreationTimeUTC)
-	populate(objectMap, "customerResolvability", i.CustomerResolvability)
-	populate(objectMap, "entityId", i.EntityID)
-	populate(objectMap, "errorCategory", i.ErrorCategory)
-	populate(objectMap, "errorCode", i.ErrorCode)
-	populate(objectMap, "errorId", i.ErrorID)
-	populate(objectMap, "errorLevel", i.ErrorLevel)
-	populate(objectMap, "errorMessage", i.ErrorMessage)
-	populate(objectMap, "errorSource", i.ErrorSource)
-	populate(objectMap, "errorType", i.ErrorType)
-	populate(objectMap, "possibleCauses", i.PossibleCauses)
-	populate(objectMap, "recommendedAction", i.RecommendedAction)
-	populate(objectMap, "recoveryProviderErrorMessage", i.RecoveryProviderErrorMessage)
-	populate(objectMap, "summaryMessage", i.SummaryMessage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InnerHealthError.
-func (i *InnerHealthError) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTimeUtc":
-			err = unpopulateTimeRFC3339(val, &i.CreationTimeUTC)
-			delete(rawMsg, key)
-		case "customerResolvability":
-			err = unpopulate(val, &i.CustomerResolvability)
-			delete(rawMsg, key)
-		case "entityId":
-			err = unpopulate(val, &i.EntityID)
-			delete(rawMsg, key)
-		case "errorCategory":
-			err = unpopulate(val, &i.ErrorCategory)
-			delete(rawMsg, key)
-		case "errorCode":
-			err = unpopulate(val, &i.ErrorCode)
-			delete(rawMsg, key)
-		case "errorId":
-			err = unpopulate(val, &i.ErrorID)
-			delete(rawMsg, key)
-		case "errorLevel":
-			err = unpopulate(val, &i.ErrorLevel)
-			delete(rawMsg, key)
-		case "errorMessage":
-			err = unpopulate(val, &i.ErrorMessage)
-			delete(rawMsg, key)
-		case "errorSource":
-			err = unpopulate(val, &i.ErrorSource)
-			delete(rawMsg, key)
-		case "errorType":
-			err = unpopulate(val, &i.ErrorType)
-			delete(rawMsg, key)
-		case "possibleCauses":
-			err = unpopulate(val, &i.PossibleCauses)
-			delete(rawMsg, key)
-		case "recommendedAction":
-			err = unpopulate(val, &i.RecommendedAction)
-			delete(rawMsg, key)
-		case "recoveryProviderErrorMessage":
-			err = unpopulate(val, &i.RecoveryProviderErrorMessage)
-			delete(rawMsg, key)
-		case "summaryMessage":
-			err = unpopulate(val, &i.SummaryMessage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type InputEndpoint struct {
 	EndpointName *string `json:"endpointName,omitempty"`
 	PrivatePort  *int32  `json:"privatePort,omitempty"`
@@ -14768,14 +5572,6 @@ type JobCollection struct {
 	Value []*Job `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JobCollection.
-func (j JobCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", j.NextLink)
-	populate(objectMap, "value", j.Value)
-	return json.Marshal(objectMap)
-}
-
 // JobDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetJobDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -14793,17 +5589,6 @@ type JobDetails struct {
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
 	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
-}
-
-// GetJobDetails implements the JobDetailsClassification interface for type JobDetails.
-func (j *JobDetails) GetJobDetails() *JobDetails { return j }
-
-// MarshalJSON implements the json.Marshaller interface for type JobDetails.
-func (j JobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", j.AffectedObjectDetails)
-	objectMap["instanceType"] = j.InstanceType
-	return json.Marshal(objectMap)
 }
 
 // JobEntity - This class contains the minimal job details required to navigate to the desired drill down.
@@ -14843,49 +5628,6 @@ type JobErrorDetails struct {
 
 	// The Id of the task.
 	TaskID *string `json:"taskId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JobErrorDetails.
-func (j JobErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "creationTime", j.CreationTime)
-	populate(objectMap, "errorLevel", j.ErrorLevel)
-	populate(objectMap, "providerErrorDetails", j.ProviderErrorDetails)
-	populate(objectMap, "serviceErrorDetails", j.ServiceErrorDetails)
-	populate(objectMap, "taskId", j.TaskID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobErrorDetails.
-func (j *JobErrorDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &j.CreationTime)
-			delete(rawMsg, key)
-		case "errorLevel":
-			err = unpopulate(val, &j.ErrorLevel)
-			delete(rawMsg, key)
-		case "providerErrorDetails":
-			err = unpopulate(val, &j.ProviderErrorDetails)
-			delete(rawMsg, key)
-		case "serviceErrorDetails":
-			err = unpopulate(val, &j.ServiceErrorDetails)
-			delete(rawMsg, key)
-		case "taskId":
-			err = unpopulate(val, &j.TaskID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // JobProperties - Job custom data details.
@@ -14934,85 +5676,6 @@ type JobProperties struct {
 	Tasks []*ASRTask `json:"tasks,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JobProperties.
-func (j JobProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activityId", j.ActivityID)
-	populate(objectMap, "allowedActions", j.AllowedActions)
-	populate(objectMap, "customDetails", j.CustomDetails)
-	populateTimeRFC3339(objectMap, "endTime", j.EndTime)
-	populate(objectMap, "errors", j.Errors)
-	populate(objectMap, "friendlyName", j.FriendlyName)
-	populate(objectMap, "scenarioName", j.ScenarioName)
-	populateTimeRFC3339(objectMap, "startTime", j.StartTime)
-	populate(objectMap, "state", j.State)
-	populate(objectMap, "stateDescription", j.StateDescription)
-	populate(objectMap, "targetInstanceType", j.TargetInstanceType)
-	populate(objectMap, "targetObjectId", j.TargetObjectID)
-	populate(objectMap, "targetObjectName", j.TargetObjectName)
-	populate(objectMap, "tasks", j.Tasks)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobProperties.
-func (j *JobProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activityId":
-			err = unpopulate(val, &j.ActivityID)
-			delete(rawMsg, key)
-		case "allowedActions":
-			err = unpopulate(val, &j.AllowedActions)
-			delete(rawMsg, key)
-		case "customDetails":
-			j.CustomDetails, err = unmarshalJobDetailsClassification(val)
-			delete(rawMsg, key)
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &j.EndTime)
-			delete(rawMsg, key)
-		case "errors":
-			err = unpopulate(val, &j.Errors)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &j.FriendlyName)
-			delete(rawMsg, key)
-		case "scenarioName":
-			err = unpopulate(val, &j.ScenarioName)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &j.State)
-			delete(rawMsg, key)
-		case "stateDescription":
-			err = unpopulate(val, &j.StateDescription)
-			delete(rawMsg, key)
-		case "targetInstanceType":
-			err = unpopulate(val, &j.TargetInstanceType)
-			delete(rawMsg, key)
-		case "targetObjectId":
-			err = unpopulate(val, &j.TargetObjectID)
-			delete(rawMsg, key)
-		case "targetObjectName":
-			err = unpopulate(val, &j.TargetObjectName)
-			delete(rawMsg, key)
-		case "tasks":
-			err = unpopulate(val, &j.Tasks)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // JobQueryParameter - Query parameter to enumerate jobs.
 type JobQueryParameter struct {
 	// The type of objects.
@@ -15058,56 +5721,6 @@ type JobStatusEventDetails struct {
 	JobStatus *string `json:"jobStatus,omitempty"`
 }
 
-// GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type JobStatusEventDetails.
-func (j *JobStatusEventDetails) GetEventSpecificDetails() *EventSpecificDetails {
-	return &EventSpecificDetails{
-		InstanceType: j.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JobStatusEventDetails.
-func (j JobStatusEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectType", j.AffectedObjectType)
-	objectMap["instanceType"] = "JobStatus"
-	populate(objectMap, "jobFriendlyName", j.JobFriendlyName)
-	populate(objectMap, "jobId", j.JobID)
-	populate(objectMap, "jobStatus", j.JobStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobStatusEventDetails.
-func (j *JobStatusEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectType":
-			err = unpopulate(val, &j.AffectedObjectType)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &j.InstanceType)
-			delete(rawMsg, key)
-		case "jobFriendlyName":
-			err = unpopulate(val, &j.JobFriendlyName)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &j.JobID)
-			delete(rawMsg, key)
-		case "jobStatus":
-			err = unpopulate(val, &j.JobStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // JobTaskDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetJobTaskDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -15126,47 +5739,6 @@ type JobTaskDetails struct {
 
 	// The job entity.
 	JobTask *JobEntity `json:"jobTask,omitempty"`
-}
-
-// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type JobTaskDetails.
-func (j *JobTaskDetails) GetJobTaskDetails() *JobTaskDetails { return j }
-
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type JobTaskDetails.
-func (j *JobTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: j.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JobTaskDetails.
-func (j JobTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "JobTaskDetails"
-	populate(objectMap, "jobTask", j.JobTask)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type JobTaskDetails.
-func (j *JobTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &j.InstanceType)
-			delete(rawMsg, key)
-		case "jobTask":
-			err = unpopulate(val, &j.JobTask)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // KeyEncryptionKeyInfo - Key Encryption Key (KEK) information.
@@ -15205,14 +5777,6 @@ type LogicalNetworkCollection struct {
 	Value []*LogicalNetwork `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LogicalNetworkCollection.
-func (l LogicalNetworkCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // LogicalNetworkProperties - Logical Network Properties.
 type LogicalNetworkProperties struct {
 	// The Friendly Name.
@@ -15243,52 +5807,6 @@ type ManualActionTaskDetails struct {
 	Observation *string `json:"observation,omitempty"`
 }
 
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ManualActionTaskDetails.
-func (m *ManualActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: m.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManualActionTaskDetails.
-func (m ManualActionTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "ManualActionTaskDetails"
-	populate(objectMap, "instructions", m.Instructions)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "observation", m.Observation)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ManualActionTaskDetails.
-func (m *ManualActionTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &m.InstanceType)
-			delete(rawMsg, key)
-		case "instructions":
-			err = unpopulate(val, &m.Instructions)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "observation":
-			err = unpopulate(val, &m.Observation)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MarsAgentDetails - Mars agent details.
 type MarsAgentDetails struct {
 	// READ-ONLY; The Mars agent Bios Id.
@@ -15317,65 +5835,6 @@ type MarsAgentDetails struct {
 
 	// READ-ONLY; The version.
 	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MarsAgentDetails.
-func (m MarsAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "biosId", m.BiosID)
-	populate(objectMap, "fabricObjectId", m.FabricObjectID)
-	populate(objectMap, "fqdn", m.Fqdn)
-	populate(objectMap, "health", m.Health)
-	populate(objectMap, "healthErrors", m.HealthErrors)
-	populate(objectMap, "id", m.ID)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", m.LastHeartbeatUTC)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "version", m.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MarsAgentDetails.
-func (m *MarsAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "biosId":
-			err = unpopulate(val, &m.BiosID)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &m.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &m.Fqdn)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &m.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &m.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &m.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &m.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MasterTargetServer - Details of a Master Target Server.
@@ -15435,101 +5894,6 @@ type MasterTargetServer struct {
 	VersionStatus *string `json:"versionStatus,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MasterTargetServer.
-func (m MasterTargetServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentExpiryDate", m.AgentExpiryDate)
-	populate(objectMap, "agentVersion", m.AgentVersion)
-	populate(objectMap, "agentVersionDetails", m.AgentVersionDetails)
-	populate(objectMap, "dataStores", m.DataStores)
-	populate(objectMap, "diskCount", m.DiskCount)
-	populate(objectMap, "healthErrors", m.HealthErrors)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "ipAddress", m.IPAddress)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", m.LastHeartbeat)
-	populateTimeRFC3339(objectMap, "marsAgentExpiryDate", m.MarsAgentExpiryDate)
-	populate(objectMap, "marsAgentVersion", m.MarsAgentVersion)
-	populate(objectMap, "marsAgentVersionDetails", m.MarsAgentVersionDetails)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "osType", m.OSType)
-	populate(objectMap, "osVersion", m.OSVersion)
-	populate(objectMap, "retentionVolumes", m.RetentionVolumes)
-	populate(objectMap, "validationErrors", m.ValidationErrors)
-	populate(objectMap, "versionStatus", m.VersionStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MasterTargetServer.
-func (m *MasterTargetServer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &m.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &m.AgentVersion)
-			delete(rawMsg, key)
-		case "agentVersionDetails":
-			err = unpopulate(val, &m.AgentVersionDetails)
-			delete(rawMsg, key)
-		case "dataStores":
-			err = unpopulate(val, &m.DataStores)
-			delete(rawMsg, key)
-		case "diskCount":
-			err = unpopulate(val, &m.DiskCount)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &m.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &m.ID)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &m.IPAddress)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &m.LastHeartbeat)
-			delete(rawMsg, key)
-		case "marsAgentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &m.MarsAgentExpiryDate)
-			delete(rawMsg, key)
-		case "marsAgentVersion":
-			err = unpopulate(val, &m.MarsAgentVersion)
-			delete(rawMsg, key)
-		case "marsAgentVersionDetails":
-			err = unpopulate(val, &m.MarsAgentVersionDetails)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &m.Name)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &m.OSType)
-			delete(rawMsg, key)
-		case "osVersion":
-			err = unpopulate(val, &m.OSVersion)
-			delete(rawMsg, key)
-		case "retentionVolumes":
-			err = unpopulate(val, &m.RetentionVolumes)
-			delete(rawMsg, key)
-		case "validationErrors":
-			err = unpopulate(val, &m.ValidationErrors)
-			delete(rawMsg, key)
-		case "versionStatus":
-			err = unpopulate(val, &m.VersionStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MigrateInput - Input for migrate.
 type MigrateInput struct {
 	// REQUIRED; Migrate input properties.
@@ -15540,33 +5904,6 @@ type MigrateInput struct {
 type MigrateInputProperties struct {
 	// REQUIRED; The provider specific details.
 	ProviderSpecificDetails MigrateProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MigrateInputProperties.
-func (m MigrateInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", m.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MigrateInputProperties.
-func (m *MigrateInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			m.ProviderSpecificDetails, err = unmarshalMigrateProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MigrateProviderSpecificInputClassification provides polymorphic access to related types.
@@ -15582,11 +5919,6 @@ type MigrateProviderSpecificInputClassification interface {
 type MigrateProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type MigrateProviderSpecificInput.
-func (m *MigrateProviderSpecificInput) GetMigrateProviderSpecificInput() *MigrateProviderSpecificInput {
-	return m
 }
 
 // MigrationItem - Migration item.
@@ -15614,14 +5946,6 @@ type MigrationItemCollection struct {
 
 	// The list of migration items.
 	Value []*MigrationItem `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MigrationItemCollection.
-func (m MigrationItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
 }
 
 // MigrationItemProperties - Migration item properties.
@@ -15672,89 +5996,6 @@ type MigrationItemProperties struct {
 	TestMigrateStateDescription *string `json:"testMigrateStateDescription,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MigrationItemProperties.
-func (m MigrationItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedOperations", m.AllowedOperations)
-	populate(objectMap, "currentJob", m.CurrentJob)
-	populate(objectMap, "eventCorrelationId", m.EventCorrelationID)
-	populate(objectMap, "health", m.Health)
-	populate(objectMap, "healthErrors", m.HealthErrors)
-	populate(objectMap, "lastTestMigrationStatus", m.LastTestMigrationStatus)
-	populateTimeRFC3339(objectMap, "lastTestMigrationTime", m.LastTestMigrationTime)
-	populate(objectMap, "machineName", m.MachineName)
-	populate(objectMap, "migrationState", m.MigrationState)
-	populate(objectMap, "migrationStateDescription", m.MigrationStateDescription)
-	populate(objectMap, "policyFriendlyName", m.PolicyFriendlyName)
-	populate(objectMap, "policyId", m.PolicyID)
-	populate(objectMap, "providerSpecificDetails", m.ProviderSpecificDetails)
-	populate(objectMap, "testMigrateState", m.TestMigrateState)
-	populate(objectMap, "testMigrateStateDescription", m.TestMigrateStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MigrationItemProperties.
-func (m *MigrationItemProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedOperations":
-			err = unpopulate(val, &m.AllowedOperations)
-			delete(rawMsg, key)
-		case "currentJob":
-			err = unpopulate(val, &m.CurrentJob)
-			delete(rawMsg, key)
-		case "eventCorrelationId":
-			err = unpopulate(val, &m.EventCorrelationID)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &m.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &m.HealthErrors)
-			delete(rawMsg, key)
-		case "lastTestMigrationStatus":
-			err = unpopulate(val, &m.LastTestMigrationStatus)
-			delete(rawMsg, key)
-		case "lastTestMigrationTime":
-			err = unpopulateTimeRFC3339(val, &m.LastTestMigrationTime)
-			delete(rawMsg, key)
-		case "machineName":
-			err = unpopulate(val, &m.MachineName)
-			delete(rawMsg, key)
-		case "migrationState":
-			err = unpopulate(val, &m.MigrationState)
-			delete(rawMsg, key)
-		case "migrationStateDescription":
-			err = unpopulate(val, &m.MigrationStateDescription)
-			delete(rawMsg, key)
-		case "policyFriendlyName":
-			err = unpopulate(val, &m.PolicyFriendlyName)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &m.PolicyID)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			m.ProviderSpecificDetails, err = unmarshalMigrationProviderSpecificSettingsClassification(val)
-			delete(rawMsg, key)
-		case "testMigrateState":
-			err = unpopulate(val, &m.TestMigrateState)
-			delete(rawMsg, key)
-		case "testMigrateStateDescription":
-			err = unpopulate(val, &m.TestMigrateStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // MigrationItemsQueryParameter - Query parameter to enumerate migration items.
 type MigrationItemsQueryParameter struct {
 	// The replication provider type.
@@ -15780,12 +6021,6 @@ type MigrationProviderSpecificSettingsClassification interface {
 type MigrationProviderSpecificSettings struct {
 	// REQUIRED; Gets the instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
-// MigrationProviderSpecificSettings.
-func (m *MigrationProviderSpecificSettings) GetMigrationProviderSpecificSettings() *MigrationProviderSpecificSettings {
-	return m
 }
 
 // MigrationRecoveryPoint - Recovery point for a migration item.
@@ -15815,14 +6050,6 @@ type MigrationRecoveryPointCollection struct {
 	Value []*MigrationRecoveryPoint `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MigrationRecoveryPointCollection.
-func (m MigrationRecoveryPointCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
 // MigrationRecoveryPointProperties - Migration item recovery point properties.
 type MigrationRecoveryPointProperties struct {
 	// READ-ONLY; The recovery point time.
@@ -15830,37 +6057,6 @@ type MigrationRecoveryPointProperties struct {
 
 	// READ-ONLY; The recovery point type.
 	RecoveryPointType *MigrationRecoveryPointType `json:"recoveryPointType,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MigrationRecoveryPointProperties.
-func (m MigrationRecoveryPointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "recoveryPointTime", m.RecoveryPointTime)
-	populate(objectMap, "recoveryPointType", m.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MigrationRecoveryPointProperties.
-func (m *MigrationRecoveryPointProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, &m.RecoveryPointTime)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &m.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // MigrationRecoveryPointsClientGetOptions contains the optional parameters for the MigrationRecoveryPointsClient.Get method.
@@ -15913,14 +6109,6 @@ type NetworkCollection struct {
 	Value []*Network `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkCollection.
-func (n NetworkCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
 // NetworkMapping - Network Mapping model. Ideally it should have been possible to inherit this class from prev version in
 // InheritedModels as long as there is no difference in structure or method signature. Since there
 // were no base Models for certain fields and methods viz NetworkMappingProperties and Load with required return type, the
@@ -15954,14 +6142,6 @@ type NetworkMappingCollection struct {
 	Value []*NetworkMapping `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkMappingCollection.
-func (n NetworkMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", n.NextLink)
-	populate(objectMap, "value", n.Value)
-	return json.Marshal(objectMap)
-}
-
 // NetworkMappingFabricSpecificSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetNetworkMappingFabricSpecificSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -15975,12 +6155,6 @@ type NetworkMappingFabricSpecificSettingsClassification interface {
 type NetworkMappingFabricSpecificSettings struct {
 	// REQUIRED; Gets the Instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
-// type NetworkMappingFabricSpecificSettings.
-func (n *NetworkMappingFabricSpecificSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
-	return n
 }
 
 // NetworkMappingProperties - Network Mapping Properties.
@@ -16013,65 +6187,6 @@ type NetworkMappingProperties struct {
 	State *string `json:"state,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkMappingProperties.
-func (n NetworkMappingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricSpecificSettings", n.FabricSpecificSettings)
-	populate(objectMap, "primaryFabricFriendlyName", n.PrimaryFabricFriendlyName)
-	populate(objectMap, "primaryNetworkFriendlyName", n.PrimaryNetworkFriendlyName)
-	populate(objectMap, "primaryNetworkId", n.PrimaryNetworkID)
-	populate(objectMap, "recoveryFabricArmId", n.RecoveryFabricArmID)
-	populate(objectMap, "recoveryFabricFriendlyName", n.RecoveryFabricFriendlyName)
-	populate(objectMap, "recoveryNetworkFriendlyName", n.RecoveryNetworkFriendlyName)
-	populate(objectMap, "recoveryNetworkId", n.RecoveryNetworkID)
-	populate(objectMap, "state", n.State)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NetworkMappingProperties.
-func (n *NetworkMappingProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricSpecificSettings":
-			n.FabricSpecificSettings, err = unmarshalNetworkMappingFabricSpecificSettingsClassification(val)
-			delete(rawMsg, key)
-		case "primaryFabricFriendlyName":
-			err = unpopulate(val, &n.PrimaryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "primaryNetworkFriendlyName":
-			err = unpopulate(val, &n.PrimaryNetworkFriendlyName)
-			delete(rawMsg, key)
-		case "primaryNetworkId":
-			err = unpopulate(val, &n.PrimaryNetworkID)
-			delete(rawMsg, key)
-		case "recoveryFabricArmId":
-			err = unpopulate(val, &n.RecoveryFabricArmID)
-			delete(rawMsg, key)
-		case "recoveryFabricFriendlyName":
-			err = unpopulate(val, &n.RecoveryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryNetworkFriendlyName":
-			err = unpopulate(val, &n.RecoveryNetworkFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryNetworkId":
-			err = unpopulate(val, &n.RecoveryNetworkID)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &n.State)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NetworkProperties - Network Properties.
 type NetworkProperties struct {
 	// The Fabric Type.
@@ -16085,16 +6200,6 @@ type NetworkProperties struct {
 
 	// The List of subnets.
 	Subnets []*Subnet `json:"subnets,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NetworkProperties.
-func (n NetworkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricType", n.FabricType)
-	populate(objectMap, "friendlyName", n.FriendlyName)
-	populate(objectMap, "networkType", n.NetworkType)
-	populate(objectMap, "subnets", n.Subnets)
-	return json.Marshal(objectMap)
 }
 
 // NewProtectionProfile - New Protection profile input.
@@ -16118,60 +6223,6 @@ type NewProtectionProfile struct {
 	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
 }
 
-// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type NewProtectionProfile.
-func (n *NewProtectionProfile) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
-	return &ProtectionProfileCustomDetails{
-		ResourceType: n.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NewProtectionProfile.
-func (n NewProtectionProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", n.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", n.CrashConsistentFrequencyInMinutes)
-	populate(objectMap, "multiVmSyncStatus", n.MultiVMSyncStatus)
-	populate(objectMap, "policyName", n.PolicyName)
-	populate(objectMap, "recoveryPointHistory", n.RecoveryPointHistory)
-	objectMap["resourceType"] = "New"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NewProtectionProfile.
-func (n *NewProtectionProfile) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &n.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &n.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "multiVmSyncStatus":
-			err = unpopulate(val, &n.MultiVMSyncStatus)
-			delete(rawMsg, key)
-		case "policyName":
-			err = unpopulate(val, &n.PolicyName)
-			delete(rawMsg, key)
-		case "recoveryPointHistory":
-			err = unpopulate(val, &n.RecoveryPointHistory)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &n.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // NewRecoveryVirtualNetwork - Recovery virtual network input to create new virtual network from given source network.
 type NewRecoveryVirtualNetwork struct {
 	// REQUIRED; The class type.
@@ -16183,49 +6234,6 @@ type NewRecoveryVirtualNetwork struct {
 	// The name of the resource group to be used to create the recovery virtual network. If absent, target network would be created
 	// in the same resource group as target VM.
 	RecoveryVirtualNetworkResourceGroupName *string `json:"recoveryVirtualNetworkResourceGroupName,omitempty"`
-}
-
-// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
-// NewRecoveryVirtualNetwork.
-func (n *NewRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
-	return &RecoveryVirtualNetworkCustomDetails{
-		ResourceType: n.ResourceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type NewRecoveryVirtualNetwork.
-func (n NewRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "recoveryVirtualNetworkName", n.RecoveryVirtualNetworkName)
-	populate(objectMap, "recoveryVirtualNetworkResourceGroupName", n.RecoveryVirtualNetworkResourceGroupName)
-	objectMap["resourceType"] = "New"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NewRecoveryVirtualNetwork.
-func (n *NewRecoveryVirtualNetwork) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "recoveryVirtualNetworkName":
-			err = unpopulate(val, &n.RecoveryVirtualNetworkName)
-			delete(rawMsg, key)
-		case "recoveryVirtualNetworkResourceGroupName":
-			err = unpopulate(val, &n.RecoveryVirtualNetworkResourceGroupName)
-			delete(rawMsg, key)
-		case "resourceType":
-			err = unpopulate(val, &n.ResourceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // OSDetails - Disk Details.
@@ -16300,7 +6308,7 @@ type OperationsDiscovery struct {
 	Origin *string `json:"origin,omitempty"`
 
 	// Properties. Reserved for future use.
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // OperationsDiscoveryCollection - Collection of ClientDiscovery details.
@@ -16310,14 +6318,6 @@ type OperationsDiscoveryCollection struct {
 
 	// The ClientDiscovery details.
 	Value []*OperationsDiscovery `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationsDiscoveryCollection.
-func (o OperationsDiscoveryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // PlannedFailoverInput - Input definition for planned failover.
@@ -16335,37 +6335,6 @@ type PlannedFailoverInputProperties struct {
 	ProviderSpecificDetails PlannedFailoverProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PlannedFailoverInputProperties.
-func (p PlannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", p.FailoverDirection)
-	populate(objectMap, "providerSpecificDetails", p.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PlannedFailoverInputProperties.
-func (p *PlannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &p.FailoverDirection)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			p.ProviderSpecificDetails, err = unmarshalPlannedFailoverProviderSpecificFailoverInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PlannedFailoverProviderSpecificFailoverInputClassification provides polymorphic access to related types.
 // Call the interface's GetPlannedFailoverProviderSpecificFailoverInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -16380,12 +6349,6 @@ type PlannedFailoverProviderSpecificFailoverInputClassification interface {
 type PlannedFailoverProviderSpecificFailoverInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
-// interface for type PlannedFailoverProviderSpecificFailoverInput.
-func (p *PlannedFailoverProviderSpecificFailoverInput) GetPlannedFailoverProviderSpecificFailoverInput() *PlannedFailoverProviderSpecificFailoverInput {
-	return p
 }
 
 // Policy - Protection profile details.
@@ -16415,14 +6378,6 @@ type PolicyCollection struct {
 	Value []*Policy `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PolicyCollection.
-func (p PolicyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PolicyProperties - Protection profile custom data details.
 type PolicyProperties struct {
 	// The FriendlyName.
@@ -16430,37 +6385,6 @@ type PolicyProperties struct {
 
 	// The ReplicationChannelSetting.
 	ProviderSpecificDetails PolicyProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PolicyProperties.
-func (p PolicyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "providerSpecificDetails", p.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PolicyProperties.
-func (p *PolicyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			p.ProviderSpecificDetails, err = unmarshalPolicyProviderSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // PolicyProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -16480,11 +6404,6 @@ type PolicyProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type PolicyProviderSpecificDetails.
-func (p *PolicyProviderSpecificDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return p
-}
-
 // PolicyProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetPolicyProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -16500,11 +6419,6 @@ type PolicyProviderSpecificInputClassification interface {
 type PolicyProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type PolicyProviderSpecificInput.
-func (p *PolicyProviderSpecificInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return p
 }
 
 // ProcessServer - Details of the Process Server.
@@ -16618,173 +6532,6 @@ type ProcessServer struct {
 	ThroughputUploadPendingDataInBytes *int64 `json:"throughputUploadPendingDataInBytes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessServer.
-func (p ProcessServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "agentExpiryDate", p.AgentExpiryDate)
-	populate(objectMap, "agentVersion", p.AgentVersion)
-	populate(objectMap, "agentVersionDetails", p.AgentVersionDetails)
-	populate(objectMap, "availableMemoryInBytes", p.AvailableMemoryInBytes)
-	populate(objectMap, "availableSpaceInBytes", p.AvailableSpaceInBytes)
-	populate(objectMap, "cpuLoad", p.CPULoad)
-	populate(objectMap, "cpuLoadStatus", p.CPULoadStatus)
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "health", p.Health)
-	populate(objectMap, "healthErrors", p.HealthErrors)
-	populate(objectMap, "hostId", p.HostID)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "ipAddress", p.IPAddress)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", p.LastHeartbeat)
-	populate(objectMap, "machineCount", p.MachineCount)
-	populate(objectMap, "marsCommunicationStatus", p.MarsCommunicationStatus)
-	populate(objectMap, "marsRegistrationStatus", p.MarsRegistrationStatus)
-	populate(objectMap, "memoryUsageStatus", p.MemoryUsageStatus)
-	populate(objectMap, "mobilityServiceUpdates", p.MobilityServiceUpdates)
-	populate(objectMap, "osType", p.OSType)
-	populate(objectMap, "osVersion", p.OSVersion)
-	populate(objectMap, "psServiceStatus", p.PsServiceStatus)
-	populateTimeRFC3339(objectMap, "psStatsRefreshTime", p.PsStatsRefreshTime)
-	populate(objectMap, "replicationPairCount", p.ReplicationPairCount)
-	populateTimeRFC3339(objectMap, "sslCertExpiryDate", p.SSLCertExpiryDate)
-	populate(objectMap, "sslCertExpiryRemainingDays", p.SSLCertExpiryRemainingDays)
-	populate(objectMap, "spaceUsageStatus", p.SpaceUsageStatus)
-	populate(objectMap, "systemLoad", p.SystemLoad)
-	populate(objectMap, "systemLoadStatus", p.SystemLoadStatus)
-	populate(objectMap, "throughputInBytes", p.ThroughputInBytes)
-	populate(objectMap, "throughputInMBps", p.ThroughputInMBps)
-	populate(objectMap, "throughputStatus", p.ThroughputStatus)
-	populate(objectMap, "throughputUploadPendingDataInBytes", p.ThroughputUploadPendingDataInBytes)
-	populate(objectMap, "totalMemoryInBytes", p.TotalMemoryInBytes)
-	populate(objectMap, "totalSpaceInBytes", p.TotalSpaceInBytes)
-	populate(objectMap, "versionStatus", p.VersionStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProcessServer.
-func (p *ProcessServer) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &p.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &p.AgentVersion)
-			delete(rawMsg, key)
-		case "agentVersionDetails":
-			err = unpopulate(val, &p.AgentVersionDetails)
-			delete(rawMsg, key)
-		case "availableMemoryInBytes":
-			err = unpopulate(val, &p.AvailableMemoryInBytes)
-			delete(rawMsg, key)
-		case "availableSpaceInBytes":
-			err = unpopulate(val, &p.AvailableSpaceInBytes)
-			delete(rawMsg, key)
-		case "cpuLoad":
-			err = unpopulate(val, &p.CPULoad)
-			delete(rawMsg, key)
-		case "cpuLoadStatus":
-			err = unpopulate(val, &p.CPULoadStatus)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &p.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &p.HealthErrors)
-			delete(rawMsg, key)
-		case "hostId":
-			err = unpopulate(val, &p.HostID)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &p.IPAddress)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &p.LastHeartbeat)
-			delete(rawMsg, key)
-		case "machineCount":
-			err = unpopulate(val, &p.MachineCount)
-			delete(rawMsg, key)
-		case "marsCommunicationStatus":
-			err = unpopulate(val, &p.MarsCommunicationStatus)
-			delete(rawMsg, key)
-		case "marsRegistrationStatus":
-			err = unpopulate(val, &p.MarsRegistrationStatus)
-			delete(rawMsg, key)
-		case "memoryUsageStatus":
-			err = unpopulate(val, &p.MemoryUsageStatus)
-			delete(rawMsg, key)
-		case "mobilityServiceUpdates":
-			err = unpopulate(val, &p.MobilityServiceUpdates)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &p.OSType)
-			delete(rawMsg, key)
-		case "osVersion":
-			err = unpopulate(val, &p.OSVersion)
-			delete(rawMsg, key)
-		case "psServiceStatus":
-			err = unpopulate(val, &p.PsServiceStatus)
-			delete(rawMsg, key)
-		case "psStatsRefreshTime":
-			err = unpopulateTimeRFC3339(val, &p.PsStatsRefreshTime)
-			delete(rawMsg, key)
-		case "replicationPairCount":
-			err = unpopulate(val, &p.ReplicationPairCount)
-			delete(rawMsg, key)
-		case "sslCertExpiryDate":
-			err = unpopulateTimeRFC3339(val, &p.SSLCertExpiryDate)
-			delete(rawMsg, key)
-		case "sslCertExpiryRemainingDays":
-			err = unpopulate(val, &p.SSLCertExpiryRemainingDays)
-			delete(rawMsg, key)
-		case "spaceUsageStatus":
-			err = unpopulate(val, &p.SpaceUsageStatus)
-			delete(rawMsg, key)
-		case "systemLoad":
-			err = unpopulate(val, &p.SystemLoad)
-			delete(rawMsg, key)
-		case "systemLoadStatus":
-			err = unpopulate(val, &p.SystemLoadStatus)
-			delete(rawMsg, key)
-		case "throughputInBytes":
-			err = unpopulate(val, &p.ThroughputInBytes)
-			delete(rawMsg, key)
-		case "throughputInMBps":
-			err = unpopulate(val, &p.ThroughputInMBps)
-			delete(rawMsg, key)
-		case "throughputStatus":
-			err = unpopulate(val, &p.ThroughputStatus)
-			delete(rawMsg, key)
-		case "throughputUploadPendingDataInBytes":
-			err = unpopulate(val, &p.ThroughputUploadPendingDataInBytes)
-			delete(rawMsg, key)
-		case "totalMemoryInBytes":
-			err = unpopulate(val, &p.TotalMemoryInBytes)
-			delete(rawMsg, key)
-		case "totalSpaceInBytes":
-			err = unpopulate(val, &p.TotalSpaceInBytes)
-			delete(rawMsg, key)
-		case "versionStatus":
-			err = unpopulate(val, &p.VersionStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProcessServerDetails - Process server details.
 type ProcessServerDetails struct {
 	// READ-ONLY; The available memory.
@@ -16875,145 +6622,6 @@ type ProcessServerDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProcessServerDetails.
-func (p ProcessServerDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availableMemoryInBytes", p.AvailableMemoryInBytes)
-	populate(objectMap, "availableSpaceInBytes", p.AvailableSpaceInBytes)
-	populate(objectMap, "biosId", p.BiosID)
-	populate(objectMap, "diskUsageStatus", p.DiskUsageStatus)
-	populate(objectMap, "fabricObjectId", p.FabricObjectID)
-	populate(objectMap, "fqdn", p.Fqdn)
-	populate(objectMap, "freeSpacePercentage", p.FreeSpacePercentage)
-	populate(objectMap, "health", p.Health)
-	populate(objectMap, "healthErrors", p.HealthErrors)
-	populate(objectMap, "historicHealth", p.HistoricHealth)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "ipAddresses", p.IPAddresses)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", p.LastHeartbeatUTC)
-	populate(objectMap, "memoryUsagePercentage", p.MemoryUsagePercentage)
-	populate(objectMap, "memoryUsageStatus", p.MemoryUsageStatus)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "processorUsagePercentage", p.ProcessorUsagePercentage)
-	populate(objectMap, "processorUsageStatus", p.ProcessorUsageStatus)
-	populate(objectMap, "protectedItemCount", p.ProtectedItemCount)
-	populate(objectMap, "systemLoad", p.SystemLoad)
-	populate(objectMap, "systemLoadStatus", p.SystemLoadStatus)
-	populate(objectMap, "throughputInBytes", p.ThroughputInBytes)
-	populate(objectMap, "throughputStatus", p.ThroughputStatus)
-	populate(objectMap, "throughputUploadPendingDataInBytes", p.ThroughputUploadPendingDataInBytes)
-	populate(objectMap, "totalMemoryInBytes", p.TotalMemoryInBytes)
-	populate(objectMap, "totalSpaceInBytes", p.TotalSpaceInBytes)
-	populate(objectMap, "usedMemoryInBytes", p.UsedMemoryInBytes)
-	populate(objectMap, "usedSpaceInBytes", p.UsedSpaceInBytes)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProcessServerDetails.
-func (p *ProcessServerDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "availableMemoryInBytes":
-			err = unpopulate(val, &p.AvailableMemoryInBytes)
-			delete(rawMsg, key)
-		case "availableSpaceInBytes":
-			err = unpopulate(val, &p.AvailableSpaceInBytes)
-			delete(rawMsg, key)
-		case "biosId":
-			err = unpopulate(val, &p.BiosID)
-			delete(rawMsg, key)
-		case "diskUsageStatus":
-			err = unpopulate(val, &p.DiskUsageStatus)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &p.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &p.Fqdn)
-			delete(rawMsg, key)
-		case "freeSpacePercentage":
-			err = unpopulate(val, &p.FreeSpacePercentage)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &p.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &p.HealthErrors)
-			delete(rawMsg, key)
-		case "historicHealth":
-			err = unpopulate(val, &p.HistoricHealth)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "ipAddresses":
-			err = unpopulate(val, &p.IPAddresses)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &p.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "memoryUsagePercentage":
-			err = unpopulate(val, &p.MemoryUsagePercentage)
-			delete(rawMsg, key)
-		case "memoryUsageStatus":
-			err = unpopulate(val, &p.MemoryUsageStatus)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "processorUsagePercentage":
-			err = unpopulate(val, &p.ProcessorUsagePercentage)
-			delete(rawMsg, key)
-		case "processorUsageStatus":
-			err = unpopulate(val, &p.ProcessorUsageStatus)
-			delete(rawMsg, key)
-		case "protectedItemCount":
-			err = unpopulate(val, &p.ProtectedItemCount)
-			delete(rawMsg, key)
-		case "systemLoad":
-			err = unpopulate(val, &p.SystemLoad)
-			delete(rawMsg, key)
-		case "systemLoadStatus":
-			err = unpopulate(val, &p.SystemLoadStatus)
-			delete(rawMsg, key)
-		case "throughputInBytes":
-			err = unpopulate(val, &p.ThroughputInBytes)
-			delete(rawMsg, key)
-		case "throughputStatus":
-			err = unpopulate(val, &p.ThroughputStatus)
-			delete(rawMsg, key)
-		case "throughputUploadPendingDataInBytes":
-			err = unpopulate(val, &p.ThroughputUploadPendingDataInBytes)
-			delete(rawMsg, key)
-		case "totalMemoryInBytes":
-			err = unpopulate(val, &p.TotalMemoryInBytes)
-			delete(rawMsg, key)
-		case "totalSpaceInBytes":
-			err = unpopulate(val, &p.TotalSpaceInBytes)
-			delete(rawMsg, key)
-		case "usedMemoryInBytes":
-			err = unpopulate(val, &p.UsedMemoryInBytes)
-			delete(rawMsg, key)
-		case "usedSpaceInBytes":
-			err = unpopulate(val, &p.UsedSpaceInBytes)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &p.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProtectableItem - Replication protected item.
 type ProtectableItem struct {
 	// Resource Location
@@ -17041,14 +6649,6 @@ type ProtectableItemCollection struct {
 	Value []*ProtectableItem `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProtectableItemCollection.
-func (p ProtectableItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // ProtectableItemProperties - Replication protected item custom data details.
 type ProtectableItemProperties struct {
 	// The Replication provider custom settings.
@@ -17071,57 +6671,6 @@ type ProtectableItemProperties struct {
 
 	// The list of replication providers supported for the protectable item.
 	SupportedReplicationProviders []*string `json:"supportedReplicationProviders,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProtectableItemProperties.
-func (p ProtectableItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customDetails", p.CustomDetails)
-	populate(objectMap, "friendlyName", p.FriendlyName)
-	populate(objectMap, "protectionReadinessErrors", p.ProtectionReadinessErrors)
-	populate(objectMap, "protectionStatus", p.ProtectionStatus)
-	populate(objectMap, "recoveryServicesProviderId", p.RecoveryServicesProviderID)
-	populate(objectMap, "replicationProtectedItemId", p.ReplicationProtectedItemID)
-	populate(objectMap, "supportedReplicationProviders", p.SupportedReplicationProviders)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectableItemProperties.
-func (p *ProtectableItemProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "customDetails":
-			p.CustomDetails, err = unmarshalConfigurationSettingsClassification(val)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &p.FriendlyName)
-			delete(rawMsg, key)
-		case "protectionReadinessErrors":
-			err = unpopulate(val, &p.ProtectionReadinessErrors)
-			delete(rawMsg, key)
-		case "protectionStatus":
-			err = unpopulate(val, &p.ProtectionStatus)
-			delete(rawMsg, key)
-		case "recoveryServicesProviderId":
-			err = unpopulate(val, &p.RecoveryServicesProviderID)
-			delete(rawMsg, key)
-		case "replicationProtectedItemId":
-			err = unpopulate(val, &p.ReplicationProtectedItemID)
-			delete(rawMsg, key)
-		case "supportedReplicationProviders":
-			err = unpopulate(val, &p.SupportedReplicationProviders)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ProtectableItemQueryParameter - Query parameter to enumerate Protectable items.
@@ -17184,14 +6733,6 @@ type ProtectionContainerCollection struct {
 	Value []*ProtectionContainer `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProtectionContainerCollection.
-func (p ProtectionContainerCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // ProtectionContainerFabricSpecificDetails - Base class for fabric specific details of container.
 type ProtectionContainerFabricSpecificDetails struct {
 	// READ-ONLY; Gets the class type. Overridden in derived classes.
@@ -17223,14 +6764,6 @@ type ProtectionContainerMappingCollection struct {
 
 	// List of container mappings.
 	Value []*ProtectionContainerMapping `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMappingCollection.
-func (p ProtectionContainerMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // ProtectionContainerMappingProperties - Protection container mapping properties.
@@ -17269,73 +6802,6 @@ type ProtectionContainerMappingProperties struct {
 	TargetProtectionContainerID *string `json:"targetProtectionContainerId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMappingProperties.
-func (p ProtectionContainerMappingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "health", p.Health)
-	populate(objectMap, "healthErrorDetails", p.HealthErrorDetails)
-	populate(objectMap, "policyFriendlyName", p.PolicyFriendlyName)
-	populate(objectMap, "policyId", p.PolicyID)
-	populate(objectMap, "providerSpecificDetails", p.ProviderSpecificDetails)
-	populate(objectMap, "sourceFabricFriendlyName", p.SourceFabricFriendlyName)
-	populate(objectMap, "sourceProtectionContainerFriendlyName", p.SourceProtectionContainerFriendlyName)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "targetFabricFriendlyName", p.TargetFabricFriendlyName)
-	populate(objectMap, "targetProtectionContainerFriendlyName", p.TargetProtectionContainerFriendlyName)
-	populate(objectMap, "targetProtectionContainerId", p.TargetProtectionContainerID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ProtectionContainerMappingProperties.
-func (p *ProtectionContainerMappingProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "health":
-			err = unpopulate(val, &p.Health)
-			delete(rawMsg, key)
-		case "healthErrorDetails":
-			err = unpopulate(val, &p.HealthErrorDetails)
-			delete(rawMsg, key)
-		case "policyFriendlyName":
-			err = unpopulate(val, &p.PolicyFriendlyName)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &p.PolicyID)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			p.ProviderSpecificDetails, err = unmarshalProtectionContainerMappingProviderSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		case "sourceFabricFriendlyName":
-			err = unpopulate(val, &p.SourceFabricFriendlyName)
-			delete(rawMsg, key)
-		case "sourceProtectionContainerFriendlyName":
-			err = unpopulate(val, &p.SourceProtectionContainerFriendlyName)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "targetFabricFriendlyName":
-			err = unpopulate(val, &p.TargetFabricFriendlyName)
-			delete(rawMsg, key)
-		case "targetProtectionContainerFriendlyName":
-			err = unpopulate(val, &p.TargetProtectionContainerFriendlyName)
-			delete(rawMsg, key)
-		case "targetProtectionContainerId":
-			err = unpopulate(val, &p.TargetProtectionContainerID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ProtectionContainerMappingProviderSpecificDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetProtectionContainerMappingProviderSpecificDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -17350,12 +6816,6 @@ type ProtectionContainerMappingProviderSpecificDetailsClassification interface {
 type ProtectionContainerMappingProviderSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
-// interface for type ProtectionContainerMappingProviderSpecificDetails.
-func (p *ProtectionContainerMappingProviderSpecificDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
-	return p
 }
 
 // ProtectionContainerProperties - Protection profile custom data details.
@@ -17397,11 +6857,6 @@ type ProtectionProfileCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ProtectionProfileCustomDetails.
-func (p *ProtectionProfileCustomDetails) GetProtectionProfileCustomDetails() *ProtectionProfileCustomDetails {
-	return p
-}
-
 // ProviderError - This class contains the error details per object.
 type ProviderError struct {
 	// The Error code.
@@ -17435,12 +6890,6 @@ type ProviderSpecificRecoveryPointDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
-// type ProviderSpecificRecoveryPointDetails.
-func (p *ProviderSpecificRecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *ProviderSpecificRecoveryPointDetails {
-	return p
-}
-
 // PushInstallerDetails - Push installer details.
 type PushInstallerDetails struct {
 	// READ-ONLY; The push installer Bios Id.
@@ -17469,65 +6918,6 @@ type PushInstallerDetails struct {
 
 	// READ-ONLY; The version.
 	Version *string `json:"version,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PushInstallerDetails.
-func (p PushInstallerDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "biosId", p.BiosID)
-	populate(objectMap, "fabricObjectId", p.FabricObjectID)
-	populate(objectMap, "fqdn", p.Fqdn)
-	populate(objectMap, "health", p.Health)
-	populate(objectMap, "healthErrors", p.HealthErrors)
-	populate(objectMap, "id", p.ID)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", p.LastHeartbeatUTC)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "version", p.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PushInstallerDetails.
-func (p *PushInstallerDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "biosId":
-			err = unpopulate(val, &p.BiosID)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &p.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &p.Fqdn)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &p.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &p.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &p.ID)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &p.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &p.Name)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &p.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RcmProxyDetails - RCM proxy details.
@@ -17563,69 +6953,6 @@ type RcmProxyDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RcmProxyDetails.
-func (r RcmProxyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "biosId", r.BiosID)
-	populate(objectMap, "clientAuthenticationType", r.ClientAuthenticationType)
-	populate(objectMap, "fabricObjectId", r.FabricObjectID)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "health", r.Health)
-	populate(objectMap, "healthErrors", r.HealthErrors)
-	populate(objectMap, "id", r.ID)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", r.LastHeartbeatUTC)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "version", r.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RcmProxyDetails.
-func (r *RcmProxyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "biosId":
-			err = unpopulate(val, &r.BiosID)
-			delete(rawMsg, key)
-		case "clientAuthenticationType":
-			err = unpopulate(val, &r.ClientAuthenticationType)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &r.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &r.Fqdn)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &r.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &r.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &r.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &r.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryAvailabilitySetCustomDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryAvailabilitySetCustomDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -17639,12 +6966,6 @@ type RecoveryAvailabilitySetCustomDetailsClassification interface {
 type RecoveryAvailabilitySetCustomDetails struct {
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
-// type RecoveryAvailabilitySetCustomDetails.
-func (r *RecoveryAvailabilitySetCustomDetails) GetRecoveryAvailabilitySetCustomDetails() *RecoveryAvailabilitySetCustomDetails {
-	return r
 }
 
 // RecoveryPlan - Recovery plan details.
@@ -17677,49 +6998,6 @@ type RecoveryPlanA2ADetails struct {
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
-// RecoveryPlanA2ADetails.
-func (r *RecoveryPlanA2ADetails) GetRecoveryPlanProviderSpecificDetails() *RecoveryPlanProviderSpecificDetails {
-	return &RecoveryPlanProviderSpecificDetails{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2ADetails.
-func (r RecoveryPlanA2ADetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "primaryZone", r.PrimaryZone)
-	populate(objectMap, "recoveryZone", r.RecoveryZone)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanA2ADetails.
-func (r *RecoveryPlanA2ADetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "primaryZone":
-			err = unpopulate(val, &r.PrimaryZone)
-			delete(rawMsg, key)
-		case "recoveryZone":
-			err = unpopulate(val, &r.RecoveryZone)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanA2AFailoverInput - Recovery plan A2A failover input.
 type RecoveryPlanA2AFailoverInput struct {
 	// REQUIRED; The class type.
@@ -17733,53 +7011,6 @@ type RecoveryPlanA2AFailoverInput struct {
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
 	MultiVMSyncPointOption *MultiVMSyncPointOption `json:"multiVmSyncPointOption,omitempty"`
-}
-
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanA2AFailoverInput.
-func (r *RecoveryPlanA2AFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2AFailoverInput.
-func (r RecoveryPlanA2AFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cloudServiceCreationOption", r.CloudServiceCreationOption)
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "multiVmSyncPointOption", r.MultiVMSyncPointOption)
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanA2AFailoverInput.
-func (r *RecoveryPlanA2AFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "cloudServiceCreationOption":
-			err = unpopulate(val, &r.CloudServiceCreationOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "multiVmSyncPointOption":
-			err = unpopulate(val, &r.MultiVMSyncPointOption)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanA2AInput - Recovery plan A2A input.
@@ -17800,57 +7031,6 @@ type RecoveryPlanA2AInput struct {
 	RecoveryZone *string `json:"recoveryZone,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
-// RecoveryPlanA2AInput.
-func (r *RecoveryPlanA2AInput) GetRecoveryPlanProviderSpecificInput() *RecoveryPlanProviderSpecificInput {
-	return &RecoveryPlanProviderSpecificInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2AInput.
-func (r RecoveryPlanA2AInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "A2A"
-	populate(objectMap, "primaryExtendedLocation", r.PrimaryExtendedLocation)
-	populate(objectMap, "primaryZone", r.PrimaryZone)
-	populate(objectMap, "recoveryExtendedLocation", r.RecoveryExtendedLocation)
-	populate(objectMap, "recoveryZone", r.RecoveryZone)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanA2AInput.
-func (r *RecoveryPlanA2AInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "primaryExtendedLocation":
-			err = unpopulate(val, &r.PrimaryExtendedLocation)
-			delete(rawMsg, key)
-		case "primaryZone":
-			err = unpopulate(val, &r.PrimaryZone)
-			delete(rawMsg, key)
-		case "recoveryExtendedLocation":
-			err = unpopulate(val, &r.RecoveryExtendedLocation)
-			delete(rawMsg, key)
-		case "recoveryZone":
-			err = unpopulate(val, &r.RecoveryZone)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanAction - Recovery plan action details.
 type RecoveryPlanAction struct {
 	// REQUIRED; The action name.
@@ -17864,45 +7044,6 @@ type RecoveryPlanAction struct {
 
 	// REQUIRED; The list of failover types.
 	FailoverTypes []*ReplicationProtectedItemOperation `json:"failoverTypes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanAction.
-func (r RecoveryPlanAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actionName", r.ActionName)
-	populate(objectMap, "customDetails", r.CustomDetails)
-	populate(objectMap, "failoverDirections", r.FailoverDirections)
-	populate(objectMap, "failoverTypes", r.FailoverTypes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanAction.
-func (r *RecoveryPlanAction) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "actionName":
-			err = unpopulate(val, &r.ActionName)
-			delete(rawMsg, key)
-		case "customDetails":
-			r.CustomDetails, err = unmarshalRecoveryPlanActionDetailsClassification(val)
-			delete(rawMsg, key)
-		case "failoverDirections":
-			err = unpopulate(val, &r.FailoverDirections)
-			delete(rawMsg, key)
-		case "failoverTypes":
-			err = unpopulate(val, &r.FailoverTypes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanActionDetailsClassification provides polymorphic access to related types.
@@ -17920,11 +7061,6 @@ type RecoveryPlanActionDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanActionDetails.
-func (r *RecoveryPlanActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
-	return r
-}
-
 // RecoveryPlanAutomationRunbookActionDetails - Recovery plan Automation runbook action details.
 type RecoveryPlanAutomationRunbookActionDetails struct {
 	// REQUIRED; The fabric location.
@@ -17940,52 +7076,6 @@ type RecoveryPlanAutomationRunbookActionDetails struct {
 	Timeout *string `json:"timeout,omitempty"`
 }
 
-// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanAutomationRunbookActionDetails.
-func (r *RecoveryPlanAutomationRunbookActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
-	return &RecoveryPlanActionDetails{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanAutomationRunbookActionDetails.
-func (r RecoveryPlanAutomationRunbookActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricLocation", r.FabricLocation)
-	objectMap["instanceType"] = "AutomationRunbookActionDetails"
-	populate(objectMap, "runbookId", r.RunbookID)
-	populate(objectMap, "timeout", r.Timeout)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanAutomationRunbookActionDetails.
-func (r *RecoveryPlanAutomationRunbookActionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricLocation":
-			err = unpopulate(val, &r.FabricLocation)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "runbookId":
-			err = unpopulate(val, &r.RunbookID)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &r.Timeout)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanCollection - Recovery plan collection details.
 type RecoveryPlanCollection struct {
 	// The value of next link.
@@ -17993,14 +7083,6 @@ type RecoveryPlanCollection struct {
 
 	// The list of recovery plans.
 	Value []*RecoveryPlan `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanCollection.
-func (r RecoveryPlanCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RecoveryPlanGroup - Recovery plan group details.
@@ -18016,16 +7098,6 @@ type RecoveryPlanGroup struct {
 
 	// The start group actions.
 	StartGroupActions []*RecoveryPlanAction `json:"startGroupActions,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanGroup.
-func (r RecoveryPlanGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "endGroupActions", r.EndGroupActions)
-	populate(objectMap, "groupType", r.GroupType)
-	populate(objectMap, "replicationProtectedItems", r.ReplicationProtectedItems)
-	populate(objectMap, "startGroupActions", r.StartGroupActions)
-	return json.Marshal(objectMap)
 }
 
 // RecoveryPlanGroupTaskDetailsClassification provides polymorphic access to related types.
@@ -18056,62 +7128,6 @@ type RecoveryPlanGroupTaskDetails struct {
 	RpGroupType *string `json:"rpGroupType,omitempty"`
 }
 
-// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanGroupTaskDetails.
-func (r *RecoveryPlanGroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
-	return &GroupTaskDetails{
-		InstanceType: r.InstanceType,
-		ChildTasks:   r.ChildTasks,
-	}
-}
-
-// GetRecoveryPlanGroupTaskDetails implements the RecoveryPlanGroupTaskDetailsClassification interface for type RecoveryPlanGroupTaskDetails.
-func (r *RecoveryPlanGroupTaskDetails) GetRecoveryPlanGroupTaskDetails() *RecoveryPlanGroupTaskDetails {
-	return r
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanGroupTaskDetails.
-func (r RecoveryPlanGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "childTasks", r.ChildTasks)
-	populate(objectMap, "groupId", r.GroupID)
-	objectMap["instanceType"] = "RecoveryPlanGroupTaskDetails"
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "rpGroupType", r.RpGroupType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanGroupTaskDetails.
-func (r *RecoveryPlanGroupTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "childTasks":
-			err = unpopulate(val, &r.ChildTasks)
-			delete(rawMsg, key)
-		case "groupId":
-			err = unpopulate(val, &r.GroupID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "rpGroupType":
-			err = unpopulate(val, &r.RpGroupType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanHyperVReplicaAzureFailbackInput - Recovery plan HVR Azure failback input.
 type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 	// REQUIRED; The data sync option.
@@ -18122,49 +7138,6 @@ type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 
 	// REQUIRED; The ALR option.
 	RecoveryVMCreationOption *AlternateLocationRecoveryOption `json:"recoveryVmCreationOption,omitempty"`
-}
-
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanHyperVReplicaAzureFailbackInput.
-func (r *RecoveryPlanHyperVReplicaAzureFailbackInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanHyperVReplicaAzureFailbackInput.
-func (r RecoveryPlanHyperVReplicaAzureFailbackInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataSyncOption", r.DataSyncOption)
-	objectMap["instanceType"] = "HyperVReplicaAzureFailback"
-	populate(objectMap, "recoveryVmCreationOption", r.RecoveryVMCreationOption)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanHyperVReplicaAzureFailbackInput.
-func (r *RecoveryPlanHyperVReplicaAzureFailbackInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataSyncOption":
-			err = unpopulate(val, &r.DataSyncOption)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryVmCreationOption":
-			err = unpopulate(val, &r.RecoveryVMCreationOption)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanHyperVReplicaAzureFailoverInput - Recovery plan HVR Azure failover input.
@@ -18182,53 +7155,6 @@ type RecoveryPlanHyperVReplicaAzureFailoverInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanHyperVReplicaAzureFailoverInput.
-func (r *RecoveryPlanHyperVReplicaAzureFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanHyperVReplicaAzureFailoverInput.
-func (r RecoveryPlanHyperVReplicaAzureFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "HyperVReplicaAzure"
-	populate(objectMap, "primaryKekCertificatePfx", r.PrimaryKekCertificatePfx)
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	populate(objectMap, "secondaryKekCertificatePfx", r.SecondaryKekCertificatePfx)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanHyperVReplicaAzureFailoverInput.
-func (r *RecoveryPlanHyperVReplicaAzureFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "primaryKekCertificatePfx":
-			err = unpopulate(val, &r.PrimaryKekCertificatePfx)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		case "secondaryKekCertificatePfx":
-			err = unpopulate(val, &r.SecondaryKekCertificatePfx)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanInMageAzureV2FailoverInput - Recovery plan InMageAzureV2 failover input.
 type RecoveryPlanInMageAzureV2FailoverInput struct {
 	// REQUIRED; The class type.
@@ -18241,49 +7167,6 @@ type RecoveryPlanInMageAzureV2FailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanInMageAzureV2FailoverInput.
-func (r *RecoveryPlanInMageAzureV2FailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageAzureV2FailoverInput.
-func (r RecoveryPlanInMageAzureV2FailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageAzureV2"
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanInMageAzureV2FailoverInput.
-func (r *RecoveryPlanInMageAzureV2FailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		case "useMultiVmSyncPoint":
-			err = unpopulate(val, &r.UseMultiVMSyncPoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanInMageFailoverInput - Recovery plan InMage failover input.
 type RecoveryPlanInMageFailoverInput struct {
 	// REQUIRED; The class type.
@@ -18291,45 +7174,6 @@ type RecoveryPlanInMageFailoverInput struct {
 
 	// REQUIRED; The recovery point type.
 	RecoveryPointType *RpInMageRecoveryPointType `json:"recoveryPointType,omitempty"`
-}
-
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanInMageFailoverInput.
-func (r *RecoveryPlanInMageFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageFailoverInput.
-func (r RecoveryPlanInMageFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMage"
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanInMageFailoverInput.
-func (r *RecoveryPlanInMageFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanInMageRcmFailbackFailoverInput - Recovery plan InMageRcmFailback failover input.
@@ -18344,49 +7188,6 @@ type RecoveryPlanInMageRcmFailbackFailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanInMageRcmFailbackFailoverInput.
-func (r *RecoveryPlanInMageRcmFailbackFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageRcmFailbackFailoverInput.
-func (r RecoveryPlanInMageRcmFailbackFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcmFailback"
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanInMageRcmFailbackFailoverInput.
-func (r *RecoveryPlanInMageRcmFailbackFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		case "useMultiVmSyncPoint":
-			err = unpopulate(val, &r.UseMultiVMSyncPoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanInMageRcmFailoverInput - Recovery plan InMageRcm failover input.
 type RecoveryPlanInMageRcmFailoverInput struct {
 	// REQUIRED; The class type.
@@ -18399,49 +7200,6 @@ type RecoveryPlanInMageRcmFailoverInput struct {
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanInMageRcmFailoverInput.
-func (r *RecoveryPlanInMageRcmFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return &RecoveryPlanProviderSpecificFailoverInput{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageRcmFailoverInput.
-func (r RecoveryPlanInMageRcmFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "InMageRcm"
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanInMageRcmFailoverInput.
-func (r *RecoveryPlanInMageRcmFailoverInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		case "useMultiVmSyncPoint":
-			err = unpopulate(val, &r.UseMultiVMSyncPoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanManualActionDetails - Recovery plan manual action details.
 type RecoveryPlanManualActionDetails struct {
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
@@ -18449,44 +7207,6 @@ type RecoveryPlanManualActionDetails struct {
 
 	// The manual action description.
 	Description *string `json:"description,omitempty"`
-}
-
-// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanManualActionDetails.
-func (r *RecoveryPlanManualActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
-	return &RecoveryPlanActionDetails{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanManualActionDetails.
-func (r RecoveryPlanManualActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", r.Description)
-	objectMap["instanceType"] = "ManualActionDetails"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanManualActionDetails.
-func (r *RecoveryPlanManualActionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &r.Description)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanPlannedFailoverInput - Recovery plan planned failover input.
@@ -18502,37 +7222,6 @@ type RecoveryPlanPlannedFailoverInputProperties struct {
 
 	// The provider specific properties.
 	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanPlannedFailoverInputProperties.
-func (r RecoveryPlanPlannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", r.FailoverDirection)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanPlannedFailoverInputProperties.
-func (r *RecoveryPlanPlannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &r.FailoverDirection)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalRecoveryPlanProviderSpecificFailoverInputClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanProperties - Recovery plan properties.
@@ -18586,93 +7275,6 @@ type RecoveryPlanProperties struct {
 	ReplicationProviders []*string `json:"replicationProviders,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProperties.
-func (r RecoveryPlanProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedOperations", r.AllowedOperations)
-	populate(objectMap, "currentScenario", r.CurrentScenario)
-	populate(objectMap, "currentScenarioStatus", r.CurrentScenarioStatus)
-	populate(objectMap, "currentScenarioStatusDescription", r.CurrentScenarioStatusDescription)
-	populate(objectMap, "failoverDeploymentModel", r.FailoverDeploymentModel)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "groups", r.Groups)
-	populateTimeRFC3339(objectMap, "lastPlannedFailoverTime", r.LastPlannedFailoverTime)
-	populateTimeRFC3339(objectMap, "lastTestFailoverTime", r.LastTestFailoverTime)
-	populateTimeRFC3339(objectMap, "lastUnplannedFailoverTime", r.LastUnplannedFailoverTime)
-	populate(objectMap, "primaryFabricFriendlyName", r.PrimaryFabricFriendlyName)
-	populate(objectMap, "primaryFabricId", r.PrimaryFabricID)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	populate(objectMap, "recoveryFabricFriendlyName", r.RecoveryFabricFriendlyName)
-	populate(objectMap, "recoveryFabricId", r.RecoveryFabricID)
-	populate(objectMap, "replicationProviders", r.ReplicationProviders)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanProperties.
-func (r *RecoveryPlanProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedOperations":
-			err = unpopulate(val, &r.AllowedOperations)
-			delete(rawMsg, key)
-		case "currentScenario":
-			err = unpopulate(val, &r.CurrentScenario)
-			delete(rawMsg, key)
-		case "currentScenarioStatus":
-			err = unpopulate(val, &r.CurrentScenarioStatus)
-			delete(rawMsg, key)
-		case "currentScenarioStatusDescription":
-			err = unpopulate(val, &r.CurrentScenarioStatusDescription)
-			delete(rawMsg, key)
-		case "failoverDeploymentModel":
-			err = unpopulate(val, &r.FailoverDeploymentModel)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "groups":
-			err = unpopulate(val, &r.Groups)
-			delete(rawMsg, key)
-		case "lastPlannedFailoverTime":
-			err = unpopulateTimeRFC3339(val, &r.LastPlannedFailoverTime)
-			delete(rawMsg, key)
-		case "lastTestFailoverTime":
-			err = unpopulateTimeRFC3339(val, &r.LastTestFailoverTime)
-			delete(rawMsg, key)
-		case "lastUnplannedFailoverTime":
-			err = unpopulateTimeRFC3339(val, &r.LastUnplannedFailoverTime)
-			delete(rawMsg, key)
-		case "primaryFabricFriendlyName":
-			err = unpopulate(val, &r.PrimaryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "primaryFabricId":
-			err = unpopulate(val, &r.PrimaryFabricID)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalRecoveryPlanProviderSpecificDetailsClassificationArray(val)
-			delete(rawMsg, key)
-		case "recoveryFabricFriendlyName":
-			err = unpopulate(val, &r.RecoveryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryFabricId":
-			err = unpopulate(val, &r.RecoveryFabricID)
-			delete(rawMsg, key)
-		case "replicationProviders":
-			err = unpopulate(val, &r.ReplicationProviders)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanProtectedItem - Recovery plan protected item.
 type RecoveryPlanProtectedItem struct {
 	// The ARM Id of the recovery plan protected item.
@@ -18697,12 +7299,6 @@ type RecoveryPlanProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
-// RecoveryPlanProviderSpecificDetails.
-func (r *RecoveryPlanProviderSpecificDetails) GetRecoveryPlanProviderSpecificDetails() *RecoveryPlanProviderSpecificDetails {
-	return r
-}
-
 // RecoveryPlanProviderSpecificFailoverInputClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryPlanProviderSpecificFailoverInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -18720,12 +7316,6 @@ type RecoveryPlanProviderSpecificFailoverInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
-// for type RecoveryPlanProviderSpecificFailoverInput.
-func (r *RecoveryPlanProviderSpecificFailoverInput) GetRecoveryPlanProviderSpecificFailoverInput() *RecoveryPlanProviderSpecificFailoverInput {
-	return r
-}
-
 // RecoveryPlanProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryPlanProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -18741,12 +7331,6 @@ type RecoveryPlanProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
-// RecoveryPlanProviderSpecificInput.
-func (r *RecoveryPlanProviderSpecificInput) GetRecoveryPlanProviderSpecificInput() *RecoveryPlanProviderSpecificInput {
-	return r
-}
-
 // RecoveryPlanScriptActionDetails - Recovery plan script action details.
 type RecoveryPlanScriptActionDetails struct {
 	// REQUIRED; The fabric location.
@@ -18760,52 +7344,6 @@ type RecoveryPlanScriptActionDetails struct {
 
 	// The script timeout.
 	Timeout *string `json:"timeout,omitempty"`
-}
-
-// GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanScriptActionDetails.
-func (r *RecoveryPlanScriptActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlanActionDetails {
-	return &RecoveryPlanActionDetails{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanScriptActionDetails.
-func (r RecoveryPlanScriptActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricLocation", r.FabricLocation)
-	objectMap["instanceType"] = "ScriptActionDetails"
-	populate(objectMap, "path", r.Path)
-	populate(objectMap, "timeout", r.Timeout)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanScriptActionDetails.
-func (r *RecoveryPlanScriptActionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricLocation":
-			err = unpopulate(val, &r.FabricLocation)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "path":
-			err = unpopulate(val, &r.Path)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &r.Timeout)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanShutdownGroupTaskDetails - This class represents the recovery plan shutdown group task details.
@@ -18824,68 +7362,6 @@ type RecoveryPlanShutdownGroupTaskDetails struct {
 
 	// The group type.
 	RpGroupType *string `json:"rpGroupType,omitempty"`
-}
-
-// GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanShutdownGroupTaskDetails.
-func (r *RecoveryPlanShutdownGroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
-	return &GroupTaskDetails{
-		InstanceType: r.InstanceType,
-		ChildTasks:   r.ChildTasks,
-	}
-}
-
-// GetRecoveryPlanGroupTaskDetails implements the RecoveryPlanGroupTaskDetailsClassification interface for type RecoveryPlanShutdownGroupTaskDetails.
-func (r *RecoveryPlanShutdownGroupTaskDetails) GetRecoveryPlanGroupTaskDetails() *RecoveryPlanGroupTaskDetails {
-	return &RecoveryPlanGroupTaskDetails{
-		Name:         r.Name,
-		GroupID:      r.GroupID,
-		RpGroupType:  r.RpGroupType,
-		InstanceType: r.InstanceType,
-		ChildTasks:   r.ChildTasks,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanShutdownGroupTaskDetails.
-func (r RecoveryPlanShutdownGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "childTasks", r.ChildTasks)
-	populate(objectMap, "groupId", r.GroupID)
-	objectMap["instanceType"] = "RecoveryPlanShutdownGroupTaskDetails"
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "rpGroupType", r.RpGroupType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanShutdownGroupTaskDetails.
-func (r *RecoveryPlanShutdownGroupTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "childTasks":
-			err = unpopulate(val, &r.ChildTasks)
-			delete(rawMsg, key)
-		case "groupId":
-			err = unpopulate(val, &r.GroupID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "rpGroupType":
-			err = unpopulate(val, &r.RpGroupType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPlanTestFailoverCleanupInput - Recovery plan test failover cleanup input.
@@ -18921,45 +7397,6 @@ type RecoveryPlanTestFailoverInputProperties struct {
 	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanTestFailoverInputProperties.
-func (r RecoveryPlanTestFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", r.FailoverDirection)
-	populate(objectMap, "networkId", r.NetworkID)
-	populate(objectMap, "networkType", r.NetworkType)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanTestFailoverInputProperties.
-func (r *RecoveryPlanTestFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &r.FailoverDirection)
-			delete(rawMsg, key)
-		case "networkId":
-			err = unpopulate(val, &r.NetworkID)
-			delete(rawMsg, key)
-		case "networkType":
-			err = unpopulate(val, &r.NetworkType)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalRecoveryPlanProviderSpecificFailoverInputClassificationArray(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryPlanUnplannedFailoverInput - Recovery plan unplanned failover input.
 type RecoveryPlanUnplannedFailoverInput struct {
 	// REQUIRED; The recovery plan unplanned failover input properties.
@@ -18976,41 +7413,6 @@ type RecoveryPlanUnplannedFailoverInputProperties struct {
 
 	// The provider specific properties.
 	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPlanUnplannedFailoverInputProperties.
-func (r RecoveryPlanUnplannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", r.FailoverDirection)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	populate(objectMap, "sourceSiteOperations", r.SourceSiteOperations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPlanUnplannedFailoverInputProperties.
-func (r *RecoveryPlanUnplannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &r.FailoverDirection)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalRecoveryPlanProviderSpecificFailoverInputClassificationArray(val)
-			delete(rawMsg, key)
-		case "sourceSiteOperations":
-			err = unpopulate(val, &r.SourceSiteOperations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPoint - Recovery point.
@@ -19040,14 +7442,6 @@ type RecoveryPointCollection struct {
 	Value []*RecoveryPoint `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPointCollection.
-func (r RecoveryPointCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // RecoveryPointProperties - Recovery point properties.
 type RecoveryPointProperties struct {
 	// The provider specific details for the recovery point.
@@ -19058,41 +7452,6 @@ type RecoveryPointProperties struct {
 
 	// The recovery point type: ApplicationConsistent, CrashConsistent.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryPointProperties.
-func (r RecoveryPointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	populateTimeRFC3339(objectMap, "recoveryPointTime", r.RecoveryPointTime)
-	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryPointProperties.
-func (r *RecoveryPointProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalProviderSpecificRecoveryPointDetailsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryPointTime":
-			err = unpopulateTimeRFC3339(val, &r.RecoveryPointTime)
-			delete(rawMsg, key)
-		case "recoveryPointType":
-			err = unpopulate(val, &r.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
@@ -19121,12 +7480,6 @@ type RecoveryProximityPlacementGroupCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
-// interface for type RecoveryProximityPlacementGroupCustomDetails.
-func (r *RecoveryProximityPlacementGroupCustomDetails) GetRecoveryProximityPlacementGroupCustomDetails() *RecoveryProximityPlacementGroupCustomDetails {
-	return r
-}
-
 // RecoveryResourceGroupCustomDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryResourceGroupCustomDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -19140,12 +7493,6 @@ type RecoveryResourceGroupCustomDetailsClassification interface {
 type RecoveryResourceGroupCustomDetails struct {
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
-// RecoveryResourceGroupCustomDetails.
-func (r *RecoveryResourceGroupCustomDetails) GetRecoveryResourceGroupCustomDetails() *RecoveryResourceGroupCustomDetails {
-	return r
 }
 
 // RecoveryServicesProvider - Provider details.
@@ -19173,14 +7520,6 @@ type RecoveryServicesProviderCollection struct {
 
 	// The Servers details.
 	Value []*RecoveryServicesProvider `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RecoveryServicesProviderCollection.
-func (r RecoveryServicesProviderCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RecoveryServicesProviderProperties - Recovery services provider properties.
@@ -19246,109 +7585,6 @@ type RecoveryServicesProviderProperties struct {
 	ServerVersion *string `json:"serverVersion,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RecoveryServicesProviderProperties.
-func (r RecoveryServicesProviderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedScenarios", r.AllowedScenarios)
-	populate(objectMap, "authenticationIdentityDetails", r.AuthenticationIdentityDetails)
-	populate(objectMap, "biosId", r.BiosID)
-	populate(objectMap, "connectionStatus", r.ConnectionStatus)
-	populate(objectMap, "dataPlaneAuthenticationIdentityDetails", r.DataPlaneAuthenticationIdentityDetails)
-	populate(objectMap, "draIdentifier", r.DraIdentifier)
-	populate(objectMap, "fabricFriendlyName", r.FabricFriendlyName)
-	populate(objectMap, "fabricType", r.FabricType)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "healthErrorDetails", r.HealthErrorDetails)
-	populateTimeRFC3339(objectMap, "lastHeartBeat", r.LastHeartBeat)
-	populate(objectMap, "machineId", r.MachineID)
-	populate(objectMap, "machineName", r.MachineName)
-	populate(objectMap, "protectedItemCount", r.ProtectedItemCount)
-	populate(objectMap, "providerVersion", r.ProviderVersion)
-	populate(objectMap, "providerVersionDetails", r.ProviderVersionDetails)
-	populateTimeRFC3339(objectMap, "providerVersionExpiryDate", r.ProviderVersionExpiryDate)
-	populate(objectMap, "providerVersionState", r.ProviderVersionState)
-	populate(objectMap, "resourceAccessIdentityDetails", r.ResourceAccessIdentityDetails)
-	populate(objectMap, "serverVersion", r.ServerVersion)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RecoveryServicesProviderProperties.
-func (r *RecoveryServicesProviderProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "allowedScenarios":
-			err = unpopulate(val, &r.AllowedScenarios)
-			delete(rawMsg, key)
-		case "authenticationIdentityDetails":
-			err = unpopulate(val, &r.AuthenticationIdentityDetails)
-			delete(rawMsg, key)
-		case "biosId":
-			err = unpopulate(val, &r.BiosID)
-			delete(rawMsg, key)
-		case "connectionStatus":
-			err = unpopulate(val, &r.ConnectionStatus)
-			delete(rawMsg, key)
-		case "dataPlaneAuthenticationIdentityDetails":
-			err = unpopulate(val, &r.DataPlaneAuthenticationIdentityDetails)
-			delete(rawMsg, key)
-		case "draIdentifier":
-			err = unpopulate(val, &r.DraIdentifier)
-			delete(rawMsg, key)
-		case "fabricFriendlyName":
-			err = unpopulate(val, &r.FabricFriendlyName)
-			delete(rawMsg, key)
-		case "fabricType":
-			err = unpopulate(val, &r.FabricType)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "healthErrorDetails":
-			err = unpopulate(val, &r.HealthErrorDetails)
-			delete(rawMsg, key)
-		case "lastHeartBeat":
-			err = unpopulateTimeRFC3339(val, &r.LastHeartBeat)
-			delete(rawMsg, key)
-		case "machineId":
-			err = unpopulate(val, &r.MachineID)
-			delete(rawMsg, key)
-		case "machineName":
-			err = unpopulate(val, &r.MachineName)
-			delete(rawMsg, key)
-		case "protectedItemCount":
-			err = unpopulate(val, &r.ProtectedItemCount)
-			delete(rawMsg, key)
-		case "providerVersion":
-			err = unpopulate(val, &r.ProviderVersion)
-			delete(rawMsg, key)
-		case "providerVersionDetails":
-			err = unpopulate(val, &r.ProviderVersionDetails)
-			delete(rawMsg, key)
-		case "providerVersionExpiryDate":
-			err = unpopulateTimeRFC3339(val, &r.ProviderVersionExpiryDate)
-			delete(rawMsg, key)
-		case "providerVersionState":
-			err = unpopulate(val, &r.ProviderVersionState)
-			delete(rawMsg, key)
-		case "resourceAccessIdentityDetails":
-			err = unpopulate(val, &r.ResourceAccessIdentityDetails)
-			delete(rawMsg, key)
-		case "serverVersion":
-			err = unpopulate(val, &r.ServerVersion)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RecoveryVirtualNetworkCustomDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetRecoveryVirtualNetworkCustomDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -19362,12 +7598,6 @@ type RecoveryVirtualNetworkCustomDetailsClassification interface {
 type RecoveryVirtualNetworkCustomDetails struct {
 	// REQUIRED; The class type.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
-// RecoveryVirtualNetworkCustomDetails.
-func (r *RecoveryVirtualNetworkCustomDetails) GetRecoveryVirtualNetworkCustomDetails() *RecoveryVirtualNetworkCustomDetails {
-	return r
 }
 
 // RemoveDisksInput - Input for remove disk(s) operation.
@@ -19384,33 +7614,6 @@ type RemoveDisksInputProperties struct {
 	ProviderSpecificDetails RemoveDisksProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RemoveDisksInputProperties.
-func (r RemoveDisksInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemoveDisksInputProperties.
-func (r *RemoveDisksInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalRemoveDisksProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RemoveDisksProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetRemoveDisksProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -19424,11 +7627,6 @@ type RemoveDisksProviderSpecificInputClassification interface {
 type RemoveDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type RemoveDisksProviderSpecificInput.
-func (r *RemoveDisksProviderSpecificInput) GetRemoveDisksProviderSpecificInput() *RemoveDisksProviderSpecificInput {
-	return r
 }
 
 // RemoveProtectionContainerMappingInput - Container unpairing input.
@@ -19485,65 +7683,6 @@ type ReplicationAgentDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationAgentDetails.
-func (r ReplicationAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "biosId", r.BiosID)
-	populate(objectMap, "fabricObjectId", r.FabricObjectID)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "health", r.Health)
-	populate(objectMap, "healthErrors", r.HealthErrors)
-	populate(objectMap, "id", r.ID)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", r.LastHeartbeatUTC)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "version", r.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplicationAgentDetails.
-func (r *ReplicationAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "biosId":
-			err = unpopulate(val, &r.BiosID)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &r.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &r.Fqdn)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &r.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &r.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &r.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &r.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReplicationAlertSettingsClientCreateOptions contains the optional parameters for the ReplicationAlertSettingsClient.Create
 // method.
 type ReplicationAlertSettingsClientCreateOptions struct {
@@ -19571,33 +7710,6 @@ type ReplicationAppliance struct {
 type ReplicationApplianceProperties struct {
 	// Provider specific settings.
 	ProviderSpecificDetails ApplianceSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReplicationApplianceProperties.
-func (r ReplicationApplianceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplicationApplianceProperties.
-func (r *ReplicationApplianceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalApplianceSpecificDetailsClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List method.
@@ -19639,13 +7751,6 @@ type ReplicationEligibilityResultsCollection struct {
 	Value []*ReplicationEligibilityResults `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResultsCollection.
-func (r ReplicationEligibilityResultsCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ReplicationEligibilityResultsErrorInfo - Error model that can be exposed to the user.
 type ReplicationEligibilityResultsErrorInfo struct {
 	// The error code.
@@ -19673,14 +7778,6 @@ type ReplicationEligibilityResultsProperties struct {
 	ClientRequestID *string `json:"clientRequestId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResultsProperties.
-func (r ReplicationEligibilityResultsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clientRequestId", r.ClientRequestID)
-	populate(objectMap, "errors", r.Errors)
-	return json.Marshal(objectMap)
-}
-
 // ReplicationEventsClientGetOptions contains the optional parameters for the ReplicationEventsClient.Get method.
 type ReplicationEventsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -19695,43 +7792,50 @@ type ReplicationEventsClientListOptions struct {
 // ReplicationFabricsClientBeginCheckConsistencyOptions contains the optional parameters for the ReplicationFabricsClient.BeginCheckConsistency
 // method.
 type ReplicationFabricsClientBeginCheckConsistencyOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginCreateOptions contains the optional parameters for the ReplicationFabricsClient.BeginCreate
 // method.
 type ReplicationFabricsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginDeleteOptions contains the optional parameters for the ReplicationFabricsClient.BeginDelete
 // method.
 type ReplicationFabricsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginMigrateToAADOptions contains the optional parameters for the ReplicationFabricsClient.BeginMigrateToAAD
 // method.
 type ReplicationFabricsClientBeginMigrateToAADOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginPurgeOptions contains the optional parameters for the ReplicationFabricsClient.BeginPurge
 // method.
 type ReplicationFabricsClientBeginPurgeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginReassociateGatewayOptions contains the optional parameters for the ReplicationFabricsClient.BeginReassociateGateway
 // method.
 type ReplicationFabricsClientBeginReassociateGatewayOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientBeginRenewCertificateOptions contains the optional parameters for the ReplicationFabricsClient.BeginRenewCertificate
 // method.
 type ReplicationFabricsClientBeginRenewCertificateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationFabricsClientGetOptions contains the optional parameters for the ReplicationFabricsClient.Get method.
@@ -19751,58 +7855,28 @@ type ReplicationGroupDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ReplicationGroupDetails.
-func (r *ReplicationGroupDetails) GetConfigurationSettings() *ConfigurationSettings {
-	return &ConfigurationSettings{
-		InstanceType: r.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReplicationGroupDetails.
-func (r ReplicationGroupDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "ReplicationGroupDetails"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplicationGroupDetails.
-func (r *ReplicationGroupDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &r.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReplicationJobsClientBeginCancelOptions contains the optional parameters for the ReplicationJobsClient.BeginCancel method.
 type ReplicationJobsClientBeginCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationJobsClientBeginExportOptions contains the optional parameters for the ReplicationJobsClient.BeginExport method.
 type ReplicationJobsClientBeginExportOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationJobsClientBeginRestartOptions contains the optional parameters for the ReplicationJobsClient.BeginRestart method.
 type ReplicationJobsClientBeginRestartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationJobsClientBeginResumeOptions contains the optional parameters for the ReplicationJobsClient.BeginResume method.
 type ReplicationJobsClientBeginResumeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationJobsClientGetOptions contains the optional parameters for the ReplicationJobsClient.Get method.
@@ -19831,7 +7905,8 @@ type ReplicationLogicalNetworksClientListByReplicationFabricsOptions struct {
 // ReplicationMigrationItemsClientBeginCreateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginCreate
 // method.
 type ReplicationMigrationItemsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginDeleteOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginDelete
@@ -19839,36 +7914,43 @@ type ReplicationMigrationItemsClientBeginCreateOptions struct {
 type ReplicationMigrationItemsClientBeginDeleteOptions struct {
 	// The delete option.
 	DeleteOption *string
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginMigrate
 // method.
 type ReplicationMigrationItemsClientBeginMigrateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginResyncOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginResync
 // method.
 type ReplicationMigrationItemsClientBeginResyncOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrateCleanup
 // method.
 type ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginTestMigrateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginTestMigrate
 // method.
 type ReplicationMigrationItemsClientBeginTestMigrateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientBeginUpdateOptions contains the optional parameters for the ReplicationMigrationItemsClient.BeginUpdate
 // method.
 type ReplicationMigrationItemsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationMigrationItemsClientGetOptions contains the optional parameters for the ReplicationMigrationItemsClient.Get
@@ -19902,19 +7984,22 @@ type ReplicationMigrationItemsClientListOptions struct {
 // ReplicationNetworkMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginCreate
 // method.
 type ReplicationNetworkMappingsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationNetworkMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginDelete
 // method.
 type ReplicationNetworkMappingsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationNetworkMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationNetworkMappingsClient.BeginUpdate
 // method.
 type ReplicationNetworkMappingsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationNetworkMappingsClientGetOptions contains the optional parameters for the ReplicationNetworkMappingsClient.Get
@@ -19954,19 +8039,22 @@ type ReplicationNetworksClientListOptions struct {
 // ReplicationPoliciesClientBeginCreateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginCreate
 // method.
 type ReplicationPoliciesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationPoliciesClientBeginDeleteOptions contains the optional parameters for the ReplicationPoliciesClient.BeginDelete
 // method.
 type ReplicationPoliciesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationPoliciesClientBeginUpdateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginUpdate
 // method.
 type ReplicationPoliciesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationPoliciesClientGetOptions contains the optional parameters for the ReplicationPoliciesClient.Get method.
@@ -20021,14 +8109,6 @@ type ReplicationProtectedItemCollection struct {
 
 	// The Replication protected item details.
 	Value []*ReplicationProtectedItem `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReplicationProtectedItemCollection.
-func (r ReplicationProtectedItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReplicationProtectedItemProperties - Replication protected item custom data details.
@@ -20126,261 +8206,137 @@ type ReplicationProtectedItemProperties struct {
 	TestFailoverStateDescription *string `json:"testFailoverStateDescription,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationProtectedItemProperties.
-func (r ReplicationProtectedItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "activeLocation", r.ActiveLocation)
-	populate(objectMap, "allowedOperations", r.AllowedOperations)
-	populate(objectMap, "currentScenario", r.CurrentScenario)
-	populate(objectMap, "eventCorrelationId", r.EventCorrelationID)
-	populate(objectMap, "failoverHealth", r.FailoverHealth)
-	populate(objectMap, "failoverRecoveryPointId", r.FailoverRecoveryPointID)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "healthErrors", r.HealthErrors)
-	populateTimeRFC3339(objectMap, "lastSuccessfulFailoverTime", r.LastSuccessfulFailoverTime)
-	populateTimeRFC3339(objectMap, "lastSuccessfulTestFailoverTime", r.LastSuccessfulTestFailoverTime)
-	populate(objectMap, "policyFriendlyName", r.PolicyFriendlyName)
-	populate(objectMap, "policyId", r.PolicyID)
-	populate(objectMap, "primaryFabricFriendlyName", r.PrimaryFabricFriendlyName)
-	populate(objectMap, "primaryFabricProvider", r.PrimaryFabricProvider)
-	populate(objectMap, "primaryProtectionContainerFriendlyName", r.PrimaryProtectionContainerFriendlyName)
-	populate(objectMap, "protectableItemId", r.ProtectableItemID)
-	populate(objectMap, "protectedItemType", r.ProtectedItemType)
-	populate(objectMap, "protectionState", r.ProtectionState)
-	populate(objectMap, "protectionStateDescription", r.ProtectionStateDescription)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	populate(objectMap, "recoveryContainerId", r.RecoveryContainerID)
-	populate(objectMap, "recoveryFabricFriendlyName", r.RecoveryFabricFriendlyName)
-	populate(objectMap, "recoveryFabricId", r.RecoveryFabricID)
-	populate(objectMap, "recoveryProtectionContainerFriendlyName", r.RecoveryProtectionContainerFriendlyName)
-	populate(objectMap, "recoveryServicesProviderId", r.RecoveryServicesProviderID)
-	populate(objectMap, "replicationHealth", r.ReplicationHealth)
-	populate(objectMap, "switchProviderState", r.SwitchProviderState)
-	populate(objectMap, "switchProviderStateDescription", r.SwitchProviderStateDescription)
-	populate(objectMap, "testFailoverState", r.TestFailoverState)
-	populate(objectMap, "testFailoverStateDescription", r.TestFailoverStateDescription)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplicationProtectedItemProperties.
-func (r *ReplicationProtectedItemProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "activeLocation":
-			err = unpopulate(val, &r.ActiveLocation)
-			delete(rawMsg, key)
-		case "allowedOperations":
-			err = unpopulate(val, &r.AllowedOperations)
-			delete(rawMsg, key)
-		case "currentScenario":
-			err = unpopulate(val, &r.CurrentScenario)
-			delete(rawMsg, key)
-		case "eventCorrelationId":
-			err = unpopulate(val, &r.EventCorrelationID)
-			delete(rawMsg, key)
-		case "failoverHealth":
-			err = unpopulate(val, &r.FailoverHealth)
-			delete(rawMsg, key)
-		case "failoverRecoveryPointId":
-			err = unpopulate(val, &r.FailoverRecoveryPointID)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &r.HealthErrors)
-			delete(rawMsg, key)
-		case "lastSuccessfulFailoverTime":
-			err = unpopulateTimeRFC3339(val, &r.LastSuccessfulFailoverTime)
-			delete(rawMsg, key)
-		case "lastSuccessfulTestFailoverTime":
-			err = unpopulateTimeRFC3339(val, &r.LastSuccessfulTestFailoverTime)
-			delete(rawMsg, key)
-		case "policyFriendlyName":
-			err = unpopulate(val, &r.PolicyFriendlyName)
-			delete(rawMsg, key)
-		case "policyId":
-			err = unpopulate(val, &r.PolicyID)
-			delete(rawMsg, key)
-		case "primaryFabricFriendlyName":
-			err = unpopulate(val, &r.PrimaryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "primaryFabricProvider":
-			err = unpopulate(val, &r.PrimaryFabricProvider)
-			delete(rawMsg, key)
-		case "primaryProtectionContainerFriendlyName":
-			err = unpopulate(val, &r.PrimaryProtectionContainerFriendlyName)
-			delete(rawMsg, key)
-		case "protectableItemId":
-			err = unpopulate(val, &r.ProtectableItemID)
-			delete(rawMsg, key)
-		case "protectedItemType":
-			err = unpopulate(val, &r.ProtectedItemType)
-			delete(rawMsg, key)
-		case "protectionState":
-			err = unpopulate(val, &r.ProtectionState)
-			delete(rawMsg, key)
-		case "protectionStateDescription":
-			err = unpopulate(val, &r.ProtectionStateDescription)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalReplicationProviderSpecificSettingsClassification(val)
-			delete(rawMsg, key)
-		case "recoveryContainerId":
-			err = unpopulate(val, &r.RecoveryContainerID)
-			delete(rawMsg, key)
-		case "recoveryFabricFriendlyName":
-			err = unpopulate(val, &r.RecoveryFabricFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryFabricId":
-			err = unpopulate(val, &r.RecoveryFabricID)
-			delete(rawMsg, key)
-		case "recoveryProtectionContainerFriendlyName":
-			err = unpopulate(val, &r.RecoveryProtectionContainerFriendlyName)
-			delete(rawMsg, key)
-		case "recoveryServicesProviderId":
-			err = unpopulate(val, &r.RecoveryServicesProviderID)
-			delete(rawMsg, key)
-		case "replicationHealth":
-			err = unpopulate(val, &r.ReplicationHealth)
-			delete(rawMsg, key)
-		case "switchProviderState":
-			err = unpopulate(val, &r.SwitchProviderState)
-			delete(rawMsg, key)
-		case "switchProviderStateDescription":
-			err = unpopulate(val, &r.SwitchProviderStateDescription)
-			delete(rawMsg, key)
-		case "testFailoverState":
-			err = unpopulate(val, &r.TestFailoverState)
-			delete(rawMsg, key)
-		case "testFailoverStateDescription":
-			err = unpopulate(val, &r.TestFailoverStateDescription)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReplicationProtectedItemsClientBeginAddDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginAddDisks
 // method.
 type ReplicationProtectedItemsClientBeginAddDisksOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginApplyRecoveryPoint
 // method.
 type ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginCreate
 // method.
 type ReplicationProtectedItemsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginDelete
 // method.
 type ReplicationProtectedItemsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginFailoverCancelOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginFailoverCancel
 // method.
 type ReplicationProtectedItemsClientBeginFailoverCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginFailoverCommitOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginFailoverCommit
 // method.
 type ReplicationProtectedItemsClientBeginFailoverCommitOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginPlannedFailover
 // method.
 type ReplicationProtectedItemsClientBeginPlannedFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginPurge
 // method.
 type ReplicationProtectedItemsClientBeginPurgeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginRemoveDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginRemoveDisks
 // method.
 type ReplicationProtectedItemsClientBeginRemoveDisksOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginRepairReplicationOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginRepairReplication
 // method.
 type ReplicationProtectedItemsClientBeginRepairReplicationOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginReprotectOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginReprotect
 // method.
 type ReplicationProtectedItemsClientBeginReprotectOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginResolveHealthErrors
 // method.
 type ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginSwitchProviderOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginSwitchProvider
 // method.
 type ReplicationProtectedItemsClientBeginSwitchProviderOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginTestFailoverCleanup
 // method.
 type ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginTestFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginTestFailover
 // method.
 type ReplicationProtectedItemsClientBeginTestFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUnplannedFailover
 // method.
 type ReplicationProtectedItemsClientBeginUnplannedFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginUpdateApplianceOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdateAppliance
 // method.
 type ReplicationProtectedItemsClientBeginUpdateApplianceOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdateMobilityService
 // method.
 type ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginUpdate
 // method.
 type ReplicationProtectedItemsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectedItemsClientGetOptions contains the optional parameters for the ReplicationProtectedItemsClient.Get
@@ -20407,25 +8363,29 @@ type ReplicationProtectedItemsClientListOptions struct {
 // ReplicationProtectionContainerMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginCreate
 // method.
 type ReplicationProtectionContainerMappingsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainerMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginDelete
 // method.
 type ReplicationProtectionContainerMappingsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainerMappingsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginPurge
 // method.
 type ReplicationProtectionContainerMappingsClientBeginPurgeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainerMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginUpdate
 // method.
 type ReplicationProtectionContainerMappingsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainerMappingsClientGetOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.Get
@@ -20449,25 +8409,29 @@ type ReplicationProtectionContainerMappingsClientListOptions struct {
 // ReplicationProtectionContainersClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginCreate
 // method.
 type ReplicationProtectionContainersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainersClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginDelete
 // method.
 type ReplicationProtectionContainersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginDiscoverProtectableItem
 // method.
 type ReplicationProtectionContainersClientBeginDiscoverProtectableItemOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainersClientBeginSwitchProtectionOptions contains the optional parameters for the ReplicationProtectionContainersClient.BeginSwitchProtection
 // method.
 type ReplicationProtectionContainersClientBeginSwitchProtectionOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationProtectionContainersClientGetOptions contains the optional parameters for the ReplicationProtectionContainersClient.Get
@@ -20515,14 +8479,6 @@ type ReplicationProtectionIntentCollection struct {
 	Value []*ReplicationProtectionIntent `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntentCollection.
-func (r ReplicationProtectionIntentCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // ReplicationProtectionIntentProperties - Replication protection intent custom data details.
 type ReplicationProtectionIntentProperties struct {
 	// The name.
@@ -20544,53 +8500,6 @@ type ReplicationProtectionIntentProperties struct {
 	JobState *string `json:"jobState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntentProperties.
-func (r ReplicationProtectionIntentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "creationTimeUTC", r.CreationTimeUTC)
-	populate(objectMap, "friendlyName", r.FriendlyName)
-	populate(objectMap, "isActive", r.IsActive)
-	populate(objectMap, "jobId", r.JobID)
-	populate(objectMap, "jobState", r.JobState)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplicationProtectionIntentProperties.
-func (r *ReplicationProtectionIntentProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTimeUTC":
-			err = unpopulate(val, &r.CreationTimeUTC)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &r.FriendlyName)
-			delete(rawMsg, key)
-		case "isActive":
-			err = unpopulate(val, &r.IsActive)
-			delete(rawMsg, key)
-		case "jobId":
-			err = unpopulate(val, &r.JobID)
-			delete(rawMsg, key)
-		case "jobState":
-			err = unpopulate(val, &r.JobState)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalReplicationProtectionIntentProviderSpecificSettingsClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReplicationProtectionIntentProviderSpecificSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetReplicationProtectionIntentProviderSpecificSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20604,12 +8513,6 @@ type ReplicationProtectionIntentProviderSpecificSettingsClassification interface
 type ReplicationProtectionIntentProviderSpecificSettings struct {
 	// REQUIRED; Gets the Instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
-// interface for type ReplicationProtectionIntentProviderSpecificSettings.
-func (r *ReplicationProtectionIntentProviderSpecificSettings) GetReplicationProtectionIntentProviderSpecificSettings() *ReplicationProtectionIntentProviderSpecificSettings {
-	return r
 }
 
 // ReplicationProtectionIntentsClientCreateOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Create
@@ -20655,12 +8558,6 @@ type ReplicationProviderSpecificContainerCreationInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
-// interface for type ReplicationProviderSpecificContainerCreationInput.
-func (r *ReplicationProviderSpecificContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
-	return r
-}
-
 // ReplicationProviderSpecificContainerMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetReplicationProviderSpecificContainerMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20674,12 +8571,6 @@ type ReplicationProviderSpecificContainerMappingInputClassification interface {
 type ReplicationProviderSpecificContainerMappingInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
-// interface for type ReplicationProviderSpecificContainerMappingInput.
-func (r *ReplicationProviderSpecificContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
-	return r
 }
 
 // ReplicationProviderSpecificSettingsClassification provides polymorphic access to related types.
@@ -20699,12 +8590,6 @@ type ReplicationProviderSpecificSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
-// ReplicationProviderSpecificSettings.
-func (r *ReplicationProviderSpecificSettings) GetReplicationProviderSpecificSettings() *ReplicationProviderSpecificSettings {
-	return r
-}
-
 // ReplicationProviderSpecificUpdateContainerMappingInputClassification provides polymorphic access to related types.
 // Call the interface's GetReplicationProviderSpecificUpdateContainerMappingInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20720,70 +8605,74 @@ type ReplicationProviderSpecificUpdateContainerMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
-// interface for type ReplicationProviderSpecificUpdateContainerMappingInput.
-func (r *ReplicationProviderSpecificUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateContainerMappingInput() *ReplicationProviderSpecificUpdateContainerMappingInput {
-	return r
-}
-
 // ReplicationRecoveryPlansClientBeginCreateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginCreate
 // method.
 type ReplicationRecoveryPlansClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginDeleteOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginDelete
 // method.
 type ReplicationRecoveryPlansClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginFailoverCancelOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginFailoverCancel
 // method.
 type ReplicationRecoveryPlansClientBeginFailoverCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginFailoverCommitOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginFailoverCommit
 // method.
 type ReplicationRecoveryPlansClientBeginFailoverCommitOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginPlannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginPlannedFailover
 // method.
 type ReplicationRecoveryPlansClientBeginPlannedFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginReprotectOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginReprotect
 // method.
 type ReplicationRecoveryPlansClientBeginReprotectOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailoverCleanup
 // method.
 type ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginTestFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginTestFailover
 // method.
 type ReplicationRecoveryPlansClientBeginTestFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUnplannedFailover
 // method.
 type ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientBeginUpdateOptions contains the optional parameters for the ReplicationRecoveryPlansClient.BeginUpdate
 // method.
 type ReplicationRecoveryPlansClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryPlansClientGetOptions contains the optional parameters for the ReplicationRecoveryPlansClient.Get method.
@@ -20800,25 +8689,29 @@ type ReplicationRecoveryPlansClientListOptions struct {
 // ReplicationRecoveryServicesProvidersClientBeginCreateOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginCreate
 // method.
 type ReplicationRecoveryServicesProvidersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryServicesProvidersClientBeginDeleteOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginDelete
 // method.
 type ReplicationRecoveryServicesProvidersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryServicesProvidersClientBeginPurgeOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginPurge
 // method.
 type ReplicationRecoveryServicesProvidersClientBeginPurgeOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider
 // method.
 type ReplicationRecoveryServicesProvidersClientBeginRefreshProviderOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationRecoveryServicesProvidersClientGetOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.Get
@@ -20842,13 +8735,15 @@ type ReplicationRecoveryServicesProvidersClientListOptions struct {
 // ReplicationStorageClassificationMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.BeginCreate
 // method.
 type ReplicationStorageClassificationMappingsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationStorageClassificationMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.BeginDelete
 // method.
 type ReplicationStorageClassificationMappingsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationStorageClassificationMappingsClientGetOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.Get
@@ -20890,7 +8785,8 @@ type ReplicationStorageClassificationsClientListOptions struct {
 // ReplicationVaultHealthClientBeginRefreshOptions contains the optional parameters for the ReplicationVaultHealthClient.BeginRefresh
 // method.
 type ReplicationVaultHealthClientBeginRefreshOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationVaultHealthClientGetOptions contains the optional parameters for the ReplicationVaultHealthClient.Get method.
@@ -20901,7 +8797,8 @@ type ReplicationVaultHealthClientGetOptions struct {
 // ReplicationVaultSettingClientBeginCreateOptions contains the optional parameters for the ReplicationVaultSettingClient.BeginCreate
 // method.
 type ReplicationVaultSettingClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationVaultSettingClientGetOptions contains the optional parameters for the ReplicationVaultSettingClient.Get method.
@@ -20917,19 +8814,22 @@ type ReplicationVaultSettingClientListOptions struct {
 // ReplicationvCentersClientBeginCreateOptions contains the optional parameters for the ReplicationvCentersClient.BeginCreate
 // method.
 type ReplicationvCentersClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationvCentersClientBeginDeleteOptions contains the optional parameters for the ReplicationvCentersClient.BeginDelete
 // method.
 type ReplicationvCentersClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationvCentersClientBeginUpdateOptions contains the optional parameters for the ReplicationvCentersClient.BeginUpdate
 // method.
 type ReplicationvCentersClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationvCentersClientGetOptions contains the optional parameters for the ReplicationvCentersClient.Get method.
@@ -20990,81 +8890,6 @@ type ReprotectAgentDetails struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReprotectAgentDetails.
-func (r ReprotectAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accessibleDatastores", r.AccessibleDatastores)
-	populate(objectMap, "biosId", r.BiosID)
-	populate(objectMap, "fabricObjectId", r.FabricObjectID)
-	populate(objectMap, "fqdn", r.Fqdn)
-	populate(objectMap, "health", r.Health)
-	populate(objectMap, "healthErrors", r.HealthErrors)
-	populate(objectMap, "id", r.ID)
-	populateTimeRFC3339(objectMap, "lastDiscoveryInUtc", r.LastDiscoveryInUTC)
-	populateTimeRFC3339(objectMap, "lastHeartbeatUtc", r.LastHeartbeatUTC)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "protectedItemCount", r.ProtectedItemCount)
-	populate(objectMap, "vcenterId", r.VcenterID)
-	populate(objectMap, "version", r.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReprotectAgentDetails.
-func (r *ReprotectAgentDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accessibleDatastores":
-			err = unpopulate(val, &r.AccessibleDatastores)
-			delete(rawMsg, key)
-		case "biosId":
-			err = unpopulate(val, &r.BiosID)
-			delete(rawMsg, key)
-		case "fabricObjectId":
-			err = unpopulate(val, &r.FabricObjectID)
-			delete(rawMsg, key)
-		case "fqdn":
-			err = unpopulate(val, &r.Fqdn)
-			delete(rawMsg, key)
-		case "health":
-			err = unpopulate(val, &r.Health)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &r.HealthErrors)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &r.ID)
-			delete(rawMsg, key)
-		case "lastDiscoveryInUtc":
-			err = unpopulateTimeRFC3339(val, &r.LastDiscoveryInUTC)
-			delete(rawMsg, key)
-		case "lastHeartbeatUtc":
-			err = unpopulateTimeRFC3339(val, &r.LastHeartbeatUTC)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &r.Name)
-			delete(rawMsg, key)
-		case "protectedItemCount":
-			err = unpopulate(val, &r.ProtectedItemCount)
-			delete(rawMsg, key)
-		case "vcenterId":
-			err = unpopulate(val, &r.VcenterID)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &r.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResolveHealthError - Resolve health errors input properties.
 type ResolveHealthError struct {
 	// Health error id.
@@ -21081,13 +8906,6 @@ type ResolveHealthInput struct {
 type ResolveHealthInputProperties struct {
 	// Health errors.
 	HealthErrors []*ResolveHealthError `json:"healthErrors,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResolveHealthInputProperties.
-func (r ResolveHealthInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "healthErrors", r.HealthErrors)
-	return json.Marshal(objectMap)
 }
 
 // Resource - Azure resource.
@@ -21117,15 +8935,6 @@ type ResourceHealthSummary struct {
 	ResourceCount *int32 `json:"resourceCount,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceHealthSummary.
-func (r ResourceHealthSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "categorizedResourceCounts", r.CategorizedResourceCounts)
-	populate(objectMap, "issues", r.Issues)
-	populate(objectMap, "resourceCount", r.ResourceCount)
-	return json.Marshal(objectMap)
-}
-
 // ResumeJobParams - Resume job params.
 type ResumeJobParams struct {
 	// Resume job properties.
@@ -21150,33 +8959,6 @@ type ResyncInputProperties struct {
 	ProviderSpecificDetails ResyncProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResyncInputProperties.
-func (r ResyncInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResyncInputProperties.
-func (r *ResyncInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalResyncProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ResyncProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetResyncProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21190,11 +8972,6 @@ type ResyncProviderSpecificInputClassification interface {
 type ResyncProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type ResyncProviderSpecificInput.
-func (r *ResyncProviderSpecificInput) GetResyncProviderSpecificInput() *ResyncProviderSpecificInput {
-	return r
 }
 
 // RetentionVolume - The retention details of the MT.
@@ -21227,37 +9004,6 @@ type ReverseReplicationInputProperties struct {
 	ProviderSpecificDetails ReverseReplicationProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReverseReplicationInputProperties.
-func (r ReverseReplicationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", r.FailoverDirection)
-	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReverseReplicationInputProperties.
-func (r *ReverseReplicationInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &r.FailoverDirection)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			r.ProviderSpecificDetails, err = unmarshalReverseReplicationProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ReverseReplicationProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetReverseReplicationProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21272,12 +9018,6 @@ type ReverseReplicationProviderSpecificInputClassification interface {
 type ReverseReplicationProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
-// for type ReverseReplicationProviderSpecificInput.
-func (r *ReverseReplicationProviderSpecificInput) GetReverseReplicationProviderSpecificInput() *ReverseReplicationProviderSpecificInput {
-	return r
 }
 
 // RoleAssignment - Azure role assignment details.
@@ -21325,56 +9065,6 @@ type ScriptActionTaskDetails struct {
 	Path *string `json:"path,omitempty"`
 }
 
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ScriptActionTaskDetails.
-func (s *ScriptActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: s.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ScriptActionTaskDetails.
-func (s ScriptActionTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "ScriptActionTaskDetails"
-	populate(objectMap, "isPrimarySideScript", s.IsPrimarySideScript)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "output", s.Output)
-	populate(objectMap, "path", s.Path)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScriptActionTaskDetails.
-func (s *ScriptActionTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &s.InstanceType)
-			delete(rawMsg, key)
-		case "isPrimarySideScript":
-			err = unpopulate(val, &s.IsPrimarySideScript)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &s.Name)
-			delete(rawMsg, key)
-		case "output":
-			err = unpopulate(val, &s.Output)
-			delete(rawMsg, key)
-		case "path":
-			err = unpopulate(val, &s.Path)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ServiceError - ASR error model.
 type ServiceError struct {
 	// Activity Id.
@@ -21408,11 +9098,6 @@ type StorageAccountCustomDetails struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type StorageAccountCustomDetails.
-func (s *StorageAccountCustomDetails) GetStorageAccountCustomDetails() *StorageAccountCustomDetails {
-	return s
-}
-
 // StorageClassification - Storage object definition.
 type StorageClassification struct {
 	// Resource Location
@@ -21440,14 +9125,6 @@ type StorageClassificationCollection struct {
 	Value []*StorageClassification `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type StorageClassificationCollection.
-func (s StorageClassificationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // StorageClassificationMapping - Storage mapping object.
 type StorageClassificationMapping struct {
 	// Resource Location
@@ -21473,14 +9150,6 @@ type StorageClassificationMappingCollection struct {
 
 	// The storage details.
 	Value []*StorageClassificationMapping `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StorageClassificationMappingCollection.
-func (s StorageClassificationMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // StorageClassificationMappingInput - Storage mapping input.
@@ -21519,15 +9188,6 @@ type Subnet struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Subnet.
-func (s Subnet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "addressList", s.AddressList)
-	populate(objectMap, "friendlyName", s.FriendlyName)
-	populate(objectMap, "name", s.Name)
-	return json.Marshal(objectMap)
-}
-
 // SupportedOSDetails - Supported operating system details.
 type SupportedOSDetails struct {
 	// The name.
@@ -21540,26 +9200,10 @@ type SupportedOSDetails struct {
 	OSVersions []*OSVersionWrapper `json:"osVersions,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SupportedOSDetails.
-func (s SupportedOSDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "osName", s.OSName)
-	populate(objectMap, "osType", s.OSType)
-	populate(objectMap, "osVersions", s.OSVersions)
-	return json.Marshal(objectMap)
-}
-
 // SupportedOSProperties - Supported operating systems properties.
 type SupportedOSProperties struct {
 	// The supported operating systems property list.
 	SupportedOsList []*SupportedOSProperty `json:"supportedOsList,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SupportedOSProperties.
-func (s SupportedOSProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "supportedOsList", s.SupportedOsList)
-	return json.Marshal(objectMap)
 }
 
 // SupportedOSProperty - Supported operating systems property.
@@ -21569,14 +9213,6 @@ type SupportedOSProperty struct {
 
 	// The list of supported operating systems.
 	SupportedOs []*SupportedOSDetails `json:"supportedOs,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SupportedOSProperty.
-func (s SupportedOSProperty) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "instanceType", s.InstanceType)
-	populate(objectMap, "supportedOs", s.SupportedOs)
-	return json.Marshal(objectMap)
 }
 
 // SupportedOperatingSystems - Supported operating systems.
@@ -21619,37 +9255,6 @@ type SwitchProtectionInputProperties struct {
 	ReplicationProtectedItemName *string `json:"replicationProtectedItemName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwitchProtectionInputProperties.
-func (s SwitchProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", s.ProviderSpecificDetails)
-	populate(objectMap, "replicationProtectedItemName", s.ReplicationProtectedItemName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SwitchProtectionInputProperties.
-func (s *SwitchProtectionInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			s.ProviderSpecificDetails, err = unmarshalSwitchProtectionProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		case "replicationProtectedItemName":
-			err = unpopulate(val, &s.ReplicationProtectedItemName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SwitchProtectionJobDetails - This class represents details for switch protection job.
 type SwitchProtectionJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -21661,49 +9266,6 @@ type SwitchProtectionJobDetails struct {
 
 	// ARM Id of the new replication protected item.
 	NewReplicationProtectedItemID *string `json:"newReplicationProtectedItemId,omitempty"`
-}
-
-// GetJobDetails implements the JobDetailsClassification interface for type SwitchProtectionJobDetails.
-func (s *SwitchProtectionJobDetails) GetJobDetails() *JobDetails {
-	return &JobDetails{
-		InstanceType:          s.InstanceType,
-		AffectedObjectDetails: s.AffectedObjectDetails,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SwitchProtectionJobDetails.
-func (s SwitchProtectionJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", s.AffectedObjectDetails)
-	objectMap["instanceType"] = "SwitchProtectionJobDetails"
-	populate(objectMap, "newReplicationProtectedItemId", s.NewReplicationProtectedItemID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SwitchProtectionJobDetails.
-func (s *SwitchProtectionJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectDetails":
-			err = unpopulate(val, &s.AffectedObjectDetails)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &s.InstanceType)
-			delete(rawMsg, key)
-		case "newReplicationProtectedItemId":
-			err = unpopulate(val, &s.NewReplicationProtectedItemID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // SwitchProtectionProviderSpecificInputClassification provides polymorphic access to related types.
@@ -21721,12 +9283,6 @@ type SwitchProtectionProviderSpecificInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
-// type SwitchProtectionProviderSpecificInput.
-func (s *SwitchProtectionProviderSpecificInput) GetSwitchProtectionProviderSpecificInput() *SwitchProtectionProviderSpecificInput {
-	return s
-}
-
 // SwitchProviderInput - Input definition for switch provider.
 type SwitchProviderInput struct {
 	// Switch provider input properties.
@@ -21742,37 +9298,6 @@ type SwitchProviderInputProperties struct {
 	TargetInstanceType *string `json:"targetInstanceType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SwitchProviderInputProperties.
-func (s SwitchProviderInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", s.ProviderSpecificDetails)
-	populate(objectMap, "targetInstanceType", s.TargetInstanceType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SwitchProviderInputProperties.
-func (s *SwitchProviderInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			s.ProviderSpecificDetails, err = unmarshalSwitchProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		case "targetInstanceType":
-			err = unpopulate(val, &s.TargetInstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // SwitchProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetSwitchProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21786,11 +9311,6 @@ type SwitchProviderSpecificInputClassification interface {
 type SwitchProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type SwitchProviderSpecificInput.
-func (s *SwitchProviderSpecificInput) GetSwitchProviderSpecificInput() *SwitchProviderSpecificInput {
-	return s
 }
 
 // TargetComputeSize - Represents applicable recovery vm sizes.
@@ -21815,14 +9335,6 @@ type TargetComputeSizeCollection struct {
 
 	// The list of target compute sizes.
 	Value []*TargetComputeSize `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TargetComputeSizeCollection.
-func (t TargetComputeSizeCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TargetComputeSizeProperties - Represents applicable recovery vm sizes properties.
@@ -21858,22 +9370,6 @@ type TargetComputeSizeProperties struct {
 	VCPUsAvailable *int32 `json:"vCPUsAvailable,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TargetComputeSizeProperties.
-func (t TargetComputeSizeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "cpuCoresCount", t.CPUCoresCount)
-	populate(objectMap, "errors", t.Errors)
-	populate(objectMap, "friendlyName", t.FriendlyName)
-	populate(objectMap, "highIopsSupported", t.HighIopsSupported)
-	populate(objectMap, "hyperVGenerations", t.HyperVGenerations)
-	populate(objectMap, "maxDataDiskCount", t.MaxDataDiskCount)
-	populate(objectMap, "maxNicsCount", t.MaxNicsCount)
-	populate(objectMap, "memoryInGB", t.MemoryInGB)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "vCPUsAvailable", t.VCPUsAvailable)
-	return json.Marshal(objectMap)
-}
-
 // TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.ListByReplicationProtectedItems
 // method.
 type TargetComputeSizesClientListByReplicationProtectedItemsOptions struct {
@@ -21895,9 +9391,6 @@ type TaskTypeDetails struct {
 	// REQUIRED; The type of task details.
 	InstanceType *string `json:"instanceType,omitempty"`
 }
-
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type TaskTypeDetails.
-func (t *TaskTypeDetails) GetTaskTypeDetails() *TaskTypeDetails { return t }
 
 // TestFailoverCleanupInput - Input definition for test failover cleanup.
 type TestFailoverCleanupInput struct {
@@ -21932,45 +9425,6 @@ type TestFailoverInputProperties struct {
 	ProviderSpecificDetails TestFailoverProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TestFailoverInputProperties.
-func (t TestFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", t.FailoverDirection)
-	populate(objectMap, "networkId", t.NetworkID)
-	populate(objectMap, "networkType", t.NetworkType)
-	populate(objectMap, "providerSpecificDetails", t.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestFailoverInputProperties.
-func (t *TestFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &t.FailoverDirection)
-			delete(rawMsg, key)
-		case "networkId":
-			err = unpopulate(val, &t.NetworkID)
-			delete(rawMsg, key)
-		case "networkType":
-			err = unpopulate(val, &t.NetworkType)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			t.ProviderSpecificDetails, err = unmarshalTestFailoverProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TestFailoverJobDetails - This class represents the details for a test failover job.
 type TestFailoverJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
@@ -21999,69 +9453,6 @@ type TestFailoverJobDetails struct {
 	TestFailoverStatus *string `json:"testFailoverStatus,omitempty"`
 }
 
-// GetJobDetails implements the JobDetailsClassification interface for type TestFailoverJobDetails.
-func (t *TestFailoverJobDetails) GetJobDetails() *JobDetails {
-	return &JobDetails{
-		InstanceType:          t.InstanceType,
-		AffectedObjectDetails: t.AffectedObjectDetails,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TestFailoverJobDetails.
-func (t TestFailoverJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "affectedObjectDetails", t.AffectedObjectDetails)
-	populate(objectMap, "comments", t.Comments)
-	objectMap["instanceType"] = "TestFailoverJobDetails"
-	populate(objectMap, "networkFriendlyName", t.NetworkFriendlyName)
-	populate(objectMap, "networkName", t.NetworkName)
-	populate(objectMap, "networkType", t.NetworkType)
-	populate(objectMap, "protectedItemDetails", t.ProtectedItemDetails)
-	populate(objectMap, "testFailoverStatus", t.TestFailoverStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestFailoverJobDetails.
-func (t *TestFailoverJobDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "affectedObjectDetails":
-			err = unpopulate(val, &t.AffectedObjectDetails)
-			delete(rawMsg, key)
-		case "comments":
-			err = unpopulate(val, &t.Comments)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &t.InstanceType)
-			delete(rawMsg, key)
-		case "networkFriendlyName":
-			err = unpopulate(val, &t.NetworkFriendlyName)
-			delete(rawMsg, key)
-		case "networkName":
-			err = unpopulate(val, &t.NetworkName)
-			delete(rawMsg, key)
-		case "networkType":
-			err = unpopulate(val, &t.NetworkType)
-			delete(rawMsg, key)
-		case "protectedItemDetails":
-			err = unpopulate(val, &t.ProtectedItemDetails)
-			delete(rawMsg, key)
-		case "testFailoverStatus":
-			err = unpopulate(val, &t.TestFailoverStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TestFailoverProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetTestFailoverProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22076,12 +9467,6 @@ type TestFailoverProviderSpecificInputClassification interface {
 type TestFailoverProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
-// TestFailoverProviderSpecificInput.
-func (t *TestFailoverProviderSpecificInput) GetTestFailoverProviderSpecificInput() *TestFailoverProviderSpecificInput {
-	return t
 }
 
 // TestMigrateCleanupInput - Input for test migrate cleanup.
@@ -22108,33 +9493,6 @@ type TestMigrateInputProperties struct {
 	ProviderSpecificDetails TestMigrateProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TestMigrateInputProperties.
-func (t TestMigrateInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", t.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TestMigrateInputProperties.
-func (t *TestMigrateInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			t.ProviderSpecificDetails, err = unmarshalTestMigrateProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TestMigrateProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetTestMigrateProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22148,11 +9506,6 @@ type TestMigrateProviderSpecificInputClassification interface {
 type TestMigrateProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type TestMigrateProviderSpecificInput.
-func (t *TestMigrateProviderSpecificInput) GetTestMigrateProviderSpecificInput() *TestMigrateProviderSpecificInput {
-	return t
 }
 
 // UnplannedFailoverInput - Input definition for unplanned failover.
@@ -22173,41 +9526,6 @@ type UnplannedFailoverInputProperties struct {
 	SourceSiteOperations *string `json:"sourceSiteOperations,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UnplannedFailoverInputProperties.
-func (u UnplannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "failoverDirection", u.FailoverDirection)
-	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
-	populate(objectMap, "sourceSiteOperations", u.SourceSiteOperations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UnplannedFailoverInputProperties.
-func (u *UnplannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "failoverDirection":
-			err = unpopulate(val, &u.FailoverDirection)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			u.ProviderSpecificDetails, err = unmarshalUnplannedFailoverProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		case "sourceSiteOperations":
-			err = unpopulate(val, &u.SourceSiteOperations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UnplannedFailoverProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetUnplannedFailoverProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22222,12 +9540,6 @@ type UnplannedFailoverProviderSpecificInputClassification interface {
 type UnplannedFailoverProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
-// for type UnplannedFailoverProviderSpecificInput.
-func (u *UnplannedFailoverProviderSpecificInput) GetUnplannedFailoverProviderSpecificInput() *UnplannedFailoverProviderSpecificInput {
-	return u
 }
 
 // UpdateApplianceForReplicationProtectedItemInput - Update appliance for replication protected item input.
@@ -22245,37 +9557,6 @@ type UpdateApplianceForReplicationProtectedItemInputProperties struct {
 	TargetApplianceID *string `json:"targetApplianceId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateApplianceForReplicationProtectedItemInputProperties.
-func (u UpdateApplianceForReplicationProtectedItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
-	populate(objectMap, "targetApplianceId", u.TargetApplianceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateApplianceForReplicationProtectedItemInputProperties.
-func (u *UpdateApplianceForReplicationProtectedItemInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			u.ProviderSpecificDetails, err = unmarshalUpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		case "targetApplianceId":
-			err = unpopulate(val, &u.TargetApplianceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification provides polymorphic access to related types.
 // Call the interface's GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22289,12 +9570,6 @@ type UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassificati
 type UpdateApplianceForReplicationProtectedItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
-// interface for type UpdateApplianceForReplicationProtectedItemProviderSpecificInput.
-func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput() *UpdateApplianceForReplicationProtectedItemProviderSpecificInput {
-	return u
 }
 
 // UpdateDiskInput - Disk input for update.
@@ -22312,44 +9587,10 @@ type UpdateMigrationItemInput struct {
 	Properties *UpdateMigrationItemInputProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateMigrationItemInput.
-func (u UpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
-}
-
 // UpdateMigrationItemInputProperties - Update migration item input properties.
 type UpdateMigrationItemInputProperties struct {
 	// REQUIRED; The provider specific input to update migration item.
 	ProviderSpecificDetails UpdateMigrationItemProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateMigrationItemInputProperties.
-func (u UpdateMigrationItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateMigrationItemInputProperties.
-func (u *UpdateMigrationItemInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificDetails":
-			u.ProviderSpecificDetails, err = unmarshalUpdateMigrationItemProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // UpdateMigrationItemProviderSpecificInputClassification provides polymorphic access to related types.
@@ -22365,12 +9606,6 @@ type UpdateMigrationItemProviderSpecificInputClassification interface {
 type UpdateMigrationItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
-// for type UpdateMigrationItemProviderSpecificInput.
-func (u *UpdateMigrationItemProviderSpecificInput) GetUpdateMigrationItemProviderSpecificInput() *UpdateMigrationItemProviderSpecificInput {
-	return u
 }
 
 // UpdateMobilityServiceRequest - Request to update the mobility service on a protected item.
@@ -22391,13 +9626,6 @@ type UpdateNetworkMappingInput struct {
 	Properties *UpdateNetworkMappingInputProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateNetworkMappingInput.
-func (u UpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
-}
-
 // UpdateNetworkMappingInputProperties - Common input details for network mapping operation.
 type UpdateNetworkMappingInputProperties struct {
 	// Fabrics specific input network Id.
@@ -22410,52 +9638,10 @@ type UpdateNetworkMappingInputProperties struct {
 	RecoveryNetworkID *string `json:"recoveryNetworkId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateNetworkMappingInputProperties.
-func (u UpdateNetworkMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "fabricSpecificDetails", u.FabricSpecificDetails)
-	populate(objectMap, "recoveryFabricName", u.RecoveryFabricName)
-	populate(objectMap, "recoveryNetworkId", u.RecoveryNetworkID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateNetworkMappingInputProperties.
-func (u *UpdateNetworkMappingInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "fabricSpecificDetails":
-			u.FabricSpecificDetails, err = unmarshalFabricSpecificUpdateNetworkMappingInputClassification(val)
-			delete(rawMsg, key)
-		case "recoveryFabricName":
-			err = unpopulate(val, &u.RecoveryFabricName)
-			delete(rawMsg, key)
-		case "recoveryNetworkId":
-			err = unpopulate(val, &u.RecoveryNetworkID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdatePolicyInput - Update policy input.
 type UpdatePolicyInput struct {
 	// The ReplicationProviderSettings.
 	Properties *UpdatePolicyInputProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdatePolicyInput.
-func (u UpdatePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdatePolicyInputProperties - Policy update properties.
@@ -22464,44 +9650,10 @@ type UpdatePolicyInputProperties struct {
 	ReplicationProviderSettings PolicyProviderSpecificInputClassification `json:"replicationProviderSettings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdatePolicyInputProperties.
-func (u UpdatePolicyInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "replicationProviderSettings", u.ReplicationProviderSettings)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdatePolicyInputProperties.
-func (u *UpdatePolicyInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "replicationProviderSettings":
-			u.ReplicationProviderSettings, err = unmarshalPolicyProviderSpecificInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdateProtectionContainerMappingInput - Container pairing update input.
 type UpdateProtectionContainerMappingInput struct {
 	// Update protection container mapping input properties.
 	Properties *UpdateProtectionContainerMappingInputProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateProtectionContainerMappingInput.
-func (u UpdateProtectionContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateProtectionContainerMappingInputProperties - Container pairing update input.
@@ -22510,44 +9662,10 @@ type UpdateProtectionContainerMappingInputProperties struct {
 	ProviderSpecificInput ReplicationProviderSpecificUpdateContainerMappingInputClassification `json:"providerSpecificInput,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateProtectionContainerMappingInputProperties.
-func (u UpdateProtectionContainerMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "providerSpecificInput", u.ProviderSpecificInput)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateProtectionContainerMappingInputProperties.
-func (u *UpdateProtectionContainerMappingInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "providerSpecificInput":
-			u.ProviderSpecificInput, err = unmarshalReplicationProviderSpecificUpdateContainerMappingInputClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdateRecoveryPlanInput - Update recovery plan input class.
 type UpdateRecoveryPlanInput struct {
 	// Recovery plan update properties.
 	Properties *UpdateRecoveryPlanInputProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateRecoveryPlanInput.
-func (u UpdateRecoveryPlanInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateRecoveryPlanInputProperties - Recovery plan update properties.
@@ -22556,24 +9674,10 @@ type UpdateRecoveryPlanInputProperties struct {
 	Groups []*RecoveryPlanGroup `json:"groups,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateRecoveryPlanInputProperties.
-func (u UpdateRecoveryPlanInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groups", u.Groups)
-	return json.Marshal(objectMap)
-}
-
 // UpdateReplicationProtectedItemInput - Update replication protected item input.
 type UpdateReplicationProtectedItemInput struct {
 	// Update replication protected item properties.
 	Properties *UpdateReplicationProtectedItemInputProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateReplicationProtectedItemInput.
-func (u UpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateReplicationProtectedItemInputProperties - Update protected item input properties.
@@ -22610,69 +9714,6 @@ type UpdateReplicationProtectedItemInputProperties struct {
 	VMNics []*VMNicInputDetails `json:"vmNics,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateReplicationProtectedItemInputProperties.
-func (u UpdateReplicationProtectedItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableRdpOnTargetOption", u.EnableRdpOnTargetOption)
-	populate(objectMap, "licenseType", u.LicenseType)
-	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
-	populate(objectMap, "recoveryAvailabilitySetId", u.RecoveryAvailabilitySetID)
-	populate(objectMap, "recoveryAzureVMName", u.RecoveryAzureVMName)
-	populate(objectMap, "recoveryAzureVMSize", u.RecoveryAzureVMSize)
-	populate(objectMap, "selectedRecoveryAzureNetworkId", u.SelectedRecoveryAzureNetworkID)
-	populate(objectMap, "selectedSourceNicId", u.SelectedSourceNicID)
-	populate(objectMap, "selectedTfoAzureNetworkId", u.SelectedTfoAzureNetworkID)
-	populate(objectMap, "vmNics", u.VMNics)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateReplicationProtectedItemInputProperties.
-func (u *UpdateReplicationProtectedItemInputProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "enableRdpOnTargetOption":
-			err = unpopulate(val, &u.EnableRdpOnTargetOption)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &u.LicenseType)
-			delete(rawMsg, key)
-		case "providerSpecificDetails":
-			u.ProviderSpecificDetails, err = unmarshalUpdateReplicationProtectedItemProviderInputClassification(val)
-			delete(rawMsg, key)
-		case "recoveryAvailabilitySetId":
-			err = unpopulate(val, &u.RecoveryAvailabilitySetID)
-			delete(rawMsg, key)
-		case "recoveryAzureVMName":
-			err = unpopulate(val, &u.RecoveryAzureVMName)
-			delete(rawMsg, key)
-		case "recoveryAzureVMSize":
-			err = unpopulate(val, &u.RecoveryAzureVMSize)
-			delete(rawMsg, key)
-		case "selectedRecoveryAzureNetworkId":
-			err = unpopulate(val, &u.SelectedRecoveryAzureNetworkID)
-			delete(rawMsg, key)
-		case "selectedSourceNicId":
-			err = unpopulate(val, &u.SelectedSourceNicID)
-			delete(rawMsg, key)
-		case "selectedTfoAzureNetworkId":
-			err = unpopulate(val, &u.SelectedTfoAzureNetworkID)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &u.VMNics)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // UpdateReplicationProtectedItemProviderInputClassification provides polymorphic access to related types.
 // Call the interface's GetUpdateReplicationProtectedItemProviderInput() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22689,23 +9730,10 @@ type UpdateReplicationProtectedItemProviderInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
-// interface for type UpdateReplicationProtectedItemProviderInput.
-func (u *UpdateReplicationProtectedItemProviderInput) GetUpdateReplicationProtectedItemProviderInput() *UpdateReplicationProtectedItemProviderInput {
-	return u
-}
-
 // UpdateVCenterRequest - Input required to update vCenter.
 type UpdateVCenterRequest struct {
 	// The update VCenter Request Properties.
 	Properties *UpdateVCenterRequestProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UpdateVCenterRequest.
-func (u UpdateVCenterRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", u.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UpdateVCenterRequestProperties - The properties of an update vCenter request.
@@ -22753,14 +9781,6 @@ type VCenterCollection struct {
 	Value []*VCenter `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VCenterCollection.
-func (v VCenterCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VCenterProperties - vCenter properties.
 type VCenterProperties struct {
 	// The VCenter discovery status.
@@ -22795,73 +9815,6 @@ type VCenterProperties struct {
 
 	// The account Id which has privileges to discover the vCenter.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VCenterProperties.
-func (v VCenterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "discoveryStatus", v.DiscoveryStatus)
-	populate(objectMap, "fabricArmResourceName", v.FabricArmResourceName)
-	populate(objectMap, "friendlyName", v.FriendlyName)
-	populate(objectMap, "healthErrors", v.HealthErrors)
-	populate(objectMap, "ipAddress", v.IPAddress)
-	populate(objectMap, "infrastructureId", v.InfrastructureID)
-	populate(objectMap, "internalId", v.InternalID)
-	populateTimeRFC3339(objectMap, "lastHeartbeat", v.LastHeartbeat)
-	populate(objectMap, "port", v.Port)
-	populate(objectMap, "processServerId", v.ProcessServerID)
-	populate(objectMap, "runAsAccountId", v.RunAsAccountID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VCenterProperties.
-func (v *VCenterProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "discoveryStatus":
-			err = unpopulate(val, &v.DiscoveryStatus)
-			delete(rawMsg, key)
-		case "fabricArmResourceName":
-			err = unpopulate(val, &v.FabricArmResourceName)
-			delete(rawMsg, key)
-		case "friendlyName":
-			err = unpopulate(val, &v.FriendlyName)
-			delete(rawMsg, key)
-		case "healthErrors":
-			err = unpopulate(val, &v.HealthErrors)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &v.IPAddress)
-			delete(rawMsg, key)
-		case "infrastructureId":
-			err = unpopulate(val, &v.InfrastructureID)
-			delete(rawMsg, key)
-		case "internalId":
-			err = unpopulate(val, &v.InternalID)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &v.LastHeartbeat)
-			delete(rawMsg, key)
-		case "port":
-			err = unpopulate(val, &v.Port)
-			delete(rawMsg, key)
-		case "processServerId":
-			err = unpopulate(val, &v.ProcessServerID)
-			delete(rawMsg, key)
-		case "runAsAccountId":
-			err = unpopulate(val, &v.RunAsAccountID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMNicDetails - Hyper V VM network details.
@@ -22924,31 +9877,6 @@ type VMNicDetails struct {
 	VMNetworkName *string `json:"vMNetworkName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMNicDetails.
-func (v VMNicDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableAcceleratedNetworkingOnRecovery", v.EnableAcceleratedNetworkingOnRecovery)
-	populate(objectMap, "enableAcceleratedNetworkingOnTfo", v.EnableAcceleratedNetworkingOnTfo)
-	populate(objectMap, "ipConfigs", v.IPConfigs)
-	populate(objectMap, "nicId", v.NicID)
-	populate(objectMap, "recoveryNetworkSecurityGroupId", v.RecoveryNetworkSecurityGroupID)
-	populate(objectMap, "recoveryNicName", v.RecoveryNicName)
-	populate(objectMap, "recoveryNicResourceGroupName", v.RecoveryNicResourceGroupName)
-	populate(objectMap, "recoveryVMNetworkId", v.RecoveryVMNetworkID)
-	populate(objectMap, "replicaNicId", v.ReplicaNicID)
-	populate(objectMap, "reuseExistingNic", v.ReuseExistingNic)
-	populate(objectMap, "selectionType", v.SelectionType)
-	populate(objectMap, "sourceNicArmId", v.SourceNicArmID)
-	populate(objectMap, "targetNicName", v.TargetNicName)
-	populate(objectMap, "tfoNetworkSecurityGroupId", v.TfoNetworkSecurityGroupID)
-	populate(objectMap, "tfoRecoveryNicName", v.TfoRecoveryNicName)
-	populate(objectMap, "tfoRecoveryNicResourceGroupName", v.TfoRecoveryNicResourceGroupName)
-	populate(objectMap, "tfoReuseExistingNic", v.TfoReuseExistingNic)
-	populate(objectMap, "tfoVMNetworkId", v.TfoVMNetworkID)
-	populate(objectMap, "vMNetworkName", v.VMNetworkName)
-	return json.Marshal(objectMap)
-}
-
 // VMNicInputDetails - Hyper V VM network input details.
 type VMNicInputDetails struct {
 	// Whether the NIC has accelerated networking enabled.
@@ -22994,26 +9922,6 @@ type VMNicInputDetails struct {
 	TfoReuseExistingNic *bool `json:"tfoReuseExistingNic,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMNicInputDetails.
-func (v VMNicInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "enableAcceleratedNetworkingOnRecovery", v.EnableAcceleratedNetworkingOnRecovery)
-	populate(objectMap, "enableAcceleratedNetworkingOnTfo", v.EnableAcceleratedNetworkingOnTfo)
-	populate(objectMap, "ipConfigs", v.IPConfigs)
-	populate(objectMap, "nicId", v.NicID)
-	populate(objectMap, "recoveryNetworkSecurityGroupId", v.RecoveryNetworkSecurityGroupID)
-	populate(objectMap, "recoveryNicName", v.RecoveryNicName)
-	populate(objectMap, "recoveryNicResourceGroupName", v.RecoveryNicResourceGroupName)
-	populate(objectMap, "reuseExistingNic", v.ReuseExistingNic)
-	populate(objectMap, "selectionType", v.SelectionType)
-	populate(objectMap, "targetNicName", v.TargetNicName)
-	populate(objectMap, "tfoNetworkSecurityGroupId", v.TfoNetworkSecurityGroupID)
-	populate(objectMap, "tfoNicName", v.TfoNicName)
-	populate(objectMap, "tfoNicResourceGroupName", v.TfoNicResourceGroupName)
-	populate(objectMap, "tfoReuseExistingNic", v.TfoReuseExistingNic)
-	return json.Marshal(objectMap)
-}
-
 // VMNicUpdatesTaskDetails - This class represents the vm NicUpdates task details.
 type VMNicUpdatesTaskDetails struct {
 	// REQUIRED; The type of task details.
@@ -23029,91 +9937,10 @@ type VMNicUpdatesTaskDetails struct {
 	VMID *string `json:"vmId,omitempty"`
 }
 
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type VMNicUpdatesTaskDetails.
-func (v *VMNicUpdatesTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMNicUpdatesTaskDetails.
-func (v VMNicUpdatesTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmNicUpdatesTaskDetails"
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "nicId", v.NicID)
-	populate(objectMap, "vmId", v.VMID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMNicUpdatesTaskDetails.
-func (v *VMNicUpdatesTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &v.Name)
-			delete(rawMsg, key)
-		case "nicId":
-			err = unpopulate(val, &v.NicID)
-			delete(rawMsg, key)
-		case "vmId":
-			err = unpopulate(val, &v.VMID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VMwareCbtContainerCreationInput - VMwareCbt container creation input.
 type VMwareCbtContainerCreationInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
-// interface for type VMwareCbtContainerCreationInput.
-func (v *VMwareCbtContainerCreationInput) GetReplicationProviderSpecificContainerCreationInput() *ReplicationProviderSpecificContainerCreationInput {
-	return &ReplicationProviderSpecificContainerCreationInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtContainerCreationInput.
-func (v VMwareCbtContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtContainerCreationInput.
-func (v *VMwareCbtContainerCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareCbtContainerMappingInput - VMwareCbt container mapping input.
@@ -23121,82 +9948,23 @@ type VMwareCbtContainerMappingInput struct {
 	// REQUIRED; The class type.
 	InstanceType *string `json:"instanceType,omitempty"`
 
-	// REQUIRED; The target key vault ARM Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
-
-	// REQUIRED; The target key vault URL.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
-
-	// REQUIRED; The secret name of the service bus connection string.
-	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty"`
-
 	// REQUIRED; The storage account ARM Id.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 
-	// REQUIRED; The secret name of the storage account.
-	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
-
 	// REQUIRED; The target location.
 	TargetLocation *string `json:"targetLocation,omitempty"`
-}
 
-// GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
-// interface for type VMwareCbtContainerMappingInput.
-func (v *VMwareCbtContainerMappingInput) GetReplicationProviderSpecificContainerMappingInput() *ReplicationProviderSpecificContainerMappingInput {
-	return &ReplicationProviderSpecificContainerMappingInput{
-		InstanceType: v.InstanceType,
-	}
-}
+	// The target key vault ARM Id.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
 
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtContainerMappingInput.
-func (v VMwareCbtContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "keyVaultId", v.KeyVaultID)
-	populate(objectMap, "keyVaultUri", v.KeyVaultURI)
-	populate(objectMap, "serviceBusConnectionStringSecretName", v.ServiceBusConnectionStringSecretName)
-	populate(objectMap, "storageAccountId", v.StorageAccountID)
-	populate(objectMap, "storageAccountSasSecretName", v.StorageAccountSasSecretName)
-	populate(objectMap, "targetLocation", v.TargetLocation)
-	return json.Marshal(objectMap)
-}
+	// The target key vault URL.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtContainerMappingInput.
-func (v *VMwareCbtContainerMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "keyVaultId":
-			err = unpopulate(val, &v.KeyVaultID)
-			delete(rawMsg, key)
-		case "keyVaultUri":
-			err = unpopulate(val, &v.KeyVaultURI)
-			delete(rawMsg, key)
-		case "serviceBusConnectionStringSecretName":
-			err = unpopulate(val, &v.ServiceBusConnectionStringSecretName)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &v.StorageAccountID)
-			delete(rawMsg, key)
-		case "storageAccountSasSecretName":
-			err = unpopulate(val, &v.StorageAccountSasSecretName)
-			delete(rawMsg, key)
-		case "targetLocation":
-			err = unpopulate(val, &v.TargetLocation)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// The secret name of the service bus connection string.
+	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty"`
+
+	// The secret name of the storage account.
+	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
 }
 
 // VMwareCbtDiskInput - VMwareCbt disk input.
@@ -23284,121 +10052,12 @@ type VMwareCbtEnableMigrationInput struct {
 
 	// The target VM tags.
 	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
-}
 
-// GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
-// type VMwareCbtEnableMigrationInput.
-func (v *VMwareCbtEnableMigrationInput) GetEnableMigrationProviderSpecificInput() *EnableMigrationProviderSpecificInput {
-	return &EnableMigrationProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
+	// The selected test network ARM Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
 
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtEnableMigrationInput.
-func (v VMwareCbtEnableMigrationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataMoverRunAsAccountId", v.DataMoverRunAsAccountID)
-	populate(objectMap, "disksToInclude", v.DisksToInclude)
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "licenseType", v.LicenseType)
-	populate(objectMap, "performAutoResync", v.PerformAutoResync)
-	populate(objectMap, "sqlServerLicenseType", v.SQLServerLicenseType)
-	populate(objectMap, "seedDiskTags", v.SeedDiskTags)
-	populate(objectMap, "snapshotRunAsAccountId", v.SnapshotRunAsAccountID)
-	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
-	populate(objectMap, "targetNetworkId", v.TargetNetworkID)
-	populate(objectMap, "targetNicTags", v.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", v.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", v.TargetResourceGroupID)
-	populate(objectMap, "targetSubnetName", v.TargetSubnetName)
-	populate(objectMap, "targetVmName", v.TargetVMName)
-	populate(objectMap, "targetVmSize", v.TargetVMSize)
-	populate(objectMap, "targetVmTags", v.TargetVMTags)
-	populate(objectMap, "vmwareMachineId", v.VmwareMachineID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtEnableMigrationInput.
-func (v *VMwareCbtEnableMigrationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataMoverRunAsAccountId":
-			err = unpopulate(val, &v.DataMoverRunAsAccountID)
-			delete(rawMsg, key)
-		case "disksToInclude":
-			err = unpopulate(val, &v.DisksToInclude)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &v.LicenseType)
-			delete(rawMsg, key)
-		case "performAutoResync":
-			err = unpopulate(val, &v.PerformAutoResync)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &v.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedDiskTags":
-			err = unpopulate(val, &v.SeedDiskTags)
-			delete(rawMsg, key)
-		case "snapshotRunAsAccountId":
-			err = unpopulate(val, &v.SnapshotRunAsAccountID)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &v.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &v.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &v.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetDiskTags":
-			err = unpopulate(val, &v.TargetDiskTags)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &v.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &v.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &v.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &v.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetSubnetName":
-			err = unpopulate(val, &v.TargetSubnetName)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &v.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &v.TargetVMSize)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &v.TargetVMTags)
-			delete(rawMsg, key)
-		case "vmwareMachineId":
-			err = unpopulate(val, &v.VmwareMachineID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// The selected test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
 }
 
 // VMwareCbtEventDetails - Event details for VMwareCbt provider.
@@ -23410,44 +10069,6 @@ type VMwareCbtEventDetails struct {
 	MigrationItemName *string `json:"migrationItemName,omitempty" azure:"ro"`
 }
 
-// GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type VMwareCbtEventDetails.
-func (v *VMwareCbtEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecificDetails {
-	return &EventProviderSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtEventDetails.
-func (v VMwareCbtEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "migrationItemName", v.MigrationItemName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtEventDetails.
-func (v *VMwareCbtEventDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "migrationItemName":
-			err = unpopulate(val, &v.MigrationItemName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VMwareCbtMigrateInput - VMwareCbt specific migrate input.
 type VMwareCbtMigrateInput struct {
 	// REQUIRED; The class type.
@@ -23455,44 +10076,6 @@ type VMwareCbtMigrateInput struct {
 
 	// REQUIRED; A value indicating whether VM is to be shutdown.
 	PerformShutdown *string `json:"performShutdown,omitempty"`
-}
-
-// GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type VMwareCbtMigrateInput.
-func (v *VMwareCbtMigrateInput) GetMigrateProviderSpecificInput() *MigrateProviderSpecificInput {
-	return &MigrateProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtMigrateInput.
-func (v VMwareCbtMigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "performShutdown", v.PerformShutdown)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtMigrateInput.
-func (v *VMwareCbtMigrateInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "performShutdown":
-			err = unpopulate(val, &v.PerformShutdown)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareCbtMigrationDetails - VMwareCbt provider specific settings.
@@ -23603,177 +10186,6 @@ type VMwareCbtMigrationDetails struct {
 	VmwareMachineID *string `json:"vmwareMachineId,omitempty" azure:"ro"`
 }
 
-// GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
-// VMwareCbtMigrationDetails.
-func (v *VMwareCbtMigrationDetails) GetMigrationProviderSpecificSettings() *MigrationProviderSpecificSettings {
-	return &MigrationProviderSpecificSettings{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtMigrationDetails.
-func (v VMwareCbtMigrationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dataMoverRunAsAccountId", v.DataMoverRunAsAccountID)
-	populate(objectMap, "firmwareType", v.FirmwareType)
-	populate(objectMap, "initialSeedingProgressPercentage", v.InitialSeedingProgressPercentage)
-	populate(objectMap, "initialSeedingRetryCount", v.InitialSeedingRetryCount)
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "lastRecoveryPointId", v.LastRecoveryPointID)
-	populateTimeRFC3339(objectMap, "lastRecoveryPointReceived", v.LastRecoveryPointReceived)
-	populate(objectMap, "licenseType", v.LicenseType)
-	populate(objectMap, "migrationProgressPercentage", v.MigrationProgressPercentage)
-	populate(objectMap, "migrationRecoveryPointId", v.MigrationRecoveryPointID)
-	populate(objectMap, "osType", v.OSType)
-	populate(objectMap, "performAutoResync", v.PerformAutoResync)
-	populate(objectMap, "protectedDisks", v.ProtectedDisks)
-	populate(objectMap, "resyncProgressPercentage", v.ResyncProgressPercentage)
-	populate(objectMap, "resyncRequired", v.ResyncRequired)
-	populate(objectMap, "resyncRetryCount", v.ResyncRetryCount)
-	populate(objectMap, "resyncState", v.ResyncState)
-	populate(objectMap, "sqlServerLicenseType", v.SQLServerLicenseType)
-	populate(objectMap, "seedDiskTags", v.SeedDiskTags)
-	populate(objectMap, "snapshotRunAsAccountId", v.SnapshotRunAsAccountID)
-	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
-	populate(objectMap, "targetGeneration", v.TargetGeneration)
-	populate(objectMap, "targetLocation", v.TargetLocation)
-	populate(objectMap, "targetNetworkId", v.TargetNetworkID)
-	populate(objectMap, "targetNicTags", v.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", v.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", v.TargetResourceGroupID)
-	populate(objectMap, "targetVmName", v.TargetVMName)
-	populate(objectMap, "targetVmSize", v.TargetVMSize)
-	populate(objectMap, "targetVmTags", v.TargetVMTags)
-	populate(objectMap, "vmNics", v.VMNics)
-	populate(objectMap, "vmwareMachineId", v.VmwareMachineID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtMigrationDetails.
-func (v *VMwareCbtMigrationDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "dataMoverRunAsAccountId":
-			err = unpopulate(val, &v.DataMoverRunAsAccountID)
-			delete(rawMsg, key)
-		case "firmwareType":
-			err = unpopulate(val, &v.FirmwareType)
-			delete(rawMsg, key)
-		case "initialSeedingProgressPercentage":
-			err = unpopulate(val, &v.InitialSeedingProgressPercentage)
-			delete(rawMsg, key)
-		case "initialSeedingRetryCount":
-			err = unpopulate(val, &v.InitialSeedingRetryCount)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "lastRecoveryPointId":
-			err = unpopulate(val, &v.LastRecoveryPointID)
-			delete(rawMsg, key)
-		case "lastRecoveryPointReceived":
-			err = unpopulateTimeRFC3339(val, &v.LastRecoveryPointReceived)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &v.LicenseType)
-			delete(rawMsg, key)
-		case "migrationProgressPercentage":
-			err = unpopulate(val, &v.MigrationProgressPercentage)
-			delete(rawMsg, key)
-		case "migrationRecoveryPointId":
-			err = unpopulate(val, &v.MigrationRecoveryPointID)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &v.OSType)
-			delete(rawMsg, key)
-		case "performAutoResync":
-			err = unpopulate(val, &v.PerformAutoResync)
-			delete(rawMsg, key)
-		case "protectedDisks":
-			err = unpopulate(val, &v.ProtectedDisks)
-			delete(rawMsg, key)
-		case "resyncProgressPercentage":
-			err = unpopulate(val, &v.ResyncProgressPercentage)
-			delete(rawMsg, key)
-		case "resyncRequired":
-			err = unpopulate(val, &v.ResyncRequired)
-			delete(rawMsg, key)
-		case "resyncRetryCount":
-			err = unpopulate(val, &v.ResyncRetryCount)
-			delete(rawMsg, key)
-		case "resyncState":
-			err = unpopulate(val, &v.ResyncState)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &v.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "seedDiskTags":
-			err = unpopulate(val, &v.SeedDiskTags)
-			delete(rawMsg, key)
-		case "snapshotRunAsAccountId":
-			err = unpopulate(val, &v.SnapshotRunAsAccountID)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &v.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &v.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &v.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetDiskTags":
-			err = unpopulate(val, &v.TargetDiskTags)
-			delete(rawMsg, key)
-		case "targetGeneration":
-			err = unpopulate(val, &v.TargetGeneration)
-			delete(rawMsg, key)
-		case "targetLocation":
-			err = unpopulate(val, &v.TargetLocation)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &v.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &v.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &v.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &v.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &v.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &v.TargetVMSize)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &v.TargetVMTags)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &v.VMNics)
-			delete(rawMsg, key)
-		case "vmwareMachineId":
-			err = unpopulate(val, &v.VmwareMachineID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VMwareCbtNicDetails - VMwareCbt NIC details.
 type VMwareCbtNicDetails struct {
 	// A value indicating whether this is the primary NIC.
@@ -23793,6 +10205,18 @@ type VMwareCbtNicDetails struct {
 
 	// Target subnet name.
 	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+
+	// The test IP address.
+	TestIPAddress *string `json:"testIPAddress,omitempty"`
+
+	// The test IP address type.
+	TestIPAddressType *EthernetAddressType `json:"testIPAddressType,omitempty"`
+
+	// Source network Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
+
+	// Test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
 
 	// READ-ONLY; The NIC Id.
 	NicID *string `json:"nicId,omitempty" azure:"ro"`
@@ -23826,6 +10250,12 @@ type VMwareCbtNicInput struct {
 
 	// Target subnet name.
 	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+
+	// The test static IP address.
+	TestStaticIPAddress *string `json:"testStaticIPAddress,omitempty"`
+
+	// The test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
 }
 
 // VMwareCbtPolicyCreationInput - VMware Cbt policy creation input.
@@ -23841,52 +10271,6 @@ type VMwareCbtPolicyCreationInput struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type VMwareCbtPolicyCreationInput.
-func (v *VMwareCbtPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProviderSpecificInput {
-	return &PolicyProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtPolicyCreationInput.
-func (v VMwareCbtPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", v.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", v.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "recoveryPointHistoryInMinutes", v.RecoveryPointHistoryInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtPolicyCreationInput.
-func (v *VMwareCbtPolicyCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &v.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &v.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryInMinutes":
-			err = unpopulate(val, &v.RecoveryPointHistoryInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareCbtProtectedDiskDetails - VMwareCbt protected disk details.
@@ -23952,65 +10336,6 @@ type VMwareCbtProtectionContainerMappingDetails struct {
 	TargetLocation *string `json:"targetLocation,omitempty" azure:"ro"`
 }
 
-// GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
-// interface for type VMwareCbtProtectionContainerMappingDetails.
-func (v *VMwareCbtProtectionContainerMappingDetails) GetProtectionContainerMappingProviderSpecificDetails() *ProtectionContainerMappingProviderSpecificDetails {
-	return &ProtectionContainerMappingProviderSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtProtectionContainerMappingDetails.
-func (v VMwareCbtProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "keyVaultId", v.KeyVaultID)
-	populate(objectMap, "keyVaultUri", v.KeyVaultURI)
-	populate(objectMap, "serviceBusConnectionStringSecretName", v.ServiceBusConnectionStringSecretName)
-	populate(objectMap, "storageAccountId", v.StorageAccountID)
-	populate(objectMap, "storageAccountSasSecretName", v.StorageAccountSasSecretName)
-	populate(objectMap, "targetLocation", v.TargetLocation)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtProtectionContainerMappingDetails.
-func (v *VMwareCbtProtectionContainerMappingDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "keyVaultId":
-			err = unpopulate(val, &v.KeyVaultID)
-			delete(rawMsg, key)
-		case "keyVaultUri":
-			err = unpopulate(val, &v.KeyVaultURI)
-			delete(rawMsg, key)
-		case "serviceBusConnectionStringSecretName":
-			err = unpopulate(val, &v.ServiceBusConnectionStringSecretName)
-			delete(rawMsg, key)
-		case "storageAccountId":
-			err = unpopulate(val, &v.StorageAccountID)
-			delete(rawMsg, key)
-		case "storageAccountSasSecretName":
-			err = unpopulate(val, &v.StorageAccountSasSecretName)
-			delete(rawMsg, key)
-		case "targetLocation":
-			err = unpopulate(val, &v.TargetLocation)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VMwareCbtResyncInput - VMwareCbt specific resync input.
 type VMwareCbtResyncInput struct {
 	// REQUIRED; The class type.
@@ -24018,44 +10343,6 @@ type VMwareCbtResyncInput struct {
 
 	// REQUIRED; A value indicating whether CBT is to be reset.
 	SkipCbtReset *string `json:"skipCbtReset,omitempty"`
-}
-
-// GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type VMwareCbtResyncInput.
-func (v *VMwareCbtResyncInput) GetResyncProviderSpecificInput() *ResyncProviderSpecificInput {
-	return &ResyncProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtResyncInput.
-func (v VMwareCbtResyncInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "skipCbtReset", v.SkipCbtReset)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtResyncInput.
-func (v *VMwareCbtResyncInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "skipCbtReset":
-			err = unpopulate(val, &v.SkipCbtReset)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareCbtTestMigrateInput - VMwareCbt specific test migrate input.
@@ -24068,54 +10355,18 @@ type VMwareCbtTestMigrateInput struct {
 
 	// REQUIRED; The recovery point Id.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
-}
 
-// GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type VMwareCbtTestMigrateInput.
-func (v *VMwareCbtTestMigrateInput) GetTestMigrateProviderSpecificInput() *TestMigrateProviderSpecificInput {
-	return &TestMigrateProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtTestMigrateInput.
-func (v VMwareCbtTestMigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "networkId", v.NetworkID)
-	populate(objectMap, "recoveryPointId", v.RecoveryPointID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtTestMigrateInput.
-func (v *VMwareCbtTestMigrateInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "networkId":
-			err = unpopulate(val, &v.NetworkID)
-			delete(rawMsg, key)
-		case "recoveryPointId":
-			err = unpopulate(val, &v.RecoveryPointID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// The list of NIC details.
+	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
 }
 
 // VMwareCbtUpdateDiskInput - VMwareCbt disk input for update.
 type VMwareCbtUpdateDiskInput struct {
 	// REQUIRED; The disk Id.
 	DiskID *string `json:"diskId,omitempty"`
+
+	// A value indicating whether the disk is the OS disk.
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
 
 	// The target disk name.
 	TargetDiskName *string `json:"targetDiskName,omitempty"`
@@ -24168,110 +10419,14 @@ type VMwareCbtUpdateMigrationItemInput struct {
 	// The target VM tags.
 	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
 
+	// The test network ARM Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
+
 	// The list of disk update properties.
 	VMDisks []*VMwareCbtUpdateDiskInput `json:"vmDisks,omitempty"`
 
 	// The list of NIC details.
 	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
-}
-
-// GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
-// for type VMwareCbtUpdateMigrationItemInput.
-func (v *VMwareCbtUpdateMigrationItemInput) GetUpdateMigrationItemProviderSpecificInput() *UpdateMigrationItemProviderSpecificInput {
-	return &UpdateMigrationItemProviderSpecificInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareCbtUpdateMigrationItemInput.
-func (v VMwareCbtUpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "licenseType", v.LicenseType)
-	populate(objectMap, "performAutoResync", v.PerformAutoResync)
-	populate(objectMap, "sqlServerLicenseType", v.SQLServerLicenseType)
-	populate(objectMap, "targetAvailabilitySetId", v.TargetAvailabilitySetID)
-	populate(objectMap, "targetAvailabilityZone", v.TargetAvailabilityZone)
-	populate(objectMap, "targetBootDiagnosticsStorageAccountId", v.TargetBootDiagnosticsStorageAccountID)
-	populate(objectMap, "targetDiskTags", v.TargetDiskTags)
-	populate(objectMap, "targetNetworkId", v.TargetNetworkID)
-	populate(objectMap, "targetNicTags", v.TargetNicTags)
-	populate(objectMap, "targetProximityPlacementGroupId", v.TargetProximityPlacementGroupID)
-	populate(objectMap, "targetResourceGroupId", v.TargetResourceGroupID)
-	populate(objectMap, "targetVmName", v.TargetVMName)
-	populate(objectMap, "targetVmSize", v.TargetVMSize)
-	populate(objectMap, "targetVmTags", v.TargetVMTags)
-	populate(objectMap, "vmDisks", v.VMDisks)
-	populate(objectMap, "vmNics", v.VMNics)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareCbtUpdateMigrationItemInput.
-func (v *VMwareCbtUpdateMigrationItemInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "licenseType":
-			err = unpopulate(val, &v.LicenseType)
-			delete(rawMsg, key)
-		case "performAutoResync":
-			err = unpopulate(val, &v.PerformAutoResync)
-			delete(rawMsg, key)
-		case "sqlServerLicenseType":
-			err = unpopulate(val, &v.SQLServerLicenseType)
-			delete(rawMsg, key)
-		case "targetAvailabilitySetId":
-			err = unpopulate(val, &v.TargetAvailabilitySetID)
-			delete(rawMsg, key)
-		case "targetAvailabilityZone":
-			err = unpopulate(val, &v.TargetAvailabilityZone)
-			delete(rawMsg, key)
-		case "targetBootDiagnosticsStorageAccountId":
-			err = unpopulate(val, &v.TargetBootDiagnosticsStorageAccountID)
-			delete(rawMsg, key)
-		case "targetDiskTags":
-			err = unpopulate(val, &v.TargetDiskTags)
-			delete(rawMsg, key)
-		case "targetNetworkId":
-			err = unpopulate(val, &v.TargetNetworkID)
-			delete(rawMsg, key)
-		case "targetNicTags":
-			err = unpopulate(val, &v.TargetNicTags)
-			delete(rawMsg, key)
-		case "targetProximityPlacementGroupId":
-			err = unpopulate(val, &v.TargetProximityPlacementGroupID)
-			delete(rawMsg, key)
-		case "targetResourceGroupId":
-			err = unpopulate(val, &v.TargetResourceGroupID)
-			delete(rawMsg, key)
-		case "targetVmName":
-			err = unpopulate(val, &v.TargetVMName)
-			delete(rawMsg, key)
-		case "targetVmSize":
-			err = unpopulate(val, &v.TargetVMSize)
-			delete(rawMsg, key)
-		case "targetVmTags":
-			err = unpopulate(val, &v.TargetVMTags)
-			delete(rawMsg, key)
-		case "vmDisks":
-			err = unpopulate(val, &v.VMDisks)
-			delete(rawMsg, key)
-		case "vmNics":
-			err = unpopulate(val, &v.VMNics)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareDetails - Store the fabric details specific to the VMware fabric.
@@ -24379,172 +10534,6 @@ type VMwareDetails struct {
 	WebLoadStatus *string `json:"webLoadStatus,omitempty"`
 }
 
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareDetails.
-func (v *VMwareDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareDetails.
-func (v VMwareDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentCount", v.AgentCount)
-	populateTimeRFC3339(objectMap, "agentExpiryDate", v.AgentExpiryDate)
-	populate(objectMap, "agentVersion", v.AgentVersion)
-	populate(objectMap, "agentVersionDetails", v.AgentVersionDetails)
-	populate(objectMap, "availableMemoryInBytes", v.AvailableMemoryInBytes)
-	populate(objectMap, "availableSpaceInBytes", v.AvailableSpaceInBytes)
-	populate(objectMap, "cpuLoad", v.CPULoad)
-	populate(objectMap, "cpuLoadStatus", v.CPULoadStatus)
-	populate(objectMap, "csServiceStatus", v.CsServiceStatus)
-	populate(objectMap, "databaseServerLoad", v.DatabaseServerLoad)
-	populate(objectMap, "databaseServerLoadStatus", v.DatabaseServerLoadStatus)
-	populate(objectMap, "hostName", v.HostName)
-	populate(objectMap, "ipAddress", v.IPAddress)
-	objectMap["instanceType"] = "VMware"
-	populateTimeRFC3339(objectMap, "lastHeartbeat", v.LastHeartbeat)
-	populate(objectMap, "masterTargetServers", v.MasterTargetServers)
-	populate(objectMap, "memoryUsageStatus", v.MemoryUsageStatus)
-	populate(objectMap, "processServerCount", v.ProcessServerCount)
-	populate(objectMap, "processServers", v.ProcessServers)
-	populate(objectMap, "protectedServers", v.ProtectedServers)
-	populate(objectMap, "psTemplateVersion", v.PsTemplateVersion)
-	populate(objectMap, "replicationPairCount", v.ReplicationPairCount)
-	populate(objectMap, "runAsAccounts", v.RunAsAccounts)
-	populateTimeRFC3339(objectMap, "sslCertExpiryDate", v.SSLCertExpiryDate)
-	populate(objectMap, "sslCertExpiryRemainingDays", v.SSLCertExpiryRemainingDays)
-	populate(objectMap, "spaceUsageStatus", v.SpaceUsageStatus)
-	populate(objectMap, "switchProviderBlockingErrorDetails", v.SwitchProviderBlockingErrorDetails)
-	populate(objectMap, "systemLoad", v.SystemLoad)
-	populate(objectMap, "systemLoadStatus", v.SystemLoadStatus)
-	populate(objectMap, "totalMemoryInBytes", v.TotalMemoryInBytes)
-	populate(objectMap, "totalSpaceInBytes", v.TotalSpaceInBytes)
-	populate(objectMap, "versionStatus", v.VersionStatus)
-	populate(objectMap, "webLoad", v.WebLoad)
-	populate(objectMap, "webLoadStatus", v.WebLoadStatus)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareDetails.
-func (v *VMwareDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentCount":
-			err = unpopulate(val, &v.AgentCount)
-			delete(rawMsg, key)
-		case "agentExpiryDate":
-			err = unpopulateTimeRFC3339(val, &v.AgentExpiryDate)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &v.AgentVersion)
-			delete(rawMsg, key)
-		case "agentVersionDetails":
-			err = unpopulate(val, &v.AgentVersionDetails)
-			delete(rawMsg, key)
-		case "availableMemoryInBytes":
-			err = unpopulate(val, &v.AvailableMemoryInBytes)
-			delete(rawMsg, key)
-		case "availableSpaceInBytes":
-			err = unpopulate(val, &v.AvailableSpaceInBytes)
-			delete(rawMsg, key)
-		case "cpuLoad":
-			err = unpopulate(val, &v.CPULoad)
-			delete(rawMsg, key)
-		case "cpuLoadStatus":
-			err = unpopulate(val, &v.CPULoadStatus)
-			delete(rawMsg, key)
-		case "csServiceStatus":
-			err = unpopulate(val, &v.CsServiceStatus)
-			delete(rawMsg, key)
-		case "databaseServerLoad":
-			err = unpopulate(val, &v.DatabaseServerLoad)
-			delete(rawMsg, key)
-		case "databaseServerLoadStatus":
-			err = unpopulate(val, &v.DatabaseServerLoadStatus)
-			delete(rawMsg, key)
-		case "hostName":
-			err = unpopulate(val, &v.HostName)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &v.IPAddress)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "lastHeartbeat":
-			err = unpopulateTimeRFC3339(val, &v.LastHeartbeat)
-			delete(rawMsg, key)
-		case "masterTargetServers":
-			err = unpopulate(val, &v.MasterTargetServers)
-			delete(rawMsg, key)
-		case "memoryUsageStatus":
-			err = unpopulate(val, &v.MemoryUsageStatus)
-			delete(rawMsg, key)
-		case "processServerCount":
-			err = unpopulate(val, &v.ProcessServerCount)
-			delete(rawMsg, key)
-		case "processServers":
-			err = unpopulate(val, &v.ProcessServers)
-			delete(rawMsg, key)
-		case "protectedServers":
-			err = unpopulate(val, &v.ProtectedServers)
-			delete(rawMsg, key)
-		case "psTemplateVersion":
-			err = unpopulate(val, &v.PsTemplateVersion)
-			delete(rawMsg, key)
-		case "replicationPairCount":
-			err = unpopulate(val, &v.ReplicationPairCount)
-			delete(rawMsg, key)
-		case "runAsAccounts":
-			err = unpopulate(val, &v.RunAsAccounts)
-			delete(rawMsg, key)
-		case "sslCertExpiryDate":
-			err = unpopulateTimeRFC3339(val, &v.SSLCertExpiryDate)
-			delete(rawMsg, key)
-		case "sslCertExpiryRemainingDays":
-			err = unpopulate(val, &v.SSLCertExpiryRemainingDays)
-			delete(rawMsg, key)
-		case "spaceUsageStatus":
-			err = unpopulate(val, &v.SpaceUsageStatus)
-			delete(rawMsg, key)
-		case "switchProviderBlockingErrorDetails":
-			err = unpopulate(val, &v.SwitchProviderBlockingErrorDetails)
-			delete(rawMsg, key)
-		case "systemLoad":
-			err = unpopulate(val, &v.SystemLoad)
-			delete(rawMsg, key)
-		case "systemLoadStatus":
-			err = unpopulate(val, &v.SystemLoadStatus)
-			delete(rawMsg, key)
-		case "totalMemoryInBytes":
-			err = unpopulate(val, &v.TotalMemoryInBytes)
-			delete(rawMsg, key)
-		case "totalSpaceInBytes":
-			err = unpopulate(val, &v.TotalSpaceInBytes)
-			delete(rawMsg, key)
-		case "versionStatus":
-			err = unpopulate(val, &v.VersionStatus)
-			delete(rawMsg, key)
-		case "webLoad":
-			err = unpopulate(val, &v.WebLoad)
-			delete(rawMsg, key)
-		case "webLoadStatus":
-			err = unpopulate(val, &v.WebLoadStatus)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VMwareV2FabricCreationInput - VMwareV2 fabric provider specific settings.
 type VMwareV2FabricCreationInput struct {
 	// REQUIRED; Gets the class type.
@@ -24558,52 +10547,6 @@ type VMwareV2FabricCreationInput struct {
 
 	// The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
-}
-
-// GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type VMwareV2FabricCreationInput.
-func (v *VMwareV2FabricCreationInput) GetFabricSpecificCreationInput() *FabricSpecificCreationInput {
-	return &FabricSpecificCreationInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareV2FabricCreationInput.
-func (v VMwareV2FabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareV2"
-	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
-	populate(objectMap, "physicalSiteId", v.PhysicalSiteID)
-	populate(objectMap, "vmwareSiteId", v.VmwareSiteID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareV2FabricCreationInput.
-func (v *VMwareV2FabricCreationInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "migrationSolutionId":
-			err = unpopulate(val, &v.MigrationSolutionID)
-			delete(rawMsg, key)
-		case "physicalSiteId":
-			err = unpopulate(val, &v.PhysicalSiteID)
-			delete(rawMsg, key)
-		case "vmwareSiteId":
-			err = unpopulate(val, &v.VmwareSiteID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareV2FabricSpecificDetails - VMwareV2 fabric specific details.
@@ -24631,68 +10574,6 @@ type VMwareV2FabricSpecificDetails struct {
 
 	// READ-ONLY; The ARM Id of the VMware site.
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
-}
-
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareV2FabricSpecificDetails.
-func (v *VMwareV2FabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareV2FabricSpecificDetails.
-func (v VMwareV2FabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMwareV2"
-	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
-	populate(objectMap, "physicalSiteId", v.PhysicalSiteID)
-	populate(objectMap, "processServers", v.ProcessServers)
-	populate(objectMap, "serviceContainerId", v.ServiceContainerID)
-	populate(objectMap, "serviceEndpoint", v.ServiceEndpoint)
-	populate(objectMap, "serviceResourceId", v.ServiceResourceID)
-	populate(objectMap, "vmwareSiteId", v.VmwareSiteID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareV2FabricSpecificDetails.
-func (v *VMwareV2FabricSpecificDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "migrationSolutionId":
-			err = unpopulate(val, &v.MigrationSolutionID)
-			delete(rawMsg, key)
-		case "physicalSiteId":
-			err = unpopulate(val, &v.PhysicalSiteID)
-			delete(rawMsg, key)
-		case "processServers":
-			err = unpopulate(val, &v.ProcessServers)
-			delete(rawMsg, key)
-		case "serviceContainerId":
-			err = unpopulate(val, &v.ServiceContainerID)
-			delete(rawMsg, key)
-		case "serviceEndpoint":
-			err = unpopulate(val, &v.ServiceEndpoint)
-			delete(rawMsg, key)
-		case "serviceResourceId":
-			err = unpopulate(val, &v.ServiceResourceID)
-			delete(rawMsg, key)
-		case "vmwareSiteId":
-			err = unpopulate(val, &v.VmwareSiteID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VMwareVirtualMachineDetails - VMware provider specific settings.
@@ -24731,80 +10612,6 @@ type VMwareVirtualMachineDetails struct {
 	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
 }
 
-// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VMwareVirtualMachineDetails.
-func (v *VMwareVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
-	return &ConfigurationSettings{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMwareVirtualMachineDetails.
-func (v VMwareVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentGeneratedId", v.AgentGeneratedID)
-	populate(objectMap, "agentInstalled", v.AgentInstalled)
-	populate(objectMap, "agentVersion", v.AgentVersion)
-	populate(objectMap, "discoveryType", v.DiscoveryType)
-	populate(objectMap, "diskDetails", v.DiskDetails)
-	populate(objectMap, "ipAddress", v.IPAddress)
-	objectMap["instanceType"] = "VMwareVirtualMachine"
-	populate(objectMap, "osType", v.OSType)
-	populate(objectMap, "poweredOn", v.PoweredOn)
-	populate(objectMap, "vCenterInfrastructureId", v.VCenterInfrastructureID)
-	populate(objectMap, "validationErrors", v.ValidationErrors)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMwareVirtualMachineDetails.
-func (v *VMwareVirtualMachineDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentGeneratedId":
-			err = unpopulate(val, &v.AgentGeneratedID)
-			delete(rawMsg, key)
-		case "agentInstalled":
-			err = unpopulate(val, &v.AgentInstalled)
-			delete(rawMsg, key)
-		case "agentVersion":
-			err = unpopulate(val, &v.AgentVersion)
-			delete(rawMsg, key)
-		case "discoveryType":
-			err = unpopulate(val, &v.DiscoveryType)
-			delete(rawMsg, key)
-		case "diskDetails":
-			err = unpopulate(val, &v.DiskDetails)
-			delete(rawMsg, key)
-		case "ipAddress":
-			err = unpopulate(val, &v.IPAddress)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "osType":
-			err = unpopulate(val, &v.OSType)
-			delete(rawMsg, key)
-		case "poweredOn":
-			err = unpopulate(val, &v.PoweredOn)
-			delete(rawMsg, key)
-		case "vCenterInfrastructureId":
-			err = unpopulate(val, &v.VCenterInfrastructureID)
-			delete(rawMsg, key)
-		case "validationErrors":
-			err = unpopulate(val, &v.ValidationErrors)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VaultHealthDetails - Vault health details definition.
 type VaultHealthDetails struct {
 	// Resource Location
@@ -24838,16 +10645,6 @@ type VaultHealthProperties struct {
 	VaultErrors []*HealthError `json:"vaultErrors,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VaultHealthProperties.
-func (v VaultHealthProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "containersHealth", v.ContainersHealth)
-	populate(objectMap, "fabricsHealth", v.FabricsHealth)
-	populate(objectMap, "protectedItemsHealth", v.ProtectedItemsHealth)
-	populate(objectMap, "vaultErrors", v.VaultErrors)
-	return json.Marshal(objectMap)
-}
-
 // VaultSetting - Vault setting.
 type VaultSetting struct {
 	// Resource Location
@@ -24873,14 +10670,6 @@ type VaultSettingCollection struct {
 
 	// The list of vault setting.
 	Value []*VaultSetting `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VaultSettingCollection.
-func (v VaultSettingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VaultSettingCreationInput - Input to create vault setting.
@@ -24919,41 +10708,6 @@ type VersionDetails struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VersionDetails.
-func (v VersionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "expiryDate", v.ExpiryDate)
-	populate(objectMap, "status", v.Status)
-	populate(objectMap, "version", v.Version)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VersionDetails.
-func (v *VersionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expiryDate":
-			err = unpopulateTimeRFC3339(val, &v.ExpiryDate)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &v.Status)
-			delete(rawMsg, key)
-		case "version":
-			err = unpopulate(val, &v.Version)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VirtualMachineTaskDetails - This class represents the virtual machine task details.
 type VirtualMachineTaskDetails struct {
 	// REQUIRED; The type of task details.
@@ -24969,98 +10723,10 @@ type VirtualMachineTaskDetails struct {
 	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
 }
 
-// GetJobTaskDetails implements the JobTaskDetailsClassification interface for type VirtualMachineTaskDetails.
-func (v *VirtualMachineTaskDetails) GetJobTaskDetails() *JobTaskDetails {
-	return &JobTaskDetails{
-		JobTask:      v.JobTask,
-		InstanceType: v.InstanceType,
-	}
-}
-
-// GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type VirtualMachineTaskDetails.
-func (v *VirtualMachineTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
-	return &TaskTypeDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTaskDetails.
-func (v VirtualMachineTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VirtualMachineTaskDetails"
-	populate(objectMap, "jobTask", v.JobTask)
-	populate(objectMap, "skippedReason", v.SkippedReason)
-	populate(objectMap, "skippedReasonString", v.SkippedReasonString)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VirtualMachineTaskDetails.
-func (v *VirtualMachineTaskDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "jobTask":
-			err = unpopulate(val, &v.JobTask)
-			delete(rawMsg, key)
-		case "skippedReason":
-			err = unpopulate(val, &v.SkippedReason)
-			delete(rawMsg, key)
-		case "skippedReasonString":
-			err = unpopulate(val, &v.SkippedReasonString)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VmmDetails - VMM fabric specific details.
 type VmmDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VmmDetails.
-func (v *VmmDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
-	return &FabricSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmDetails.
-func (v VmmDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VMM"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmDetails.
-func (v *VmmDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VmmToAzureCreateNetworkMappingInput - Create network mappings input properties/behavior specific to Vmm to Azure Network
@@ -25070,80 +10736,10 @@ type VmmToAzureCreateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
-// for type VmmToAzureCreateNetworkMappingInput.
-func (v *VmmToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
-	return &FabricSpecificCreateNetworkMappingInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToAzureCreateNetworkMappingInput.
-func (v VmmToAzureCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToAzure"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToAzureCreateNetworkMappingInput.
-func (v *VmmToAzureCreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VmmToAzureNetworkMappingSettings - E2A Network Mapping fabric specific settings.
 type VmmToAzureNetworkMappingSettings struct {
 	// REQUIRED; Gets the Instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
-// type VmmToAzureNetworkMappingSettings.
-func (v *VmmToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
-	return &NetworkMappingFabricSpecificSettings{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToAzureNetworkMappingSettings.
-func (v VmmToAzureNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToAzure"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToAzureNetworkMappingSettings.
-func (v *VmmToAzureNetworkMappingSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VmmToAzureUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to azure.
@@ -25152,80 +10748,10 @@ type VmmToAzureUpdateNetworkMappingInput struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
-// for type VmmToAzureUpdateNetworkMappingInput.
-func (v *VmmToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
-	return &FabricSpecificUpdateNetworkMappingInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToAzureUpdateNetworkMappingInput.
-func (v VmmToAzureUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToAzure"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToAzureUpdateNetworkMappingInput.
-func (v *VmmToAzureUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VmmToVmmCreateNetworkMappingInput - Create network mappings input properties/behavior specific to vmm to vmm Network mapping.
 type VmmToVmmCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
-// for type VmmToVmmCreateNetworkMappingInput.
-func (v *VmmToVmmCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappingInput() *FabricSpecificCreateNetworkMappingInput {
-	return &FabricSpecificCreateNetworkMappingInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToVmmCreateNetworkMappingInput.
-func (v VmmToVmmCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToVmm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToVmmCreateNetworkMappingInput.
-func (v *VmmToVmmCreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VmmToVmmNetworkMappingSettings - E2E Network Mapping fabric specific settings.
@@ -25234,80 +10760,10 @@ type VmmToVmmNetworkMappingSettings struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
-// GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
-// type VmmToVmmNetworkMappingSettings.
-func (v *VmmToVmmNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings() *NetworkMappingFabricSpecificSettings {
-	return &NetworkMappingFabricSpecificSettings{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToVmmNetworkMappingSettings.
-func (v VmmToVmmNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToVmm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToVmmNetworkMappingSettings.
-func (v *VmmToVmmNetworkMappingSettings) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VmmToVmmUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to vmm.
 type VmmToVmmUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
 	InstanceType *string `json:"instanceType,omitempty"`
-}
-
-// GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
-// for type VmmToVmmUpdateNetworkMappingInput.
-func (v *VmmToVmmUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappingInput() *FabricSpecificUpdateNetworkMappingInput {
-	return &FabricSpecificUpdateNetworkMappingInput{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmToVmmUpdateNetworkMappingInput.
-func (v VmmToVmmUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	objectMap["instanceType"] = "VmmToVmm"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmToVmmUpdateNetworkMappingInput.
-func (v *VmmToVmmUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // VmmVirtualMachineDetails - VMM fabric provider specific VM settings.
@@ -25341,87 +10797,6 @@ type VmmVirtualMachineDetails struct {
 	SourceItemID *string `json:"sourceItemId,omitempty"`
 }
 
-// GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VmmVirtualMachineDetails.
-func (v *VmmVirtualMachineDetails) GetConfigurationSettings() *ConfigurationSettings {
-	return &ConfigurationSettings{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// GetHyperVVirtualMachineDetails implements the HyperVVirtualMachineDetailsClassification interface for type VmmVirtualMachineDetails.
-func (v *VmmVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVirtualMachineDetails {
-	return &HyperVVirtualMachineDetails{
-		SourceItemID:           v.SourceItemID,
-		Generation:             v.Generation,
-		OSDetails:              v.OSDetails,
-		DiskDetails:            v.DiskDetails,
-		HasPhysicalDisk:        v.HasPhysicalDisk,
-		HasFibreChannelAdapter: v.HasFibreChannelAdapter,
-		HasSharedVhd:           v.HasSharedVhd,
-		HyperVHostID:           v.HyperVHostID,
-		InstanceType:           v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmmVirtualMachineDetails.
-func (v VmmVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "diskDetails", v.DiskDetails)
-	populate(objectMap, "generation", v.Generation)
-	populate(objectMap, "hasFibreChannelAdapter", v.HasFibreChannelAdapter)
-	populate(objectMap, "hasPhysicalDisk", v.HasPhysicalDisk)
-	populate(objectMap, "hasSharedVhd", v.HasSharedVhd)
-	populate(objectMap, "hyperVHostId", v.HyperVHostID)
-	objectMap["instanceType"] = "VmmVirtualMachine"
-	populate(objectMap, "osDetails", v.OSDetails)
-	populate(objectMap, "sourceItemId", v.SourceItemID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmmVirtualMachineDetails.
-func (v *VmmVirtualMachineDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "diskDetails":
-			err = unpopulate(val, &v.DiskDetails)
-			delete(rawMsg, key)
-		case "generation":
-			err = unpopulate(val, &v.Generation)
-			delete(rawMsg, key)
-		case "hasFibreChannelAdapter":
-			err = unpopulate(val, &v.HasFibreChannelAdapter)
-			delete(rawMsg, key)
-		case "hasPhysicalDisk":
-			err = unpopulate(val, &v.HasPhysicalDisk)
-			delete(rawMsg, key)
-		case "hasSharedVhd":
-			err = unpopulate(val, &v.HasSharedVhd)
-			delete(rawMsg, key)
-		case "hyperVHostId":
-			err = unpopulate(val, &v.HyperVHostID)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "osDetails":
-			err = unpopulate(val, &v.OSDetails)
-			delete(rawMsg, key)
-		case "sourceItemId":
-			err = unpopulate(val, &v.SourceItemID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // VmwareCbtPolicyDetails - VMware Cbt specific policy details.
 type VmwareCbtPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
@@ -25435,67 +10810,4 @@ type VmwareCbtPolicyDetails struct {
 
 	// The duration in minutes until which the recovery points need to be stored.
 	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
-}
-
-// GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type VmwareCbtPolicyDetails.
-func (v *VmwareCbtPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpecificDetails {
-	return &PolicyProviderSpecificDetails{
-		InstanceType: v.InstanceType,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VmwareCbtPolicyDetails.
-func (v VmwareCbtPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "appConsistentFrequencyInMinutes", v.AppConsistentFrequencyInMinutes)
-	populate(objectMap, "crashConsistentFrequencyInMinutes", v.CrashConsistentFrequencyInMinutes)
-	objectMap["instanceType"] = "VMwareCbt"
-	populate(objectMap, "recoveryPointHistoryInMinutes", v.RecoveryPointHistoryInMinutes)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VmwareCbtPolicyDetails.
-func (v *VmwareCbtPolicyDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "appConsistentFrequencyInMinutes":
-			err = unpopulate(val, &v.AppConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "crashConsistentFrequencyInMinutes":
-			err = unpopulate(val, &v.CrashConsistentFrequencyInMinutes)
-			delete(rawMsg, key)
-		case "instanceType":
-			err = unpopulate(val, &v.InstanceType)
-			delete(rawMsg, key)
-		case "recoveryPointHistoryInMinutes":
-			err = unpopulate(val, &v.RecoveryPointHistoryInMinutes)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

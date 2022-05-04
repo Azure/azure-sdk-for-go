@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -21,8 +24,8 @@ import (
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
 // This allows us to provide a local implementation that fakes the server for hermetic testing.
 type blockWriter interface {
-	StageBlock(context.Context, string, io.ReadSeekCloser, *StageBlockOptions) (BlockBlobStageBlockResponse, error)
-	CommitBlockList(context.Context, []string, *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error)
+	StageBlock(context.Context, string, io.ReadSeekCloser, *BlockBlobStageBlockOptions) (BlockBlobStageBlockResponse, error)
+	CommitBlockList(context.Context, []string, *BlockBlobCommitBlockListOptions) (BlockBlobCommitBlockListResponse, error)
 }
 
 // copyFromReader copies a source io.Reader to blob storage using concurrent uploads.
@@ -33,7 +36,7 @@ type blockWriter interface {
 // well, 4 MiB or 8 MiB, and auto-scale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
-func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
@@ -90,7 +93,7 @@ type copier struct {
 	to blockWriter
 
 	// o contains our options for uploading.
-	o UploadStreamToBlockBlobOptions
+	o UploadStreamOptions
 
 	// id provides the ids for each chunk.
 	id *id

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,23 +34,27 @@ type PricingsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewPricingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PricingsClient {
+func NewPricingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PricingsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &PricingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
-// Get - Gets a provided Security Center pricing configuration in the subscription.
+// Get - Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // pricingName - name of the pricing configuration
 // options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
@@ -84,7 +89,7 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -92,14 +97,14 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName 
 
 // getHandleResponse handles the Get response.
 func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsClientGetResponse, error) {
-	result := PricingsClientGetResponse{RawResponse: resp}
+	result := PricingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Lists Security Center pricing configurations in the subscription.
+// List - Lists Microsoft Defender for Cloud pricing configurations in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
 func (client *PricingsClient) List(ctx context.Context, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
@@ -129,7 +134,7 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, options *Pr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -137,14 +142,14 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, options *Pr
 
 // listHandleResponse handles the List response.
 func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsClientListResponse, error) {
-	result := PricingsClientListResponse{RawResponse: resp}
+	result := PricingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PricingList); err != nil {
 		return PricingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - Updates a provided Security Center pricing configuration in the subscription.
+// Update - Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // pricingName - name of the pricing configuration
 // pricing - Pricing object
@@ -180,7 +185,7 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, pricing)
@@ -188,7 +193,7 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingNa
 
 // updateHandleResponse handles the Update response.
 func (client *PricingsClient) updateHandleResponse(resp *http.Response) (PricingsClientUpdateResponse, error) {
-	result := PricingsClientUpdateResponse{RawResponse: resp}
+	result := PricingsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pricing); err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}

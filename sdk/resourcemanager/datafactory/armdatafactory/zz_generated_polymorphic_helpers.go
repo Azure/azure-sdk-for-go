@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -80,6 +80,8 @@ func unmarshalActivityClassification(rawMsg json.RawMessage) (ActivityClassifica
 		b = &IfConditionActivity{}
 	case "Lookup":
 		b = &LookupActivity{}
+	case "Script":
+		b = &ScriptActivity{}
 	case "SetVariable":
 		b = &SetVariableActivity{}
 	case "SqlServerStoredProcedure":
@@ -969,6 +971,10 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &AmazonS3LinkedService{}
 	case "AmazonS3Compatible":
 		b = &AmazonS3CompatibleLinkedService{}
+	case "AppFigures":
+		b = &AppFiguresLinkedService{}
+	case "Asana":
+		b = &AsanaLinkedService{}
 	case "AzureBatch":
 		b = &AzureBatchLinkedService{}
 	case "AzureBlobFS":
@@ -1027,6 +1033,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &CouchbaseLinkedService{}
 	case "CustomDataSource":
 		b = &CustomDataSourceLinkedService{}
+	case "Dataworld":
+		b = &DataworldLinkedService{}
 	case "Db2":
 		b = &Db2LinkedService{}
 	case "Drill":
@@ -1111,6 +1119,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &PrestoLinkedService{}
 	case "QuickBooks":
 		b = &QuickBooksLinkedService{}
+	case "Quickbase":
+		b = &QuickbaseLinkedService{}
 	case "Responsys":
 		b = &ResponsysLinkedService{}
 	case "RestService":
@@ -1141,6 +1151,8 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SharePointOnlineListLinkedService{}
 	case "Shopify":
 		b = &ShopifyLinkedService{}
+	case "Smartsheet":
+		b = &SmartsheetLinkedService{}
 	case "Snowflake":
 		b = &SnowflakeLinkedService{}
 	case "Spark":
@@ -1151,14 +1163,20 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 		b = &SquareLinkedService{}
 	case "Sybase":
 		b = &SybaseLinkedService{}
+	case "TeamDesk":
+		b = &TeamDeskLinkedService{}
 	case "Teradata":
 		b = &TeradataLinkedService{}
+	case "Twilio":
+		b = &TwilioLinkedService{}
 	case "Vertica":
 		b = &VerticaLinkedService{}
 	case "Web":
 		b = &WebLinkedService{}
 	case "Xero":
 		b = &XeroLinkedService{}
+	case "Zendesk":
+		b = &ZendeskLinkedService{}
 	case "Zoho":
 		b = &ZohoLinkedService{}
 	default:

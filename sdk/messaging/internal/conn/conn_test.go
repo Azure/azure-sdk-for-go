@@ -26,17 +26,19 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const (
-	namespace    = "mynamespace"
-	keyName      = "keyName"
-	secret       = "superSecret="
-	hubName      = "myhub"
-	happyConnStr = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";EntityPath=" + hubName
-	noEntityPath = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret
-	lowerCase    = "endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccesskeyName=" + keyName + ";sharedAccessKey=" + secret + ";Entitypath=" + hubName
-	noEndpoint   = "NoEndpoint=Blah"
+	namespace       = "mynamespace"
+	keyName         = "keyName"
+	secret          = "superSecret="
+	hubName         = "myhub"
+	happyConnStr    = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret + ";EntityPath=" + hubName
+	noEntityPath    = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessKeyName=" + keyName + ";SharedAccessKey=" + secret
+	lowerCase       = "endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccesskeyName=" + keyName + ";sharedAccessKey=" + secret + ";Entitypath=" + hubName
+	withEmbeddedSAS = "Endpoint=sb://" + namespace + ".servicebus.windows.net/;SharedAccessSignature=SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>"
+	noEndpoint      = "NoEndpoint=Blah"
 )
 
 func TestParsedConnectionFromStr(t *testing.T) {
@@ -67,6 +69,17 @@ func TestParsedConnectionFromStrWithoutEntityPath(t *testing.T) {
 		assert.Equal(t, secret, parsed.Key)
 		assert.Equal(t, "", parsed.HubName)
 	}
+}
+
+func TestParsedConnectionFromStrWithEmbeddedSAS(t *testing.T) {
+	parsed, err := ParsedConnectionFromStr(withEmbeddedSAS)
+	require.NoError(t, err)
+
+	require.Equal(t, &ParsedConn{
+		Namespace: namespace + ".servicebus.windows.net",
+		SAS:       "SharedAccessSignature sr=" + namespace + ".servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>",
+	}, parsed)
+
 }
 
 func TestFailedParsedConnectionFromStrWithoutEndpoint(t *testing.T) {

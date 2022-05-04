@@ -9,7 +9,7 @@ import (
 )
 
 func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
-	qd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
+	qd.ServiceBusSchema = to.Ptr(serviceBusSchema)
 
 	qe := &QueueEnvelope{
 		Entry: &Entry{
@@ -34,7 +34,7 @@ func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvide
 }
 
 func WrapWithTopicEnvelope(td *TopicDescription) *TopicEnvelope {
-	td.ServiceBusSchema = to.StringPtr(serviceBusSchema)
+	td.ServiceBusSchema = to.Ptr(serviceBusSchema)
 
 	return &TopicEnvelope{
 		Entry: &Entry{
@@ -48,7 +48,7 @@ func WrapWithTopicEnvelope(td *TopicDescription) *TopicEnvelope {
 }
 
 func WrapWithSubscriptionEnvelope(sd *SubscriptionDescription) *SubscriptionEnvelope {
-	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
+	sd.ServiceBusSchema = to.Ptr(serviceBusSchema)
 
 	return &SubscriptionEnvelope{
 		Entry: &Entry{
@@ -57,6 +57,21 @@ func WrapWithSubscriptionEnvelope(sd *SubscriptionDescription) *SubscriptionEnve
 		Content: &subscriptionContent{
 			Type:                    applicationXML,
 			SubscriptionDescription: *sd,
+		},
+	}
+}
+
+func WrapWithRuleEnvelope(rd *RuleDescription) *RuleEnvelope {
+	rd.XMLNS = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+	rd.XMLNSI = "http://www.w3.org/2001/XMLSchema-instance"
+
+	return &RuleEnvelope{
+		Entry: &Entry{
+			AtomSchema: atomSchema,
+		},
+		Content: &RuleContent{
+			Type:            applicationXML,
+			RuleDescription: *rd,
 		},
 	}
 }

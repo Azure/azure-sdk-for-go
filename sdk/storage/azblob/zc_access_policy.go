@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -8,7 +11,7 @@ import (
 	"fmt"
 )
 
-// The AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
+// AccessPolicyPermission type simplifies creating the permissions string for a container's access policy.
 // Initialize an instance of this type and then call its String method to set AccessPolicy's Permission field.
 type AccessPolicyPermission struct {
 	Read, Add, Create, Write, Delete, List bool

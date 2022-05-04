@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -42,17 +42,14 @@ func TestApplicable(t *testing.T) {
 func TestNew(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
-	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
 	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatalf("unexpected final get URL %s", u)
 	}
-	if s := poller.Status(); s != pollers.StatusInProgress {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeLocationURL {
@@ -62,7 +59,7 @@ func TestNew(t *testing.T) {
 
 func TestNewFail(t *testing.T) {
 	resp := initialResponse()
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -70,7 +67,7 @@ func TestNewFail(t *testing.T) {
 		t.Fatal("expected nil poller")
 	}
 	resp.Header.Set(shared.HeaderLocation, "/must/be/absolute")
-	poller, err = New(resp, "pollerID")
+	poller, err = New(resp, "", "pollerID")
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -82,16 +79,13 @@ func TestNewFail(t *testing.T) {
 func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL2)
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
-	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
 	}
 	if u := poller.URL(); u != fakeLocationURL2 {
 		t.Fatalf("unexpected polling URL %s", u)
@@ -99,10 +93,7 @@ func TestUpdateSucceeded(t *testing.T) {
 	if err := poller.Update(&http.Response{StatusCode: http.StatusOK}); err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("expected done")
-	}
-	if s := poller.Status(); s != pollers.StatusSucceeded {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -110,7 +101,7 @@ func TestUpdateSucceeded(t *testing.T) {
 func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "pollerID")
+	poller, err := New(resp, "", "pollerID")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -118,8 +109,8 @@ func TestUpdateFailed(t *testing.T) {
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
+	if s := poller.State(); s != pollers.OperationStateInProgress {
+		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeLocationURL2 {
 		t.Fatalf("unexpected polling URL %s", u)
@@ -127,10 +118,7 @@ func TestUpdateFailed(t *testing.T) {
 	if err := poller.Update(&http.Response{StatusCode: http.StatusConflict}); err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("expected done")
-	}
-	if s := poller.Status(); s != pollers.StatusFailed {
+	if s := poller.State(); s != pollers.OperationStateFailed {
 		t.Fatalf("unexpected status %s", s)
 	}
 }

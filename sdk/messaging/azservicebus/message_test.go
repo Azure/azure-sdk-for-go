@@ -4,7 +4,7 @@
 package azservicebus
 
 import (
-	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -25,11 +25,11 @@ func TestMessageUnitTest(t *testing.T) {
 		scheduledEnqueuedTime := time.Now()
 
 		message = &Message{
-			MessageID:               to.StringPtr("message id"),
+			MessageID:               to.Ptr("message id"),
 			Body:                    []byte("the body"),
-			PartitionKey:            to.StringPtr("partition key"),
-			TransactionPartitionKey: to.StringPtr("via partition key"),
-			SessionID:               to.StringPtr("session id"),
+			PartitionKey:            to.Ptr("partition key"),
+			TransactionPartitionKey: to.Ptr("via partition key"),
+			SessionID:               to.Ptr("session id"),
 			ScheduledEnqueueTime:    &scheduledEnqueuedTime,
 		}
 
@@ -52,7 +52,7 @@ func TestMessageUnitTest(t *testing.T) {
 func TestAMQPMessageToReceivedMessage(t *testing.T) {
 	t.Run("empty_message", func(t *testing.T) {
 		// nothing should blow up.
-		rm := newReceivedMessage(context.Background(), &amqp.Message{})
+		rm := newReceivedMessage(&amqp.Message{})
 		require.NotNil(t, rm)
 	})
 
@@ -72,7 +72,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			},
 		}
 
-		receivedMessage := newReceivedMessage(context.Background(), amqpMessage)
+		receivedMessage := newReceivedMessage(amqpMessage)
 
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
 		require.EqualValues(t, int64(101), *receivedMessage.SequenceNumber)
@@ -99,16 +99,16 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		DeliveryTag: dotNetEncodedLockTokenGUID,
 		Properties: &amqp.MessageProperties{
 			MessageID:          "messageID",
-			To:                 to.StringPtr("to"),
-			Subject:            to.StringPtr("subject"),
-			ReplyTo:            to.StringPtr("replyTo"),
-			ReplyToGroupID:     to.StringPtr("replyToGroupID"),
+			To:                 to.Ptr("to"),
+			Subject:            to.Ptr("subject"),
+			ReplyTo:            to.Ptr("replyTo"),
+			ReplyToGroupID:     to.Ptr("replyToGroupID"),
 			CorrelationID:      "correlationID",
-			ContentType:        to.StringPtr("contentType"),
-			ContentEncoding:    to.StringPtr("contentEncoding"),
+			ContentType:        to.Ptr("contentType"),
+			ContentEncoding:    to.Ptr("contentEncoding"),
 			AbsoluteExpiryTime: &until,
 			CreationTime:       &until,
-			GroupID:            to.StringPtr("groupID"),
+			GroupID:            to.Ptr("groupID"),
 			GroupSequence:      &groupSequence,
 		},
 		Annotations: amqp.Annotations{
@@ -132,7 +132,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		Data: [][]byte{[]byte("foo")},
 	}
 
-	msg := newReceivedMessage(context.Background(), amqpMsg)
+	msg := newReceivedMessage(amqpMsg)
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
@@ -143,6 +143,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, *msg.TimeToLive, amqpMsg.Header.TTL, "ttl")
 	require.EqualValues(t, msg.Subject, amqpMsg.Properties.Subject, "subject")
 	require.EqualValues(t, msg.To, amqpMsg.Properties.To, "to")
+	require.EqualValues(t, MessageStateActive, msg.State)
 
 	body, err := msg.Body()
 	require.NoError(t, err)
@@ -155,4 +156,38 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, map[string]interface{}{
 		"test": "foo",
 	}, msg.ApplicationProperties)
+}
+
+func TestMessageState(t *testing.T) {
+	testData := []struct {
+		PropValue interface{}
+		Expected  MessageState
+	}{
+		{PropValue: int32(0), Expected: MessageStateActive},
+		{PropValue: int64(0), Expected: MessageStateActive},
+		{PropValue: int32(1), Expected: MessageStateDeferred},
+		{PropValue: int64(1), Expected: MessageStateDeferred},
+		{PropValue: int32(2), Expected: MessageStateScheduled},
+		{PropValue: int64(2), Expected: MessageStateScheduled},
+		{PropValue: "hello", Expected: MessageStateActive},
+		{PropValue: nil, Expected: MessageStateActive},
+	}
+
+	for _, td := range testData {
+		t.Run(fmt.Sprintf("Value '%v' => %d", td.PropValue, td.Expected), func(t *testing.T) {
+			m := newReceivedMessage(&amqp.Message{
+				Annotations: amqp.Annotations{
+					messageStateAnnotation: td.PropValue,
+				},
+			})
+			require.EqualValues(t, td.Expected, m.State)
+		})
+	}
+
+	t.Run("NoAnnotations", func(t *testing.T) {
+		m := newReceivedMessage(&amqp.Message{
+			Annotations: nil,
+		})
+		require.EqualValues(t, MessageStateActive, m.State)
+	})
 }

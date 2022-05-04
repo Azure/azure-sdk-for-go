@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -15,15 +15,14 @@ import (
 )
 
 func TestNewExpiringResource(t *testing.T) {
-	er := NewExpiringResource(func(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
-		s := state.(string)
-		switch s {
+	er := NewExpiringResource(func(state string) (newResource string, newExpiration time.Time, err error) {
+		switch state {
 		case "initial":
 			return "updated", time.Now(), nil
 		case "updated":
 			return "refreshed", time.Now().Add(1 * time.Hour), nil
 		default:
-			t.Fatalf("unexpected state %s", s)
+			t.Fatalf("unexpected state %s", state)
 			return "", time.Time{}, errors.New("unexpected")
 		}
 	})

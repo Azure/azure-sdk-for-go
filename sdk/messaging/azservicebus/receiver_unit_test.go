@@ -322,7 +322,7 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 
 	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
 	require.Nil(t, receiver)
-	require.ErrorIs(t, err, context.Canceled)
+	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))
 
 	// also, the receiver we returned should be closed as part of the gourtine
 	// unwinding.

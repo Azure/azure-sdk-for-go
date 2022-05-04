@@ -7,6 +7,7 @@
 package body
 
 import (
+	"context"
 	"errors"
 	"io"
 	"io/ioutil"
@@ -14,7 +15,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -33,14 +37,6 @@ func initialResponse(method string, resp io.Reader) *http.Response {
 	}
 }
 
-func pollingResponse(status int, resp io.Reader) *http.Response {
-	return &http.Response{
-		Body:       ioutil.NopCloser(resp),
-		Header:     http.Header{},
-		StatusCode: status,
-	}
-}
-
 func TestApplicable(t *testing.T) {
 	resp := &http.Response{
 		Header: http.Header{},
@@ -48,142 +44,144 @@ func TestApplicable(t *testing.T) {
 			Method: http.MethodDelete,
 		},
 	}
-	if Applicable(resp) {
-		t.Fatal("method DELETE should not be applicable")
-	}
+	require.False(t, Applicable(resp), "method DELETE should not be applicable")
 	resp.Request.Method = http.MethodPatch
-	if !Applicable(resp) {
-		t.Fatal("method PATCH should be applicable")
-	}
+	require.True(t, Applicable(resp), "method PATCH should be applicable")
 	resp.Request.Method = http.MethodPut
-	if !Applicable(resp) {
-		t.Fatal("method PUT should be applicable")
-	}
+	require.True(t, Applicable(resp), "method PUT should be applicable")
+}
+
+func TestCanResume(t *testing.T) {
+	token := map[string]interface{}{}
+	require.False(t, CanResume(token))
+	token["type"] = kind
+	require.True(t, CanResume(token))
+	token["type"] = "something_else"
+	require.False(t, CanResume(token))
+	token["type"] = 123
+	require.False(t, CanResume(token))
 }
 
 func TestNew(t *testing.T) {
-	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	poller, err := New[struct{}](exported.Pipeline{}, nil)
+	require.NoError(t, err)
+	require.Empty(t, poller.CurState)
+
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusCreated
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeResourceURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	if err := poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{ "properties": { "provisioningState": "InProgress" } }`))); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
+	require.Equal(t, "Started", poller.CurState)
+
+	resp = initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp.StatusCode = http.StatusOK
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
+	require.Equal(t, "Started", poller.CurState)
+
+	resp = initialResponse(http.MethodPut, http.NoBody)
+	resp.StatusCode = http.StatusOK
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
+	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+
+	resp = initialResponse(http.MethodPut, http.NoBody)
+	resp.StatusCode = http.StatusNoContent
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
+	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+}
+
+type widget struct {
+	Shape string `json:"shape"`
 }
 
 func TestUpdateNoProvStateFail(t *testing.T) {
-	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeResourceURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	err = poller.Update(pollingResponse(http.StatusOK, http.NoBody))
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if !errors.Is(err, pollers.ErrNoBody) {
-		t.Fatalf("unexpected error type %T", err)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       http.NoBody,
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.ErrorIs(t, err, pollers.ErrNoBody)
+	require.Nil(t, resp)
+	require.False(t, poller.Done())
 }
 
 func TestUpdateNoProvStateSuccess(t *testing.T) {
-	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeResourceURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	err = poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{}`)))
-	if err != nil {
-		t.Fatal(err)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "shape": "rectangle" }`)),
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "rectangle", result.Shape)
 }
 
 func TestUpdateNoProvState204(t *testing.T) {
-	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeResourceURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	err = poller.Update(pollingResponse(http.StatusNoContent, http.NoBody))
-	if err != nil {
-		t.Fatal(err)
-	}
+	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusNoContent,
+			Body:       http.NoBody,
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNoContent, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Empty(t, result)
 }
 
-func TestNewNoInitialProvStateOK(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	resp.StatusCode = http.StatusOK
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateSucceeded {
-		t.Fatalf("unexpected status %s", s)
-	}
+func TestPollFailed(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusBadRequest,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader(`{ "provisioningState": "failed" }`)),
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Empty(t, result)
 }
 
-func TestNewNoInitialProvStateNC(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	resp.StatusCode = http.StatusNoContent
-	poller, err := New(resp, "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatal("expected empty final GET URL")
-	}
-	if s := poller.State(); s != pollers.OperationStateSucceeded {
-		t.Fatalf("unexpected status %s", s)
-	}
+func TestPollFailedError(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed")
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
 }

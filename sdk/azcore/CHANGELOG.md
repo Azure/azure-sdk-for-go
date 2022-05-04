@@ -3,6 +3,8 @@
 ## 0.24.0 (Unreleased)
 
 ### Features Added
+* Added interface `runtime.PollingHandler` to support custom poller implementations.
+  * Added field `PollingHandler` of this type to `runtime.NewPollerOptions[T]` and `runtime.NewPollerFromResumeTokenOptions[T]`.
 
 ### Breaking Changes
 * Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
@@ -10,13 +12,18 @@
 * Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
 * Removed `TokenRequestOptions.TenantID`
 * `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
+* Removed `arm/runtime.Poller[T]`, `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()`
+* Removed `arm/runtime.FinalStateVia` and related `const` values
 
 ### Bugs Fixed
 * When per-try timeouts are enabled, only cancel the context after the body has been read and closed.
+* The `Operation-Location` poller now properly handles `final-state-via` values.
 
 ### Other Changes
-* The functionality in `arm/runtime/poller.go` has been merged into `runtime/poller.go` so it should be used instead.
-  * `arm/runtime/poller.go` will be removed in a future release.
+* The internal poller implementation has been refactored.
+  * The implementation in `internal/pollers/poller.go` has been merged into `runtime/poller.go` with some slight modification.
+  * The internal poller types had their methods updated to conform to the `runtime.PollingHandler` interface.
+  * The creation of resume tokens has been refactored so that implementers of `runtime.PollingHandler` don't need to know about it.
 
 ## 0.23.1 (2022-04-14)
 

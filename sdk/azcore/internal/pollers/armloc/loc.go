@@ -7,6 +7,7 @@
 package armloc
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -18,15 +19,32 @@ import (
 )
 
 // Kind is the identifier of this type in a resume token.
-const Kind = "ARM-Location"
+const kind = "ARM-Location"
 
 // Applicable returns true if the LRO is using Location.
 func Applicable(resp *http.Response) bool {
 	return resp.StatusCode == http.StatusAccepted && resp.Header.Get(shared.HeaderLocation) != ""
 }
 
+// CanResume returns true if the token can rehydrate this poller type.
+func CanResume(token map[string]interface{}) bool {
+	t, ok := token["type"]
+	if !ok {
+		return false
+	}
+	tt, ok := t.(string)
+	if !ok {
+		return false
+	}
+	return tt == kind
+}
+
 // Poller is an LRO poller that uses the Location pattern.
-type Poller struct {
+type Poller[T any] struct {
+	pl exported.Pipeline
+
+	resp *http.Response
+
 	// The poller's type, used for resume token processing.
 	Type string `json:"type"`
 
@@ -38,7 +56,12 @@ type Poller struct {
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, pollerID string) (*Poller, error) {
+// Pass nil for response to create an empty Poller for rehydration.
+func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
+	if resp == nil {
+		log.Write(log.EventLRO, "Resuming Location poller.")
+		return &Poller[T]{pl: pl}, nil
+	}
 	log.Write(log.EventLRO, "Using Location poller.")
 	locURL := resp.Header.Get(shared.HeaderLocation)
 	if locURL == "" {
@@ -47,57 +70,56 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	if !pollers.IsValidURL(locURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", locURL)
 	}
-	p := &Poller{
-		Type:     pollers.MakeID(pollerID, Kind),
+	p := &Poller[T]{
+		pl:       pl,
+		resp:     resp,
+		Type:     kind,
 		PollURL:  locURL,
 		CurState: pollers.StatusInProgress,
 	}
 	return p, nil
 }
 
-// URL returns the polling URL.
-func (p *Poller) URL() string {
-	return p.PollURL
+// Done implements the Done method for the Operation interface.
+func (p *Poller[T]) Done() bool {
+	return pollers.IsTerminalState(p.CurState)
 }
 
-// State returns the current state of the LRO.
-func (p *Poller) State() pollers.OperationState {
-	if pollers.Succeeded(p.CurState) {
-		return pollers.OperationStateSucceeded
-	} else if pollers.IsTerminalState(p.CurState) {
-		return pollers.OperationStateFailed
-	}
-	return pollers.OperationStateInProgress
-}
-
-// Update updates the Poller from the polling response.
-func (p *Poller) Update(resp *http.Response) error {
-	// location polling can return an updated polling URL
-	if h := resp.Header.Get(shared.HeaderLocation); h != "" {
-		p.PollURL = h
-	}
-	if exported.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
-		// if a 200/201 returns a provisioning state, use that instead
-		state, err := pollers.GetProvisioningState(resp)
-		if err != nil && !errors.Is(err, pollers.ErrNoBody) {
-			return err
+// Poll implements the Poll method for the Operation interface.
+func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
+	err := pollers.PollHelper(ctx, p.PollURL, p.pl, func(resp *http.Response) (string, error) {
+		// location polling can return an updated polling URL
+		if h := resp.Header.Get(shared.HeaderLocation); h != "" {
+			p.PollURL = h
 		}
-		if state != "" {
-			p.CurState = state
-		} else {
-			// a 200/201 with no provisioning state indicates success
+		if exported.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+			// if a 200/201 returns a provisioning state, use that instead
+			state, err := pollers.GetProvisioningState(resp)
+			if err != nil && !errors.Is(err, pollers.ErrNoBody) {
+				return "", err
+			}
+			if state != "" {
+				p.CurState = state
+			} else {
+				// a 200/201 with no provisioning state indicates success
+				p.CurState = pollers.StatusSucceeded
+			}
+		} else if resp.StatusCode == http.StatusNoContent {
 			p.CurState = pollers.StatusSucceeded
+		} else if resp.StatusCode > 399 && resp.StatusCode < 500 {
+			p.CurState = pollers.StatusFailed
 		}
-	} else if resp.StatusCode == http.StatusNoContent {
-		p.CurState = pollers.StatusSucceeded
-	} else if resp.StatusCode > 399 && resp.StatusCode < 500 {
-		p.CurState = pollers.StatusFailed
+		p.resp = resp
+		// a 202 falls through, means the LRO is still in progress and we don't check for provisioning state
+		return p.CurState, nil
+	})
+	if err != nil {
+		return nil, err
 	}
-	// a 202 falls through, means the LRO is still in progress and we don't check for provisioning state
-	return nil
+	return p.resp, nil
 }
 
-// FinalGetURL returns the empty string as no final GET is required for this poller type.
-func (p *Poller) FinalGetURL() string {
-	return ""
+// Result implements the Result method for the Operation interface.
+func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

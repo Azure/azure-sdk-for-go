@@ -7,14 +7,19 @@
 package async
 
 import (
+	"context"
+	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -34,61 +39,56 @@ func initialResponse(method string, resp io.Reader) *http.Response {
 	}
 }
 
-func pollingResponse(resp io.Reader) *http.Response {
-	return &http.Response{
-		Body:   ioutil.NopCloser(resp),
-		Header: http.Header{},
-	}
-}
-
 func TestApplicable(t *testing.T) {
 	resp := &http.Response{
 		Header: http.Header{},
 	}
-	if Applicable(resp) {
-		t.Fatal("missing Azure-AsyncOperation should not be applicable")
-	}
+	require.False(t, Applicable(resp), "missing Azure-AsyncOperation should not be applicable")
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	if !Applicable(resp) {
-		t.Fatal("having Azure-AsyncOperation should be applicable")
-	}
+	require.True(t, Applicable(resp), "having Azure-AsyncOperation should be applicable")
+}
+
+func TestCanResume(t *testing.T) {
+	token := map[string]interface{}{}
+	require.False(t, CanResume(token))
+	token["asyncURL"] = fakePollingURL
+	require.True(t, CanResume(token))
 }
 
 func TestNew(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
+
+	poller, err := New[struct{}](exported.Pipeline{}, nil, "")
+	require.NoError(t, err)
+	require.Empty(t, poller.CurState)
+
+	poller, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "")
+	require.Error(t, err)
+	require.Nil(t, poller)
+
 	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp.Header.Set(shared.HeaderAzureAsync, "this is an invalid polling URL")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	require.Error(t, err)
+	require.Nil(t, poller)
+
+	resp = initialResponse(http.MethodPut, strings.NewReader(jsonBody))
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != fakeResourceURL {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakePollingURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	if err := poller.Update(pollingResponse(strings.NewReader(`{ "status": "InProgress" }`))); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	resp.Header.Set(shared.HeaderLocation, fakeResourceURL)
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	require.NoError(t, err)
+	require.Equal(t, fakePollingURL, poller.AsyncURL)
+	require.Equal(t, fakeResourceURL, poller.LocURL)
+	require.Equal(t, "Started", poller.CurState)
+	require.False(t, poller.Done())
 }
 
 func TestNewDeleteNoProvState(t *testing.T) {
 	resp := initialResponse(http.MethodDelete, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[struct{}](exported.Pipeline{}, resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
 }
 
 func TestNewPutNoProvState(t *testing.T) {
@@ -96,74 +96,148 @@ func TestNewPutNoProvState(t *testing.T) {
 	// NOTE: ARM RPC forbids this but we allow it for back-compat
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[struct{}](exported.Pipeline{}, resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
 }
 
-func TestNewFinalGetLocation(t *testing.T) {
+type widget struct {
+	Shape string `json:"shape"`
+}
+
+func TestFinalGetLocation(t *testing.T) {
 	const (
-		jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-		locURL   = "https://foo.bar.baz/location"
+		locURL = "https://foo.bar.baz/location"
 	)
-	resp := initialResponse(http.MethodPost, strings.NewReader(jsonBody))
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, locURL)
-	poller, err := New(resp, "location", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.FinalGetURL(); u != locURL {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
-	if u := poller.URL(); u != fakePollingURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded" }`)),
+			}, nil
+		} else if surl == locURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "triangle" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "triangle", result.Shape)
 }
 
-func TestNewFinalGetOrigin(t *testing.T) {
-	const (
-		jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-		locURL   = "https://foo.bar.baz/location"
-	)
-	resp := initialResponse(http.MethodPost, strings.NewReader(jsonBody))
+func TestFinalGetOrigin(t *testing.T) {
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, locURL)
-	poller, err := New(resp, "original-uri", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.FinalGetURL(); u != fakeResourceURL {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
-	if u := poller.URL(); u != fakePollingURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded" }`)),
+			}, nil
+		} else if surl == fakeResourceURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "circle" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, pollers.FinalStateViaOriginalURI)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "circle", result.Shape)
 }
 
-func TestNewPutNoProvStateOnUpdate(t *testing.T) {
-	// missing provisioning state on initial response
-	// NOTE: ARM RPC forbids this but we allow it for back-compat
-	resp := initialResponse(http.MethodPut, http.NoBody)
+func TestNoFinalGet(t *testing.T) {
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if err := poller.Update(pollingResponse(strings.NewReader("{}"))); err == nil {
-		t.Fatal("unexpected nil error")
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "circle" }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaAzureAsyncOp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "circle", result.Shape)
+}
+
+func TestPatchNoFinalGet(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "circle" }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaAzureAsyncOp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "circle", result.Shape)
+}
+
+func TestPollFailed(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusBadRequest,
+			Header:     http.Header{},
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "failed" }`)),
+		}, nil
+	})), resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Empty(t, result)
+}
+
+func TestPollFailedError(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed")
+	})), resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
 }

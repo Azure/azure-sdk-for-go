@@ -125,3 +125,11 @@ func (r *NopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
 }
 
 var _ BytesSetter = (*NopClosingBytesReader)(nil)
+
+// TransportFunc is a helper to use a first-class func to satisfy the Transporter interface.
+type TransportFunc func(*http.Request) (*http.Response, error)
+
+// Do implements the Transporter interface for the TransportFunc type.
+func (pf TransportFunc) Do(req *http.Request) (*http.Response, error) {
+	return pf(req)
+}

@@ -7,15 +7,17 @@
 package body
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // Kind is the identifier of this type in a resume token.
-const Kind = "Body"
+const kind = "Body"
 
 // Applicable returns true if the LRO is using no headers, just provisioning state.
 // This is only applicable to PATCH and PUT methods and assumes no polling headers.
@@ -25,8 +27,25 @@ func Applicable(resp *http.Response) bool {
 	return resp.Request.Method == http.MethodPatch || resp.Request.Method == http.MethodPut
 }
 
+// CanResume returns true if the token can rehydrate this poller type.
+func CanResume(token map[string]interface{}) bool {
+	t, ok := token["type"]
+	if !ok {
+		return false
+	}
+	tt, ok := t.(string)
+	if !ok {
+		return false
+	}
+	return tt == kind
+}
+
 // Poller is an LRO poller that uses the Body pattern.
-type Poller struct {
+type Poller[T any] struct {
+	pl exported.Pipeline
+
+	resp *http.Response
+
 	// The poller's type, used for resume token processing.
 	Type string `json:"type"`
 
@@ -38,10 +57,17 @@ type Poller struct {
 }
 
 // New creates a new Poller from the provided initial response.
-func New(resp *http.Response, pollerID string) (*Poller, error) {
+// Pass nil for response to create an empty Poller for rehydration.
+func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
+	if resp == nil {
+		log.Write(log.EventLRO, "Resuming Body poller.")
+		return &Poller[T]{pl: pl}, nil
+	}
 	log.Write(log.EventLRO, "Using Body poller.")
-	p := &Poller{
-		Type:    pollers.MakeID(pollerID, Kind),
+	p := &Poller[T]{
+		pl:      pl,
+		resp:    resp,
+		Type:    kind,
 		PollURL: resp.Request.URL.String(),
 	}
 	// default initial state to InProgress.  depending on the HTTP
@@ -68,42 +94,37 @@ func New(resp *http.Response, pollerID string) (*Poller, error) {
 	return p, nil
 }
 
-// URL returns the polling URL.
-func (p *Poller) URL() string {
-	return p.PollURL
+func (p *Poller[T]) Done() bool {
+	return pollers.IsTerminalState(p.CurState)
 }
 
-// State returns the current state of the LRO.
-func (p *Poller) State() pollers.OperationState {
-	if pollers.Succeeded(p.CurState) {
-		return pollers.OperationStateSucceeded
-	} else if pollers.IsTerminalState(p.CurState) {
-		return pollers.OperationStateFailed
+func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
+	err := pollers.PollHelper(ctx, p.PollURL, p.pl, func(resp *http.Response) (string, error) {
+		if resp.StatusCode == http.StatusNoContent {
+			p.resp = resp
+			p.CurState = pollers.StatusSucceeded
+			return p.CurState, nil
+		}
+		state, err := pollers.GetProvisioningState(resp)
+		if errors.Is(err, pollers.ErrNoBody) {
+			// a missing response body in non-204 case is an error
+			return "", err
+		} else if state == "" {
+			// a response body without provisioning state is considered terminal success
+			state = pollers.StatusSucceeded
+		} else if err != nil {
+			return "", err
+		}
+		p.resp = resp
+		p.CurState = state
+		return p.CurState, nil
+	})
+	if err != nil {
+		return nil, err
 	}
-	return pollers.OperationStateInProgress
+	return p.resp, nil
 }
 
-// Update updates the Poller from the polling response.
-func (p *Poller) Update(resp *http.Response) error {
-	if resp.StatusCode == http.StatusNoContent {
-		p.CurState = pollers.StatusSucceeded
-		return nil
-	}
-	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoBody) {
-		// a missing response body in non-204 case is an error
-		return err
-	} else if state == "" {
-		// a response body without provisioning state is considered terminal success
-		state = pollers.StatusSucceeded
-	} else if err != nil {
-		return err
-	}
-	p.CurState = state
-	return nil
-}
-
-// FinalGetURL returns the empty string as no final GET is required for this poller type.
-func (*Poller) FinalGetURL() string {
-	return ""
+func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

@@ -7,21 +7,26 @@
 package op
 
 import (
+	"context"
+	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 const (
-	fakePollingURL  = "https://foo.bar.baz/status"
-	fakePollingURL2 = "https://foo.bar.baz/status/updated"
-	fakeLocationURL = "https://foo.bar.baz/location"
-	fakeResourceURL = "https://foo.bar.baz/resource"
+	fakePollingURL     = "https://foo.bar.baz/status"
+	fakeLocationURL    = "https://foo.bar.baz/location"
+	fakeResourceURL    = "https://foo.bar.baz/resource"
+	fakeResourceLocURL = "https://foo.bar.baz/resourceLocation"
 )
 
 func initialResponse(method string, body io.Reader) *http.Response {
@@ -36,196 +41,243 @@ func initialResponse(method string, body io.Reader) *http.Response {
 	}
 }
 
-func createResponse(body io.Reader) *http.Response {
-	return &http.Response{
-		Body:   ioutil.NopCloser(body),
-		Header: http.Header{},
-	}
-}
-
 func TestApplicable(t *testing.T) {
 	resp := &http.Response{
 		Header: http.Header{},
 	}
-	if Applicable(resp) {
-		t.Fatal("missing Operation-Location should not be applicable")
-	}
+	require.False(t, Applicable(resp), "missing Operation-Location should not be applicable")
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	if !Applicable(resp) {
-		t.Fatal("having Operation-Location should be applicable")
-	}
+	require.True(t, Applicable(resp), "having Operation-Location should be applicable")
+}
+
+func TestCanResume(t *testing.T) {
+	token := map[string]interface{}{}
+	require.False(t, CanResume(token))
+	token["oplocURL"] = fakePollingURL
+	require.True(t, CanResume(token))
 }
 
 func TestNew(t *testing.T) {
+	poller, err := New[struct{}](exported.Pipeline{}, nil, "")
+	require.NoError(t, err)
+	require.Empty(t, poller.CurState)
+
+	poller, err = New[struct{}](exported.Pipeline{}, &http.Response{Header: http.Header{}}, "")
+	require.Error(t, err)
+	require.Nil(t, poller)
+
 	resp := initialResponse(http.MethodPut, http.NoBody)
+	resp.Header.Set(shared.HeaderOperationLocation, "this is an invalid polling URL")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	require.Error(t, err)
+	require.Nil(t, poller)
+
+	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != fakeResourceURL {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakePollingURL {
-		t.Fatalf("unexpected URL %s", u)
-	}
+	resp.Header.Set(shared.HeaderLocation, "this is an invalid polling URL")
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	require.Error(t, err)
+	require.Nil(t, poller)
+
+	resp = initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
+	require.NoError(t, err)
+	require.Equal(t, "Updating", poller.CurState)
+	require.False(t, poller.Done())
 }
 
-func TestNewWithInitialStatus(t *testing.T) {
+type widget struct {
+	Shape string `json:"shape"`
+}
+
+func TestFinalStateViaLocation(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded" }`)),
+			}, nil
+		} else if surl == fakeLocationURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "triangle" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "triangle", result.Shape)
 }
 
-func TestNewWithPost(t *testing.T) {
-	resp := initialResponse(http.MethodPost, http.NoBody)
+func TestFinalStateViaOperationLocationWithPost(t *testing.T) {
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "shape": "rhombus" }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaOpLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "rhombus", result.Shape)
+}
+
+func TestFinalStateViaResourceLocation(t *testing.T) {
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded", "resourceLocation": "https://foo.bar.baz/resourceLocation" }`)),
+			}, nil
+		} else if surl == fakeResourceLocURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "square" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "square", result.Shape)
+}
+
+func TestResultForPatch(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "status": "Updating" }`))
+	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded" }`)),
+			}, nil
+		} else if surl == fakeResourceURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "square" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "square", result.Shape)
+}
+
+func TestPostWithLocation(t *testing.T) {
+	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.FinalGetURL(); u != fakeLocationURL {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakePollingURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "status": "succeeded" }`)),
+			}, nil
+		} else if surl == fakeLocationURL {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "shape": "triangle" }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Equal(t, "triangle", result.Shape)
 }
 
-func TestNewWithDelete(t *testing.T) {
-	resp := initialResponse(http.MethodDelete, http.NoBody)
+func TestOperationFailed(t *testing.T) {
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusBadRequest,
+			Body:       io.NopCloser(strings.NewReader(`{ "status": "Failed", "error": { "code": "InvalidSomething" } }`)),
+		}, nil
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.True(t, poller.Done())
+	result, err := poller.Result(context.Background(), nil)
+	var respErr *exported.ResponseError
+	require.ErrorAs(t, err, &respErr)
+	require.Equal(t, "InvalidSomething", respErr.ErrorCode)
+	require.Empty(t, result)
 }
 
-func TestNewFail(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	poller, err := New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
-	}
+func TestPollFailed(t *testing.T) {
+	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, "/must/be/absolute")
-	poller, err = New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
-	}
-	resp.Header.Set(shared.HeaderOperationLocation, "/must/be/absolute")
-	poller, err = New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return nil, errors.New("failed")
+	})), resp, pollers.FinalStateViaLocation)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
+	require.False(t, poller.Done())
 }
 
-func TestUpdateSucceeded(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
+func TestMissingStatus(t *testing.T) {
+	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "status": "Updating" }`))
 	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp = createResponse(strings.NewReader(`{ "status": "Running" }`))
-	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL2)
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakePollingURL2 {
-		t.Fatalf("unexpected URL %s", u)
-	}
-	resp = createResponse(strings.NewReader(`{ "status": "succeeded" }`))
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateSucceeded {
-		t.Fatalf("unexpected status %s", s)
-	}
-}
-
-func TestUpdateResourceLocation(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp = createResponse(strings.NewReader(`{ "status": "succeeded", "resourceLocation": "https://foo.bar.baz/resource2" }`))
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateSucceeded {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.FinalGetURL(); u != "https://foo.bar.baz/resource2" {
-		t.Fatalf("unexpected final get url %s", u)
-	}
-}
-
-func TestUpdateFailed(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp = createResponse(strings.NewReader(`{ "status": "Failed" }`))
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateFailed {
-		t.Fatalf("unexpected status %s", s)
-	}
-}
-
-func TestUpdateMissingStatus(t *testing.T) {
-	resp := initialResponse(http.MethodPut, http.NoBody)
-	resp.Header.Set(shared.HeaderOperationLocation, fakePollingURL)
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp = createResponse(http.NoBody)
-	if err := poller.Update(resp); err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusOK,
+			Body:       io.NopCloser(strings.NewReader(`{ "shape": "square" }`)),
+		}, nil
+	})), resp, "")
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.Error(t, err)
+	require.Nil(t, resp)
+	require.False(t, poller.Done())
 }

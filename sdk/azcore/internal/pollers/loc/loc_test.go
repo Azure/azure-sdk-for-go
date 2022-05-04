@@ -7,11 +7,14 @@
 package loc
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -30,95 +33,92 @@ func TestApplicable(t *testing.T) {
 	resp := &http.Response{
 		Header: http.Header{},
 	}
-	if Applicable(resp) {
-		t.Fatal("missing Location should not be applicable")
-	}
+	require.False(t, Applicable(resp), "missing Location should not be applicable")
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	if !Applicable(resp) {
-		t.Fatal("having Location should be applicable")
-	}
+	require.True(t, Applicable(resp), "having Location should be applicable")
+}
+
+func TestCanResume(t *testing.T) {
+	token := map[string]interface{}{}
+	require.False(t, CanResume(token))
+	token["type"] = kind
+	require.True(t, CanResume(token))
+	token["type"] = "something_else"
+	require.False(t, CanResume(token))
+	token["type"] = 123
+	require.False(t, CanResume(token))
 }
 
 func TestNew(t *testing.T) {
+	poller, err := New[struct{}](exported.Pipeline{}, nil)
+	require.NoError(t, err)
+	require.Empty(t, poller.CurState)
+
+	poller, err = New[struct{}](exported.Pipeline{}, initialResponse())
+	require.Error(t, err)
+	require.Nil(t, poller)
+
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.FinalGetURL(); u != "" {
-		t.Fatalf("unexpected final get URL %s", u)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeLocationURL {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-}
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
 
-func TestNewFail(t *testing.T) {
-	resp := initialResponse()
-	poller, err := New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
-	}
-	resp.Header.Set(shared.HeaderLocation, "/must/be/absolute")
-	poller, err = New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
-	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
-	}
+	resp = initialResponse()
+	resp.Header.Set(shared.HeaderLocation, "this is a bad polling URL")
+	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	require.Error(t, err)
+	require.Nil(t, poller)
 }
 
 func TestUpdateSucceeded(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL2)
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if u := poller.URL(); u != fakeLocationURL2 {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	if err := poller.Update(&http.Response{StatusCode: http.StatusOK}); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateSucceeded {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return &http.Response{
+			StatusCode: http.StatusNoContent,
+			Body:       http.NoBody,
+		}, nil
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNoContent, resp.StatusCode)
+	result, err := poller.Result(context.Background(), nil)
+	require.NoError(t, err)
+	require.Empty(t, result)
 }
 
 func TestUpdateFailed(t *testing.T) {
 	resp := initialResponse()
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
-	poller, err := New(resp, "", "pollerID")
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp.Header.Set(shared.HeaderLocation, fakeLocationURL2)
-	if err := poller.Update(resp); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateInProgress {
-		t.Fatalf("unexpected status %s", s)
-	}
-	if u := poller.URL(); u != fakeLocationURL2 {
-		t.Fatalf("unexpected polling URL %s", u)
-	}
-	if err := poller.Update(&http.Response{StatusCode: http.StatusConflict}); err != nil {
-		t.Fatal(err)
-	}
-	if s := poller.State(); s != pollers.OperationStateFailed {
-		t.Fatalf("unexpected status %s", s)
-	}
+	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakeLocationURL {
+			resp := &http.Response{
+				StatusCode: http.StatusAccepted,
+				Body:       http.NoBody,
+				Header:     http.Header{},
+			}
+			resp.Header.Set(shared.HeaderLocation, fakeLocationURL2)
+			return resp, nil
+		} else if surl == fakeLocationURL2 {
+			return &http.Response{
+				StatusCode: http.StatusBadRequest,
+				Body:       http.NoBody,
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusAccepted, resp.StatusCode)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	result, err := poller.Result(context.Background(), nil)
+	require.Error(t, err)
+	require.Empty(t, result)
 }

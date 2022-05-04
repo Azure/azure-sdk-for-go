@@ -107,19 +107,16 @@ func startTest(t *testing.T) func() {
 	}
 }
 
+// skipHSM skips live MHSM tests when AZURE_MANAGEDHSM_URL has no value
 func skipHSM(t *testing.T, testType string) {
-	if testType == HSMTEST && !enableHSM {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			t.Log("Skipping HSM Test")
-			t.Skip()
-		}
+	if recording.GetRecordMode() != recording.PlaybackMode && testType == HSMTEST && !enableHSM {
+		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
 }
 
 func alwaysSkipHSM(t *testing.T, testType string) {
 	if testType == HSMTEST {
-		t.Log("Skipping HSM Test")
-		t.Skip()
+		t.Skip("this feature isn't supported by MHSM")
 	}
 }
 

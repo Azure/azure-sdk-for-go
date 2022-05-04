@@ -51,8 +51,8 @@ type NewPollerOptions[T any] struct {
 	// The final payload will be unmarshaled into it and returned.
 	Response *T
 
-	// PollerMethod[T] contains a custom polling implementation.
-	PollerMethod PollerMethod[T]
+	// Handler[T] contains a custom polling implementation.
+	Handler PollingHandler[T]
 }
 
 // NewPoller creates a Poller based on the provided initial response.
@@ -60,9 +60,9 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	if options == nil {
 		options = &NewPollerOptions[T]{}
 	}
-	if options.PollerMethod != nil {
+	if options.Handler != nil {
 		return &Poller[T]{
-			op:     options.PollerMethod,
+			op:     options.Handler,
 			resp:   resp,
 			result: options.Response,
 		}, nil
@@ -76,7 +76,7 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	}
 
 	// determine the polling method
-	var opr PollerMethod[T]
+	var opr PollingHandler[T]
 	var err error
 	if async.Applicable(resp) {
 		// async poller must be checked first as it can also have a location header
@@ -116,8 +116,8 @@ type NewPollerFromResumeTokenOptions[T any] struct {
 	// The final payload will be unmarshaled into it and returned.
 	Response *T
 
-	// PollerMethod[T] contains a custom polling implementation.
-	PollerMethod PollerMethod[T]
+	// Handler[T] contains a custom polling implementation.
+	Handler PollingHandler[T]
 }
 
 // NewPollerFromResumeToken creates a Poller from a resume token string.
@@ -138,7 +138,7 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 		return nil, err
 	}
 
-	opr := options.PollerMethod
+	opr := options.Handler
 	// now rehydrate the poller based on the encoded poller type
 	if async.CanResume(asJSON) {
 		opr, _ = async.New[T](pl, nil, "")
@@ -164,8 +164,8 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	}, nil
 }
 
-// PollerMethod[T] abstracts the differences among poller implementations.
-type PollerMethod[T any] interface {
+// PollingHandler[T] abstracts the differences among poller implementations.
+type PollingHandler[T any] interface {
 	// Done returns true if the LRO has reached a terminal state.
 	Done() bool
 
@@ -179,7 +179,7 @@ type PollerMethod[T any] interface {
 
 // Poller encapsulates a long-running operation, providing polling facilities until the operation reaches a terminal state.
 type Poller[T any] struct {
-	op     PollerMethod[T]
+	op     PollingHandler[T]
 	resp   *http.Response
 	err    error
 	result *T

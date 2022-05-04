@@ -13,6 +13,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -61,13 +62,10 @@ func TestNew(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != fakeResourceURL {
 		t.Fatalf("unexpected final get URL %s", u)
 	}
-	if s := poller.Status(); s != "Started" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakePollingURL {
@@ -76,7 +74,7 @@ func TestNew(t *testing.T) {
 	if err := poller.Update(pollingResponse(strings.NewReader(`{ "status": "InProgress" }`))); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -88,10 +86,7 @@ func TestNewDeleteNoProvState(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -105,10 +100,7 @@ func TestNewPutNoProvState(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -125,8 +117,8 @@ func TestNewFinalGetLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
+	if s := poller.State(); s != pollers.OperationStateInProgress {
+		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.FinalGetURL(); u != locURL {
 		t.Fatalf("unexpected final get URL %s", u)
@@ -148,8 +140,8 @@ func TestNewFinalGetOrigin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
+	if s := poller.State(); s != pollers.OperationStateInProgress {
+		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.FinalGetURL(); u != fakeResourceURL {
 		t.Fatalf("unexpected final get URL %s", u)
@@ -168,10 +160,7 @@ func TestNewPutNoProvStateOnUpdate(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if err := poller.Update(pollingResponse(strings.NewReader("{}"))); err == nil {

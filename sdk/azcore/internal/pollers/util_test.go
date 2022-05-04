@@ -246,14 +246,11 @@ func TestGetProvisioningStateError(t *testing.T) {
 
 func TestNopPoller(t *testing.T) {
 	np := NopPoller{}
-	if !np.Done() {
-		t.Fatal("expected done")
+	if np.State() != OperationStateSucceeded {
+		t.Fatal("expected Succeeded")
 	}
 	if np.FinalGetURL() != "" {
 		t.Fatal("expected empty final get URL")
-	}
-	if np.Status() != StatusSucceeded {
-		t.Fatal("expected Succeeded")
 	}
 	if np.URL() != "" {
 		t.Fatal("expected empty URL")

@@ -20,7 +20,7 @@ type UsernamePasswordCredentialOptions struct {
 	azcore.ClientOptions
 }
 
-// UsernamePasswordCredential authenticates user with a password. Microsoft doesn't recommend this kind of authentication,
+// UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
 // because it's less secure than other authentication flows. This credential is not interactive, so it isn't compatible
 // with any form of multi-factor authentication, and the application must already have user or admin consent.
 // This credential can only authenticate work and school accounts; it can't authenticate Microsoft accounts.
@@ -31,12 +31,8 @@ type UsernamePasswordCredential struct {
 	account  public.Account
 }
 
-// NewUsernamePasswordCredential creates a UsernamePasswordCredential.
-// tenantID: The ID of the Azure Active Directory tenant the credential authenticates in.
-// clientID: The ID of the application users will authenticate to.
-// username: A username (typically an email address).
-// password: That user's password.
-// options: Optional configuration. Pass nil to accept default settings.
+// NewUsernamePasswordCredential creates a UsernamePasswordCredential. clientID is the ID of the application the user
+// will authenticate to. Pass nil for options to accept defaults.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)
@@ -58,9 +54,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	return &UsernamePasswordCredential{username: username, password: password, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
 		return nil, errors.New(credNameUserPassword + ": GetToken() requires at least one scope")

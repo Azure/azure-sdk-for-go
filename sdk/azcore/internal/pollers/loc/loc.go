@@ -56,8 +56,14 @@ func (p *Poller) URL() string {
 	return p.PollURL
 }
 
-func (p *Poller) Done() bool {
-	return pollers.IsTerminalState(p.Status())
+func (p *Poller) State() pollers.OperationState {
+	if p.CurState == http.StatusAccepted {
+		return pollers.OperationStateInProgress
+	} else if p.CurState > 199 && p.CurState < 300 {
+		// any 2xx other than a 202 indicates success
+		return pollers.OperationStateSucceeded
+	}
+	return pollers.OperationStateFailed
 }
 
 func (p *Poller) Update(resp *http.Response) error {
@@ -71,14 +77,4 @@ func (p *Poller) Update(resp *http.Response) error {
 
 func (p *Poller) FinalGetURL() string {
 	return p.FinalGET
-}
-
-func (p *Poller) Status() string {
-	if p.CurState == http.StatusAccepted {
-		return pollers.StatusInProgress
-	} else if p.CurState > 199 && p.CurState < 300 {
-		// any 2xx other than a 202 indicates success
-		return pollers.StatusSucceeded
-	}
-	return pollers.StatusFailed
 }

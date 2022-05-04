@@ -69,13 +69,10 @@ func TestNew(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Started" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeResourceURL {
@@ -84,7 +81,7 @@ func TestNew(t *testing.T) {
 	if err := poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{ "properties": { "provisioningState": "InProgress" } }`))); err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "InProgress" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -97,13 +94,10 @@ func TestUpdateNoProvStateFail(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Started" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeResourceURL {
@@ -126,13 +120,10 @@ func TestUpdateNoProvStateSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Started" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeResourceURL {
@@ -152,13 +143,10 @@ func TestUpdateNoProvState204(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("poller should not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Started" {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeResourceURL {
@@ -177,13 +165,10 @@ func TestNewNoInitialProvStateOK(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("poller not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Succeeded" {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -195,13 +180,10 @@ func TestNewNoInitialProvStateNC(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("poller not be done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatal("expected empty final GET URL")
 	}
-	if s := poller.Status(); s != "Succeeded" {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 }

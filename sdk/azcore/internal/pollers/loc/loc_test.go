@@ -46,13 +46,10 @@ func TestNew(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
-	}
 	if u := poller.FinalGetURL(); u != "" {
 		t.Fatalf("unexpected final get URL %s", u)
 	}
-	if s := poller.Status(); s != pollers.StatusInProgress {
+	if s := poller.State(); s != pollers.OperationStateInProgress {
 		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeLocationURL {
@@ -90,19 +87,13 @@ func TestUpdateSucceeded(t *testing.T) {
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
-	}
 	if u := poller.URL(); u != fakeLocationURL2 {
 		t.Fatalf("unexpected polling URL %s", u)
 	}
 	if err := poller.Update(&http.Response{StatusCode: http.StatusOK}); err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("expected done")
-	}
-	if s := poller.Status(); s != pollers.StatusSucceeded {
+	if s := poller.State(); s != pollers.OperationStateSucceeded {
 		t.Fatalf("unexpected status %s", s)
 	}
 }
@@ -118,8 +109,8 @@ func TestUpdateFailed(t *testing.T) {
 	if err := poller.Update(resp); err != nil {
 		t.Fatal(err)
 	}
-	if poller.Done() {
-		t.Fatal("unexpected done")
+	if s := poller.State(); s != pollers.OperationStateInProgress {
+		t.Fatalf("unexpected status %s", s)
 	}
 	if u := poller.URL(); u != fakeLocationURL2 {
 		t.Fatalf("unexpected polling URL %s", u)
@@ -127,10 +118,7 @@ func TestUpdateFailed(t *testing.T) {
 	if err := poller.Update(&http.Response{StatusCode: http.StatusConflict}); err != nil {
 		t.Fatal(err)
 	}
-	if !poller.Done() {
-		t.Fatal("expected done")
-	}
-	if s := poller.Status(); s != pollers.StatusFailed {
+	if s := poller.State(); s != pollers.OperationStateFailed {
 		t.Fatalf("unexpected status %s", s)
 	}
 }

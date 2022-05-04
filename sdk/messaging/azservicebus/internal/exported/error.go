@@ -22,6 +22,9 @@ const (
 )
 
 // Error represents a Service Bus specific error.
+// NOTE: the Code is considered part of the published API but the message that
+// comes back from Error(), as well as the underlying wrapped error, are NOT and
+// are subject to change.
 type Error struct {
 	// Code is a stable error code which can be used as part of programatic error handling.
 	// The codes can expand in the future, but the values (and their meaning) will remain the same.

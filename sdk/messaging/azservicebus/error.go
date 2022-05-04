@@ -24,4 +24,7 @@ const (
 )
 
 // Error represents a Service Bus specific error.
+// NOTE: the Code is considered part of the published API but the message that
+// comes back from Error(), as well as the underlying wrapped error, are NOT and
+// are subject to change.
 type Error = exported.Error

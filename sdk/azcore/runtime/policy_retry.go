@@ -127,7 +127,15 @@ func (p *retryPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 			tryCtx, tryCancel := context.WithTimeout(req.Raw().Context(), options.TryTimeout)
 			clone := req.Clone(tryCtx)
 			resp, err = clone.Next() // Make the request
-			tryCancel()
+			// if the body was already downloaded or there was an error it's safe to cancel the context now
+			if err != nil {
+				tryCancel()
+			} else if _, ok := resp.Body.(*shared.NopClosingBytesReader); ok {
+				tryCancel()
+			} else {
+				// must cancel the context after the body has been read and closed
+				resp.Body = &contextCancelReadCloser{cf: tryCancel, body: resp.Body}
+			}
 		}
 		if err == nil {
 			log.Writef(log.EventRetryPolicy, "response %d", resp.StatusCode)
@@ -212,4 +220,23 @@ func (b *retryableRequestBody) realClose() error {
 		return c.Close()
 	}
 	return nil
+}
+
+// ********** The following type/methods implement the contextCancelReadCloser
+
+// contextCancelReadCloser combines an io.ReadCloser with a cancel func.
+// it ensures the cancel func is invoked once the body has been read and closed.
+type contextCancelReadCloser struct {
+	cf   context.CancelFunc
+	body io.ReadCloser
+}
+
+func (rc *contextCancelReadCloser) Read(p []byte) (n int, err error) {
+	return rc.body.Read(p)
+}
+
+func (rc *contextCancelReadCloser) Close() error {
+	err := rc.body.Close()
+	rc.cf()
+	return err
 }

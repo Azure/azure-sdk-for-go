@@ -410,7 +410,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 			return nil, nil, nil
 		},
-		retryOptions: exported.RetryOptions{
+		retryOptions: RetryOptions{
 			MaxRetries:    0,
 			RetryDelay:    0,
 			MaxRetryDelay: 0,

@@ -11,7 +11,7 @@ type Code string
 
 const (
 	// CodeConnectionLost means our connection was lost and all retry attempts failed.
-	// This typicall reflects an extended outage or connection disruption and may
+	// This typically reflects an extended outage or connection disruption and may
 	// require manual intervention.
 	CodeConnectionLost Code = "connlost"
 

@@ -23,7 +23,7 @@ func TestSender_UserFacingError(t *testing.T) {
 		},
 		queueOrTopic:   "queue",
 		cleanupOnClose: func() {},
-		retryOptions: exported.RetryOptions{
+		retryOptions: RetryOptions{
 			MaxRetries:    0,
 			RetryDelay:    0,
 			MaxRetryDelay: 0,

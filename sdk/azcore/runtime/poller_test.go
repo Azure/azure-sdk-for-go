@@ -10,14 +10,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -665,5 +671,358 @@ func TestOpPollerWithResponseType(t *testing.T) {
 	}
 	if w.Preconstructed != 12345 {
 		t.Fatalf("unexpected widget size %d", w.Preconstructed)
+	}
+}
+
+const (
+	provStateStarted   = `{ "properties": { "provisioningState": "Started" } }`
+	provStateUpdating  = `{ "properties": { "provisioningState": "Updating" } }`
+	provStateSucceeded = `{ "properties": { "provisioningState": "Succeeded" }, "field": "value" }`
+	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }` //nolint
+	statusInProgress   = `{ "status": "InProgress" }`
+	statusSucceeded    = `{ "status": "Succeeded" }`
+	statusCanceled     = `{ "status": "Canceled", "error": { "code": "OperationCanceled", "message": "somebody canceled it" } }`
+	successResp        = `{ "field": "value" }`
+)
+
+type mockType struct {
+	Field *string `json:"field,omitempty"`
+}
+
+func getPipeline(srv *mock.Server) Pipeline {
+	return NewPipeline(
+		"test",
+		"v0.1.0",
+		PipelineOptions{PerRetry: []policy.Policy{NewLogPolicy(nil)}},
+		&policy.ClientOptions{Transport: srv},
+	)
+}
+
+func initialResponse(method, u string, resp io.Reader) (*http.Response, mock.TrackedClose) {
+	req, err := http.NewRequest(method, u, nil)
+	if err != nil {
+		panic(err)
+	}
+	body, closed := mock.NewTrackedCloser(resp)
+	return &http.Response{
+		Body:          body,
+		ContentLength: -1,
+		Header:        http.Header{},
+		Request:       req,
+	}, closed
+}
+
+func typeOfOpField[T any](pl *Poller[T]) reflect.Type {
+	return reflect.ValueOf(pl).Elem().FieldByName("op").Elem().Type()
+}
+
+func TestNewPollerAsync(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
+	srv.AppendResponse(mock.WithBody([]byte(successResp)))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+}
+
+func TestNewPollerBody(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)), mock.WithHeader("Retry-After", "1"))
+	srv.AppendResponse(mock.WithBody([]byte(provStateSucceeded)))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+}
+
+func TestNewPollerARMLoc(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
+	srv.AppendResponse(mock.WithBody([]byte(successResp)))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderLocation, srv.URL())
+	resp.StatusCode = http.StatusAccepted
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*armloc.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for {
+		if poller.Done() {
+			break
+		}
+		_, err = poller.Poll(context.Background())
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+	result, err := poller.Result(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+}
+
+func TestNewPollerInitialRetryAfter(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithBody([]byte(statusSucceeded)))
+	srv.AppendResponse(mock.WithBody([]byte(successResp)))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.Header.Set("Retry-After", "1")
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+}
+
+func TestNewPollerCanceled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithBody([]byte(statusCanceled)), mock.WithStatusCode(http.StatusOK))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	_, err = poller.Poll(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if poller.Done() {
+		t.Fatal("poller shouldn't be done yet")
+	}
+	_, err = poller.Poll(context.Background())
+	if err != nil {
+		t.Fatal("expected nil error")
+	}
+	if !poller.Done() {
+		t.Fatal("poller should be done")
+	}
+	_, err = poller.Result(context.Background())
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+}
+
+func TestNewPollerFailedWithError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+	resp, closed := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(shared.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err == nil {
+		t.Fatal(err)
+	}
+}
+
+func TestNewPollerSuccessNoContent(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNoContent))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[mockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Field != nil {
+		t.Fatal("expected nil result")
+	}
+}
+
+func TestNewPollerFail202NoHeaders(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	resp, closed := initialResponse(http.MethodDelete, srv.URL(), http.NoBody)
+	resp.StatusCode = http.StatusAccepted
+	pl := getPipeline(srv)
+	poller, err := NewPoller[mockType](resp, pl, nil)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if poller != nil {
+		t.Fatal("expected nil poller")
+	}
+}
+
+type preconstructedMockType struct {
+	Field          *string `json:"field,omitempty"`
+	Preconstructed int
+}
+
+func TestNewPollerWithResponseType(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)), mock.WithHeader("Retry-After", "1"))
+	srv.AppendResponse(mock.WithBody([]byte(provStateSucceeded)))
+	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewPoller[preconstructedMockType](resp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*body.Poller[preconstructedMockType])(nil)) {
+		t.Fatalf("unexpected poller type %s", pt.String())
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewPollerFromResumeToken(tk, pl, &NewPollerFromResumeTokenOptions[preconstructedMockType]{
+		Response: &preconstructedMockType{
+			Preconstructed: 12345,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+	if result.Preconstructed != 12345 {
+		t.Fatalf("unexpected value %d", result.Preconstructed)
 	}
 }

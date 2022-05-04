@@ -12,8 +12,7 @@
 * Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
 * Removed `TokenRequestOptions.TenantID`
 * `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
-* `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()` now return type `*runtime.Poller[T]`
-* Removed `arm/runtime.Poller[T]`
+* Removed `arm/runtime.Poller[T]`, `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()`
 * Removed `arm/runtime.FinalStateVia` and related `const` values
 
 ### Bugs Fixed
@@ -23,10 +22,8 @@
 ### Other Changes
 * The internal poller implementation has been refactored.
   * The implementation in `internal/pollers/poller.go` has been merged into `runtime/poller.go` with some slight modification.
-  * Constructor `arm/runtime.NewPoller[T]()` is now implemented in terms of `runtime.NewPoller[T]()`, leveraging the custom poller feature.
   * The internal poller types had their methods updated to conform to the `runtime.PollerMethod` interface.
   * The creation of resume tokens has been refactored so that implementers of `runtime.PollerMethod` don't need to know about it.
-  * The ARM-specific internal poller types have been moved back under the `arm` package.
 
 ## 0.23.1 (2022-04-14)
 

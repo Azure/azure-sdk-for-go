@@ -16,6 +16,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/op"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -75,11 +78,20 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	// determine the polling method
 	var opr PollerMethod[T]
 	var err error
-	if op.Applicable(resp) {
+	if async.Applicable(resp) {
+		// async poller must be checked first as it can also have a location header
+		opr, err = async.New[T](pl, resp, options.FinalStateVia)
+	} else if op.Applicable(resp) {
 		// op poller must be checked before loc as it can also have a location header
 		opr, err = op.New[T](pl, resp, options.FinalStateVia)
+	} else if armloc.Applicable(resp) {
+		opr, err = armloc.New[T](pl, resp)
 	} else if loc.Applicable(resp) {
 		opr, err = loc.New[T](pl, resp)
+	} else if body.Applicable(resp) {
+		// must test body poller last as it's a subset of the other pollers.
+		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
+		opr, err = body.New[T](pl, resp)
 	} else if m := resp.Request.Method; resp.StatusCode == http.StatusAccepted && (m == http.MethodDelete || m == http.MethodPost) {
 		// if we get here it means we have a 202 with no polling headers.
 		// for DELETE and POST this is a hard error per ARM RPC spec.
@@ -128,16 +140,20 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 
 	opr := options.PollerMethod
 	// now rehydrate the poller based on the encoded poller type
-	if loc.CanResume(asJSON) {
-		log.Write(log.EventLRO, "Resuming loc poller.")
+	if async.CanResume(asJSON) {
+		opr, _ = async.New[T](pl, nil, "")
+	} else if armloc.CanResume(asJSON) {
+		opr, _ = armloc.New[T](pl, nil)
+	} else if body.CanResume(asJSON) {
+		opr, _ = body.New[T](pl, nil)
+	} else if loc.CanResume(asJSON) {
 		opr, _ = loc.New[T](pl, nil)
 	} else if op.CanResume(asJSON) {
-		log.Write(log.EventLRO, "Resuming op poller.")
 		opr, _ = op.New[T](pl, nil, "")
 	} else if opr != nil {
 		log.Writef(log.EventLRO, "Resuming custom poller %T.", opr)
 	} else {
-		return nil, fmt.Errorf("unhandled poller token %+v", raw)
+		return nil, fmt.Errorf("unhandled poller token %s", string(raw))
 	}
 	if err := json.Unmarshal(raw, &opr); err != nil {
 		return nil, err

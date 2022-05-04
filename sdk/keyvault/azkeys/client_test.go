@@ -779,8 +779,8 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 	}
 }
 
-// This test is not ready, it will be ready in the 7.4 swagger, leaving this test for once that change is made.
 func TestReleaseKey(t *testing.T) {
+	t.Skip("key release isn't supported yet")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			alwaysSkipHSM(t, testType)

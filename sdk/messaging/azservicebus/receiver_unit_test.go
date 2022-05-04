@@ -11,7 +11,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )

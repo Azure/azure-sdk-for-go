@@ -44,7 +44,7 @@ func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPoll
 	}
 
 	// determine the polling method
-	var op runtime.Operation[T]
+	var op runtime.PollerMethod[T]
 	var err error
 	if async.Applicable(resp) {
 		op, err = async.New[T](pl, resp, options.FinalStateVia)
@@ -67,7 +67,7 @@ func NewPoller[T any](resp *http.Response, pl runtime.Pipeline, options *NewPoll
 	return runtime.NewPoller(resp, pl, &runtime.NewPollerOptions[T]{
 		FinalStateVia: options.FinalStateVia,
 		Response:      options.Response,
-		Operation:     op,
+		PollerMethod:  op,
 	})
 }
 
@@ -97,7 +97,7 @@ func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options 
 	}
 
 	// now rehydrate the poller based on the encoded poller type
-	var op runtime.Operation[T]
+	var op runtime.PollerMethod[T]
 	if async.CanResume(asJSON) {
 		op, _ = async.New[T](pl, nil, "")
 	} else if loc.CanResume(asJSON) {
@@ -111,7 +111,7 @@ func NewPollerFromResumeToken[T any](token string, pl runtime.Pipeline, options 
 		return nil, err
 	}
 	return runtime.NewPoller(nil, pl, &runtime.NewPollerOptions[T]{
-		Response:  options.Response,
-		Operation: op,
+		Response:     options.Response,
+		PollerMethod: op,
 	})
 }

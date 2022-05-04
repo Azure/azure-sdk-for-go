@@ -3,8 +3,8 @@
 ## 0.24.0 (Unreleased)
 
 ### Features Added
-* Added interface `runtime.Operation` to support custom poller implementations.
-  * Added field `Operation` of this type to `runtime.NewPollerOptions[T]` and `runtime.NewPollerFromResumeTokenOptions[T]`.
+* Added interface `runtime.PollerMethod` to support custom poller implementations.
+  * Added field `PollerMethod` of this type to `runtime.NewPollerOptions[T]` and `runtime.NewPollerFromResumeTokenOptions[T]`.
 
 ### Breaking Changes
 * Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
@@ -24,8 +24,8 @@
 * The internal poller implementation has been refactored.
   * The implementation in `internal/pollers/poller.go` has been merged into `runtime/poller.go` with some slight modification.
   * Constructor `arm/runtime.NewPoller[T]()` is now implemented in terms of `runtime.NewPoller[T]()`, leveraging the custom poller feature.
-  * The internal poller types had their methods updated to conform to the `runtime.Operation` interface.
-  * The creation of resume tokens has been refactored so that implementers of `runtime.Operation` don't need to know about it.
+  * The internal poller types had their methods updated to conform to the `runtime.PollerMethod` interface.
+  * The creation of resume tokens has been refactored so that implementers of `runtime.PollerMethod` don't need to know about it.
   * The ARM-specific internal poller types have been moved back under the `arm` package.
 
 ## 0.23.1 (2022-04-14)

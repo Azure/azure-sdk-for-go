@@ -11,7 +11,7 @@
 ### Bugs Fixed
 
 ### Other Changes
-* Updated build constraints and Go versioin to 1.18.
+* Updated build constraints and Go version to 1.18.
 
 ## 0.9.2 (2022-04-04)
 

@@ -4020,9 +4020,7 @@ type OSProfile struct {
 	// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 
-	// Specifies whether the guest provision signal is required to infer provision success of the virtual machine. Note: This
-	// property is for private testing only, and all customers must not set the property
-	// to false.
+	// Optional property which must either be set to True or omitted.
 	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
 
 	// Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine

@@ -468,7 +468,7 @@ func (client VirtualMachinesClient) DeallocateResponder(resp *http.Response) (re
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.
-// forceDeletion - optional parameter to force delete virtual machines.(Feature in Preview)
+// forceDeletion - optional parameter to force delete virtual machines.
 func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupName string, VMName string, forceDeletion *bool) (result VirtualMachinesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Delete")

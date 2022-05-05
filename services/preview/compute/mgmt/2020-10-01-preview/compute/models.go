@@ -9179,7 +9179,7 @@ type ManagedArtifact struct {
 
 // ManagedDiskParameters the parameters of a managed disk.
 type ManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Managed OS disk storage account type can only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -9429,7 +9429,7 @@ type OSProfile struct {
 
 // PatchSettings ...
 type PatchSettings struct {
-	// PatchMode - Specifies the mode of in-guest patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> ** AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'InGuestPatchModeManual', 'InGuestPatchModeAutomaticByOS', 'InGuestPatchModeAutomaticByPlatform'
+	// PatchMode - Specifies the mode of in-guest patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'InGuestPatchModeManual', 'InGuestPatchModeAutomaticByOS', 'InGuestPatchModeAutomaticByPlatform'
 	PatchMode InGuestPatchMode `json:"patchMode,omitempty"`
 }
 

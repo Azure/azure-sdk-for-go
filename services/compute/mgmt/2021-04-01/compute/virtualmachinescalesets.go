@@ -1835,12 +1835,6 @@ func (client VirtualMachineScaleSetsClient) SetOrchestrationServiceState(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ServiceName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("compute.VirtualMachineScaleSetsClient", "SetOrchestrationServiceState", err.Error())
-	}
-
 	req, err := client.SetOrchestrationServiceStatePreparer(ctx, resourceGroupName, VMScaleSetName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetsClient", "SetOrchestrationServiceState", nil, "Failure preparing request")

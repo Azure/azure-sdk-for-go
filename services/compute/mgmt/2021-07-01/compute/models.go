@@ -3951,7 +3951,7 @@ func (dhu *DedicatedHostUpdate) UnmarshalJSON(body []byte) error {
 // DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version:
 // 2015-06-15.
 type DiagnosticsProfile struct {
-	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
+	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br>**NOTE**: If storageUri is being specified then ensure that the storage account is in the same region and subscription as the VM. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
 }
 
@@ -12924,8 +12924,8 @@ type RestorePointProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ConsistencyMode - READ-ONLY; Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details. Possible values include: 'ConsistencyModeTypesCrashConsistent', 'ConsistencyModeTypesFileSystemConsistent', 'ConsistencyModeTypesApplicationConsistent'
 	ConsistencyMode ConsistencyModeTypes `json:"consistencyMode,omitempty"`
-	// ProvisioningDetails - READ-ONLY; Gets the provisioning details set by the server during Create restore point operation.
-	ProvisioningDetails *RestorePointProvisioningDetails `json:"provisioningDetails,omitempty"`
+	// TimeCreated - Gets the creation time of the restore point.
+	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RestorePointProperties.
@@ -12934,19 +12934,10 @@ func (rpp RestorePointProperties) MarshalJSON() ([]byte, error) {
 	if rpp.ExcludeDisks != nil {
 		objectMap["excludeDisks"] = rpp.ExcludeDisks
 	}
+	if rpp.TimeCreated != nil {
+		objectMap["timeCreated"] = rpp.TimeCreated
+	}
 	return json.Marshal(objectMap)
-}
-
-// RestorePointProvisioningDetails restore Point Provisioning details.
-type RestorePointProvisioningDetails struct {
-	// CreationTime - Gets the creation time of the restore point.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// TotalUsedSizeInBytes - Gets the total size of the data in all the disks which are part of the restore point.
-	TotalUsedSizeInBytes *int64 `json:"totalUsedSizeInBytes,omitempty"`
-	// StatusCode - Gets the status of the Create restore point operation.
-	StatusCode *int32 `json:"statusCode,omitempty"`
-	// StatusMessage - Gets the status message of the Create restore point operation.
-	StatusMessage *string `json:"statusMessage,omitempty"`
 }
 
 // RestorePointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

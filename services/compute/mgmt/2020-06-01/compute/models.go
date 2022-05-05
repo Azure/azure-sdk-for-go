@@ -4817,11 +4817,10 @@ func (gavp GalleryApplicationVersionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery Image Version.
+// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery image version.
 type GalleryApplicationVersionPublishingProfile struct {
-	Source *UserArtifactSource `json:"source,omitempty"`
-	// ContentType - Optional. May be used to help process this file. The type of file contained in the source, e.g. zip, json, etc.
-	ContentType *string `json:"contentType,omitempty"`
+	Source        *UserArtifactSource `json:"source,omitempty"`
+	ManageActions *UserArtifactManage `json:"manageActions,omitempty"`
 	// EnableHealthCheck - Optional. Whether or not this application reports health.
 	EnableHealthCheck *bool `json:"enableHealthCheck,omitempty"`
 	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
@@ -4844,8 +4843,8 @@ func (gavpp GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, e
 	if gavpp.Source != nil {
 		objectMap["source"] = gavpp.Source
 	}
-	if gavpp.ContentType != nil {
-		objectMap["contentType"] = gavpp.ContentType
+	if gavpp.ManageActions != nil {
+		objectMap["manageActions"] = gavpp.ManageActions
 	}
 	if gavpp.EnableHealthCheck != nil {
 		objectMap["enableHealthCheck"] = gavpp.EnableHealthCheck
@@ -7530,6 +7529,10 @@ type LogAnalyticsInputBase struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // LogAnalyticsOperationResult logAnalytics operation status response
@@ -7583,7 +7586,7 @@ type ManagedArtifact struct {
 
 // ManagedDiskParameters the parameters of a managed disk.
 type ManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Managed OS disk storage account type can only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -7833,7 +7836,7 @@ type OSProfile struct {
 
 // PatchSettings ...
 type PatchSettings struct {
-	// PatchMode - Specifies the mode of in-guest patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> ** AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'Manual', 'AutomaticByOS', 'AutomaticByPlatform'
+	// PatchMode - Specifies the mode of in-guest patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'Manual', 'AutomaticByOS', 'AutomaticByPlatform'
 	PatchMode InGuestPatchMode `json:"patchMode,omitempty"`
 }
 
@@ -8438,6 +8441,10 @@ type RequestRateByIntervalInput struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // Resource the Resource model definition.
@@ -9914,7 +9921,7 @@ type SSHConfiguration struct {
 type SSHPublicKey struct {
 	// Path - Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string `json:"path,omitempty"`
-	// KeyData - SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+	// KeyData - SSH public key certificate used to authenticate with the VM through ssh. The key needs to be at least 2048-bit and in ssh-rsa format. <br><br> For creating ssh keys, see [Create SSH keys on Linux and Mac for Linux VMs in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
 	KeyData *string `json:"keyData,omitempty"`
 }
 
@@ -10318,6 +10325,10 @@ type ThrottledRequestsInput struct {
 	GroupByOperationName *bool `json:"groupByOperationName,omitempty"`
 	// GroupByResourceName - Group query result by Resource Name.
 	GroupByResourceName *bool `json:"groupByResourceName,omitempty"`
+	// GroupByClientApplicationID - Group query result by Client Application ID.
+	GroupByClientApplicationID *bool `json:"groupByClientApplicationId,omitempty"`
+	// GroupByUserAgent - Group query result by User Agent.
+	GroupByUserAgent *bool `json:"groupByUserAgent,omitempty"`
 }
 
 // UpdateResource the Update Resource model definition.
@@ -10441,12 +10452,22 @@ type UsageName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// UserArtifactManage ...
+type UserArtifactManage struct {
+	// Install - Required. The path and arguments to install the gallery application. This is limited to 4096 characters.
+	Install *string `json:"install,omitempty"`
+	// Remove - Required. The path and arguments to remove the gallery application. This is limited to 4096 characters.
+	Remove *string `json:"remove,omitempty"`
+	// Update - Optional. The path and arguments to update the gallery application. If not present, then update operation will invoke remove command on the previous version and install command on the current version of the gallery application. This is limited to 4096 characters.
+	Update *string `json:"update,omitempty"`
+}
+
 // UserArtifactSource the source image from which the Image Version is going to be created.
 type UserArtifactSource struct {
-	// FileName - Required. The fileName of the artifact.
-	FileName *string `json:"fileName,omitempty"`
-	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage blob.
+	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage page blob.
 	MediaLink *string `json:"mediaLink,omitempty"`
+	// DefaultConfigurationLink - Optional. The defaultConfigurationLink of the artifact, must be a readable storage page blob.
+	DefaultConfigurationLink *string `json:"defaultConfigurationLink,omitempty"`
 }
 
 // VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate
@@ -13880,6 +13901,8 @@ type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	Primary *bool `json:"primary,omitempty"`
 	// EnableAcceleratedNetworking - Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
+	// EnableFpga - Specifies whether the network interface is FPGA networking-enabled.
+	EnableFpga *bool `json:"enableFpga,omitempty"`
 	// NetworkSecurityGroup - The network security group.
 	NetworkSecurityGroup *SubResource `json:"networkSecurityGroup,omitempty"`
 	// DNSSettings - The dns settings to be applied on the network interfaces.
@@ -15040,6 +15063,8 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 	Primary *bool `json:"primary,omitempty"`
 	// EnableAcceleratedNetworking - Specifies whether the network interface is accelerated networking-enabled.
 	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
+	// EnableFpga - Specifies whether the network interface is FPGA networking-enabled.
+	EnableFpga *bool `json:"enableFpga,omitempty"`
 	// NetworkSecurityGroup - The network security group.
 	NetworkSecurityGroup *SubResource `json:"networkSecurityGroup,omitempty"`
 	// DNSSettings - The dns settings to be applied on the network interfaces.

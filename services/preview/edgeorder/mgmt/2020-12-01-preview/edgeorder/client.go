@@ -731,8 +731,10 @@ func (client BaseClient) GetOrderByNameResponder(resp *http.Response) (result Or
 // Parameters:
 // orderItemName - the name of the order item
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// expand - $expand is supported on device details parameter for order item, which provides details on the
-// devices of the product.
+// expand - $expand is supported on device details, forward shipping details and reverse shipping details
+// parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+// details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
+// shipping details respectively.
 func (client BaseClient) GetOrderItemByName(ctx context.Context, orderItemName string, resourceGroupName string, expand string) (result OrderItemResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetOrderItemByName")
@@ -1582,8 +1584,10 @@ func (client BaseClient) ListOrderAtSubscriptionLevelComplete(ctx context.Contex
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // filter - $filter is supported to filter based on order id. Filter supports only equals operation.
-// expand - $expand is supported on device details parameter for order item, which provides details on the
-// devices of the product.
+// expand - $expand is supported on device details, forward shipping details and reverse shipping details
+// parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+// details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
+// shipping details respectively.
 // skipToken - $skipToken is supported on Get list of order items, which provides the next page in the list of
 // order items.
 func (client BaseClient) ListOrderItemsAtResourceGroupLevel(ctx context.Context, resourceGroupName string, filter string, expand string, skipToken string) (result OrderItemResourceListPage, err error) {
@@ -1717,12 +1721,16 @@ func (client BaseClient) ListOrderItemsAtResourceGroupLevelComplete(ctx context.
 	return
 }
 
-// ListOrderItemsAtSubscriptionLevel lists order at subscription level.
+// ListOrderItemsAtSubscriptionLevel lists order item at subscription level.
 // Parameters:
 // filter - $filter is supported to filter based on order id. Filter supports only equals operation.
-// skipToken - $skipToken is supported on Get list of orders, which provides the next page in the list of
-// order.
-func (client BaseClient) ListOrderItemsAtSubscriptionLevel(ctx context.Context, filter string, skipToken string) (result OrderItemResourceListPage, err error) {
+// expand - $expand is supported on device details, forward shipping details and reverse shipping details
+// parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+// details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
+// shipping details respectively.
+// skipToken - $skipToken is supported on Get list of order items, which provides the next page in the list of
+// order items.
+func (client BaseClient) ListOrderItemsAtSubscriptionLevel(ctx context.Context, filter string, expand string, skipToken string) (result OrderItemResourceListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListOrderItemsAtSubscriptionLevel")
 		defer func() {
@@ -1740,7 +1748,7 @@ func (client BaseClient) ListOrderItemsAtSubscriptionLevel(ctx context.Context, 
 	}
 
 	result.fn = client.listOrderItemsAtSubscriptionLevelNextResults
-	req, err := client.ListOrderItemsAtSubscriptionLevelPreparer(ctx, filter, skipToken)
+	req, err := client.ListOrderItemsAtSubscriptionLevelPreparer(ctx, filter, expand, skipToken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "ListOrderItemsAtSubscriptionLevel", nil, "Failure preparing request")
 		return
@@ -1767,7 +1775,7 @@ func (client BaseClient) ListOrderItemsAtSubscriptionLevel(ctx context.Context, 
 }
 
 // ListOrderItemsAtSubscriptionLevelPreparer prepares the ListOrderItemsAtSubscriptionLevel request.
-func (client BaseClient) ListOrderItemsAtSubscriptionLevelPreparer(ctx context.Context, filter string, skipToken string) (*http.Request, error) {
+func (client BaseClient) ListOrderItemsAtSubscriptionLevelPreparer(ctx context.Context, filter string, expand string, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -1778,6 +1786,9 @@ func (client BaseClient) ListOrderItemsAtSubscriptionLevelPreparer(ctx context.C
 	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 	if len(skipToken) > 0 {
 		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
@@ -1831,7 +1842,7 @@ func (client BaseClient) listOrderItemsAtSubscriptionLevelNextResults(ctx contex
 }
 
 // ListOrderItemsAtSubscriptionLevelComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BaseClient) ListOrderItemsAtSubscriptionLevelComplete(ctx context.Context, filter string, skipToken string) (result OrderItemResourceListIterator, err error) {
+func (client BaseClient) ListOrderItemsAtSubscriptionLevelComplete(ctx context.Context, filter string, expand string, skipToken string) (result OrderItemResourceListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListOrderItemsAtSubscriptionLevel")
 		defer func() {
@@ -1842,7 +1853,7 @@ func (client BaseClient) ListOrderItemsAtSubscriptionLevelComplete(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListOrderItemsAtSubscriptionLevel(ctx, filter, skipToken)
+	result.page, err = client.ListOrderItemsAtSubscriptionLevel(ctx, filter, expand, skipToken)
 	return
 }
 

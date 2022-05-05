@@ -14,6 +14,7 @@ import (
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
 type acquiringResourceState struct {
@@ -35,9 +36,9 @@ func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newE
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource[azcore.AccessToken, acquiringResourceState]
+	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	// auxResources are additional resources that are required for cross-tenant applications
-	auxResources map[string]*shared.ExpiringResource[azcore.AccessToken, acquiringResourceState]
+	auxResources map[string]*temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	cred    azcore.TokenCredential
 	options armpolicy.BearerTokenOptions
@@ -53,7 +54,7 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTok
 	p := &BearerTokenPolicy{
 		cred:         cred,
 		options:      *opts,
-		mainResource: shared.NewExpiringResource(acquire),
+		mainResource: temporal.NewResource(acquire),
 	}
 	return p
 }
@@ -64,7 +65,7 @@ func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 		ctx: req.Raw().Context(),
 		p:   b,
 	}
-	tk, err := b.mainResource.GetResource(as)
+	tk, err := b.mainResource.Get(as)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +73,7 @@ func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	auxTokens := []string{}
 	for tenant, er := range b.auxResources {
 		as.tenant = tenant
-		auxTk, err := er.GetResource(as)
+		auxTk, err := er.Get(as)
 		if err != nil {
 			return nil, err
 		}

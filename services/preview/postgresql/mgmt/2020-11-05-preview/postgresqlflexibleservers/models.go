@@ -1376,7 +1376,7 @@ type ResourceModelWithAllowedPropertySet struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ManagedBy - The  fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
 	Kind *string `json:"kind,omitempty"`
@@ -1850,6 +1850,8 @@ type ServerProperties struct {
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 	// Version - PostgreSQL Server version. Possible values include: 'OneTwo', 'OneOne'
 	Version ServerVersion `json:"version,omitempty"`
+	// MinorVersion - READ-ONLY; The minor version of the server.
+	MinorVersion *string `json:"minorVersion,omitempty"`
 	// State - READ-ONLY; A state of a server that is visible to user. Possible values include: 'ServerStateReady', 'ServerStateDropping', 'ServerStateDisabled', 'ServerStateStarting', 'ServerStateStopping', 'ServerStateStopped', 'ServerStateUpdating'
 	State ServerState `json:"state,omitempty"`
 	// HaState - READ-ONLY; A state of a HA server that is visible to user. Possible values include: 'NotEnabled', 'CreatingStandby', 'ReplicatingData', 'FailingOver', 'Healthy', 'RemovingStandby'
@@ -1864,10 +1866,18 @@ type ServerProperties struct {
 	PublicNetworkAccess ServerPublicNetworkAccessState `json:"publicNetworkAccess,omitempty"`
 	// MaintenanceWindow - Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
-	// HaEnabled - stand by count value can be either enabled or disabled. Possible values include: 'Enabled', 'Disabled'
+	// HaEnabled - stand by count value can be either enabled or disabled. Possible values include: 'HAEnabledEnumEnabled', 'HAEnabledEnumDisabled'
 	HaEnabled HAEnabledEnum `json:"haEnabled,omitempty"`
+	// StandbyCount - The number of standbys.
+	StandbyCount *int32 `json:"standbyCount,omitempty"`
+	// LogBackupStorageSku - The log backup storage sku of the server.
+	LogBackupStorageSku *string `json:"logBackupStorageSku,omitempty"`
 	// SourceServerName - The source PostgreSQL server name to restore from.
 	SourceServerName *string `json:"sourceServerName,omitempty"`
+	// SourceSubscriptionID - The subscription id of source serve PostgreSQL server name to restore from.
+	SourceSubscriptionID *string `json:"sourceSubscriptionId,omitempty"`
+	// SourceResourceGroupName - The resource group name of source serve PostgreSQL server name to restore from.
+	SourceResourceGroupName *string `json:"sourceResourceGroupName,omitempty"`
 	// PointInTimeUTC - Restore point creation time (ISO8601 format), specifying the time to restore from.
 	PointInTimeUTC *date.Time `json:"pointInTimeUTC,omitempty"`
 	// AvailabilityZone - availability Zone information of the server.
@@ -1877,6 +1887,9 @@ type ServerProperties struct {
 	// ByokEnforcement - READ-ONLY; Status showing whether the data encryption is enabled with customer-managed keys.
 	ByokEnforcement          *string                                   `json:"byokEnforcement,omitempty"`
 	DelegatedSubnetArguments *ServerPropertiesDelegatedSubnetArguments `json:"delegatedSubnetArguments,omitempty"`
+	PrivateDNSZoneArguments  *ServerPropertiesPrivateDNSZoneArguments  `json:"privateDnsZoneArguments,omitempty"`
+	// EarliestRestoreDate - READ-ONLY; The earliest restore point time (ISO8601 format) for server.
+	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 	// CreateMode - The mode to create a new PostgreSQL server. Possible values include: 'Default', 'PointInTimeRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
 	// Tags - Application-specific metadata in the form of key-value pairs.
@@ -1907,8 +1920,20 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	if sp.HaEnabled != "" {
 		objectMap["haEnabled"] = sp.HaEnabled
 	}
+	if sp.StandbyCount != nil {
+		objectMap["standbyCount"] = sp.StandbyCount
+	}
+	if sp.LogBackupStorageSku != nil {
+		objectMap["logBackupStorageSku"] = sp.LogBackupStorageSku
+	}
 	if sp.SourceServerName != nil {
 		objectMap["sourceServerName"] = sp.SourceServerName
+	}
+	if sp.SourceSubscriptionID != nil {
+		objectMap["sourceSubscriptionId"] = sp.SourceSubscriptionID
+	}
+	if sp.SourceResourceGroupName != nil {
+		objectMap["sourceResourceGroupName"] = sp.SourceResourceGroupName
 	}
 	if sp.PointInTimeUTC != nil {
 		objectMap["pointInTimeUTC"] = sp.PointInTimeUTC
@@ -1918,6 +1943,9 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sp.DelegatedSubnetArguments != nil {
 		objectMap["delegatedSubnetArguments"] = sp.DelegatedSubnetArguments
+	}
+	if sp.PrivateDNSZoneArguments != nil {
+		objectMap["privateDnsZoneArguments"] = sp.PrivateDNSZoneArguments
 	}
 	if sp.CreateMode != "" {
 		objectMap["createMode"] = sp.CreateMode
@@ -1940,10 +1968,18 @@ type ServerPropertiesForUpdate struct {
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
 	// StorageProfile - Storage profile of a server.
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
-	// HaEnabled - stand by count value can be either enabled or disabled. Possible values include: 'Enabled', 'Disabled'
+	// HaEnabled - stand by count value can be either enabled or disabled. Possible values include: 'HAEnabledEnumEnabled', 'HAEnabledEnumDisabled'
 	HaEnabled HAEnabledEnum `json:"haEnabled,omitempty"`
+	// StandbyCount - The number of standbys.
+	StandbyCount *int32 `json:"standbyCount,omitempty"`
 	// MaintenanceWindow - Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+}
+
+// ServerPropertiesPrivateDNSZoneArguments ...
+type ServerPropertiesPrivateDNSZoneArguments struct {
+	// PrivateDNSZoneArmResourceID - private dns zone arm resource id.
+	PrivateDNSZoneArmResourceID *string `json:"privateDnsZoneArmResourceId,omitempty"`
 }
 
 // ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2236,6 +2272,8 @@ type StorageProfile struct {
 	BackupRetentionDays *int32 `json:"backupRetentionDays,omitempty"`
 	// StorageMB - Max storage allowed for a server.
 	StorageMB *int32 `json:"storageMB,omitempty"`
+	// GeoRedundantBackup - A value indicating whether Geo-Redundant backup is enabled on the server. Possible values include: 'Enabled', 'Disabled'
+	GeoRedundantBackup GeoRedundantBackupEnum `json:"geoRedundantBackup,omitempty"`
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource

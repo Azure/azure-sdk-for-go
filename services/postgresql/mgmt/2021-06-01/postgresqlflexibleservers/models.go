@@ -511,6 +511,16 @@ type ConfigurationProperties struct {
 	AllowedValues *string `json:"allowedValues,omitempty"`
 	// Source - Source of the configuration.
 	Source *string `json:"source,omitempty"`
+	// IsDynamicConfig - READ-ONLY; Configuration dynamic or static.
+	IsDynamicConfig *bool `json:"isDynamicConfig,omitempty"`
+	// IsReadOnly - READ-ONLY; Configuration read-only or not.
+	IsReadOnly *bool `json:"isReadOnly,omitempty"`
+	// IsConfigPendingRestart - READ-ONLY; Configuration is pending restart or not.
+	IsConfigPendingRestart *bool `json:"isConfigPendingRestart,omitempty"`
+	// Unit - READ-ONLY; Configuration unit.
+	Unit *string `json:"unit,omitempty"`
+	// DocumentationLink - READ-ONLY; Configuration documentation link.
+	DocumentationLink *string `json:"documentationLink,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConfigurationProperties.
@@ -1397,14 +1407,22 @@ type MaintenanceWindow struct {
 // NameAvailability represents a resource name availability.
 type NameAvailability struct {
 	autorest.Response `json:"-"`
-	// Message - Error Message.
+	// Message - READ-ONLY; Error Message.
 	Message *string `json:"message,omitempty"`
-	// NameAvailable - Indicates whether the resource name is available.
+	// NameAvailable - READ-ONLY; Indicates whether the resource name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Name - name of the PostgreSQL server.
+	// Name - READ-ONLY; name of the PostgreSQL server.
 	Name *string `json:"name,omitempty"`
-	// Type - type of the server
+	// Type - READ-ONLY; type of the server
 	Type *string `json:"type,omitempty"`
+	// Reason - READ-ONLY; The name availability reason. Possible values include: 'ReasonInvalid', 'ReasonAlreadyExists'
+	Reason Reason `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NameAvailability.
+func (na NameAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NameAvailabilityRequest request from client to check resource name availability.
@@ -1943,8 +1961,6 @@ type ServerProperties struct {
 	AvailabilityZone *string `json:"availabilityZone,omitempty"`
 	// CreateMode - The mode to create a new PostgreSQL server. Possible values include: 'CreateModeDefault', 'CreateModeCreate', 'CreateModeUpdate', 'CreateModePointInTimeRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// Tags - Application-specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for ServerProperties.
@@ -1985,9 +2001,6 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sp.CreateMode != "" {
 		objectMap["createMode"] = sp.CreateMode
-	}
-	if sp.Tags != nil {
-		objectMap["tags"] = sp.Tags
 	}
 	return json.Marshal(objectMap)
 }

@@ -40,19 +40,34 @@ func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{Default, PointInTimeRestore}
 }
 
+// GeoRedundantBackupEnum enumerates the values for geo redundant backup enum.
+type GeoRedundantBackupEnum string
+
+const (
+	// Disabled ...
+	Disabled GeoRedundantBackupEnum = "Disabled"
+	// Enabled ...
+	Enabled GeoRedundantBackupEnum = "Enabled"
+)
+
+// PossibleGeoRedundantBackupEnumValues returns an array of possible values for the GeoRedundantBackupEnum const type.
+func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
+	return []GeoRedundantBackupEnum{Disabled, Enabled}
+}
+
 // HAEnabledEnum enumerates the values for ha enabled enum.
 type HAEnabledEnum string
 
 const (
-	// Disabled ...
-	Disabled HAEnabledEnum = "Disabled"
-	// Enabled ...
-	Enabled HAEnabledEnum = "Enabled"
+	// HAEnabledEnumDisabled ...
+	HAEnabledEnumDisabled HAEnabledEnum = "Disabled"
+	// HAEnabledEnumEnabled ...
+	HAEnabledEnumEnabled HAEnabledEnum = "Enabled"
 )
 
 // PossibleHAEnabledEnumValues returns an array of possible values for the HAEnabledEnum const type.
 func PossibleHAEnabledEnumValues() []HAEnabledEnum {
-	return []HAEnabledEnum{Disabled, Enabled}
+	return []HAEnabledEnum{HAEnabledEnumDisabled, HAEnabledEnumEnabled}
 }
 
 // OperationOrigin enumerates the values for operation origin.

@@ -232,7 +232,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, id Manage
 			msg := fmt.Sprintf("failed to retreive secret key from the identity endpoint: %v", err)
 			return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, nil)
 		}
-		return c.createAzureArcAuthRequest(ctx, key, scopes)
+		return c.createAzureArcAuthRequest(ctx, id, scopes, key)
 	case msiTypeServiceFabric:
 		return c.createServiceFabricAuthRequest(ctx, id, scopes)
 	case msiTypeCloudShell:
@@ -293,7 +293,12 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	q.Add("api-version", serviceFabricAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
-		q.Add(qpClientID, id.String())
+		log.Write(EventAuthentication, "WARNING: Service Fabric doesn't support selecting a user-assigned identity at runtime")
+		if id.idKind() == miResourceID {
+			q.Add(qpResID, id.String())
+		} else {
+			q.Add(qpClientID, id.String())
+		}
 	}
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
@@ -337,7 +342,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	return string(key), nil
 }
 
-func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, resources []string) (*policy.Request, error) {
+func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, id ManagedIDKind, resources []string, key string) (*policy.Request, error) {
 	request, err := runtime.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -347,15 +352,19 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 	q := request.Raw().URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
+	if id != nil {
+		log.Write(EventAuthentication, "WARNING: Azure Arc doesn't support user-assigned managed identities")
+		if id.idKind() == miResourceID {
+			q.Add(qpResID, id.String())
+		} else {
+			q.Add(qpClientID, id.String())
+		}
+	}
 	request.Raw().URL.RawQuery = q.Encode()
 	return request, nil
 }
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, id ManagedIDKind, scopes []string) (*policy.Request, error) {
-	if id != nil {
-		msg := "Cloud Shell doesn't support user assigned managed identities. To authenticate the signed in user, omit ManagedIdentityCredentialOptions.ID"
-		return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, nil)
-	}
 	request, err := runtime.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -367,6 +376,15 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
 	if err := request.SetBody(body, "application/x-www-form-urlencoded"); err != nil {
 		return nil, err
+	}
+	if id != nil {
+		log.Write(EventAuthentication, "WARNING: Cloud Shell doesn't support user-assigned managed identities")
+		q := request.Raw().URL.Query()
+		if id.idKind() == miResourceID {
+			q.Add(qpResID, id.String())
+		} else {
+			q.Add(qpClientID, id.String())
+		}
 	}
 	return request, nil
 }

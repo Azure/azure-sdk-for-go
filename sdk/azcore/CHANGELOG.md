@@ -15,6 +15,7 @@
 * Removed `arm/runtime.Poller[T]`, `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()`
 * Removed `arm/runtime.FinalStateVia` and related `const` values
 * Renamed `runtime.PageProcessor` to `runtime.PagingHandler`
+* The `arm/runtime.ProviderRepsonse` and `arm/runtime.Provider` types are no longer exported.
 
 ### Bugs Fixed
 * When per-try timeouts are enabled, only cancel the context after the body has been read and closed.

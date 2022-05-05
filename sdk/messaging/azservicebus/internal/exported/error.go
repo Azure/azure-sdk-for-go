@@ -33,7 +33,7 @@ type Error struct {
 }
 
 // Error is an error message containing the code and a user friendly message, if any.
-func (e Error) Error() string {
+func (e *Error) Error() string {
 	msg := "unknown error"
 	if e.innerErr != nil {
 		msg = e.innerErr.Error()

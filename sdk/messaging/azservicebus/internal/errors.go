@@ -52,7 +52,7 @@ func TransformError(err error) error {
 		return nil
 	}
 
-	_, ok := err.(exported.Error)
+	_, ok := err.(*exported.Error)
 
 	if ok {
 		// it's already been wrapped.

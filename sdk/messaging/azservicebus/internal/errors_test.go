@@ -277,4 +277,12 @@ func Test_TransformError(t *testing.T) {
 	err = TransformError(amqp.ErrConnClosed)
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
+
+	// don't double wrap an already wrapped error
+	alreadyWrappedErr := &exported.Error{Code: exported.CodeConnectionLost}
+	err = TransformError(alreadyWrappedErr)
+	require.Equal(t, alreadyWrappedErr, err)
+
+	// and it's okay, for convenience, to pass a nil.
+	require.Nil(t, TransformError(nil))
 }

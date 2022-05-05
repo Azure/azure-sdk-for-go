@@ -38,6 +38,8 @@ type NamespacesClientAPI interface {
 	ListIPFilterRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.IPFilterRuleListResultPage, err error)
 	ListIPFilterRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.IPFilterRuleListResultIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (result servicebus.AccessKeys, err error)
+	ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSetListResultPage, err error)
+	ListNetworkRuleSetsComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.NetworkRuleSetListResultIterator, err error)
 	ListVirtualNetworkRules(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.VirtualNetworkRuleListResultPage, err error)
 	ListVirtualNetworkRulesComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result servicebus.VirtualNetworkRuleListResultIterator, err error)
 	Migrate(ctx context.Context, resourceGroupName string, namespaceName string, parameters servicebus.SBNamespaceMigrate) (result autorest.Response, err error)
@@ -64,14 +66,6 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*servicebus.PrivateLinkResourcesClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result servicebus.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result servicebus.OperationListResultIterator, err error)
-}
-
-var _ OperationsClientAPI = (*servicebus.OperationsClient)(nil)
 
 // DisasterRecoveryConfigsClientAPI contains the set of methods on the DisasterRecoveryConfigsClient type.
 type DisasterRecoveryConfigsClientAPI interface {
@@ -185,3 +179,11 @@ type RulesClientAPI interface {
 }
 
 var _ RulesClientAPI = (*servicebus.RulesClient)(nil)
+
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result servicebus.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result servicebus.OperationListResultIterator, err error)
+}
+
+var _ OperationsClientAPI = (*servicebus.OperationsClient)(nil)

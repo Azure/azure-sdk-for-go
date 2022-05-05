@@ -17,19 +17,19 @@ example, configuring a credential and ARM client for Azure Government:
 
 	opts := azcore.ClientOptions{Cloud: cloud.AzureGovernment}
 	cred, err := azidentity.NewDefaultAzureCredential(
-		&azidentity.DefaultAzureCredentialOptions{ClientOptions: opts}
+		&azidentity.DefaultAzureCredentialOptions{ClientOptions: opts},
 	)
 	handle(err)
 
 	client, err := armsubscription.NewClient(
-		cred, &arm.ClientOptions{ClientOptions: opts}
+		cred, &arm.ClientOptions{ClientOptions: opts},
 	)
 	handle(err)
 
 Applications deployed to a private cloud such as Azure Stack create a Configuration object with
 appropriate values:
 
-	c = cloud.Configuration{
+	c := cloud.Configuration{
 		ActiveDirectoryAuthorityHost: "https://...",
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
 			cloud.ResourceManager: {
@@ -41,14 +41,13 @@ appropriate values:
 	opts := azcore.ClientOptions{Cloud: c}
 
 	cred, err := azidentity.NewDefaultAzureCredential(
-		&azidentity.DefaultAzureCredentialOptions{ClientOptions: opts}
+		&azidentity.DefaultAzureCredentialOptions{ClientOptions: opts},
 	)
 	handle(err)
 
 	client, err := armsubscription.NewClient(
-		cred, &arm.ClientOptions{ClientOptions: opts}
+		cred, &arm.ClientOptions{ClientOptions: opts},
 	)
 	handle(err)
 */
-
 package cloud

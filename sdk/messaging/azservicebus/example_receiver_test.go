@@ -100,13 +100,13 @@ func ExampleReceiver_DeadLetterMessage() {
 	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 	defer cancel()
 
-	message, err := receiver.ReceiveMessages(ctx, 1, nil)
+	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 	if err != nil {
 		panic(err)
 	}
 
 	if len(messages) == 1 {
-		err := receiver.DeadLetterMessage(ctx, message[0], deadLetterOptions)
+		err := receiver.DeadLetterMessage(ctx, messages[0], deadLetterOptions)
 		if err != nil {
 			panic(err)
 		}

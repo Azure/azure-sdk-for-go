@@ -14,6 +14,7 @@
 * `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
 * Removed `arm/runtime.Poller[T]`, `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()`
 * Removed `arm/runtime.FinalStateVia` and related `const` values
+* Renamed `runtime.PageProcessor` to `runtime.PagingHandler`
 
 ### Bugs Fixed
 * When per-try timeouts are enabled, only cancel the context after the body has been read and closed.

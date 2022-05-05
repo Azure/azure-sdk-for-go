@@ -293,7 +293,7 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 	q.Add("api-version", serviceFabricAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != nil {
-		log.Write(EventAuthentication, "Service Fabric doesn't support selecting a user-assigned identity at runtime")
+		log.Write(EventAuthentication, "WARNING: Service Fabric doesn't support selecting a user-assigned identity at runtime")
 		if id.idKind() == miResourceID {
 			q.Add(qpResID, id.String())
 		} else {
@@ -353,7 +353,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, i
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))
 	if id != nil {
-		log.Write(EventAuthentication, "Azure Arc doesn't support user-assigned managed identities")
+		log.Write(EventAuthentication, "WARNING: Azure Arc doesn't support user-assigned managed identities")
 		if id.idKind() == miResourceID {
 			q.Add(qpResID, id.String())
 		} else {
@@ -378,7 +378,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 		return nil, err
 	}
 	if id != nil {
-		log.Write(EventAuthentication, "Cloud Shell doesn't support user-assigned managed identities")
+		log.Write(EventAuthentication, "WARNING: Cloud Shell doesn't support user-assigned managed identities")
 		q := request.Raw().URL.Query()
 		if id.idKind() == miResourceID {
 			q.Add(qpResID, id.String())

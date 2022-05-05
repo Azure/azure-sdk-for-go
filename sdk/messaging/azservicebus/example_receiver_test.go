@@ -99,7 +99,8 @@ func ExampleReceiver_DeadLetterMessage() {
 
 	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 	defer cancel()
-
+  // How to create a dead letter receiver
+	// https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/example_receiver_test.go#L25
 	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 	if err != nil {
 		panic(err)

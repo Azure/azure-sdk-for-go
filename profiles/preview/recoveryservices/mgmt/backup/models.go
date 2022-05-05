@@ -62,7 +62,7 @@ const (
 	ContainerTypeBasicProtectionContainerContainerTypeAzureWorkloadContainer                 ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeAzureWorkloadContainer
 	ContainerTypeBasicProtectionContainerContainerTypeDPMContainer                           ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeDPMContainer
 	ContainerTypeBasicProtectionContainerContainerTypeGenericContainer                       ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeGenericContainer
-	ContainerTypeBasicProtectionContainerContainerTypeIaaSVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeIaaSVMContainer
+	ContainerTypeBasicProtectionContainerContainerTypeIaasVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeIaasVMContainer
 	ContainerTypeBasicProtectionContainerContainerTypeMicrosoftClassicComputevirtualMachines ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeMicrosoftClassicComputevirtualMachines
 	ContainerTypeBasicProtectionContainerContainerTypeMicrosoftComputevirtualMachines        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeMicrosoftComputevirtualMachines
 	ContainerTypeBasicProtectionContainerContainerTypeProtectionContainer                    ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeProtectionContainer
@@ -843,6 +843,15 @@ const (
 	SupportStatusSupported    SupportStatus = original.SupportStatusSupported
 )
 
+type TieringMode = original.TieringMode
+
+const (
+	TieringModeDoNotTier       TieringMode = original.TieringModeDoNotTier
+	TieringModeInvalid         TieringMode = original.TieringModeInvalid
+	TieringModeTierAfter       TieringMode = original.TieringModeTierAfter
+	TieringModeTierRecommended TieringMode = original.TieringModeTierRecommended
+)
+
 type Type = original.Type
 
 const (
@@ -1324,6 +1333,7 @@ type StatusResponse = original.StatusResponse
 type SubProtectionPolicy = original.SubProtectionPolicy
 type TargetAFSRestoreInfo = original.TargetAFSRestoreInfo
 type TargetRestoreInfo = original.TargetRestoreInfo
+type TieringPolicy = original.TieringPolicy
 type TokenInformation = original.TokenInformation
 type TriggerDataMoveRequest = original.TriggerDataMoveRequest
 type UnlockDeleteRequest = original.UnlockDeleteRequest
@@ -1947,6 +1957,9 @@ func PossibleStorageTypeValues() []StorageType {
 }
 func PossibleSupportStatusValues() []SupportStatus {
 	return original.PossibleSupportStatusValues()
+}
+func PossibleTieringModeValues() []TieringMode {
+	return original.PossibleTieringModeValues()
 }
 func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()

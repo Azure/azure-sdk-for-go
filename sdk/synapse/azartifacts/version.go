@@ -11,5 +11,5 @@ const (
 	UserAgent = "azartifacts/" + Version
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.1.0"
+	Version = "v0.1.2"
 )

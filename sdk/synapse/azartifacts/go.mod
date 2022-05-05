@@ -1,3 +1,4 @@
+// Deprecated: this module is no longer supported
 module github.com/Azure/azure-sdk-for-go/sdk/synapse/azartifacts
 
 go 1.16
@@ -8,6 +9,6 @@ require (
 )
 
 retract (
-	v0.1.0 // https://github.com/Azure/azure-sdk-for-go/issues/16058
 	v0.1.1 // contains retractions
+	v0.1.0 // https://github.com/Azure/azure-sdk-for-go/issues/16058
 )

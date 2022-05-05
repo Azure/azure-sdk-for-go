@@ -32,7 +32,7 @@ func TestSender_UserFacingError(t *testing.T) {
 
 	fakeAMQPLinks.Err = amqp.ErrConnClosed
 
-	var asSBError Error
+	var asSBError *Error
 
 	batch, err := sender.NewMessageBatch(context.Background(), nil)
 	require.Nil(t, batch)

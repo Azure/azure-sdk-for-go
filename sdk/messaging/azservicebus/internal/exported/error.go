@@ -41,16 +41,11 @@ func (e Error) Error() string {
 	return fmt.Sprintf("(%s): %s", e.Code, msg)
 }
 
-// Unwrap is implemented so this error can be used with errors.As()
-func (e Error) Unwrap() error {
-	return e.innerErr
-}
-
 // NewError creates a new `Error` instance.
 // NOTE: this function is only exported so it can be used by the `internal`
 // package. It is not available for customers.
 func NewError(code Code, innerErr error) error {
-	return Error{
+	return &Error{
 		Code:     code,
 		innerErr: innerErr,
 	}

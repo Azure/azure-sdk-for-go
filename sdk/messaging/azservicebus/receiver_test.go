@@ -5,7 +5,6 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -556,7 +555,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 	defer endCaptureFn()
 	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0], nil)
 
-	var asSBError Error
+	var asSBError *Error
 	require.ErrorAs(t, expectedLockBadError, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
 	require.Contains(t, expectedLockBadError.Error(),
@@ -778,21 +777,9 @@ func TestReceiverMessageLockExpires(t *testing.T) {
 
 	err = receiver.CompleteMessage(context.Background(), messages[0], nil)
 
-	var asSBError Error
+	var asSBError *Error
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeLockLost, asSBError.Code)
-
-	var amqpErr *amqp.Error
-	require.ErrorAs(t, err, &amqpErr)
-	require.Equal(t, amqp.ErrorCondition("com.microsoft:message-lock-lost"), amqpErr.Condition)
-}
-
-type badRPCLink struct {
-	internal.RPCLink
-}
-
-func (br *badRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*internal.RPCResponse, error) {
-	return nil, errors.New("receive deferred messages failed")
 }
 
 type receivedMessageSlice []*ReceivedMessage

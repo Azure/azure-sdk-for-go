@@ -93,7 +93,7 @@ func ExampleReceiver_ReceiveMessages() {
 		err = receiver.CompleteMessage(context.TODO(), message, nil)
 
 		if err != nil {
-			var sbErr azservicebus.Error
+			var sbErr *azservicebus.Error
 
 			if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
 				// The message lock has expired. This isn't fatal for the client, but it does mean

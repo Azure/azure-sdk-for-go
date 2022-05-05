@@ -252,7 +252,7 @@ func Test_IsLockLostError(t *testing.T) {
 }
 
 func Test_TransformError(t *testing.T) {
-	var asExportedErr exported.Error
+	var asExportedErr *exported.Error
 
 	err := TransformError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}})
 	require.ErrorAs(t, err, &asExportedErr)

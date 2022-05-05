@@ -31,7 +31,7 @@ func TestSessionReceiverUserFacingErrors(t *testing.T) {
 	}, nil)
 
 	require.Nil(t, receiver)
-	var asSBError Error
+	var asSBError *Error
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 

@@ -417,7 +417,7 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	}, nil)
 	require.NoError(t, err)
 
-	var asSBError Error
+	var asSBError *Error
 
 	fakeAMQPLinks.Err = amqp.ErrLinkClosed
 	messages, err := receiver.PeekMessages(context.Background(), 1, nil)

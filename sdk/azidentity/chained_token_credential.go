@@ -90,7 +90,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 			break
 		}
 		errs = append(errs, err)
-		if _, ok := err.(credentialUnavailableError); !ok {
+		if _, ok := err.(*credentialUnavailableError); !ok {
 			break
 		}
 	}
@@ -105,7 +105,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	if err != nil {
 		// return credentialUnavailableError iff all sources did so; return AuthenticationFailedError otherwise
 		msg := createChainedErrorMessage(errs)
-		if _, ok := err.(credentialUnavailableError); ok {
+		if _, ok := err.(*credentialUnavailableError); ok {
 			err = newCredentialUnavailableError(c.name, msg)
 		} else {
 			res := getResponseFromError(err)

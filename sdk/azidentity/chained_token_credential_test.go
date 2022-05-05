@@ -117,7 +117,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var authErr AuthenticationFailedError
+	var authErr *AuthenticationFailedError
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
 	}
@@ -141,7 +141,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testin
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var authErr credentialUnavailableError
+	var authErr *credentialUnavailableError
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected CredentialUnavailableError, received %T", err)
 	}
@@ -170,7 +170,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var authErr AuthenticationFailedError
+	var authErr *AuthenticationFailedError
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
 	}
@@ -196,7 +196,7 @@ func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var authErr credentialUnavailableError
+	var authErr *credentialUnavailableError
 	if !errors.As(err, &authErr) {
 		t.Fatalf("Expected credentialUnavailableError, received %T", err)
 	}

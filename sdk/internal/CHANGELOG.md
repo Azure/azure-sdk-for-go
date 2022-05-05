@@ -7,6 +7,7 @@
 
 ### Breaking Changes
 * Removed logging constants from the `log` package.
+* Removed `atomic` package as it wasn't being used.
 
 ### Bugs Fixed
 

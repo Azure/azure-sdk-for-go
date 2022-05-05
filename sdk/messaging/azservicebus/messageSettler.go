@@ -52,7 +52,7 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 		return nil
 	}, RetryOptions{})
 
-	return err
+	return internal.TransformError(err)
 }
 
 // CompleteMessageOptions contains optional parameters for the CompleteMessage function.

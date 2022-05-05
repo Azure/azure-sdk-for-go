@@ -13,6 +13,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/go-amqp"
 )
 
@@ -37,38 +38,45 @@ const (
 	RecoveryKindConn  RecoveryKind = "connection"
 )
 
-type SBErrInfo struct {
-	inner        error
-	RecoveryKind RecoveryKind
-}
-
-func (sbe *SBErrInfo) String() string {
-	return sbe.inner.Error()
-}
-
-func (sbe *SBErrInfo) AsError() error {
-	return sbe.inner
-}
-
 func IsFatalSBError(err error) bool {
-	return GetSBErrInfo(err).RecoveryKind == RecoveryKindFatal
+	return GetRecoveryKind(err) == RecoveryKindFatal
 }
 
-// GetSBErrInfo wraps the passed in 'err' with a proper error with one of either:
-// - `fatalServiceBusError` if no recovery is possible.
-// - `serviceBusError` if the error is recoverable. The `recoveryKind` field contains the
-//   type of recovery needed.
-func GetSBErrInfo(err error) *SBErrInfo {
+// TransformError will create a proper error type that users
+// can potentially inspect.
+// If the error is actionable then it'll be of type exported.Error which
+// has a 'Code' field that can be used programatically.
+// If it's not actionable or if it's nil it'll just be returned.
+func TransformError(err error) error {
 	if err == nil {
 		return nil
 	}
 
-	sbe := &SBErrInfo{
-		inner:        err,
-		RecoveryKind: GetRecoveryKind(err),
+	_, ok := err.(*exported.Error)
+
+	if ok {
+		// it's already been wrapped.
+		return err
 	}
 
-	return sbe
+	if isLockLostError(err) {
+		return exported.NewError(exported.CodeLockLost, err)
+	}
+
+	rk := GetRecoveryKind(err)
+
+	switch rk {
+	case RecoveryKindLink:
+		// note that we could give back a more differentiated error code
+		// here but it's probably best to just give the customer the simplest
+		// recovery mechanism possible.
+		return exported.NewError(exported.CodeConnectionLost, err)
+	case RecoveryKindConn:
+		return exported.NewError(exported.CodeConnectionLost, err)
+	default:
+		// isn't one of our specifically called out cases so we'll just return it.
+		return err
+	}
 }
 
 func IsDetachError(err error) bool {
@@ -97,6 +105,8 @@ func IsDrainingError(err error) bool {
 	return strings.Contains(err.Error(), "link is currently draining")
 }
 
+const errorConditionLockLost = amqp.ErrorCondition("com.microsoft:message-lock-lost")
+
 var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
 	// no recovery needed, these are temporary errors.
 	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
@@ -118,7 +128,7 @@ var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
 	amqp.ErrorNotAllowed:                                          RecoveryKindFatal, // "amqp:not-allowed"
 	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
 	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
-	amqp.ErrorCondition("com.microsoft:message-lock-lost"):        RecoveryKindFatal,
+	errorConditionLockLost:                                        RecoveryKindFatal,
 }
 
 // GetRecoveryKindForSession determines the recovery type for session-based links.
@@ -187,7 +197,7 @@ func GetRecoveryKind(err error) RecoveryKind {
 		}
 	}
 
-	var rpcErr rpcError
+	var rpcErr RPCError
 
 	if errors.As(err, &rpcErr) {
 		// Described more here:
@@ -304,12 +314,20 @@ func (e ErrConnectionClosed) Error() string {
 }
 
 func isLockLostError(err error) bool {
-	var rpcErr rpcError
+	var rpcErr RPCError
 
-	if errors.As(err, &rpcErr) {
-		if rpcErr.Resp.Code == RPCResponseCodeLockLost {
-			return true
-		}
+	// this is the error you get if you settle on the management$ link
+	// with an expired locktoken.
+	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == RPCResponseCodeLockLost {
+		return true
+	}
+
+	var amqpErr *amqp.Error
+
+	// this is the error you get if you settle on the actual receiver link you
+	// got the message on with an expired locktoken.
+	if errors.As(err, &amqpErr) && amqpErr.Condition == errorConditionLockLost {
+		return true
 	}
 
 	return false

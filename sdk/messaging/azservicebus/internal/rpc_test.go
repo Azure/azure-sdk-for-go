@@ -142,7 +142,7 @@ func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 
 	// the 400 automatically gets translated into an RPC error. The response router should still be running.
 	require.Nil(t, resp)
-	var rpcErr rpcError
+	var rpcErr RPCError
 	require.ErrorAs(t, err, &rpcErr)
 	require.Equal(t, 400, rpcErr.RPCCode())
 

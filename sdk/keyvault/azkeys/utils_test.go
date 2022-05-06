@@ -114,12 +114,6 @@ func skipHSM(t *testing.T, testType string) {
 	}
 }
 
-func alwaysSkipHSM(t *testing.T, testType string) {
-	if testType == HSMTEST {
-		t.Skip("this feature isn't supported by MHSM")
-	}
-}
-
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))

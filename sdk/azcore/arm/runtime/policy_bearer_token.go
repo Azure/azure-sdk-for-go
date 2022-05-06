@@ -68,6 +68,9 @@ func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
+	if tk.Token == "" {
+		return req.Next()
+	}
 	req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
 	auxTokens := []string{}
 	for tenant, er := range b.auxResources {

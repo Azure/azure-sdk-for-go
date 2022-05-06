@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,15 +19,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListSubscriptionScope.json
-func ExampleAttestationsClient_ListForSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListSubscriptionScope.json
+func ExampleAttestationsClient_NewListForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
-	pager := client.ListForSubscription(&armpolicyinsights.QueryOptions{Top: nil,
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForSubscriptionPager(&armpolicyinsights.QueryOptions{Top: nil,
 		Filter:    nil,
 		OrderBy:   nil,
 		Select:    nil,
@@ -36,90 +39,104 @@ func ExampleAttestationsClient_ListForSubscription() {
 		Apply:     nil,
 		SkipToken: nil,
 		Expand:    nil,
-	})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+	},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateSubscriptionScope.json
 func ExampleAttestationsClient_BeginCreateOrUpdateAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdateAtSubscription(ctx,
 		"<attestation-name>",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
-				ComplianceState:    armpolicyinsights.ComplianceState("Compliant").ToPtr(),
-				PolicyAssignmentID: to.StringPtr("<policy-assignment-id>"),
+				ComplianceState:    to.Ptr(armpolicyinsights.ComplianceStateCompliant),
+				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
 			},
 		},
-		nil)
+		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtSubscriptionOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientCreateOrUpdateAtSubscriptionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetSubscriptionScope.json
 func ExampleAttestationsClient_GetAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAtSubscription(ctx,
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientGetAtSubscriptionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteSubscriptionScope.json
 func ExampleAttestationsClient_DeleteAtSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteAtSubscription(ctx,
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceGroupScope.json
-func ExampleAttestationsClient_ListForResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceGroupScope.json
+func ExampleAttestationsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
-	pager := client.ListForResourceGroup("<resource-group-name>",
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForResourceGroupPager("<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -129,102 +146,116 @@ func ExampleAttestationsClient_ListForResourceGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateResourceGroupScope.json
 func ExampleAttestationsClient_BeginCreateOrUpdateAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdateAtResourceGroup(ctx,
 		"<resource-group-name>",
 		"<attestation-name>",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
-				Comments:        to.StringPtr("<comments>"),
-				ComplianceState: armpolicyinsights.ComplianceState("Compliant").ToPtr(),
+				Comments:        to.Ptr("<comments>"),
+				ComplianceState: to.Ptr(armpolicyinsights.ComplianceStateCompliant),
 				Evidence: []*armpolicyinsights.AttestationEvidence{
 					{
-						Description: to.StringPtr("<description>"),
-						SourceURI:   to.StringPtr("<source-uri>"),
+						Description: to.Ptr("<description>"),
+						SourceURI:   to.Ptr("<source-uri>"),
 					}},
-				ExpiresOn:                   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
-				Owner:                       to.StringPtr("<owner>"),
-				PolicyAssignmentID:          to.StringPtr("<policy-assignment-id>"),
-				PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+				ExpiresOn:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
+				Owner:                       to.Ptr("<owner>"),
+				PolicyAssignmentID:          to.Ptr("<policy-assignment-id>"),
+				PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
 			},
 		},
-		nil)
+		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceGroupOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientCreateOrUpdateAtResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetResourceGroupScope.json
 func ExampleAttestationsClient_GetAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAtResourceGroup(ctx,
 		"<resource-group-name>",
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientGetAtResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceGroupScope.json
 func ExampleAttestationsClient_DeleteAtResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteAtResourceGroup(ctx,
 		"<resource-group-name>",
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceScope.json
-func ExampleAttestationsClient_ListForResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceScope.json
+func ExampleAttestationsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
-	pager := client.ListForResource("<resource-id>",
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListForResourcePager("<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -234,89 +265,100 @@ func ExampleAttestationsClient_ListForResource() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_CreateResourceScope.json
 func ExampleAttestationsClient_BeginCreateOrUpdateAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginCreateOrUpdateAtResource(ctx,
 		"<resource-id>",
 		"<attestation-name>",
 		armpolicyinsights.Attestation{
 			Properties: &armpolicyinsights.AttestationProperties{
-				Comments:        to.StringPtr("<comments>"),
-				ComplianceState: armpolicyinsights.ComplianceState("Compliant").ToPtr(),
+				Comments:        to.Ptr("<comments>"),
+				ComplianceState: to.Ptr(armpolicyinsights.ComplianceStateCompliant),
 				Evidence: []*armpolicyinsights.AttestationEvidence{
 					{
-						Description: to.StringPtr("<description>"),
-						SourceURI:   to.StringPtr("<source-uri>"),
+						Description: to.Ptr("<description>"),
+						SourceURI:   to.Ptr("<source-uri>"),
 					}},
-				ExpiresOn:                   to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
-				Owner:                       to.StringPtr("<owner>"),
-				PolicyAssignmentID:          to.StringPtr("<policy-assignment-id>"),
-				PolicyDefinitionReferenceID: to.StringPtr("<policy-definition-reference-id>"),
+				ExpiresOn:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T00:00:00Z"); return t }()),
+				Owner:                       to.Ptr("<owner>"),
+				PolicyAssignmentID:          to.Ptr("<policy-assignment-id>"),
+				PolicyDefinitionReferenceID: to.Ptr("<policy-definition-reference-id>"),
 			},
 		},
-		nil)
+		&armpolicyinsights.AttestationsClientBeginCreateOrUpdateAtResourceOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientCreateOrUpdateAtResourceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_GetResourceScope.json
 func ExampleAttestationsClient_GetAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.GetAtResource(ctx,
 		"<resource-id>",
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.AttestationsClientGetAtResourceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceScope.json
 func ExampleAttestationsClient_DeleteAtResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewAttestationsClient("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	_, err = client.DeleteAtResource(ctx,
 		"<resource-id>",
 		"<attestation-name>",
 		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 }

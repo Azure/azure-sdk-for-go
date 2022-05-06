@@ -9,7 +9,7 @@
 
 package cdnapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn/cdnapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2021-06-01/cdn/cdnapi"
 
 type AFDCustomDomainsClientAPI = original.AFDCustomDomainsClientAPI
 type AFDEndpointsClientAPI = original.AFDEndpointsClientAPI

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,19 +30,23 @@ type SitesClient struct {
 // NewSitesClient creates a new instance of SitesClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSitesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SitesClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSitesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SitesClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create or update IoT site
@@ -81,7 +86,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, scop
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *SitesClient) createOrUpdateHandleResponse(resp *http.Response) (SitesClientCreateOrUpdateResponse, error) {
-	result := SitesClientCreateOrUpdateResponse{RawResponse: resp}
+	result := SitesClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteModel); err != nil {
 		return SitesClientCreateOrUpdateResponse{}, err
 	}
@@ -104,7 +109,7 @@ func (client *SitesClient) Delete(ctx context.Context, scope string, options *Si
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SitesClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SitesClientDeleteResponse{RawResponse: resp}, nil
+	return SitesClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -158,7 +163,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, scope string, o
 
 // getHandleResponse handles the Get response.
 func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGetResponse, error) {
-	result := SitesClientGetResponse{RawResponse: resp}
+	result := SitesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteModel); err != nil {
 		return SitesClientGetResponse{}, err
 	}
@@ -201,7 +206,7 @@ func (client *SitesClient) listCreateRequest(ctx context.Context, scope string, 
 
 // listHandleResponse handles the List response.
 func (client *SitesClient) listHandleResponse(resp *http.Response) (SitesClientListResponse, error) {
-	result := SitesClientListResponse{RawResponse: resp}
+	result := SitesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SitesList); err != nil {
 		return SitesClientListResponse{}, err
 	}

@@ -6,31 +6,14 @@ package internal
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/go-amqp"
 )
 
-// AMQPReceiver is implemented by *amqp.Receiver
-type AMQPReceiver interface {
-	IssueCredit(credit uint32) error
-	DrainCredit(ctx context.Context) error
-	Receive(ctx context.Context) (*amqp.Message, error)
-	Prefetched(ctx context.Context) (*amqp.Message, error)
-
-	// settlement functions
-	AcceptMessage(ctx context.Context, msg *amqp.Message) error
-	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
-	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
-	ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
-
-	LinkName() string
-	LinkSourceFilterValue(name string) interface{}
-}
-
-// AMQPReceiver is implemented by *amqp.Receiver
-type AMQPReceiverCloser interface {
-	AMQPReceiver
-	Close(ctx context.Context) error
-}
+type AMQPReceiver = amqpwrap.AMQPReceiver
+type AMQPReceiverCloser = amqpwrap.AMQPReceiverCloser
+type AMQPSender = amqpwrap.AMQPSender
+type AMQPSenderCloser = amqpwrap.AMQPSenderCloser
 
 // AMQPSession is implemented by *amqp.Session
 type AMQPSession interface {
@@ -41,18 +24,6 @@ type AMQPSession interface {
 // AMQPSessionCloser is implemented by *amqp.Session
 type AMQPSessionCloser interface {
 	AMQPSession
-	Close(ctx context.Context) error
-}
-
-// AMQPSender is implemented by *amqp.Sender
-type AMQPSender interface {
-	Send(ctx context.Context, msg *amqp.Message) error
-	MaxMessageSize() uint64
-}
-
-// AMQPSenderCloser is implemented by *amqp.Sender
-type AMQPSenderCloser interface {
-	AMQPSender
 	Close(ctx context.Context) error
 }
 

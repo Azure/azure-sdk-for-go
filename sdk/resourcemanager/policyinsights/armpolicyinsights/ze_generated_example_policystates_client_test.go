@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -19,16 +19,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/policyinsights/armpolicyinsights"
 )
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryManagementGroupScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForManagementGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryManagementGroupScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForManagementGroup(armpolicyinsights.PolicyStatesResource("latest"),
-		armpolicyinsights.Enum0("Microsoft.Management"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForManagementGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<management-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -39,95 +41,105 @@ func ExamplePolicyStatesClient_ListQueryResultsForManagementGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeManagementGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeManagementGroupScope.json
 func ExamplePolicyStatesClient_SummarizeForManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForManagementGroup(ctx,
-		armpolicyinsights.Enum6("latest"),
-		armpolicyinsights.Enum0("Microsoft.Management"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<management-group-name>",
-		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(0),
-			Filter:    to.StringPtr("<filter>"),
+		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](0),
+			Filter:    to.Ptr("<filter>"),
 			OrderBy:   nil,
 			Select:    nil,
-			From:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
-			To:        to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-06T18:00:00Z"); return t }()),
+			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
+			To:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-06T18:00:00Z"); return t }()),
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForManagementGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndAggregateOnly.json
-func ExamplePolicyStatesClient_ListQueryResultsForSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_FilterAndAggregateOnly.json
+func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForSubscription(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForSubscriptionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
-			Filter:    to.StringPtr("<filter>"),
+			Filter:    to.Ptr("<filter>"),
 			OrderBy:   nil,
 			Select:    nil,
-			From:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
+			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
 			To:        nil,
-			Apply:     to.StringPtr("<apply>"),
+			Apply:     to.Ptr("<apply>"),
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionScope.json
 func ExamplePolicyStatesClient_SummarizeForSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForSubscription(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
-		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(5),
+		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](5),
 			Filter:    nil,
 			OrderBy:   nil,
 			Select:    nil,
@@ -136,22 +148,27 @@ func ExamplePolicyStatesClient_SummarizeForSubscription() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForSubscriptionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForResourceGroup() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroup(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForResourceGroupPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
 		"<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -163,31 +180,34 @@ func ExamplePolicyStatesClient_ListQueryResultsForResourceGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupScope.json
 func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForResourceGroup(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
 		"<resource-group-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
@@ -199,22 +219,27 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroup() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForResourceGroupResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryNestedResourceScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForResource() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryNestedResourceScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForResource(armpolicyinsights.PolicyStatesResource("default"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForResourcePager(armpolicyinsights.PolicyStatesResourceDefault,
 		"<resource-id>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -225,33 +250,36 @@ func ExamplePolicyStatesClient_ListQueryResultsForResource() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceScope.json
 func ExamplePolicyStatesClient_SummarizeForResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForResource(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<resource-id>",
-		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(2),
+		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](2),
 			Filter:    nil,
 			OrderBy:   nil,
 			Select:    nil,
@@ -260,65 +288,75 @@ func ExamplePolicyStatesClient_SummarizeForResource() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForResourceResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerSubscriptionEvaluation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerSubscriptionEvaluation.json
 func ExamplePolicyStatesClient_BeginTriggerSubscriptionEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginTriggerSubscriptionEvaluation(ctx,
 		"<subscription-id>",
-		nil)
+		&armpolicyinsights.PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerResourceGroupEvaluation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_TriggerResourceGroupEvaluation.json
 func ExamplePolicyStatesClient_BeginTriggerResourceGroupEvaluation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	poller, err := client.BeginTriggerResourceGroupEvaluation(ctx,
 		"<subscription-id>",
 		"<resource-group-name>",
-		nil)
+		&armpolicyinsights.PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions{ResumeToken: ""})
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, 30*time.Second)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForPolicySetDefinition() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForPolicySetDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForPolicySetDefinition(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForPolicySetDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-set-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -329,61 +367,67 @@ func ExamplePolicyStatesClient_ListQueryResultsForPolicySetDefinition() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
 func ExamplePolicyStatesClient_SummarizeForPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForPolicySetDefinition(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-set-definition-name>",
-		&armpolicyinsights.QueryOptions{Top: to.Int32Ptr(1),
-			Filter:    to.StringPtr("<filter>"),
+		&armpolicyinsights.QueryOptions{Top: to.Ptr[int32](1),
+			Filter:    to.Ptr("<filter>"),
 			OrderBy:   nil,
 			Select:    nil,
-			From:      to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
-			To:        to.TimePtr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-06T18:00:00Z"); return t }()),
+			From:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-05T18:00:00Z"); return t }()),
+			To:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-06T18:00:00Z"); return t }()),
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForPolicySetDefinitionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForPolicyDefinition() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForPolicyDefinitionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForPolicyDefinition(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForPolicyDefinitionPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -394,33 +438,35 @@ func ExamplePolicyStatesClient_ListQueryResultsForPolicyDefinition() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyDefinitionScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyDefinitionScope.json
 func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForPolicyDefinition(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-definition-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -431,24 +477,28 @@ func ExamplePolicyStatesClient_SummarizeForPolicyDefinition() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForPolicyDefinitionResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForSubscriptionLevelPolicyAssignment() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForSubscriptionLevelPolicyAssignment(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -459,33 +509,35 @@ func ExamplePolicyStatesClient_ListQueryResultsForSubscriptionLevelPolicyAssignm
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeSubscriptionLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForSubscriptionLevelPolicyAssignment(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -496,25 +548,29 @@ func ExamplePolicyStatesClient_SummarizeForSubscriptionLevelPolicyAssignment() {
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForSubscriptionLevelPolicyAssignmentResult)
+	// TODO: use response item
+	_ = res
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
-func ExamplePolicyStatesClient_ListQueryResultsForResourceGroupLevelPolicyAssignment() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
+func ExamplePolicyStatesClient_NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
-	pager := client.ListQueryResultsForResourceGroupLevelPolicyAssignment(armpolicyinsights.PolicyStatesResource("latest"),
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(armpolicyinsights.PolicyStatesResourceLatest,
 		"<subscription-id>",
 		"<resource-group-name>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -525,34 +581,36 @@ func ExamplePolicyStatesClient_ListQueryResultsForResourceGroupLevelPolicyAssign
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
-	for {
-		nextResult := pager.NextPage(ctx)
-		if err := pager.Err(); err != nil {
+		},
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
+			return
 		}
-		if !nextResult {
-			break
-		}
-		for _, v := range pager.PageResponse().Value {
-			log.Printf("Pager result: %#v\n", v)
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
 		}
 	}
 }
 
-// x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupLevelPolicyAssignmentScope.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/PolicyStates_SummarizeResourceGroupLevelPolicyAssignmentScope.json
 func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	client, err := armpolicyinsights.NewPolicyStatesClient(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
 	res, err := client.SummarizeForResourceGroupLevelPolicyAssignment(ctx,
-		armpolicyinsights.Enum6("latest"),
+		armpolicyinsights.PolicyStatesSummaryResourceTypeLatest,
 		"<subscription-id>",
 		"<resource-group-name>",
-		armpolicyinsights.Enum4("Microsoft.Authorization"),
 		"<policy-assignment-name>",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
@@ -563,9 +621,11 @@ func ExamplePolicyStatesClient_SummarizeForResourceGroupLevelPolicyAssignment() 
 			Apply:     nil,
 			SkipToken: nil,
 			Expand:    nil,
-		})
+		},
+		nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed to finish the request: %v", err)
 	}
-	log.Printf("Response result: %#v\n", res.PolicyStatesClientSummarizeForResourceGroupLevelPolicyAssignmentResult)
+	// TODO: use response item
+	_ = res
 }

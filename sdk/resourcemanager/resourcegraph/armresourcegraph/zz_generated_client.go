@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,19 +29,23 @@ type Client struct {
 // NewClient creates a new instance of Client with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) *Client {
+func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &Client{
-		host: string(ep),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // Resources - Queries the resources managed by Azure Resource Manager for scopes specified in the request.
@@ -78,7 +83,7 @@ func (client *Client) resourcesCreateRequest(ctx context.Context, query QueryReq
 
 // resourcesHandleResponse handles the Resources response.
 func (client *Client) resourcesHandleResponse(resp *http.Response) (ClientResourcesResponse, error) {
-	result := ClientResourcesResponse{RawResponse: resp}
+	result := ClientResourcesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResponse); err != nil {
 		return ClientResourcesResponse{}, err
 	}
@@ -120,7 +125,7 @@ func (client *Client) resourcesHistoryCreateRequest(ctx context.Context, request
 
 // resourcesHistoryHandleResponse handles the ResourcesHistory response.
 func (client *Client) resourcesHistoryHandleResponse(resp *http.Response) (ClientResourcesHistoryResponse, error) {
-	result := ClientResourcesHistoryResponse{RawResponse: resp}
+	result := ClientResourcesHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return ClientResourcesHistoryResponse{}, err
 	}

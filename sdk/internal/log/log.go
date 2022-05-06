@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -12,31 +12,12 @@ import (
 	"time"
 )
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// NOTE: The following are exported as public surface area from azcore.  DO NOT MODIFY
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Event is used to group entries.  Each group can be toggled on or off.
 type Event string
-
-const (
-	// EventRequest entries contain information about HTTP requests.
-	// This includes information like the URL, query parameters, and headers.
-	EventRequest Event = "Request"
-
-	// EventResponse entries containe information about HTTP responses.
-	// This includes information like the HTTP status code, headers, and request URL.
-	EventResponse Event = "Response"
-
-	// EventRetryPolicy entries contain information specific to the rety policy in use.
-	EventRetryPolicy Event = "Retry"
-
-	// EventLRO entries contian information specific to long-running operations.
-	// This includes information like polling location, operation state, and sleep intervals.
-	EventLRO Event = "LongRunningOperation"
-)
-
-// logger controls which events to log and writing to the underlying log.
-type logger struct {
-	cls []Event
-	lst func(Event, string)
-}
 
 // SetEvents is used to control which events are written to
 // the log.  By default all log events are writen.
@@ -48,6 +29,10 @@ func SetEvents(cls ...Event) {
 func SetListener(lst func(Event, string)) {
 	log.lst = lst
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// END PUBLIC SURFACE AREA
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Should returns true if the specified log event should be written to the log.
 // By default all log events will be logged.  Call SetEvents() to limit
@@ -88,9 +73,15 @@ func Writef(cls Event, format string, a ...interface{}) {
 	log.lst(cls, fmt.Sprintf(format, a...))
 }
 
-// TestResetEvents is used for testing purposes only.
+// TestResetEvents is used for TESTING PURPOSES ONLY.
 func TestResetEvents() {
 	log.cls = nil
+}
+
+// logger controls which events to log and writing to the underlying log.
+type logger struct {
+	cls []Event
+	lst func(Event, string)
 }
 
 // the process-wide logger

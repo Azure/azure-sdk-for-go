@@ -19,6 +19,7 @@ type WorkTree interface {
 	Add(path string) error
 	Commit(message string) error
 	Checkout(opt *CheckoutOptions) error
+	CheckoutTag(tag string) error
 	CreateBranch(branch *Branch) error
 	DeleteBranch(name string) error
 	CherryPick(commit string) error
@@ -26,6 +27,10 @@ type WorkTree interface {
 	StashPop() error
 	Head() (*plumbing.Reference, error)
 	Tags() (storer.ReferenceIter, error)
+	Remotes() ([]*git.Remote, error)
+	DeleteRemote(name string) error
+	CreateRemote(c *config.RemoteConfig) (*git.Remote, error)
+	Fetch(o *git.FetchOptions) error
 }
 
 type CheckoutOptions git.CheckoutOptions
@@ -135,6 +140,16 @@ func (r *repository) checkoutBranch(branch string, create bool) error {
 
 func (r *repository) checkoutHash(hash string) error {
 	cmd := exec.Command("git", "checkout", hash)
+	cmd.Dir = r.root
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf(string(output))
+	}
+	return nil
+}
+
+func (r *repository) CheckoutTag(tag string) error {
+	cmd := exec.Command("git", "checkout", tag)
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {

@@ -331,6 +331,8 @@ func PossibleTypeBasicFunctionBindingValues() []TypeBasicFunctionBinding {
 type TypeBasicFunctionProperties string
 
 const (
+	// TypeBasicFunctionPropertiesTypeAggregate ...
+	TypeBasicFunctionPropertiesTypeAggregate TypeBasicFunctionProperties = "Aggregate"
 	// TypeBasicFunctionPropertiesTypeFunctionProperties ...
 	TypeBasicFunctionPropertiesTypeFunctionProperties TypeBasicFunctionProperties = "FunctionProperties"
 	// TypeBasicFunctionPropertiesTypeScalar ...
@@ -339,7 +341,7 @@ const (
 
 // PossibleTypeBasicFunctionPropertiesValues returns an array of possible values for the TypeBasicFunctionProperties const type.
 func PossibleTypeBasicFunctionPropertiesValues() []TypeBasicFunctionProperties {
-	return []TypeBasicFunctionProperties{TypeBasicFunctionPropertiesTypeFunctionProperties, TypeBasicFunctionPropertiesTypeScalar}
+	return []TypeBasicFunctionProperties{TypeBasicFunctionPropertiesTypeAggregate, TypeBasicFunctionPropertiesTypeFunctionProperties, TypeBasicFunctionPropertiesTypeScalar}
 }
 
 // TypeBasicInputProperties enumerates the values for type basic input properties.
@@ -363,6 +365,8 @@ func PossibleTypeBasicInputPropertiesValues() []TypeBasicInputProperties {
 type TypeBasicOutputDataSource string
 
 const (
+	// TypeBasicOutputDataSourceTypeMicrosoftAzureFunction ...
+	TypeBasicOutputDataSourceTypeMicrosoftAzureFunction TypeBasicOutputDataSource = "Microsoft.AzureFunction"
 	// TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts ...
 	TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts TypeBasicOutputDataSource = "Microsoft.DataLake/Accounts"
 	// TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub ...
@@ -391,7 +395,7 @@ const (
 
 // PossibleTypeBasicOutputDataSourceValues returns an array of possible values for the TypeBasicOutputDataSource const type.
 func PossibleTypeBasicOutputDataSourceValues() []TypeBasicOutputDataSource {
-	return []TypeBasicOutputDataSource{TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts, TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue, TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic, TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse, TypeBasicOutputDataSourceTypeMicrosoftStorageBlob, TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB, TypeBasicOutputDataSourceTypeMicrosoftStorageTable, TypeBasicOutputDataSourceTypeOutputDataSource, TypeBasicOutputDataSourceTypePowerBI}
+	return []TypeBasicOutputDataSource{TypeBasicOutputDataSourceTypeMicrosoftAzureFunction, TypeBasicOutputDataSourceTypeMicrosoftDataLakeAccounts, TypeBasicOutputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicOutputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicOutputDataSourceTypeMicrosoftServiceBusQueue, TypeBasicOutputDataSourceTypeMicrosoftServiceBusTopic, TypeBasicOutputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicOutputDataSourceTypeMicrosoftSQLServerDataWarehouse, TypeBasicOutputDataSourceTypeMicrosoftStorageBlob, TypeBasicOutputDataSourceTypeMicrosoftStorageDocumentDB, TypeBasicOutputDataSourceTypeMicrosoftStorageTable, TypeBasicOutputDataSourceTypeOutputDataSource, TypeBasicOutputDataSourceTypePowerBI}
 }
 
 // TypeBasicReferenceInputDataSource enumerates the values for type basic reference input data source.

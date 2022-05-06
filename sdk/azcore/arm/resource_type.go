@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -11,19 +11,17 @@ import (
 	"strings"
 )
 
-var (
-	// SubscriptionResourceType is the ResourceType of a subscription
-	SubscriptionResourceType = NewResourceType(builtInResourceNamespace, "subscriptions")
+// SubscriptionResourceType is the ResourceType of a subscription
+var SubscriptionResourceType = NewResourceType(builtInResourceNamespace, "subscriptions")
 
-	// ResourceGroupResourceType is the ResourceType of a resource group
-	ResourceGroupResourceType = NewResourceType(builtInResourceNamespace, "resourceGroups")
+// ResourceGroupResourceType is the ResourceType of a resource group
+var ResourceGroupResourceType = NewResourceType(builtInResourceNamespace, "resourceGroups")
 
-	// TenantResourceType is the ResourceType of a tenant
-	TenantResourceType = NewResourceType(builtInResourceNamespace, "tenants")
+// TenantResourceType is the ResourceType of a tenant
+var TenantResourceType = NewResourceType(builtInResourceNamespace, "tenants")
 
-	// ProviderResourceType is the ResourceType of a provider
-	ProviderResourceType = NewResourceType(builtInResourceNamespace, "providers")
-)
+// ProviderResourceType is the ResourceType of a provider
+var ProviderResourceType = NewResourceType(builtInResourceNamespace, "providers")
 
 // ResourceType represents an Azure resource type, e.g. "Microsoft.Network/virtualNetworks/subnets".
 // Don't create this type directly, use ParseResourceType or NewResourceType instead.
@@ -43,6 +41,7 @@ type ResourceType struct {
 	stringValue string
 }
 
+// String returns the string of the ResourceType
 func (t ResourceType) String() string {
 	return t.stringValue
 }

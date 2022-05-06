@@ -15,35 +15,21 @@ const (
 	timestamp                     = "Timestamp"
 	partitionKey                  = "PartitionKey"
 	rowKey                        = "RowKey"
-	etag                          = "ETag"
 )
 
-// ResponseFormat determines what is returned from a service request
-type ResponseFormat string
+// UpdateMode specifies what type of update to do on UpsertEntity or UpdateEntity. UpdateModeReplace
+// will replace an existing entity, UpdateModeMerge will merge properties of the entities.
+type UpdateMode string
 
 const (
-	ResponseFormatReturnContent   ResponseFormat = "return-content"
-	ResponseFormatReturnNoContent ResponseFormat = "return-no-content"
+	UpdateModeReplace UpdateMode = "replace"
+	UpdateModeMerge   UpdateMode = "merge"
 )
 
-// PossibleResponseFormatValues returns the possible values for the ResponseFormat const type.
-func PossibleResponseFormatValues() []ResponseFormat {
-	return []ResponseFormat{
-		ResponseFormatReturnContent,
-		ResponseFormatReturnNoContent,
+// PossibleUpdateModeValues returns the possible values for the EntityUpdateMode const type.
+func PossibleUpdateModeValues() []UpdateMode {
+	return []UpdateMode{
+		UpdateModeMerge,
+		UpdateModeReplace,
 	}
 }
-
-// ToPtr returns a *ResponseFormat pointing to the current value.
-func (c ResponseFormat) ToPtr() *ResponseFormat {
-	return &c
-}
-
-// EntityUpdateMode specifies what type of update to do on InsertEntity or UpdateEntity. ReplaceEntity
-// will replace an existing entity, MergeEntity will merge properties of the entities.
-type EntityUpdateMode string
-
-const (
-	ReplaceEntity EntityUpdateMode = "replace"
-	MergeEntity   EntityUpdateMode = "merge"
-)

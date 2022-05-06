@@ -5,17 +5,22 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"math"
 	"math/rand"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 )
 
 // EventRetry is the name for retry events
 const EventRetry = "azsb.Retry"
 
 type RetryFnArgs struct {
+	// I is the iteration of the retry "loop" and starts at 0.
+	// The 0th iteration is the first call, and doesn't count as a retry.
+	// The last try will equal RetryOptions.MaxRetries
 	I int32
 	// LastErr is the returned error from the previous loop.
 	// If you have potentially expensive
@@ -24,23 +29,20 @@ type RetryFnArgs struct {
 	resetAttempts bool
 }
 
-// ResetAttempts causes the current retry attempt number to be reset
-// in time for the next recovery (should we fail).
-// NOTE: Use of this should be pretty rare, it's really only needed when you have
-// a situation like Receiver.ReceiveMessages() that can recovery but intentionally
-// does not return.
+// ResetAttempts resets all Retry() attempts, starting back
+// at iteration 0.
 func (rf *RetryFnArgs) ResetAttempts() {
 	rf.resetAttempts = true
 }
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
 // It returns if it exceeds the number of configured retry options or if 'isFatal' returns true.
-func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o RetryOptions) error {
+func Retry(ctx context.Context, eventName log.Event, operation string, fn func(ctx context.Context, args *RetryFnArgs) error, isFatalFn func(err error) bool, o exported.RetryOptions) error {
 	if isFatalFn == nil {
 		panic("isFatalFn is nil, errors would panic")
 	}
 
-	var ro RetryOptions = o
+	var ro exported.RetryOptions = o
 	setDefaults(&ro)
 
 	var err error
@@ -48,7 +50,7 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
 			sleep := calcDelay(ro, i)
-			log.Writef(EventRetry, "(%s) Attempt %d sleeping for %s", name, i, sleep)
+			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", operation, i, sleep)
 			time.Sleep(sleep)
 		}
 
@@ -59,16 +61,26 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 		err = fn(ctx, &args)
 
 		if args.resetAttempts {
-			log.Writef(EventRetry, "(%s) Resetting attempts", name)
-			i = int32(0)
+			log.Writef(eventName, "(%s) Resetting retry attempts", operation)
+
+			// it looks weird, but we're doing -1 here because the post-increment
+			// will set it back to 0, which is what we want - go back to the 0th
+			// iteration so we don't sleep before the attempt.
+			//
+			// You'll use this when you want to get another "fast" retry attempt.
+			i = int32(-1)
 		}
 
 		if err != nil {
 			if isFatalFn(err) {
-				log.Writef(EventRetry, "(%s) Attempt %d returned non-retryable error: %s", name, i, err.Error())
+				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+					log.Writef(eventName, "(%s) Retry attempt %d was cancelled, stopping: %s", operation, i, err.Error())
+				} else {
+					log.Writef(eventName, "(%s) Retry attempt %d returned non-retryable error: %s", operation, i, err.Error())
+				}
 				return err
 			} else {
-				log.Writef(EventRetry, "(%s) Attempt %d returned retryable error: %s", name, i, err.Error())
+				log.Writef(eventName, "(%s) Retry attempt %d returned retryable error: %s", operation, i, err.Error())
 			}
 
 			continue
@@ -80,25 +92,7 @@ func Retry(ctx context.Context, name string, fn func(ctx context.Context, args *
 	return err
 }
 
-// RetryOptions represent the options for retries.
-type RetryOptions struct {
-	// MaxRetries specifies the maximum number of attempts a failed operation will be retried
-	// before producing an error.
-	// The default value is three.  A value less than zero means one try and no retries.
-	MaxRetries int32
-
-	// RetryDelay specifies the initial amount of delay to use before retrying an operation.
-	// The delay increases exponentially with each retry up to the maximum specified by MaxRetryDelay.
-	// The default value is four seconds.  A value less than zero means no delay between retries.
-	RetryDelay time.Duration
-
-	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation.
-	// Typically the value is greater than or equal to the value specified in RetryDelay.
-	// The default Value is 120 seconds.  A value less than zero means there is no cap.
-	MaxRetryDelay time.Duration
-}
-
-func setDefaults(o *RetryOptions) {
+func setDefaults(o *exported.RetryOptions) {
 	if o.MaxRetries == 0 {
 		o.MaxRetries = 3
 	} else if o.MaxRetries < 0 {
@@ -118,7 +112,7 @@ func setDefaults(o *RetryOptions) {
 }
 
 // (adapted from from azcore/policy_retry)
-func calcDelay(o RetryOptions, try int32) time.Duration {
+func calcDelay(o exported.RetryOptions, try int32) time.Duration {
 	if try == 0 {
 		return 0
 	}

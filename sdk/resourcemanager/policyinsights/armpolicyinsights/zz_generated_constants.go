@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armpolicyinsights
 
 const (
 	moduleName    = "armpolicyinsights"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.4.0"
 )
 
 // ComplianceState - The compliance state that should be set on the resource.
@@ -34,11 +34,6 @@ func PossibleComplianceStateValues() []ComplianceState {
 	}
 }
 
-// ToPtr returns a *ComplianceState pointing to the current value.
-func (c ComplianceState) ToPtr() *ComplianceState {
-	return &c
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -57,83 +52,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
 	}
-}
-
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
-type Enum0 string
-
-const (
-	Enum0MicrosoftManagement Enum0 = "Microsoft.Management"
-)
-
-// PossibleEnum0Values returns the possible values for the Enum0 const type.
-func PossibleEnum0Values() []Enum0 {
-	return []Enum0{
-		Enum0MicrosoftManagement,
-	}
-}
-
-// ToPtr returns a *Enum0 pointing to the current value.
-func (c Enum0) ToPtr() *Enum0 {
-	return &c
-}
-
-type Enum1 string
-
-const (
-	Enum1Default Enum1 = "default"
-)
-
-// PossibleEnum1Values returns the possible values for the Enum1 const type.
-func PossibleEnum1Values() []Enum1 {
-	return []Enum1{
-		Enum1Default,
-	}
-}
-
-// ToPtr returns a *Enum1 pointing to the current value.
-func (c Enum1) ToPtr() *Enum1 {
-	return &c
-}
-
-type Enum4 string
-
-const (
-	Enum4MicrosoftAuthorization Enum4 = "Microsoft.Authorization"
-)
-
-// PossibleEnum4Values returns the possible values for the Enum4 const type.
-func PossibleEnum4Values() []Enum4 {
-	return []Enum4{
-		Enum4MicrosoftAuthorization,
-	}
-}
-
-// ToPtr returns a *Enum4 pointing to the current value.
-func (c Enum4) ToPtr() *Enum4 {
-	return &c
-}
-
-type Enum6 string
-
-const (
-	Enum6Latest Enum6 = "latest"
-)
-
-// PossibleEnum6Values returns the possible values for the Enum6 const type.
-func PossibleEnum6Values() []Enum6 {
-	return []Enum6{
-		Enum6Latest,
-	}
-}
-
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
-	return &c
 }
 
 // FieldRestrictionResult - The type of restriction that is imposed on the field.
@@ -157,9 +75,17 @@ func PossibleFieldRestrictionResultValues() []FieldRestrictionResult {
 	}
 }
 
-// ToPtr returns a *FieldRestrictionResult pointing to the current value.
-func (c FieldRestrictionResult) ToPtr() *FieldRestrictionResult {
-	return &c
+type PolicyEventsResourceType string
+
+const (
+	PolicyEventsResourceTypeDefault PolicyEventsResourceType = "default"
+)
+
+// PossiblePolicyEventsResourceTypeValues returns the possible values for the PolicyEventsResourceType const type.
+func PossiblePolicyEventsResourceTypeValues() []PolicyEventsResourceType {
+	return []PolicyEventsResourceType{
+		PolicyEventsResourceTypeDefault,
+	}
 }
 
 type PolicyStatesResource string
@@ -177,9 +103,30 @@ func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	}
 }
 
-// ToPtr returns a *PolicyStatesResource pointing to the current value.
-func (c PolicyStatesResource) ToPtr() *PolicyStatesResource {
-	return &c
+type PolicyStatesSummaryResourceType string
+
+const (
+	PolicyStatesSummaryResourceTypeLatest PolicyStatesSummaryResourceType = "latest"
+)
+
+// PossiblePolicyStatesSummaryResourceTypeValues returns the possible values for the PolicyStatesSummaryResourceType const type.
+func PossiblePolicyStatesSummaryResourceTypeValues() []PolicyStatesSummaryResourceType {
+	return []PolicyStatesSummaryResourceType{
+		PolicyStatesSummaryResourceTypeLatest,
+	}
+}
+
+type PolicyTrackedResourcesResourceType string
+
+const (
+	PolicyTrackedResourcesResourceTypeDefault PolicyTrackedResourcesResourceType = "default"
+)
+
+// PossiblePolicyTrackedResourcesResourceTypeValues returns the possible values for the PolicyTrackedResourcesResourceType const type.
+func PossiblePolicyTrackedResourcesResourceTypeValues() []PolicyTrackedResourcesResourceType {
+	return []PolicyTrackedResourcesResourceType{
+		PolicyTrackedResourcesResourceTypeDefault,
+	}
 }
 
 // ResourceDiscoveryMode - The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
@@ -199,9 +146,4 @@ func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
 		ResourceDiscoveryModeExistingNonCompliant,
 		ResourceDiscoveryModeReEvaluateCompliance,
 	}
-}
-
-// ToPtr returns a *ResourceDiscoveryMode pointing to the current value.
-func (c ResourceDiscoveryMode) ToPtr() *ResourceDiscoveryMode {
-	return &c
 }

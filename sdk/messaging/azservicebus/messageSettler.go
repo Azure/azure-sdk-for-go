@@ -12,7 +12,7 @@ import (
 )
 
 type settler interface {
-	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
+	CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error
 	AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error
 	DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error
 	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error
@@ -20,13 +20,13 @@ type settler interface {
 
 type messageSettler struct {
 	links        internal.AMQPLinks
-	retryOptions utils.RetryOptions
+	retryOptions RetryOptions
 
 	// used only for tests
 	onlyDoBackupSettlement bool
 }
 
-func newMessageSettler(links internal.AMQPLinks, retryOptions utils.RetryOptions) settler {
+func newMessageSettler(links internal.AMQPLinks, retryOptions RetryOptions) settler {
 	return &messageSettler{
 		links:        links,
 		retryOptions: retryOptions,
@@ -41,22 +41,27 @@ func (s *messageSettler) useManagementLink(m *ReceivedMessage, receiver internal
 
 func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error) error {
 	if s == nil {
-		return internal.ErrNonRetriable{Message: "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable"}
+		return internal.NewErrNonRetriable("messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 	}
 
-	err := s.links.Retry(ctx, "settle", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := s.links.Retry(ctx, EventReceiver, "settle", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		if err := settleFn(lwid.Receiver, lwid.RPC); err != nil {
 			return err
 		}
 
 		return nil
-	}, utils.RetryOptions{})
+	}, RetryOptions{})
 
-	return err
+	return internal.TransformError(err)
+}
+
+// CompleteMessageOptions contains optional parameters for the CompleteMessage function.
+type CompleteMessageOptions struct {
+	// For future expansion
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
 			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
@@ -66,6 +71,7 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 	})
 }
 
+// AbandonMessageOptions contains optional parameters for Client.AbandonMessage
 type AbandonMessageOptions struct {
 	// PropertiesToModify specifies properties to modify in the message when it is abandoned.
 	PropertiesToModify map[string]interface{}
@@ -100,6 +106,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 	})
 }
 
+// DeferMessageOptions contains optional parameters for Client.DeferMessage
 type DeferMessageOptions struct {
 	// PropertiesToModify specifies properties to modify in the message when it is deferred
 	PropertiesToModify map[string]interface{}

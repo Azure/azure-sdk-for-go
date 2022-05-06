@@ -52,15 +52,13 @@ func handle(e error) {
 }
 
 func getVersion() string {
-	v := runtime.Version()
-	if strings.Contains(v, "go") {
-		v = strings.TrimLeft(v, "go")
-
-		return fmt.Sprintf("go %s", v)
+	ver := regexp.MustCompile(`\d\.\d{2}`)
+	if m := ver.FindString(runtime.Version()); m != "" {
+		return fmt.Sprintf("go %s", m)
 	}
 
 	// Default, go is not from a tag
-	return "go 1.17"
+	return "go 1.18"
 }
 
 func inIgnoredDirectories(path string) bool {

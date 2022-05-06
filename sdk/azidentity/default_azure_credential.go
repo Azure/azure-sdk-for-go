@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"os"
 	"strings"
 	"time"
 
@@ -19,9 +20,6 @@ import (
 type DefaultAzureCredentialOptions struct {
 	azcore.ClientOptions
 
-	// AuthorityHost is the base URL of an Azure Active Directory authority. Defaults
-	// to the value of environment variable AZURE_AUTHORITY_HOST, if set, or AzurePublicCloud.
-	AuthorityHost AuthorityHost
 	// TenantID identifies the tenant the Azure CLI should authenticate in.
 	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
 	TenantID string
@@ -30,15 +28,17 @@ type DefaultAzureCredentialOptions struct {
 // DefaultAzureCredential is a default credential chain for applications that will deploy to Azure.
 // It combines credentials suitable for deployment with credentials suitable for local development.
 // It attempts to authenticate with each of these credential types, in the following order, stopping when one provides a token:
-// - EnvironmentCredential
-// - ManagedIdentityCredential
-// - AzureCLICredential
+//  EnvironmentCredential
+//  ManagedIdentityCredential
+//  AzureCLICredential
 // Consult the documentation for these credential types for more information on how they authenticate.
+// Once a credential has successfully authenticated, DefaultAzureCredential will use that credential for
+// every subsequent authentication.
 type DefaultAzureCredential struct {
 	chain *ChainedTokenCredential
 }
 
-// NewDefaultAzureCredential creates a DefaultAzureCredential.
+// NewDefaultAzureCredential creates a DefaultAzureCredential. Pass nil for options to accept defaults.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
 	var errorMessages []string
@@ -47,9 +47,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		options = &DefaultAzureCredentialOptions{}
 	}
 
-	envCred, err := NewEnvironmentCredential(
-		&EnvironmentCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions},
-	)
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: options.ClientOptions})
 	if err == nil {
 		creds = append(creds, envCred)
 	} else {
@@ -57,7 +55,11 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		creds = append(creds, &defaultCredentialErrorReporter{credType: "EnvironmentCredential", err: err})
 	}
 
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
+	o := &ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions}
+	if ID, ok := os.LookupEnv(azureClientID); ok {
+		o.ID = ClientID(ID)
+	}
+	msiCred, err := NewManagedIdentityCredential(o)
 	if err == nil {
 		creds = append(creds, msiCred)
 		msiCred.client.imdsTimeout = time.Second
@@ -87,9 +89,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 	return &DefaultAzureCredential{chain: chain}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-// ctx: Context used to control the request lifetime.
-// opts: Options for the token request, in particular the desired scope of the access token.
+// GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	return c.chain.GetToken(ctx, opts)
 }
@@ -100,13 +100,11 @@ func defaultAzureCredentialConstructorErrorHandler(numberOfSuccessfulCredentials
 	errorMessage := strings.Join(errorMessages, "\n\t")
 
 	if numberOfSuccessfulCredentials == 0 {
-		err := errors.New(errorMessage)
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize the Default Azure Credential:\n\t%s", err.Error())
-		return err
+		return errors.New(errorMessage)
 	}
 
 	if len(errorMessages) != 0 {
-		log.Writef(EventAuthentication, "Azure Identity => Failed to initialize some credentials on the Default Azure Credential:\n\t%s", errorMessage)
+		log.Writef(EventAuthentication, "NewDefaultAzureCredential failed to initialize some credentials:\n\t%s", errorMessage)
 	}
 
 	return nil
@@ -122,7 +120,7 @@ type defaultCredentialErrorReporter struct {
 }
 
 func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
-	if _, ok := d.err.(credentialUnavailableError); ok {
+	if _, ok := d.err.(*credentialUnavailableError); ok {
 		return nil, d.err
 	}
 	return nil, newCredentialUnavailableError(d.credType, d.err.Error())

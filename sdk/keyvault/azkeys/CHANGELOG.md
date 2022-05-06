@@ -1,21 +1,46 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.5.1 (Unreleased)
 
 ### Features Added
-* Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct.
-* Adds the `Immutable` boolean to the `KeyReleasePolicy` model.
 
 ### Breaking Changes
-* Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
-* Changed the `Tags` properties from `map[string]*string` to `map[string]string`.
-* Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
-* Renamed `JSONWebKeyOperation` to `KeyOperation`.
-* Renamed `JSONWebKeyCurveName` to `KeyCurveName`
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.5.0 (2022-04-06)
+
+### Features Added
+* Added the Name property on `Key`
+
+### Breaking Changes
+* Requires go 1.18
+* `ListPropertiesOfDeletedKeysPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfDeletedKeysPage, error)` for paging over deleted keys.
+* `ListPropertiesOfKeyVersionsPager` has `More() bool` and `NextPage(context.Context) (ListPropertiesOfKeyVersionsPage, error)` for paging over deleted keys.
+* Removing `RawResponse *http.Response` from `crypto` response types
+
+## 0.4.0 (2022-03-08)
+
+### Features Added
+* Adds the `ReleasePolicy` parameter to the `UpdateKeyPropertiesOptions` struct.
+* Adds the `Immutable` boolean to the `KeyReleasePolicy` model.
+* Added a `ToPtr` method on `KeyType` constant
+
+### Breaking Changes
+* Requires go 1.18
+* Changed the `Data` to `EncodedPolicy` on the `KeyReleasePolicy` struct.
+* Changed the `Updated`, `Created`, and `Expires` properties to `UpdatedOn`, `CreatedOn`, and `ExpiresOn`.
+* Renamed `JSONWebKeyOperation` to `Operation`.
+* Renamed `JSONWebKeyCurveName` to `CurveName`
+* Prefixed all KeyType constants with `KeyType`
+* Changed `KeyBundle` to `KeyVaultKey` and `DeletedKeyBundle` to `DeletedKey`
+* Renamed `KeyAttributes` to `KeyProperties`
+* Renamed `ListKeyVersions` to `ListPropertiesOfKeyVersions`
+* Removed `Attributes` struct
+* Changed `CreateOCTKey`/`Response`/`Options` to `CreateOctKey`/`Response`/`Options`
+* Removed all `RawResponse *http.Response` fields from response structs.
 
 ## 0.3.0 (2022-02-08)
 

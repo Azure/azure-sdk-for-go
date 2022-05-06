@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -40,7 +40,7 @@ func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessag
 	}
 	var b CustomPersistentDiskPropertiesClassification
 	switch m["type"] {
-	case string(CustomPersistentDiskPropertiesTypeAzureFileVolume):
+	case string(TypeAzureFileVolume):
 		b = &AzureFileVolume{}
 	default:
 		b = &CustomPersistentDiskProperties{}
@@ -58,7 +58,7 @@ func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePr
 	}
 	var b StoragePropertiesClassification
 	switch m["storageType"] {
-	case string(StoragePropertiesStorageTypeStorageAccount):
+	case string(StorageTypeStorageAccount):
 		b = &StorageAccount{}
 	default:
 		b = &StorageProperties{}

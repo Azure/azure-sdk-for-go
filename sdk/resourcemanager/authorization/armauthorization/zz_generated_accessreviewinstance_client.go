@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type AccessReviewInstanceClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAccessReviewInstanceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstanceClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewAccessReviewInstanceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessReviewInstanceClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &AccessReviewInstanceClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // AcceptRecommendations - An action to accept recommendations for decision in an access review instance.
@@ -67,7 +72,7 @@ func (client *AccessReviewInstanceClient) AcceptRecommendations(ctx context.Cont
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewInstanceClientAcceptRecommendationsResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewInstanceClientAcceptRecommendationsResponse{RawResponse: resp}, nil
+	return AccessReviewInstanceClientAcceptRecommendationsResponse{}, nil
 }
 
 // acceptRecommendationsCreateRequest creates the AcceptRecommendations request.
@@ -86,7 +91,7 @@ func (client *AccessReviewInstanceClient) acceptRecommendationsCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -110,7 +115,7 @@ func (client *AccessReviewInstanceClient) ApplyDecisions(ctx context.Context, sc
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewInstanceClientApplyDecisionsResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewInstanceClientApplyDecisionsResponse{RawResponse: resp}, nil
+	return AccessReviewInstanceClientApplyDecisionsResponse{}, nil
 }
 
 // applyDecisionsCreateRequest creates the ApplyDecisions request.
@@ -133,7 +138,7 @@ func (client *AccessReviewInstanceClient) applyDecisionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -157,7 +162,7 @@ func (client *AccessReviewInstanceClient) ResetDecisions(ctx context.Context, sc
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewInstanceClientResetDecisionsResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewInstanceClientResetDecisionsResponse{RawResponse: resp}, nil
+	return AccessReviewInstanceClientResetDecisionsResponse{}, nil
 }
 
 // resetDecisionsCreateRequest creates the ResetDecisions request.
@@ -180,7 +185,7 @@ func (client *AccessReviewInstanceClient) resetDecisionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -204,7 +209,7 @@ func (client *AccessReviewInstanceClient) SendReminders(ctx context.Context, sch
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewInstanceClientSendRemindersResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewInstanceClientSendRemindersResponse{RawResponse: resp}, nil
+	return AccessReviewInstanceClientSendRemindersResponse{}, nil
 }
 
 // sendRemindersCreateRequest creates the SendReminders request.
@@ -227,7 +232,7 @@ func (client *AccessReviewInstanceClient) sendRemindersCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -251,7 +256,7 @@ func (client *AccessReviewInstanceClient) Stop(ctx context.Context, scheduleDefi
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AccessReviewInstanceClientStopResponse{}, runtime.NewResponseError(resp)
 	}
-	return AccessReviewInstanceClientStopResponse{RawResponse: resp}, nil
+	return AccessReviewInstanceClientStopResponse{}, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -274,7 +279,7 @@ func (client *AccessReviewInstanceClient) stopCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-05-01-preview")
+	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

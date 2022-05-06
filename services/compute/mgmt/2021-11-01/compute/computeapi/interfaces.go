@@ -460,7 +460,7 @@ var _ DiskRestorePointClientAPI = (*compute.DiskRestorePointClient)(nil)
 type GalleriesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.Gallery) (result compute.GalleriesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleriesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, galleryName string, selectParameter compute.SelectPermissions) (result compute.Gallery, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, selectParameter compute.SelectPermissions, expand compute.GalleryExpandParams) (result compute.Gallery, err error)
 	List(ctx context.Context) (result compute.GalleryListPage, err error)
 	ListComplete(ctx context.Context) (result compute.GalleryListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.GalleryListPage, err error)

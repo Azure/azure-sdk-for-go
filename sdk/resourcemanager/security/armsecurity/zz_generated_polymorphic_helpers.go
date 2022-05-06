@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -170,8 +170,10 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorAwsOffering{}
 	case string(OfferingTypeDefenderForContainersAws):
 		b = &DefenderForContainersAwsOffering{}
-	case "DefenderForServersAWS":
+	case string(OfferingTypeDefenderForServersAws):
 		b = &DefenderForServersAwsOffering{}
+	case string(OfferingTypeInformationProtectionAws):
+		b = &InformationProtectionAwsOffering{}
 	default:
 		b = &CloudOffering{}
 	}

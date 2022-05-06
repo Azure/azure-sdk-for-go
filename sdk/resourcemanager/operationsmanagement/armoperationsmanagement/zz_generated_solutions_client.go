@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SolutionsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SolutionsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SolutionsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SolutionsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates the Solution.
@@ -57,22 +62,16 @@ func NewSolutionsClient(subscriptionID string, credential azcore.TokenCredential
 // parameters - The parameters required to create OMS Solution.
 // options - SolutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionsClient.BeginCreateOrUpdate
 // method.
-func (client *SolutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters Solution, options *SolutionsClientBeginCreateOrUpdateOptions) (SolutionsClientCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, solutionName, parameters, options)
-	if err != nil {
-		return SolutionsClientCreateOrUpdatePollerResponse{}, err
+func (client *SolutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters Solution, options *SolutionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SolutionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, solutionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SolutionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SolutionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SolutionsClientCreateOrUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SolutionsClient.CreateOrUpdate", "", resp, client.pl)
-	if err != nil {
-		return SolutionsClientCreateOrUpdatePollerResponse{}, err
-	}
-	result.Poller = &SolutionsClientCreateOrUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the Solution.
@@ -123,22 +122,16 @@ func (client *SolutionsClient) createOrUpdateCreateRequest(ctx context.Context, 
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // solutionName - User Solution Name.
 // options - SolutionsClientBeginDeleteOptions contains the optional parameters for the SolutionsClient.BeginDelete method.
-func (client *SolutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, solutionName string, options *SolutionsClientBeginDeleteOptions) (SolutionsClientDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, solutionName, options)
-	if err != nil {
-		return SolutionsClientDeletePollerResponse{}, err
+func (client *SolutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, solutionName string, options *SolutionsClientBeginDeleteOptions) (*armruntime.Poller[SolutionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, solutionName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SolutionsClientDeleteResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SolutionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SolutionsClientDeletePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SolutionsClient.Delete", "", resp, client.pl)
-	if err != nil {
-		return SolutionsClientDeletePollerResponse{}, err
-	}
-	result.Poller = &SolutionsClientDeletePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Delete - Deletes the solution in the subscription.
@@ -232,7 +225,7 @@ func (client *SolutionsClient) getCreateRequest(ctx context.Context, resourceGro
 
 // getHandleResponse handles the Get response.
 func (client *SolutionsClient) getHandleResponse(resp *http.Response) (SolutionsClientGetResponse, error) {
-	result := SolutionsClientGetResponse{RawResponse: resp}
+	result := SolutionsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Solution); err != nil {
 		return SolutionsClientGetResponse{}, err
 	}
@@ -283,7 +276,7 @@ func (client *SolutionsClient) listByResourceGroupCreateRequest(ctx context.Cont
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *SolutionsClient) listByResourceGroupHandleResponse(resp *http.Response) (SolutionsClientListByResourceGroupResponse, error) {
-	result := SolutionsClientListByResourceGroupResponse{RawResponse: resp}
+	result := SolutionsClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionPropertiesList); err != nil {
 		return SolutionsClientListByResourceGroupResponse{}, err
 	}
@@ -329,7 +322,7 @@ func (client *SolutionsClient) listBySubscriptionCreateRequest(ctx context.Conte
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *SolutionsClient) listBySubscriptionHandleResponse(resp *http.Response) (SolutionsClientListBySubscriptionResponse, error) {
-	result := SolutionsClientListBySubscriptionResponse{RawResponse: resp}
+	result := SolutionsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionPropertiesList); err != nil {
 		return SolutionsClientListBySubscriptionResponse{}, err
 	}
@@ -342,22 +335,16 @@ func (client *SolutionsClient) listBySubscriptionHandleResponse(resp *http.Respo
 // solutionName - User Solution Name.
 // parameters - The parameters required to patch a Solution.
 // options - SolutionsClientBeginUpdateOptions contains the optional parameters for the SolutionsClient.BeginUpdate method.
-func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters SolutionPatch, options *SolutionsClientBeginUpdateOptions) (SolutionsClientUpdatePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, solutionName, parameters, options)
-	if err != nil {
-		return SolutionsClientUpdatePollerResponse{}, err
+func (client *SolutionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, solutionName string, parameters SolutionPatch, options *SolutionsClientBeginUpdateOptions) (*armruntime.Poller[SolutionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, solutionName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[SolutionsClientUpdateResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[SolutionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := SolutionsClientUpdatePollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("SolutionsClient.Update", "", resp, client.pl)
-	if err != nil {
-		return SolutionsClientUpdatePollerResponse{}, err
-	}
-	result.Poller = &SolutionsClientUpdatePoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Update - Patch a Solution. Only updating tags supported.

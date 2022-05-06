@@ -10,6 +10,11 @@ import (
 	"testing"
 )
 
+const (
+	EventRequest  Event = "Request"
+	EventResponse Event = "Response"
+)
+
 func TestLoggingdefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
 	SetListener(nil)

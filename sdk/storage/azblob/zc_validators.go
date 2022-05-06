@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -12,6 +15,7 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Raw converts PageRange into primitive start, end integers of type int64
 func (pr *PageRange) Raw() (start, end int64) {
 	if pr.Start != nil {
 		start = *pr.Start
@@ -31,8 +35,12 @@ type HttpRange struct {
 	Count  int64
 }
 
-func (r HttpRange) pointers() *string {
-	if r.Offset == 0 && r.Count == 0 { // Do common case first for performance
+func NewHttpRange(offset, count int64) *HttpRange {
+	return &HttpRange{Offset: offset, Count: count}
+}
+
+func (r *HttpRange) format() *string {
+	if r == nil || (r.Offset == 0 && r.Count == 0) { // Do common case first for performance
 		return nil // No specified range
 	}
 	endOffset := "" // if count == CountToEnd (0)
@@ -58,7 +66,7 @@ func getSourceRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return HttpRange{Offset: newOffset, Count: newCount}.pointers()
+	return (&HttpRange{Offset: newOffset, Count: newCount}).format()
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

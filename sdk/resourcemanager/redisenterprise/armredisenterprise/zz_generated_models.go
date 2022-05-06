@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,12 +7,6 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 package armredisenterprise
-
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-)
 
 // AccessKeys - The secret access keys used for authenticating connections to redis
 type AccessKeys struct {
@@ -25,17 +19,20 @@ type AccessKeys struct {
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 type ClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 type ClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
 type ClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -80,20 +77,6 @@ type Cluster struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Cluster.
-func (c Cluster) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "location", c.Location)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	populate(objectMap, "type", c.Type)
-	populate(objectMap, "zones", c.Zones)
-	return json.Marshal(objectMap)
-}
-
 // ClusterList - The response of a list-all operation.
 type ClusterList struct {
 	// List of clusters.
@@ -101,14 +84,6 @@ type ClusterList struct {
 
 	// READ-ONLY; The URI to fetch the next page of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterList.
-func (c ClusterList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // ClusterProperties - Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags
@@ -132,18 +107,6 @@ type ClusterProperties struct {
 	ResourceState *ResourceState `json:"resourceState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ClusterProperties.
-func (c ClusterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "hostName", c.HostName)
-	populate(objectMap, "minimumTlsVersion", c.MinimumTLSVersion)
-	populate(objectMap, "privateEndpointConnections", c.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populate(objectMap, "redisVersion", c.RedisVersion)
-	populate(objectMap, "resourceState", c.ResourceState)
-	return json.Marshal(objectMap)
-}
-
 // ClusterUpdate - A partial update to the RedisEnterprise cluster
 type ClusterUpdate struct {
 	// Other properties of the cluster.
@@ -154,15 +117,6 @@ type ClusterUpdate struct {
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterUpdate.
-func (c ClusterUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "sku", c.SKU)
-	populate(objectMap, "tags", c.Tags)
-	return json.Marshal(objectMap)
 }
 
 // Database - Describes a database on the RedisEnterprise cluster
@@ -189,14 +143,6 @@ type DatabaseList struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseList.
-func (d DatabaseList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DatabaseProperties - Properties of RedisEnterprise databases, as opposed to general resource properties like location,
 // tags
 type DatabaseProperties struct {
@@ -208,6 +154,9 @@ type DatabaseProperties struct {
 
 	// Redis eviction policy - default is VolatileLRU
 	EvictionPolicy *EvictionPolicy `json:"evictionPolicy,omitempty"`
+
+	// Optional set of properties to configure geo replication for this database.
+	GeoReplication *DatabasePropertiesGeoReplication `json:"geoReplication,omitempty"`
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module `json:"modules,omitempty"`
@@ -225,18 +174,13 @@ type DatabaseProperties struct {
 	ResourceState *ResourceState `json:"resourceState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseProperties.
-func (d DatabaseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "clientProtocol", d.ClientProtocol)
-	populate(objectMap, "clusteringPolicy", d.ClusteringPolicy)
-	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
-	populate(objectMap, "modules", d.Modules)
-	populate(objectMap, "persistence", d.Persistence)
-	populate(objectMap, "port", d.Port)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "resourceState", d.ResourceState)
-	return json.Marshal(objectMap)
+// DatabasePropertiesGeoReplication - Optional set of properties to configure geo replication for this database.
+type DatabasePropertiesGeoReplication struct {
+	// Name for the group of linked database resources
+	GroupNickname *string `json:"groupNickname,omitempty"`
+
+	// List of database resources to link with this database
+	LinkedDatabases []*LinkedDatabase `json:"linkedDatabases,omitempty"`
 }
 
 // DatabaseUpdate - A partial update to the RedisEnterprise database
@@ -245,41 +189,46 @@ type DatabaseUpdate struct {
 	Properties *DatabaseProperties `json:"properties,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DatabaseUpdate.
-func (d DatabaseUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
 // DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
 type DatabasesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
 type DatabasesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientBeginExportOptions contains the optional parameters for the DatabasesClient.BeginExport method.
 type DatabasesClientBeginExportOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// DatabasesClientBeginForceUnlinkOptions contains the optional parameters for the DatabasesClient.BeginForceUnlink method.
+type DatabasesClientBeginForceUnlinkOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientBeginImportOptions contains the optional parameters for the DatabasesClient.BeginImport method.
 type DatabasesClientBeginImportOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientBeginRegenerateKeyOptions contains the optional parameters for the DatabasesClient.BeginRegenerateKey method.
 type DatabasesClientBeginRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientBeginUpdateOptions contains the optional parameters for the DatabasesClient.BeginUpdate method.
 type DatabasesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
@@ -300,7 +249,7 @@ type DatabasesClientListKeysOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
+	Info interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -324,17 +273,6 @@ type ErrorDetail struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
@@ -348,17 +286,25 @@ type ExportClusterParameters struct {
 	SasURI *string `json:"sasUri,omitempty"`
 }
 
+// ForceUnlinkParameters - Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
+type ForceUnlinkParameters struct {
+	// REQUIRED; The resource IDs of the database resources to be unlinked.
+	IDs []*string `json:"ids,omitempty"`
+}
+
 // ImportClusterParameters - Parameters for a Redis Enterprise import operation.
 type ImportClusterParameters struct {
 	// REQUIRED; SAS URIs for the target blobs to import from
 	SasUris []*string `json:"sasUris,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImportClusterParameters.
-func (i ImportClusterParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "sasUris", i.SasUris)
-	return json.Marshal(objectMap)
+// LinkedDatabase - Specifies details of a linked database resource.
+type LinkedDatabase struct {
+	// Resource ID of a database resource to link with this database.
+	ID *string `json:"id,omitempty"`
+
+	// READ-ONLY; State of the link between the database resources.
+	State *LinkState `json:"state,omitempty" azure:"ro"`
 }
 
 // Module - Specifies configuration of a redis module
@@ -366,7 +312,7 @@ type Module struct {
 	// REQUIRED; The name of the module, e.g. 'RedisBloom', 'RediSearch', 'RedisTimeSeries'
 	Name *string `json:"name,omitempty"`
 
-	// Configuration options for the module, e.g. 'ERRORRATE 0.00 INITIALSIZE 400'.
+	// Configuration options for the module, e.g. 'ERRORRATE 0.01 INITIALSIZE 400'.
 	Args *string `json:"args,omitempty"`
 
 	// READ-ONLY; The version of the module, e.g. '1.0'.
@@ -420,14 +366,6 @@ type OperationListResult struct {
 
 	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationStatus - The status of a long-running operation.
@@ -503,13 +441,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
@@ -525,7 +456,8 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
 // method.
 type PrivateEndpointConnectionsClientBeginPutOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Delete
@@ -567,13 +499,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
@@ -584,15 +509,6 @@ type PrivateLinkResourceProperties struct {
 
 	// READ-ONLY; The private link resource required member names.
 	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesClientListByClusterOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByCluster
@@ -672,25 +588,4 @@ type TrackedResource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
-func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
 }

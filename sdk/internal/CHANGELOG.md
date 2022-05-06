@@ -1,14 +1,24 @@
 # Release History
 
-## 0.9.2 (Unreleased)
+## 0.10.0 (Unreleased)
 
 ### Features Added
+* Added `temporal` package for handling of temporal resources.
 
 ### Breaking Changes
+* Removed logging constants from the `log` package.
+* Removed `atomic` package as it wasn't being used.
 
 ### Bugs Fixed
 
 ### Other Changes
+* Updated build constraints and Go version to 1.18.
+
+## 0.9.2 (2022-04-04)
+
+### Features Added
+* Set sanitizers at the test level by specifying `RecordingOptions.TestInstance`
+* Added the `perf` library for performance testing client SDKs
 
 ## 0.9.1 (2022-02-01)
 

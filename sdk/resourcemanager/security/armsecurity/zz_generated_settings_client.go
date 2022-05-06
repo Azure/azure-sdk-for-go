@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,27 +34,31 @@ type SettingsClient struct {
 // subscriptionID - Azure subscription ID
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SettingsClient {
+func NewSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SettingsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SettingsClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
-// Get - Settings of different configurations in security center
+// Get - Settings of different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // settingName - The name of the setting
 // options - SettingsClientGetOptions contains the optional parameters for the SettingsClient.Get method.
-func (client *SettingsClient) Get(ctx context.Context, settingName Enum77, options *SettingsClientGetOptions) (SettingsClientGetResponse, error) {
+func (client *SettingsClient) Get(ctx context.Context, settingName SettingName, options *SettingsClientGetOptions) (SettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, settingName, options)
 	if err != nil {
 		return SettingsClientGetResponse{}, err
@@ -69,7 +74,7 @@ func (client *SettingsClient) Get(ctx context.Context, settingName Enum77, optio
 }
 
 // getCreateRequest creates the Get request.
-func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName Enum77, options *SettingsClientGetOptions) (*policy.Request, error) {
+func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName SettingName, options *SettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -92,26 +97,42 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName 
 
 // getHandleResponse handles the Get response.
 func (client *SettingsClient) getHandleResponse(resp *http.Response) (SettingsClientGetResponse, error) {
-	result := SettingsClientGetResponse{RawResponse: resp}
+	result := SettingsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SettingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// List - Settings about different configurations in security center
+// NewListPager - Settings about different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - SettingsClientListOptions contains the optional parameters for the SettingsClient.List method.
-func (client *SettingsClient) List(options *SettingsClientListOptions) *SettingsClientListPager {
-	return &SettingsClientListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
+func (client *SettingsClient) NewListPager(options *SettingsClientListOptions) *runtime.Pager[SettingsClientListResponse] {
+	return runtime.NewPager(runtime.PageProcessor[SettingsClientListResponse]{
+		More: func(page SettingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp SettingsClientListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SettingsList.NextLink)
+		Fetcher: func(ctx context.Context, page *SettingsClientListResponse) (SettingsClientListResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return SettingsClientListResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return SettingsClientListResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return SettingsClientListResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listCreateRequest creates the List request.
@@ -134,19 +155,19 @@ func (client *SettingsClient) listCreateRequest(ctx context.Context, options *Se
 
 // listHandleResponse handles the List response.
 func (client *SettingsClient) listHandleResponse(resp *http.Response) (SettingsClientListResponse, error) {
-	result := SettingsClientListResponse{RawResponse: resp}
+	result := SettingsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SettingsList); err != nil {
 		return SettingsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// Update - updating settings about different configurations in security center
+// Update - updating settings about different configurations in Microsoft Defender for Cloud
 // If the operation fails it returns an *azcore.ResponseError type.
 // settingName - The name of the setting
 // setting - Setting object
 // options - SettingsClientUpdateOptions contains the optional parameters for the SettingsClient.Update method.
-func (client *SettingsClient) Update(ctx context.Context, settingName Enum77, setting SettingClassification, options *SettingsClientUpdateOptions) (SettingsClientUpdateResponse, error) {
+func (client *SettingsClient) Update(ctx context.Context, settingName SettingName, setting SettingClassification, options *SettingsClientUpdateOptions) (SettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, settingName, setting, options)
 	if err != nil {
 		return SettingsClientUpdateResponse{}, err
@@ -162,7 +183,7 @@ func (client *SettingsClient) Update(ctx context.Context, settingName Enum77, se
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingName Enum77, setting SettingClassification, options *SettingsClientUpdateOptions) (*policy.Request, error) {
+func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingName SettingName, setting SettingClassification, options *SettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -185,7 +206,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingNa
 
 // updateHandleResponse handles the Update response.
 func (client *SettingsClient) updateHandleResponse(resp *http.Response) (SettingsClientUpdateResponse, error) {
-	result := SettingsClientUpdateResponse{RawResponse: resp}
+	result := SettingsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SettingsClientUpdateResponse{}, err
 	}

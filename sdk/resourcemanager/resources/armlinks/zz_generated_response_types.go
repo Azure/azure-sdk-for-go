@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,70 +8,32 @@
 
 package armlinks
 
-import "net/http"
-
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationsClientListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// OperationsClientListResult contains the result from method OperationsClient.List.
-type OperationsClientListResult struct {
 	OperationListResult
 }
 
 // ResourceLinksClientCreateOrUpdateResponse contains the response from method ResourceLinksClient.CreateOrUpdate.
 type ResourceLinksClientCreateOrUpdateResponse struct {
-	ResourceLinksClientCreateOrUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceLinksClientCreateOrUpdateResult contains the result from method ResourceLinksClient.CreateOrUpdate.
-type ResourceLinksClientCreateOrUpdateResult struct {
 	ResourceLink
 }
 
 // ResourceLinksClientDeleteResponse contains the response from method ResourceLinksClient.Delete.
 type ResourceLinksClientDeleteResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+	// placeholder for future response values
 }
 
 // ResourceLinksClientGetResponse contains the response from method ResourceLinksClient.Get.
 type ResourceLinksClientGetResponse struct {
-	ResourceLinksClientGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceLinksClientGetResult contains the result from method ResourceLinksClient.Get.
-type ResourceLinksClientGetResult struct {
 	ResourceLink
 }
 
 // ResourceLinksClientListAtSourceScopeResponse contains the response from method ResourceLinksClient.ListAtSourceScope.
 type ResourceLinksClientListAtSourceScopeResponse struct {
-	ResourceLinksClientListAtSourceScopeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceLinksClientListAtSourceScopeResult contains the result from method ResourceLinksClient.ListAtSourceScope.
-type ResourceLinksClientListAtSourceScopeResult struct {
 	ResourceLinkResult
 }
 
 // ResourceLinksClientListAtSubscriptionResponse contains the response from method ResourceLinksClient.ListAtSubscription.
 type ResourceLinksClientListAtSubscriptionResponse struct {
-	ResourceLinksClientListAtSubscriptionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// ResourceLinksClientListAtSubscriptionResult contains the result from method ResourceLinksClient.ListAtSubscription.
-type ResourceLinksClientListAtSubscriptionResult struct {
 	ResourceLinkResult
 }

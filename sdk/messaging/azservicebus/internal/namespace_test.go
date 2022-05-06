@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
@@ -32,7 +33,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		retryOptions:  retryOptionsOnlyOnce,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -51,7 +52,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 	}
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
-	cancel, err := ns.startNegotiateClaimRenewer(
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"my entity path",
 		cbsNegotiateClaim,
@@ -77,7 +78,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	expires := time.Now().Add(24 * time.Hour)
 
 	ns := &Namespace{
-		retryOptions:  retryOptionsOnlyOnce,
+		RetryOptions:  retryOptionsOnlyOnce,
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
@@ -107,7 +108,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	nextRefreshDurationChecks := 0
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
-	cancel, err := ns.startNegotiateClaimRenewer(
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"my entity path",
 		cbsNegotiateClaim, getAMQPClient, func(expirationTimeParam, currentTime time.Time) time.Duration {
@@ -137,7 +138,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	cancel, err := ns.startNegotiateClaimRenewer(
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
 		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
@@ -153,12 +154,47 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	require.Nil(t, cancel)
 }
 
+func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
+	ns := &Namespace{
+		RetryOptions: retryOptionsOnlyOnce,
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{
+			// credentials that don't renew return a zero-initialized time.
+			expires: time.Time{},
+		}),
+	}
+
+	cbsNegotiateClaimCalled := 0
+
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+		cbsNegotiateClaimCalled++
+		return nil
+	}
+
+	// since the token is non-renewable we will just do the single cbsNegotiateClaim call and never renew.
+	_, done, err := ns.startNegotiateClaimRenewer(
+		context.Background(),
+		"my entity path",
+		cbsNegotiateClaim, func(ctx context.Context) (*amqp.Client, uint64, error) { return &amqp.Client{}, 0, nil },
+		func(expirationTimeParam, currentTime time.Time) time.Duration {
+			panic("Won't be called, no refreshing of claims will be done")
+		})
+
+	require.NoError(t, err)
+	require.Equal(t, 1, cbsNegotiateClaimCalled)
+
+	select {
+	case <-done:
+	default:
+		require.Fail(t, "cancel() returns a channel that is already Done()")
+	}
+}
+
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
 		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
-	cancel, err := ns.startNegotiateClaimRenewer(
+	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
 		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
@@ -172,6 +208,50 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 
 	require.EqualError(t, err, "NegotiateClaim amqp.Client failed")
 	require.Nil(t, cancel)
+}
+
+func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
+	ns := &Namespace{
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
+	}
+
+	cbsNegotiateClaimCalled := 0
+
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+		cbsNegotiateClaimCalled++
+
+		// work the first time, fail on renewals.
+		if cbsNegotiateClaimCalled > 1 {
+			return errNonRetriable{Message: "non retriable error message"}
+		}
+
+		return nil
+	}
+
+	endCapture := test.CaptureLogsForTest()
+	defer endCapture()
+
+	_, done, err := ns.startNegotiateClaimRenewer(
+		context.Background(),
+		"entity path",
+		cbsNegotiateClaim, func(ctx context.Context) (*amqp.Client, uint64, error) {
+			return &amqp.Client{}, 0, nil
+		}, func(expirationTime, currentTime time.Time) time.Duration {
+			// instant renewals.
+			return 0
+		})
+
+	require.NoError(t, err)
+
+	select {
+	case <-done:
+		logs := endCapture()
+		// check the log messages - we should have one telling us why we stopped the claims loop
+		require.Contains(t, logs, "[azsb.Auth] [entity path] fatal error, stopping token refresh loop: non retriable error message")
+	case <-time.After(3 * time.Second):
+		// was locked! Should have been closed.
+		require.Fail(t, "claim renewal was automatically cancelled because of a non-retriable error")
+	}
 }
 
 func TestNamespaceNextClaimRefreshDuration(t *testing.T) {

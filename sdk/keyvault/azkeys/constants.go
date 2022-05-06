@@ -1,148 +1,148 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azkeys
 
-import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
-
-// DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
-// certificate can be permanently deleted by a privileged user; otherwise,
-// only the system can purge the certificate, at the end of the retention interval.
-type DeletionRecoveryLevel string
-
-const (
-	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
-	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability of the deleted entity during the retention interval
-	// and while the subscription is still available.
-	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
-
-	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable, immediate
-	// and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled when 7<= SoftDeleteRetentionInDays
-	// < 90. This level guarantees the recoverability of the deleted entity during the retention interval, and also reflects the fact that the subscription
-	// itself cannot be cancelled.
-	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
-
-	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent
-	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees the recoverability of the deleted entity during the retention interval,
-	// unless a Purge operation is requested, or the subscription is cancelled.
-	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
-
-	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility for recovery. This level
-	// corresponds to no protection being available against a Delete operation; the data is irretrievably lost upon accepting a Delete operation at the entity
-	// level or higher (vault, resource group, subscription etc.)
-	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
-
-	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent deletion
-	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval(90 days) and while the subscription is still
-	// available. System wil permanently delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
-
-	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable within retention interval
-	// (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled. System
-	// wil permanently delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
-
-	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
-	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval (90 days), unless a Purge operation is requested,
-	// or the subscription is cancelled. System wil permanently delete it after 90 days, if not recovered
-	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
-// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
-func (d DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
-	return &d
-}
-
-// convert a pointer to exported DeletionRecoveryLevel to the generated version
-func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *generated.DeletionRecoveryLevel {
-	if d == nil {
+func toGeneratedDeletionRecoveryLevel(s *string) *generated.DeletionRecoveryLevel {
+	if s == nil {
 		return nil
 	}
-	if *d == DeletionRecoveryLevelCustomizedRecoverable {
-		return generated.DeletionRecoveryLevelCustomizedRecoverable.ToPtr()
-	} else if *d == DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription {
-		return generated.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription.ToPtr()
-	} else if *d == DeletionRecoveryLevelCustomizedRecoverablePurgeable {
-		return generated.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr()
-	} else if *d == DeletionRecoveryLevelPurgeable {
-		return generated.DeletionRecoveryLevelPurgeable.ToPtr()
-	} else if *d == DeletionRecoveryLevelRecoverableProtectedSubscription {
-		return generated.DeletionRecoveryLevelRecoverableProtectedSubscription.ToPtr()
-	} else if *d == DeletionRecoveryLevelRecoverable {
-		return generated.DeletionRecoveryLevelRecoverable.ToPtr()
-	} else {
-		return generated.DeletionRecoveryLevelRecoverablePurgeable.ToPtr()
+	return to.Ptr(generated.DeletionRecoveryLevel(*s))
+}
+
+// CurveName - Elliptic curve name. For valid values, see PossibleCurveNameValues.
+type CurveName string
+
+const (
+	// CurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	CurveNameP256 CurveName = "P-256"
+
+	// CurveNameP256K - The SECG SECP256K1 elliptic curve.
+	CurveNameP256K CurveName = "P-256K"
+
+	// CurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	CurveNameP384 CurveName = "P-384"
+
+	// CurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	CurveNameP521 CurveName = "P-521"
+)
+
+// PossibleCurveNameValues provides a slice of all possible CurveNames
+func PossibleCurveNameValues() []CurveName {
+	return []CurveName{
+		CurveNameP256,
+		CurveNameP256K,
+		CurveNameP384,
+		CurveNameP521,
 	}
 }
 
-// KeyCurveName - Elliptic curve name. For valid values, see KeyCurveName.
-type KeyCurveName string
+// Operation - JSON web key operations. For more information, see Operation.
+type Operation string
 
 const (
-	// KeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	KeyCurveNameP256 KeyCurveName = "P-256"
-
-	// KeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
-	KeyCurveNameP256K KeyCurveName = "P-256K"
-
-	// KeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	KeyCurveNameP384 KeyCurveName = "P-384"
-
-	// KeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	KeyCurveNameP521 KeyCurveName = "P-521"
+	OperationDecrypt   Operation = "decrypt"
+	OperationEncrypt   Operation = "encrypt"
+	OperationImport    Operation = "import"
+	OperationSign      Operation = "sign"
+	OperationUnwrapKey Operation = "unwrapKey"
+	OperationVerify    Operation = "verify"
+	OperationWrapKey   Operation = "wrapKey"
 )
 
-// ToPtr returns a *KeyCurveName pointing to the current value.
-func (c KeyCurveName) ToPtr() *KeyCurveName {
-	return &c
+// PossibleOperationValues provides a slice of all possible Operations
+func PossibleOperationValues() []Operation {
+	return []Operation{
+		OperationDecrypt,
+		OperationEncrypt,
+		OperationImport,
+		OperationSign,
+		OperationUnwrapKey,
+		OperationVerify,
+		OperationWrapKey,
+	}
 }
 
-// KeyOperation - JSON web key operations. For more information, see KeyOperation.
-type KeyOperation string
+// RotationAction - The type of the action.
+type RotationAction string
 
 const (
-	KeyOperationDecrypt   KeyOperation = "decrypt"
-	KeyOperationEncrypt   KeyOperation = "encrypt"
-	KeyOperationImport    KeyOperation = "import"
-	KeyOperationSign      KeyOperation = "sign"
-	KeyOperationUnwrapKey KeyOperation = "unwrapKey"
-	KeyOperationVerify    KeyOperation = "verify"
-	KeyOperationWrapKey   KeyOperation = "wrapKey"
+	// RotationActionRotate - Rotate the key based on the key policy.
+	RotationActionRotate RotationAction = "rotate"
+	// RotationActionNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default to 30 days before expiry.
+	RotationActionNotify RotationAction = "notify"
 )
 
-// ToPtr returns a *KeyOperation pointing to the current value.
-func (c KeyOperation) ToPtr() *KeyOperation {
-	return &c
+// PossibleActionTypeValues provides a slice of all possible ActionTypes
+func PossibleActionTypeValues() []RotationAction {
+	return []RotationAction{
+		RotationActionRotate,
+		RotationActionNotify,
+	}
 }
 
-// ActionType - The type of the action.
-type ActionType string
+// ExportEncryptionAlg - The encryption algorithm to use to protected the exported key material
+type ExportEncryptionAlg string
 
 const (
-	// ActionTypeRotate - Rotate the key based on the key policy.
-	ActionTypeRotate ActionType = "rotate"
-	// ActionTypeNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default to 30 days before expiry.
-	ActionTypeNotify ActionType = "notify"
+	ExportEncryptionAlgCKMRSAAESKEYWRAP ExportEncryptionAlg = "CKM_RSA_AES_KEY_WRAP"
+	ExportEncryptionAlgRSAAESKEYWRAP256 ExportEncryptionAlg = "RSA_AES_KEY_WRAP_256"
+	ExportEncryptionAlgRSAAESKEYWRAP384 ExportEncryptionAlg = "RSA_AES_KEY_WRAP_384"
 )
 
-// ToPtr returns a *ActionType pointing to the current value.
-func (c ActionType) ToPtr() *ActionType {
-	return &c
+// PossibleExportEncryptionAlgValues provides a slice of all possible ExportEncryptionAlgs
+func PossibleExportEncryptionAlgValues() []ExportEncryptionAlg {
+	return []ExportEncryptionAlg{
+		ExportEncryptionAlgCKMRSAAESKEYWRAP,
+		ExportEncryptionAlgRSAAESKEYWRAP256,
+		ExportEncryptionAlgRSAAESKEYWRAP384,
+	}
 }
 
-// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
-type KeyEncryptionAlgorithm string
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type KeyType string
 
 const (
-	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
-	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+	// EC - Elliptic Curve.
+	KeyTypeEC KeyType = "EC"
+
+	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
+	KeyTypeECHSM KeyType = "EC-HSM"
+
+	// Oct - Octet sequence (used to represent symmetric keys)
+	KeyTypeOct KeyType = "oct"
+
+	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
+	KeyTypeOctHSM KeyType = "oct-HSM"
+
+	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
+	KeyTypeRSA KeyType = "RSA"
+
+	// RSAHSM - RSA with a private key which is not exportable from the HSM.
+	KeyTypeRSAHSM KeyType = "RSA-HSM"
 )
 
-// ToPtr returns a *KeyEncryptionAlgorithm pointing to the current value.
-func (c KeyEncryptionAlgorithm) ToPtr() *KeyEncryptionAlgorithm {
-	return &c
+// PossibleKeyTypeValues provides a slice of all possible KeyTypes
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypeEC,
+		KeyTypeECHSM,
+		KeyTypeOct,
+		KeyTypeOctHSM,
+		KeyTypeRSA,
+		KeyTypeRSAHSM,
+	}
+}
+
+// convert KeyType to *generated.JSONWebKeyType
+func (j KeyType) toGenerated() *generated.JSONWebKeyType {
+	return to.Ptr(generated.JSONWebKeyType(j))
 }

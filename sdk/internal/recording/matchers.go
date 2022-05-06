@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -82,7 +82,7 @@ func SetDefaultMatcher(t *testing.T, options *SetDefaultMatcherOptions) error {
 	}
 	req.Header["x-abstraction-identifier"] = []string{"CustomDefaultMatcher"}
 	if t != nil {
-		req.Header["x-recording-id"] = []string{GetRecordingId(t)}
+		req.Header[IDHeader] = []string{GetRecordingId(t)}
 	}
 
 	if !(*options.CompareBodies) {

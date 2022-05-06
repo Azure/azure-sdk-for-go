@@ -4,8 +4,9 @@
 package tests
 
 import (
+	"context"
+	"errors"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -15,6 +16,7 @@ import (
 
 func ConstantDetachment(remainingArgs []string) {
 	sc := shared.MustCreateStressContext("ConstantDetachment")
+	defer sc.End()
 
 	queueName := fmt.Sprintf("detach-tester-%s", sc.Nano)
 
@@ -23,15 +25,14 @@ func ConstantDetachment(remainingArgs []string) {
 	client, err := azservicebus.NewClientFromConnectionString(sc.ConnectionString, nil)
 	sc.PanicOnError("failed to create client", err)
 
-	senderStats := sc.NewStat("sender")
-	receiverStats := sc.NewStat("receiver")
+	stats := sc.NewStat("stats")
 
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("create a sender", err)
 
-	const maxMessages = 5000
+	const maxMessages = 10000
 
-	shared.MustGenerateMessages(sc, sender, maxMessages, 1024, senderStats)
+	shared.MustGenerateMessages(sc, sender, maxMessages, 1024, stats)
 
 	// now attempt to receive messages, while constant detaching is happening
 	receiver, err := client.NewReceiverForQueue(queueName, &azservicebus.ReceiverOptions{
@@ -43,38 +44,35 @@ func ConstantDetachment(remainingArgs []string) {
 	sc.PanicOnError("failed to create admin client", err)
 
 	go func() {
+		// keep updating the definition of the queue, which will cause the service to detach us.
 		err := shared.ConstantlyUpdateQueue(sc.Context, adminClient, queueName, 30*time.Second)
+
+		if errors.Is(err, context.Canceled) {
+			return
+		}
+
 		sc.PanicOnError("constantly updated queue failed", err)
 	}()
 
 InfiniteLoop:
-	for receiverStats.Received != maxMessages {
+	for stats.Received != maxMessages {
 		select {
 		case <-sc.Done():
 			break InfiniteLoop
 		default:
 		}
 
-		log.Printf("Waiting for message")
-		messages, err := receiver.ReceiveMessages(sc.Context, 1, nil)
+		messages, err := receiver.ReceiveMessages(sc.Context, 10, nil)
 
 		if err != nil {
-			sc.LogIfFailed("receive failed, continuing", err, receiverStats)
+			sc.LogIfFailed("receive failed, continuing", err, stats)
 			continue
 		}
 
-		receiverStats.AddReceived(int32(len(messages)))
+		stats.AddReceived(int32(len(messages)))
+	}
 
-		// TODO: this easily proves that the 410 error (where a lock is lost) is a problem for amqp-common since it just continually retries, wasting time since
-		// TODO: lock lost is _FATAL_.
-		// This is covered here: https://github.com/Azure/azure-sdk-for-go/issues/16088
-		//TODO: if you run this with receiveAndDelete mode our recovery is _perfect_.
-		// for _, msg := range messages {
-		// 	receiver.CompleteMessage(sc.Context, msg)
-
-		// 	if sc.LogOnError("failed to complete message", err, receiverStats) == nil {
-		// 		receiverStats.AddReceived(1)
-		// 	}
-		// }
+	if stats.Received != maxMessages {
+		sc.PanicOnError("constantdetach failed", fmt.Errorf("not all messages received (got %d, wanted %d)", stats.Received, maxMessages))
 	}
 }

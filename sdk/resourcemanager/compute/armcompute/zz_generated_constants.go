@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.7.0"
 )
 
 type AccessLevel string
@@ -28,11 +28,6 @@ func PossibleAccessLevelValues() []AccessLevel {
 		AccessLevelRead,
 		AccessLevelWrite,
 	}
-}
-
-// ToPtr returns a *AccessLevel pointing to the current value.
-func (c AccessLevel) ToPtr() *AccessLevel {
-	return &c
 }
 
 // AggregatedReplicationState - This is the aggregated replication status based on all the regional replication status flags.
@@ -55,9 +50,36 @@ func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
 	}
 }
 
-// ToPtr returns a *AggregatedReplicationState pointing to the current value.
-func (c AggregatedReplicationState) ToPtr() *AggregatedReplicationState {
-	return &c
+// Architecture - The architecture of the image. Applicable to OS disks only.
+type Architecture string
+
+const (
+	ArchitectureArm64 Architecture = "Arm64"
+	ArchitectureX64   Architecture = "x64"
+)
+
+// PossibleArchitectureValues returns the possible values for the Architecture const type.
+func PossibleArchitectureValues() []Architecture {
+	return []Architecture{
+		ArchitectureArm64,
+		ArchitectureX64,
+	}
+}
+
+// ArchitectureTypes - Specifies the Architecture Type
+type ArchitectureTypes string
+
+const (
+	ArchitectureTypesArm64 ArchitectureTypes = "Arm64"
+	ArchitectureTypesX64   ArchitectureTypes = "x64"
+)
+
+// PossibleArchitectureTypesValues returns the possible values for the ArchitectureTypes const type.
+func PossibleArchitectureTypesValues() []ArchitectureTypes {
+	return []ArchitectureTypes{
+		ArchitectureTypesArm64,
+		ArchitectureTypesX64,
+	}
 }
 
 // AvailabilitySetSKUTypes - Specifies the sku of an Availability Set. Use 'Aligned' for virtual machines with managed disks
@@ -75,11 +97,6 @@ func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
 		AvailabilitySetSKUTypesAligned,
 		AvailabilitySetSKUTypesClassic,
 	}
-}
-
-// ToPtr returns a *AvailabilitySetSKUTypes pointing to the current value.
-func (c AvailabilitySetSKUTypes) ToPtr() *AvailabilitySetSKUTypes {
-	return &c
 }
 
 // CachingTypes - Specifies the caching requirements.
@@ -105,11 +122,6 @@ func PossibleCachingTypesValues() []CachingTypes {
 	}
 }
 
-// ToPtr returns a *CachingTypes pointing to the current value.
-func (c CachingTypes) ToPtr() *CachingTypes {
-	return &c
-}
-
 type CapacityReservationGroupInstanceViewTypes string
 
 const (
@@ -123,11 +135,6 @@ func PossibleCapacityReservationGroupInstanceViewTypesValues() []CapacityReserva
 	}
 }
 
-// ToPtr returns a *CapacityReservationGroupInstanceViewTypes pointing to the current value.
-func (c CapacityReservationGroupInstanceViewTypes) ToPtr() *CapacityReservationGroupInstanceViewTypes {
-	return &c
-}
-
 type CapacityReservationInstanceViewTypes string
 
 const (
@@ -139,11 +146,6 @@ func PossibleCapacityReservationInstanceViewTypesValues() []CapacityReservationI
 	return []CapacityReservationInstanceViewTypes{
 		CapacityReservationInstanceViewTypesInstanceView,
 	}
-}
-
-// ToPtr returns a *CapacityReservationInstanceViewTypes pointing to the current value.
-func (c CapacityReservationInstanceViewTypes) ToPtr() *CapacityReservationInstanceViewTypes {
-	return &c
 }
 
 // CloudServiceUpgradeMode - Update mode for the cloud service. Role instances are allocated to update domains when the service
@@ -172,9 +174,22 @@ func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 	}
 }
 
-// ToPtr returns a *CloudServiceUpgradeMode pointing to the current value.
-func (c CloudServiceUpgradeMode) ToPtr() *CloudServiceUpgradeMode {
-	return &c
+// ConfidentialVMEncryptionType - confidential VM encryption types
+type ConfidentialVMEncryptionType string
+
+const (
+	ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk ConfidentialVMEncryptionType = "EncryptedVMGuestStateOnlyWithPmk"
+	ConfidentialVMEncryptionTypeEncryptedWithCmk                 ConfidentialVMEncryptionType = "EncryptedWithCmk"
+	ConfidentialVMEncryptionTypeEncryptedWithPmk                 ConfidentialVMEncryptionType = "EncryptedWithPmk"
+)
+
+// PossibleConfidentialVMEncryptionTypeValues returns the possible values for the ConfidentialVMEncryptionType const type.
+func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType {
+	return []ConfidentialVMEncryptionType{
+		ConfidentialVMEncryptionTypeEncryptedVMGuestStateOnlyWithPmk,
+		ConfidentialVMEncryptionTypeEncryptedWithCmk,
+		ConfidentialVMEncryptionTypeEncryptedWithPmk,
+	}
 }
 
 // ConsistencyModeTypes - Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for
@@ -196,9 +211,23 @@ func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 	}
 }
 
-// ToPtr returns a *ConsistencyModeTypes pointing to the current value.
-func (c ConsistencyModeTypes) ToPtr() *ConsistencyModeTypes {
-	return &c
+// DataAccessAuthMode - Additional authentication requirements when exporting or uploading to a disk or snapshot.
+type DataAccessAuthMode string
+
+const (
+	// DataAccessAuthModeAzureActiveDirectory - When export/upload URL is used, the system checks if the user has an identity
+	// in Azure Active Directory and has necessary permissions to export/upload the data. Please refer to aka.ms/DisksAzureADAuth.
+	DataAccessAuthModeAzureActiveDirectory DataAccessAuthMode = "AzureActiveDirectory"
+	// DataAccessAuthModeNone - No additional authentication would be performed when accessing export/upload URL.
+	DataAccessAuthModeNone DataAccessAuthMode = "None"
+)
+
+// PossibleDataAccessAuthModeValues returns the possible values for the DataAccessAuthMode const type.
+func PossibleDataAccessAuthModeValues() []DataAccessAuthMode {
+	return []DataAccessAuthMode{
+		DataAccessAuthModeAzureActiveDirectory,
+		DataAccessAuthModeNone,
+	}
 }
 
 // DedicatedHostLicenseTypes - Specifies the software license type that will be applied to the VMs deployed on the dedicated
@@ -225,11 +254,6 @@ func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 	}
 }
 
-// ToPtr returns a *DedicatedHostLicenseTypes pointing to the current value.
-func (c DedicatedHostLicenseTypes) ToPtr() *DedicatedHostLicenseTypes {
-	return &c
-}
-
 // DeleteOptions - Specify what happens to the network interface when the VM is deleted
 type DeleteOptions string
 
@@ -246,11 +270,6 @@ func PossibleDeleteOptionsValues() []DeleteOptions {
 	}
 }
 
-// ToPtr returns a *DeleteOptions pointing to the current value.
-func (c DeleteOptions) ToPtr() *DeleteOptions {
-	return &c
-}
-
 // DiffDiskOptions - Specifies the ephemeral disk option for operating system disk.
 type DiffDiskOptions string
 
@@ -263,11 +282,6 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return []DiffDiskOptions{
 		DiffDiskOptionsLocal,
 	}
-}
-
-// ToPtr returns a *DiffDiskOptions pointing to the current value.
-func (c DiffDiskOptions) ToPtr() *DiffDiskOptions {
-	return &c
 }
 
 // DiffDiskPlacement - Specifies the ephemeral disk placement for operating system disk. This property can be used by user
@@ -289,11 +303,6 @@ func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
 		DiffDiskPlacementCacheDisk,
 		DiffDiskPlacementResourceDisk,
 	}
-}
-
-// ToPtr returns a *DiffDiskPlacement pointing to the current value.
-func (c DiffDiskPlacement) ToPtr() *DiffDiskPlacement {
-	return &c
 }
 
 // DiskCreateOption - This enumerates the possible sources of a disk's creation.
@@ -343,11 +352,6 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	}
 }
 
-// ToPtr returns a *DiskCreateOption pointing to the current value.
-func (c DiskCreateOption) ToPtr() *DiskCreateOption {
-	return &c
-}
-
 // DiskCreateOptionTypes - Specifies how the virtual machine should be created.
 // Possible values are:
 // Attach \u2013 This value is used when you are using a specialized disk to create the virtual machine.
@@ -371,11 +375,6 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	}
 }
 
-// ToPtr returns a *DiskCreateOptionTypes pointing to the current value.
-func (c DiskCreateOptionTypes) ToPtr() *DiskCreateOptionTypes {
-	return &c
-}
-
 // DiskDeleteOptionTypes - Specifies the behavior of the managed disk when the VM gets deleted i.e whether the managed disk
 // is deleted or detached. Supported values:
 // Delete If this value is used, the managed disk is deleted when VM gets deleted.
@@ -394,11 +393,6 @@ func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
 		DiskDeleteOptionTypesDelete,
 		DiskDeleteOptionTypesDetach,
 	}
-}
-
-// ToPtr returns a *DiskDeleteOptionTypes pointing to the current value.
-func (c DiskDeleteOptionTypes) ToPtr() *DiskDeleteOptionTypes {
-	return &c
 }
 
 // DiskDetachOptionTypes - Specifies the detach behavior to be used while detaching a disk or which is already in the process
@@ -422,11 +416,6 @@ func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 	}
 }
 
-// ToPtr returns a *DiskDetachOptionTypes pointing to the current value.
-func (c DiskDetachOptionTypes) ToPtr() *DiskDetachOptionTypes {
-	return &c
-}
-
 // DiskEncryptionSetIdentityType - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported
 // for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
 // subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
@@ -443,11 +432,6 @@ func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityTy
 		DiskEncryptionSetIdentityTypeNone,
 		DiskEncryptionSetIdentityTypeSystemAssigned,
 	}
-}
-
-// ToPtr returns a *DiskEncryptionSetIdentityType pointing to the current value.
-func (c DiskEncryptionSetIdentityType) ToPtr() *DiskEncryptionSetIdentityType {
-	return &c
 }
 
 // DiskEncryptionSetType - The type of key used to encrypt the data of the disk.
@@ -472,11 +456,6 @@ func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
 		DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 	}
-}
-
-// ToPtr returns a *DiskEncryptionSetType pointing to the current value.
-func (c DiskEncryptionSetType) ToPtr() *DiskEncryptionSetType {
-	return &c
 }
 
 // DiskSecurityTypes - Specifies the SecurityType of the VM. Applicable for OS disks only.
@@ -505,11 +484,6 @@ func PossibleDiskSecurityTypesValues() []DiskSecurityTypes {
 		DiskSecurityTypesConfidentialVMVmguestStateOnlyEncryptedWithPlatformKey,
 		DiskSecurityTypesTrustedLaunch,
 	}
-}
-
-// ToPtr returns a *DiskSecurityTypes pointing to the current value.
-func (c DiskSecurityTypes) ToPtr() *DiskSecurityTypes {
-	return &c
 }
 
 // DiskState - This enumerates the possible state of the disk.
@@ -548,11 +522,6 @@ func PossibleDiskStateValues() []DiskState {
 	}
 }
 
-// ToPtr returns a *DiskState pointing to the current value.
-func (c DiskState) ToPtr() *DiskState {
-	return &c
-}
-
 // DiskStorageAccountTypes - The sku name.
 type DiskStorageAccountTypes string
 
@@ -589,11 +558,6 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	}
 }
 
-// ToPtr returns a *DiskStorageAccountTypes pointing to the current value.
-func (c DiskStorageAccountTypes) ToPtr() *DiskStorageAccountTypes {
-	return &c
-}
-
 // EncryptionType - The type of key used to encrypt the data of the disk.
 type EncryptionType string
 
@@ -616,11 +580,6 @@ func PossibleEncryptionTypeValues() []EncryptionType {
 		EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 		EncryptionTypeEncryptionAtRestWithPlatformKey,
 	}
-}
-
-// ToPtr returns a *EncryptionType pointing to the current value.
-func (c EncryptionType) ToPtr() *EncryptionType {
-	return &c
 }
 
 // ExecutionState - Script execution status.
@@ -649,11 +608,6 @@ func PossibleExecutionStateValues() []ExecutionState {
 	}
 }
 
-// ToPtr returns a *ExecutionState pointing to the current value.
-func (c ExecutionState) ToPtr() *ExecutionState {
-	return &c
-}
-
 type ExpandTypesForGetCapacityReservationGroups string
 
 const (
@@ -669,11 +623,6 @@ func PossibleExpandTypesForGetCapacityReservationGroupsValues() []ExpandTypesFor
 	}
 }
 
-// ToPtr returns a *ExpandTypesForGetCapacityReservationGroups pointing to the current value.
-func (c ExpandTypesForGetCapacityReservationGroups) ToPtr() *ExpandTypesForGetCapacityReservationGroups {
-	return &c
-}
-
 type ExpandTypesForGetVMScaleSets string
 
 const (
@@ -685,11 +634,6 @@ func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets
 	return []ExpandTypesForGetVMScaleSets{
 		ExpandTypesForGetVMScaleSetsUserData,
 	}
-}
-
-// ToPtr returns a *ExpandTypesForGetVMScaleSets pointing to the current value.
-func (c ExpandTypesForGetVMScaleSets) ToPtr() *ExpandTypesForGetVMScaleSets {
-	return &c
 }
 
 // ExtendedLocationType - The type of the extended location.
@@ -706,11 +650,6 @@ func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
 	}
 }
 
-// ToPtr returns a *ExtendedLocationType pointing to the current value.
-func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
-	return &c
-}
-
 // ExtendedLocationTypes - The type of extendedLocation.
 type ExtendedLocationTypes string
 
@@ -723,11 +662,6 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return []ExtendedLocationTypes{
 		ExtendedLocationTypesEdgeZone,
 	}
-}
-
-// ToPtr returns a *ExtendedLocationTypes pointing to the current value.
-func (c ExtendedLocationTypes) ToPtr() *ExtendedLocationTypes {
-	return &c
 }
 
 // GalleryApplicationVersionPropertiesProvisioningState - The provisioning state, which only appears in the response.
@@ -754,9 +688,33 @@ func PossibleGalleryApplicationVersionPropertiesProvisioningStateValues() []Gall
 	}
 }
 
-// ToPtr returns a *GalleryApplicationVersionPropertiesProvisioningState pointing to the current value.
-func (c GalleryApplicationVersionPropertiesProvisioningState) ToPtr() *GalleryApplicationVersionPropertiesProvisioningState {
-	return &c
+type GalleryExpandParams string
+
+const (
+	GalleryExpandParamsSharingProfileGroups GalleryExpandParams = "SharingProfile/Groups"
+)
+
+// PossibleGalleryExpandParamsValues returns the possible values for the GalleryExpandParams const type.
+func PossibleGalleryExpandParamsValues() []GalleryExpandParams {
+	return []GalleryExpandParams{
+		GalleryExpandParamsSharingProfileGroups,
+	}
+}
+
+// GalleryExtendedLocationType - It is type of the extended location.
+type GalleryExtendedLocationType string
+
+const (
+	GalleryExtendedLocationTypeEdgeZone GalleryExtendedLocationType = "EdgeZone"
+	GalleryExtendedLocationTypeUnknown  GalleryExtendedLocationType = "Unknown"
+)
+
+// PossibleGalleryExtendedLocationTypeValues returns the possible values for the GalleryExtendedLocationType const type.
+func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
+	return []GalleryExtendedLocationType{
+		GalleryExtendedLocationTypeEdgeZone,
+		GalleryExtendedLocationTypeUnknown,
+	}
 }
 
 // GalleryImagePropertiesProvisioningState - The provisioning state, which only appears in the response.
@@ -783,11 +741,6 @@ func PossibleGalleryImagePropertiesProvisioningStateValues() []GalleryImagePrope
 	}
 }
 
-// ToPtr returns a *GalleryImagePropertiesProvisioningState pointing to the current value.
-func (c GalleryImagePropertiesProvisioningState) ToPtr() *GalleryImagePropertiesProvisioningState {
-	return &c
-}
-
 // GalleryImageVersionPropertiesProvisioningState - The provisioning state, which only appears in the response.
 type GalleryImageVersionPropertiesProvisioningState string
 
@@ -810,11 +763,6 @@ func PossibleGalleryImageVersionPropertiesProvisioningStateValues() []GalleryIma
 		GalleryImageVersionPropertiesProvisioningStateSucceeded,
 		GalleryImageVersionPropertiesProvisioningStateUpdating,
 	}
-}
-
-// ToPtr returns a *GalleryImageVersionPropertiesProvisioningState pointing to the current value.
-func (c GalleryImageVersionPropertiesProvisioningState) ToPtr() *GalleryImageVersionPropertiesProvisioningState {
-	return &c
 }
 
 // GalleryPropertiesProvisioningState - The provisioning state, which only appears in the response.
@@ -841,11 +789,6 @@ func PossibleGalleryPropertiesProvisioningStateValues() []GalleryPropertiesProvi
 	}
 }
 
-// ToPtr returns a *GalleryPropertiesProvisioningState pointing to the current value.
-func (c GalleryPropertiesProvisioningState) ToPtr() *GalleryPropertiesProvisioningState {
-	return &c
-}
-
 // GallerySharingPermissionTypes - This property allows you to specify the permission of sharing gallery.
 // Possible values are:
 // Private
@@ -863,11 +806,6 @@ func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTyp
 		GallerySharingPermissionTypesGroups,
 		GallerySharingPermissionTypesPrivate,
 	}
-}
-
-// ToPtr returns a *GallerySharingPermissionTypes pointing to the current value.
-func (c GallerySharingPermissionTypes) ToPtr() *GallerySharingPermissionTypes {
-	return &c
 }
 
 // HostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
@@ -888,11 +826,6 @@ func PossibleHostCachingValues() []HostCaching {
 	}
 }
 
-// ToPtr returns a *HostCaching pointing to the current value.
-func (c HostCaching) ToPtr() *HostCaching {
-	return &c
-}
-
 // HyperVGeneration - The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 type HyperVGeneration string
 
@@ -907,11 +840,6 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 		HyperVGenerationV1,
 		HyperVGenerationV2,
 	}
-}
-
-// ToPtr returns a *HyperVGeneration pointing to the current value.
-func (c HyperVGeneration) ToPtr() *HyperVGeneration {
-	return &c
 }
 
 // HyperVGenerationType - Specifies the HyperVGeneration Type associated with a resource
@@ -930,11 +858,6 @@ func PossibleHyperVGenerationTypeValues() []HyperVGenerationType {
 	}
 }
 
-// ToPtr returns a *HyperVGenerationType pointing to the current value.
-func (c HyperVGenerationType) ToPtr() *HyperVGenerationType {
-	return &c
-}
-
 // HyperVGenerationTypes - Specifies the HyperVGeneration Type
 type HyperVGenerationTypes string
 
@@ -949,11 +872,6 @@ func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
 		HyperVGenerationTypesV1,
 		HyperVGenerationTypesV2,
 	}
-}
-
-// ToPtr returns a *HyperVGenerationTypes pointing to the current value.
-func (c HyperVGenerationTypes) ToPtr() *HyperVGenerationTypes {
-	return &c
 }
 
 // IPVersion - Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
@@ -973,11 +891,6 @@ func PossibleIPVersionValues() []IPVersion {
 	}
 }
 
-// ToPtr returns a *IPVersion pointing to the current value.
-func (c IPVersion) ToPtr() *IPVersion {
-	return &c
-}
-
 // IPVersions - Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4
 // or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersions string
@@ -995,11 +908,6 @@ func PossibleIPVersionsValues() []IPVersions {
 	}
 }
 
-// ToPtr returns a *IPVersions pointing to the current value.
-func (c IPVersions) ToPtr() *IPVersions {
-	return &c
-}
-
 type InstanceViewTypes string
 
 const (
@@ -1013,11 +921,6 @@ func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 		InstanceViewTypesInstanceView,
 		InstanceViewTypesUserData,
 	}
-}
-
-// ToPtr returns a *InstanceViewTypes pointing to the current value.
-func (c InstanceViewTypes) ToPtr() *InstanceViewTypes {
-	return &c
 }
 
 // IntervalInMins - Interval value in minutes used to create LogAnalytics call rate logs.
@@ -1040,11 +943,6 @@ func PossibleIntervalInMinsValues() []IntervalInMins {
 	}
 }
 
-// ToPtr returns a *IntervalInMins pointing to the current value.
-func (c IntervalInMins) ToPtr() *IntervalInMins {
-	return &c
-}
-
 // LinuxPatchAssessmentMode - Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.
 // Possible values are:
 // ImageDefault - You control the timing of patch assessments on a virtual machine.
@@ -1062,11 +960,6 @@ func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
 		LinuxPatchAssessmentModeAutomaticByPlatform,
 		LinuxPatchAssessmentModeImageDefault,
 	}
-}
-
-// ToPtr returns a *LinuxPatchAssessmentMode pointing to the current value.
-func (c LinuxPatchAssessmentMode) ToPtr() *LinuxPatchAssessmentMode {
-	return &c
 }
 
 // LinuxVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
@@ -1090,11 +983,6 @@ func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 	}
 }
 
-// ToPtr returns a *LinuxVMGuestPatchMode pointing to the current value.
-func (c LinuxVMGuestPatchMode) ToPtr() *LinuxVMGuestPatchMode {
-	return &c
-}
-
 // MaintenanceOperationResultCodeTypes - The Last Maintenance Operation Result Code.
 type MaintenanceOperationResultCodeTypes string
 
@@ -1115,11 +1003,6 @@ func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationR
 	}
 }
 
-// ToPtr returns a *MaintenanceOperationResultCodeTypes pointing to the current value.
-func (c MaintenanceOperationResultCodeTypes) ToPtr() *MaintenanceOperationResultCodeTypes {
-	return &c
-}
-
 // NetworkAPIVersion - specifies the Microsoft.Network API version used when creating networking resources in the Network
 // Interface Configurations
 type NetworkAPIVersion string
@@ -1133,11 +1016,6 @@ func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
 	return []NetworkAPIVersion{
 		NetworkAPIVersionTwoThousandTwenty1101,
 	}
-}
-
-// ToPtr returns a *NetworkAPIVersion pointing to the current value.
-func (c NetworkAPIVersion) ToPtr() *NetworkAPIVersion {
-	return &c
 }
 
 // NetworkAccessPolicy - Policy for accessing the disk via network.
@@ -1161,18 +1039,12 @@ func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
 	}
 }
 
-// ToPtr returns a *NetworkAccessPolicy pointing to the current value.
-func (c NetworkAccessPolicy) ToPtr() *NetworkAccessPolicy {
-	return &c
-}
-
-// OperatingSystemStateTypes - The OS State.
+// OperatingSystemStateTypes - This property allows the user to specify whether the virtual machines created under this image
+// are 'Generalized' or 'Specialized'.
 type OperatingSystemStateTypes string
 
 const (
-	// OperatingSystemStateTypesGeneralized - Generalized image. Needs to be provisioned during deployment time.
 	OperatingSystemStateTypesGeneralized OperatingSystemStateTypes = "Generalized"
-	// OperatingSystemStateTypesSpecialized - Specialized image. Contains already provisioned OS Disk.
 	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = "Specialized"
 )
 
@@ -1182,11 +1054,6 @@ func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 		OperatingSystemStateTypesGeneralized,
 		OperatingSystemStateTypesSpecialized,
 	}
-}
-
-// ToPtr returns a *OperatingSystemStateTypes pointing to the current value.
-func (c OperatingSystemStateTypes) ToPtr() *OperatingSystemStateTypes {
-	return &c
 }
 
 // OperatingSystemType - Gets the Operating System type.
@@ -1205,12 +1072,11 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// ToPtr returns a *OperatingSystemType pointing to the current value.
-func (c OperatingSystemType) ToPtr() *OperatingSystemType {
-	return &c
-}
-
-// OperatingSystemTypes - The operating system of the osDiskImage.
+// OperatingSystemTypes - This property allows you to specify the type of the OS that is included in the disk when creating
+// a VM from a managed image.
+// Possible values are:
+// Windows
+// Linux
 type OperatingSystemTypes string
 
 const (
@@ -1224,11 +1090,6 @@ func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 		OperatingSystemTypesWindows,
 		OperatingSystemTypesLinux,
 	}
-}
-
-// ToPtr returns a *OperatingSystemTypes pointing to the current value.
-func (c OperatingSystemTypes) ToPtr() *OperatingSystemTypes {
-	return &c
 }
 
 // OrchestrationMode - Specifies the orchestration mode for the virtual machine scale set.
@@ -1247,11 +1108,6 @@ func PossibleOrchestrationModeValues() []OrchestrationMode {
 	}
 }
 
-// ToPtr returns a *OrchestrationMode pointing to the current value.
-func (c OrchestrationMode) ToPtr() *OrchestrationMode {
-	return &c
-}
-
 // OrchestrationServiceNames - The name of the service.
 type OrchestrationServiceNames string
 
@@ -1264,11 +1120,6 @@ func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
 	return []OrchestrationServiceNames{
 		OrchestrationServiceNamesAutomaticRepairs,
 	}
-}
-
-// ToPtr returns a *OrchestrationServiceNames pointing to the current value.
-func (c OrchestrationServiceNames) ToPtr() *OrchestrationServiceNames {
-	return &c
 }
 
 // OrchestrationServiceState - The current state of the service.
@@ -1289,11 +1140,6 @@ func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
 	}
 }
 
-// ToPtr returns a *OrchestrationServiceState pointing to the current value.
-func (c OrchestrationServiceState) ToPtr() *OrchestrationServiceState {
-	return &c
-}
-
 // OrchestrationServiceStateAction - The action to be performed.
 type OrchestrationServiceStateAction string
 
@@ -1310,11 +1156,6 @@ func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceState
 	}
 }
 
-// ToPtr returns a *OrchestrationServiceStateAction pointing to the current value.
-func (c OrchestrationServiceStateAction) ToPtr() *OrchestrationServiceStateAction {
-	return &c
-}
-
 // PatchAssessmentState - Describes the availability of a given patch.
 type PatchAssessmentState string
 
@@ -1329,11 +1170,6 @@ func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
 		PatchAssessmentStateAvailable,
 		PatchAssessmentStateUnknown,
 	}
-}
-
-// ToPtr returns a *PatchAssessmentState pointing to the current value.
-func (c PatchAssessmentState) ToPtr() *PatchAssessmentState {
-	return &c
 }
 
 // PatchInstallationState - The state of the patch after the installation operation completed.
@@ -1360,11 +1196,6 @@ func PossiblePatchInstallationStateValues() []PatchInstallationState {
 	}
 }
 
-// ToPtr returns a *PatchInstallationState pointing to the current value.
-func (c PatchInstallationState) ToPtr() *PatchInstallationState {
-	return &c
-}
-
 // PatchOperationStatus - The overall success or failure status of the operation. It remains "InProgress" until the operation
 // completes. At that point it will become "Unknown", "Failed", "Succeeded", or
 // "CompletedWithWarnings."
@@ -1389,11 +1220,6 @@ func PossiblePatchOperationStatusValues() []PatchOperationStatus {
 	}
 }
 
-// ToPtr returns a *PatchOperationStatus pointing to the current value.
-func (c PatchOperationStatus) ToPtr() *PatchOperationStatus {
-	return &c
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -1414,11 +1240,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
-// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
-func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
-	return &c
-}
-
 // PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
 type PrivateEndpointServiceConnectionStatus string
 
@@ -1435,11 +1256,6 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
 	}
-}
-
-// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
-func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
-	return &c
 }
 
 // ProtocolTypes - Specifies the protocol of WinRM listener.
@@ -1461,11 +1277,6 @@ func PossibleProtocolTypesValues() []ProtocolTypes {
 	}
 }
 
-// ToPtr returns a *ProtocolTypes pointing to the current value.
-func (c ProtocolTypes) ToPtr() *ProtocolTypes {
-	return &c
-}
-
 // ProximityPlacementGroupType - Specifies the type of the proximity placement group.
 // Possible values are:
 // Standard : Co-locate resources within an Azure region or Availability Zone.
@@ -1485,11 +1296,6 @@ func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	}
 }
 
-// ToPtr returns a *ProximityPlacementGroupType pointing to the current value.
-func (c ProximityPlacementGroupType) ToPtr() *ProximityPlacementGroupType {
-	return &c
-}
-
 // PublicIPAddressSKUName - Specify public IP sku name
 type PublicIPAddressSKUName string
 
@@ -1504,11 +1310,6 @@ func PossiblePublicIPAddressSKUNameValues() []PublicIPAddressSKUName {
 		PublicIPAddressSKUNameBasic,
 		PublicIPAddressSKUNameStandard,
 	}
-}
-
-// ToPtr returns a *PublicIPAddressSKUName pointing to the current value.
-func (c PublicIPAddressSKUName) ToPtr() *PublicIPAddressSKUName {
-	return &c
 }
 
 // PublicIPAddressSKUTier - Specify public IP sku tier
@@ -1527,11 +1328,6 @@ func PossiblePublicIPAddressSKUTierValues() []PublicIPAddressSKUTier {
 	}
 }
 
-// ToPtr returns a *PublicIPAddressSKUTier pointing to the current value.
-func (c PublicIPAddressSKUTier) ToPtr() *PublicIPAddressSKUTier {
-	return &c
-}
-
 // PublicIPAllocationMethod - Specify the public IP allocation type
 type PublicIPAllocationMethod string
 
@@ -1546,11 +1342,6 @@ func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 		PublicIPAllocationMethodDynamic,
 		PublicIPAllocationMethodStatic,
 	}
-}
-
-// ToPtr returns a *PublicIPAllocationMethod pointing to the current value.
-func (c PublicIPAllocationMethod) ToPtr() *PublicIPAllocationMethod {
-	return &c
 }
 
 // PublicNetworkAccess - Policy for controlling export on the disk.
@@ -1575,9 +1366,23 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ToPtr returns a *PublicNetworkAccess pointing to the current value.
-func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
-	return &c
+// RepairAction - Type of repair action (replace, restart, reimage) that will be used for repairing unhealthy virtual machines
+// in the scale set. Default value is replace.
+type RepairAction string
+
+const (
+	RepairActionReimage RepairAction = "Reimage"
+	RepairActionReplace RepairAction = "Replace"
+	RepairActionRestart RepairAction = "Restart"
+)
+
+// PossibleRepairActionValues returns the possible values for the RepairAction const type.
+func PossibleRepairActionValues() []RepairAction {
+	return []RepairAction{
+		RepairActionReimage,
+		RepairActionReplace,
+		RepairActionRestart,
+	}
 }
 
 // ReplicationMode - Optional parameter which specifies the mode to be used for replication. This property is not updatable.
@@ -1594,11 +1399,6 @@ func PossibleReplicationModeValues() []ReplicationMode {
 		ReplicationModeFull,
 		ReplicationModeShallow,
 	}
-}
-
-// ToPtr returns a *ReplicationMode pointing to the current value.
-func (c ReplicationMode) ToPtr() *ReplicationMode {
-	return &c
 }
 
 // ReplicationState - This is the regional replication state.
@@ -1621,11 +1421,6 @@ func PossibleReplicationStateValues() []ReplicationState {
 	}
 }
 
-// ToPtr returns a *ReplicationState pointing to the current value.
-func (c ReplicationState) ToPtr() *ReplicationState {
-	return &c
-}
-
 type ReplicationStatusTypes string
 
 const (
@@ -1637,11 +1432,6 @@ func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
 	return []ReplicationStatusTypes{
 		ReplicationStatusTypesReplicationStatus,
 	}
-}
-
-// ToPtr returns a *ReplicationStatusTypes pointing to the current value.
-func (c ReplicationStatusTypes) ToPtr() *ReplicationStatusTypes {
-	return &c
 }
 
 // ResourceIdentityType - The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes
@@ -1666,11 +1456,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ToPtr returns a *ResourceIdentityType pointing to the current value.
-func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
-	return &c
-}
-
 // ResourceSKUCapacityScaleType - The scale type applicable to the sku.
 type ResourceSKUCapacityScaleType string
 
@@ -1689,11 +1474,6 @@ func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType
 	}
 }
 
-// ToPtr returns a *ResourceSKUCapacityScaleType pointing to the current value.
-func (c ResourceSKUCapacityScaleType) ToPtr() *ResourceSKUCapacityScaleType {
-	return &c
-}
-
 // ResourceSKURestrictionsReasonCode - The reason for restriction.
 type ResourceSKURestrictionsReasonCode string
 
@@ -1708,11 +1488,6 @@ func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictions
 		ResourceSKURestrictionsReasonCodeQuotaID,
 		ResourceSKURestrictionsReasonCodeNotAvailableForSubscription,
 	}
-}
-
-// ToPtr returns a *ResourceSKURestrictionsReasonCode pointing to the current value.
-func (c ResourceSKURestrictionsReasonCode) ToPtr() *ResourceSKURestrictionsReasonCode {
-	return &c
 }
 
 // ResourceSKURestrictionsType - The type of restrictions.
@@ -1731,11 +1506,6 @@ func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
 	}
 }
 
-// ToPtr returns a *ResourceSKURestrictionsType pointing to the current value.
-func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
-	return &c
-}
-
 type RestorePointCollectionExpandOptions string
 
 const (
@@ -1749,9 +1519,17 @@ func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectio
 	}
 }
 
-// ToPtr returns a *RestorePointCollectionExpandOptions pointing to the current value.
-func (c RestorePointCollectionExpandOptions) ToPtr() *RestorePointCollectionExpandOptions {
-	return &c
+type RestorePointExpandOptions string
+
+const (
+	RestorePointExpandOptionsInstanceView RestorePointExpandOptions = "instanceView"
+)
+
+// PossibleRestorePointExpandOptionsValues returns the possible values for the RestorePointExpandOptions const type.
+func PossibleRestorePointExpandOptionsValues() []RestorePointExpandOptions {
+	return []RestorePointExpandOptions{
+		RestorePointExpandOptionsInstanceView,
+	}
 }
 
 // RollingUpgradeActionType - The last action performed on the rolling upgrade.
@@ -1768,11 +1546,6 @@ func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 		RollingUpgradeActionTypeStart,
 		RollingUpgradeActionTypeCancel,
 	}
-}
-
-// ToPtr returns a *RollingUpgradeActionType pointing to the current value.
-func (c RollingUpgradeActionType) ToPtr() *RollingUpgradeActionType {
-	return &c
 }
 
 // RollingUpgradeStatusCode - Code indicating the current status of the upgrade.
@@ -1795,29 +1568,40 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 	}
 }
 
-// ToPtr returns a *RollingUpgradeStatusCode pointing to the current value.
-func (c RollingUpgradeStatusCode) ToPtr() *RollingUpgradeStatusCode {
-	return &c
+// SecurityEncryptionTypes - Specifies the EncryptionType of the managed disk.
+// It is set to DiskWithVMGuestState for encryption of the managed disk along with VMGuestState blob, and VMGuestStateOnly
+// for encryption of just the VMGuestState blob.
+// NOTE: It can be set for only Confidential VMs.
+type SecurityEncryptionTypes string
+
+const (
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	SecurityEncryptionTypesVMGuestStateOnly     SecurityEncryptionTypes = "VMGuestStateOnly"
+)
+
+// PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
+func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
+	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
+		SecurityEncryptionTypesVMGuestStateOnly,
+	}
 }
 
-// SecurityTypes - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
-// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+// Default: UefiSettings will not be enabled unless this property is set.
 type SecurityTypes string
 
 const (
-	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+	SecurityTypesConfidentialVM SecurityTypes = "ConfidentialVM"
+	SecurityTypesTrustedLaunch  SecurityTypes = "TrustedLaunch"
 )
 
 // PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return []SecurityTypes{
+		SecurityTypesConfidentialVM,
 		SecurityTypesTrustedLaunch,
 	}
-}
-
-// ToPtr returns a *SecurityTypes pointing to the current value.
-func (c SecurityTypes) ToPtr() *SecurityTypes {
-	return &c
 }
 
 type SelectPermissions string
@@ -1831,11 +1615,6 @@ func PossibleSelectPermissionsValues() []SelectPermissions {
 	return []SelectPermissions{
 		SelectPermissionsPermissions,
 	}
-}
-
-// ToPtr returns a *SelectPermissions pointing to the current value.
-func (c SelectPermissions) ToPtr() *SelectPermissions {
-	return &c
 }
 
 // SettingNames - Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands
@@ -1855,11 +1634,6 @@ func PossibleSettingNamesValues() []SettingNames {
 	}
 }
 
-// ToPtr returns a *SettingNames pointing to the current value.
-func (c SettingNames) ToPtr() *SettingNames {
-	return &c
-}
-
 type SharedToValues string
 
 const (
@@ -1873,19 +1647,16 @@ func PossibleSharedToValuesValues() []SharedToValues {
 	}
 }
 
-// ToPtr returns a *SharedToValues pointing to the current value.
-func (c SharedToValues) ToPtr() *SharedToValues {
-	return &c
-}
-
 // SharingProfileGroupTypes - This property allows you to specify the type of sharing group.
 // Possible values are:
 // Subscriptions
 // AADTenants
+// Community
 type SharingProfileGroupTypes string
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = "AADTenants"
+	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = "Community"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
@@ -1893,13 +1664,29 @@ const (
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAADTenants,
+		SharingProfileGroupTypesCommunity,
 		SharingProfileGroupTypesSubscriptions,
 	}
 }
 
-// ToPtr returns a *SharingProfileGroupTypes pointing to the current value.
-func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
-	return &c
+// SharingState - The sharing state of the gallery, which only appears in the response.
+type SharingState string
+
+const (
+	SharingStateFailed     SharingState = "Failed"
+	SharingStateInProgress SharingState = "InProgress"
+	SharingStateSucceeded  SharingState = "Succeeded"
+	SharingStateUnknown    SharingState = "Unknown"
+)
+
+// PossibleSharingStateValues returns the possible values for the SharingState const type.
+func PossibleSharingStateValues() []SharingState {
+	return []SharingState{
+		SharingStateFailed,
+		SharingStateInProgress,
+		SharingStateSucceeded,
+		SharingStateUnknown,
+	}
 }
 
 // SharingUpdateOperationTypes - This property allows you to specify the operation type of gallery sharing update.
@@ -1910,23 +1697,20 @@ func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
 type SharingUpdateOperationTypes string
 
 const (
-	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = "Add"
-	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = "Remove"
-	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = "Reset"
+	SharingUpdateOperationTypesAdd             SharingUpdateOperationTypes = "Add"
+	SharingUpdateOperationTypesEnableCommunity SharingUpdateOperationTypes = "EnableCommunity"
+	SharingUpdateOperationTypesRemove          SharingUpdateOperationTypes = "Remove"
+	SharingUpdateOperationTypesReset           SharingUpdateOperationTypes = "Reset"
 )
 
 // PossibleSharingUpdateOperationTypesValues returns the possible values for the SharingUpdateOperationTypes const type.
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
 	return []SharingUpdateOperationTypes{
 		SharingUpdateOperationTypesAdd,
+		SharingUpdateOperationTypesEnableCommunity,
 		SharingUpdateOperationTypesRemove,
 		SharingUpdateOperationTypesReset,
 	}
-}
-
-// ToPtr returns a *SharingUpdateOperationTypes pointing to the current value.
-func (c SharingUpdateOperationTypes) ToPtr() *SharingUpdateOperationTypes {
-	return &c
 }
 
 // SnapshotStorageAccountTypes - The sku name.
@@ -1950,11 +1734,6 @@ func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	}
 }
 
-// ToPtr returns a *SnapshotStorageAccountTypes pointing to the current value.
-func (c SnapshotStorageAccountTypes) ToPtr() *SnapshotStorageAccountTypes {
-	return &c
-}
-
 // StatusLevelTypes - The level code.
 type StatusLevelTypes string
 
@@ -1973,11 +1752,6 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	}
 }
 
-// ToPtr returns a *StatusLevelTypes pointing to the current value.
-func (c StatusLevelTypes) ToPtr() *StatusLevelTypes {
-	return &c
-}
-
 // StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable.
 type StorageAccountType string
 
@@ -1994,11 +1768,6 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 		StorageAccountTypeStandardLRS,
 		StorageAccountTypeStandardZRS,
 	}
-}
-
-// ToPtr returns a *StorageAccountType pointing to the current value.
-func (c StorageAccountType) ToPtr() *StorageAccountType {
-	return &c
 }
 
 // StorageAccountTypes - Specifies the storage account type for the managed disk. Managed OS disk storage account type can
@@ -2031,11 +1800,6 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	}
 }
 
-// ToPtr returns a *StorageAccountTypes pointing to the current value.
-func (c StorageAccountTypes) ToPtr() *StorageAccountTypes {
-	return &c
-}
-
 // UpgradeMode - Specifies the mode of an upgrade to virtual machines in the scale set.
 // Possible values are:
 // Manual - You control the application of updates to virtual machines in the scale set. You do this by using the manualUpgrade
@@ -2058,11 +1822,6 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 	}
 }
 
-// ToPtr returns a *UpgradeMode pointing to the current value.
-func (c UpgradeMode) ToPtr() *UpgradeMode {
-	return &c
-}
-
 // UpgradeOperationInvoker - Invoker of the Upgrade Operation
 type UpgradeOperationInvoker string
 
@@ -2079,11 +1838,6 @@ func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
 		UpgradeOperationInvokerUser,
 		UpgradeOperationInvokerPlatform,
 	}
-}
-
-// ToPtr returns a *UpgradeOperationInvoker pointing to the current value.
-func (c UpgradeOperationInvoker) ToPtr() *UpgradeOperationInvoker {
-	return &c
 }
 
 // UpgradeState - Code indicating the current status of the upgrade.
@@ -2106,11 +1860,6 @@ func PossibleUpgradeStateValues() []UpgradeState {
 	}
 }
 
-// ToPtr returns a *UpgradeState pointing to the current value.
-func (c UpgradeState) ToPtr() *UpgradeState {
-	return &c
-}
-
 // VMDiskTypes - VM disk types which are disallowed.
 type VMDiskTypes string
 
@@ -2125,11 +1874,6 @@ func PossibleVMDiskTypesValues() []VMDiskTypes {
 		VMDiskTypesNone,
 		VMDiskTypesUnmanaged,
 	}
-}
-
-// ToPtr returns a *VMDiskTypes pointing to the current value.
-func (c VMDiskTypes) ToPtr() *VMDiskTypes {
-	return &c
 }
 
 type VMGuestPatchClassificationLinux string
@@ -2147,11 +1891,6 @@ func PossibleVMGuestPatchClassificationLinuxValues() []VMGuestPatchClassificatio
 		VMGuestPatchClassificationLinuxOther,
 		VMGuestPatchClassificationLinuxSecurity,
 	}
-}
-
-// ToPtr returns a *VMGuestPatchClassificationLinux pointing to the current value.
-func (c VMGuestPatchClassificationLinux) ToPtr() *VMGuestPatchClassificationLinux {
-	return &c
 }
 
 type VMGuestPatchClassificationWindows string
@@ -2181,11 +1920,6 @@ func PossibleVMGuestPatchClassificationWindowsValues() []VMGuestPatchClassificat
 	}
 }
 
-// ToPtr returns a *VMGuestPatchClassificationWindows pointing to the current value.
-func (c VMGuestPatchClassificationWindows) ToPtr() *VMGuestPatchClassificationWindows {
-	return &c
-}
-
 // VMGuestPatchRebootBehavior - Describes the reboot requirements of the patch.
 type VMGuestPatchRebootBehavior string
 
@@ -2206,11 +1940,6 @@ func PossibleVMGuestPatchRebootBehaviorValues() []VMGuestPatchRebootBehavior {
 	}
 }
 
-// ToPtr returns a *VMGuestPatchRebootBehavior pointing to the current value.
-func (c VMGuestPatchRebootBehavior) ToPtr() *VMGuestPatchRebootBehavior {
-	return &c
-}
-
 // VMGuestPatchRebootSetting - Defines when it is acceptable to reboot a VM during a software update operation.
 type VMGuestPatchRebootSetting string
 
@@ -2227,11 +1956,6 @@ func PossibleVMGuestPatchRebootSettingValues() []VMGuestPatchRebootSetting {
 		VMGuestPatchRebootSettingIfRequired,
 		VMGuestPatchRebootSettingNever,
 	}
-}
-
-// ToPtr returns a *VMGuestPatchRebootSetting pointing to the current value.
-func (c VMGuestPatchRebootSetting) ToPtr() *VMGuestPatchRebootSetting {
-	return &c
 }
 
 // VMGuestPatchRebootStatus - The reboot state of the VM following completion of the operation.
@@ -2258,11 +1982,6 @@ func PossibleVMGuestPatchRebootStatusValues() []VMGuestPatchRebootStatus {
 	}
 }
 
-// ToPtr returns a *VMGuestPatchRebootStatus pointing to the current value.
-func (c VMGuestPatchRebootStatus) ToPtr() *VMGuestPatchRebootStatus {
-	return &c
-}
-
 // VirtualMachineEvictionPolicyTypes - Specifies the eviction policy for the Azure Spot VM/VMSS
 type VirtualMachineEvictionPolicyTypes string
 
@@ -2277,11 +1996,6 @@ func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionP
 		VirtualMachineEvictionPolicyTypesDeallocate,
 		VirtualMachineEvictionPolicyTypesDelete,
 	}
-}
-
-// ToPtr returns a *VirtualMachineEvictionPolicyTypes pointing to the current value.
-func (c VirtualMachineEvictionPolicyTypes) ToPtr() *VirtualMachineEvictionPolicyTypes {
-	return &c
 }
 
 // VirtualMachinePriorityTypes - Specifies the priority for a standalone virtual machine or the virtual machines in the scale
@@ -2304,11 +2018,6 @@ func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
 	}
 }
 
-// ToPtr returns a *VirtualMachinePriorityTypes pointing to the current value.
-func (c VirtualMachinePriorityTypes) ToPtr() *VirtualMachinePriorityTypes {
-	return &c
-}
-
 // VirtualMachineScaleSetSKUScaleType - The scale type applicable to the sku.
 type VirtualMachineScaleSetSKUScaleType string
 
@@ -2323,11 +2032,6 @@ func PossibleVirtualMachineScaleSetSKUScaleTypeValues() []VirtualMachineScaleSet
 		VirtualMachineScaleSetSKUScaleTypeAutomatic,
 		VirtualMachineScaleSetSKUScaleTypeNone,
 	}
-}
-
-// ToPtr returns a *VirtualMachineScaleSetSKUScaleType pointing to the current value.
-func (c VirtualMachineScaleSetSKUScaleType) ToPtr() *VirtualMachineScaleSetSKUScaleType {
-	return &c
 }
 
 type VirtualMachineScaleSetScaleInRules string
@@ -2345,11 +2049,6 @@ func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSet
 		VirtualMachineScaleSetScaleInRulesNewestVM,
 		VirtualMachineScaleSetScaleInRulesOldestVM,
 	}
-}
-
-// ToPtr returns a *VirtualMachineScaleSetScaleInRules pointing to the current value.
-func (c VirtualMachineScaleSetScaleInRules) ToPtr() *VirtualMachineScaleSetScaleInRules {
-	return &c
 }
 
 // VirtualMachineSizeTypes - Specifies the size of the virtual machine.
@@ -2704,11 +2403,6 @@ func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	}
 }
 
-// ToPtr returns a *VirtualMachineSizeTypes pointing to the current value.
-func (c VirtualMachineSizeTypes) ToPtr() *VirtualMachineSizeTypes {
-	return &c
-}
-
 // WindowsPatchAssessmentMode - Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.
 // Possible values are:
 // ImageDefault - You control the timing of patch assessments on a virtual machine.
@@ -2726,11 +2420,6 @@ func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
 		WindowsPatchAssessmentModeAutomaticByPlatform,
 		WindowsPatchAssessmentModeImageDefault,
 	}
-}
-
-// ToPtr returns a *WindowsPatchAssessmentMode pointing to the current value.
-func (c WindowsPatchAssessmentMode) ToPtr() *WindowsPatchAssessmentMode {
-	return &c
 }
 
 // WindowsVMGuestPatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated
@@ -2758,9 +2447,4 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
 	}
-}
-
-// ToPtr returns a *WindowsVMGuestPatchMode pointing to the current value.
-func (c WindowsVMGuestPatchMode) ToPtr() *WindowsVMGuestPatchMode {
-	return &c
 }

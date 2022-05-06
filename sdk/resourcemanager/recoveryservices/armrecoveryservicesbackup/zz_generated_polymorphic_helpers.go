@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -220,17 +220,17 @@ func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (Protect
 		b = &AzureBackupServerContainer{}
 	case string(ContainerTypeAzureSQLContainer):
 		b = &AzureSQLContainer{}
-	case "AzureWorkloadContainer":
+	case string(ContainerTypeAzureWorkloadContainer):
 		b = &AzureWorkloadContainer{}
 	case string(ContainerTypeDPMContainer):
 		b = &DpmContainer{}
 	case string(ContainerTypeGenericContainer):
 		b = &GenericContainer{}
-	case "IaaSVMContainer":
+	case string(ContainerTypeIaasVMContainer):
 		b = &IaaSVMContainer{}
-	case "Microsoft.ClassicCompute/virtualMachines":
+	case string(ContainerTypeMicrosoftClassicComputeVirtualMachines):
 		b = &AzureIaaSClassicComputeVMContainer{}
-	case "Microsoft.Compute/virtualMachines":
+	case string(ContainerTypeMicrosoftComputeVirtualMachines):
 		b = &AzureIaaSComputeVMContainer{}
 	case string(ContainerTypeSQLAGWorkLoadContainer):
 		b = &AzureSQLAGWorkloadContainerProtectionContainer{}
@@ -258,11 +258,11 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 	switch m["protectionIntentItemType"] {
 	case string(ProtectionIntentItemTypeAzureResourceItem):
 		b = &AzureResourceProtectionIntent{}
-	case "AzureWorkloadAutoProtectionIntent":
+	case "ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent":
 		b = &AzureWorkloadAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
 		b = &AzureWorkloadContainerAutoProtectionIntent{}
-	case "AzureWorkloadSQLAutoProtectionIntent":
+	case "ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent":
 		b = &AzureWorkloadSQLAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
 		b = &AzureRecoveryServiceVaultProtectionIntent{}
@@ -412,6 +412,8 @@ func unmarshalSchedulePolicyClassification(rawMsg json.RawMessage) (SchedulePoli
 		b = &LongTermSchedulePolicy{}
 	case "SimpleSchedulePolicy":
 		b = &SimpleSchedulePolicy{}
+	case "SimpleSchedulePolicyV2":
+		b = &SimpleSchedulePolicyV2{}
 	default:
 		b = &SchedulePolicy{}
 	}

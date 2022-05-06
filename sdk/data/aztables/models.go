@@ -6,6 +6,7 @@ package aztables
 import (
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -174,6 +175,7 @@ func fromGeneratedLogging(g *generated.Logging) *Logging {
 	}
 }
 
+// Metrics are the metrics for a Table
 type Metrics struct {
 	// REQUIRED; Indicates whether metrics are enabled for the Table service.
 	Enabled *bool `xml:"Enabled"`
@@ -263,10 +265,20 @@ func toGeneratedAccessPolicy(a *AccessPolicy) *generated.AccessPolicy {
 		return nil
 	}
 
+	expiry := a.Expiry
+	if expiry != nil {
+		expiry = to.Ptr(expiry.UTC())
+	}
+
+	start := a.Start
+	if start != nil {
+		start = to.Ptr(start.UTC())
+	}
+
 	return &generated.AccessPolicy{
-		Expiry:     a.Expiry,
+		Expiry:     expiry,
 		Permission: a.Permission,
-		Start:      a.Start,
+		Start:      start,
 	}
 }
 
@@ -282,6 +294,7 @@ func fromGeneratedAccessPolicy(g *generated.AccessPolicy) *AccessPolicy {
 	}
 }
 
+// GeoReplication represents the GeoReplication status of an account
 type GeoReplication struct {
 	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary.
 	// Primary writes after this point in time may or may
@@ -289,7 +302,7 @@ type GeoReplication struct {
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location.
-	Status *GeoReplicationStatusType `xml:"Status"`
+	Status *GeoReplicationStatus `xml:"Status"`
 }
 
 func fromGeneratedGeoReplication(g *generated.GeoReplication) *GeoReplication {
@@ -303,41 +316,36 @@ func fromGeneratedGeoReplication(g *generated.GeoReplication) *GeoReplication {
 	}
 }
 
-// GeoReplicationStatusType - The status of the secondary location.
-type GeoReplicationStatusType string
+// GeoReplicationStatus - The status of the secondary location.
+type GeoReplicationStatus string
 
 const (
-	GeoReplicationStatusTypeBootstrap   GeoReplicationStatusType = "bootstrap"
-	GeoReplicationStatusTypeLive        GeoReplicationStatusType = "live"
-	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
+	GeoReplicationStatusBootstrap   GeoReplicationStatus = "bootstrap"
+	GeoReplicationStatusLive        GeoReplicationStatus = "live"
+	GeoReplicationStatusUnavailable GeoReplicationStatus = "unavailable"
 )
 
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{
-		GeoReplicationStatusTypeBootstrap,
-		GeoReplicationStatusTypeLive,
-		GeoReplicationStatusTypeUnavailable,
+// PossibleGeoReplicationStatusValues returns the possible values for the GeoReplicationStatus const type.
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
+	return []GeoReplicationStatus{
+		GeoReplicationStatusBootstrap,
+		GeoReplicationStatusLive,
+		GeoReplicationStatusUnavailable,
 	}
 }
 
-// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
-func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
-	return &c
-}
-
-func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicationStatusType {
+func toGeneratedStatusType(g *generated.GeoReplicationStatusType) *GeoReplicationStatus {
 	if g == nil {
 		return nil
 	}
 	if *g == generated.GeoReplicationStatusTypeBootstrap {
-		return GeoReplicationStatusTypeBootstrap.ToPtr()
+		return to.Ptr(GeoReplicationStatusBootstrap)
 	}
 	if *g == generated.GeoReplicationStatusTypeLive {
-		return GeoReplicationStatusTypeLive.ToPtr()
+		return to.Ptr(GeoReplicationStatusLive)
 	}
 	if *g == generated.GeoReplicationStatusTypeUnavailable {
-		return GeoReplicationStatusTypeUnavailable.ToPtr()
+		return to.Ptr(GeoReplicationStatusUnavailable)
 	}
 	return nil
 }

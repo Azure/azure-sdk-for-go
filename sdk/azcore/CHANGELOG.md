@@ -1,15 +1,71 @@
 # Release History
 
-## 0.21.2 (Unreleased)
+## 0.24.0 (Unreleased)
+
+### Features Added
+* Added interface `runtime.PollingHandler` to support custom poller implementations.
+  * Added field `PollingHandler` of this type to `runtime.NewPollerOptions[T]` and `runtime.NewPollerFromResumeTokenOptions[T]`.
+
+### Breaking Changes
+* Renamed `cloud.Configuration.LoginEndpoint` to `.ActiveDirectoryAuthorityHost`
+* Renamed `cloud.AzurePublicCloud` to `cloud.AzurePublic`
+* Removed `AuxiliaryTenants` field from `arm/ClientOptions` and `arm/policy/BearerTokenOptions`
+* Removed `TokenRequestOptions.TenantID`
+* `Poller[T].PollUntilDone()` now takes an `options *PollUntilDoneOptions` param instead of `freq time.Duration`
+* Removed `arm/runtime.Poller[T]`, `arm/runtime.NewPoller[T]()` and `arm/runtime.NewPollerFromResumeToken[T]()`
+* Removed `arm/runtime.FinalStateVia` and related `const` values
+* Renamed `runtime.PageProcessor` to `runtime.PagingHandler`
+* The `arm/runtime.ProviderRepsonse` and `arm/runtime.Provider` types are no longer exported.
+* Renamed `NewRequestIdPolicy()` to `NewRequestIDPolicy()`
+
+### Bugs Fixed
+* When per-try timeouts are enabled, only cancel the context after the body has been read and closed.
+* The `Operation-Location` poller now properly handles `final-state-via` values.
+
+### Other Changes
+* The internal poller implementation has been refactored.
+  * The implementation in `internal/pollers/poller.go` has been merged into `runtime/poller.go` with some slight modification.
+  * The internal poller types had their methods updated to conform to the `runtime.PollingHandler` interface.
+  * The creation of resume tokens has been refactored so that implementers of `runtime.PollingHandler` don't need to know about it.
+
+## 0.23.1 (2022-04-14)
+
+### Bugs Fixed
+* Include XML header when marshalling XML content.
+* Handle XML namespaces when searching for error code.
+* Handle `odata.error` when searching for error code.
+
+## 0.23.0 (2022-04-04)
+
+### Features Added
+* Added `runtime.Pager[T any]` and `runtime.Poller[T any]` supporting types for central, generic, implementations.
+* Added `cloud` package with a new API for cloud configuration
+* Added `FinalStateVia` field to `runtime.NewPollerOptions[T any]` type.
+
+### Breaking Changes
+* Removed the `Poller` type-alias to the internal poller implementation.
+* Added `Ptr[T any]` and `SliceOfPtrs[T any]` in the `to` package and removed all non-generic implementations.
+* `NullValue` and `IsNullValue` now take a generic type parameter instead of an interface func parameter.
+* Replaced `arm.Endpoint` with `cloud` API
+  * Removed the `endpoint` parameter from `NewRPRegistrationPolicy()`
+  * `arm/runtime.NewPipeline()` and `.NewRPRegistrationPolicy()` now return an `error`
+* Refactored `NewPoller` and `NewPollerFromResumeToken` funcs in `arm/runtime` and `runtime` packages.
+  * Removed the `pollerID` parameter as it's no longer required.
+  * Created optional parameter structs and moved optional parameters into them.
+* Changed `FinalStateVia` field to a `const` type.
+
+### Other Changes
+* Converted expiring resource and dependent types to use generics.
+
+## 0.22.0 (2022-03-03)
 
 ### Features Added
 * Added header `WWW-Authenticate` to the default allow-list of headers for logging.
+* Added a pipeline policy that enables the retrieval of HTTP responses from API calls.
+  * Added `runtime.WithCaptureResponse` to enable the policy at the API level (off by default).
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Moved `WithHTTPHeader` and `WithRetryOptions` from the `policy` package to the `runtime` package.
 
 ## 0.21.1 (2022-02-04)
 

@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -76,11 +79,10 @@ func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) 
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-// A SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
+// SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
 // You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
-//
 // This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
 type SASQueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
@@ -116,101 +118,132 @@ type SASQueryParameters struct {
 	seTimeFormat string
 }
 
+// PreauthorizedAgentObjectId returns preauthorizedAgentObjectId
 func (p *SASQueryParameters) PreauthorizedAgentObjectId() string {
 	return p.preauthorizedAgentObjectId
 }
 
+// AgentObjectId returns agentObjectId
 func (p *SASQueryParameters) AgentObjectId() string {
 	return p.agentObjectId
 }
 
+// SignedCorrelationId returns signedCorrelationId
 func (p *SASQueryParameters) SignedCorrelationId() string {
 	return p.correlationId
 }
 
+// SignedTid returns aignedTid
 func (p *SASQueryParameters) SignedTid() string {
 	return p.signedTid
 }
 
+// SignedStart returns signedStart
 func (p *SASQueryParameters) SignedStart() time.Time {
 	return p.signedStart
 }
 
+// SignedExpiry returns signedExpiry
 func (p *SASQueryParameters) SignedExpiry() time.Time {
 	return p.signedExpiry
 }
 
+// SignedService returns signedService
 func (p *SASQueryParameters) SignedService() string {
 	return p.signedService
 }
 
+// SignedVersion returns signedVersion
 func (p *SASQueryParameters) SignedVersion() string {
 	return p.signedVersion
 }
 
+// SnapshotTime returns snapshotTime
 func (p *SASQueryParameters) SnapshotTime() time.Time {
 	return p.snapshotTime
 }
 
+// Version returns version
 func (p *SASQueryParameters) Version() string {
 	return p.version
 }
 
+// Services returns services
 func (p *SASQueryParameters) Services() string {
 	return p.services
 }
+
+// ResourceTypes returns resourceTypes
 func (p *SASQueryParameters) ResourceTypes() string {
 	return p.resourceTypes
 }
+
+// Protocol returns protocol
 func (p *SASQueryParameters) Protocol() SASProtocol {
 	return p.protocol
 }
+
+// StartTime returns startTime
 func (p *SASQueryParameters) StartTime() time.Time {
 	return p.startTime
 }
+
+// ExpiryTime returns expiryTime
 func (p *SASQueryParameters) ExpiryTime() time.Time {
 	return p.expiryTime
 }
 
+// IPRange returns ipRange
 func (p *SASQueryParameters) IPRange() IPRange {
 	return p.ipRange
 }
 
+// Identifier returns identifier
 func (p *SASQueryParameters) Identifier() string {
 	return p.identifier
 }
 
+// Resource returns resource
 func (p *SASQueryParameters) Resource() string {
 	return p.resource
 }
+
+// Permissions returns permissions
 func (p *SASQueryParameters) Permissions() string {
 	return p.permissions
 }
 
+// Signature returns signature
 func (p *SASQueryParameters) Signature() string {
 	return p.signature
 }
 
+// CacheControl returns cacheControl
 func (p *SASQueryParameters) CacheControl() string {
 	return p.cacheControl
 }
 
+// ContentDisposition returns contentDisposition
 func (p *SASQueryParameters) ContentDisposition() string {
 	return p.contentDisposition
 }
 
+// ContentEncoding returns contentEncoding
 func (p *SASQueryParameters) ContentEncoding() string {
 	return p.contentEncoding
 }
 
+// ContentLanguage returns contentLanguage
 func (p *SASQueryParameters) ContentLanguage() string {
 	return p.contentLanguage
 }
 
+// ContentType returns sontentType
 func (p *SASQueryParameters) ContentType() string {
 	return p.contentType
 }
 
+// SignedDirectoryDepth returns signedDirectoryDepth
 func (p *SASQueryParameters) SignedDirectoryDepth() string {
 	return p.signedDirectoryDepth
 }

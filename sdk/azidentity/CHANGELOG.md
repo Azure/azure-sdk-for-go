@@ -1,14 +1,52 @@
 # Release History
 
-## 0.13.2 (Unreleased)
+## 0.15.0 (Unreleased)
 
 ### Features Added
+* `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
+  client ID of a user-assigned managed identity
+  ([#17293](https://github.com/Azure/azure-sdk-for-go/pull/17293))
 
 ### Breaking Changes
+* Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
+  to authenticate a user with the authorization code flow.
+* Instances of `AuthenticationFailedError` are now returned by pointer.
 
 ### Bugs Fixed
+* `AzureCLICredential` panics after receiving an unexpected error type
+  ([#17490](https://github.com/Azure/azure-sdk-for-go/issues/17490))
 
 ### Other Changes
+* `GetToken()` returns an error when the caller specifies no scope
+
+## 0.14.0 (2022-04-05)
+
+### Breaking Changes
+* This module now requires Go 1.18
+* Removed `AuthorityHost`. Credentials are now configured for sovereign or private
+  clouds with the API in `azcore/cloud`, for example:
+  ```go
+  // before
+  opts := azidentity.ClientSecretCredentialOptions{AuthorityHost: azidentity.AzureGovernment}
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+
+  // after
+  import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
+
+  opts := azidentity.ClientSecretCredentialOptions{}
+  opts.Cloud = cloud.AzureGovernment
+  cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, secret, &opts)
+  ```
+
+## 0.13.2 (2022-03-08)
+
+### Bugs Fixed
+* Prevented a data race in `DefaultAzureCredential` and `ChainedTokenCredential`
+  ([#17144](https://github.com/Azure/azure-sdk-for-go/issues/17144))
+
+### Other Changes
+* Upgraded App Service managed identity version from 2017-09-01 to 2019-08-01
+  ([#17086](https://github.com/Azure/azure-sdk-for-go/pull/17086))
 
 ## 0.13.1 (2022-02-08)
 

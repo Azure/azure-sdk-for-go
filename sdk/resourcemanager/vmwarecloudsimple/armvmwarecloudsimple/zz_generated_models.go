@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armvmwarecloudsimple
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // AvailableOperation - Resource provider available operation model
 type AvailableOperation struct {
@@ -80,13 +75,6 @@ type AvailableOperationDisplayPropertyServiceSpecificationMetricsList struct {
 	MetricSpecifications []*AvailableOperationDisplayPropertyServiceSpecificationMetricsItem `json:"metricSpecifications,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailableOperationDisplayPropertyServiceSpecificationMetricsList.
-func (a AvailableOperationDisplayPropertyServiceSpecificationMetricsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "metricSpecifications", a.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
 // AvailableOperationsListResponse - List of available operations
 type AvailableOperationsListResponse struct {
 	// Link for next list of available operations
@@ -94,14 +82,6 @@ type AvailableOperationsListResponse struct {
 
 	// Returns a list of available operations
 	Value []*AvailableOperation `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AvailableOperationsListResponse.
-func (a AvailableOperationsListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // CSRPError - General error model
@@ -123,16 +103,6 @@ type CSRPErrorBody struct {
 
 	// READ-ONLY; Error's message
 	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CSRPErrorBody.
-func (c CSRPErrorBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", c.Code)
-	populate(objectMap, "details", c.Details)
-	populate(objectMap, "message", c.Message)
-	populate(objectMap, "target", c.Target)
-	return json.Marshal(objectMap)
 }
 
 // CustomizationHostName - Host name model
@@ -164,15 +134,6 @@ type CustomizationIPSettings struct {
 
 	// Adapter subnet mask
 	SubnetMask *string `json:"subnetMask,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomizationIPSettings.
-func (c CustomizationIPSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "gateway", c.Gateway)
-	populate(objectMap, "ip", c.IP)
-	populate(objectMap, "subnetMask", c.SubnetMask)
-	return json.Marshal(objectMap)
 }
 
 type CustomizationIdentity struct {
@@ -223,14 +184,6 @@ type CustomizationPoliciesListResponse struct {
 	Value []*CustomizationPolicy `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CustomizationPoliciesListResponse.
-func (c CustomizationPoliciesListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
 // CustomizationPolicy - The virtual machine customization policy
 type CustomizationPolicy struct {
 	// Customization policy azure id
@@ -276,14 +229,6 @@ type CustomizationSpecification struct {
 	NicSettings []*CustomizationNicSetting `json:"nicSettings,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CustomizationSpecification.
-func (c CustomizationSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", c.Identity)
-	populate(objectMap, "nicSettings", c.NicSettings)
-	return json.Marshal(objectMap)
-}
-
 // DedicatedCloudNode - Dedicated cloud node model
 type DedicatedCloudNode struct {
 	// REQUIRED; Azure region
@@ -308,19 +253,6 @@ type DedicatedCloudNode struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudNode.
-func (d DedicatedCloudNode) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "sku", d.SKU)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DedicatedCloudNodeListResponse - List of dedicated nodes response model
 type DedicatedCloudNodeListResponse struct {
 	// Link for next list of DedicatedCloudNode
@@ -328,14 +260,6 @@ type DedicatedCloudNodeListResponse struct {
 
 	// Results of the DedicatedCloudNode list
 	Value []*DedicatedCloudNode `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudNodeListResponse.
-func (d DedicatedCloudNodeListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // DedicatedCloudNodeProperties - Properties of dedicated cloud node
@@ -383,89 +307,11 @@ type DedicatedCloudNodeProperties struct {
 	VmwareClusterName *string `json:"vmwareClusterName,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudNodeProperties.
-func (d DedicatedCloudNodeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityZoneId", d.AvailabilityZoneID)
-	populate(objectMap, "availabilityZoneName", d.AvailabilityZoneName)
-	populate(objectMap, "cloudRackName", d.CloudRackName)
-	populateTimeRFC3339(objectMap, "created", d.Created)
-	populate(objectMap, "nodesCount", d.NodesCount)
-	populate(objectMap, "placementGroupId", d.PlacementGroupID)
-	populate(objectMap, "placementGroupName", d.PlacementGroupName)
-	populate(objectMap, "privateCloudId", d.PrivateCloudID)
-	populate(objectMap, "privateCloudName", d.PrivateCloudName)
-	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populate(objectMap, "purchaseId", d.PurchaseID)
-	populate(objectMap, "skuDescription", d.SKUDescription)
-	populate(objectMap, "status", d.Status)
-	populate(objectMap, "vmwareClusterName", d.VmwareClusterName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DedicatedCloudNodeProperties.
-func (d *DedicatedCloudNodeProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "availabilityZoneId":
-			err = unpopulate(val, &d.AvailabilityZoneID)
-			delete(rawMsg, key)
-		case "availabilityZoneName":
-			err = unpopulate(val, &d.AvailabilityZoneName)
-			delete(rawMsg, key)
-		case "cloudRackName":
-			err = unpopulate(val, &d.CloudRackName)
-			delete(rawMsg, key)
-		case "created":
-			err = unpopulateTimeRFC3339(val, &d.Created)
-			delete(rawMsg, key)
-		case "nodesCount":
-			err = unpopulate(val, &d.NodesCount)
-			delete(rawMsg, key)
-		case "placementGroupId":
-			err = unpopulate(val, &d.PlacementGroupID)
-			delete(rawMsg, key)
-		case "placementGroupName":
-			err = unpopulate(val, &d.PlacementGroupName)
-			delete(rawMsg, key)
-		case "privateCloudId":
-			err = unpopulate(val, &d.PrivateCloudID)
-			delete(rawMsg, key)
-		case "privateCloudName":
-			err = unpopulate(val, &d.PrivateCloudName)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &d.ProvisioningState)
-			delete(rawMsg, key)
-		case "purchaseId":
-			err = unpopulate(val, &d.PurchaseID)
-			delete(rawMsg, key)
-		case "skuDescription":
-			err = unpopulate(val, &d.SKUDescription)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &d.Status)
-			delete(rawMsg, key)
-		case "vmwareClusterName":
-			err = unpopulate(val, &d.VmwareClusterName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DedicatedCloudNodesClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.BeginCreateOrUpdate
 // method.
 type DedicatedCloudNodesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DedicatedCloudNodesClientDeleteOptions contains the optional parameters for the DedicatedCloudNodesClient.Delete method.
@@ -526,18 +372,6 @@ type DedicatedCloudService struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudService.
-func (d DedicatedCloudService) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", d.ID)
-	populate(objectMap, "location", d.Location)
-	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", d.Properties)
-	populate(objectMap, "tags", d.Tags)
-	populate(objectMap, "type", d.Type)
-	return json.Marshal(objectMap)
-}
-
 // DedicatedCloudServiceListResponse - List of dedicated cloud services
 type DedicatedCloudServiceListResponse struct {
 	// Link for next list of DedicatedCloudNode
@@ -545,14 +379,6 @@ type DedicatedCloudServiceListResponse struct {
 
 	// Results of the DedicatedCloudService list
 	Value []*DedicatedCloudService `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DedicatedCloudServiceListResponse.
-func (d DedicatedCloudServiceListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
 }
 
 // DedicatedCloudServiceProperties - Properties of dedicated cloud service
@@ -573,7 +399,8 @@ type DedicatedCloudServiceProperties struct {
 // DedicatedCloudServicesClientBeginDeleteOptions contains the optional parameters for the DedicatedCloudServicesClient.BeginDelete
 // method.
 type DedicatedCloudServicesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // DedicatedCloudServicesClientCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudServicesClient.CreateOrUpdate
@@ -633,17 +460,6 @@ type GuestOSCustomization struct {
 	Username *string `json:"username,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GuestOSCustomization.
-func (g GuestOSCustomization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "dnsServers", g.DNSServers)
-	populate(objectMap, "hostName", g.HostName)
-	populate(objectMap, "password", g.Password)
-	populate(objectMap, "policyId", g.PolicyID)
-	populate(objectMap, "username", g.Username)
-	return json.Marshal(objectMap)
-}
-
 // GuestOSNICCustomization - Guest OS nic customization
 type GuestOSNICCustomization struct {
 	// IP address allocation method
@@ -666,19 +482,6 @@ type GuestOSNICCustomization struct {
 
 	// secondary WINS server for Windows
 	SecondaryWinsServer *string `json:"secondaryWinsServer,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GuestOSNICCustomization.
-func (g GuestOSNICCustomization) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allocation", g.Allocation)
-	populate(objectMap, "dnsServers", g.DNSServers)
-	populate(objectMap, "gateway", g.Gateway)
-	populate(objectMap, "ipAddress", g.IPAddress)
-	populate(objectMap, "mask", g.Mask)
-	populate(objectMap, "primaryWinsServer", g.PrimaryWinsServer)
-	populate(objectMap, "secondaryWinsServer", g.SecondaryWinsServer)
-	return json.Marshal(objectMap)
 }
 
 // OperationError - Operation error model
@@ -711,53 +514,6 @@ type OperationResource struct {
 	Status *string `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResource.
-func (o OperationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "error", o.Error)
-	populate(objectMap, "id", o.ID)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	populate(objectMap, "status", o.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OperationResource.
-func (o *OperationResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
-			delete(rawMsg, key)
-		case "error":
-			err = unpopulate(val, &o.Error)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &o.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &o.Name)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &o.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
 type OperationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -772,13 +528,6 @@ type OperationsClientListOptions struct {
 type PatchPayload struct {
 	// The tags key:value pairs
 	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PatchPayload.
-func (p PatchPayload) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "tags", p.Tags)
-	return json.Marshal(objectMap)
 }
 
 // PrivateCloud - Private cloud model
@@ -806,14 +555,6 @@ type PrivateCloudList struct {
 
 	// the list of private clouds
 	Value []*PrivateCloud `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateCloudList.
-func (p PrivateCloudList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // PrivateCloudProperties - Properties of private
@@ -891,125 +632,6 @@ type PrivateCloudProperties struct {
 	VrOpsEnabled *bool `json:"vrOpsEnabled,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateCloudProperties.
-func (p PrivateCloudProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "availabilityZoneId", p.AvailabilityZoneID)
-	populate(objectMap, "availabilityZoneName", p.AvailabilityZoneName)
-	populate(objectMap, "clustersNumber", p.ClustersNumber)
-	populate(objectMap, "createdBy", p.CreatedBy)
-	populateTimeRFC3339(objectMap, "createdOn", p.CreatedOn)
-	populate(objectMap, "dnsServers", p.DNSServers)
-	populate(objectMap, "expires", p.Expires)
-	populate(objectMap, "nsxType", p.NsxType)
-	populate(objectMap, "placementGroupId", p.PlacementGroupID)
-	populate(objectMap, "placementGroupName", p.PlacementGroupName)
-	populate(objectMap, "privateCloudId", p.PrivateCloudID)
-	populate(objectMap, "resourcePools", p.ResourcePools)
-	populate(objectMap, "state", p.State)
-	populate(objectMap, "totalCpuCores", p.TotalCPUCores)
-	populate(objectMap, "totalNodes", p.TotalNodes)
-	populate(objectMap, "totalRam", p.TotalRAM)
-	populate(objectMap, "totalStorage", p.TotalStorage)
-	populate(objectMap, "type", p.Type)
-	populate(objectMap, "vSphereVersion", p.VSphereVersion)
-	populate(objectMap, "vcenterFqdn", p.VcenterFqdn)
-	populate(objectMap, "vcenterRefid", p.VcenterRefid)
-	populate(objectMap, "virtualMachineTemplates", p.VirtualMachineTemplates)
-	populate(objectMap, "virtualNetworks", p.VirtualNetworks)
-	populate(objectMap, "vrOpsEnabled", p.VrOpsEnabled)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateCloudProperties.
-func (p *PrivateCloudProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "availabilityZoneId":
-			err = unpopulate(val, &p.AvailabilityZoneID)
-			delete(rawMsg, key)
-		case "availabilityZoneName":
-			err = unpopulate(val, &p.AvailabilityZoneName)
-			delete(rawMsg, key)
-		case "clustersNumber":
-			err = unpopulate(val, &p.ClustersNumber)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &p.CreatedBy)
-			delete(rawMsg, key)
-		case "createdOn":
-			err = unpopulateTimeRFC3339(val, &p.CreatedOn)
-			delete(rawMsg, key)
-		case "dnsServers":
-			err = unpopulate(val, &p.DNSServers)
-			delete(rawMsg, key)
-		case "expires":
-			err = unpopulate(val, &p.Expires)
-			delete(rawMsg, key)
-		case "nsxType":
-			err = unpopulate(val, &p.NsxType)
-			delete(rawMsg, key)
-		case "placementGroupId":
-			err = unpopulate(val, &p.PlacementGroupID)
-			delete(rawMsg, key)
-		case "placementGroupName":
-			err = unpopulate(val, &p.PlacementGroupName)
-			delete(rawMsg, key)
-		case "privateCloudId":
-			err = unpopulate(val, &p.PrivateCloudID)
-			delete(rawMsg, key)
-		case "resourcePools":
-			err = unpopulate(val, &p.ResourcePools)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, &p.State)
-			delete(rawMsg, key)
-		case "totalCpuCores":
-			err = unpopulate(val, &p.TotalCPUCores)
-			delete(rawMsg, key)
-		case "totalNodes":
-			err = unpopulate(val, &p.TotalNodes)
-			delete(rawMsg, key)
-		case "totalRam":
-			err = unpopulate(val, &p.TotalRAM)
-			delete(rawMsg, key)
-		case "totalStorage":
-			err = unpopulate(val, &p.TotalStorage)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &p.Type)
-			delete(rawMsg, key)
-		case "vSphereVersion":
-			err = unpopulate(val, &p.VSphereVersion)
-			delete(rawMsg, key)
-		case "vcenterFqdn":
-			err = unpopulate(val, &p.VcenterFqdn)
-			delete(rawMsg, key)
-		case "vcenterRefid":
-			err = unpopulate(val, &p.VcenterRefid)
-			delete(rawMsg, key)
-		case "virtualMachineTemplates":
-			err = unpopulate(val, &p.VirtualMachineTemplates)
-			delete(rawMsg, key)
-		case "virtualNetworks":
-			err = unpopulate(val, &p.VirtualNetworks)
-			delete(rawMsg, key)
-		case "vrOpsEnabled":
-			err = unpopulate(val, &p.VrOpsEnabled)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
 type PrivateCloudsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1064,14 +686,6 @@ type ResourcePoolsListResponse struct {
 
 	// Results of the Resource pools list
 	Value []*ResourcePool `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourcePoolsListResponse.
-func (r ResourcePoolsListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // SKU - The purchase SKU for CloudSimple paid resources
@@ -1129,14 +743,6 @@ type SKUAvailabilityListResponse struct {
 	Value []*SKUAvailability `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SKUAvailabilityListResponse.
-func (s SKUAvailabilityListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SKUDescription - The purchase SKU for CloudSimple paid resources
 type SKUDescription struct {
 	// REQUIRED; SKU's id
@@ -1175,14 +781,6 @@ type UsageListResponse struct {
 
 	// READ-ONLY; The list of usages
 	Value []*Usage `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type UsageListResponse.
-func (u UsageListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", u.NextLink)
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
 }
 
 // UsageName - User name model
@@ -1254,18 +852,6 @@ type VirtualMachine struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
-func (v VirtualMachine) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "location", v.Location)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "tags", v.Tags)
-	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineListResponse - List of virtual machines
 type VirtualMachineListResponse struct {
 	// Link for next list of VirtualMachines
@@ -1273,14 +859,6 @@ type VirtualMachineListResponse struct {
 
 	// Results of the VirtualMachine list
 	Value []*VirtualMachine `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineListResponse.
-func (v VirtualMachineListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VirtualMachineProperties - Properties of virtual machine
@@ -1352,34 +930,6 @@ type VirtualMachineProperties struct {
 	Vmwaretools *string `json:"vmwaretools,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineProperties.
-func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "amountOfRam", v.AmountOfRAM)
-	populate(objectMap, "controllers", v.Controllers)
-	populate(objectMap, "customization", v.Customization)
-	populate(objectMap, "disks", v.Disks)
-	populate(objectMap, "dnsname", v.Dnsname)
-	populate(objectMap, "exposeToGuestVM", v.ExposeToGuestVM)
-	populate(objectMap, "folder", v.Folder)
-	populate(objectMap, "guestOS", v.GuestOS)
-	populate(objectMap, "guestOSType", v.GuestOSType)
-	populate(objectMap, "nics", v.Nics)
-	populate(objectMap, "numberOfCores", v.NumberOfCores)
-	populate(objectMap, "password", v.Password)
-	populate(objectMap, "privateCloudId", v.PrivateCloudID)
-	populate(objectMap, "provisioningState", v.ProvisioningState)
-	populate(objectMap, "publicIP", v.PublicIP)
-	populate(objectMap, "resourcePool", v.ResourcePool)
-	populate(objectMap, "status", v.Status)
-	populate(objectMap, "templateId", v.TemplateID)
-	populate(objectMap, "username", v.Username)
-	populate(objectMap, "vmId", v.VMID)
-	populate(objectMap, "vSphereNetworks", v.VSphereNetworks)
-	populate(objectMap, "vmwaretools", v.Vmwaretools)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineStopMode - List of virtual machine stop modes
 type VirtualMachineStopMode struct {
 	// mode indicates a type of stop operation - reboot, suspend, shutdown or power-off
@@ -1411,14 +961,6 @@ type VirtualMachineTemplateListResponse struct {
 
 	// Results of the VM template list
 	Value []*VirtualMachineTemplate `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateListResponse.
-func (v VirtualMachineTemplateListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // VirtualMachineTemplateProperties - Properties of virtual machine template
@@ -1466,26 +1008,6 @@ type VirtualMachineTemplateProperties struct {
 	Vmwaretools *string `json:"vmwaretools,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateProperties.
-func (v VirtualMachineTemplateProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "amountOfRam", v.AmountOfRAM)
-	populate(objectMap, "controllers", v.Controllers)
-	populate(objectMap, "description", v.Description)
-	populate(objectMap, "disks", v.Disks)
-	populate(objectMap, "exposeToGuestVM", v.ExposeToGuestVM)
-	populate(objectMap, "guestOS", v.GuestOS)
-	populate(objectMap, "guestOSType", v.GuestOSType)
-	populate(objectMap, "nics", v.Nics)
-	populate(objectMap, "numberOfCores", v.NumberOfCores)
-	populate(objectMap, "path", v.Path)
-	populate(objectMap, "privateCloudId", v.PrivateCloudID)
-	populate(objectMap, "vSphereNetworks", v.VSphereNetworks)
-	populate(objectMap, "vSphereTags", v.VSphereTags)
-	populate(objectMap, "vmwaretools", v.Vmwaretools)
-	return json.Marshal(objectMap)
-}
-
 // VirtualMachineTemplatesClientGetOptions contains the optional parameters for the VirtualMachineTemplatesClient.Get method.
 type VirtualMachineTemplatesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -1499,17 +1021,20 @@ type VirtualMachineTemplatesClientListOptions struct {
 // VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
 // method.
 type VirtualMachinesClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete method.
 type VirtualMachinesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart method.
 type VirtualMachinesClientBeginStartOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop method.
@@ -1518,11 +1043,14 @@ type VirtualMachinesClientBeginStopOptions struct {
 	M *VirtualMachineStopMode
 	// query stop mode parameter (reboot, shutdown, etc…)
 	Mode *StopMode
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate method.
 type VirtualMachinesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
@@ -1582,14 +1110,6 @@ type VirtualNetworkListResponse struct {
 	Value []*VirtualNetwork `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkListResponse.
-func (v VirtualNetworkListResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // VirtualNetworkProperties - Properties of virtual network
 type VirtualNetworkProperties struct {
 	// READ-ONLY; The Private Cloud id
@@ -1631,35 +1151,4 @@ type VirtualNic struct {
 
 	// READ-ONLY; NIC name
 	VirtualNicName *string `json:"virtualNicName,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNic.
-func (v VirtualNic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customization", v.Customization)
-	populate(objectMap, "ipAddresses", v.IPAddresses)
-	populate(objectMap, "macAddress", v.MacAddress)
-	populate(objectMap, "network", v.Network)
-	populate(objectMap, "nicType", v.NicType)
-	populate(objectMap, "powerOnBoot", v.PowerOnBoot)
-	populate(objectMap, "virtualNicId", v.VirtualNicID)
-	populate(objectMap, "virtualNicName", v.VirtualNicName)
-	return json.Marshal(objectMap)
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

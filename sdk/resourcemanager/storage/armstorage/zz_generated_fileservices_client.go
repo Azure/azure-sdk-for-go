@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type FileServicesClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *FileServicesClient {
+func NewFileServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileServicesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := options.Endpoint
-	if len(ep) == 0 {
-		ep = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &FileServicesClient{
 		subscriptionID: subscriptionID,
-		host:           string(ep),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // GetServiceProperties - Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource
@@ -93,7 +98,7 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -101,7 +106,7 @@ func (client *FileServicesClient) getServicePropertiesCreateRequest(ctx context.
 
 // getServicePropertiesHandleResponse handles the GetServiceProperties response.
 func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (FileServicesClientGetServicePropertiesResponse, error) {
-	result := FileServicesClientGetServicePropertiesResponse{RawResponse: resp}
+	result := FileServicesClientGetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
 		return FileServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -149,7 +154,7 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -157,7 +162,7 @@ func (client *FileServicesClient) listCreateRequest(ctx context.Context, resourc
 
 // listHandleResponse handles the List response.
 func (client *FileServicesClient) listHandleResponse(resp *http.Response) (FileServicesClientListResponse, error) {
-	result := FileServicesClientListResponse{RawResponse: resp}
+	result := FileServicesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceItems); err != nil {
 		return FileServicesClientListResponse{}, err
 	}
@@ -209,7 +214,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-01")
+	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -217,7 +222,7 @@ func (client *FileServicesClient) setServicePropertiesCreateRequest(ctx context.
 
 // setServicePropertiesHandleResponse handles the SetServiceProperties response.
 func (client *FileServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (FileServicesClientSetServicePropertiesResponse, error) {
-	result := FileServicesClientSetServicePropertiesResponse{RawResponse: resp}
+	result := FileServicesClientSetServicePropertiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileServiceProperties); err != nil {
 		return FileServicesClientSetServicePropertiesResponse{}, err
 	}

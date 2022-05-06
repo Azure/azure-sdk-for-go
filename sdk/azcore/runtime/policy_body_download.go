@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
@@ -29,7 +29,7 @@ func bodyDownloadPolicy(req *policy.Request) (*http.Response, error) {
 	}
 	// Either bodyDownloadPolicyOpValues was not specified (so skip is false)
 	// or it was specified and skip is false: don't skip downloading the body
-	_, err = shared.Payload(resp)
+	_, err = exported.Payload(resp)
 	if err != nil {
 		return resp, newBodyDownloadError(err, req)
 	}

@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,7 @@
 
 package armpolicy
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
 
 // Alias - The alias type.
 type Alias struct {
@@ -36,18 +31,6 @@ type Alias struct {
 	DefaultMetadata *AliasPathMetadata `json:"defaultMetadata,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Alias.
-func (a Alias) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultMetadata", a.DefaultMetadata)
-	populate(objectMap, "defaultPath", a.DefaultPath)
-	populate(objectMap, "defaultPattern", a.DefaultPattern)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "paths", a.Paths)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AliasPath - The type of the paths for alias.
 type AliasPath struct {
 	// The API versions.
@@ -61,16 +44,6 @@ type AliasPath struct {
 
 	// READ-ONLY; The metadata of the alias path. If missing, fall back to the default metadata of the alias.
 	Metadata *AliasPathMetadata `json:"metadata,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AliasPath.
-func (a AliasPath) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "apiVersions", a.APIVersions)
-	populate(objectMap, "metadata", a.Metadata)
-	populate(objectMap, "path", a.Path)
-	populate(objectMap, "pattern", a.Pattern)
-	return json.Marshal(objectMap)
 }
 
 type AliasPathMetadata struct {
@@ -126,14 +99,6 @@ type AssignmentListResult struct {
 	Value []*Assignment `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentListResult.
-func (a AssignmentListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // AssignmentProperties - The policy assignment properties.
 type AssignmentProperties struct {
 	// This message will be part of response in case of policy violation.
@@ -164,35 +129,12 @@ type AssignmentProperties struct {
 	Scope *string `json:"scope,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssignmentProperties.
-func (a AssignmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", a.Description)
-	populate(objectMap, "displayName", a.DisplayName)
-	populate(objectMap, "enforcementMode", a.EnforcementMode)
-	populate(objectMap, "metadata", &a.Metadata)
-	populate(objectMap, "nonComplianceMessages", a.NonComplianceMessages)
-	populate(objectMap, "notScopes", a.NotScopes)
-	populate(objectMap, "parameters", a.Parameters)
-	populate(objectMap, "policyDefinitionId", a.PolicyDefinitionID)
-	populate(objectMap, "scope", a.Scope)
-	return json.Marshal(objectMap)
-}
-
 type AssignmentUpdate struct {
 	// The managed identity associated with the policy assignment.
 	Identity *Identity `json:"identity,omitempty"`
 
 	// The location of the policy assignment. Only required when utilizing managed identity.
 	Location *string `json:"location,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssignmentUpdate.
-func (a AssignmentUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	return json.Marshal(objectMap)
 }
 
 // AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
@@ -293,6 +235,13 @@ type AssignmentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CloudError - An error response from a policy operation.
+type CloudError struct {
+	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
+	// the OData error response format.)
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
 // DataEffect - The data effect definition.
 type DataEffect struct {
 	// The data effect details schema.
@@ -319,16 +268,6 @@ type DataManifestCustomResourceFunctionDefinition struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataManifestCustomResourceFunctionDefinition.
-func (d DataManifestCustomResourceFunctionDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowCustomProperties", d.AllowCustomProperties)
-	populate(objectMap, "defaultProperties", d.DefaultProperties)
-	populate(objectMap, "fullyQualifiedResourceType", d.FullyQualifiedResourceType)
-	populate(objectMap, "name", d.Name)
-	return json.Marshal(objectMap)
-}
-
 // DataManifestResourceFunctionsDefinition - The resource functions supported by a manifest
 type DataManifestResourceFunctionsDefinition struct {
 	// An array of data manifest custom resource definition.
@@ -336,14 +275,6 @@ type DataManifestResourceFunctionsDefinition struct {
 
 	// The standard resource functions (subscription and/or resourceGroup).
 	Standard []*string `json:"standard,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataManifestResourceFunctionsDefinition.
-func (d DataManifestResourceFunctionsDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "custom", d.Custom)
-	populate(objectMap, "standard", d.Standard)
-	return json.Marshal(objectMap)
 }
 
 // DataPolicyManifest - The data policy manifest.
@@ -370,14 +301,6 @@ type DataPolicyManifestListResult struct {
 	Value []*DataPolicyManifest `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataPolicyManifestListResult.
-func (d DataPolicyManifestListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DataPolicyManifestProperties - The properties of the data policy manifest.
 type DataPolicyManifestProperties struct {
 	// The effect definition.
@@ -400,19 +323,6 @@ type DataPolicyManifestProperties struct {
 
 	// An array of resource type aliases.
 	ResourceTypeAliases []*ResourceTypeAliases `json:"resourceTypeAliases,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataPolicyManifestProperties.
-func (d DataPolicyManifestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "effects", d.Effects)
-	populate(objectMap, "fieldValues", d.FieldValues)
-	populate(objectMap, "isBuiltInOnly", d.IsBuiltInOnly)
-	populate(objectMap, "namespaces", d.Namespaces)
-	populate(objectMap, "policyMode", d.PolicyMode)
-	populate(objectMap, "resourceFunctions", d.ResourceFunctions)
-	populate(objectMap, "resourceTypeAliases", d.ResourceTypeAliases)
-	return json.Marshal(objectMap)
 }
 
 // DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
@@ -474,14 +384,6 @@ type DefinitionListResult struct {
 	Value []*Definition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DefinitionListResult.
-func (d DefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
 // DefinitionProperties - The policy definition properties.
 type DefinitionProperties struct {
 	// The policy definition description.
@@ -506,19 +408,6 @@ type DefinitionProperties struct {
 	PolicyType *PolicyType `json:"policyType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DefinitionProperties.
-func (d DefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", d.Description)
-	populate(objectMap, "displayName", d.DisplayName)
-	populate(objectMap, "metadata", &d.Metadata)
-	populate(objectMap, "mode", d.Mode)
-	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "policyRule", &d.PolicyRule)
-	populate(objectMap, "policyType", d.PolicyType)
-	return json.Marshal(objectMap)
-}
-
 // DefinitionReference - The policy definition reference.
 type DefinitionReference struct {
 	// REQUIRED; The ID of the policy definition or policy set definition.
@@ -532,16 +421,6 @@ type DefinitionReference struct {
 
 	// A unique id (within the policy set definition) for this policy definition reference.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DefinitionReference.
-func (d DefinitionReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupNames", d.GroupNames)
-	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "policyDefinitionId", d.PolicyDefinitionID)
-	populate(objectMap, "policyDefinitionReferenceId", d.PolicyDefinitionReferenceID)
-	return json.Marshal(objectMap)
 }
 
 // DefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdateAtManagementGroup
@@ -625,6 +504,34 @@ type DefinitionsClientListOptions struct {
 	Top *int32
 }
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
+type ErrorResponse struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error details.
+	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error message.
+	Message *string `json:"message,omitempty" azure:"ro"`
+
+	// READ-ONLY; The error target.
+	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
 // Exemption - The policy exemption.
 type Exemption struct {
 	// REQUIRED; Properties for the policy exemption.
@@ -652,14 +559,6 @@ type ExemptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExemptionListResult.
-func (e ExemptionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // ExemptionProperties - The policy exemption properties.
 type ExemptionProperties struct {
 	// REQUIRED; The policy exemption category. Possible values are Waiver and Mitigated.
@@ -682,57 +581,6 @@ type ExemptionProperties struct {
 
 	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
 	PolicyDefinitionReferenceIDs []*string `json:"policyDefinitionReferenceIds,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ExemptionProperties.
-func (e ExemptionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", e.Description)
-	populate(objectMap, "displayName", e.DisplayName)
-	populate(objectMap, "exemptionCategory", e.ExemptionCategory)
-	populateTimeRFC3339(objectMap, "expiresOn", e.ExpiresOn)
-	populate(objectMap, "metadata", &e.Metadata)
-	populate(objectMap, "policyAssignmentId", e.PolicyAssignmentID)
-	populate(objectMap, "policyDefinitionReferenceIds", e.PolicyDefinitionReferenceIDs)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ExemptionProperties.
-func (e *ExemptionProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "description":
-			err = unpopulate(val, &e.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &e.DisplayName)
-			delete(rawMsg, key)
-		case "exemptionCategory":
-			err = unpopulate(val, &e.ExemptionCategory)
-			delete(rawMsg, key)
-		case "expiresOn":
-			err = unpopulateTimeRFC3339(val, &e.ExpiresOn)
-			delete(rawMsg, key)
-		case "metadata":
-			err = unpopulate(val, &e.Metadata)
-			delete(rawMsg, key)
-		case "policyAssignmentId":
-			err = unpopulate(val, &e.PolicyAssignmentID)
-			delete(rawMsg, key)
-		case "policyDefinitionReferenceIds":
-			err = unpopulate(val, &e.PolicyDefinitionReferenceIDs)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // ExemptionsClientCreateOrUpdateOptions contains the optional parameters for the ExemptionsClient.CreateOrUpdate method.
@@ -834,16 +682,6 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Identity.
-func (i Identity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
-}
-
 // NonComplianceMessage - A message that describes why a resource is non-compliant with the policy. This is shown in 'deny'
 // error messages and on resource's non-compliant compliance results.
 type NonComplianceMessage struct {
@@ -872,16 +710,6 @@ type ParameterDefinitionsValue struct {
 	Type *ParameterType `json:"type,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ParameterDefinitionsValue.
-func (p ParameterDefinitionsValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedValues", p.AllowedValues)
-	populate(objectMap, "defaultValue", &p.DefaultValue)
-	populate(objectMap, "metadata", p.Metadata)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
 // ParameterDefinitionsValueMetadata - General metadata for the parameter.
 type ParameterDefinitionsValueMetadata struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
@@ -903,60 +731,6 @@ type ParameterDefinitionsValueMetadata struct {
 	StrongType *string `json:"strongType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ParameterDefinitionsValueMetadata.
-func (p ParameterDefinitionsValueMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assignPermissions", p.AssignPermissions)
-	populate(objectMap, "description", p.Description)
-	populate(objectMap, "displayName", p.DisplayName)
-	populate(objectMap, "strongType", p.StrongType)
-	if p.AdditionalProperties != nil {
-		for key, val := range p.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ParameterDefinitionsValueMetadata.
-func (p *ParameterDefinitionsValueMetadata) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "assignPermissions":
-			err = unpopulate(val, &p.AssignPermissions)
-			delete(rawMsg, key)
-		case "description":
-			err = unpopulate(val, &p.Description)
-			delete(rawMsg, key)
-		case "displayName":
-			err = unpopulate(val, &p.DisplayName)
-			delete(rawMsg, key)
-		case "strongType":
-			err = unpopulate(val, &p.StrongType)
-			delete(rawMsg, key)
-		default:
-			if p.AdditionalProperties == nil {
-				p.AdditionalProperties = map[string]interface{}{}
-			}
-			if val != nil {
-				var aux interface{}
-				err = json.Unmarshal(val, &aux)
-				p.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ParameterValuesValue - The value of a parameter.
 type ParameterValuesValue struct {
 	// The value of the parameter.
@@ -970,14 +744,6 @@ type ResourceTypeAliases struct {
 
 	// The resource type name.
 	ResourceType *string `json:"resourceType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeAliases.
-func (r ResourceTypeAliases) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aliases", r.Aliases)
-	populate(objectMap, "resourceType", r.ResourceType)
-	return json.Marshal(objectMap)
 }
 
 // SetDefinition - The policy set definition.
@@ -1007,14 +773,6 @@ type SetDefinitionListResult struct {
 	Value []*SetDefinition `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SetDefinitionListResult.
-func (s SetDefinitionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
 // SetDefinitionProperties - The policy set definition properties.
 type SetDefinitionProperties struct {
 	// REQUIRED; An array of policy definition references.
@@ -1037,19 +795,6 @@ type SetDefinitionProperties struct {
 
 	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
 	PolicyType *PolicyType `json:"policyType,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SetDefinitionProperties.
-func (s SetDefinitionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "description", s.Description)
-	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "metadata", &s.Metadata)
-	populate(objectMap, "parameters", s.Parameters)
-	populate(objectMap, "policyDefinitionGroups", s.PolicyDefinitionGroups)
-	populate(objectMap, "policyDefinitions", s.PolicyDefinitions)
-	populate(objectMap, "policyType", s.PolicyType)
-	return json.Marshal(objectMap)
 }
 
 // SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.CreateOrUpdateAtManagementGroup
@@ -1155,74 +900,10 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type UserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

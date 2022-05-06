@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,7 @@ package armsubscription
 
 const (
 	moduleName    = "armsubscription"
-	moduleVersion = "v0.2.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AcceptOwnership - The accept ownership state of the resource.
@@ -29,11 +29,6 @@ func PossibleAcceptOwnershipValues() []AcceptOwnership {
 		AcceptOwnershipExpired,
 		AcceptOwnershipPending,
 	}
-}
-
-// ToPtr returns a *AcceptOwnership pointing to the current value.
-func (c AcceptOwnership) ToPtr() *AcceptOwnership {
-	return &c
 }
 
 // CreatedByType - The type of identity that created the resource.
@@ -56,11 +51,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
-	return &c
-}
-
 // ProvisioningState - The provisioning state of the resource.
 type ProvisioningState string
 
@@ -79,11 +69,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// ToPtr returns a *ProvisioningState pointing to the current value.
-func (c ProvisioningState) ToPtr() *ProvisioningState {
-	return &c
-}
-
 // SpendingLimit - The subscription spending limit.
 type SpendingLimit string
 
@@ -100,11 +85,6 @@ func PossibleSpendingLimitValues() []SpendingLimit {
 		SpendingLimitOff,
 		SpendingLimitCurrentPeriodOff,
 	}
-}
-
-// ToPtr returns a *SpendingLimit pointing to the current value.
-func (c SpendingLimit) ToPtr() *SpendingLimit {
-	return &c
 }
 
 // SubscriptionState - The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
@@ -129,11 +109,6 @@ func PossibleSubscriptionStateValues() []SubscriptionState {
 	}
 }
 
-// ToPtr returns a *SubscriptionState pointing to the current value.
-func (c SubscriptionState) ToPtr() *SubscriptionState {
-	return &c
-}
-
 // Workload - The workload type of the subscription. It can be either Production or DevTest.
 type Workload string
 
@@ -148,9 +123,4 @@ func PossibleWorkloadValues() []Workload {
 		WorkloadDevTest,
 		WorkloadProduction,
 	}
-}
-
-// ToPtr returns a *Workload pointing to the current value.
-func (c Workload) ToPtr() *Workload {
-	return &c
 }

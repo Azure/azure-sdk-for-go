@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,20 +35,24 @@ type SoftwareUpdateConfigurationsClient struct {
 // forms part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SoftwareUpdateConfigurationsClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareUpdateConfigurationsClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &SoftwareUpdateConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // Create - Create a new software update configuration with the name given in the URI.
@@ -108,7 +113,7 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 
 // createHandleResponse handles the Create response.
 func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientCreateResponse, error) {
-	result := SoftwareUpdateConfigurationsClientCreateResponse{RawResponse: resp}
+	result := SoftwareUpdateConfigurationsClientCreateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
@@ -134,7 +139,7 @@ func (client *SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, re
 	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return SoftwareUpdateConfigurationsClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return SoftwareUpdateConfigurationsClientDeleteResponse{RawResponse: resp}, nil
+	return SoftwareUpdateConfigurationsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -227,7 +232,7 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 
 // getByNameHandleResponse handles the GetByName response.
 func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientGetByNameResponse, error) {
-	result := SoftwareUpdateConfigurationsClientGetByNameResponse{RawResponse: resp}
+	result := SoftwareUpdateConfigurationsClientGetByNameResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
@@ -289,7 +294,7 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 
 // listHandleResponse handles the List response.
 func (client *SoftwareUpdateConfigurationsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientListResponse, error) {
-	result := SoftwareUpdateConfigurationsClientListResponse{RawResponse: resp}
+	result := SoftwareUpdateConfigurationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationListResult); err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}

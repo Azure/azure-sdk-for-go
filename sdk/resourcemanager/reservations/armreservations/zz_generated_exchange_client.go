@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -28,41 +29,41 @@ type ExchangeClient struct {
 // NewExchangeClient creates a new instance of ExchangeClient with the specified values.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ExchangeClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExchangeClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ExchangeClient{
-		host: string(cp.Endpoint),
-		pl:   armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host: ep,
+		pl:   pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginPost - Returns one or more Reservations in exchange for one or more Reservation purchases.
 // If the operation fails it returns an *azcore.ResponseError type.
 // body - Request containing the refunds and purchases that need to be executed.
 // options - ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
-func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (ExchangeClientPostPollerResponse, error) {
-	resp, err := client.post(ctx, body, options)
-	if err != nil {
-		return ExchangeClientPostPollerResponse{}, err
+func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*armruntime.Poller[ExchangeClientPostResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.post(ctx, body, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ExchangeClientPostResponse]{
+			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		})
+	} else {
+		return armruntime.NewPollerFromResumeToken[ExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ExchangeClientPostPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ExchangeClient.Post", "azure-async-operation", resp, client.pl)
-	if err != nil {
-		return ExchangeClientPostPollerResponse{}, err
-	}
-	result.Poller = &ExchangeClientPostPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // Post - Returns one or more Reservations in exchange for one or more Reservation purchases.
@@ -90,7 +91,7 @@ func (client *ExchangeClient) postCreateRequest(ctx context.Context, body Exchan
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, body)

@@ -13,7 +13,7 @@ import (
 func Run(remainingArgs []string) {
 	onBadCommand := func() {
 		fmt.Printf("ERROR: missing tool name\n")
-		fmt.Printf("Usage: stress tools (delete)\n")
+		fmt.Printf("Usage: stress tools (delete|constantupdate|tempqueue|generatesas)\n")
 		os.Exit(1)
 	}
 
@@ -30,6 +30,8 @@ func Run(remainingArgs []string) {
 		ec = ConstantlyUpdateQueue(remainingArgs[1:])
 	case "tempqueue":
 		ec = CreateTempQueue(remainingArgs[1:])
+	case "generatesas":
+		ec = GenerateSas(remainingArgs[1:])
 	default:
 		onBadCommand()
 	}

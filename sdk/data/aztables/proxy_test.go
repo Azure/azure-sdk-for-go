@@ -144,7 +144,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 	require.NoError(t, err)
 
 	if createTable {
-		_, err = client.Create(ctx, nil)
+		_, err = client.CreateTable(ctx, nil)
 		require.NoError(t, err)
 	}
 
@@ -268,15 +268,18 @@ func createRandomName(t *testing.T, prefix string) (string, error) {
 }
 
 func clearAllTables(service *ServiceClient) error {
-	pager := service.ListTables(nil)
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	pager := service.NewListTablesPager(nil)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		if err != nil {
+			return err
+		}
 		for _, v := range resp.Tables {
-			_, err := service.DeleteTable(ctx, *v.TableName, nil)
+			_, err := service.DeleteTable(ctx, *v.Name, nil)
 			if err != nil {
 				return err
 			}
 		}
 	}
-	return pager.Err()
+	return nil
 }

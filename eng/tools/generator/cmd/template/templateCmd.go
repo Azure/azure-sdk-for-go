@@ -60,7 +60,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.String("package-config", "", "Additional config for package")
-	flagSet.String("go-version", "1.16", "Go version")
+	flagSet.String("go-version", "1.18", "Go version")
 }
 
 // ParseFlags parses the flags to a Flags struct

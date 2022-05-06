@@ -63,8 +63,8 @@ stages:
                     ReleaseSha: $(Build.SourceVersion)
                     RepoId: Azure/azure-sdk-for-go
                     WorkingDirectory: $(System.DefaultWorkingDirectory)
-
-      - ${{ if not(startsWith(parameters.ServiceDirectory, 'resourcemanager')) }}:
+      
+      - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))

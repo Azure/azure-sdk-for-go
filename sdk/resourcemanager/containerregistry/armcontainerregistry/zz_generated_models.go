@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,12 +8,24 @@
 
 package armcontainerregistry
 
-import (
-	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"reflect"
-	"time"
-)
+import "time"
+
+// ActivationProperties - The activation properties of the connected registry.
+type ActivationProperties struct {
+	// READ-ONLY; The activation status of the connected registry.
+	Status *ActivationStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// ActiveDirectoryObject - The Active Directory Object that will be used for authenticating the token of a container registry.
+type ActiveDirectoryObject struct {
+	// The user/group/application object ID for Active Directory Object that will be used for authenticating the token of a container
+	// registry.
+	ObjectID *string `json:"objectId,omitempty"`
+
+	// The tenant ID of user/group/application object Active Directory Object that will be used for authenticating the token of
+	// a container registry.
+	TenantID *string `json:"tenantId,omitempty"`
+}
 
 // Actor - The agent that initiated the event. For most situations, this could be from the authorization context of the request.
 type Actor struct {
@@ -46,19 +58,6 @@ type AgentPool struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AgentPool.
-func (a AgentPool) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "systemData", a.SystemData)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
 // AgentPoolListResult - The collection of agent pools.
 type AgentPoolListResult struct {
 	// The URI that can be used to request the next set of paged results.
@@ -66,14 +65,6 @@ type AgentPoolListResult struct {
 
 	// The collection value.
 	Value []*AgentPool `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AgentPoolListResult.
-func (a AgentPoolListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
 }
 
 // AgentPoolProperties - The properties of agent pool.
@@ -114,27 +105,22 @@ type AgentPoolUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AgentPoolUpdateParameters.
-func (a AgentPoolUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
 // AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
 type AgentPoolsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
 type AgentPoolsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
 type AgentPoolsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
@@ -269,12 +255,133 @@ type CallbackConfig struct {
 	CustomHeaders map[string]*string `json:"customHeaders,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CallbackConfig.
-func (c CallbackConfig) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customHeaders", c.CustomHeaders)
-	populate(objectMap, "serviceUri", c.ServiceURI)
-	return json.Marshal(objectMap)
+// ConnectedRegistriesClientBeginCreateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginCreate
+// method.
+type ConnectedRegistriesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedRegistriesClientBeginDeactivateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDeactivate
+// method.
+type ConnectedRegistriesClientBeginDeactivateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedRegistriesClientBeginDeleteOptions contains the optional parameters for the ConnectedRegistriesClient.BeginDelete
+// method.
+type ConnectedRegistriesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedRegistriesClientBeginUpdateOptions contains the optional parameters for the ConnectedRegistriesClient.BeginUpdate
+// method.
+type ConnectedRegistriesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ConnectedRegistriesClientGetOptions contains the optional parameters for the ConnectedRegistriesClient.Get method.
+type ConnectedRegistriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.List method.
+type ConnectedRegistriesClientListOptions struct {
+	// An OData filter expression that describes a subset of connectedRegistries to return. The parameters that can be filtered
+	// are parent.id (the resource id of the connectedRegistry parent), mode, and
+	// connectionState. The supported operator is eq.
+	Filter *string
+}
+
+// ConnectedRegistry - An object that represents a connected registry for a container registry.
+type ConnectedRegistry struct {
+	// The properties of the connected registry.
+	Properties *ConnectedRegistryProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ConnectedRegistryListResult - The result of a request to list connected registries for a container registry.
+type ConnectedRegistryListResult struct {
+	// The URI that can be used to request the next list of connected registries.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of connected registries. Since this list may be incomplete, the nextLink field should be used to request the next
+	// list of connected registries.
+	Value []*ConnectedRegistry `json:"value,omitempty"`
+}
+
+// ConnectedRegistryProperties - The properties of a connected registry.
+type ConnectedRegistryProperties struct {
+	// REQUIRED; The mode of the connected registry resource that indicates the permissions of the registry.
+	Mode *ConnectedRegistryMode `json:"mode,omitempty"`
+
+	// REQUIRED; The parent of the connected registry.
+	Parent *ParentProperties `json:"parent,omitempty"`
+
+	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
+	ClientTokenIDs []*string `json:"clientTokenIds,omitempty"`
+
+	// The logging properties of the connected registry.
+	Logging *LoggingProperties `json:"logging,omitempty"`
+
+	// The login server properties of the connected registry.
+	LoginServer *LoginServerProperties `json:"loginServer,omitempty"`
+
+	// The list of notifications subscription information for the connected registry.
+	NotificationsList []*string `json:"notificationsList,omitempty"`
+
+	// READ-ONLY; The activation properties of the connected registry.
+	Activation *ActivationProperties `json:"activation,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current connection state of the connected registry.
+	ConnectionState *ConnectionState `json:"connectionState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The last activity time of the connected registry.
+	LastActivityTime *time.Time `json:"lastActivityTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The list of current statuses of the connected registry.
+	StatusDetails []*StatusDetailProperties `json:"statusDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current version of ACR runtime on the connected registry.
+	Version *string `json:"version,omitempty" azure:"ro"`
+}
+
+// ConnectedRegistryUpdateParameters - The parameters for updating a connected registry.
+type ConnectedRegistryUpdateParameters struct {
+	// The properties of the connected registry update parameters.
+	Properties *ConnectedRegistryUpdateProperties `json:"properties,omitempty"`
+}
+
+// ConnectedRegistryUpdateProperties - The parameters for updating token properties.
+type ConnectedRegistryUpdateProperties struct {
+	// The list of the ACR token resource IDs used to authenticate clients to the connected registry.
+	ClientTokenIDs []*string `json:"clientTokenIds,omitempty"`
+
+	// The logging properties of the connected registry.
+	Logging *LoggingProperties `json:"logging,omitempty"`
+
+	// The list of notifications subscription information for the connected registry.
+	NotificationsList []*string `json:"notificationsList,omitempty"`
+
+	// The sync properties of the connected registry with its parent.
+	SyncProperties *SyncUpdateProperties `json:"syncProperties,omitempty"`
 }
 
 // Credentials - The parameters that describes a set of credentials that will be used when a run is invoked.
@@ -286,14 +393,6 @@ type Credentials struct {
 
 	// Describes the credential parameters for accessing the source registry.
 	SourceRegistry *SourceRegistryCredentials `json:"sourceRegistry,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Credentials.
-func (c Credentials) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "customRegistries", c.CustomRegistries)
-	populate(objectMap, "sourceRegistry", c.SourceRegistry)
-	return json.Marshal(objectMap)
 }
 
 // CustomRegistryCredentials - Describes the credentials that will be used to access a custom registry during a run.
@@ -362,99 +461,6 @@ type DockerBuildRequest struct {
 	Timeout *int32 `json:"timeout,omitempty"`
 }
 
-// GetRunRequest implements the RunRequestClassification interface for type DockerBuildRequest.
-func (d *DockerBuildRequest) GetRunRequest() *RunRequest {
-	return &RunRequest{
-		Type:             d.Type,
-		IsArchiveEnabled: d.IsArchiveEnabled,
-		AgentPoolName:    d.AgentPoolName,
-		LogTemplate:      d.LogTemplate,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DockerBuildRequest.
-func (d DockerBuildRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", d.AgentConfiguration)
-	populate(objectMap, "agentPoolName", d.AgentPoolName)
-	populate(objectMap, "arguments", d.Arguments)
-	populate(objectMap, "credentials", d.Credentials)
-	populate(objectMap, "dockerFilePath", d.DockerFilePath)
-	populate(objectMap, "imageNames", d.ImageNames)
-	populate(objectMap, "isArchiveEnabled", d.IsArchiveEnabled)
-	populate(objectMap, "isPushEnabled", d.IsPushEnabled)
-	populate(objectMap, "logTemplate", d.LogTemplate)
-	populate(objectMap, "noCache", d.NoCache)
-	populate(objectMap, "platform", d.Platform)
-	populate(objectMap, "sourceLocation", d.SourceLocation)
-	populate(objectMap, "target", d.Target)
-	populate(objectMap, "timeout", d.Timeout)
-	objectMap["type"] = "DockerBuildRequest"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DockerBuildRequest.
-func (d *DockerBuildRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &d.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &d.AgentPoolName)
-			delete(rawMsg, key)
-		case "arguments":
-			err = unpopulate(val, &d.Arguments)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, &d.Credentials)
-			delete(rawMsg, key)
-		case "dockerFilePath":
-			err = unpopulate(val, &d.DockerFilePath)
-			delete(rawMsg, key)
-		case "imageNames":
-			err = unpopulate(val, &d.ImageNames)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &d.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "isPushEnabled":
-			err = unpopulate(val, &d.IsPushEnabled)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &d.LogTemplate)
-			delete(rawMsg, key)
-		case "noCache":
-			err = unpopulate(val, &d.NoCache)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &d.Platform)
-			delete(rawMsg, key)
-		case "sourceLocation":
-			err = unpopulate(val, &d.SourceLocation)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &d.Target)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &d.Timeout)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DockerBuildStep - The Docker build step.
 type DockerBuildStep struct {
 	// REQUIRED; The Docker file path relative to the source context.
@@ -488,79 +494,6 @@ type DockerBuildStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
-// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type DockerBuildStep.
-func (d *DockerBuildStep) GetTaskStepProperties() *TaskStepProperties {
-	return &TaskStepProperties{
-		Type:                  d.Type,
-		BaseImageDependencies: d.BaseImageDependencies,
-		ContextPath:           d.ContextPath,
-		ContextAccessToken:    d.ContextAccessToken,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DockerBuildStep.
-func (d DockerBuildStep) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", d.Arguments)
-	populate(objectMap, "baseImageDependencies", d.BaseImageDependencies)
-	populate(objectMap, "contextAccessToken", d.ContextAccessToken)
-	populate(objectMap, "contextPath", d.ContextPath)
-	populate(objectMap, "dockerFilePath", d.DockerFilePath)
-	populate(objectMap, "imageNames", d.ImageNames)
-	populate(objectMap, "isPushEnabled", d.IsPushEnabled)
-	populate(objectMap, "noCache", d.NoCache)
-	populate(objectMap, "target", d.Target)
-	objectMap["type"] = StepTypeDocker
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DockerBuildStep.
-func (d *DockerBuildStep) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "arguments":
-			err = unpopulate(val, &d.Arguments)
-			delete(rawMsg, key)
-		case "baseImageDependencies":
-			err = unpopulate(val, &d.BaseImageDependencies)
-			delete(rawMsg, key)
-		case "contextAccessToken":
-			err = unpopulate(val, &d.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &d.ContextPath)
-			delete(rawMsg, key)
-		case "dockerFilePath":
-			err = unpopulate(val, &d.DockerFilePath)
-			delete(rawMsg, key)
-		case "imageNames":
-			err = unpopulate(val, &d.ImageNames)
-			delete(rawMsg, key)
-		case "isPushEnabled":
-			err = unpopulate(val, &d.IsPushEnabled)
-			delete(rawMsg, key)
-		case "noCache":
-			err = unpopulate(val, &d.NoCache)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &d.Target)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // DockerBuildStepUpdateParameters - The properties for updating a docker build step.
 type DockerBuildStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -589,74 +522,6 @@ type DockerBuildStepUpdateParameters struct {
 
 	// The name of the target build stage for the docker build.
 	Target *string `json:"target,omitempty"`
-}
-
-// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type DockerBuildStepUpdateParameters.
-func (d *DockerBuildStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
-	return &TaskStepUpdateParameters{
-		Type:               d.Type,
-		ContextPath:        d.ContextPath,
-		ContextAccessToken: d.ContextAccessToken,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DockerBuildStepUpdateParameters.
-func (d DockerBuildStepUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", d.Arguments)
-	populate(objectMap, "contextAccessToken", d.ContextAccessToken)
-	populate(objectMap, "contextPath", d.ContextPath)
-	populate(objectMap, "dockerFilePath", d.DockerFilePath)
-	populate(objectMap, "imageNames", d.ImageNames)
-	populate(objectMap, "isPushEnabled", d.IsPushEnabled)
-	populate(objectMap, "noCache", d.NoCache)
-	populate(objectMap, "target", d.Target)
-	objectMap["type"] = StepTypeDocker
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DockerBuildStepUpdateParameters.
-func (d *DockerBuildStepUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "arguments":
-			err = unpopulate(val, &d.Arguments)
-			delete(rawMsg, key)
-		case "contextAccessToken":
-			err = unpopulate(val, &d.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &d.ContextPath)
-			delete(rawMsg, key)
-		case "dockerFilePath":
-			err = unpopulate(val, &d.DockerFilePath)
-			delete(rawMsg, key)
-		case "imageNames":
-			err = unpopulate(val, &d.ImageNames)
-			delete(rawMsg, key)
-		case "isPushEnabled":
-			err = unpopulate(val, &d.IsPushEnabled)
-			delete(rawMsg, key)
-		case "noCache":
-			err = unpopulate(val, &d.NoCache)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &d.Target)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &d.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // EncodedTaskRunRequest - The parameters for a quick task run request.
@@ -699,87 +564,6 @@ type EncodedTaskRunRequest struct {
 	Values []*SetValue `json:"values,omitempty"`
 }
 
-// GetRunRequest implements the RunRequestClassification interface for type EncodedTaskRunRequest.
-func (e *EncodedTaskRunRequest) GetRunRequest() *RunRequest {
-	return &RunRequest{
-		Type:             e.Type,
-		IsArchiveEnabled: e.IsArchiveEnabled,
-		AgentPoolName:    e.AgentPoolName,
-		LogTemplate:      e.LogTemplate,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncodedTaskRunRequest.
-func (e EncodedTaskRunRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", e.AgentConfiguration)
-	populate(objectMap, "agentPoolName", e.AgentPoolName)
-	populate(objectMap, "credentials", e.Credentials)
-	populate(objectMap, "encodedTaskContent", e.EncodedTaskContent)
-	populate(objectMap, "encodedValuesContent", e.EncodedValuesContent)
-	populate(objectMap, "isArchiveEnabled", e.IsArchiveEnabled)
-	populate(objectMap, "logTemplate", e.LogTemplate)
-	populate(objectMap, "platform", e.Platform)
-	populate(objectMap, "sourceLocation", e.SourceLocation)
-	populate(objectMap, "timeout", e.Timeout)
-	objectMap["type"] = "EncodedTaskRunRequest"
-	populate(objectMap, "values", e.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncodedTaskRunRequest.
-func (e *EncodedTaskRunRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &e.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &e.AgentPoolName)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, &e.Credentials)
-			delete(rawMsg, key)
-		case "encodedTaskContent":
-			err = unpopulate(val, &e.EncodedTaskContent)
-			delete(rawMsg, key)
-		case "encodedValuesContent":
-			err = unpopulate(val, &e.EncodedValuesContent)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &e.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &e.LogTemplate)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &e.Platform)
-			delete(rawMsg, key)
-		case "sourceLocation":
-			err = unpopulate(val, &e.SourceLocation)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &e.Timeout)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &e.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EncodedTaskStep - The properties of a encoded task step.
 type EncodedTaskStep struct {
 	// REQUIRED; Base64 encoded value of the template/definition file content.
@@ -804,67 +588,6 @@ type EncodedTaskStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
-// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type EncodedTaskStep.
-func (e *EncodedTaskStep) GetTaskStepProperties() *TaskStepProperties {
-	return &TaskStepProperties{
-		Type:                  e.Type,
-		BaseImageDependencies: e.BaseImageDependencies,
-		ContextPath:           e.ContextPath,
-		ContextAccessToken:    e.ContextAccessToken,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncodedTaskStep.
-func (e EncodedTaskStep) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "baseImageDependencies", e.BaseImageDependencies)
-	populate(objectMap, "contextAccessToken", e.ContextAccessToken)
-	populate(objectMap, "contextPath", e.ContextPath)
-	populate(objectMap, "encodedTaskContent", e.EncodedTaskContent)
-	populate(objectMap, "encodedValuesContent", e.EncodedValuesContent)
-	objectMap["type"] = StepTypeEncodedTask
-	populate(objectMap, "values", e.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncodedTaskStep.
-func (e *EncodedTaskStep) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "baseImageDependencies":
-			err = unpopulate(val, &e.BaseImageDependencies)
-			delete(rawMsg, key)
-		case "contextAccessToken":
-			err = unpopulate(val, &e.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &e.ContextPath)
-			delete(rawMsg, key)
-		case "encodedTaskContent":
-			err = unpopulate(val, &e.EncodedTaskContent)
-			delete(rawMsg, key)
-		case "encodedValuesContent":
-			err = unpopulate(val, &e.EncodedValuesContent)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &e.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EncodedTaskStepUpdateParameters - The properties for updating encoded task step.
 type EncodedTaskStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -884,62 +607,6 @@ type EncodedTaskStepUpdateParameters struct {
 
 	// The collection of overridable values that can be passed when running a task.
 	Values []*SetValue `json:"values,omitempty"`
-}
-
-// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type EncodedTaskStepUpdateParameters.
-func (e *EncodedTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
-	return &TaskStepUpdateParameters{
-		Type:               e.Type,
-		ContextPath:        e.ContextPath,
-		ContextAccessToken: e.ContextAccessToken,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EncodedTaskStepUpdateParameters.
-func (e EncodedTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contextAccessToken", e.ContextAccessToken)
-	populate(objectMap, "contextPath", e.ContextPath)
-	populate(objectMap, "encodedTaskContent", e.EncodedTaskContent)
-	populate(objectMap, "encodedValuesContent", e.EncodedValuesContent)
-	objectMap["type"] = StepTypeEncodedTask
-	populate(objectMap, "values", e.Values)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EncodedTaskStepUpdateParameters.
-func (e *EncodedTaskStepUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "contextAccessToken":
-			err = unpopulate(val, &e.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &e.ContextPath)
-			delete(rawMsg, key)
-		case "encodedTaskContent":
-			err = unpopulate(val, &e.EncodedTaskContent)
-			delete(rawMsg, key)
-		case "encodedValuesContent":
-			err = unpopulate(val, &e.EncodedValuesContent)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &e.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &e.Values)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 type EncryptionProperty struct {
@@ -969,16 +636,6 @@ type ErrorResponseBody struct {
 
 	// target of the particular error.
 	Target *string `json:"target,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBody.
-func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // Event - The event for a webhook.
@@ -1018,57 +675,6 @@ type EventContent struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventContent.
-func (e EventContent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "action", e.Action)
-	populate(objectMap, "actor", e.Actor)
-	populate(objectMap, "id", e.ID)
-	populate(objectMap, "request", e.Request)
-	populate(objectMap, "source", e.Source)
-	populate(objectMap, "target", e.Target)
-	populateTimeRFC3339(objectMap, "timestamp", e.Timestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type EventContent.
-func (e *EventContent) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "action":
-			err = unpopulate(val, &e.Action)
-			delete(rawMsg, key)
-		case "actor":
-			err = unpopulate(val, &e.Actor)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, &e.ID)
-			delete(rawMsg, key)
-		case "request":
-			err = unpopulate(val, &e.Request)
-			delete(rawMsg, key)
-		case "source":
-			err = unpopulate(val, &e.Source)
-			delete(rawMsg, key)
-		case "target":
-			err = unpopulate(val, &e.Target)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &e.Timestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // EventInfo - The basic information of an event.
 type EventInfo struct {
 	// The event ID.
@@ -1082,14 +688,6 @@ type EventListResult struct {
 
 	// The list of events. Since this list may be incomplete, the nextLink field should be used to request the next list of events.
 	Value []*Event `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EventListResult.
-func (e EventListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
 }
 
 // EventRequestMessage - The event request message sent to the service URI.
@@ -1110,17 +708,6 @@ type EventRequestMessage struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventRequestMessage.
-func (e EventRequestMessage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "content", e.Content)
-	populate(objectMap, "headers", e.Headers)
-	populate(objectMap, "method", e.Method)
-	populate(objectMap, "requestUri", e.RequestURI)
-	populate(objectMap, "version", e.Version)
-	return json.Marshal(objectMap)
-}
-
 // EventResponseMessage - The event response message received from the service URI.
 type EventResponseMessage struct {
 	// The content of the event response message.
@@ -1139,15 +726,86 @@ type EventResponseMessage struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EventResponseMessage.
-func (e EventResponseMessage) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "content", e.Content)
-	populate(objectMap, "headers", e.Headers)
-	populate(objectMap, "reasonPhrase", e.ReasonPhrase)
-	populate(objectMap, "statusCode", e.StatusCode)
-	populate(objectMap, "version", e.Version)
-	return json.Marshal(objectMap)
+// ExportPipeline - An object that represents an export pipeline for a container registry.
+type ExportPipeline struct {
+	// The identity of the export pipeline.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+
+	// The location of the export pipeline.
+	Location *string `json:"location,omitempty"`
+
+	// The properties of the export pipeline.
+	Properties *ExportPipelineProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ExportPipelineListResult - The result of a request to list export pipelines for a container registry.
+type ExportPipelineListResult struct {
+	// The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of export pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
+	// list of export pipelines.
+	Value []*ExportPipeline `json:"value,omitempty"`
+}
+
+// ExportPipelineProperties - The properties of an export pipeline.
+type ExportPipelineProperties struct {
+	// REQUIRED; The target properties of the export pipeline.
+	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
+
+	// The list of all options configured for the pipeline.
+	Options []*PipelineOptions `json:"options,omitempty"`
+
+	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ExportPipelineTargetProperties - The properties of the export pipeline target.
+type ExportPipelineTargetProperties struct {
+	// REQUIRED; They key vault secret uri to obtain the target storage SAS token.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+
+	// The type of target for the export pipeline.
+	Type *string `json:"type,omitempty"`
+
+	// The target uri of the export pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
+	// When 'AzureStorageBlobContainer':
+	// "https://accountName.blob.core.windows.net/containerName"
+	URI *string `json:"uri,omitempty"`
+}
+
+// ExportPipelinesClientBeginCreateOptions contains the optional parameters for the ExportPipelinesClient.BeginCreate method.
+type ExportPipelinesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExportPipelinesClientBeginDeleteOptions contains the optional parameters for the ExportPipelinesClient.BeginDelete method.
+type ExportPipelinesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ExportPipelinesClientGetOptions contains the optional parameters for the ExportPipelinesClient.Get method.
+type ExportPipelinesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExportPipelinesClientListOptions contains the optional parameters for the ExportPipelinesClient.List method.
+type ExportPipelinesClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ExportPolicy - The export policy for a container registry.
@@ -1196,87 +854,6 @@ type FileTaskRunRequest struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 }
 
-// GetRunRequest implements the RunRequestClassification interface for type FileTaskRunRequest.
-func (f *FileTaskRunRequest) GetRunRequest() *RunRequest {
-	return &RunRequest{
-		Type:             f.Type,
-		IsArchiveEnabled: f.IsArchiveEnabled,
-		AgentPoolName:    f.AgentPoolName,
-		LogTemplate:      f.LogTemplate,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileTaskRunRequest.
-func (f FileTaskRunRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", f.AgentConfiguration)
-	populate(objectMap, "agentPoolName", f.AgentPoolName)
-	populate(objectMap, "credentials", f.Credentials)
-	populate(objectMap, "isArchiveEnabled", f.IsArchiveEnabled)
-	populate(objectMap, "logTemplate", f.LogTemplate)
-	populate(objectMap, "platform", f.Platform)
-	populate(objectMap, "sourceLocation", f.SourceLocation)
-	populate(objectMap, "taskFilePath", f.TaskFilePath)
-	populate(objectMap, "timeout", f.Timeout)
-	objectMap["type"] = "FileTaskRunRequest"
-	populate(objectMap, "values", f.Values)
-	populate(objectMap, "valuesFilePath", f.ValuesFilePath)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FileTaskRunRequest.
-func (f *FileTaskRunRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &f.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &f.AgentPoolName)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, &f.Credentials)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &f.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &f.LogTemplate)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &f.Platform)
-			delete(rawMsg, key)
-		case "sourceLocation":
-			err = unpopulate(val, &f.SourceLocation)
-			delete(rawMsg, key)
-		case "taskFilePath":
-			err = unpopulate(val, &f.TaskFilePath)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &f.Timeout)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &f.Values)
-			delete(rawMsg, key)
-		case "valuesFilePath":
-			err = unpopulate(val, &f.ValuesFilePath)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FileTaskStep - The properties of a task step.
 type FileTaskStep struct {
 	// REQUIRED; The task template/definition file path relative to the source context.
@@ -1301,67 +878,6 @@ type FileTaskStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
-// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type FileTaskStep.
-func (f *FileTaskStep) GetTaskStepProperties() *TaskStepProperties {
-	return &TaskStepProperties{
-		Type:                  f.Type,
-		BaseImageDependencies: f.BaseImageDependencies,
-		ContextPath:           f.ContextPath,
-		ContextAccessToken:    f.ContextAccessToken,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileTaskStep.
-func (f FileTaskStep) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "baseImageDependencies", f.BaseImageDependencies)
-	populate(objectMap, "contextAccessToken", f.ContextAccessToken)
-	populate(objectMap, "contextPath", f.ContextPath)
-	populate(objectMap, "taskFilePath", f.TaskFilePath)
-	objectMap["type"] = StepTypeFileTask
-	populate(objectMap, "values", f.Values)
-	populate(objectMap, "valuesFilePath", f.ValuesFilePath)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type FileTaskStep.
-func (f *FileTaskStep) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "baseImageDependencies":
-			err = unpopulate(val, &f.BaseImageDependencies)
-			delete(rawMsg, key)
-		case "contextAccessToken":
-			err = unpopulate(val, &f.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &f.ContextPath)
-			delete(rawMsg, key)
-		case "taskFilePath":
-			err = unpopulate(val, &f.TaskFilePath)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &f.Values)
-			delete(rawMsg, key)
-		case "valuesFilePath":
-			err = unpopulate(val, &f.ValuesFilePath)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // FileTaskStepUpdateParameters - The properties of updating a task step.
 type FileTaskStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -1383,60 +899,26 @@ type FileTaskStepUpdateParameters struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 }
 
-// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type FileTaskStepUpdateParameters.
-func (f *FileTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
-	return &TaskStepUpdateParameters{
-		Type:               f.Type,
-		ContextPath:        f.ContextPath,
-		ContextAccessToken: f.ContextAccessToken,
-	}
+// GenerateCredentialsParameters - The parameters used to generate credentials for a specified token or user of a container
+// registry.
+type GenerateCredentialsParameters struct {
+	// The expiry date of the generated credentials after which the credentials become invalid.
+	Expiry *time.Time `json:"expiry,omitempty"`
+
+	// Specifies name of the password which should be regenerated if any -- password1 or password2.
+	Name *TokenPasswordName `json:"name,omitempty"`
+
+	// The resource ID of the token for which credentials have to be generated.
+	TokenID *string `json:"tokenId,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type FileTaskStepUpdateParameters.
-func (f FileTaskStepUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contextAccessToken", f.ContextAccessToken)
-	populate(objectMap, "contextPath", f.ContextPath)
-	populate(objectMap, "taskFilePath", f.TaskFilePath)
-	objectMap["type"] = StepTypeFileTask
-	populate(objectMap, "values", f.Values)
-	populate(objectMap, "valuesFilePath", f.ValuesFilePath)
-	return json.Marshal(objectMap)
-}
+// GenerateCredentialsResult - The response from the GenerateCredentials operation.
+type GenerateCredentialsResult struct {
+	// The list of passwords for a container registry.
+	Passwords []*TokenPassword `json:"passwords,omitempty"`
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type FileTaskStepUpdateParameters.
-func (f *FileTaskStepUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "contextAccessToken":
-			err = unpopulate(val, &f.ContextAccessToken)
-			delete(rawMsg, key)
-		case "contextPath":
-			err = unpopulate(val, &f.ContextPath)
-			delete(rawMsg, key)
-		case "taskFilePath":
-			err = unpopulate(val, &f.TaskFilePath)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &f.Type)
-			delete(rawMsg, key)
-		case "values":
-			err = unpopulate(val, &f.Values)
-			delete(rawMsg, key)
-		case "valuesFilePath":
-			err = unpopulate(val, &f.ValuesFilePath)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	// The username for a container registry.
+	Username *string `json:"username,omitempty"`
 }
 
 // IPRule - IP rule with specific IP or IP range in CIDR format.
@@ -1463,16 +945,6 @@ type IdentityProperties struct {
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IdentityProperties.
-func (i IdentityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "principalId", i.PrincipalID)
-	populate(objectMap, "tenantId", i.TenantID)
-	populate(objectMap, "type", i.Type)
-	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
-	return json.Marshal(objectMap)
 }
 
 // ImageDescriptor - Properties for a registry image.
@@ -1502,41 +974,6 @@ type ImageUpdateTrigger struct {
 	Timestamp *time.Time `json:"timestamp,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImageUpdateTrigger.
-func (i ImageUpdateTrigger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", i.ID)
-	populate(objectMap, "images", i.Images)
-	populateTimeRFC3339(objectMap, "timestamp", i.Timestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ImageUpdateTrigger.
-func (i *ImageUpdateTrigger) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &i.ID)
-			delete(rawMsg, key)
-		case "images":
-			err = unpopulate(val, &i.Images)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &i.Timestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type ImportImageParameters struct {
 	// REQUIRED; The source of the image.
 	Source *ImportSource `json:"source,omitempty"`
@@ -1553,14 +990,89 @@ type ImportImageParameters struct {
 	UntaggedTargetRepositories []*string `json:"untaggedTargetRepositories,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ImportImageParameters.
-func (i ImportImageParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "mode", i.Mode)
-	populate(objectMap, "source", i.Source)
-	populate(objectMap, "targetTags", i.TargetTags)
-	populate(objectMap, "untaggedTargetRepositories", i.UntaggedTargetRepositories)
-	return json.Marshal(objectMap)
+// ImportPipeline - An object that represents an import pipeline for a container registry.
+type ImportPipeline struct {
+	// The identity of the import pipeline.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+
+	// The location of the import pipeline.
+	Location *string `json:"location,omitempty"`
+
+	// The properties of the import pipeline.
+	Properties *ImportPipelineProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ImportPipelineListResult - The result of a request to list import pipelines for a container registry.
+type ImportPipelineListResult struct {
+	// The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of import pipelines. Since this list may be incomplete, the nextLink field should be used to request the next
+	// list of import pipelines.
+	Value []*ImportPipeline `json:"value,omitempty"`
+}
+
+// ImportPipelineProperties - The properties of an import pipeline.
+type ImportPipelineProperties struct {
+	// REQUIRED; The source properties of the import pipeline.
+	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
+
+	// The list of all options configured for the pipeline.
+	Options []*PipelineOptions `json:"options,omitempty"`
+
+	// The properties that describe the trigger of the import pipeline.
+	Trigger *PipelineTriggerProperties `json:"trigger,omitempty"`
+
+	// READ-ONLY; The provisioning state of the pipeline at the time the operation was called.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// ImportPipelineSourceProperties - The properties of the import pipeline source.
+type ImportPipelineSourceProperties struct {
+	// REQUIRED; They key vault secret uri to obtain the source storage SAS token.
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+
+	// The type of source for the import pipeline.
+	Type *PipelineSourceType `json:"type,omitempty"`
+
+	// The source uri of the import pipeline. When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
+	// When 'AzureStorageBlobContainer':
+	// "https://accountName.blob.core.windows.net/containerName"
+	URI *string `json:"uri,omitempty"`
+}
+
+// ImportPipelinesClientBeginCreateOptions contains the optional parameters for the ImportPipelinesClient.BeginCreate method.
+type ImportPipelinesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ImportPipelinesClientBeginDeleteOptions contains the optional parameters for the ImportPipelinesClient.BeginDelete method.
+type ImportPipelinesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ImportPipelinesClientGetOptions contains the optional parameters for the ImportPipelinesClient.Get method.
+type ImportPipelinesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ImportPipelinesClientListOptions contains the optional parameters for the ImportPipelinesClient.List method.
+type ImportPipelinesClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 type ImportSource struct {
@@ -1616,47 +1128,22 @@ type KeyVaultProperties struct {
 	VersionedKeyIdentifier *string `json:"versionedKeyIdentifier,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type KeyVaultProperties.
-func (k KeyVaultProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", k.Identity)
-	populate(objectMap, "keyIdentifier", k.KeyIdentifier)
-	populate(objectMap, "keyRotationEnabled", k.KeyRotationEnabled)
-	populateTimeRFC3339(objectMap, "lastKeyRotationTimestamp", k.LastKeyRotationTimestamp)
-	populate(objectMap, "versionedKeyIdentifier", k.VersionedKeyIdentifier)
-	return json.Marshal(objectMap)
+// LoggingProperties - The logging properties of the connected registry.
+type LoggingProperties struct {
+	// Indicates whether audit logs are enabled on the connected registry.
+	AuditLogStatus *AuditLogStatus `json:"auditLogStatus,omitempty"`
+
+	// The verbosity of logs persisted on the connected registry.
+	LogLevel *LogLevel `json:"logLevel,omitempty"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type KeyVaultProperties.
-func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, &k.Identity)
-			delete(rawMsg, key)
-		case "keyIdentifier":
-			err = unpopulate(val, &k.KeyIdentifier)
-			delete(rawMsg, key)
-		case "keyRotationEnabled":
-			err = unpopulate(val, &k.KeyRotationEnabled)
-			delete(rawMsg, key)
-		case "lastKeyRotationTimestamp":
-			err = unpopulateTimeRFC3339(val, &k.LastKeyRotationTimestamp)
-			delete(rawMsg, key)
-		case "versionedKeyIdentifier":
-			err = unpopulate(val, &k.VersionedKeyIdentifier)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// LoginServerProperties - The login server properties of the connected registry.
+type LoginServerProperties struct {
+	// READ-ONLY; The host of the connected registry. Can be FQDN or IP.
+	Host *string `json:"host,omitempty" azure:"ro"`
+
+	// READ-ONLY; The TLS properties of the connected registry login server.
+	TLS *TLSProperties `json:"tls,omitempty" azure:"ro"`
 }
 
 // NetworkRuleSet - The network rule set for a container registry.
@@ -1666,14 +1153,9 @@ type NetworkRuleSet struct {
 
 	// The IP ACL rules.
 	IPRules []*IPRule `json:"ipRules,omitempty"`
-}
 
-// MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
-func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "defaultAction", n.DefaultAction)
-	populate(objectMap, "ipRules", n.IPRules)
-	return json.Marshal(objectMap)
+	// The virtual network rules.
+	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
 // OperationDefinition - The definition of a container registry operation.
@@ -1717,14 +1199,6 @@ type OperationListResult struct {
 	// The list of container registry operations. Since this list may be incomplete, the nextLink field should be used to request
 	// the next list of operations.
 	Value []*OperationDefinition `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // OperationLogSpecificationDefinition - The definition of Azure Monitoring log.
@@ -1775,14 +1249,6 @@ type OperationServiceSpecificationDefinition struct {
 	MetricSpecifications []*OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationServiceSpecificationDefinition.
-func (o OperationServiceSpecificationDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", o.LogSpecifications)
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1808,25 +1274,167 @@ type OverrideTaskStepProperties struct {
 	Values []*SetValue `json:"values,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OverrideTaskStepProperties.
-func (o OverrideTaskStepProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "arguments", o.Arguments)
-	populate(objectMap, "contextPath", o.ContextPath)
-	populate(objectMap, "file", o.File)
-	populate(objectMap, "target", o.Target)
-	populate(objectMap, "updateTriggerToken", o.UpdateTriggerToken)
-	populate(objectMap, "values", o.Values)
-	return json.Marshal(objectMap)
+// ParentProperties - The properties of the connected registry parent.
+type ParentProperties struct {
+	// REQUIRED; The sync properties of the connected registry with its parent.
+	SyncProperties *SyncProperties `json:"syncProperties,omitempty"`
+
+	// The resource ID of the parent to which the connected registry will be associated.
+	ID *string `json:"id,omitempty"`
 }
 
-// PackageType - The properties of a package type.
-type PackageType struct {
-	// The name of the package type.
+// PipelineRun - An object that represents a pipeline run for a container registry.
+type PipelineRun struct {
+	// The properties of a pipeline run.
+	Properties *PipelineRunProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PipelineRunListResult - The result of a request to list pipeline runs for a container registry.
+type PipelineRunListResult struct {
+	// The URI that can be used to request the next list of pipeline runs.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of pipeline runs. Since this list may be incomplete, the nextLink field should be used to request the next list
+	// of pipeline runs.
+	Value []*PipelineRun `json:"value,omitempty"`
+}
+
+// PipelineRunProperties - The properties of a pipeline run.
+type PipelineRunProperties struct {
+	// How the pipeline run should be forced to recreate even if the pipeline run configuration has not changed.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+
+	// The request parameters for a pipeline run.
+	Request *PipelineRunRequest `json:"request,omitempty"`
+
+	// READ-ONLY; The provisioning state of a pipeline run.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The response of a pipeline run.
+	Response *PipelineRunResponse `json:"response,omitempty" azure:"ro"`
+}
+
+// PipelineRunRequest - The request properties provided for a pipeline run.
+type PipelineRunRequest struct {
+	// List of source artifacts to be transferred by the pipeline. Specify an image by repository ('hello-world'). This will use
+	// the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an
+	// image by sha256-based manifest digest ('hello-world@sha256:abc123').
+	Artifacts []*string `json:"artifacts,omitempty"`
+
+	// The digest of the tar used to transfer the artifacts.
+	CatalogDigest *string `json:"catalogDigest,omitempty"`
+
+	// The resource ID of the pipeline to run.
+	PipelineResourceID *string `json:"pipelineResourceId,omitempty"`
+
+	// The source properties of the pipeline run.
+	Source *PipelineRunSourceProperties `json:"source,omitempty"`
+
+	// The target properties of the pipeline run.
+	Target *PipelineRunTargetProperties `json:"target,omitempty"`
+}
+
+// PipelineRunResponse - The response properties returned for a pipeline run.
+type PipelineRunResponse struct {
+	// The digest of the tar used to transfer the artifacts.
+	CatalogDigest *string `json:"catalogDigest,omitempty"`
+
+	// The time the pipeline run finished.
+	FinishTime *time.Time `json:"finishTime,omitempty"`
+
+	// The artifacts imported in the pipeline run.
+	ImportedArtifacts []*string `json:"importedArtifacts,omitempty"`
+
+	// The detailed error message for the pipeline run in the case of failure.
+	PipelineRunErrorMessage *string `json:"pipelineRunErrorMessage,omitempty"`
+
+	// The current progress of the copy operation.
+	Progress *ProgressProperties `json:"progress,omitempty"`
+
+	// The source of the pipeline run.
+	Source *ImportPipelineSourceProperties `json:"source,omitempty"`
+
+	// The time the pipeline run started.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// The current status of the pipeline run.
+	Status *string `json:"status,omitempty"`
+
+	// The target of the pipeline run.
+	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
+
+	// The trigger that caused the pipeline run.
+	Trigger *PipelineTriggerDescriptor `json:"trigger,omitempty"`
+}
+
+type PipelineRunSourceProperties struct {
+	// The name of the source.
 	Name *string `json:"name,omitempty"`
 
-	// READ-ONLY; The endpoint of the package type.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	// The type of the source.
+	Type *PipelineRunSourceType `json:"type,omitempty"`
+}
+
+type PipelineRunTargetProperties struct {
+	// The name of the target.
+	Name *string `json:"name,omitempty"`
+
+	// The type of the target.
+	Type *PipelineRunTargetType `json:"type,omitempty"`
+}
+
+// PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate method.
+type PipelineRunsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete method.
+type PipelineRunsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PipelineRunsClientGetOptions contains the optional parameters for the PipelineRunsClient.Get method.
+type PipelineRunsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.List method.
+type PipelineRunsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+type PipelineSourceTriggerDescriptor struct {
+	// The timestamp when the source update happened.
+	Timestamp *time.Time `json:"timestamp,omitempty"`
+}
+
+type PipelineSourceTriggerProperties struct {
+	// REQUIRED; The current status of the source trigger.
+	Status *TriggerStatus `json:"status,omitempty"`
+}
+
+type PipelineTriggerDescriptor struct {
+	// The source trigger that caused the pipeline run.
+	SourceTrigger *PipelineSourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
+}
+
+type PipelineTriggerProperties struct {
+	// The source trigger properties of the pipeline.
+	SourceTrigger *PipelineSourceTriggerProperties `json:"sourceTrigger,omitempty"`
 }
 
 // PlatformProperties - The platform properties against which the run has to happen.
@@ -1902,14 +1510,6 @@ type PrivateEndpointConnectionListResult struct {
 	Value []*PrivateEndpointConnection `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateEndpointConnectionProperties - The properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// The resource of private endpoint.
@@ -1925,13 +1525,15 @@ type PrivateEndpointConnectionProperties struct {
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
@@ -1971,14 +1573,6 @@ type PrivateLinkResourceListResult struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkResourceProperties - The properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource group id.
@@ -1991,15 +1585,6 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
-func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "groupId", p.GroupID)
-	populate(objectMap, "requiredMembers", p.RequiredMembers)
-	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
-	return json.Marshal(objectMap)
-}
-
 // PrivateLinkServiceConnectionState - The state of a private link service connection.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
@@ -2010,6 +1595,11 @@ type PrivateLinkServiceConnectionState struct {
 
 	// The private link service connection status.
 	Status *ConnectionStatus `json:"status,omitempty"`
+}
+
+type ProgressProperties struct {
+	// The percentage complete of the copy operation.
+	Percentage *string `json:"percentage,omitempty"`
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
@@ -2042,27 +1632,39 @@ type RegenerateCredentialParameters struct {
 
 // RegistriesClientBeginCreateOptions contains the optional parameters for the RegistriesClient.BeginCreate method.
 type RegistriesClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistriesClientBeginDeleteOptions contains the optional parameters for the RegistriesClient.BeginDelete method.
 type RegistriesClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// RegistriesClientBeginGenerateCredentialsOptions contains the optional parameters for the RegistriesClient.BeginGenerateCredentials
+// method.
+type RegistriesClientBeginGenerateCredentialsOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistriesClientBeginImportImageOptions contains the optional parameters for the RegistriesClient.BeginImportImage method.
 type RegistriesClientBeginImportImageOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistriesClientBeginScheduleRunOptions contains the optional parameters for the RegistriesClient.BeginScheduleRun method.
 type RegistriesClientBeginScheduleRunOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistriesClientBeginUpdateOptions contains the optional parameters for the RegistriesClient.BeginUpdate method.
 type RegistriesClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RegistriesClientCheckNameAvailabilityOptions contains the optional parameters for the RegistriesClient.CheckNameAvailability
@@ -2151,21 +1753,6 @@ type Registry struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Registry.
-func (r Registry) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "identity", r.Identity)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // RegistryListCredentialsResult - The response from the ListCredentials operation.
 type RegistryListCredentialsResult struct {
 	// The list of passwords for a container registry.
@@ -2173,14 +1760,6 @@ type RegistryListCredentialsResult struct {
 
 	// The username for a container registry.
 	Username *string `json:"username,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryListCredentialsResult.
-func (r RegistryListCredentialsResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "passwords", r.Passwords)
-	populate(objectMap, "username", r.Username)
-	return json.Marshal(objectMap)
 }
 
 // RegistryListResult - The result of a request to list container registries.
@@ -2191,14 +1770,6 @@ type RegistryListResult struct {
 	// The list of container registries. Since this list may be incomplete, the nextLink field should be used to request the next
 	// list of container registries.
 	Value []*Registry `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryListResult.
-func (r RegistryListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RegistryNameCheckRequest - A request to check whether a container registry name is available.
@@ -2235,6 +1806,9 @@ type RegistryPassword struct {
 type RegistryProperties struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
+
+	// Enables registry-wide pull from unauthenticated clients.
+	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
 
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool `json:"dataEndpointEnabled,omitempty"`
@@ -2276,89 +1850,13 @@ type RegistryProperties struct {
 	Status *Status `json:"status,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegistryProperties.
-func (r RegistryProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "adminUserEnabled", r.AdminUserEnabled)
-	populateTimeRFC3339(objectMap, "creationDate", r.CreationDate)
-	populate(objectMap, "dataEndpointEnabled", r.DataEndpointEnabled)
-	populate(objectMap, "dataEndpointHostNames", r.DataEndpointHostNames)
-	populate(objectMap, "encryption", r.Encryption)
-	populate(objectMap, "loginServer", r.LoginServer)
-	populate(objectMap, "networkRuleBypassOptions", r.NetworkRuleBypassOptions)
-	populate(objectMap, "networkRuleSet", r.NetworkRuleSet)
-	populate(objectMap, "policies", r.Policies)
-	populate(objectMap, "privateEndpointConnections", r.PrivateEndpointConnections)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "publicNetworkAccess", r.PublicNetworkAccess)
-	populate(objectMap, "status", r.Status)
-	populate(objectMap, "zoneRedundancy", r.ZoneRedundancy)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RegistryProperties.
-func (r *RegistryProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "adminUserEnabled":
-			err = unpopulate(val, &r.AdminUserEnabled)
-			delete(rawMsg, key)
-		case "creationDate":
-			err = unpopulateTimeRFC3339(val, &r.CreationDate)
-			delete(rawMsg, key)
-		case "dataEndpointEnabled":
-			err = unpopulate(val, &r.DataEndpointEnabled)
-			delete(rawMsg, key)
-		case "dataEndpointHostNames":
-			err = unpopulate(val, &r.DataEndpointHostNames)
-			delete(rawMsg, key)
-		case "encryption":
-			err = unpopulate(val, &r.Encryption)
-			delete(rawMsg, key)
-		case "loginServer":
-			err = unpopulate(val, &r.LoginServer)
-			delete(rawMsg, key)
-		case "networkRuleBypassOptions":
-			err = unpopulate(val, &r.NetworkRuleBypassOptions)
-			delete(rawMsg, key)
-		case "networkRuleSet":
-			err = unpopulate(val, &r.NetworkRuleSet)
-			delete(rawMsg, key)
-		case "policies":
-			err = unpopulate(val, &r.Policies)
-			delete(rawMsg, key)
-		case "privateEndpointConnections":
-			err = unpopulate(val, &r.PrivateEndpointConnections)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "publicNetworkAccess":
-			err = unpopulate(val, &r.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &r.Status)
-			delete(rawMsg, key)
-		case "zoneRedundancy":
-			err = unpopulate(val, &r.ZoneRedundancy)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RegistryPropertiesUpdateParameters - The parameters for updating the properties of a container registry.
 type RegistryPropertiesUpdateParameters struct {
 	// The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
+
+	// Enables registry-wide pull from unauthenticated clients.
+	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
 
 	// Enable a single data endpoint per region for serving data.
 	DataEndpointEnabled *bool `json:"dataEndpointEnabled,omitempty"`
@@ -2394,16 +1892,6 @@ type RegistryUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RegistryUpdateParameters.
-func (r RegistryUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", r.Identity)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "sku", r.SKU)
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
-}
-
 // RegistryUsage - The quota usage for a container registry.
 type RegistryUsage struct {
 	// The current value of the usage.
@@ -2423,13 +1911,6 @@ type RegistryUsage struct {
 type RegistryUsageListResult struct {
 	// The list of container registry quota usages.
 	Value []*RegistryUsage `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RegistryUsageListResult.
-func (r RegistryUsageListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // Replication - An object that represents a replication for a container registry.
@@ -2456,19 +1937,6 @@ type Replication struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Replication.
-func (r Replication) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // ReplicationListResult - The result of a request to list replications for a container registry.
 type ReplicationListResult struct {
 	// The URI that can be used to request the next list of replications.
@@ -2477,14 +1945,6 @@ type ReplicationListResult struct {
 	// The list of replications. Since this list may be incomplete, the nextLink field should be used to request the next list
 	// of replications.
 	Value []*Replication `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ReplicationListResult.
-func (r ReplicationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // ReplicationProperties - The properties of a replication.
@@ -2513,14 +1973,6 @@ type ReplicationUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplicationUpdateParameters.
-func (r ReplicationUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "tags", r.Tags)
-	return json.Marshal(objectMap)
-}
-
 type ReplicationUpdateParametersProperties struct {
 	// Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional
 	// endpoint is disabled, however its data will continue to be synced with
@@ -2530,17 +1982,20 @@ type ReplicationUpdateParametersProperties struct {
 
 // ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate method.
 type ReplicationsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationsClientBeginDeleteOptions contains the optional parameters for the ReplicationsClient.BeginDelete method.
 type ReplicationsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationsClientBeginUpdateOptions contains the optional parameters for the ReplicationsClient.BeginUpdate method.
 type ReplicationsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ReplicationsClientGetOptions contains the optional parameters for the ReplicationsClient.Get method.
@@ -2593,18 +2048,6 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "systemData", r.SystemData)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
 // RetentionPolicy - The retention policy for a container registry.
 type RetentionPolicy struct {
 	// The number of days to retain an untagged manifest after which it gets purged.
@@ -2615,41 +2058,6 @@ type RetentionPolicy struct {
 
 	// READ-ONLY; The timestamp when the policy was last updated.
 	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RetentionPolicy.
-func (r RetentionPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "days", r.Days)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", r.LastUpdatedTime)
-	populate(objectMap, "status", r.Status)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RetentionPolicy.
-func (r *RetentionPolicy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "days":
-			err = unpopulate(val, &r.Days)
-			delete(rawMsg, key)
-		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdatedTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &r.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Run resource properties
@@ -2701,65 +2109,6 @@ type RunFilter struct {
 	TaskName *string `json:"taskName,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RunFilter.
-func (r RunFilter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentPoolName", r.AgentPoolName)
-	populateTimeRFC3339(objectMap, "createTime", r.CreateTime)
-	populateTimeRFC3339(objectMap, "finishTime", r.FinishTime)
-	populate(objectMap, "isArchiveEnabled", r.IsArchiveEnabled)
-	populate(objectMap, "outputImageManifests", r.OutputImageManifests)
-	populate(objectMap, "runId", r.RunID)
-	populate(objectMap, "runType", r.RunType)
-	populate(objectMap, "status", r.Status)
-	populate(objectMap, "taskName", r.TaskName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RunFilter.
-func (r *RunFilter) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentPoolName":
-			err = unpopulate(val, &r.AgentPoolName)
-			delete(rawMsg, key)
-		case "createTime":
-			err = unpopulateTimeRFC3339(val, &r.CreateTime)
-			delete(rawMsg, key)
-		case "finishTime":
-			err = unpopulateTimeRFC3339(val, &r.FinishTime)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &r.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "outputImageManifests":
-			err = unpopulate(val, &r.OutputImageManifests)
-			delete(rawMsg, key)
-		case "runId":
-			err = unpopulate(val, &r.RunID)
-			delete(rawMsg, key)
-		case "runType":
-			err = unpopulate(val, &r.RunType)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &r.Status)
-			delete(rawMsg, key)
-		case "taskName":
-			err = unpopulate(val, &r.TaskName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RunGetLogResult - The result of get log link operation.
 type RunGetLogResult struct {
 	// The link to logs in registry for a run on a azure container registry.
@@ -2776,14 +2125,6 @@ type RunListResult struct {
 
 	// The collection value.
 	Value []*Run `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RunListResult.
-func (r RunListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
 }
 
 // RunProperties - The properties for a run.
@@ -2855,117 +2196,6 @@ type RunProperties struct {
 	RunErrorMessage *string `json:"runErrorMessage,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RunProperties.
-func (r RunProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", r.AgentConfiguration)
-	populate(objectMap, "agentPoolName", r.AgentPoolName)
-	populateTimeRFC3339(objectMap, "createTime", r.CreateTime)
-	populate(objectMap, "customRegistries", r.CustomRegistries)
-	populateTimeRFC3339(objectMap, "finishTime", r.FinishTime)
-	populate(objectMap, "imageUpdateTrigger", r.ImageUpdateTrigger)
-	populate(objectMap, "isArchiveEnabled", r.IsArchiveEnabled)
-	populateTimeRFC3339(objectMap, "lastUpdatedTime", r.LastUpdatedTime)
-	populate(objectMap, "logArtifact", r.LogArtifact)
-	populate(objectMap, "outputImages", r.OutputImages)
-	populate(objectMap, "platform", r.Platform)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "runErrorMessage", r.RunErrorMessage)
-	populate(objectMap, "runId", r.RunID)
-	populate(objectMap, "runType", r.RunType)
-	populate(objectMap, "sourceRegistryAuth", r.SourceRegistryAuth)
-	populate(objectMap, "sourceTrigger", r.SourceTrigger)
-	populateTimeRFC3339(objectMap, "startTime", r.StartTime)
-	populate(objectMap, "status", r.Status)
-	populate(objectMap, "task", r.Task)
-	populate(objectMap, "timerTrigger", r.TimerTrigger)
-	populate(objectMap, "updateTriggerToken", r.UpdateTriggerToken)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RunProperties.
-func (r *RunProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &r.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &r.AgentPoolName)
-			delete(rawMsg, key)
-		case "createTime":
-			err = unpopulateTimeRFC3339(val, &r.CreateTime)
-			delete(rawMsg, key)
-		case "customRegistries":
-			err = unpopulate(val, &r.CustomRegistries)
-			delete(rawMsg, key)
-		case "finishTime":
-			err = unpopulateTimeRFC3339(val, &r.FinishTime)
-			delete(rawMsg, key)
-		case "imageUpdateTrigger":
-			err = unpopulate(val, &r.ImageUpdateTrigger)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &r.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "lastUpdatedTime":
-			err = unpopulateTimeRFC3339(val, &r.LastUpdatedTime)
-			delete(rawMsg, key)
-		case "logArtifact":
-			err = unpopulate(val, &r.LogArtifact)
-			delete(rawMsg, key)
-		case "outputImages":
-			err = unpopulate(val, &r.OutputImages)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &r.Platform)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &r.ProvisioningState)
-			delete(rawMsg, key)
-		case "runErrorMessage":
-			err = unpopulate(val, &r.RunErrorMessage)
-			delete(rawMsg, key)
-		case "runId":
-			err = unpopulate(val, &r.RunID)
-			delete(rawMsg, key)
-		case "runType":
-			err = unpopulate(val, &r.RunType)
-			delete(rawMsg, key)
-		case "sourceRegistryAuth":
-			err = unpopulate(val, &r.SourceRegistryAuth)
-			delete(rawMsg, key)
-		case "sourceTrigger":
-			err = unpopulate(val, &r.SourceTrigger)
-			delete(rawMsg, key)
-		case "startTime":
-			err = unpopulateTimeRFC3339(val, &r.StartTime)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &r.Status)
-			delete(rawMsg, key)
-		case "task":
-			err = unpopulate(val, &r.Task)
-			delete(rawMsg, key)
-		case "timerTrigger":
-			err = unpopulate(val, &r.TimerTrigger)
-			delete(rawMsg, key)
-		case "updateTriggerToken":
-			err = unpopulate(val, &r.UpdateTriggerToken)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // RunRequestClassification provides polymorphic access to related types.
 // Call the interface's GetRunRequest() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2990,30 +2220,22 @@ type RunRequest struct {
 	LogTemplate *string `json:"logTemplate,omitempty"`
 }
 
-// GetRunRequest implements the RunRequestClassification interface for type RunRequest.
-func (r *RunRequest) GetRunRequest() *RunRequest { return r }
-
 // RunUpdateParameters - The set of run properties that can be updated.
 type RunUpdateParameters struct {
 	// The value that indicates whether archiving is enabled or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RunUpdateParameters.
-func (r RunUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "isArchiveEnabled", r.IsArchiveEnabled)
-	return json.Marshal(objectMap)
-}
-
 // RunsClientBeginCancelOptions contains the optional parameters for the RunsClient.BeginCancel method.
 type RunsClientBeginCancelOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RunsClientBeginUpdateOptions contains the optional parameters for the RunsClient.BeginUpdate method.
 type RunsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
@@ -3042,6 +2264,95 @@ type SKU struct {
 
 	// READ-ONLY; The SKU tier based on the SKU name.
 	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
+}
+
+// ScopeMap - An object that represents a scope map for a container registry.
+type ScopeMap struct {
+	// The properties of the scope map.
+	Properties *ScopeMapProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ScopeMapListResult - The result of a request to list scope maps for a container registry.
+type ScopeMapListResult struct {
+	// The URI that can be used to request the next list of scope maps.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of scope maps. Since this list may be incomplete, the nextLink field should be used to request the next list of
+	// scope maps.
+	Value []*ScopeMap `json:"value,omitempty"`
+}
+
+// ScopeMapProperties - The properties of a scope map.
+type ScopeMapProperties struct {
+	// REQUIRED; The list of scoped permissions for registry artifacts. E.g. repositories/repository-name/content/read, repositories/repository-name/metadata/write
+	Actions []*string `json:"actions,omitempty"`
+
+	// The user friendly description of the scope map.
+	Description *string `json:"description,omitempty"`
+
+	// READ-ONLY; The creation date of scope map.
+	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the scope map. E.g. BuildIn scope map.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ScopeMapPropertiesUpdateParameters - The update parameters for scope map properties.
+type ScopeMapPropertiesUpdateParameters struct {
+	// The list of scope permissions for registry artifacts. E.g. repositories/repository-name/pull, repositories/repository-name/delete
+	Actions []*string `json:"actions,omitempty"`
+
+	// The user friendly description of the scope map.
+	Description *string `json:"description,omitempty"`
+}
+
+// ScopeMapUpdateParameters - The properties for updating the scope map.
+type ScopeMapUpdateParameters struct {
+	// The update parameters for scope map properties.
+	Properties *ScopeMapPropertiesUpdateParameters `json:"properties,omitempty"`
+}
+
+// ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
+type ScopeMapsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ScopeMapsClientBeginDeleteOptions contains the optional parameters for the ScopeMapsClient.BeginDelete method.
+type ScopeMapsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
+type ScopeMapsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ScopeMapsClientGetOptions contains the optional parameters for the ScopeMapsClient.Get method.
+type ScopeMapsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.List method.
+type ScopeMapsClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SecretObject - Describes the properties of a secret object value.
@@ -3115,16 +2426,6 @@ type SourceTrigger struct {
 	Status *TriggerStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SourceTrigger.
-func (s SourceTrigger) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "sourceRepository", s.SourceRepository)
-	populate(objectMap, "sourceTriggerEvents", s.SourceTriggerEvents)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
-}
-
 // SourceTriggerDescriptor - The source trigger that caused a run.
 type SourceTriggerDescriptor struct {
 	// The branch name in the repository.
@@ -3164,16 +2465,6 @@ type SourceTriggerUpdateParameters struct {
 	Status *TriggerStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SourceTriggerUpdateParameters.
-func (s SourceTriggerUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "sourceRepository", s.SourceRepository)
-	populate(objectMap, "sourceTriggerEvents", s.SourceTriggerEvents)
-	populate(objectMap, "status", s.Status)
-	return json.Marshal(objectMap)
-}
-
 // SourceUpdateParameters - The properties for updating the source code repository.
 type SourceUpdateParameters struct {
 	// The branch name of the source code.
@@ -3210,45 +2501,59 @@ type Status struct {
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Status.
-func (s Status) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayStatus", s.DisplayStatus)
-	populate(objectMap, "message", s.Message)
-	populateTimeRFC3339(objectMap, "timestamp", s.Timestamp)
-	return json.Marshal(objectMap)
+// StatusDetailProperties - The status detail properties of the connected registry.
+type StatusDetailProperties struct {
+	// READ-ONLY; The code of the status.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; The correlation ID of the status.
+	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The description of the status.
+	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; The timestamp of the status.
+	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+
+	// READ-ONLY; The component of the connected registry corresponding to the status.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Status.
-func (s *Status) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "displayStatus":
-			err = unpopulate(val, &s.DisplayStatus)
-			delete(rawMsg, key)
-		case "message":
-			err = unpopulate(val, &s.Message)
-			delete(rawMsg, key)
-		case "timestamp":
-			err = unpopulateTimeRFC3339(val, &s.Timestamp)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// SyncProperties - The sync properties of the connected registry with its parent.
+type SyncProperties struct {
+	// REQUIRED; The period of time for which a message is available to sync before it is expired. Specify the duration using
+	// the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	MessageTTL *string `json:"messageTtl,omitempty"`
+
+	// REQUIRED; The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
+	TokenID *string `json:"tokenId,omitempty"`
+
+	// The cron expression indicating the schedule that the connected registry will sync with its parent.
+	Schedule *string `json:"schedule,omitempty"`
+
+	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
+	// as per ISO8601.
+	SyncWindow *string `json:"syncWindow,omitempty"`
+
+	// READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
+	GatewayEndpoint *string `json:"gatewayEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; The last time a sync occurred between the connected registry and its parent.
+	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
 }
 
-// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
-type StorageAccountProperties struct {
-	// REQUIRED; The resource ID of the storage account.
-	ID *string `json:"id,omitempty"`
+// SyncUpdateProperties - The parameters for updating the sync properties of the connected registry with its parent.
+type SyncUpdateProperties struct {
+	// The period of time for which a message is available to sync before it is expired. Specify the duration using the format
+	// P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	MessageTTL *string `json:"messageTtl,omitempty"`
+
+	// The cron expression indicating the schedule that the connected registry will sync with its parent.
+	Schedule *string `json:"schedule,omitempty"`
+
+	// The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S
+	// as per ISO8601.
+	SyncWindow *string `json:"syncWindow,omitempty"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -3272,51 +2577,22 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type SystemData.
-func (s SystemData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
-	populate(objectMap, "createdBy", s.CreatedBy)
-	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
-	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
-	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
-	return json.Marshal(objectMap)
+// TLSCertificateProperties - The TLS certificate properties of the connected registry login server.
+type TLSCertificateProperties struct {
+	// READ-ONLY; Indicates the location of the certificates.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of certificate location.
+	Type *CertificateType `json:"type,omitempty" azure:"ro"`
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
-func (s *SystemData) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
-			delete(rawMsg, key)
-		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
-			delete(rawMsg, key)
-		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
-			delete(rawMsg, key)
-		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
-			delete(rawMsg, key)
-		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
-			delete(rawMsg, key)
-		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+// TLSProperties - The TLS properties of the connected registry login server.
+type TLSProperties struct {
+	// READ-ONLY; The certificate used to configure HTTPS for the login server.
+	Certificate *TLSCertificateProperties `json:"certificate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Indicates whether HTTPS is enabled for the login server.
+	Status *TLSStatus `json:"status,omitempty" azure:"ro"`
 }
 
 // Target - The target of the event.
@@ -3377,20 +2653,6 @@ type Task struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Task.
-func (t Task) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", t.ID)
-	populate(objectMap, "identity", t.Identity)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "name", t.Name)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "systemData", t.SystemData)
-	populate(objectMap, "tags", t.Tags)
-	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
 // TaskListResult - The collection of tasks.
 type TaskListResult struct {
 	// The URI that can be used to request the next set of paged results.
@@ -3398,14 +2660,6 @@ type TaskListResult struct {
 
 	// The collection value.
 	Value []*Task `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TaskListResult.
-func (t TaskListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
 }
 
 // TaskProperties - The properties of a task.
@@ -3447,77 +2701,6 @@ type TaskProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TaskProperties.
-func (t TaskProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", t.AgentConfiguration)
-	populate(objectMap, "agentPoolName", t.AgentPoolName)
-	populateTimeRFC3339(objectMap, "creationDate", t.CreationDate)
-	populate(objectMap, "credentials", t.Credentials)
-	populate(objectMap, "isSystemTask", t.IsSystemTask)
-	populate(objectMap, "logTemplate", t.LogTemplate)
-	populate(objectMap, "platform", t.Platform)
-	populate(objectMap, "provisioningState", t.ProvisioningState)
-	populate(objectMap, "status", t.Status)
-	populate(objectMap, "step", t.Step)
-	populate(objectMap, "timeout", t.Timeout)
-	populate(objectMap, "trigger", t.Trigger)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TaskProperties.
-func (t *TaskProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &t.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &t.AgentPoolName)
-			delete(rawMsg, key)
-		case "creationDate":
-			err = unpopulateTimeRFC3339(val, &t.CreationDate)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, &t.Credentials)
-			delete(rawMsg, key)
-		case "isSystemTask":
-			err = unpopulate(val, &t.IsSystemTask)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &t.LogTemplate)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &t.Platform)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &t.ProvisioningState)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &t.Status)
-			delete(rawMsg, key)
-		case "step":
-			t.Step, err = unmarshalTaskStepPropertiesClassification(val)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &t.Timeout)
-			delete(rawMsg, key)
-		case "trigger":
-			err = unpopulate(val, &t.Trigger)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TaskPropertiesUpdateParameters - The properties for updating a task.
 type TaskPropertiesUpdateParameters struct {
 	// The machine configuration of the run agent.
@@ -3546,65 +2729,6 @@ type TaskPropertiesUpdateParameters struct {
 
 	// The properties for updating trigger properties.
 	Trigger *TriggerUpdateParameters `json:"trigger,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TaskPropertiesUpdateParameters.
-func (t TaskPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentConfiguration", t.AgentConfiguration)
-	populate(objectMap, "agentPoolName", t.AgentPoolName)
-	populate(objectMap, "credentials", t.Credentials)
-	populate(objectMap, "logTemplate", t.LogTemplate)
-	populate(objectMap, "platform", t.Platform)
-	populate(objectMap, "status", t.Status)
-	populate(objectMap, "step", t.Step)
-	populate(objectMap, "timeout", t.Timeout)
-	populate(objectMap, "trigger", t.Trigger)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TaskPropertiesUpdateParameters.
-func (t *TaskPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentConfiguration":
-			err = unpopulate(val, &t.AgentConfiguration)
-			delete(rawMsg, key)
-		case "agentPoolName":
-			err = unpopulate(val, &t.AgentPoolName)
-			delete(rawMsg, key)
-		case "credentials":
-			err = unpopulate(val, &t.Credentials)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &t.LogTemplate)
-			delete(rawMsg, key)
-		case "platform":
-			err = unpopulate(val, &t.Platform)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &t.Status)
-			delete(rawMsg, key)
-		case "step":
-			t.Step, err = unmarshalTaskStepUpdateParametersClassification(val)
-			delete(rawMsg, key)
-		case "timeout":
-			err = unpopulate(val, &t.Timeout)
-			delete(rawMsg, key)
-		case "trigger":
-			err = unpopulate(val, &t.Trigger)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TaskRun - The task run that has the ARM resource and properties. The task run will have the information of request and
@@ -3641,14 +2765,6 @@ type TaskRunListResult struct {
 	Value []*TaskRun `json:"value,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TaskRunListResult.
-func (t TaskRunListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // TaskRunProperties - The properties of task run.
 type TaskRunProperties struct {
 	// How the run should be forced to rerun even if the run request configuration has not changed
@@ -3664,45 +2780,6 @@ type TaskRunProperties struct {
 	RunResult *Run `json:"runResult,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TaskRunProperties.
-func (t TaskRunProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "forceUpdateTag", t.ForceUpdateTag)
-	populate(objectMap, "provisioningState", t.ProvisioningState)
-	populate(objectMap, "runRequest", t.RunRequest)
-	populate(objectMap, "runResult", t.RunResult)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TaskRunProperties.
-func (t *TaskRunProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "forceUpdateTag":
-			err = unpopulate(val, &t.ForceUpdateTag)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, &t.ProvisioningState)
-			delete(rawMsg, key)
-		case "runRequest":
-			t.RunRequest, err = unmarshalRunRequestClassification(val)
-			delete(rawMsg, key)
-		case "runResult":
-			err = unpopulate(val, &t.RunResult)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TaskRunPropertiesUpdateParameters - The properties of a task run update parameters.
 type TaskRunPropertiesUpdateParameters struct {
 	// How the run should be forced to rerun even if the run request configuration has not changed
@@ -3710,37 +2787,6 @@ type TaskRunPropertiesUpdateParameters struct {
 
 	// The request (parameters) for the new run
 	RunRequest RunRequestClassification `json:"runRequest,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TaskRunPropertiesUpdateParameters.
-func (t TaskRunPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "forceUpdateTag", t.ForceUpdateTag)
-	populate(objectMap, "runRequest", t.RunRequest)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TaskRunPropertiesUpdateParameters.
-func (t *TaskRunPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "forceUpdateTag":
-			err = unpopulate(val, &t.ForceUpdateTag)
-			delete(rawMsg, key)
-		case "runRequest":
-			t.RunRequest, err = unmarshalRunRequestClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // TaskRunRequest - The parameters for a task run request.
@@ -3764,63 +2810,6 @@ type TaskRunRequest struct {
 	OverrideTaskStepProperties *OverrideTaskStepProperties `json:"overrideTaskStepProperties,omitempty"`
 }
 
-// GetRunRequest implements the RunRequestClassification interface for type TaskRunRequest.
-func (t *TaskRunRequest) GetRunRequest() *RunRequest {
-	return &RunRequest{
-		Type:             t.Type,
-		IsArchiveEnabled: t.IsArchiveEnabled,
-		AgentPoolName:    t.AgentPoolName,
-		LogTemplate:      t.LogTemplate,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TaskRunRequest.
-func (t TaskRunRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "agentPoolName", t.AgentPoolName)
-	populate(objectMap, "isArchiveEnabled", t.IsArchiveEnabled)
-	populate(objectMap, "logTemplate", t.LogTemplate)
-	populate(objectMap, "overrideTaskStepProperties", t.OverrideTaskStepProperties)
-	populate(objectMap, "taskId", t.TaskID)
-	objectMap["type"] = "TaskRunRequest"
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type TaskRunRequest.
-func (t *TaskRunRequest) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "agentPoolName":
-			err = unpopulate(val, &t.AgentPoolName)
-			delete(rawMsg, key)
-		case "isArchiveEnabled":
-			err = unpopulate(val, &t.IsArchiveEnabled)
-			delete(rawMsg, key)
-		case "logTemplate":
-			err = unpopulate(val, &t.LogTemplate)
-			delete(rawMsg, key)
-		case "overrideTaskStepProperties":
-			err = unpopulate(val, &t.OverrideTaskStepProperties)
-			delete(rawMsg, key)
-		case "taskId":
-			err = unpopulate(val, &t.TaskID)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &t.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // TaskRunUpdateParameters - The parameters for updating a task run.
 type TaskRunUpdateParameters struct {
 	// Identity for the resource.
@@ -3836,29 +2825,22 @@ type TaskRunUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TaskRunUpdateParameters.
-func (t TaskRunUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", t.Identity)
-	populate(objectMap, "location", t.Location)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
 // TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
 type TaskRunsClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
 type TaskRunsClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
 type TaskRunsClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
@@ -3900,19 +2882,6 @@ type TaskStepProperties struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
-// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type TaskStepProperties.
-func (t *TaskStepProperties) GetTaskStepProperties() *TaskStepProperties { return t }
-
-// MarshalJSON implements the json.Marshaller interface for type TaskStepProperties.
-func (t TaskStepProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "baseImageDependencies", t.BaseImageDependencies)
-	populate(objectMap, "contextAccessToken", t.ContextAccessToken)
-	populate(objectMap, "contextPath", t.ContextPath)
-	objectMap["type"] = t.Type
-	return json.Marshal(objectMap)
-}
-
 // TaskStepUpdateParametersClassification provides polymorphic access to related types.
 // Call the interface's GetTaskStepUpdateParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3934,9 +2903,6 @@ type TaskStepUpdateParameters struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 }
 
-// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type TaskStepUpdateParameters.
-func (t *TaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters { return t }
-
 // TaskUpdateParameters - The parameters for updating a task.
 type TaskUpdateParameters struct {
 	// Identity for the resource.
@@ -3949,28 +2915,22 @@ type TaskUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TaskUpdateParameters.
-func (t TaskUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "identity", t.Identity)
-	populate(objectMap, "properties", t.Properties)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
 // TasksClientBeginCreateOptions contains the optional parameters for the TasksClient.BeginCreate method.
 type TasksClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TasksClientBeginDeleteOptions contains the optional parameters for the TasksClient.BeginDelete method.
 type TasksClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TasksClientBeginUpdateOptions contains the optional parameters for the TasksClient.BeginUpdate method.
 type TasksClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TasksClientGetDetailsOptions contains the optional parameters for the TasksClient.GetDetails method.
@@ -4020,6 +2980,131 @@ type TimerTriggerUpdateParameters struct {
 	Status *TriggerStatus `json:"status,omitempty"`
 }
 
+// Token - An object that represents a token for a container registry.
+type Token struct {
+	// The properties of the token.
+	Properties *TokenProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// TokenCertificate - The properties of a certificate used for authenticating a token.
+type TokenCertificate struct {
+	// Base 64 encoded string of the public certificate1 in PEM format that will be used for authenticating the token.
+	EncodedPemCertificate *string `json:"encodedPemCertificate,omitempty"`
+
+	// The expiry datetime of the certificate.
+	Expiry *time.Time            `json:"expiry,omitempty"`
+	Name   *TokenCertificateName `json:"name,omitempty"`
+
+	// The thumbprint of the certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// TokenCredentialsProperties - The properties of the credentials that can be used for authenticating the token.
+type TokenCredentialsProperties struct {
+	Certificates []*TokenCertificate `json:"certificates,omitempty"`
+	Passwords    []*TokenPassword    `json:"passwords,omitempty"`
+}
+
+// TokenListResult - The result of a request to list tokens for a container registry.
+type TokenListResult struct {
+	// The URI that can be used to request the next list of tokens.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of tokens. Since this list may be incomplete, the nextLink field should be used to request the next list of tokens.
+	Value []*Token `json:"value,omitempty"`
+}
+
+// TokenPassword - The password that will be used for authenticating the token of a container registry.
+type TokenPassword struct {
+	// The creation datetime of the password.
+	CreationTime *time.Time `json:"creationTime,omitempty"`
+
+	// The expiry datetime of the password.
+	Expiry *time.Time `json:"expiry,omitempty"`
+
+	// The password name "password1" or "password2"
+	Name *TokenPasswordName `json:"name,omitempty"`
+
+	// READ-ONLY; The password value.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// TokenProperties - The properties of a token.
+type TokenProperties struct {
+	// The credentials that can be used for authenticating the token.
+	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
+
+	// The resource ID of the scope map to which the token will be associated with.
+	ScopeMapID *string `json:"scopeMapId,omitempty"`
+
+	// The status of the token example enabled or disabled.
+	Status *TokenStatus `json:"status,omitempty"`
+
+	// READ-ONLY; The creation date of scope map.
+	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// TokenUpdateParameters - The parameters for updating a token.
+type TokenUpdateParameters struct {
+	// The properties of the token update parameters.
+	Properties *TokenUpdateProperties `json:"properties,omitempty"`
+}
+
+// TokenUpdateProperties - The parameters for updating token properties.
+type TokenUpdateProperties struct {
+	// The credentials that can be used for authenticating the token.
+	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
+
+	// The resource ID of the scope map to which the token will be associated with.
+	ScopeMapID *string `json:"scopeMapId,omitempty"`
+
+	// The status of the token example enabled or disabled.
+	Status *TokenStatus `json:"status,omitempty"`
+}
+
+// TokensClientBeginCreateOptions contains the optional parameters for the TokensClient.BeginCreate method.
+type TokensClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TokensClientBeginDeleteOptions contains the optional parameters for the TokensClient.BeginDelete method.
+type TokensClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TokensClientBeginUpdateOptions contains the optional parameters for the TokensClient.BeginUpdate method.
+type TokensClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TokensClientGetOptions contains the optional parameters for the TokensClient.Get method.
+type TokensClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TokensClientListOptions contains the optional parameters for the TokensClient.List method.
+type TokensClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TriggerProperties - The properties of a trigger.
 type TriggerProperties struct {
 	// The trigger based on base image dependencies.
@@ -4032,15 +3117,6 @@ type TriggerProperties struct {
 	TimerTriggers []*TimerTrigger `json:"timerTriggers,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TriggerProperties.
-func (t TriggerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "baseImageTrigger", t.BaseImageTrigger)
-	populate(objectMap, "sourceTriggers", t.SourceTriggers)
-	populate(objectMap, "timerTriggers", t.TimerTriggers)
-	return json.Marshal(objectMap)
-}
-
 // TriggerUpdateParameters - The properties for updating triggers.
 type TriggerUpdateParameters struct {
 	// The trigger based on base image dependencies.
@@ -4051,15 +3127,6 @@ type TriggerUpdateParameters struct {
 
 	// The collection of timer triggers.
 	TimerTriggers []*TimerTriggerUpdateParameters `json:"timerTriggers,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TriggerUpdateParameters.
-func (t TriggerUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "baseImageTrigger", t.BaseImageTrigger)
-	populate(objectMap, "sourceTriggers", t.SourceTriggers)
-	populate(objectMap, "timerTriggers", t.TimerTriggers)
-	return json.Marshal(objectMap)
 }
 
 // TrustPolicy - The content trust policy for a container registry.
@@ -4077,6 +3144,15 @@ type UserIdentityProperties struct {
 
 	// The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// VirtualNetworkRule - Virtual network rule.
+type VirtualNetworkRule struct {
+	// REQUIRED; Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	VirtualNetworkResourceID *string `json:"id,omitempty"`
+
+	// The action of virtual network rule.
+	Action *Action `json:"action,omitempty"`
 }
 
 // Webhook - An object that represents a webhook for a container registry.
@@ -4103,19 +3179,6 @@ type Webhook struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Webhook.
-func (w Webhook) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", w.ID)
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "name", w.Name)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "systemData", w.SystemData)
-	populate(objectMap, "tags", w.Tags)
-	populate(objectMap, "type", w.Type)
-	return json.Marshal(objectMap)
-}
-
 // WebhookCreateParameters - The parameters for creating a webhook.
 type WebhookCreateParameters struct {
 	// REQUIRED; The location of the webhook. This cannot be changed after the resource is created.
@@ -4128,15 +3191,6 @@ type WebhookCreateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WebhookCreateParameters.
-func (w WebhookCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "location", w.Location)
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "tags", w.Tags)
-	return json.Marshal(objectMap)
-}
-
 // WebhookListResult - The result of a request to list webhooks for a container registry.
 type WebhookListResult struct {
 	// The URI that can be used to request the next list of webhooks.
@@ -4145,14 +3199,6 @@ type WebhookListResult struct {
 	// The list of webhooks. Since this list may be incomplete, the nextLink field should be used to request the next list of
 	// webhooks.
 	Value []*Webhook `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WebhookListResult.
-func (w WebhookListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", w.NextLink)
-	populate(objectMap, "value", w.Value)
-	return json.Marshal(objectMap)
 }
 
 // WebhookProperties - The properties of a webhook.
@@ -4170,16 +3216,6 @@ type WebhookProperties struct {
 
 	// READ-ONLY; The provisioning state of the webhook at the time the operation was called.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type WebhookProperties.
-func (w WebhookProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", w.Actions)
-	populate(objectMap, "provisioningState", w.ProvisioningState)
-	populate(objectMap, "scope", w.Scope)
-	populate(objectMap, "status", w.Status)
-	return json.Marshal(objectMap)
 }
 
 // WebhookPropertiesCreateParameters - The parameters for creating the properties of a webhook.
@@ -4202,17 +3238,6 @@ type WebhookPropertiesCreateParameters struct {
 	Status *WebhookStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WebhookPropertiesCreateParameters.
-func (w WebhookPropertiesCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", w.Actions)
-	populate(objectMap, "customHeaders", w.CustomHeaders)
-	populate(objectMap, "scope", w.Scope)
-	populate(objectMap, "serviceUri", w.ServiceURI)
-	populate(objectMap, "status", w.Status)
-	return json.Marshal(objectMap)
-}
-
 // WebhookPropertiesUpdateParameters - The parameters for updating the properties of a webhook.
 type WebhookPropertiesUpdateParameters struct {
 	// The list of actions that trigger the webhook to post notifications.
@@ -4233,17 +3258,6 @@ type WebhookPropertiesUpdateParameters struct {
 	Status *WebhookStatus `json:"status,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WebhookPropertiesUpdateParameters.
-func (w WebhookPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "actions", w.Actions)
-	populate(objectMap, "customHeaders", w.CustomHeaders)
-	populate(objectMap, "scope", w.Scope)
-	populate(objectMap, "serviceUri", w.ServiceURI)
-	populate(objectMap, "status", w.Status)
-	return json.Marshal(objectMap)
-}
-
 // WebhookUpdateParameters - The parameters for updating a webhook.
 type WebhookUpdateParameters struct {
 	// The properties that the webhook will be updated with.
@@ -4253,27 +3267,22 @@ type WebhookUpdateParameters struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type WebhookUpdateParameters.
-func (w WebhookUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", w.Properties)
-	populate(objectMap, "tags", w.Tags)
-	return json.Marshal(objectMap)
-}
-
 // WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
 type WebhooksClientBeginCreateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
 type WebhooksClientBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
 type WebhooksClientBeginUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // WebhooksClientGetCallbackConfigOptions contains the optional parameters for the WebhooksClient.GetCallbackConfig method.
@@ -4299,21 +3308,4 @@ type WebhooksClientListOptions struct {
 // WebhooksClientPingOptions contains the optional parameters for the WebhooksClient.Ping method.
 type WebhooksClientPingOptions struct {
 	// placeholder for future optional parameters
-}
-
-func populate(m map[string]interface{}, k string, v interface{}) {
-	if v == nil {
-		return
-	} else if azcore.IsNullValue(v) {
-		m[k] = nil
-	} else if !reflect.ValueOf(v).IsNil() {
-		m[k] = v
-	}
-}
-
-func unpopulate(data json.RawMessage, v interface{}) error {
-	if data == nil {
-		return nil
-	}
-	return json.Unmarshal(data, v)
 }

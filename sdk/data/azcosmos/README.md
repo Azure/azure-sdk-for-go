@@ -44,13 +44,29 @@ The following section provides several code snippets covering some of the most c
 
 ### Create Cosmos Client
 
+The clients support different forms of authentication. The azcosmos library supports authorization via Azure Active Directory or an account key.
+
+**Using Azure Active Directory**
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+handle(err)
+client, err := azcosmos.NewClient("myAccountEndpointURL", cred, nil)
+handle(err)
+```
+
+**Using account keys**
+
 ```go
 const (
     cosmosDbEndpoint = "someEndpoint"
     cosmosDbKey = "someKey"
 )
 
-cred, _ := azcosmos.NewKeyCredential(cosmosDbKey)
+cred, err := azcosmos.NewKeyCredential(cosmosDbKey)
+handle(err)
 client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```

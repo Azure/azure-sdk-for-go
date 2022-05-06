@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,13 +11,12 @@ package generated
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
@@ -71,7 +70,7 @@ func (client *KeyVaultClient) backupCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -79,7 +78,7 @@ func (client *KeyVaultClient) backupCertificateCreateRequest(ctx context.Context
 
 // backupCertificateHandleResponse handles the BackupCertificate response.
 func (client *KeyVaultClient) backupCertificateHandleResponse(resp *http.Response) (KeyVaultClientBackupCertificateResponse, error) {
-	result := KeyVaultClientBackupCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientBackupCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupCertificateResult); err != nil {
 		return KeyVaultClientBackupCertificateResponse{}, err
 	}
@@ -123,7 +122,7 @@ func (client *KeyVaultClient) createCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -131,7 +130,7 @@ func (client *KeyVaultClient) createCertificateCreateRequest(ctx context.Context
 
 // createCertificateHandleResponse handles the CreateCertificate response.
 func (client *KeyVaultClient) createCertificateHandleResponse(resp *http.Response) (KeyVaultClientCreateCertificateResponse, error) {
-	result := KeyVaultClientCreateCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientCreateCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return KeyVaultClientCreateCertificateResponse{}, err
 	}
@@ -175,7 +174,7 @@ func (client *KeyVaultClient) deleteCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -183,7 +182,7 @@ func (client *KeyVaultClient) deleteCertificateCreateRequest(ctx context.Context
 
 // deleteCertificateHandleResponse handles the DeleteCertificate response.
 func (client *KeyVaultClient) deleteCertificateHandleResponse(resp *http.Response) (KeyVaultClientDeleteCertificateResponse, error) {
-	result := KeyVaultClientDeleteCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificateBundle); err != nil {
 		return KeyVaultClientDeleteCertificateResponse{}, err
 	}
@@ -221,7 +220,7 @@ func (client *KeyVaultClient) deleteCertificateContactsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -229,7 +228,7 @@ func (client *KeyVaultClient) deleteCertificateContactsCreateRequest(ctx context
 
 // deleteCertificateContactsHandleResponse handles the DeleteCertificateContacts response.
 func (client *KeyVaultClient) deleteCertificateContactsHandleResponse(resp *http.Response) (KeyVaultClientDeleteCertificateContactsResponse, error) {
-	result := KeyVaultClientDeleteCertificateContactsResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteCertificateContactsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return KeyVaultClientDeleteCertificateContactsResponse{}, err
 	}
@@ -272,7 +271,7 @@ func (client *KeyVaultClient) deleteCertificateIssuerCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -280,7 +279,7 @@ func (client *KeyVaultClient) deleteCertificateIssuerCreateRequest(ctx context.C
 
 // deleteCertificateIssuerHandleResponse handles the DeleteCertificateIssuer response.
 func (client *KeyVaultClient) deleteCertificateIssuerHandleResponse(resp *http.Response) (KeyVaultClientDeleteCertificateIssuerResponse, error) {
-	result := KeyVaultClientDeleteCertificateIssuerResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteCertificateIssuerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerBundle); err != nil {
 		return KeyVaultClientDeleteCertificateIssuerResponse{}, err
 	}
@@ -323,7 +322,7 @@ func (client *KeyVaultClient) deleteCertificateOperationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -331,7 +330,7 @@ func (client *KeyVaultClient) deleteCertificateOperationCreateRequest(ctx contex
 
 // deleteCertificateOperationHandleResponse handles the DeleteCertificateOperation response.
 func (client *KeyVaultClient) deleteCertificateOperationHandleResponse(resp *http.Response) (KeyVaultClientDeleteCertificateOperationResponse, error) {
-	result := KeyVaultClientDeleteCertificateOperationResponse{RawResponse: resp}
+	result := KeyVaultClientDeleteCertificateOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return KeyVaultClientDeleteCertificateOperationResponse{}, err
 	}
@@ -369,16 +368,13 @@ func (client *KeyVaultClient) getCertificateCreateRequest(ctx context.Context, v
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(certificateName))
-	// if certificateVersion == "" {
-	// 	return nil, errors.New("parameter certificateVersion cannot be empty")
-	// }
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(certificateVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -386,7 +382,7 @@ func (client *KeyVaultClient) getCertificateCreateRequest(ctx context.Context, v
 
 // getCertificateHandleResponse handles the GetCertificate response.
 func (client *KeyVaultClient) getCertificateHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateResponse, error) {
-	result := KeyVaultClientGetCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientGetCertificateResponse{}, err
 	}
@@ -424,7 +420,7 @@ func (client *KeyVaultClient) getCertificateContactsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -432,7 +428,7 @@ func (client *KeyVaultClient) getCertificateContactsCreateRequest(ctx context.Co
 
 // getCertificateContactsHandleResponse handles the GetCertificateContacts response.
 func (client *KeyVaultClient) getCertificateContactsHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateContactsResponse, error) {
-	result := KeyVaultClientGetCertificateContactsResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateContactsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return KeyVaultClientGetCertificateContactsResponse{}, err
 	}
@@ -475,7 +471,7 @@ func (client *KeyVaultClient) getCertificateIssuerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -483,29 +479,45 @@ func (client *KeyVaultClient) getCertificateIssuerCreateRequest(ctx context.Cont
 
 // getCertificateIssuerHandleResponse handles the GetCertificateIssuer response.
 func (client *KeyVaultClient) getCertificateIssuerHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateIssuerResponse, error) {
-	result := KeyVaultClientGetCertificateIssuerResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateIssuerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerBundle); err != nil {
 		return KeyVaultClientGetCertificateIssuerResponse{}, err
 	}
 	return result, nil
 }
 
-// GetCertificateIssuers - The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified
-// key vault. This operation requires the certificates/manageissuers/getissuers permission.
+// NewGetCertificateIssuersPager - The GetCertificateIssuers operation returns the set of certificate issuer resources in
+// the specified key vault. This operation requires the certificates/manageissuers/getissuers permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers
 // method.
-func (client *KeyVaultClient) GetCertificateIssuers(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *KeyVaultClientGetCertificateIssuersPager {
-	return &KeyVaultClientGetCertificateIssuersPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) NewGetCertificateIssuersPager(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *runtime.Pager[KeyVaultClientGetCertificateIssuersResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateIssuersResponse]{
+		More: func(page KeyVaultClientGetCertificateIssuersResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateIssuersResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateIssuerListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificateIssuersResponse) (KeyVaultClientGetCertificateIssuersResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getCertificateIssuersCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetCertificateIssuersResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetCertificateIssuersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetCertificateIssuersResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getCertificateIssuersHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getCertificateIssuersCreateRequest creates the GetCertificateIssuers request.
@@ -521,7 +533,7 @@ func (client *KeyVaultClient) getCertificateIssuersCreateRequest(ctx context.Con
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -529,7 +541,7 @@ func (client *KeyVaultClient) getCertificateIssuersCreateRequest(ctx context.Con
 
 // getCertificateIssuersHandleResponse handles the GetCertificateIssuers response.
 func (client *KeyVaultClient) getCertificateIssuersHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateIssuersResponse, error) {
-	result := KeyVaultClientGetCertificateIssuersResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateIssuersResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateIssuerListResult); err != nil {
 		return KeyVaultClientGetCertificateIssuersResponse{}, err
 	}
@@ -572,7 +584,7 @@ func (client *KeyVaultClient) getCertificateOperationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -580,7 +592,7 @@ func (client *KeyVaultClient) getCertificateOperationCreateRequest(ctx context.C
 
 // getCertificateOperationHandleResponse handles the GetCertificateOperation response.
 func (client *KeyVaultClient) getCertificateOperationHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateOperationResponse, error) {
-	result := KeyVaultClientGetCertificateOperationResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return KeyVaultClientGetCertificateOperationResponse{}, err
 	}
@@ -623,7 +635,7 @@ func (client *KeyVaultClient) getCertificatePolicyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -631,30 +643,46 @@ func (client *KeyVaultClient) getCertificatePolicyCreateRequest(ctx context.Cont
 
 // getCertificatePolicyHandleResponse handles the GetCertificatePolicy response.
 func (client *KeyVaultClient) getCertificatePolicyHandleResponse(resp *http.Response) (KeyVaultClientGetCertificatePolicyResponse, error) {
-	result := KeyVaultClientGetCertificatePolicyResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificatePolicyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePolicy); err != nil {
 		return KeyVaultClientGetCertificatePolicyResponse{}, err
 	}
 	return result, nil
 }
 
-// GetCertificateVersions - The GetCertificateVersions operation returns the versions of a certificate in the specified key
-// vault. This operation requires the certificates/list permission.
+// NewGetCertificateVersionsPager - The GetCertificateVersions operation returns the versions of a certificate in the specified
+// key vault. This operation requires the certificates/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // certificateName - The name of the certificate.
 // options - KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions
 // method.
-func (client *KeyVaultClient) GetCertificateVersions(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *KeyVaultClientGetCertificateVersionsPager {
-	return &KeyVaultClientGetCertificateVersionsPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
+func (client *KeyVaultClient) NewGetCertificateVersionsPager(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *runtime.Pager[KeyVaultClientGetCertificateVersionsResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateVersionsResponse]{
+		More: func(page KeyVaultClientGetCertificateVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificateVersionsResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificateVersionsResponse) (KeyVaultClientGetCertificateVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getCertificateVersionsCreateRequest(ctx, vaultBaseURL, certificateName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetCertificateVersionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetCertificateVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetCertificateVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getCertificateVersionsHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getCertificateVersionsCreateRequest creates the GetCertificateVersions request.
@@ -674,7 +702,7 @@ func (client *KeyVaultClient) getCertificateVersionsCreateRequest(ctx context.Co
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -682,29 +710,45 @@ func (client *KeyVaultClient) getCertificateVersionsCreateRequest(ctx context.Co
 
 // getCertificateVersionsHandleResponse handles the GetCertificateVersions response.
 func (client *KeyVaultClient) getCertificateVersionsHandleResponse(resp *http.Response) (KeyVaultClientGetCertificateVersionsResponse, error) {
-	result := KeyVaultClientGetCertificateVersionsResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificateVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
 		return KeyVaultClientGetCertificateVersionsResponse{}, err
 	}
 	return result, nil
 }
 
-// GetCertificates - The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-// operation requires the certificates/list permission.
+// NewGetCertificatesPager - The GetCertificates operation returns the set of certificates resources in the specified key
+// vault. This operation requires the certificates/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetCertificatesOptions contains the optional parameters for the KeyVaultClient.GetCertificates
 // method.
-func (client *KeyVaultClient) GetCertificates(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *KeyVaultClientGetCertificatesPager {
-	return &KeyVaultClientGetCertificatesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getCertificatesCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) NewGetCertificatesPager(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *runtime.Pager[KeyVaultClientGetCertificatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificatesResponse]{
+		More: func(page KeyVaultClientGetCertificatesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetCertificatesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetCertificatesResponse) (KeyVaultClientGetCertificatesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getCertificatesCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetCertificatesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetCertificatesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetCertificatesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getCertificatesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getCertificatesCreateRequest creates the GetCertificates request.
@@ -723,7 +767,7 @@ func (client *KeyVaultClient) getCertificatesCreateRequest(ctx context.Context, 
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -731,7 +775,7 @@ func (client *KeyVaultClient) getCertificatesCreateRequest(ctx context.Context, 
 
 // getCertificatesHandleResponse handles the GetCertificates response.
 func (client *KeyVaultClient) getCertificatesHandleResponse(resp *http.Response) (KeyVaultClientGetCertificatesResponse, error) {
-	result := KeyVaultClientGetCertificatesResponse{RawResponse: resp}
+	result := KeyVaultClientGetCertificatesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListResult); err != nil {
 		return KeyVaultClientGetCertificatesResponse{}, err
 	}
@@ -775,7 +819,7 @@ func (client *KeyVaultClient) getDeletedCertificateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -783,31 +827,47 @@ func (client *KeyVaultClient) getDeletedCertificateCreateRequest(ctx context.Con
 
 // getDeletedCertificateHandleResponse handles the GetDeletedCertificate response.
 func (client *KeyVaultClient) getDeletedCertificateHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedCertificateResponse, error) {
-	result := KeyVaultClientGetDeletedCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificateBundle); err != nil {
 		return KeyVaultClientGetDeletedCertificateResponse{}, err
 	}
 	return result, nil
 }
 
-// GetDeletedCertificates - The GetDeletedCertificates operation retrieves the certificates in the current vault which are
-// in a deleted state and ready for recovery or purging. This operation includes deletion-specific
+// NewGetDeletedCertificatesPager - The GetDeletedCertificates operation retrieves the certificates in the current vault which
+// are in a deleted state and ready for recovery or purging. This operation includes deletion-specific
 // information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete
 // enabled vaults.
 // If the operation fails it returns an *azcore.ResponseError type.
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates
 // method.
-func (client *KeyVaultClient) GetDeletedCertificates(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *KeyVaultClientGetDeletedCertificatesPager {
-	return &KeyVaultClientGetDeletedCertificatesPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.getDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
+func (client *KeyVaultClient) NewGetDeletedCertificatesPager(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *runtime.Pager[KeyVaultClientGetDeletedCertificatesResponse] {
+	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedCertificatesResponse]{
+		More: func(page KeyVaultClientGetDeletedCertificatesResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		advancer: func(ctx context.Context, resp KeyVaultClientGetDeletedCertificatesResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedCertificateListResult.NextLink)
+		Fetcher: func(ctx context.Context, page *KeyVaultClientGetDeletedCertificatesResponse) (KeyVaultClientGetDeletedCertificatesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.getDeletedCertificatesCreateRequest(ctx, vaultBaseURL, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return KeyVaultClientGetDeletedCertificatesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return KeyVaultClientGetDeletedCertificatesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return KeyVaultClientGetDeletedCertificatesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.getDeletedCertificatesHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // getDeletedCertificatesCreateRequest creates the GetDeletedCertificates request.
@@ -826,7 +886,7 @@ func (client *KeyVaultClient) getDeletedCertificatesCreateRequest(ctx context.Co
 	if options != nil && options.IncludePending != nil {
 		reqQP.Set("includePending", strconv.FormatBool(*options.IncludePending))
 	}
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -834,7 +894,7 @@ func (client *KeyVaultClient) getDeletedCertificatesCreateRequest(ctx context.Co
 
 // getDeletedCertificatesHandleResponse handles the GetDeletedCertificates response.
 func (client *KeyVaultClient) getDeletedCertificatesHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedCertificatesResponse, error) {
-	result := KeyVaultClientGetDeletedCertificatesResponse{RawResponse: resp}
+	result := KeyVaultClientGetDeletedCertificatesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedCertificateListResult); err != nil {
 		return KeyVaultClientGetDeletedCertificatesResponse{}, err
 	}
@@ -880,7 +940,7 @@ func (client *KeyVaultClient) importCertificateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -888,7 +948,7 @@ func (client *KeyVaultClient) importCertificateCreateRequest(ctx context.Context
 
 // importCertificateHandleResponse handles the ImportCertificate response.
 func (client *KeyVaultClient) importCertificateHandleResponse(resp *http.Response) (KeyVaultClientImportCertificateResponse, error) {
-	result := KeyVaultClientImportCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientImportCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientImportCertificateResponse{}, err
 	}
@@ -933,7 +993,7 @@ func (client *KeyVaultClient) mergeCertificateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -941,7 +1001,7 @@ func (client *KeyVaultClient) mergeCertificateCreateRequest(ctx context.Context,
 
 // mergeCertificateHandleResponse handles the MergeCertificate response.
 func (client *KeyVaultClient) mergeCertificateHandleResponse(resp *http.Response) (KeyVaultClientMergeCertificateResponse, error) {
-	result := KeyVaultClientMergeCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientMergeCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientMergeCertificateResponse{}, err
 	}
@@ -968,7 +1028,7 @@ func (client *KeyVaultClient) PurgeDeletedCertificate(ctx context.Context, vault
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return KeyVaultClientPurgeDeletedCertificateResponse{}, runtime.NewResponseError(resp)
 	}
-	return KeyVaultClientPurgeDeletedCertificateResponse{RawResponse: resp}, nil
+	return KeyVaultClientPurgeDeletedCertificateResponse{}, nil
 }
 
 // purgeDeletedCertificateCreateRequest creates the PurgeDeletedCertificate request.
@@ -985,7 +1045,7 @@ func (client *KeyVaultClient) purgeDeletedCertificateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1028,7 +1088,7 @@ func (client *KeyVaultClient) recoverDeletedCertificateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -1036,7 +1096,7 @@ func (client *KeyVaultClient) recoverDeletedCertificateCreateRequest(ctx context
 
 // recoverDeletedCertificateHandleResponse handles the RecoverDeletedCertificate response.
 func (client *KeyVaultClient) recoverDeletedCertificateHandleResponse(resp *http.Response) (KeyVaultClientRecoverDeletedCertificateResponse, error) {
-	result := KeyVaultClientRecoverDeletedCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientRecoverDeletedCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientRecoverDeletedCertificateResponse{}, err
 	}
@@ -1075,7 +1135,7 @@ func (client *KeyVaultClient) restoreCertificateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1083,7 +1143,7 @@ func (client *KeyVaultClient) restoreCertificateCreateRequest(ctx context.Contex
 
 // restoreCertificateHandleResponse handles the RestoreCertificate response.
 func (client *KeyVaultClient) restoreCertificateHandleResponse(resp *http.Response) (KeyVaultClientRestoreCertificateResponse, error) {
-	result := KeyVaultClientRestoreCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientRestoreCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientRestoreCertificateResponse{}, err
 	}
@@ -1122,7 +1182,7 @@ func (client *KeyVaultClient) setCertificateContactsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, contacts)
@@ -1130,7 +1190,7 @@ func (client *KeyVaultClient) setCertificateContactsCreateRequest(ctx context.Co
 
 // setCertificateContactsHandleResponse handles the SetCertificateContacts response.
 func (client *KeyVaultClient) setCertificateContactsHandleResponse(resp *http.Response) (KeyVaultClientSetCertificateContactsResponse, error) {
-	result := KeyVaultClientSetCertificateContactsResponse{RawResponse: resp}
+	result := KeyVaultClientSetCertificateContactsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contacts); err != nil {
 		return KeyVaultClientSetCertificateContactsResponse{}, err
 	}
@@ -1174,7 +1234,7 @@ func (client *KeyVaultClient) setCertificateIssuerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameter)
@@ -1182,7 +1242,7 @@ func (client *KeyVaultClient) setCertificateIssuerCreateRequest(ctx context.Cont
 
 // setCertificateIssuerHandleResponse handles the SetCertificateIssuer response.
 func (client *KeyVaultClient) setCertificateIssuerHandleResponse(resp *http.Response) (KeyVaultClientSetCertificateIssuerResponse, error) {
-	result := KeyVaultClientSetCertificateIssuerResponse{RawResponse: resp}
+	result := KeyVaultClientSetCertificateIssuerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerBundle); err != nil {
 		return KeyVaultClientSetCertificateIssuerResponse{}, err
 	}
@@ -1223,16 +1283,13 @@ func (client *KeyVaultClient) updateCertificateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-name}", url.PathEscape(certificateName))
-	// if certificateVersion == "" {
-	// 	return nil, errors.New("parameter certificateVersion cannot be empty")
-	// }
 	urlPath = strings.ReplaceAll(urlPath, "{certificate-version}", url.PathEscape(certificateVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1240,7 +1297,7 @@ func (client *KeyVaultClient) updateCertificateCreateRequest(ctx context.Context
 
 // updateCertificateHandleResponse handles the UpdateCertificate response.
 func (client *KeyVaultClient) updateCertificateHandleResponse(resp *http.Response) (KeyVaultClientUpdateCertificateResponse, error) {
-	result := KeyVaultClientUpdateCertificateResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateCertificateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateBundle); err != nil {
 		return KeyVaultClientUpdateCertificateResponse{}, err
 	}
@@ -1284,7 +1341,7 @@ func (client *KeyVaultClient) updateCertificateIssuerCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameter)
@@ -1292,7 +1349,7 @@ func (client *KeyVaultClient) updateCertificateIssuerCreateRequest(ctx context.C
 
 // updateCertificateIssuerHandleResponse handles the UpdateCertificateIssuer response.
 func (client *KeyVaultClient) updateCertificateIssuerHandleResponse(resp *http.Response) (KeyVaultClientUpdateCertificateIssuerResponse, error) {
-	result := KeyVaultClientUpdateCertificateIssuerResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateCertificateIssuerResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssuerBundle); err != nil {
 		return KeyVaultClientUpdateCertificateIssuerResponse{}, err
 	}
@@ -1336,7 +1393,7 @@ func (client *KeyVaultClient) updateCertificateOperationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, certificateOperation)
@@ -1344,7 +1401,7 @@ func (client *KeyVaultClient) updateCertificateOperationCreateRequest(ctx contex
 
 // updateCertificateOperationHandleResponse handles the UpdateCertificateOperation response.
 func (client *KeyVaultClient) updateCertificateOperationHandleResponse(resp *http.Response) (KeyVaultClientUpdateCertificateOperationResponse, error) {
-	result := KeyVaultClientUpdateCertificateOperationResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateCertificateOperationResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateOperation); err != nil {
 		return KeyVaultClientUpdateCertificateOperationResponse{}, err
 	}
@@ -1388,7 +1445,7 @@ func (client *KeyVaultClient) updateCertificatePolicyCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "7.3-preview")
+	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, certificatePolicy)
@@ -1396,7 +1453,7 @@ func (client *KeyVaultClient) updateCertificatePolicyCreateRequest(ctx context.C
 
 // updateCertificatePolicyHandleResponse handles the UpdateCertificatePolicy response.
 func (client *KeyVaultClient) updateCertificatePolicyHandleResponse(resp *http.Response) (KeyVaultClientUpdateCertificatePolicyResponse, error) {
-	result := KeyVaultClientUpdateCertificatePolicyResponse{RawResponse: resp}
+	result := KeyVaultClientUpdateCertificatePolicyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificatePolicy); err != nil {
 		return KeyVaultClientUpdateCertificatePolicyResponse{}, err
 	}

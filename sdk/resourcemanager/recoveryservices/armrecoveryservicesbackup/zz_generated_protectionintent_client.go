@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ProtectionIntentClient struct {
 // subscriptionID - The subscription Id.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProtectionIntentClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionIntentClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ProtectionIntentClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // CreateOrUpdate - Create Intent for Enabling backup of an item. This is a synchronous operation.
@@ -101,7 +106,7 @@ func (client *ProtectionIntentClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -109,7 +114,7 @@ func (client *ProtectionIntentClient) createOrUpdateCreateRequest(ctx context.Co
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ProtectionIntentClient) createOrUpdateHandleResponse(resp *http.Response) (ProtectionIntentClientCreateOrUpdateResponse, error) {
-	result := ProtectionIntentClientCreateOrUpdateResponse{RawResponse: resp}
+	result := ProtectionIntentClientCreateOrUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionIntentResource); err != nil {
 		return ProtectionIntentClientCreateOrUpdateResponse{}, err
 	}
@@ -135,7 +140,7 @@ func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName stri
 	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return ProtectionIntentClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
-	return ProtectionIntentClientDeleteResponse{RawResponse: resp}, nil
+	return ProtectionIntentClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -166,7 +171,7 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -222,7 +227,7 @@ func (client *ProtectionIntentClient) getCreateRequest(ctx context.Context, vaul
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -230,7 +235,7 @@ func (client *ProtectionIntentClient) getCreateRequest(ctx context.Context, vaul
 
 // getHandleResponse handles the Get response.
 func (client *ProtectionIntentClient) getHandleResponse(resp *http.Response) (ProtectionIntentClientGetResponse, error) {
-	result := ProtectionIntentClientGetResponse{RawResponse: resp}
+	result := ProtectionIntentClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionIntentResource); err != nil {
 		return ProtectionIntentClientGetResponse{}, err
 	}
@@ -277,7 +282,7 @@ func (client *ProtectionIntentClient) validateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -285,7 +290,7 @@ func (client *ProtectionIntentClient) validateCreateRequest(ctx context.Context,
 
 // validateHandleResponse handles the Validate response.
 func (client *ProtectionIntentClient) validateHandleResponse(resp *http.Response) (ProtectionIntentClientValidateResponse, error) {
-	result := ProtectionIntentClientValidateResponse{RawResponse: resp}
+	result := ProtectionIntentClientValidateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreValidateEnableBackupResponse); err != nil {
 		return ProtectionIntentClientValidateResponse{}, err
 	}

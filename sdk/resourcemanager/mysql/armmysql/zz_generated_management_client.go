@@ -1,5 +1,5 @@
-//go:build go1.16
-// +build go1.16
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -33,20 +34,24 @@ type ManagementClient struct {
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementClient {
-	cp := arm.ClientOptions{}
-	if options != nil {
-		cp = *options
+func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if options == nil {
+		options = &arm.ClientOptions{}
 	}
-	if len(cp.Endpoint) == 0 {
-		cp.Endpoint = arm.AzurePublicCloud
+	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
+		ep = c.Endpoint
+	}
+	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	if err != nil {
+		return nil, err
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           string(cp.Endpoint),
-		pl:             armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, &cp),
+		host:           ep,
+		pl:             pl,
 	}
-	return client
+	return client, nil
 }
 
 // BeginCreateRecommendedActionSession - Create recommendation action session for the advisor.
@@ -57,22 +62,16 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 // databaseName - The name of the database.
 // options - ManagementClientBeginCreateRecommendedActionSessionOptions contains the optional parameters for the ManagementClient.BeginCreateRecommendedActionSession
 // method.
-func (client *ManagementClient) BeginCreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string, options *ManagementClientBeginCreateRecommendedActionSessionOptions) (ManagementClientCreateRecommendedActionSessionPollerResponse, error) {
-	resp, err := client.createRecommendedActionSession(ctx, resourceGroupName, serverName, advisorName, databaseName, options)
-	if err != nil {
-		return ManagementClientCreateRecommendedActionSessionPollerResponse{}, err
+func (client *ManagementClient) BeginCreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string, options *ManagementClientBeginCreateRecommendedActionSessionOptions) (*armruntime.Poller[ManagementClientCreateRecommendedActionSessionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createRecommendedActionSession(ctx, resourceGroupName, serverName, advisorName, databaseName, options)
+		if err != nil {
+			return nil, err
+		}
+		return armruntime.NewPoller[ManagementClientCreateRecommendedActionSessionResponse](resp, client.pl, nil)
+	} else {
+		return armruntime.NewPollerFromResumeToken[ManagementClientCreateRecommendedActionSessionResponse](options.ResumeToken, client.pl, nil)
 	}
-	result := ManagementClientCreateRecommendedActionSessionPollerResponse{
-		RawResponse: resp,
-	}
-	pt, err := armruntime.NewPoller("ManagementClient.CreateRecommendedActionSession", "", resp, client.pl)
-	if err != nil {
-		return ManagementClientCreateRecommendedActionSessionPollerResponse{}, err
-	}
-	result.Poller = &ManagementClientCreateRecommendedActionSessionPoller{
-		pt: pt,
-	}
-	return result, nil
 }
 
 // CreateRecommendedActionSession - Create recommendation action session for the advisor.
@@ -171,7 +170,7 @@ func (client *ManagementClient) resetQueryPerformanceInsightDataCreateRequest(ct
 
 // resetQueryPerformanceInsightDataHandleResponse handles the ResetQueryPerformanceInsightData response.
 func (client *ManagementClient) resetQueryPerformanceInsightDataHandleResponse(resp *http.Response) (ManagementClientResetQueryPerformanceInsightDataResponse, error) {
-	result := ManagementClientResetQueryPerformanceInsightDataResponse{RawResponse: resp}
+	result := ManagementClientResetQueryPerformanceInsightDataResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryPerformanceInsightResetDataResult); err != nil {
 		return ManagementClientResetQueryPerformanceInsightDataResponse{}, err
 	}

@@ -14,6 +14,20 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type DataPartitionsList.
+func (d DataPartitionsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "dataPartitionNames", d.DataPartitionNames)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DataPartitionsListResult.
+func (d DataPartitionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type EnergyResourceUpdate.
 func (e EnergyResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

@@ -1,5 +1,25 @@
 # Release History
 
+## 0.4.0 (2022-05-06)
+### Features Added
+
+- New function `DataPartitionsListResult.MarshalJSON() ([]byte, error)`
+- New function `DataPartitionsList.MarshalJSON() ([]byte, error)`
+- New function `*EnergyServicesClient.BeginAddPartition(context.Context, string, string, *EnergyServicesClientBeginAddPartitionOptions) (*armruntime.Poller[EnergyServicesClientAddPartitionResponse], error)`
+- New function `*EnergyServicesClient.BeginRemovePartition(context.Context, string, string, *EnergyServicesClientBeginRemovePartitionOptions) (*armruntime.Poller[EnergyServicesClientRemovePartitionResponse], error)`
+- New function `*EnergyServicesClient.ListPartitions(context.Context, string, string, *EnergyServicesClientListPartitionsOptions) (EnergyServicesClientListPartitionsResponse, error)`
+- New struct `DataPartitionAddOrRemoveRequest`
+- New struct `DataPartitionProperties`
+- New struct `DataPartitionsList`
+- New struct `DataPartitionsListResult`
+- New struct `EnergyServicesClientAddPartitionResponse`
+- New struct `EnergyServicesClientBeginAddPartitionOptions`
+- New struct `EnergyServicesClientBeginRemovePartitionOptions`
+- New struct `EnergyServicesClientListPartitionsOptions`
+- New struct `EnergyServicesClientListPartitionsResponse`
+- New struct `EnergyServicesClientRemovePartitionResponse`
+
+
 ## 0.3.0 (2022-04-18)
 ### Breaking Changes
 

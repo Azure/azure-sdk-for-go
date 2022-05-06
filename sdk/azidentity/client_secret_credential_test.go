@@ -58,7 +58,7 @@ func TestClientSecretCredential_InvalidSecretLive(t *testing.T) {
 	if tk != nil {
 		t.Fatal("GetToken returned a token")
 	}
-	var e AuthenticationFailedError
+	var e *AuthenticationFailedError
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}

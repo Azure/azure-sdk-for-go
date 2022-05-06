@@ -20,6 +20,7 @@
 ### Breaking Changes
 
 - `admin.Client` can now be configured using `azcore.Options`. (#17796)
+- `ReceivedMessage.TransactionPartitionKey` has been removed as this library doesn't support transactions.
 
 ### Bugs Fixed
 

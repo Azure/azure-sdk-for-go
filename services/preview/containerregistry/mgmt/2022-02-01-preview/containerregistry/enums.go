@@ -34,6 +34,21 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 	return []ActionsRequired{None, Recreate}
 }
 
+// ActivationStatus enumerates the values for activation status.
+type ActivationStatus string
+
+const (
+	// Active ...
+	Active ActivationStatus = "Active"
+	// Inactive ...
+	Inactive ActivationStatus = "Inactive"
+)
+
+// PossibleActivationStatusValues returns an array of possible values for the ActivationStatus const type.
+func PossibleActivationStatusValues() []ActivationStatus {
+	return []ActivationStatus{Active, Inactive}
+}
+
 // Architecture enumerates the values for architecture.
 type Architecture string
 
@@ -53,6 +68,37 @@ const (
 // PossibleArchitectureValues returns an array of possible values for the Architecture const type.
 func PossibleArchitectureValues() []Architecture {
 	return []Architecture{Amd64, Arm, Arm64, ThreeEightSix, X86}
+}
+
+// AuditLogStatus enumerates the values for audit log status.
+type AuditLogStatus string
+
+const (
+	// Disabled ...
+	Disabled AuditLogStatus = "Disabled"
+	// Enabled ...
+	Enabled AuditLogStatus = "Enabled"
+)
+
+// PossibleAuditLogStatusValues returns an array of possible values for the AuditLogStatus const type.
+func PossibleAuditLogStatusValues() []AuditLogStatus {
+	return []AuditLogStatus{Disabled, Enabled}
+}
+
+// AzureADAuthenticationAsArmPolicyStatus enumerates the values for azure ad authentication as arm policy
+// status.
+type AzureADAuthenticationAsArmPolicyStatus string
+
+const (
+	// AzureADAuthenticationAsArmPolicyStatusDisabled ...
+	AzureADAuthenticationAsArmPolicyStatusDisabled AzureADAuthenticationAsArmPolicyStatus = "disabled"
+	// AzureADAuthenticationAsArmPolicyStatusEnabled ...
+	AzureADAuthenticationAsArmPolicyStatusEnabled AzureADAuthenticationAsArmPolicyStatus = "enabled"
+)
+
+// PossibleAzureADAuthenticationAsArmPolicyStatusValues returns an array of possible values for the AzureADAuthenticationAsArmPolicyStatus const type.
+func PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus {
+	return []AzureADAuthenticationAsArmPolicyStatus{AzureADAuthenticationAsArmPolicyStatusDisabled, AzureADAuthenticationAsArmPolicyStatusEnabled}
 }
 
 // BaseImageDependencyType enumerates the values for base image dependency type.
@@ -83,6 +129,57 @@ const (
 // PossibleBaseImageTriggerTypeValues returns an array of possible values for the BaseImageTriggerType const type.
 func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
 	return []BaseImageTriggerType{All, Runtime}
+}
+
+// CertificateType enumerates the values for certificate type.
+type CertificateType string
+
+const (
+	// LocalDirectory ...
+	LocalDirectory CertificateType = "LocalDirectory"
+)
+
+// PossibleCertificateTypeValues returns an array of possible values for the CertificateType const type.
+func PossibleCertificateTypeValues() []CertificateType {
+	return []CertificateType{LocalDirectory}
+}
+
+// ConnectedRegistryMode enumerates the values for connected registry mode.
+type ConnectedRegistryMode string
+
+const (
+	// ConnectedRegistryModeMirror ...
+	ConnectedRegistryModeMirror ConnectedRegistryMode = "Mirror"
+	// ConnectedRegistryModeReadOnly ...
+	ConnectedRegistryModeReadOnly ConnectedRegistryMode = "ReadOnly"
+	// ConnectedRegistryModeReadWrite ...
+	ConnectedRegistryModeReadWrite ConnectedRegistryMode = "ReadWrite"
+	// ConnectedRegistryModeRegistry ...
+	ConnectedRegistryModeRegistry ConnectedRegistryMode = "Registry"
+)
+
+// PossibleConnectedRegistryModeValues returns an array of possible values for the ConnectedRegistryMode const type.
+func PossibleConnectedRegistryModeValues() []ConnectedRegistryMode {
+	return []ConnectedRegistryMode{ConnectedRegistryModeMirror, ConnectedRegistryModeReadOnly, ConnectedRegistryModeReadWrite, ConnectedRegistryModeRegistry}
+}
+
+// ConnectionState enumerates the values for connection state.
+type ConnectionState string
+
+const (
+	// Offline ...
+	Offline ConnectionState = "Offline"
+	// Online ...
+	Online ConnectionState = "Online"
+	// Syncing ...
+	Syncing ConnectionState = "Syncing"
+	// Unhealthy ...
+	Unhealthy ConnectionState = "Unhealthy"
+)
+
+// PossibleConnectionStateValues returns an array of possible values for the ConnectionState const type.
+func PossibleConnectionStateValues() []ConnectionState {
+	return []ConnectionState{Offline, Online, Syncing, Unhealthy}
 }
 
 // ConnectionStatus enumerates the values for connection status.
@@ -142,15 +239,30 @@ func PossibleDefaultActionValues() []DefaultAction {
 type EncryptionStatus string
 
 const (
-	// Disabled ...
-	Disabled EncryptionStatus = "disabled"
-	// Enabled ...
-	Enabled EncryptionStatus = "enabled"
+	// EncryptionStatusDisabled ...
+	EncryptionStatusDisabled EncryptionStatus = "disabled"
+	// EncryptionStatusEnabled ...
+	EncryptionStatusEnabled EncryptionStatus = "enabled"
 )
 
 // PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
 func PossibleEncryptionStatusValues() []EncryptionStatus {
-	return []EncryptionStatus{Disabled, Enabled}
+	return []EncryptionStatus{EncryptionStatusDisabled, EncryptionStatusEnabled}
+}
+
+// ExportPolicyStatus enumerates the values for export policy status.
+type ExportPolicyStatus string
+
+const (
+	// ExportPolicyStatusDisabled ...
+	ExportPolicyStatusDisabled ExportPolicyStatus = "disabled"
+	// ExportPolicyStatusEnabled ...
+	ExportPolicyStatusEnabled ExportPolicyStatus = "enabled"
+)
+
+// PossibleExportPolicyStatusValues returns an array of possible values for the ExportPolicyStatus const type.
+func PossibleExportPolicyStatusValues() []ExportPolicyStatus {
+	return []ExportPolicyStatus{ExportPolicyStatusDisabled, ExportPolicyStatusEnabled}
 }
 
 // ImportMode enumerates the values for import mode.
@@ -185,6 +297,27 @@ const (
 // PossibleLastModifiedByTypeValues returns an array of possible values for the LastModifiedByType const type.
 func PossibleLastModifiedByTypeValues() []LastModifiedByType {
 	return []LastModifiedByType{LastModifiedByTypeApplication, LastModifiedByTypeKey, LastModifiedByTypeManagedIdentity, LastModifiedByTypeUser}
+}
+
+// LogLevel enumerates the values for log level.
+type LogLevel string
+
+const (
+	// LogLevelDebug ...
+	LogLevelDebug LogLevel = "Debug"
+	// LogLevelError ...
+	LogLevelError LogLevel = "Error"
+	// LogLevelInformation ...
+	LogLevelInformation LogLevel = "Information"
+	// LogLevelNone ...
+	LogLevelNone LogLevel = "None"
+	// LogLevelWarning ...
+	LogLevelWarning LogLevel = "Warning"
+)
+
+// PossibleLogLevelValues returns an array of possible values for the LogLevel const type.
+func PossibleLogLevelValues() []LogLevel {
+	return []LogLevel{LogLevelDebug, LogLevelError, LogLevelInformation, LogLevelNone, LogLevelWarning}
 }
 
 // NetworkRuleBypassOptions enumerates the values for network rule bypass options.
@@ -536,6 +669,21 @@ func PossibleTaskStatusValues() []TaskStatus {
 	return []TaskStatus{TaskStatusDisabled, TaskStatusEnabled}
 }
 
+// TLSStatus enumerates the values for tls status.
+type TLSStatus string
+
+const (
+	// TLSStatusDisabled ...
+	TLSStatusDisabled TLSStatus = "Disabled"
+	// TLSStatusEnabled ...
+	TLSStatusEnabled TLSStatus = "Enabled"
+)
+
+// PossibleTLSStatusValues returns an array of possible values for the TLSStatus const type.
+func PossibleTLSStatusValues() []TLSStatus {
+	return []TLSStatus{TLSStatusDisabled, TLSStatusEnabled}
+}
+
 // TokenCertificateName enumerates the values for token certificate name.
 type TokenCertificateName string
 
@@ -749,4 +897,19 @@ const (
 // PossibleWebhookStatusValues returns an array of possible values for the WebhookStatus const type.
 func PossibleWebhookStatusValues() []WebhookStatus {
 	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
+}
+
+// ZoneRedundancy enumerates the values for zone redundancy.
+type ZoneRedundancy string
+
+const (
+	// ZoneRedundancyDisabled ...
+	ZoneRedundancyDisabled ZoneRedundancy = "Disabled"
+	// ZoneRedundancyEnabled ...
+	ZoneRedundancyEnabled ZoneRedundancy = "Enabled"
+)
+
+// PossibleZoneRedundancyValues returns an array of possible values for the ZoneRedundancy const type.
+func PossibleZoneRedundancyValues() []ZoneRedundancy {
+	return []ZoneRedundancy{ZoneRedundancyDisabled, ZoneRedundancyEnabled}
 }

@@ -1,27 +1,9 @@
-# Change History
+# Unreleased
 
 ## Breaking Changes
 
-### Struct Changes
+### Signature Changes
 
-#### Removed Structs
+#### Struct Fields
 
-1. StorageAccountProperties
-
-#### Removed Struct Fields
-
-1. RegistryProperties.StorageAccount
-
-## Additive Changes
-
-### Struct Changes
-
-#### New Structs
-
-1. OperationLogSpecificationDefinition
-
-#### New Struct Fields
-
-1. OperationServiceSpecificationDefinition.LogSpecifications
-1. RegistryProperties.AnonymousPullEnabled
-1. RegistryPropertiesUpdateParameters.AnonymousPullEnabled
+1. ErrorResponseBody.Details changed type from *InnerErrorDescription to *[]InnerErrorDescription

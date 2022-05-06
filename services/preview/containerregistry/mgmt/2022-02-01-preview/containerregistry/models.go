@@ -18,11 +18,11 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry"
 
 // ActivationProperties the activation properties of the connected registry.
 type ActivationProperties struct {
-	// Status - READ-ONLY; The activation status of the connected registry. Possible values include: 'ActivationStatusActive', 'ActivationStatusInactive'
+	// Status - READ-ONLY; The activation status of the connected registry. Possible values include: 'Active', 'Inactive'
 	Status ActivationStatus `json:"status,omitempty"`
 }
 
@@ -326,11 +326,11 @@ type AgentPoolProperties struct {
 	Count *int32 `json:"count,omitempty"`
 	// Tier - The Tier of agent machine
 	Tier *string `json:"tier,omitempty"`
-	// Os - The OS of agent machine. Possible values include: 'OSWindows', 'OSLinux'
+	// Os - The OS of agent machine. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
 	// VirtualNetworkSubnetResourceID - The Virtual Network Subnet Resource Id of the agent machine
 	VirtualNetworkSubnetResourceID *string `json:"virtualNetworkSubnetResourceId,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of this agent pool. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of this agent pool. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -559,7 +559,7 @@ type Argument struct {
 
 // AuthInfo the authorization properties for accessing the source code repository.
 type AuthInfo struct {
-	// TokenType - The type of Auth token. Possible values include: 'TokenTypePAT', 'TokenTypeOAuth'
+	// TokenType - The type of Auth token. Possible values include: 'PAT', 'OAuth'
 	TokenType TokenType `json:"tokenType,omitempty"`
 	// Token - The access token used to access the source control provider.
 	Token *string `json:"token,omitempty"`
@@ -573,7 +573,7 @@ type AuthInfo struct {
 
 // AuthInfoUpdateParameters the authorization properties for accessing the source code repository.
 type AuthInfoUpdateParameters struct {
-	// TokenType - The type of Auth token. Possible values include: 'TokenTypePAT', 'TokenTypeOAuth'
+	// TokenType - The type of Auth token. Possible values include: 'PAT', 'OAuth'
 	TokenType TokenType `json:"tokenType,omitempty"`
 	// Token - The access token used to access the source control provider.
 	Token *string `json:"token,omitempty"`
@@ -585,9 +585,15 @@ type AuthInfoUpdateParameters struct {
 	ExpiresIn *int32 `json:"expiresIn,omitempty"`
 }
 
+// AzureADAuthenticationAsArmPolicy the policy for using ARM audience token for a container registry.
+type AzureADAuthenticationAsArmPolicy struct {
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'AzureADAuthenticationAsArmPolicyStatusEnabled', 'AzureADAuthenticationAsArmPolicyStatusDisabled'
+	Status AzureADAuthenticationAsArmPolicyStatus `json:"status,omitempty"`
+}
+
 // BaseImageDependency properties that describe a base image dependency.
 type BaseImageDependency struct {
-	// Type - The type of the base image dependency. Possible values include: 'BaseImageDependencyTypeBuildTime', 'BaseImageDependencyTypeRunTime'
+	// Type - The type of the base image dependency. Possible values include: 'BuildTime', 'RunTime'
 	Type BaseImageDependencyType `json:"type,omitempty"`
 	// Registry - The registry login server.
 	Registry *string `json:"registry,omitempty"`
@@ -601,7 +607,7 @@ type BaseImageDependency struct {
 
 // BaseImageTrigger the trigger based on base image dependency.
 type BaseImageTrigger struct {
-	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'BaseImageTriggerTypeAll', 'BaseImageTriggerTypeRuntime'
+	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
 	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
@@ -615,7 +621,7 @@ type BaseImageTrigger struct {
 
 // BaseImageTriggerUpdateParameters the properties for updating base image dependency trigger.
 type BaseImageTriggerUpdateParameters struct {
-	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'BaseImageTriggerTypeAll', 'BaseImageTriggerTypeRuntime'
+	// BaseImageTriggerType - The type of the auto trigger for base image dependency updates. Possible values include: 'All', 'Runtime'
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
 	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
@@ -1054,13 +1060,13 @@ func NewConnectedRegistryListResultPage(cur ConnectedRegistryListResult, getNext
 
 // ConnectedRegistryProperties the properties of a connected registry.
 type ConnectedRegistryProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Mode - The mode of the connected registry resource that indicates the permissions of the registry. Possible values include: 'ConnectedRegistryModeRegistry', 'ConnectedRegistryModeMirror'
+	// Mode - The mode of the connected registry resource that indicates the permissions of the registry. Possible values include: 'ConnectedRegistryModeReadWrite', 'ConnectedRegistryModeReadOnly', 'ConnectedRegistryModeRegistry', 'ConnectedRegistryModeMirror'
 	Mode ConnectedRegistryMode `json:"mode,omitempty"`
 	// Version - READ-ONLY; The current version of ACR runtime on the connected registry.
 	Version *string `json:"version,omitempty"`
-	// ConnectionState - READ-ONLY; The current connection state of the connected registry. Possible values include: 'ConnectionStateOnline', 'ConnectionStateOffline', 'ConnectionStateSyncing', 'ConnectionStateUnhealthy'
+	// ConnectionState - READ-ONLY; The current connection state of the connected registry. Possible values include: 'Online', 'Offline', 'Syncing', 'Unhealthy'
 	ConnectionState ConnectionState `json:"connectionState,omitempty"`
 	// LastActivityTime - READ-ONLY; The last activity time of the connected registry.
 	LastActivityTime *date.Time `json:"lastActivityTime,omitempty"`
@@ -1076,6 +1082,8 @@ type ConnectedRegistryProperties struct {
 	Logging *LoggingProperties `json:"logging,omitempty"`
 	// StatusDetails - READ-ONLY; The list of current statuses of the connected registry.
 	StatusDetails *[]StatusDetailProperties `json:"statusDetails,omitempty"`
+	// NotificationsList - The list of notifications subscription information for the connected registry.
+	NotificationsList *[]string `json:"notificationsList,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectedRegistryProperties.
@@ -1095,6 +1103,9 @@ func (crp ConnectedRegistryProperties) MarshalJSON() ([]byte, error) {
 	}
 	if crp.Logging != nil {
 		objectMap["logging"] = crp.Logging
+	}
+	if crp.NotificationsList != nil {
+		objectMap["notificationsList"] = crp.NotificationsList
 	}
 	return json.Marshal(objectMap)
 }
@@ -1146,6 +1157,8 @@ type ConnectedRegistryUpdateProperties struct {
 	Logging *LoggingProperties `json:"logging,omitempty"`
 	// ClientTokenIds - The list of the ACR token resource IDs used to authenticate clients to the connected registry.
 	ClientTokenIds *[]string `json:"clientTokenIds,omitempty"`
+	// NotificationsList - The list of notifications subscription information for the connected registry.
+	NotificationsList *[]string `json:"notificationsList,omitempty"`
 }
 
 // Credentials the parameters that describes a set of credentials that will be used when a run is invoked.
@@ -1323,13 +1336,13 @@ type DockerBuildStep struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
 	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepPropertiesTypeTaskStepProperties', 'TypeBasicTaskStepPropertiesTypeDocker', 'TypeBasicTaskStepPropertiesTypeFileTask', 'TypeBasicTaskStepPropertiesTypeEncodedTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DockerBuildStep.
 func (dbs DockerBuildStep) MarshalJSON() ([]byte, error) {
-	dbs.Type = TypeBasicTaskStepPropertiesTypeDocker
+	dbs.Type = TypeDocker
 	objectMap := make(map[string]interface{})
 	if dbs.ImageNames != nil {
 		objectMap["imageNames"] = dbs.ImageNames
@@ -1583,13 +1596,13 @@ type EncodedTaskStep struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
 	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepPropertiesTypeTaskStepProperties', 'TypeBasicTaskStepPropertiesTypeDocker', 'TypeBasicTaskStepPropertiesTypeFileTask', 'TypeBasicTaskStepPropertiesTypeEncodedTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EncodedTaskStep.
 func (ets EncodedTaskStep) MarshalJSON() ([]byte, error) {
-	ets.Type = TypeBasicTaskStepPropertiesTypeEncodedTask
+	ets.Type = TypeEncodedTask
 	objectMap := make(map[string]interface{})
 	if ets.EncodedTaskContent != nil {
 		objectMap["encodedTaskContent"] = ets.EncodedTaskContent
@@ -2270,7 +2283,7 @@ type ExportPipelineProperties struct {
 	Target *ExportPipelineTargetProperties `json:"target,omitempty"`
 	// Options - The list of all options configured for the pipeline.
 	Options *[]PipelineOptions `json:"options,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -2500,13 +2513,13 @@ type FileTaskStep struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
 	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepPropertiesTypeTaskStepProperties', 'TypeBasicTaskStepPropertiesTypeDocker', 'TypeBasicTaskStepPropertiesTypeFileTask', 'TypeBasicTaskStepPropertiesTypeEncodedTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileTaskStep.
 func (fts FileTaskStep) MarshalJSON() ([]byte, error) {
-	fts.Type = TypeBasicTaskStepPropertiesTypeFileTask
+	fts.Type = TypeFileTask
 	objectMap := make(map[string]interface{})
 	if fts.TaskFilePath != nil {
 		objectMap["taskFilePath"] = fts.TaskFilePath
@@ -2703,7 +2716,7 @@ type ImportImageParameters struct {
 	TargetTags *[]string `json:"targetTags,omitempty"`
 	// UntaggedTargetRepositories - List of strings of repository names to do a manifest only copy. No tag will be created.
 	UntaggedTargetRepositories *[]string `json:"untaggedTargetRepositories,omitempty"`
-	// Mode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins. Possible values include: 'ImportModeNoForce', 'ImportModeForce'
+	// Mode - When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the operation before any copying begins. Possible values include: 'NoForce', 'Force'
 	Mode ImportMode `json:"mode,omitempty"`
 }
 
@@ -2986,7 +2999,7 @@ type ImportPipelineProperties struct {
 	Trigger *PipelineTriggerProperties `json:"trigger,omitempty"`
 	// Options - The list of all options configured for the pipeline.
 	Options *[]PipelineOptions `json:"options,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the pipeline at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3087,7 +3100,7 @@ func (future *ImportPipelinesDeleteFuture) result(client ImportPipelinesClient) 
 
 // ImportPipelineSourceProperties the properties of the import pipeline source.
 type ImportPipelineSourceProperties struct {
-	// Type - The type of source for the import pipeline. Possible values include: 'PipelineSourceTypeAzureStorageBlobContainer'
+	// Type - The type of source for the import pipeline. Possible values include: 'AzureStorageBlobContainer'
 	Type PipelineSourceType `json:"type,omitempty"`
 	// URI - The source uri of the import pipeline.
 	// When 'AzureStorageBlob': "https://accountName.blob.core.windows.net/containerName/blobName"
@@ -3132,7 +3145,7 @@ type InnerErrorDescription struct {
 
 // IPRule IP rule with specific IP or IP range in CIDR format.
 type IPRule struct {
-	// Action - The action of IP ACL rule. Possible values include: 'ActionAllow'
+	// Action - The action of IP ACL rule. Possible values include: 'Allow'
 	Action Action `json:"action,omitempty"`
 	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
 	IPAddressOrRange *string `json:"value,omitempty"`
@@ -3168,7 +3181,7 @@ func (kvp KeyVaultProperties) MarshalJSON() ([]byte, error) {
 type LoggingProperties struct {
 	// LogLevel - The verbosity of logs persisted on the connected registry. Possible values include: 'LogLevelDebug', 'LogLevelInformation', 'LogLevelWarning', 'LogLevelError', 'LogLevelNone'
 	LogLevel LogLevel `json:"logLevel,omitempty"`
-	// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry. Possible values include: 'AuditLogStatusEnabled', 'AuditLogStatusDisabled'
+	// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry. Possible values include: 'Enabled', 'Disabled'
 	AuditLogStatus AuditLogStatus `json:"auditLogStatus,omitempty"`
 }
 
@@ -3190,8 +3203,6 @@ func (lsp LoginServerProperties) MarshalJSON() ([]byte, error) {
 type NetworkRuleSet struct {
 	// DefaultAction - The default action of allow or deny when no other rules match. Possible values include: 'DefaultActionAllow', 'DefaultActionDeny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
-	// VirtualNetworkRules - The virtual network rules.
-	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 	// IPRules - The IP ACL rules.
 	IPRules *[]IPRule `json:"ipRules,omitempty"`
 }
@@ -3520,6 +3531,23 @@ type OverrideTaskStepProperties struct {
 	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
 }
 
+// PackageType the properties of a package type.
+type PackageType struct {
+	// Name - The name of the package type.
+	Name *string `json:"name,omitempty"`
+	// Endpoint - READ-ONLY; The endpoint of the package type.
+	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PackageType.
+func (pt PackageType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pt.Name != nil {
+		objectMap["name"] = pt.Name
+	}
+	return json.Marshal(objectMap)
+}
+
 // ParentProperties the properties of the connected registry parent.
 type ParentProperties struct {
 	// ID - The resource ID of the parent to which the connected registry will be associated.
@@ -3773,7 +3801,7 @@ func NewPipelineRunListResultPage(cur PipelineRunListResult, getNextPage func(co
 
 // PipelineRunProperties the properties of a pipeline run.
 type PipelineRunProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of a pipeline run. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of a pipeline run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Request - The request parameters for a pipeline run.
 	Request *PipelineRunRequest `json:"request,omitempty"`
@@ -3918,7 +3946,7 @@ func (future *PipelineRunsDeleteFuture) result(client PipelineRunsClient) (ar au
 
 // PipelineRunSourceProperties ...
 type PipelineRunSourceProperties struct {
-	// Type - The type of the source. Possible values include: 'PipelineRunSourceTypeAzureStorageBlob'
+	// Type - The type of the source. Possible values include: 'AzureStorageBlob'
 	Type PipelineRunSourceType `json:"type,omitempty"`
 	// Name - The name of the source.
 	Name *string `json:"name,omitempty"`
@@ -3958,21 +3986,21 @@ type PipelineTriggerProperties struct {
 
 // PlatformProperties the platform properties against which the run has to happen.
 type PlatformProperties struct {
-	// Os - The operating system type required for the run. Possible values include: 'OSWindows', 'OSLinux'
+	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'ArchitectureAmd64', 'ArchitectureX86', 'ArchitectureThreeEightSix', 'ArchitectureArm', 'ArchitectureArm64'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'ThreeEightSix', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
-	// Variant - Variant of the CPU. Possible values include: 'VariantV6', 'VariantV7', 'VariantV8'
+	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
 }
 
 // PlatformUpdateParameters the properties for updating the platform configuration.
 type PlatformUpdateParameters struct {
-	// Os - The operating system type required for the run. Possible values include: 'OSWindows', 'OSLinux'
+	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'ArchitectureAmd64', 'ArchitectureX86', 'ArchitectureThreeEightSix', 'ArchitectureArm', 'ArchitectureArm64'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'ThreeEightSix', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
-	// Variant - Variant of the CPU. Possible values include: 'VariantV6', 'VariantV7', 'VariantV8'
+	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
 }
 
@@ -3986,6 +4014,10 @@ type Policies struct {
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
 	// ExportPolicy - The export policy for a container registry.
 	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
+	// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
+	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy `json:"azureADAuthenticationAsArmPolicy,omitempty"`
+	// SoftDeletePolicy - The soft delete policy for a container registry.
+	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 }
 
 // PrivateEndpoint the Private Endpoint resource.
@@ -4246,7 +4278,7 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of private endpoint connection resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of private endpoint connection resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4344,6 +4376,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 
 // PrivateLinkResource a resource that supports private link capabilities.
 type PrivateLinkResource struct {
+	autorest.Response `json:"-"`
 	// Type - READ-ONLY; The resource type is private link resource.
 	Type *string `json:"type,omitempty"`
 	// ID - The resource ID.
@@ -4593,11 +4626,11 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkServiceConnectionState the state of a private link service connection.
 type PrivateLinkServiceConnectionState struct {
-	// Status - The private link service connection status. Possible values include: 'ConnectionStatusApproved', 'ConnectionStatusPending', 'ConnectionStatusRejected', 'ConnectionStatusDisconnected'
+	// Status - The private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'
 	Status ConnectionStatus `json:"status,omitempty"`
 	// Description - The description for connection status. For example if connection is rejected it can indicate reason for rejection.
 	Description *string `json:"description,omitempty"`
-	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer. Possible values include: 'ActionsRequiredNone', 'ActionsRequiredRecreate'
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer. Possible values include: 'None', 'Recreate'
 	ActionsRequired ActionsRequired `json:"actionsRequired,omitempty"`
 }
 
@@ -4634,7 +4667,7 @@ type QuarantinePolicy struct {
 
 // RegenerateCredentialParameters the parameters used to regenerate the login credential.
 type RegenerateCredentialParameters struct {
-	// Name - Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'PasswordNamePassword', 'PasswordNamePassword2'
+	// Name - Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'Password', 'Password2'
 	Name PasswordName `json:"name,omitempty"`
 }
 
@@ -5213,7 +5246,7 @@ type RegistryNameStatus struct {
 
 // RegistryPassword the login password for the container registry.
 type RegistryPassword struct {
-	// Name - The password name. Possible values include: 'PasswordNamePassword', 'PasswordNamePassword2'
+	// Name - The password name. Possible values include: 'Password', 'Password2'
 	Name PasswordName `json:"name,omitempty"`
 	// Value - The password value.
 	Value *string `json:"value,omitempty"`
@@ -5225,7 +5258,7 @@ type RegistryProperties struct {
 	LoginServer *string `json:"loginServer,omitempty"`
 	// CreationDate - READ-ONLY; The creation date of the container registry in ISO8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the container registry at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the container registry at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the container registry at the time the operation was called.
 	Status *Status `json:"status,omitempty"`
@@ -5395,7 +5428,7 @@ type RegistryUsage struct {
 	Limit *int64 `json:"limit,omitempty"`
 	// CurrentValue - The current value of the usage.
 	CurrentValue *int64 `json:"currentValue,omitempty"`
-	// Unit - The unit of measurement. Possible values include: 'RegistryUsageUnitCount', 'RegistryUsageUnitBytes'
+	// Unit - The unit of measurement. Possible values include: 'Count', 'Bytes'
 	Unit RegistryUsageUnit `json:"unit,omitempty"`
 }
 
@@ -5679,7 +5712,7 @@ func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(co
 
 // ReplicationProperties the properties of a replication.
 type ReplicationProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the replication at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the replication at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the replication at the time the operation was called.
 	Status *Status `json:"status,omitempty"`
@@ -6035,7 +6068,7 @@ func (r *Run) UnmarshalJSON(body []byte) error {
 type RunFilter struct {
 	// RunID - The unique identifier for the run.
 	RunID *string `json:"runId,omitempty"`
-	// RunType - The type of run. Possible values include: 'RunTypeQuickBuild', 'RunTypeQuickRun', 'RunTypeAutoBuild', 'RunTypeAutoRun'
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
 	RunType RunType `json:"runType,omitempty"`
 	// Status - The current status of the run. Possible values include: 'RunStatusQueued', 'RunStatusStarted', 'RunStatusRunning', 'RunStatusSucceeded', 'RunStatusFailed', 'RunStatusCanceled', 'RunStatusError', 'RunStatusTimeout'
 	Status RunStatus `json:"status,omitempty"`
@@ -6230,7 +6263,7 @@ type RunProperties struct {
 	Status RunStatus `json:"status,omitempty"`
 	// LastUpdatedTime - The last updated time for the run.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
-	// RunType - The type of run. Possible values include: 'RunTypeQuickBuild', 'RunTypeQuickRun', 'RunTypeAutoBuild', 'RunTypeAutoRun'
+	// RunType - The type of run. Possible values include: 'QuickBuild', 'QuickRun', 'AutoBuild', 'AutoRun'
 	RunType RunType `json:"runType,omitempty"`
 	// AgentPoolName - The dedicated agent pool for the run.
 	AgentPoolName *string `json:"agentPoolName,omitempty"`
@@ -6264,7 +6297,7 @@ type RunProperties struct {
 	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
 	// LogArtifact - READ-ONLY; The image description for the log artifact.
 	LogArtifact *ImageDescriptor `json:"logArtifact,omitempty"`
-	// ProvisioningState - The provisioning state of a run. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
@@ -6790,7 +6823,7 @@ type ScopeMapProperties struct {
 	Type *string `json:"type,omitempty"`
 	// CreationDate - READ-ONLY; The creation date of scope map.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Actions - The list of scoped permissions for registry artifacts.
 	// E.g. repositories/repository-name/content/read,
@@ -6989,7 +7022,7 @@ type SecretObject struct {
 	// used as is without any modification.
 	Value *string `json:"value,omitempty"`
 	// Type - The type of the secret object which determines how the value of the secret object has to be
-	// interpreted. Possible values include: 'SecretObjectTypeOpaque', 'SecretObjectTypeVaultsecret'
+	// interpreted. Possible values include: 'Opaque', 'Vaultsecret'
 	Type SecretObjectType `json:"type,omitempty"`
 }
 
@@ -7005,7 +7038,7 @@ type SetValue struct {
 
 // Sku the SKU of a container registry.
 type Sku struct {
-	// Name - The SKU name of the container registry. Required for registry creation. Possible values include: 'SkuNameClassic', 'SkuNameBasic', 'SkuNameStandard', 'SkuNamePremium'
+	// Name - The SKU name of the container registry. Required for registry creation. Possible values include: 'Classic', 'Basic', 'Standard', 'Premium'
 	Name SkuName `json:"name,omitempty"`
 	// Tier - READ-ONLY; The SKU tier based on the SKU name. Possible values include: 'SkuTierClassic', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
 	Tier SkuTier `json:"tier,omitempty"`
@@ -7016,6 +7049,28 @@ func (s Sku) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if s.Name != "" {
 		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// SoftDeletePolicy the soft delete policy for a container registry
+type SoftDeletePolicy struct {
+	// RetentionDays - The number of days after which a soft-deleted item is permanently deleted.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	// LastUpdatedTime - READ-ONLY; The timestamp when the policy was last updated.
+	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
+	Status PolicyStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftDeletePolicy.
+func (sdp SoftDeletePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sdp.RetentionDays != nil {
+		objectMap["retentionDays"] = sdp.RetentionDays
+	}
+	if sdp.Status != "" {
+		objectMap["status"] = sdp.Status
 	}
 	return json.Marshal(objectMap)
 }
@@ -7031,7 +7086,7 @@ type Source struct {
 
 // SourceProperties the properties of the source code repository.
 type SourceProperties struct {
-	// SourceControlType - The type of source control service. Possible values include: 'SourceControlTypeGithub', 'SourceControlTypeVisualStudioTeamService'
+	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
 	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
@@ -7094,7 +7149,7 @@ type SourceTriggerUpdateParameters struct {
 
 // SourceUpdateParameters the properties for updating the source code repository.
 type SourceUpdateParameters struct {
-	// SourceControlType - The type of source control service. Possible values include: 'SourceControlTypeGithub', 'SourceControlTypeVisualStudioTeamService'
+	// SourceControlType - The type of source control service. Possible values include: 'Github', 'VisualStudioTeamService'
 	SourceControlType SourceControlType `json:"sourceControlType,omitempty"`
 	// RepositoryURL - The full URL to the source code repository
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
@@ -7150,6 +7205,13 @@ func (sdp StatusDetailProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// StorageAccountProperties the properties of a storage account for a container registry. Only applicable
+// to Classic SKU.
+type StorageAccountProperties struct {
+	// ID - The resource ID of the storage account.
+	ID *string `json:"id,omitempty"`
+}
+
 // SyncProperties the sync properties of the connected registry with its parent.
 type SyncProperties struct {
 	// TokenID - The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
@@ -7199,7 +7261,7 @@ type SyncUpdateProperties struct {
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
@@ -7521,7 +7583,7 @@ func NewTaskListResultPage(cur TaskListResult, getNextPage func(context.Context,
 
 // TaskProperties the properties of a task.
 type TaskProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the task. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the task. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationDate - READ-ONLY; The creation date of task.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
@@ -8094,7 +8156,7 @@ func NewTaskRunListResultPage(cur TaskRunListResult, getNextPage func(context.Co
 
 // TaskRunProperties the properties of task run.
 type TaskRunProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of this task run. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of this task run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RunRequest - The request (parameters) for the run
 	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
@@ -8573,7 +8635,7 @@ type TaskStepProperties struct {
 	ContextPath *string `json:"contextPath,omitempty"`
 	// ContextAccessToken - The token (git PAT or SAS token of storage account blob) associated with the context for a step.
 	ContextAccessToken *string `json:"contextAccessToken,omitempty"`
-	// Type - Possible values include: 'TypeBasicTaskStepPropertiesTypeTaskStepProperties', 'TypeBasicTaskStepPropertiesTypeDocker', 'TypeBasicTaskStepPropertiesTypeFileTask', 'TypeBasicTaskStepPropertiesTypeEncodedTask'
+	// Type - Possible values include: 'TypeTaskStepProperties', 'TypeDocker', 'TypeFileTask', 'TypeEncodedTask'
 	Type TypeBasicTaskStepProperties `json:"type,omitempty"`
 }
 
@@ -8585,15 +8647,15 @@ func unmarshalBasicTaskStepProperties(body []byte) (BasicTaskStepProperties, err
 	}
 
 	switch m["type"] {
-	case string(TypeBasicTaskStepPropertiesTypeDocker):
+	case string(TypeDocker):
 		var dbs DockerBuildStep
 		err := json.Unmarshal(body, &dbs)
 		return dbs, err
-	case string(TypeBasicTaskStepPropertiesTypeFileTask):
+	case string(TypeFileTask):
 		var fts FileTaskStep
 		err := json.Unmarshal(body, &fts)
 		return fts, err
-	case string(TypeBasicTaskStepPropertiesTypeEncodedTask):
+	case string(TypeEncodedTask):
 		var ets EncodedTaskStep
 		err := json.Unmarshal(body, &ets)
 		return ets, err
@@ -8624,7 +8686,7 @@ func unmarshalBasicTaskStepPropertiesArray(body []byte) ([]BasicTaskStepProperti
 
 // MarshalJSON is the custom marshaler for TaskStepProperties.
 func (tsp TaskStepProperties) MarshalJSON() ([]byte, error) {
-	tsp.Type = TypeBasicTaskStepPropertiesTypeTaskStepProperties
+	tsp.Type = TypeTaskStepProperties
 	objectMap := make(map[string]interface{})
 	if tsp.ContextPath != nil {
 		objectMap["contextPath"] = tsp.ContextPath
@@ -8906,7 +8968,7 @@ type TimerTriggerUpdateParameters struct {
 
 // TLSCertificateProperties the TLS certificate properties of the connected registry login server.
 type TLSCertificateProperties struct {
-	// Type - READ-ONLY; The type of certificate location. Possible values include: 'CertificateTypeLocalDirectory'
+	// Type - READ-ONLY; The type of certificate location. Possible values include: 'LocalDirectory'
 	Type CertificateType `json:"type,omitempty"`
 	// Location - READ-ONLY; Indicates the location of the certificates.
 	Location *string `json:"location,omitempty"`
@@ -9018,7 +9080,7 @@ func (t *Token) UnmarshalJSON(body []byte) error {
 
 // TokenCertificate the properties of a certificate used for authenticating a token.
 type TokenCertificate struct {
-	// Name - Possible values include: 'TokenCertificateNameCertificate1', 'TokenCertificateNameCertificate2'
+	// Name - Possible values include: 'Certificate1', 'Certificate2'
 	Name TokenCertificateName `json:"name,omitempty"`
 	// Expiry - The expiry datetime of the certificate.
 	Expiry *date.Time `json:"expiry,omitempty"`
@@ -9225,7 +9287,7 @@ func (tp TokenPassword) MarshalJSON() ([]byte, error) {
 type TokenProperties struct {
 	// CreationDate - READ-ONLY; The creation date of scope map.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ScopeMapID - The resource ID of the scope map to which the token will be associated with.
 	ScopeMapID *string `json:"scopeMapId,omitempty"`
@@ -9441,7 +9503,7 @@ type TriggerUpdateParameters struct {
 
 // TrustPolicy the content trust policy for a container registry.
 type TrustPolicy struct {
-	// Type - The type of trust policy. Possible values include: 'TrustPolicyTypeNotary'
+	// Type - The type of trust policy. Possible values include: 'Notary'
 	Type TrustPolicyType `json:"type,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'PolicyStatusEnabled', 'PolicyStatusDisabled'
 	Status PolicyStatus `json:"status,omitempty"`
@@ -9453,14 +9515,6 @@ type UserIdentityProperties struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
-}
-
-// VirtualNetworkRule virtual network rule.
-type VirtualNetworkRule struct {
-	// Action - The action of virtual network rule. Possible values include: 'ActionAllow'
-	Action Action `json:"action,omitempty"`
-	// VirtualNetworkResourceID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-	VirtualNetworkResourceID *string `json:"id,omitempty"`
 }
 
 // Webhook an object that represents a webhook for a container registry.
@@ -9809,7 +9863,7 @@ type WebhookProperties struct {
 	Scope *string `json:"scope,omitempty"`
 	// Actions - The list of actions that trigger the webhook to post notifications.
 	Actions *[]WebhookAction `json:"actions,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the webhook at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the webhook at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 

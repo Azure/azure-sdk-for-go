@@ -1206,7 +1206,7 @@ type ErrorResponseBody struct {
 	// Target - target of the particular error.
 	Target *string `json:"target,omitempty"`
 	// Details - an array of additional nested error response info objects, as described by this contract.
-	Details *InnerErrorDescription `json:"details,omitempty"`
+	Details *[]InnerErrorDescription `json:"details,omitempty"`
 }
 
 // Event the event for a webhook.

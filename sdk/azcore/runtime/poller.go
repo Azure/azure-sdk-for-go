@@ -291,7 +291,7 @@ func (p *Poller[T]) Result(ctx context.Context) (T, error) {
 	}
 	res, err := p.op.Result(ctx, p.result)
 	var respErr *exported.ResponseError
-	if err != nil && errors.As(err, &respErr) {
+	if errors.As(err, &respErr) {
 		// the LRO failed. record the error
 		p.err = err
 	} else if err != nil {

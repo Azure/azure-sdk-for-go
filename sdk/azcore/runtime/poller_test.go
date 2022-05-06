@@ -407,9 +407,9 @@ func TestOpPollerWithWidgetFinalGetError(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
+	// PUT and PATCH state that a final GET will happen
 	// the first attempt at a final GET returns an error
 	srv.AppendError(&nonRetriableError{Msg: "failed attempt"})
-	// PUT and PATCH state that a final GET will happen
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
 	defer close()
 
@@ -431,12 +431,9 @@ func TestOpPollerWithWidgetFinalGetError(t *testing.T) {
 	}
 	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller[widget](firstResp, pl, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !closed() {
-		t.Fatal("initial response body wasn't closed")
-	}
+	require.Nil(t, err)
+	require.True(t, closed(), "initial response body wasn't closed")
+
 	resp, err := lro.Poll(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, http.StatusAccepted, resp.StatusCode)

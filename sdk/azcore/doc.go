@@ -235,12 +235,13 @@ mechanism as required.
 Resume Tokens
 
 Pollers provide the ability to serialize their state into a "resume token" which can be used by another process to
-resume the poller.  This is achieved via the runtime.Poller[T].ResumeToken() method.
+recreate the poller.  This is achieved via the runtime.Poller[T].ResumeToken() method.
 
    token, err := poller.ResumeToken()
+   // handle error
 
 Note that a token can only be obtained for a poller that's in a non-terminal state.  Also note that any subsequent calls
-to poller.Poll() might change the poller's state.  In this case, a new token should be requested.
+to poller.Poll() might change the poller's state.  In this case, a new token should be created.
 
 After the token has been obtained, it can be used to recreate an instance of the originating poller.
 
@@ -250,7 +251,7 @@ After the token has been obtained, it can be used to recreate an instance of the
 
 When resuming a poller, no IO is performed, and zero-value arguments can be used for everything but the Options.ResumeToken.
 
-Resume tokens are unique per service client and operation.  Attempting to resume a poller for LRO B with a token from LRO A
-will result in an error.
+Resume tokens are unique per service client and operation.  Attempting to resume a poller for LRO BeginB() with a token from LRO
+BeginA() will result in an error.
 */
 package azcore

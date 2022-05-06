@@ -1057,7 +1057,6 @@ func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "defaultAction", n.DefaultAction)
 	populate(objectMap, "ipRules", n.IPRules)
-	populate(objectMap, "virtualNetworkRules", n.VirtualNetworkRules)
 	return json.Marshal(objectMap)
 }
 
@@ -1682,6 +1681,41 @@ func (s ScopeMapUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SoftDeletePolicy.
+func (s SoftDeletePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "lastUpdatedTime", s.LastUpdatedTime)
+	populate(objectMap, "retentionDays", s.RetentionDays)
+	populate(objectMap, "status", s.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletePolicy.
+func (s *SoftDeletePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "lastUpdatedTime":
+			err = unpopulateTimeRFC3339(val, &s.LastUpdatedTime)
+			delete(rawMsg, key)
+		case "retentionDays":
+			err = unpopulate(val, &s.RetentionDays)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &s.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SourceTrigger.

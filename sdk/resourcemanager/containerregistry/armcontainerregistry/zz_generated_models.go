@@ -192,6 +192,12 @@ type AuthInfoUpdateParameters struct {
 	TokenType *TokenType `json:"tokenType,omitempty"`
 }
 
+// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
+type AzureADAuthenticationAsArmPolicy struct {
+	// The value that indicates whether the policy is enabled or not.
+	Status *AzureADAuthenticationAsArmPolicyStatus `json:"status,omitempty"`
+}
+
 // BaseImageDependency - Properties that describe a base image dependency.
 type BaseImageDependency struct {
 	// The sha256-based digest of the image manifest.
@@ -1153,9 +1159,6 @@ type NetworkRuleSet struct {
 
 	// The IP ACL rules.
 	IPRules []*IPRule `json:"ipRules,omitempty"`
-
-	// The virtual network rules.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
 // OperationDefinition - The definition of a container registry operation.
@@ -1272,6 +1275,15 @@ type OverrideTaskStepProperties struct {
 
 	// The collection of overridable values that can be passed when running a Task.
 	Values []*SetValue `json:"values,omitempty"`
+}
+
+// PackageType - The properties of a package type.
+type PackageType struct {
+	// The name of the package type.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; The endpoint of the package type.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
 
 // ParentProperties - The properties of the connected registry parent.
@@ -1463,6 +1475,9 @@ type PlatformUpdateParameters struct {
 
 // Policies - The policies for a container registry.
 type Policies struct {
+	// The policy for using ARM audience token for a container registry.
+	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy `json:"azureADAuthenticationAsArmPolicy,omitempty"`
+
 	// The export policy for a container registry.
 	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
 
@@ -1471,6 +1486,9 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+
+	// The soft delete policy for a container registry.
+	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
@@ -2377,6 +2395,18 @@ type SetValue struct {
 	IsSecret *bool `json:"isSecret,omitempty"`
 }
 
+// SoftDeletePolicy - The soft delete policy for a container registry
+type SoftDeletePolicy struct {
+	// The number of days after which a soft-deleted item is permanently deleted.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+
+	// The value that indicates whether the policy is enabled or not.
+	Status *PolicyStatus `json:"status,omitempty"`
+
+	// READ-ONLY; The timestamp when the policy was last updated.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+}
+
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -2517,6 +2547,12 @@ type StatusDetailProperties struct {
 
 	// READ-ONLY; The component of the connected registry corresponding to the status.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
+type StorageAccountProperties struct {
+	// REQUIRED; The resource ID of the storage account.
+	ID *string `json:"id,omitempty"`
 }
 
 // SyncProperties - The sync properties of the connected registry with its parent.
@@ -3144,15 +3180,6 @@ type UserIdentityProperties struct {
 
 	// The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-}
-
-// VirtualNetworkRule - Virtual network rule.
-type VirtualNetworkRule struct {
-	// REQUIRED; Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-	VirtualNetworkResourceID *string `json:"id,omitempty"`
-
-	// The action of virtual network rule.
-	Action *Action `json:"action,omitempty"`
 }
 
 // Webhook - An object that represents a webhook for a container registry.

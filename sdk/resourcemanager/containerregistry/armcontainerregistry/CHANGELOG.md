@@ -1,5 +1,26 @@
 # Release History
 
+## 0.6.0 (2022-05-06)
+### Breaking Changes
+
+- Struct `VirtualNetworkRule` has been removed
+- Field `VirtualNetworkRules` of struct `NetworkRuleSet` has been removed
+
+### Features Added
+
+- New const `AzureADAuthenticationAsArmPolicyStatusDisabled`
+- New const `AzureADAuthenticationAsArmPolicyStatusEnabled`
+- New function `*SoftDeletePolicy.UnmarshalJSON([]byte) error`
+- New function `SoftDeletePolicy.MarshalJSON() ([]byte, error)`
+- New function `PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus`
+- New struct `AzureADAuthenticationAsArmPolicy`
+- New struct `PackageType`
+- New struct `SoftDeletePolicy`
+- New struct `StorageAccountProperties`
+- New field `SoftDeletePolicy` in struct `Policies`
+- New field `AzureADAuthenticationAsArmPolicy` in struct `Policies`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

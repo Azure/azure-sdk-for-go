@@ -80,22 +80,22 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
-		return nil, errors.New(credNameCert + ": GetToken() requires at least one scope")
+		return azcore.AccessToken{}, errors.New(credNameCert + ": GetToken() requires at least one scope")
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
 		logGetTokenSuccess(c, opts)
-		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		return nil, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
 	}
 	logGetTokenSuccess(c, opts)
-	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 // ParseCertificates loads certificates and a private key, in PEM or PKCS12 format, for use with NewClientCertificateCredential.

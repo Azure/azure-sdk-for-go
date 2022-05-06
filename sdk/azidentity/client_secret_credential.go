@@ -52,22 +52,22 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
-		return nil, errors.New(credNameSecret + ": GetToken() requires at least one scope")
+		return azcore.AccessToken{}, errors.New(credNameSecret + ": GetToken() requires at least one scope")
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
 	if err == nil {
 		logGetTokenSuccess(c, opts)
-		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	if err != nil {
-		return nil, newAuthenticationFailedErrorFromMSALError(credNameSecret, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameSecret, err)
 	}
 	logGetTokenSuccess(c, opts)
-	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)

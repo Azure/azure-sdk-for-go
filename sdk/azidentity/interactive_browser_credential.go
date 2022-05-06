@@ -71,14 +71,14 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
-		return nil, errors.New(credNameBrowser + ": GetToken() requires at least one scope")
+		return azcore.AccessToken{}, errors.New(credNameBrowser + ": GetToken() requires at least one scope")
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
 	if err == nil {
 		logGetTokenSuccess(c, opts)
-		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 
 	o := []public.InteractiveAuthOption{}
@@ -87,11 +87,11 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	}
 	ar, err = c.client.AcquireTokenInteractive(ctx, opts.Scopes, o...)
 	if err != nil {
-		return nil, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameBrowser, err)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)
-	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)

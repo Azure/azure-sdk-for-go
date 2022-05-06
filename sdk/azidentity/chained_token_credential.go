@@ -59,7 +59,7 @@ func NewChainedTokenCredential(sources []azcore.TokenCredential, options *Chaine
 
 // GetToken calls GetToken on the chained credentials in turn, stopping when one returns a token.
 // This method is called automatically by Azure SDK clients.
-func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if !c.retrySources {
 		// ensure only one goroutine at a time iterates the sources and perhaps sets c.successfulCredential
 		c.cond.L.Lock()
@@ -80,7 +80,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 
 	var err error
 	var errs []error
-	var token *azcore.AccessToken
+	var token azcore.AccessToken
 	var successfulCredential azcore.TokenCredential
 	for _, cred := range c.sources {
 		token, err = cred.GetToken(ctx, opts)

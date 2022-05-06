@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -514,8 +515,8 @@ func TestManagedIdentityCredential_IMDSTimeoutExceeded(t *testing.T) {
 	if !errors.As(err, &expected) {
 		t.Fatalf(`expected credentialUnavailableError, got %T: "%v"`, err, err)
 	}
-	if tk != nil {
-		t.Fatal("GetToken returned a token and an error")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
 }
 

@@ -17,7 +17,7 @@ import (
 )
 
 type fakeCredentialResponse struct {
-	token *azcore.AccessToken
+	token azcore.AccessToken
 	err   error
 }
 
@@ -32,19 +32,19 @@ func NewFakeCredential() *fakeCredential {
 	return &fakeCredential{mut: &sync.Mutex{}}
 }
 
-func (c *fakeCredential) SetResponse(tk *azcore.AccessToken, err error) {
+func (c *fakeCredential) SetResponse(tk azcore.AccessToken, err error) {
 	c.mut.Lock()
 	defer c.mut.Unlock()
 	c.static = &fakeCredentialResponse{tk, err}
 }
 
-func (c *fakeCredential) AppendResponse(tk *azcore.AccessToken, err error) {
+func (c *fakeCredential) AppendResponse(tk azcore.AccessToken, err error) {
 	c.mut.Lock()
 	defer c.mut.Unlock()
 	c.responses = append(c.responses, fakeCredentialResponse{tk, err})
 }
 
-func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	c.mut.Lock()
 	defer c.mut.Unlock()
 	c.getTokenCalls += 1
@@ -56,7 +56,7 @@ func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestO
 	return response.token, response.err
 }
 
-func testGoodGetTokenResponse(t *testing.T, token *azcore.AccessToken, err error) {
+func testGoodGetTokenResponse(t *testing.T, token azcore.AccessToken, err error) {
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,9 +81,9 @@ func TestChainedTokenCredential_NilSource(t *testing.T) {
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	c1 := NewFakeCredential()
-	c1.SetResponse(nil, newCredentialUnavailableError("test", "something went wrong"))
+	c1.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("test", "something went wrong"))
 	c2 := NewFakeCredential()
-	c2.SetResponse(&azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}, nil)
+	c2.SetResponse(azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour)}, nil)
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -108,7 +108,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 
 func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	c := NewFakeCredential()
-	c.SetResponse(nil, newAuthenticationFailedError("test", "something went wrong", nil))
+	c.SetResponse(azcore.AccessToken{}, newAuthenticationFailedError("test", "something went wrong", nil))
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -128,11 +128,11 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 
 func TestChainedTokenCredential_MultipleCredentialsGetTokenUnavailable(t *testing.T) {
 	c1 := NewFakeCredential()
-	c1.SetResponse(nil, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
+	c1.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
 	c2 := NewFakeCredential()
-	c2.SetResponse(nil, newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error"))
+	c2.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error"))
 	c3 := NewFakeCredential()
-	c3.SetResponse(nil, newCredentialUnavailableError("unavailableCredential3", "Unavailable expected error"))
+	c3.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential3", "Unavailable expected error"))
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2, c3}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -157,11 +157,11 @@ Attempted credentials:
 
 func TestChainedTokenCredential_MultipleCredentialsGetTokenAuthenticationFailed(t *testing.T) {
 	c1 := NewFakeCredential()
-	c1.SetResponse(nil, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
+	c1.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
 	c2 := NewFakeCredential()
-	c2.SetResponse(nil, newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error"))
+	c2.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential2", "Unavailable expected error"))
 	c3 := NewFakeCredential()
-	c3.SetResponse(nil, newAuthenticationFailedError("authenticationFailedCredential3", "Authentication failed expected error", nil))
+	c3.SetResponse(azcore.AccessToken{}, newAuthenticationFailedError("authenticationFailedCredential3", "Authentication failed expected error", nil))
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c1, c2, c3}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -186,7 +186,7 @@ Attempted credentials:
 
 func TestChainedTokenCredential_MultipleCredentialsGetTokenCustomName(t *testing.T) {
 	c := NewFakeCredential()
-	c.SetResponse(nil, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
+	c.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("unavailableCredential1", "Unavailable expected error"))
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{c}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -210,9 +210,9 @@ Attempted credentials:
 
 func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *testing.T) {
 	failedCredential := NewFakeCredential()
-	failedCredential.SetResponse(nil, newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error"))
+	failedCredential.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error"))
 	successfulCredential := NewFakeCredential()
-	successfulCredential.SetResponse(&azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}, nil)
+	successfulCredential.SetResponse(azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}, nil)
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, nil)
 	if err != nil {
@@ -241,9 +241,9 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredential(t *test
 
 func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetrySources(t *testing.T) {
 	failedCredential := NewFakeCredential()
-	failedCredential.SetResponse(nil, newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error"))
+	failedCredential.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error"))
 	successfulCredential := NewFakeCredential()
-	successfulCredential.SetResponse(&azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}, nil)
+	successfulCredential.SetResponse(azcore.AccessToken{Token: tokenValue, ExpiresOn: time.Now()}, nil)
 
 	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{failedCredential, successfulCredential}, &ChainedTokenCredentialOptions{RetrySources: true})
 	if err != nil {
@@ -272,11 +272,11 @@ func TestChainedTokenCredential_RepeatedGetTokenWithSuccessfulCredentialWithRetr
 
 func TestChainedTokenCredential_Race(t *testing.T) {
 	successFake := NewFakeCredential()
-	successFake.SetResponse(&azcore.AccessToken{Token: "*", ExpiresOn: time.Now().Add(time.Hour)}, nil)
+	successFake.SetResponse(azcore.AccessToken{Token: "*", ExpiresOn: time.Now().Add(time.Hour)}, nil)
 	authFailFake := NewFakeCredential()
-	authFailFake.SetResponse(nil, newAuthenticationFailedError("", "", nil))
+	authFailFake.SetResponse(azcore.AccessToken{}, newAuthenticationFailedError("", "", nil))
 	unavailableFake := NewFakeCredential()
-	unavailableFake.SetResponse(nil, newCredentialUnavailableError("", ""))
+	unavailableFake.SetResponse(azcore.AccessToken{}, newCredentialUnavailableError("", ""))
 	tro := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
 
 	for _, b := range []bool{true, false} {

@@ -183,6 +183,7 @@ type Poller[T any] struct {
 	resp   *http.Response
 	err    error
 	result *T
+	done   bool
 }
 
 // PollUntilDoneOptions contains the optional values for the Poller[T].PollUntilDone() method.
@@ -193,6 +194,7 @@ type PollUntilDoneOptions struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached, an error is received, or the context expires.
+// It internally uses Poll(), Done(), and Result() in its polling loop, sleeping for the specified duration between intervals.
 // options: pass nil to accept the default values.
 // NOTE: the default polling frequency is 30 seconds which works well for most operations.  However, some operations might
 // benefit from a shorter or longer duration.
@@ -250,46 +252,69 @@ func (p *Poller[T]) PollUntilDone(ctx context.Context, options *PollUntilDoneOpt
 }
 
 // Poll fetches the latest state of the LRO.  It returns an HTTP response or error.
-// If the LRO has completed successfully, the poller's state is updated and the HTTP
-// response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is
-// updated and the error is returned.
-// If the LRO has not reached a terminal state, the poller's state is updated and
-// the latest HTTP response is returned.
+// If Poll succeeds, the poller's state is updated and the HTTP response is returned.
 // If Poll fails, the poller's state is unmodified and the error is returned.
-// Calling Poll on an LRO that has reached a terminal state will return the final
-// HTTP response or error.
+// Calling Poll on an LRO that has reached a terminal state will return the last HTTP response.
 func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	if p.Done() {
 		// the LRO has reached a terminal state, don't poll again
-		if p.err != nil {
-			return nil, p.err
-		}
 		return p.resp, nil
 	}
-	p.resp, p.err = p.op.Poll(ctx)
-	return p.resp, p.err
+	resp, err := p.op.Poll(ctx)
+	if err != nil {
+		return nil, err
+	}
+	p.resp = resp
+	return p.resp, nil
 }
 
 // Done returns true if the LRO has reached a terminal state.
+// Once a terminal state is reached, call Result().
 func (p *Poller[T]) Done() bool {
 	return p.op.Done()
 }
 
 // Result returns the result of the LRO and is meant to be used in conjunction with Poll and Done.
+// If the LRO completed successfully, a populated instance of T is returned.
+// If the LRO failed or was canceled, an *azcore.ResponseError error is returned.
 // Calling this on an LRO in a non-terminal state will return an error.
 func (p *Poller[T]) Result(ctx context.Context) (T, error) {
 	if !p.Done() {
-		return *new(T), errors.New("cannot return a final response from a poller in a non-terminal state")
+		return *new(T), errors.New("poller is in a non-terminal state")
 	}
-	return p.op.Result(ctx, p.result)
+	if p.done {
+		// the result has already been retrieved, return the cached value
+		if p.err != nil {
+			return *new(T), p.err
+		}
+		return *p.result, nil
+	}
+	res, err := p.op.Result(ctx, p.result)
+	var respErr *exported.ResponseError
+	if errors.As(err, &respErr) {
+		// the LRO failed. record the error
+		p.err = err
+	} else if err != nil {
+		// the call to Result failed, don't cache anything in this case
+		return *new(T), err
+	} else {
+		// the LRO succeeded. record the result
+		p.result = &res
+	}
+	p.done = true
+	if p.err != nil {
+		return *new(T), p.err
+	}
+	return *p.result, nil
 }
 
 // ResumeToken returns a value representing the poller that can be used to resume
 // the LRO at a later time. ResumeTokens are unique per service operation.
+// The token's format should be considered opaque and is subject to change.
+// Calling this on an LRO in a terminal state will return an error.
 func (p *Poller[T]) ResumeToken() (string, error) {
 	if p.Done() {
-		return "", errors.New("cannot create a ResumeToken from a poller in a terminal state")
+		return "", errors.New("poller is in a terminal state")
 	}
 	tk, err := pollers.NewResumeToken[T](p.op)
 	if err != nil {

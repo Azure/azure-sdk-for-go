@@ -171,6 +171,10 @@ func delay() time.Duration {
 }
 
 func cleanUpKey(t *testing.T, client *Client, key string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
 	if err != nil {
 		return

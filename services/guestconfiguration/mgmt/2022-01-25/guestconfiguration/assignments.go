@@ -85,11 +85,12 @@ func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, gues
 		"vmName":                           autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -171,7 +172,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, resourceGrou
 		"vmName":                           autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -254,7 +255,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, resourceGroupNa
 		"vmName":                           autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -336,7 +337,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, resourceGroupN
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -416,7 +417,7 @@ func (client AssignmentsClient) RGListPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -487,7 +488,7 @@ func (client AssignmentsClient) SubscriptionListPreparer(ctx context.Context) (*
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-06-25"
+	const APIVersion = "2022-01-25"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

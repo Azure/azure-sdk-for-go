@@ -8,7 +8,7 @@ package guestconfigurationapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration"
+	"github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2022-01-25/guestconfiguration"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -49,6 +49,23 @@ type HCRPAssignmentReportsClientAPI interface {
 }
 
 var _ HCRPAssignmentReportsClientAPI = (*guestconfiguration.HCRPAssignmentReportsClient)(nil)
+
+// AssignmentsVMSSClientAPI contains the set of methods on the AssignmentsVMSSClient type.
+type AssignmentsVMSSClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, vmssName string, name string) (result guestconfiguration.Assignment, err error)
+	Get(ctx context.Context, resourceGroupName string, vmssName string, name string) (result guestconfiguration.Assignment, err error)
+	List(ctx context.Context, resourceGroupName string, vmssName string) (result guestconfiguration.AssignmentList, err error)
+}
+
+var _ AssignmentsVMSSClientAPI = (*guestconfiguration.AssignmentsVMSSClient)(nil)
+
+// AssignmentReportsVMSSClientAPI contains the set of methods on the AssignmentReportsVMSSClient type.
+type AssignmentReportsVMSSClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, vmssName string, name string, ID string) (result guestconfiguration.AssignmentReportType, err error)
+	List(ctx context.Context, resourceGroupName string, vmssName string, name string) (result guestconfiguration.AssignmentReportList, err error)
+}
+
+var _ AssignmentReportsVMSSClientAPI = (*guestconfiguration.AssignmentReportsVMSSClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

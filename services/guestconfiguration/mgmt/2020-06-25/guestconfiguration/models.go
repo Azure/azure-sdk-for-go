@@ -81,6 +81,12 @@ type AssignmentProperties struct {
 	LastComplianceStatusChecked *date.Time `json:"lastComplianceStatusChecked,omitempty"`
 	// LatestReportID - READ-ONLY; Id of the latest report for the guest configuration assignment.
 	LatestReportID *string `json:"latestReportId,omitempty"`
+	// ParameterHash - READ-ONLY; parameter hash for the guest configuration assignment.
+	ParameterHash *string `json:"parameterHash,omitempty"`
+	// ResourceType - READ-ONLY; Type of the resource - VMSS / VM
+	ResourceType *string `json:"resourceType,omitempty"`
+	// VmssVMList - The list of VM Compliance data for VMSS
+	VmssVMList *[]VMSSVMInfo `json:"vmssVMList,omitempty"`
 	// LatestAssignmentReport - Last reported guest configuration assignment report.
 	LatestAssignmentReport *AssignmentReport `json:"latestAssignmentReport,omitempty"`
 	// Context - The source which initiated the guest configuration assignment. Ex: Azure Policy
@@ -96,6 +102,9 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ap.GuestConfiguration != nil {
 		objectMap["guestConfiguration"] = ap.GuestConfiguration
+	}
+	if ap.VmssVMList != nil {
+		objectMap["vmssVMList"] = ap.VmssVMList
 	}
 	if ap.LatestAssignmentReport != nil {
 		objectMap["latestAssignmentReport"] = ap.LatestAssignmentReport
@@ -192,6 +201,8 @@ type AssignmentReportProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// Details - Details of the assignment report.
 	Details *AssignmentReportDetails `json:"details,omitempty"`
+	// VmssResourceID - READ-ONLY; Azure resource Id of the VMSS.
+	VmssResourceID *string `json:"vmssResourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AssignmentReportProperties.
@@ -333,10 +344,47 @@ type Navigation struct {
 	ContentHash *string `json:"contentHash,omitempty"`
 	// AssignmentType - Specifies the assignment type and execution of the configuration. Possible values are Audit, DeployAndAutoCorrect, ApplyAndAutoCorrect and ApplyAndMonitor. Possible values include: 'AssignmentTypeAudit', 'AssignmentTypeDeployAndAutoCorrect', 'AssignmentTypeApplyAndAutoCorrect', 'AssignmentTypeApplyAndMonitor'
 	AssignmentType AssignmentType `json:"assignmentType,omitempty"`
+	// ContentType - READ-ONLY; Specifies the content type of the configuration. Possible values could be Builtin or Custom.
+	ContentType *string `json:"contentType,omitempty"`
 	// ConfigurationParameter - The configuration parameters for the guest configuration.
 	ConfigurationParameter *[]ConfigurationParameter `json:"configurationParameter,omitempty"`
+	// ConfigurationProtectedParameter - The protected configuration parameters for the guest configuration.
+	ConfigurationProtectedParameter *[]ConfigurationParameter `json:"configurationProtectedParameter,omitempty"`
 	// ConfigurationSetting - The configuration setting for the guest configuration.
 	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Navigation.
+func (n Navigation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if n.Kind != "" {
+		objectMap["kind"] = n.Kind
+	}
+	if n.Name != nil {
+		objectMap["name"] = n.Name
+	}
+	if n.Version != nil {
+		objectMap["version"] = n.Version
+	}
+	if n.ContentURI != nil {
+		objectMap["contentUri"] = n.ContentURI
+	}
+	if n.ContentHash != nil {
+		objectMap["contentHash"] = n.ContentHash
+	}
+	if n.AssignmentType != "" {
+		objectMap["assignmentType"] = n.AssignmentType
+	}
+	if n.ConfigurationParameter != nil {
+		objectMap["configurationParameter"] = n.ConfigurationParameter
+	}
+	if n.ConfigurationProtectedParameter != nil {
+		objectMap["configurationProtectedParameter"] = n.ConfigurationProtectedParameter
+	}
+	if n.ConfigurationSetting != nil {
+		objectMap["configurationSetting"] = n.ConfigurationSetting
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation guestConfiguration REST API operation
@@ -518,6 +566,26 @@ type VMInfo struct {
 
 // MarshalJSON is the custom marshaler for VMInfo.
 func (vi VMInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// VMSSVMInfo information about VMSS VM
+type VMSSVMInfo struct {
+	// VMID - READ-ONLY; UUID of the VM.
+	VMID *string `json:"vmId,omitempty"`
+	// VMResourceID - READ-ONLY; Azure resource Id of the VM.
+	VMResourceID *string `json:"vmResourceId,omitempty"`
+	// ComplianceStatus - READ-ONLY; A value indicating compliance status of the machine for the assigned guest configuration. Possible values include: 'ComplianceStatusCompliant', 'ComplianceStatusNonCompliant', 'ComplianceStatusPending'
+	ComplianceStatus ComplianceStatus `json:"complianceStatus,omitempty"`
+	// LatestReportID - READ-ONLY; Id of the latest report for the guest configuration assignment.
+	LatestReportID *string `json:"latestReportId,omitempty"`
+	// LastComplianceChecked - READ-ONLY; Date and time when last compliance status was checked.
+	LastComplianceChecked *date.Time `json:"lastComplianceChecked,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMSSVMInfo.
+func (vi VMSSVMInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }

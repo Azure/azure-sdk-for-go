@@ -18,6 +18,8 @@ type AssignmentsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result guestconfiguration.Assignment, err error)
 	List(ctx context.Context, resourceGroupName string, VMName string) (result guestconfiguration.AssignmentList, err error)
+	RGList(ctx context.Context, resourceGroupName string) (result guestconfiguration.AssignmentList, err error)
+	SubscriptionList(ctx context.Context) (result guestconfiguration.AssignmentList, err error)
 }
 
 var _ AssignmentsClientAPI = (*guestconfiguration.AssignmentsClient)(nil)

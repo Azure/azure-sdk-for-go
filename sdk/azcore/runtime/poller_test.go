@@ -26,6 +26,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 type none struct{}
@@ -169,6 +170,16 @@ func TestLocPollerCancelled(t *testing.T) {
 		t.Fatal("initial response body wasn't closed")
 	}
 	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if _, ok := err.(*exported.ResponseError); !ok {
+		t.Fatal("expected pollerError")
+	}
+	if w.Size != 0 {
+		t.Fatalf("unexpected widget size %d", w.Size)
+	}
+	w, err = lro.Result(context.Background())
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -378,6 +389,71 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
 	}
+}
+
+type nonRetriableError struct {
+	Msg string
+}
+
+func (n *nonRetriableError) Error() string {
+	return n.Msg
+}
+
+func (*nonRetriableError) NonRetriable() {
+	// prevent the retry policy from masking this transient error
+}
+
+func TestOpPollerWithWidgetFinalGetError(t *testing.T) {
+	srv, close := mock.NewServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
+	// the first attempt at a final GET returns an error
+	srv.AppendError(&nonRetriableError{Msg: "failed attempt"})
+	// PUT and PATCH state that a final GET will happen
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
+	defer close()
+
+	reqURL, err := url.Parse(srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp := &http.Response{
+		Body:       body,
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
+		},
+	}
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
+	lro, err := NewPoller[widget](firstResp, pl, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
+	}
+	resp, err := lro.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusAccepted, resp.StatusCode)
+	require.False(t, lro.Done())
+
+	resp, err = lro.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, lro.Done())
+
+	w, err := lro.Result(context.Background())
+	require.Error(t, err)
+	require.Empty(t, w)
+
+	w, err = lro.Result(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, w.Size, 2)
 }
 
 func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
@@ -751,6 +827,13 @@ func TestNewPollerAsync(t *testing.T) {
 	if v := *result.Field; v != "value" {
 		t.Fatalf("unexpected value %s", v)
 	}
+	result, err = poller.Result(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
 }
 
 func TestNewPollerBody(t *testing.T) {
@@ -825,6 +908,13 @@ func TestNewPollerARMLoc(t *testing.T) {
 		}
 	}
 	result, err := poller.Result(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+	result, err = poller.Result(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}

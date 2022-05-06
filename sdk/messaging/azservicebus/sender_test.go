@@ -233,20 +233,19 @@ func messageFromReceivedMessage(t *testing.T, receivedMessage *ReceivedMessage) 
 	require.NoError(t, err)
 
 	newMsg := &Message{
-		MessageID:               &receivedMessage.MessageID,
-		ContentType:             receivedMessage.ContentType,
-		CorrelationID:           receivedMessage.CorrelationID,
-		Body:                    body,
-		SessionID:               receivedMessage.SessionID,
-		Subject:                 receivedMessage.Subject,
-		ReplyTo:                 receivedMessage.ReplyTo,
-		ReplyToSessionID:        receivedMessage.ReplyToSessionID,
-		To:                      receivedMessage.To,
-		TimeToLive:              receivedMessage.TimeToLive,
-		PartitionKey:            receivedMessage.PartitionKey,
-		TransactionPartitionKey: receivedMessage.TransactionPartitionKey,
-		ScheduledEnqueueTime:    receivedMessage.ScheduledEnqueueTime,
-		ApplicationProperties:   receivedMessage.ApplicationProperties,
+		MessageID:             &receivedMessage.MessageID,
+		ContentType:           receivedMessage.ContentType,
+		CorrelationID:         receivedMessage.CorrelationID,
+		Body:                  body,
+		SessionID:             receivedMessage.SessionID,
+		Subject:               receivedMessage.Subject,
+		ReplyTo:               receivedMessage.ReplyTo,
+		ReplyToSessionID:      receivedMessage.ReplyToSessionID,
+		To:                    receivedMessage.To,
+		TimeToLive:            receivedMessage.TimeToLive,
+		PartitionKey:          receivedMessage.PartitionKey,
+		ScheduledEnqueueTime:  receivedMessage.ScheduledEnqueueTime,
+		ApplicationProperties: receivedMessage.ApplicationProperties,
 	}
 
 	return newMsg

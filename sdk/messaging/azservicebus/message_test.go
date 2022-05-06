@@ -25,12 +25,11 @@ func TestMessageUnitTest(t *testing.T) {
 		scheduledEnqueuedTime := time.Now()
 
 		message = &Message{
-			MessageID:               to.Ptr("message id"),
-			Body:                    []byte("the body"),
-			PartitionKey:            to.Ptr("partition key"),
-			TransactionPartitionKey: to.Ptr("via partition key"),
-			SessionID:               to.Ptr("session id"),
-			ScheduledEnqueueTime:    &scheduledEnqueuedTime,
+			MessageID:            to.Ptr("message id"),
+			Body:                 []byte("the body"),
+			PartitionKey:         to.Ptr("partition key"),
+			SessionID:            to.Ptr("session id"),
+			ScheduledEnqueueTime: &scheduledEnqueuedTime,
 		}
 
 		amqpMessage = message.toAMQPMessage()
@@ -43,7 +42,6 @@ func TestMessageUnitTest(t *testing.T) {
 
 		require.EqualValues(t, map[interface{}]interface{}{
 			partitionKeyAnnotation:          "partition key",
-			viaPartitionKeyAnnotation:       "via partition key",
 			scheduledEnqueuedTimeAnnotation: scheduledEnqueuedTime,
 		}, amqpMessage.Annotations)
 	})

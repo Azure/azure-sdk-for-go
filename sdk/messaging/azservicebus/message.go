@@ -77,23 +77,46 @@ type ReceivedMessage struct {
 	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]interface{}
 
-	LockToken              [16]byte
-	DeliveryCount          uint32
-	LockedUntil            *time.Time
-	SequenceNumber         *int64
-	EnqueuedSequenceNumber *int64
-	EnqueuedTime           *time.Time
-	ExpiresAt              *time.Time
+	// LockToken is the lock token for a message received from a Receiver created with a receive mode of ReceiveModePeekLock.
+	LockToken [16]byte
 
+	// DeliveryCount is number of times this message has been delivered.
+	// This number is incremented when a message lock expires or if the message is explicitly abandoned
+	// with Receiver.AbandonMessage.
+	DeliveryCount uint32
+
+	// LockedUntil is the time when the lock expires for this message.
+	// This can be extended by using Receiver.RenewMessageLock.
+	LockedUntil *time.Time
+
+	// SequenceNumber is a unique number assigned to a message by Service Bus.
+	SequenceNumber *int64
+
+	// EnqueuedSequenceNumber is the original sequence number assigned to a message, before it
+	// was auto-forwarded.
+	EnqueuedSequenceNumber *int64
+
+	// EnqueuedTime is the UTC time when the message was accepted and stored by Service Bus.
+	EnqueuedTime *time.Time
+
+	// ExpiresAt is the time when this message will expire.
+	//
+	// This time is calculated by adding the TimeToLive property, set in the message that was sent, along  with the
+	// EnqueuedTime of the message.
+	ExpiresAt *time.Time
+
+	// DeadLetterErrorDescription is the description set when the message was dead-lettered.
 	DeadLetterErrorDescription *string
-	DeadLetterReason           *string
-	DeadLetterSource           *string
+
+	// DeadLetterReason is the reason set when the message was dead-lettered.
+	DeadLetterReason *string
+
+	// DeadLetterSource is the name of the queue or subscription this message was enqueued on
+	// before it was dead-lettered.
+	DeadLetterSource *string
 
 	// State represents the current state of the message (Active, Scheduled, Deferred).
 	State MessageState
-
-	// available in the raw AMQP message, but not exported by default
-	// GroupSequence  *uint32
 
 	rawAMQPMessage *amqp.Message
 
@@ -202,7 +225,6 @@ const (
 
 	// Annotation properties
 	partitionKeyAnnotation           = "x-opt-partition-key"
-	viaPartitionKeyAnnotation        = "x-opt-via-partition-key"
 	scheduledEnqueuedTimeAnnotation  = "x-opt-scheduled-enqueue-time"
 	lockedUntilAnnotation            = "x-opt-locked-until"
 	sequenceNumberAnnotation         = "x-opt-sequence-number"
@@ -261,10 +283,6 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 
 	if m.PartitionKey != nil {
 		amqpMsg.Annotations[partitionKeyAnnotation] = *m.PartitionKey
-	}
-
-	if m.TransactionPartitionKey != nil {
-		amqpMsg.Annotations[viaPartitionKeyAnnotation] = *m.TransactionPartitionKey
 	}
 
 	if m.ScheduledEnqueueTime != nil {
@@ -371,10 +389,6 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 
 		if enqueuedSequenceNumber, ok := amqpMsg.Annotations[enqueuedSequenceNumberAnnotation]; ok {
 			msg.EnqueuedSequenceNumber = to.Ptr(enqueuedSequenceNumber.(int64))
-		}
-
-		if viaPartitionKey, ok := amqpMsg.Annotations[viaPartitionKeyAnnotation]; ok {
-			msg.TransactionPartitionKey = to.Ptr(viaPartitionKey.(string))
 		}
 
 		switch asInt64(amqpMsg.Annotations[messageStateAnnotation], 0) {

@@ -17,6 +17,7 @@
 * Renamed `runtime.PageProcessor` to `runtime.PagingHandler`
 * The `arm/runtime.ProviderRepsonse` and `arm/runtime.Provider` types are no longer exported.
 * Renamed `NewRequestIdPolicy()` to `NewRequestIDPolicy()`
+* `TokenCredential.GetToken` now returns `AccessToken` by value.
 
 ### Bugs Fixed
 * When per-try timeouts are enabled, only cancel the context after the body has been read and closed.

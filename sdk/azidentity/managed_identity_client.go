@@ -150,7 +150,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 // ctx: The current context for controlling the request lifetime.
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
-func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (*azcore.AccessToken, error) {
+func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKind, scopes []string) (azcore.AccessToken, error) {
 	var cancel context.CancelFunc
 	if c.imdsTimeout > 0 && c.msiType == msiTypeIMDS {
 		ctx, cancel = context.WithTimeout(ctx, c.imdsTimeout)
@@ -159,15 +159,15 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	msg, err := c.createAuthRequest(ctx, id, scopes)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 
 	resp, err := c.pipeline.Do(msg)
 	if err != nil {
 		if cancel != nil && errors.Is(err, context.DeadlineExceeded) {
-			return nil, newCredentialUnavailableError(credNameManagedIdentity, "IMDS token request timed out")
+			return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, "IMDS token request timed out")
 		}
-		return nil, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, err.Error(), nil)
 	}
 
 	// got a response, remove the IMDS timeout so future requests use the transport's configuration
@@ -179,15 +179,15 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, id ManagedIDKi
 
 	if c.msiType == msiTypeIMDS && resp.StatusCode == 400 {
 		if id != nil {
-			return nil, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
+			return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "the requested identity isn't assigned to this resource", resp)
 		}
-		return nil, newCredentialUnavailableError(credNameManagedIdentity, "no default identity is assigned to this resource")
+		return azcore.AccessToken{}, newCredentialUnavailableError(credNameManagedIdentity, "no default identity is assigned to this resource")
 	}
 
-	return nil, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp)
+	return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "authentication failed", resp)
 }
 
-func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
+func (c *managedIdentityClient) createAccessToken(res *http.Response) (azcore.AccessToken, error) {
 	value := struct {
 		// these are the only fields that we use
 		Token        string        `json:"access_token,omitempty"`
@@ -196,26 +196,26 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %v", err)
+		return azcore.AccessToken{}, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	if value.ExpiresIn != "" {
 		expiresIn, err := json.Number(value.ExpiresIn).Int64()
 		if err != nil {
-			return nil, err
+			return azcore.AccessToken{}, err
 		}
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
+		return azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
 	switch v := value.ExpiresOn.(type) {
 	case float64:
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(v), 0).UTC()}, nil
+		return azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(v), 0).UTC()}, nil
 	case string:
 		if expiresOn, err := strconv.Atoi(v); err == nil {
-			return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(expiresOn), 0).UTC()}, nil
+			return azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(expiresOn), 0).UTC()}, nil
 		}
-		return nil, newAuthenticationFailedError(credNameManagedIdentity, "unexpected expires_on value: "+v, res)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, "unexpected expires_on value: "+v, res)
 	default:
 		msg := fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)
-		return nil, newAuthenticationFailedError(credNameManagedIdentity, msg, res)
+		return azcore.AccessToken{}, newAuthenticationFailedError(credNameManagedIdentity, msg, res)
 	}
 }
 

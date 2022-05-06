@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -53,8 +54,8 @@ func TestUsernamePasswordCredential_InvalidPasswordLive(t *testing.T) {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if tk != nil {
-		t.Fatal("GetToken returned a token")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
 	var e *AuthenticationFailedError
 	if !errors.As(err, &e) {

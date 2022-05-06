@@ -11,6 +11,7 @@
 * Removed `AuthorizationCodeCredential`. Use `InteractiveBrowserCredential` instead
   to authenticate a user with the authorization code flow.
 * Instances of `AuthenticationFailedError` are now returned by pointer.
+* `GetToken()` returns `azcore.AccessToken` by value
 
 ### Bugs Fixed
 * `AzureCLICredential` panics after receiving an unexpected error type

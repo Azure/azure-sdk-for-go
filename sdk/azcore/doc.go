@@ -6,7 +6,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package azcore implements an HTTP request/response middleware pipeline used by the Azure SDKs.
+Package azcore implements an HTTP request/response middleware pipeline used by Azure SDK clients.
 
 The middleware consists of three components.
 
@@ -216,7 +216,7 @@ LROs can be identified by their Begin* prefix and their return type of *runtime.
 When a call to WidgetClient.BeginCreateOrUpdate() returns a nil error, it means that the LRO has started.
 It does _not_ mean that the widget has been created or updated (or failed to be created/updated).
 
-The *runtime.Poller[T] provides APIs for determining the state of the LRO.  To wait for the LRO complete,
+The *runtime.Poller[T] provides APIs for determining the state of the LRO.  To wait for the LRO to complete,
 call the PollUntilDone() method.
 
    poller, err := widgetClient.BeginCreateOrUpdate(context.TODO(), Widget{}, nil)
@@ -246,7 +246,7 @@ to poller.Poll() might change the poller's state.  In this case, a new token sho
 After the token has been obtained, it can be used to recreate an instance of the originating poller.
 
    poller, err := widgetClient.BeginCreateOrUpdate(nil, Widget{}, &Options{
-      ResumeToken, token,
+      ResumeToken: token,
    })
 
 When resuming a poller, no IO is performed, and zero-value arguments can be used for everything but the Options.ResumeToken.

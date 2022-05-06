@@ -24,10 +24,10 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
 	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{Scopes: state.p.options.Scopes})
 	if err != nil {
-		return nil, time.Time{}, err
+		return azcore.AccessToken{}, time.Time{}, err
 	}
 	return tk, tk.ExpiresOn, nil
 }
@@ -35,9 +35,9 @@ func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, new
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
+	mainResource *shared.ExpiringResource[azcore.AccessToken, acquiringResourceState]
 	// auxResources are additional resources that are required for cross-tenant applications
-	auxResources map[string]*shared.ExpiringResource[*azcore.AccessToken, acquiringResourceState]
+	auxResources map[string]*shared.ExpiringResource[azcore.AccessToken, acquiringResourceState]
 	// the following fields are read-only
 	cred    azcore.TokenCredential
 	options armpolicy.BearerTokenOptions

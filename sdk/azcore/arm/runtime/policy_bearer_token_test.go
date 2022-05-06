@@ -39,10 +39,6 @@ func (mc mockCredential) GetToken(ctx context.Context, options azpolicy.TokenReq
 	return azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
-func (mc mockCredential) NewAuthenticationPolicy() azpolicy.Policy {
-	return mc
-}
-
 func (mc mockCredential) Do(req *azpolicy.Request) (*http.Response, error) {
 	return nil, nil
 }

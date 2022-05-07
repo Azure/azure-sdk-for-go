@@ -52,7 +52,7 @@ func TestMessageUnitTest(t *testing.T) {
 func TestAMQPMessageToReceivedMessage(t *testing.T) {
 	t.Run("empty_message", func(t *testing.T) {
 		// nothing should blow up.
-		rm := newReceivedMessage(&amqp.Message{})
+		rm := NewReceivedMessage(&amqp.Message{})
 		require.NotNil(t, rm)
 	})
 
@@ -72,7 +72,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 			},
 		}
 
-		receivedMessage := newReceivedMessage(amqpMessage)
+		receivedMessage := NewReceivedMessage(amqpMessage)
 
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
 		require.EqualValues(t, int64(101), *receivedMessage.SequenceNumber)
@@ -132,7 +132,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 		Data: [][]byte{[]byte("foo")},
 	}
 
-	msg := newReceivedMessage(amqpMsg)
+	msg := NewReceivedMessage(amqpMsg)
 
 	require.EqualValues(t, msg.MessageID, amqpMsg.Properties.MessageID, "messageID")
 	require.EqualValues(t, msg.SessionID, amqpMsg.Properties.GroupID, "groupID")
@@ -175,7 +175,7 @@ func TestMessageState(t *testing.T) {
 
 	for _, td := range testData {
 		t.Run(fmt.Sprintf("Value '%v' => %d", td.PropValue, td.Expected), func(t *testing.T) {
-			m := newReceivedMessage(&amqp.Message{
+			m := NewReceivedMessage(&amqp.Message{
 				Annotations: amqp.Annotations{
 					messageStateAnnotation: td.PropValue,
 				},
@@ -185,7 +185,7 @@ func TestMessageState(t *testing.T) {
 	}
 
 	t.Run("NoAnnotations", func(t *testing.T) {
-		m := newReceivedMessage(&amqp.Message{
+		m := NewReceivedMessage(&amqp.Message{
 			Annotations: nil,
 		})
 		require.EqualValues(t, MessageStateActive, m.State)

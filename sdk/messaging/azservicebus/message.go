@@ -205,10 +205,10 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 	return amqpMsg
 }
 
-// newReceivedMessage creates a received message from an AMQP message.
+// NewReceivedMessage creates a received message from an AMQP message.
 // NOTE: this converter assumes that the Body of this message will be the first
 // serialized byte array in the Data section of the messsage.
-func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
+func NewReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
 		rawAMQPMessage: amqpMsg,
 		State:          MessageStateActive,

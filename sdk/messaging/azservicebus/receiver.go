@@ -219,7 +219,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		}
 
 		for _, amqpMsg := range amqpMessages {
-			receivedMsg := newReceivedMessage(amqpMsg)
+			receivedMsg := NewReceivedMessage(amqpMsg)
 			receivedMsg.deferred = true
 
 			receivedMessages = append(receivedMessages, receivedMsg)
@@ -264,7 +264,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		receivedMessages = make([]*ReceivedMessage, len(messages))
 
 		for i := 0; i < len(messages); i++ {
-			receivedMessages[i] = newReceivedMessage(messages[i])
+			receivedMessages[i] = NewReceivedMessage(messages[i])
 		}
 
 		if len(receivedMessages) > 0 && updateInternalSequenceNumber {
@@ -439,7 +439,7 @@ func fetchMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessa
 			return err
 		}
 
-		*messages = append(*messages, newReceivedMessage(amqpMessage))
+		*messages = append(*messages, NewReceivedMessage(amqpMessage))
 
 		if len(*messages) == maxMessages {
 			return nil
@@ -465,7 +465,7 @@ func flushPrefetchedMessages(ctx context.Context, receiver internal.AMQPReceiver
 			return
 		}
 
-		*messages = append(*messages, newReceivedMessage(am))
+		*messages = append(*messages, NewReceivedMessage(am))
 	}
 }
 

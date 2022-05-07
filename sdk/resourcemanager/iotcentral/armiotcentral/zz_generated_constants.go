@@ -10,7 +10,7 @@ package armiotcentral
 
 const (
 	moduleName    = "armiotcentral"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // AppSKU - The name of the SKU.
@@ -64,6 +64,20 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// IPRuleAction - The network action for the IP mask.
+type IPRuleAction string
+
+const (
+	IPRuleActionAllow IPRuleAction = "Allow"
+)
+
+// PossibleIPRuleActionValues returns the possible values for the IPRuleAction const type.
+func PossibleIPRuleActionValues() []IPRuleAction {
+	return []IPRuleAction{
+		IPRuleActionAllow,
 	}
 }
 

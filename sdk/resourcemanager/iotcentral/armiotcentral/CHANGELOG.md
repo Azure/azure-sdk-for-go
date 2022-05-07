@@ -1,5 +1,13 @@
 # Release History
 
+## 0.5.0 (2022-05-07)
+### Features Added
+
+- New const `IPRuleActionAllow`
+- New function `PossibleIPRuleActionValues() []IPRuleAction`
+- New field `Action` in struct `NetworkRuleSetIPRule`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -249,6 +249,9 @@ type NetworkRuleSetIPRule struct {
 
 	// The CIDR block defining the IP range.
 	IPMask *string `json:"ipMask,omitempty"`
+
+	// READ-ONLY; The network action for the IP mask.
+	Action *IPRuleAction `json:"action,omitempty" azure:"ro"`
 }
 
 // NetworkRuleSets - Network Rule Set Properties of this IoT Central application.

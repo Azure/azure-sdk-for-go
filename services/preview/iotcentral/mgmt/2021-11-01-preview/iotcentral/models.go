@@ -858,12 +858,45 @@ type ErrorResponse struct {
 	Error *ErrorDetail `json:"error,omitempty"`
 }
 
+// Identity identity for the resource.
+type Identity struct {
+	// PrincipalID - READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'ResourceIdentityTypeSystemAssigned'
+	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // NetworkRuleSetIPRule an object for an IP range that will be allowed access.
 type NetworkRuleSetIPRule struct {
+	// Action - READ-ONLY; The network action for the IP mask. Possible values include: 'IPRuleActionAllow'
+	Action IPRuleAction `json:"action,omitempty"`
 	// FilterName - The readable name of the IP rule.
 	FilterName *string `json:"filterName,omitempty"`
 	// IPMask - The CIDR block defining the IP range.
 	IPMask *string `json:"ipMask,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkRuleSetIPRule.
+func (nrsir NetworkRuleSetIPRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nrsir.FilterName != nil {
+		objectMap["filterName"] = nrsir.FilterName
+	}
+	if nrsir.IPMask != nil {
+		objectMap["ipMask"] = nrsir.IPMask
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkRuleSets network Rule Set Properties of this IoT Central application.
@@ -1092,6 +1125,20 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 		fn:  getNextPage,
 		olr: cur,
 	}
+}
+
+// Plan plan for the resource.
+type Plan struct {
+	// Name - A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The version of the desired product/artifact.
+	Version *string `json:"version,omitempty"`
 }
 
 // PrivateEndpoint the private endpoint resource.
@@ -1461,6 +1508,121 @@ type Resource struct {
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this
+// set.
+type ResourceModelWithAllowedPropertySet struct {
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag     *string                                      `json:"etag,omitempty"`
+	Identity *ResourceModelWithAllowedPropertySetIdentity `json:"identity,omitempty"`
+	Sku      *ResourceModelWithAllowedPropertySetSku      `json:"sku,omitempty"`
+	Plan     *ResourceModelWithAllowedPropertySetPlan     `json:"plan,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySet.
+func (rmwaps ResourceModelWithAllowedPropertySet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.ManagedBy != nil {
+		objectMap["managedBy"] = rmwaps.ManagedBy
+	}
+	if rmwaps.Kind != nil {
+		objectMap["kind"] = rmwaps.Kind
+	}
+	if rmwaps.Identity != nil {
+		objectMap["identity"] = rmwaps.Identity
+	}
+	if rmwaps.Sku != nil {
+		objectMap["sku"] = rmwaps.Sku
+	}
+	if rmwaps.Plan != nil {
+		objectMap["plan"] = rmwaps.Plan
+	}
+	if rmwaps.Tags != nil {
+		objectMap["tags"] = rmwaps.Tags
+	}
+	if rmwaps.Location != nil {
+		objectMap["location"] = rmwaps.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySetIdentity ...
+type ResourceModelWithAllowedPropertySetIdentity struct {
+	// PrincipalID - READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'ResourceIdentityTypeSystemAssigned'
+	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySetIdentity.
+func (rmwaps ResourceModelWithAllowedPropertySetIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.Type != "" {
+		objectMap["type"] = rmwaps.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySetPlan ...
+type ResourceModelWithAllowedPropertySetPlan struct {
+	// Name - A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The version of the desired product/artifact.
+	Version *string `json:"version,omitempty"`
+}
+
+// ResourceModelWithAllowedPropertySetSku ...
+type ResourceModelWithAllowedPropertySetSku struct {
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+	// Tier - Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	Tier SkuTier `json:"tier,omitempty"`
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// Sku the resource model definition representing SKU
+type Sku struct {
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+	// Tier - Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	Tier SkuTier `json:"tier,omitempty"`
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
 }
 
 // SystemAssignedServiceIdentity managed service identity (either system assigned, or none)

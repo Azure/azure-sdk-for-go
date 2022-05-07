@@ -57,6 +57,19 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
 }
 
+// IPRuleAction enumerates the values for ip rule action.
+type IPRuleAction string
+
+const (
+	// IPRuleActionAllow ...
+	IPRuleActionAllow IPRuleAction = "Allow"
+)
+
+// PossibleIPRuleActionValues returns an array of possible values for the IPRuleAction const type.
+func PossibleIPRuleActionValues() []IPRuleAction {
+	return []IPRuleAction{IPRuleActionAllow}
+}
+
 // NetworkAction enumerates the values for network action.
 type NetworkAction string
 
@@ -145,6 +158,38 @@ const (
 // PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
+}
+
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{ResourceIdentityTypeSystemAssigned}
+}
+
+// SkuTier enumerates the values for sku tier.
+type SkuTier string
+
+const (
+	// SkuTierBasic ...
+	SkuTierBasic SkuTier = "Basic"
+	// SkuTierFree ...
+	SkuTierFree SkuTier = "Free"
+	// SkuTierPremium ...
+	SkuTierPremium SkuTier = "Premium"
+	// SkuTierStandard ...
+	SkuTierStandard SkuTier = "Standard"
+)
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{SkuTierBasic, SkuTierFree, SkuTierPremium, SkuTierStandard}
 }
 
 // SystemAssignedServiceIdentityType enumerates the values for system assigned service identity type.

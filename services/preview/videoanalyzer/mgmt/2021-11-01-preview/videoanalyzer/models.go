@@ -1,3 +1,5 @@
+//Deprecated: We’re retiring the Azure Video Analyzer preview service, you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is no longer maintained and won’t work after the service is retired
+
 package videoanalyzer
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

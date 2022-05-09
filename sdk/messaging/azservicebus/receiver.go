@@ -314,7 +314,7 @@ func (r *Receiver) Close(ctx context.Context) error {
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
-// This function can only be used when the Receiver has been opened with `ReceiveModePeekLock`.
+// This function can only be used when the Receiver has been opened with ReceiveModePeekLock.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return r.settler.CompleteMessage(ctx, message, options)

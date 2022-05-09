@@ -110,8 +110,8 @@ type ReceivedMessage struct {
 	// property.
 	//
 	// When not set explicitly, the assumed value is the DefaultTimeToLive for the queue or topic.
-	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive is silently
-	// adjusted if it does.
+	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive, and is silently
+	// adjusted if it is.
 	TimeToLive *time.Duration
 
 	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.

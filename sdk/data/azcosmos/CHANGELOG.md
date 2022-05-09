@@ -9,10 +9,6 @@
 ### Breaking Changes
 * This module now requires Go 1.18
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 0.2.0 (2022-01-13)
 
 ### Features Added

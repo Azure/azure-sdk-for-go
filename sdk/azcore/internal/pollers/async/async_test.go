@@ -133,7 +133,8 @@ func TestFinalGetLocation(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "triangle", result.Shape)
 }
@@ -162,7 +163,8 @@ func TestFinalGetOrigin(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "circle", result.Shape)
 }
@@ -182,7 +184,8 @@ func TestNoFinalGet(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "circle", result.Shape)
 }
@@ -202,7 +205,8 @@ func TestPatchNoFinalGet(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "circle", result.Shape)
 }
@@ -223,7 +227,8 @@ func TestPollFailed(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Empty(t, result)

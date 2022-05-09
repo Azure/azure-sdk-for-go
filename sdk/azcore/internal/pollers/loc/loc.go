@@ -100,6 +100,6 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	return pollers.ResultHelper(p.resp, p.resp.StatusCode > 399, out)
 }

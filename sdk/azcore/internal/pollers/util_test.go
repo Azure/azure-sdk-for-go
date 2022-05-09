@@ -186,9 +186,9 @@ func TestNopPoller(t *testing.T) {
 	pollResp, err := np.Poll(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, resp, pollResp)
-	result, err := np.Result(context.Background(), nil)
+	var result struct{}
+	err = np.Result(context.Background(), &result)
 	require.NoError(t, err)
-	require.Empty(t, result)
 
 	resp.StatusCode = http.StatusOK
 	np, err = NewNopPoller[struct{}](resp)
@@ -198,9 +198,8 @@ func TestNopPoller(t *testing.T) {
 	pollResp, err = np.Poll(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, resp, pollResp)
-	result, err = np.Result(context.Background(), nil)
+	err = np.Result(context.Background(), &result)
 	require.NoError(t, err)
-	require.Empty(t, result)
 
 	resp.Body = io.NopCloser(strings.NewReader(`"value"`))
 	np2, err := NewNopPoller[string](resp)
@@ -210,7 +209,8 @@ func TestNopPoller(t *testing.T) {
 	pollResp, err = np2.Poll(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, resp, pollResp)
-	result2, err := np2.Result(context.Background(), nil)
+	var result2 string
+	err = np2.Result(context.Background(), &result2)
 	require.NoError(t, err)
 	require.Equal(t, "value", result2)
 }
@@ -261,13 +261,14 @@ func TestResultHelper(t *testing.T) {
 		StatusCode: http.StatusNoContent,
 		Body:       http.NoBody,
 	}
-	result, err := ResultHelper[string](resp, false, nil)
+	var result string
+	err := ResultHelper(resp, false, &result)
 	require.NoError(t, err)
 	require.Empty(t, result)
 
 	resp.StatusCode = http.StatusBadRequest
 	resp.Body = io.NopCloser(strings.NewReader(`{ "code": "failed", "message": "bad stuff" }`))
-	result, err = ResultHelper[string](resp, false, nil)
+	err = ResultHelper(resp, false, &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, "failed", respErr.ErrorCode)
@@ -275,14 +276,14 @@ func TestResultHelper(t *testing.T) {
 
 	resp.StatusCode = http.StatusOK
 	resp.Body = http.NoBody
-	result, err = ResultHelper[string](resp, false, nil)
+	err = ResultHelper(resp, false, &result)
 	require.NoError(t, err)
 	require.Empty(t, result)
 
 	resp.Body = io.NopCloser(strings.NewReader(`{ "Result": "happy" }`))
 	widgetResult := widget{Precalculated: 123}
-	result2, err := ResultHelper(resp, false, &widgetResult)
+	err = ResultHelper(resp, false, &widgetResult)
 	require.NoError(t, err)
-	require.Equal(t, "happy", result2.Result)
-	require.Equal(t, 123, result2.Precalculated)
+	require.Equal(t, "happy", widgetResult.Result)
+	require.Equal(t, 123, widgetResult.Precalculated)
 }

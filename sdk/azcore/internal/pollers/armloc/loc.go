@@ -120,6 +120,6 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 }
 
 // Result implements the Result method for the Operation interface.
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

@@ -116,7 +116,8 @@ func TestFinalStateViaLocation(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "triangle", result.Shape)
 }
@@ -136,7 +137,8 @@ func TestFinalStateViaOperationLocationWithPost(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "rhombus", result.Shape)
 }
@@ -165,7 +167,8 @@ func TestFinalStateViaResourceLocation(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "square", result.Shape)
 }
@@ -194,7 +197,8 @@ func TestResultForPatch(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "square", result.Shape)
 }
@@ -224,7 +228,8 @@ func TestPostWithLocation(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "triangle", result.Shape)
 }
@@ -244,7 +249,8 @@ func TestOperationFailed(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Equal(t, "InvalidSomething", respErr.ErrorCode)

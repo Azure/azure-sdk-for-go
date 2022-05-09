@@ -1,6 +1,6 @@
 # Release History
 
-## 0.15.0 (Unreleased)
+## 1.0.0 (2022-05-12)
 
 ### Features Added
 * `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the

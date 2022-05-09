@@ -177,6 +177,7 @@ type ReceiveMessagesOptions struct {
 // 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()
 	isReceiving := r.receiving
@@ -196,7 +197,8 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
-	return r.receiveMessagesImpl(ctx, maxMessages, options)
+	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options)
+	return messages, internal.TransformError(err)
 }
 
 // ReceiveDeferredMessagesOptions contains optional parameters for the ReceiveDeferredMessages function.
@@ -205,6 +207,7 @@ type ReceiveDeferredMessagesOptions struct {
 }
 
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64, options *ReceiveDeferredMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
@@ -225,11 +228,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		return nil
 	}, r.retryOptions)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return receivedMessages, nil
+	return receivedMessages, internal.TransformError(err)
 }
 
 // PeekMessagesOptions contains options for the `Receiver.PeekMessages`
@@ -243,6 +242,7 @@ type PeekMessagesOptions struct {
 // Messages that are peeked do not have lock tokens, so settlement methods
 // like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
 // will not work with them.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekMessagesOptions) ([]*ReceivedMessage, error) {
 	var receivedMessages []*ReceivedMessage
 
@@ -275,11 +275,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		return nil
 	}, r.retryOptions)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return receivedMessages, nil
+	return receivedMessages, internal.TransformError(err)
 }
 
 // RenewMessageLockOptions contains optional parameters for the RenewMessageLock function.
@@ -288,8 +284,9 @@ type RenewMessageLockOptions struct {
 }
 
 // RenewMessageLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
-	return r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
@@ -302,6 +299,7 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 		return nil
 	}, r.retryOptions)
 
+	return internal.TransformError(err)
 }
 
 // Close permanently closes the receiver.
@@ -311,6 +309,7 @@ func (r *Receiver) Close(ctx context.Context) error {
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return r.settler.CompleteMessage(ctx, message, options)
 }
@@ -318,12 +317,14 @@ func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage, options *AbandonMessageOptions) error {
 	return r.settler.AbandonMessage(ctx, message, options)
 }
 
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, options *DeferMessageOptions) error {
 	return r.settler.DeferMessage(ctx, message, options)
 }
@@ -331,6 +332,7 @@ func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage, o
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiverForQueue()`
 // or `Client.NewReceiverForSubscription()` using the `ReceiverOptions.SubQueue` option.
+// If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return r.settler.DeadLetterMessage(ctx, message, options)
 }

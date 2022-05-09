@@ -5,12 +5,12 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -322,7 +322,7 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 
 	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
 	require.Nil(t, receiver)
-	require.ErrorIs(t, err, context.Canceled)
+	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))
 
 	// also, the receiver we returned should be closed as part of the gourtine
 	// unwinding.
@@ -394,24 +394,73 @@ func TestReceiverOptions(t *testing.T) {
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
 }
 
-func TestReceiverDeferUnitTests(t *testing.T) {
-	r := &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			Err: errors.New("links are dead"),
+func TestReceiver_UserFacingErrors(t *testing.T) {
+	fakeAMQPLinks := &internal.FakeAMQPLinks{}
+
+	receiver, err := newReceiver(newReceiverArgs{
+		ns: &internal.FakeNS{
+			AMQPLinks: fakeAMQPLinks,
 		},
-	}
-
-	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
-	require.EqualError(t, err, "links are dead")
-	require.Nil(t, messages)
-
-	r = &Receiver{
-		amqpLinks: &internal.FakeAMQPLinks{
-			RPC: &badRPCLink{},
+		entity: entity{
+			Queue: "queue",
 		},
-	}
+		cleanupOnClose:      func() {},
+		getRecoveryKindFunc: internal.GetRecoveryKind,
+		newLinkFn: func(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+			return nil, nil, nil
+		},
+		retryOptions: RetryOptions{
+			MaxRetries:    0,
+			RetryDelay:    0,
+			MaxRetryDelay: 0,
+		},
+	}, nil)
+	require.NoError(t, err)
 
-	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
-	require.EqualError(t, err, "receive deferred messages failed")
-	require.Nil(t, messages)
+	var asSBError *Error
+
+	fakeAMQPLinks.Err = amqp.ErrLinkClosed
+	messages, err := receiver.PeekMessages(context.Background(), 1, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeConnectionLost, asSBError.Code)
+
+	fakeAMQPLinks.Err = internal.RPCError{Resp: &internal.RPCResponse{Code: internal.RPCResponseCodeLockLost}}
+
+	err = receiver.AbandonMessage(context.Background(), &ReceivedMessage{}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.CompleteMessage(context.Background(), &ReceivedMessage{}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.DeadLetterMessage(context.Background(), &ReceivedMessage{}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.DeferMessage(context.Background(), &ReceivedMessage{}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
+
+	err = receiver.RenewMessageLock(context.Background(), &ReceivedMessage{}, nil)
+	require.Empty(t, messages)
+	require.ErrorAs(t, err, &asSBError)
+	require.Equal(t, CodeLockLost, asSBError.Code)
 }

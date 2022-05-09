@@ -12,8 +12,8 @@ import (
 	"errors"
 )
 
-// PageProcessor contains the required data for constructing a Pager.
-type PageProcessor[T any] struct {
+// PagingHandler contains the required data for constructing a Pager.
+type PagingHandler[T any] struct {
 	// More returns a boolean indicating if there are more pages to fetch.
 	// It uses the provided page to make the determination.
 	More func(T) bool
@@ -25,15 +25,15 @@ type PageProcessor[T any] struct {
 // Pager provides operations for iterating over paged responses.
 type Pager[T any] struct {
 	current   *T
-	processor PageProcessor[T]
+	handler   PagingHandler[T]
 	firstPage bool
 }
 
-// NewPager creates an instance of Pager using the specified PageProcessor.
+// NewPager creates an instance of Pager using the specified PagingHandler.
 // Pass a non-nil T for firstPage if the first page has already been retrieved.
-func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
+func NewPager[T any](handler PagingHandler[T]) *Pager[T] {
 	return &Pager[T]{
-		processor: processor,
+		handler:   handler,
 		firstPage: true,
 	}
 }
@@ -41,7 +41,7 @@ func NewPager[T any](processor PageProcessor[T]) *Pager[T] {
 // More returns true if there are more pages to retrieve.
 func (p *Pager[T]) More() bool {
 	if p.current != nil {
-		return p.processor.More(*p.current)
+		return p.handler.More(*p.current)
 	}
 	return true
 }
@@ -55,14 +55,14 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 			// we get here if it's an LRO-pager, we already have the first page
 			p.firstPage = false
 			return *p.current, nil
-		} else if !p.processor.More(*p.current) {
+		} else if !p.handler.More(*p.current) {
 			return *new(T), errors.New("no more pages")
 		}
-		resp, err = p.processor.Fetcher(ctx, p.current)
+		resp, err = p.handler.Fetcher(ctx, p.current)
 	} else {
 		// non-LRO case, first page
 		p.firstPage = false
-		resp, err = p.processor.Fetcher(ctx, nil)
+		resp, err = p.handler.Fetcher(ctx, nil)
 	}
 	if err != nil {
 		return *new(T), err

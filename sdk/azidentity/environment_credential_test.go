@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"reflect"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -218,10 +219,10 @@ func TestEnvironmentCredential_InvalidClientSecretLive(t *testing.T) {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if tk != nil {
-		t.Fatal("GetToken returned a token")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
-	var e AuthenticationFailedError
+	var e *AuthenticationFailedError
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}
@@ -262,10 +263,10 @@ func TestEnvironmentCredential_InvalidPasswordLive(t *testing.T) {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if tk != nil {
-		t.Fatal("GetToken returned a token")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
-	var e AuthenticationFailedError
+	var e *AuthenticationFailedError
 	if !errors.As(err, &e) {
 		t.Fatal("expected AuthenticationFailedError")
 	}

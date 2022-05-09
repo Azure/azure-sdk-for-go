@@ -84,16 +84,16 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 }
 
 // GetToken requests an access token from the hosting environment. This method is called automatically by Azure SDK clients.
-func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
 		err := errors.New(credNameManagedIdentity + ": GetToken() requires exactly one scope")
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
 	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
 	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, err

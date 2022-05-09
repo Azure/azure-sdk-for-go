@@ -62,15 +62,15 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 
 // GetToken requests a token from the Azure CLI. This credential doesn't cache tokens, so every call invokes the CLI.
 // This method is called automatically by Azure SDK clients.
-func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) != 1 {
-		return nil, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
+		return azcore.AccessToken{}, errors.New(credNameAzureCLI + ": GetToken() requires exactly one scope")
 	}
 	// CLI expects an AAD v1 resource, not a v2 scope
 	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, scope)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 	logGetTokenSuccess(c, opts)
 	return at, nil
@@ -78,10 +78,10 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 
 const timeoutCLIRequest = 10 * time.Second
 
-func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (azcore.AccessToken, error) {
 	output, err := c.tokenProvider(ctx, resource, c.tenantID)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 
 	return c.createAccessToken(output)
@@ -137,7 +137,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 	}
 }
 
-func (c *AzureCLICredential) createAccessToken(tk []byte) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) createAccessToken(tk []byte) (azcore.AccessToken, error) {
 	t := struct {
 		AccessToken      string `json:"accessToken"`
 		Authority        string `json:"_authority"`
@@ -152,15 +152,15 @@ func (c *AzureCLICredential) createAccessToken(tk []byte) (*azcore.AccessToken, 
 	}{}
 	err := json.Unmarshal(tk, &t)
 	if err != nil {
-		return nil, err
+		return azcore.AccessToken{}, err
 	}
 
 	tokenExpirationDate, err := parseExpirationDate(t.ExpiresOn)
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing Token Expiration Date %q: %+v", t.ExpiresOn, err)
+		return azcore.AccessToken{}, fmt.Errorf("Error parsing Token Expiration Date %q: %+v", t.ExpiresOn, err)
 	}
 
-	converted := &azcore.AccessToken{
+	converted := azcore.AccessToken{
 		Token:     t.AccessToken,
 		ExpiresOn: *tokenExpirationDate,
 	}

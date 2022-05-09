@@ -136,8 +136,7 @@ func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	// messages where the lock token is not a predefined value)
 	receiver, err = client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 
-	sbe := internal.GetSBErrInfo(err)
-	require.EqualValues(t, internal.RecoveryKindFatal, sbe.RecoveryKind)
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(err))
 	require.Nil(t, receiver)
 }
 

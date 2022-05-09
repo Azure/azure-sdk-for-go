@@ -20,6 +20,10 @@
 | `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/recoveryservices/mgmt/2021-12-01/backup/CHANGELOG.md) |
 
+### Deprecated Packages
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer`
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer`
+
 ## `v63.4.0`
 
 ### New Packages

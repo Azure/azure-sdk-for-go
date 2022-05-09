@@ -36,7 +36,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 	batch.CreateItem(emulatorTests.marshallItem("test2", "tBatch"), nil)
 
 	// Default behavior has no content body
-	response, err := batch.Execute(context.TODO(), nil)
+	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, nil)
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
@@ -74,7 +74,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 	batch2.DeleteItem("test", nil)
 
 	// If there is a read operation, body should be included
-	response2, err := batch2.Execute(context.TODO(), nil)
+	response2, err := container.ExecuteTransactionalBatch(context.TODO(), batch2, nil)
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
@@ -123,7 +123,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 	batch3.UpsertItem(emulatorTests.marshallItem("test4", "tBatch"), nil)
 	batch3.ReplaceItem("test3", emulatorTests.marshallItem("test3", "tBatch"), nil)
 
-	response3, err := batch3.Execute(context.TODO(), &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
+	response3, err := container.ExecuteTransactionalBatch(context.TODO(), batch3, &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
@@ -191,7 +191,7 @@ func TestItemTransactionalBatchError(t *testing.T) {
 	batch.CreateItem(emulatorTests.marshallItem("test2", "tBatch"), nil)
 	batch.CreateItem(emulatorTests.marshallItem("test", "tBatch"), nil)
 
-	response, err := batch.Execute(context.TODO(), &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
+	response, err := container.ExecuteTransactionalBatch(context.TODO(), batch, &TransactionalBatchOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}

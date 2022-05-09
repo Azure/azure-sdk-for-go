@@ -5,9 +5,7 @@ package azcosmos
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -17,7 +15,6 @@ import (
 // See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
 type TransactionalBatch struct {
 	partitionKey PartitionKey
-	container    *ContainerClient
 	operations   []batchOperation
 }
 
@@ -72,60 +69,6 @@ func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchItemOp
 		batchOperationRead{
 			operationType: "Read",
 			id:            itemId})
-}
-
-// Execute executes the transactional batch.
-// Once executed, verify the IsSuccess property of the response to determine if the batch was committed
-func (b *TransactionalBatch) Execute(ctx context.Context, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
-	if len(b.operations) == 0 {
-		return TransactionalBatchResponse{}, errors.New("no operations in batch")
-	}
-
-	h := headerOptionsOverride{
-		partitionKey: &b.partitionKey,
-	}
-
-	if o == nil {
-		o = &TransactionalBatchOptions{}
-	} else {
-		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
-	}
-
-	// If contentResponseOnWrite is not enabled at the client level the
-	// service will not even send a batch response payload
-	// Instead we should automatically enforce contentResponseOnWrite for all
-	// batch requests whenever at least one of the item operations requires a content response (read operation)
-	enableContentResponseOnWriteForReadOperations := true
-	for _, op := range b.operations {
-		if op.getOperationType() == operationTypeRead {
-			h.enableContentResponseOnWrite = &enableContentResponseOnWriteForReadOperations
-			break
-		}
-	}
-
-	operationContext := pipelineRequestOptions{
-		resourceType:          resourceTypeDocument,
-		resourceAddress:       b.container.link,
-		isWriteOperation:      true,
-		headerOptionsOverride: &h}
-
-	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
-	if err != nil {
-		return TransactionalBatchResponse{}, err
-	}
-
-	azResponse, err := b.container.database.client.sendBatchRequest(
-		path,
-		ctx,
-		b.operations,
-		operationContext,
-		o,
-		nil)
-	if err != nil {
-		return TransactionalBatchResponse{}, err
-	}
-
-	return newTransactionalBatchResponse(azResponse)
 }
 
 type batchOperation interface {

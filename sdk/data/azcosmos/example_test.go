@@ -646,7 +646,7 @@ func ExampleContainerClient_NewTransactionalBatch() {
 	batch.ReadItem("anIdThatExists", nil)
 	batch.DeleteItem("yetAnotherExistingId", nil)
 
-	batchResponse, err := batch.Execute(context.Background(), nil)
+	batchResponse, err := container.ExecuteTransactionalBatch(context.Background(), batch, nil)
 	if err != nil {
 		panic(err)
 	}

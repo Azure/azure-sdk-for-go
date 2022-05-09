@@ -1,15 +1,9 @@
 # Release History
 
-## 0.3.0 (Unreleased)
-
-### Features Added
+## 0.3.0 (2022-05-10)
 
 ### Breaking Changes
 * Changed argument semantics of `AddSetting`, `DeleteSetting`, `GetSetting`, `SetSetting`, and `SetReadOnly`.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2022-04-20)
 

@@ -1,4 +1,4 @@
-// Package backup implements the Azure ARM Backup service API version .
+// Package backup implements the Azure ARM Backup service API version 2020-02-02.
 //
 // Open API 2.0 Specs for Azure RecoveryServices Backup service
 package backup

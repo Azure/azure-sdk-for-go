@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.0 (2022-05-10)
 
 ### Features Added
 * Added single partition query support.

@@ -18,8 +18,9 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// NewPipeline creates a pipeline from connection options.
-// The telemetry policy, when enabled, will use the specified module and version info.
+// NewPipeline creates a pipeline from connection options. Policies from ClientOptions are
+// placed after policies from PipelineOptions. The telemetry policy, when enabled, will
+// use the specified module and version info.
 func NewPipeline(module, version string, cred azcore.TokenCredential, plOpts azruntime.PipelineOptions, options *arm.ClientOptions) (azruntime.Pipeline, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}

@@ -359,6 +359,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
@@ -377,10 +378,10 @@ func main() {
     options := &aztables.ListEntitiesOptions{
         Filter: &filter,
         Select: to.Ptr("RowKey,Value,Product,Available"),
-        Top: to.Ptr(int32(((15),
+        Top: to.Ptr(int32(15)),
     }
 
-	pager := client.List(options)
+	pager := client.NewListEntitiesPager(options)
 	pageCount := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -477,6 +478,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
 )
@@ -490,7 +492,7 @@ func main() {
         panic(err)
     }
 
-    pager := client.List(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(((10)})
+    pager := client.NewListEntitiesPager(&aztables.ListEntitiesOptions{Top: to.Ptr(int32(10))})
     count := 0
 	for pager.More() {
 		response, err := pager.NextPage(context.TODO())
@@ -505,8 +507,8 @@ func main() {
         }
     }
 
-    newPager := client.List(&aztables.ListEntitiesOptions{
-        Top:          to.Ptr(int32(((10),
+    newPager := client.NewListEntitiesPager(&aztables.ListEntitiesOptions{
+        Top:          to.Ptr(int32(10)),
         PartitionKey: pager.NextPagePartitionKey(),
         RowKey:       pager.NextPageRowKey(),
     })

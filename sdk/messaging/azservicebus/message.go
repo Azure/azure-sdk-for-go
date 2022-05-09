@@ -15,12 +15,8 @@ import (
 
 // ReceivedMessage is a received message from a Client.NewReceiver().
 type ReceivedMessage struct {
-	// MessageID is an application-defined value that uniquely identifies
-	// the message and its payload. The identifier is a free-form string.
-	//
-	// If enabled, the duplicate detection feature identifies and removes further submissions
-	// of messages with the same MessageId.
-	MessageID string
+	// ApplicationProperties can be used to store custom metadata for a message.
+	ApplicationProperties map[string]interface{}
 
 	// ContentType describes the payload of the message, with a descriptor following
 	// the format of Content-Type, specified by RFC2045 (ex: "application/json").
@@ -31,66 +27,20 @@ type ReceivedMessage struct {
 	// replied to.
 	CorrelationID *string
 
-	// SessionID is used with session-aware entities and associates a message with an application-defined
-	// session ID. Note that an empty string is a valid session identifier.
-	// Messages with the same session identifier are subject to summary locking and enable
-	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
-	SessionID *string
+	// DeadLetterErrorDescription is the description set when the message was dead-lettered.
+	DeadLetterErrorDescription *string
 
-	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
-	Subject *string
+	// DeadLetterReason is the reason set when the message was dead-lettered.
+	DeadLetterReason *string
 
-	// ReplyTo is an application-defined value specify a reply path to the receiver of the message. When
-	// a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
-	// it expects the reply to be sent to.
-	ReplyTo *string
-
-	// ReplyToSessionID augments the ReplyTo information and specifies which SessionId should
-	// be set for the reply when sent to the reply entity.
-	ReplyToSessionID *string
-
-	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
-	// Applications can use this value to indicate the logical destination of the message.
-	To *string
-
-	// TimeToLive is the duration after which the message expires, starting from the instant the
-	// message has been accepted and stored by the broker, found in the ReceivedMessage.EnqueuedTime
-	// property.
-	//
-	// When not set explicitly, the assumed value is the DefaultTimeToLive for the queue or topic.
-	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive is silently
-	// adjusted if it does.
-	TimeToLive *time.Duration
-
-	// PartitionKey is used with a partitioned entity and enables assigning related messages
-	// to the same internal partition. This ensures that the submission sequence order is correctly
-	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
-	// directly.
-	//
-	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
-	PartitionKey *string
-
-	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
-	// to the broker but will not available until the scheduled time.
-	ScheduledEnqueueTime *time.Time
-
-	// ApplicationProperties can be used to store custom metadata for a message.
-	ApplicationProperties map[string]interface{}
-
-	// LockToken is the lock token for a message received from a Receiver created with a receive mode of ReceiveModePeekLock.
-	LockToken [16]byte
+	// DeadLetterSource is the name of the queue or subscription this message was enqueued on
+	// before it was dead-lettered.
+	DeadLetterSource *string
 
 	// DeliveryCount is number of times this message has been delivered.
 	// This number is incremented when a message lock expires or if the message is explicitly abandoned
 	// with Receiver.AbandonMessage.
 	DeliveryCount uint32
-
-	// LockedUntil is the time when the lock expires for this message.
-	// This can be extended by using Receiver.RenewMessageLock.
-	LockedUntil *time.Time
-
-	// SequenceNumber is a unique number assigned to a message by Service Bus.
-	SequenceNumber *int64
 
 	// EnqueuedSequenceNumber is the original sequence number assigned to a message, before it
 	// was auto-forwarded.
@@ -105,18 +55,68 @@ type ReceivedMessage struct {
 	// EnqueuedTime of the message.
 	ExpiresAt *time.Time
 
-	// DeadLetterErrorDescription is the description set when the message was dead-lettered.
-	DeadLetterErrorDescription *string
+	// LockedUntil is the time when the lock expires for this message.
+	// This can be extended by using Receiver.RenewMessageLock.
+	LockedUntil *time.Time
 
-	// DeadLetterReason is the reason set when the message was dead-lettered.
-	DeadLetterReason *string
+	// LockToken is the lock token for a message received from a Receiver created with a receive mode of ReceiveModePeekLock.
+	LockToken [16]byte
 
-	// DeadLetterSource is the name of the queue or subscription this message was enqueued on
-	// before it was dead-lettered.
-	DeadLetterSource *string
+	// MessageID is an application-defined value that uniquely identifies
+	// the message and its payload. The identifier is a free-form string.
+	//
+	// If enabled, the duplicate detection feature identifies and removes further submissions
+	// of messages with the same MessageId.
+	MessageID string
+
+	// PartitionKey is used with a partitioned entity and enables assigning related messages
+	// to the same internal partition. This ensures that the submission sequence order is correctly
+	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
+	// directly.
+	//
+	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
+	PartitionKey *string
+
+	// ReplyTo is an application-defined value specify a reply path to the receiver of the message. When
+	// a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+	// it expects the reply to be sent to.
+	ReplyTo *string
+
+	// ReplyToSessionID augments the ReplyTo information and specifies which SessionId should
+	// be set for the reply when sent to the reply entity.
+	ReplyToSessionID *string
+
+	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
+	// to the broker but will not available until the scheduled time.
+	ScheduledEnqueueTime *time.Time
+
+	// SequenceNumber is a unique number assigned to a message by Service Bus.
+	SequenceNumber *int64
+
+	// SessionID is used with session-aware entities and associates a message with an application-defined
+	// session ID. Note that an empty string is a valid session identifier.
+	// Messages with the same session identifier are subject to summary locking and enable
+	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
+	SessionID *string
 
 	// State represents the current state of the message (Active, Scheduled, Deferred).
 	State MessageState
+
+	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
+	Subject *string
+
+	// TimeToLive is the duration after which the message expires, starting from the instant the
+	// message has been accepted and stored by the broker, found in the ReceivedMessage.EnqueuedTime
+	// property.
+	//
+	// When not set explicitly, the assumed value is the DefaultTimeToLive for the queue or topic.
+	// A message's TimeToLive cannot be longer than the entity's DefaultTimeToLive is silently
+	// adjusted if it does.
+	TimeToLive *time.Duration
+
+	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
+	// Applications can use this value to indicate the logical destination of the message.
+	To *string
 
 	rawAMQPMessage *amqp.Message
 
@@ -152,12 +152,11 @@ func (rm *ReceivedMessage) Body() ([]byte, error) {
 // Message is a message with a body and commonly used properties.
 // Properties that are pointers are optional.
 type Message struct {
-	// MessageID is an application-defined value that uniquely identifies
-	// the message and its payload. The identifier is a free-form string.
-	//
-	// If enabled, the duplicate detection feature identifies and removes further submissions
-	// of messages with the same MessageId.
-	MessageID *string
+	// ApplicationProperties can be used to store custom metadata for a message.
+	ApplicationProperties map[string]interface{}
+
+	// Body corresponds to the first []byte array in the Data section of an AMQP message.
+	Body []byte
 
 	// ContentType describes the payload of the message, with a descriptor following
 	// the format of Content-Type, specified by RFC2045 (ex: "application/json").
@@ -168,17 +167,20 @@ type Message struct {
 	// replied to.
 	CorrelationID *string
 
-	// Body corresponds to the first []byte array in the Data section of an AMQP message.
-	Body []byte
+	// MessageID is an application-defined value that uniquely identifies
+	// the message and its payload. The identifier is a free-form string.
+	//
+	// If enabled, the duplicate detection feature identifies and removes further submissions
+	// of messages with the same MessageId.
+	MessageID *string
 
-	// SessionID is used with session-aware entities and associates a message with an application-defined
-	// session ID. Note that an empty string is a valid session identifier.
-	// Messages with the same session identifier are subject to summary locking and enable
-	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
-	SessionID *string
-
-	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
-	Subject *string
+	// PartitionKey is used with a partitioned entity and enables assigning related messages
+	// to the same internal partition. This ensures that the submission sequence order is correctly
+	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
+	// directly.
+	//
+	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
+	PartitionKey *string
 
 	// ReplyTo is an application-defined value specify a reply path to the receiver of the message. When
 	// a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
@@ -189,9 +191,18 @@ type Message struct {
 	// be set for the reply when sent to the reply entity.
 	ReplyToSessionID *string
 
-	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
-	// Applications can use this value to indicate the logical destination of the message.
-	To *string
+	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
+	// to the broker but will not available until the scheduled time.
+	ScheduledEnqueueTime *time.Time
+
+	// SessionID is used with session-aware entities and associates a message with an application-defined
+	// session ID. Note that an empty string is a valid session identifier.
+	// Messages with the same session identifier are subject to summary locking and enable
+	// exact in-order processing and demultiplexing. For session-unaware entities, this value is ignored.
+	SessionID *string
+
+	// Subject enables an application to indicate the purpose of the message, similar to an email subject line.
+	Subject *string
 
 	// TimeToLive is the duration after which the message expires, starting from the instant the
 	// message has been accepted and stored by the broker, found in the ReceivedMessage.EnqueuedTime
@@ -202,20 +213,9 @@ type Message struct {
 	// adjusted if it does.
 	TimeToLive *time.Duration
 
-	// PartitionKey is used with a partitioned entity and enables assigning related messages
-	// to the same internal partition. This ensures that the submission sequence order is correctly
-	// recorded. The partition is chosen by a hash function in Service Bus and cannot be chosen
-	// directly.
-	//
-	// For session-aware entities, the ReceivedMessage.SessionID overrides this value.
-	PartitionKey *string
-
-	// ScheduledEnqueueTime specifies a time when a message will be enqueued. The message is transferred
-	// to the broker but will not available until the scheduled time.
-	ScheduledEnqueueTime *time.Time
-
-	// ApplicationProperties can be used to store custom metadata for a message.
-	ApplicationProperties map[string]interface{}
+	// To is reserved for future use in routing scenarios but is not currently used by Service Bus.
+	// Applications can use this value to indicate the logical destination of the message.
+	To *string
 }
 
 // Service Bus custom properties

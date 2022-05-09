@@ -121,11 +121,11 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	if p.resp.StatusCode == http.StatusNoContent {
-		return *new(T), nil
+		return nil
 	} else if pollers.Failed(p.CurState) {
-		return *new(T), exported.NewResponseError(p.resp)
+		return exported.NewResponseError(p.resp)
 	}
 	var req *exported.Request
 	var err error
@@ -144,14 +144,14 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		}
 	}
 	if err != nil {
-		return *new(T), err
+		return err
 	}
 
 	// if a final GET request has been created, execute it
 	if req != nil {
 		resp, err := p.pl.Do(req)
 		if err != nil {
-			return *new(T), err
+			return err
 		}
 		p.resp = resp
 	}

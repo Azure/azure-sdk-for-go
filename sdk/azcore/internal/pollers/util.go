@@ -260,8 +260,9 @@ func (p *NopPoller[T]) Poll(context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *NopPoller[T]) Result(context.Context, *T) (T, error) {
-	return p.result, nil
+func (p *NopPoller[T]) Result(ctx context.Context, out *T) error {
+	*out = p.result
+	return nil
 }
 
 // PollHelper creates and executes the request, calling update() with the response.
@@ -288,33 +289,29 @@ func PollHelper(ctx context.Context, endpoint string, pl exported.Pipeline, upda
 // ResultHelper processes the response as success or failure.
 // In the success case, it unmarshals the payload into either a new instance of T or out.
 // In the failure case, it creates an *azcore.Response error from the response.
-func ResultHelper[T any](resp *http.Response, failed bool, out *T) (T, error) {
+func ResultHelper[T any](resp *http.Response, failed bool, out *T) error {
 	// short-circuit the simple success case with no response body to unmarshal
 	if resp.StatusCode == http.StatusNoContent {
-		return *new(T), nil
+		return nil
 	}
 
 	defer resp.Body.Close()
 	if !StatusCodeValid(resp) || failed {
 		// the LRO failed.  unmarshall the error and update state
-		return *new(T), exported.NewResponseError(resp)
+		return exported.NewResponseError(resp)
 	}
 
 	// success case
 	payload, err := exported.Payload(resp)
 	if err != nil {
-		return *new(T), err
+		return err
 	}
 	if len(payload) == 0 {
-		return *new(T), nil
+		return nil
 	}
 
-	var result T
-	if out != nil {
-		result = *out
+	if err = json.Unmarshal(payload, out); err != nil {
+		return err
 	}
-	if err = json.Unmarshal(payload, &result); err != nil {
-		return *new(T), err
-	}
-	return result, nil
+	return nil
 }

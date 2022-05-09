@@ -107,7 +107,7 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	var req *exported.Request
 	var err error
 	if p.FinalState == pollers.FinalStateViaLocation && p.LocURL != "" {
@@ -115,7 +115,7 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 	} else if p.FinalState == pollers.FinalStateViaOpLocation && p.Method == http.MethodPost {
 		// no final GET required, terminal response should have it
 	} else if rl, rlErr := pollers.GetResourceLocation(p.resp); rlErr != nil && !errors.Is(rlErr, pollers.ErrNoBody) {
-		return *new(T), rlErr
+		return rlErr
 	} else if rl != "" {
 		req, err = exported.NewRequest(ctx, http.MethodGet, rl)
 	} else if p.Method == http.MethodPatch || p.Method == http.MethodPut {
@@ -124,14 +124,14 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		req, err = exported.NewRequest(ctx, http.MethodGet, p.LocURL)
 	}
 	if err != nil {
-		return *new(T), err
+		return err
 	}
 
 	// if a final GET request has been created, execute it
 	if req != nil {
 		resp, err := p.pl.Do(req)
 		if err != nil {
-			return *new(T), err
+			return err
 		}
 		p.resp = resp
 	}

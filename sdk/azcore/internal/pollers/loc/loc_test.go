@@ -84,9 +84,8 @@ func TestUpdateSucceeded(t *testing.T) {
 	resp, err = poller.Poll(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, http.StatusNoContent, resp.StatusCode)
-	result, err := poller.Result(context.Background(), nil)
+	err = poller.Result(context.Background(), nil)
 	require.NoError(t, err)
-	require.Empty(t, result)
 }
 
 func TestUpdateFailed(t *testing.T) {
@@ -118,7 +117,6 @@ func TestUpdateFailed(t *testing.T) {
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
 	require.NoError(t, err)
-	result, err := poller.Result(context.Background(), nil)
+	err = poller.Result(context.Background(), nil)
 	require.Error(t, err)
-	require.Empty(t, result)
 }

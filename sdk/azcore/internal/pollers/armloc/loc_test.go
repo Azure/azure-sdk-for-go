@@ -85,9 +85,8 @@ func TestProvisioningStateSuccessNoContent(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusNoContent, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	err = poller.Result(context.Background(), nil)
 	require.NoError(t, err)
-	require.Empty(t, result)
 }
 
 type widget struct {
@@ -112,7 +111,8 @@ func TestProvisioningStateSuccess(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "round", result.Shape)
 }
@@ -135,7 +135,8 @@ func TestProvisioningStateSuccessNoProvisioningState(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "round", result.Shape)
 }
@@ -159,7 +160,8 @@ func TestPollFailedBadRequest(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Empty(t, result)

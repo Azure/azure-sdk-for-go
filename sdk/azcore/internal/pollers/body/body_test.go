@@ -128,7 +128,8 @@ func TestUpdateNoProvStateSuccess(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	require.NoError(t, err)
 	require.Equal(t, "rectangle", result.Shape)
 }
@@ -148,9 +149,8 @@ func TestUpdateNoProvState204(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusNoContent, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	err = poller.Result(context.Background(), nil)
 	require.NoError(t, err)
-	require.Empty(t, result)
 }
 
 func TestPollFailed(t *testing.T) {
@@ -168,7 +168,8 @@ func TestPollFailed(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	require.True(t, poller.Done())
-	result, err := poller.Result(context.Background(), nil)
+	var result widget
+	err = poller.Result(context.Background(), &result)
 	var respErr *exported.ResponseError
 	require.ErrorAs(t, err, &respErr)
 	require.Empty(t, result)

@@ -33,9 +33,9 @@ func NewShareClient(shareURL string, cred azcore.TokenCredential, options *Clien
 }
 
 // NewShareClientWithNoCredential creates a SHareClient object using the specified URL and options.
-func NewShareClientWithNoCredential(containerURL string, options *ClientOptions) (*ShareClient, error) {
+func NewShareClientWithNoCredential(shareURL string, options *ClientOptions) (*ShareClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(containerURL, conOptions)
+	conn := newConnection(shareURL, conOptions)
 
 	return &ShareClient{
 		client: newShareClient(conn.Endpoint(), conn.Pipeline()),
@@ -53,6 +53,16 @@ func NewShareClientWithSharedKey(containerURL string, cred *SharedKeyCredential,
 		client:    newShareClient(conn.Endpoint(), conn.Pipeline()),
 		sharedKey: cred,
 	}, nil
+}
+
+// NewShareClientFromConnectionString creates a service client from the given connection string.
+//nolint
+func NewShareClientFromConnectionString(connectionString string, shareURL string, options *ClientOptions) (*ShareClient, error) {
+	_, credential, err := parseConnectionString(connectionString)
+	if err != nil {
+		return nil, err
+	}
+	return NewShareClientWithSharedKey(shareURL, credential, options)
 }
 
 // WithSnapshot creates a new ShareURL object identical to the source but with the specified snapshot timestamp.

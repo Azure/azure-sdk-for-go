@@ -59,11 +59,11 @@ type (
 	// CountDetails has current active (and other) messages for queue/topic.
 	CountDetails struct {
 		XMLName                        xml.Name `xml:"CountDetails"`
-		ActiveMessageCount             *int32   `xml:"ActiveMessageCount,omitempty"`
-		DeadLetterMessageCount         *int32   `xml:"DeadLetterMessageCount,omitempty"`
-		ScheduledMessageCount          *int32   `xml:"ScheduledMessageCount,omitempty"`
-		TransferDeadLetterMessageCount *int32   `xml:"TransferDeadLetterMessageCount,omitempty"`
-		TransferMessageCount           *int32   `xml:"TransferMessageCount,omitempty"`
+		ActiveMessageCount             int32    `xml:"ActiveMessageCount,omitempty"`
+		DeadLetterMessageCount         int32    `xml:"DeadLetterMessageCount,omitempty"`
+		ScheduledMessageCount          int32    `xml:"ScheduledMessageCount,omitempty"`
+		TransferDeadLetterMessageCount int32    `xml:"TransferDeadLetterMessageCount,omitempty"`
+		TransferMessageCount           int32    `xml:"TransferMessageCount,omitempty"`
 	}
 
 	// EntityStatus enumerates the values for entity status.

@@ -72,7 +72,10 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
 	require.NoError(t, err)
 
-	forwardedMessages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
+	forwardedMessages, err := receiver.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
 
 	body, err := forwardedMessages[0].Body()

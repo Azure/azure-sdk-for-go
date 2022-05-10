@@ -386,9 +386,15 @@ func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
 func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimePropertiesItem, error) {
 	desc := env.Content.TopicDescription
 
+	countDetails := desc.CountDetails
+
+	if countDetails == nil {
+		countDetails = &atom.CountDetails{}
+	}
+
 	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		ScheduledMessageCount: countDetails.ScheduledMessageCount,
 		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
 	}
 

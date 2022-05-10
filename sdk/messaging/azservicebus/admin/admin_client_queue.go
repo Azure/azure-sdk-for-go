@@ -430,14 +430,20 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 func newQueueRuntimePropertiesItem(env *atom.QueueEnvelope) (*QueueRuntimePropertiesItem, error) {
 	desc := env.Content.QueueDescription
 
+	countDetails := desc.CountDetails
+
+	if countDetails == nil {
+		countDetails = &atom.CountDetails{}
+	}
+
 	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
 		TotalMessageCount:              int64OrZero(desc.MessageCount),
-		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
-		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
-		ScheduledMessageCount:          int32OrZero(desc.CountDetails.ScheduledMessageCount),
-		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
-		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
+		ActiveMessageCount:             countDetails.ActiveMessageCount,
+		DeadLetterMessageCount:         countDetails.DeadLetterMessageCount,
+		ScheduledMessageCount:          countDetails.ScheduledMessageCount,
+		TransferDeadLetterMessageCount: countDetails.TransferDeadLetterMessageCount,
+		TransferMessageCount:           countDetails.TransferMessageCount,
 	}
 
 	var err error

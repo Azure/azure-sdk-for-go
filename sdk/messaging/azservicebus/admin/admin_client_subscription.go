@@ -415,12 +415,18 @@ func newSubscriptionItem(env *atom.SubscriptionEnvelope, topicName string) (*Sub
 func newSubscriptionRuntimePropertiesItem(env *atom.SubscriptionEnvelope, topicName string) (*SubscriptionRuntimePropertiesItem, error) {
 	desc := env.Content.SubscriptionDescription
 
+	countDetails := desc.CountDetails
+
+	if countDetails == nil {
+		countDetails = &atom.CountDetails{}
+	}
+
 	rtp := SubscriptionRuntimeProperties{
 		TotalMessageCount:              *desc.MessageCount,
-		ActiveMessageCount:             *desc.CountDetails.ActiveMessageCount,
-		DeadLetterMessageCount:         *desc.CountDetails.DeadLetterMessageCount,
-		TransferMessageCount:           *desc.CountDetails.TransferMessageCount,
-		TransferDeadLetterMessageCount: *desc.CountDetails.TransferDeadLetterMessageCount,
+		ActiveMessageCount:             countDetails.ActiveMessageCount,
+		DeadLetterMessageCount:         countDetails.DeadLetterMessageCount,
+		TransferMessageCount:           countDetails.TransferMessageCount,
+		TransferDeadLetterMessageCount: countDetails.TransferDeadLetterMessageCount,
 	}
 
 	var err error

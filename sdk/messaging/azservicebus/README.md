@@ -116,7 +116,6 @@ Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sen
 Sending a single message:
 
 ```go
-// Send a single message
 err := sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world!"),
 }, nil)

@@ -1,19 +1,10 @@
-# Guide to migrate from `azure-service-bus-go` to `azservicebus` 0.3.0
+# Guide to migrate from `azure-service-bus-go` to `azservicebus`
 
 This guide is intended to assist in the migration from the pre-release `azure-service-bus-go` package to the latest beta releases (and eventual GA) of the `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus`.
 
 # Migration benefits
 
 The redesign of the Service Bus SDK offers better integration with Azure Identity, a simpler API surface that allows you to uniformly work with queues, topics, subscriptions and subqueues (for instance: dead letter queues).
-
-# Missing features
-
-NOTE: The `admin.Client`, which allows you to manage queues, topics and subscriptions is currently missing the following features:
-
-- Authorization rules
-- Topic filters/actions
-
-These will be added in the near-term.
 
 ## Simplified API surface
 
@@ -44,6 +35,9 @@ New (using `azservicebus`):
 
 client, err := azservicebus.NewClientFromConnectionString(connectionString, nil)
 ```
+
+You can also use `azidentity` credentials. See the [Azure Identity integration](#azure-identity-integration) section
+below.
 
 ### Sending messages
 
@@ -193,6 +187,8 @@ Azure Identity has been directly integrated into the `Client` via the `NewClient
 In `azservicebus`:
 
 ```go
+// import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
 credential, err := azidentity.NewDefaultAzureCredential(nil)
 client, err := azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 ```

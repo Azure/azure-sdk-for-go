@@ -17,7 +17,7 @@ import (
 )
 
 // Kind is the identifier of this type in a resume token.
-const kind = "Body"
+const kind = "body"
 
 // Applicable returns true if the LRO is using no headers, just provisioning state.
 // This is only applicable to PATCH and PUT methods and assumes no polling headers.

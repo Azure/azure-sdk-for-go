@@ -34,11 +34,10 @@ New (using `azservicebus`):
 // new code
 
 client, err := azservicebus.NewClientFromConnectionString(connectionString, nil)
-
-//  or, if you would like to use an `azidentity` credential:
-
-client, err := azservicebus.NewClient(serviceBusFQDN, azureIdentityCredential, nil)
 ```
+
+You can also use `azidentity` credentials. See the [Azure Identity integration](#azure-identity-integration) section
+below.
 
 ### Sending messages
 
@@ -188,6 +187,8 @@ Azure Identity has been directly integrated into the `Client` via the `NewClient
 In `azservicebus`:
 
 ```go
+// import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
 credential, err := azidentity.NewDefaultAzureCredential(nil)
 client, err := azservicebus.NewClient("<ex: myservicebus.servicebus.windows.net>", credential, nil)
 ```

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2022-05-09)
+## 1.0.0 (2022-05-10)
 
 ### Features Added
 * Added `temporal` package for handling of temporal resources.

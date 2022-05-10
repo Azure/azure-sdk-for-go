@@ -6,6 +6,8 @@
 
 package azblob
 
+import "golang.org/x/net/context"
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ServiceGetAccountInfoOptions provides set of options for ServiceClient.GetAccountInfo
@@ -54,8 +56,8 @@ func (o *ListContainersDetail) format() []ListContainersIncludeType {
 	return items
 }
 
-// ListContainersOptions provides set of configurations for ListContainers operation
-type ListContainersOptions struct {
+// ServiceListContainersOptions provides set of configurations for ListContainers operation
+type ServiceListContainersOptions struct {
 	Include ListContainersDetail
 
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
@@ -74,7 +76,7 @@ type ListContainersOptions struct {
 	Prefix *string
 }
 
-func (o *ListContainersOptions) format() *serviceClientListContainersSegmentOptions {
+func (o *ServiceListContainersOptions) format() *serviceClientListContainersSegmentOptions {
 	if o == nil {
 		return nil
 	}
@@ -87,13 +89,38 @@ func (o *ListContainersOptions) format() *serviceClientListContainersSegmentOpti
 	}
 }
 
-// ServiceListContainersSegmentPager provides operations for iterating over paged responses.
-type ServiceListContainersSegmentPager struct {
+// ServiceListContainersPager provides operations for iterating over paged responses.
+type ServiceListContainersPager struct {
 	serviceClientListContainersSegmentPager
 }
 
-func toServiceListContainersSegmentPager(resp serviceClientListContainersSegmentPager) *ServiceListContainersSegmentPager {
-	return &ServiceListContainersSegmentPager{resp}
+func toServiceListContainersSegmentPager(resp serviceClientListContainersSegmentPager) *ServiceListContainersPager {
+	return &ServiceListContainersPager{resp}
+}
+
+// Err returns the last error encountered while paging.
+func (p *ServiceListContainersPager) Err() error {
+	return p.serviceClientListContainersSegmentPager.Err()
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ServiceListContainersPager) NextPage(ctx context.Context) bool {
+	return p.serviceClientListContainersSegmentPager.NextPage(ctx)
+}
+
+// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
+func (p *ServiceListContainersPager) PageResponse() ServiceListContainersResponse {
+	return toServiceListContainersResponse(p.serviceClientListContainersSegmentPager.PageResponse())
+}
+
+// ServiceListContainersResponse contains the response from method pageBlobClientGetPageRangesDiffPager.PageResponse()
+type ServiceListContainersResponse struct {
+	serviceClientListContainersSegmentResponse
+}
+
+func toServiceListContainersResponse(resp serviceClientListContainersSegmentResponse) ServiceListContainersResponse {
+	return ServiceListContainersResponse{resp}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

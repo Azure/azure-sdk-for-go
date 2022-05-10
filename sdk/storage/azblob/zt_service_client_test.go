@@ -69,7 +69,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	}(containerClient, ctx, nil)
 	_require.Nil(err)
 	prefix := containerPrefix
-	listOptions := ListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+	listOptions := ServiceListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
 	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
@@ -128,7 +128,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	}(containerClient, ctx, nil)
 	_require.Nil(err)
 	prefix := containerPrefix
-	listOptions := ListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+	listOptions := ServiceListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
 	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
@@ -195,7 +195,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //
 //	// list for a first time
 //	prefix := containerPrefix + pagedContainersPrefix
-//	listOptions := ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
+//	listOptions := ServiceListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
 //	count := 0
 //	results := make([]ContainerItem, 0)
 //
@@ -268,7 +268,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////
 ////	illegalMaxResults := []int32{-2, 0}
 ////	for _, num := range illegalMaxResults {
-////		options := ListContainersOptions{MaxResults: &num}
+////		options := ServiceListContainersOptions{MaxResults: &num}
 ////
 ////		// getting the pager should still work
 ////		pager, err := svcClient.ListContainers(context.Background(), 100, time.Hour, &options)
@@ -289,7 +289,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////
 ////	prefix := containerPrefix + "abc"
 ////	maxResults := int32(2)
-////	options := ListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
+////	options := ServiceListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
 ////	pager, err := svcClient.ListContainers(&options)
 ////	_require.Nil(err)
 ////

@@ -1,5 +1,9 @@
 # Release History
 
+## 0.4.2 (2022-05-16)
+### Deprecated
+-
+
 ## 0.4.1 (2022-05-07)
 ### Deprecated
 - We’re retiring the Azure Video Analyzer preview service, you're advised to transition your applications off of Video Analyzer by 01 December 2022. This SDK is no longer maintained and won’t work after the service is retired.

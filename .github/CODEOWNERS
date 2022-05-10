@@ -6,7 +6,7 @@
 ################
 
 # Git Hub integration and bot rules
-/.github/                @AlexGhiondea @jsquire @jhendrixMSFT @rickwinter
+/.github/                    @jsquire @jhendrixMSFT @rickwinter
 
 #############
 # SDK (track2)

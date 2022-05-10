@@ -15,9 +15,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -473,49 +471,4 @@ func TestBackupSecret(t *testing.T) {
 		}
 		recording.Sleep(30 * time.Second)
 	}
-}
-
-func TestTimeout(t *testing.T) {
-	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-
-	client, err := NewClient(fakeKVUrl, cred, nil)
-	require.NoError(t, err)
-
-	c := context.Background()
-	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
-	defer cancelFunc()
-
-	start := time.Now()
-	_, err = client.GetSecret(c, "nonexistentsecret", nil)
-	require.Error(t, err)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Less(t, time.Since(start).Seconds(), 11.0)
-	require.Greater(t, time.Since(start).Seconds(), 9.0)
-}
-
-func TestLogging(t *testing.T) {
-	fakeKVUrl := "https://test-sync-time-dummy.vault.azure.net/"
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	require.NoError(t, err)
-
-	client, err := NewClient(fakeKVUrl, cred, nil)
-	require.NoError(t, err)
-
-	c := context.Background()
-	c, cancelFunc := context.WithTimeout(c, 10*time.Second)
-	defer cancelFunc()
-
-	log.SetListener(func(cls log.Event, msg string) {
-		fmt.Println(msg)
-	})
-	log.SetEvents(log.EventRequest, log.EventResponse)
-
-	start := time.Now()
-	_, err = client.GetSecret(c, "nonexistentsecret", nil)
-	require.Error(t, err)
-	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Less(t, time.Since(start).Seconds(), 11.0)
-	require.Greater(t, time.Since(start).Seconds(), 9.0)
 }

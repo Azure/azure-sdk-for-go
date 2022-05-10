@@ -24,7 +24,7 @@ type AccessToken struct {
 // TokenCredential represents a credential capable of providing an OAuth token.
 type TokenCredential interface {
 	// GetToken requests an access token for the specified set of scopes.
-	GetToken(ctx context.Context, options policy.TokenRequestOptions) (*AccessToken, error)
+	GetToken(ctx context.Context, options policy.TokenRequestOptions) (AccessToken, error)
 }
 
 // holds sentinel values used to send nulls

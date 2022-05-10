@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -22,15 +23,35 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azkeys/testdata"
+const (
+	fakeVaultURL = "https://fakekvurl.vault.azure.net"
+	fakeMHSMURL  = "https://fakekvurl.managedhsm.azure.net"
+)
 
-const fakeKvURL = "https://fakekvurl.vault.azure.net/"
-const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
-
-var enableHSM = true
+var (
+	enableHSM     bool
+	liveMHSMURL   string
+	liveVaultURL  string
+	pathToPackage = "sdk/keyvault/azkeys/testdata"
+)
 
 func TestMain(m *testing.M) {
-	// Initialize
+	liveVaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
+	liveMHSMURL = strings.TrimSuffix(os.Getenv("AZURE_MANAGEDHSM_URL"), "/")
+	enableHSM = liveMHSMURL != ""
+
+	if recording.GetRecordMode() != recording.LiveMode {
+		err := recording.ResetProxy(nil)
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			err := recording.ResetProxy(nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
 		err := recording.SetDefaultMatcher(nil, &recording.SetDefaultMatcherOptions{
@@ -40,48 +61,37 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	case recording.RecordingMode:
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if liveVaultURL == "" {
+			panic("no value for AZURE_KEYVAULT_URL")
+		}
+		err := recording.AddURISanitizer(fakeVaultURL, liveVaultURL, nil)
 		if err != nil {
 			panic(err)
 		}
 
-		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		err = recording.AddBodyKeySanitizer("$.recoveryId", fakeKvURL, vaultUrl, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		tenantID := os.Getenv("AZKEYS_TENANT_ID")
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", tenantID, nil)
-		if err != nil {
-			panic(err)
-		}
-
-		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
-		if !ok {
-			fmt.Println("Did not find managed HSM url, skipping those tests")
-			enableHSM = false
-		} else {
-			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
+		keyIDPaths := []string{"$.error.message", "$.key.kid", "$.recoveryId"}
+		for _, path := range keyIDPaths {
+			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, liveVaultURL, nil)
 			if err != nil {
 				panic(err)
 			}
+		}
 
-			err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
+		if enableHSM {
+			err = recording.AddURISanitizer(fakeMHSMURL, liveMHSMURL, nil)
 			if err != nil {
 				panic(err)
+			}
+			for _, path := range keyIDPaths {
+				err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, liveMHSMURL, nil)
+				if err != nil {
+					panic(err)
+				}
 			}
 		}
 	case recording.LiveMode:
-		_, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
-		if !ok {
-			fmt.Println("Did not find managed HSM url, skipping those tests")
-			enableHSM = false
+		if liveVaultURL == "" {
+			panic("no value for AZURE_KEYVAULT_URL")
 		}
 	}
 
@@ -97,19 +107,10 @@ func startTest(t *testing.T) func() {
 	}
 }
 
+// skipHSM skips live MHSM tests when AZURE_MANAGEDHSM_URL has no value
 func skipHSM(t *testing.T, testType string) {
-	if testType == HSMTEST && !enableHSM {
-		if recording.GetRecordMode() != recording.PlaybackMode {
-			t.Log("Skipping HSM Test")
-			t.Skip()
-		}
-	}
-}
-
-func alwaysSkipHSM(t *testing.T, testType string) {
-	if testType == HSMTEST {
-		t.Log("Skipping HSM Test")
-		t.Skip()
+	if recording.GetRecordMode() != recording.PlaybackMode && testType == HSMTEST && !enableHSM {
+		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
 }
 
@@ -128,9 +129,9 @@ func lookupEnvVar(s string) string {
 }
 
 func createClient(t *testing.T, testType string) (*Client, error) {
-	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
+	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
 	if testType == HSMTEST {
-		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
+		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
 	}
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
@@ -164,6 +165,10 @@ func delay() time.Duration {
 }
 
 func cleanUpKey(t *testing.T, client *Client, key string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
+	}
+
 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
 	if err != nil {
 		return
@@ -176,22 +181,16 @@ func cleanUpKey(t *testing.T, client *Client, key string) {
 	require.NoError(t, err)
 }
 
-type FakeCredential struct {
-	accountName string
-	accountKey  string
-}
+type FakeCredential struct{}
 
 func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
+	return &FakeCredential{}
 }
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
 		Token:     "faketoken",
-		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
+		ExpiresOn: time.Now().UTC().Add(time.Hour),
 	}, nil
 }
 

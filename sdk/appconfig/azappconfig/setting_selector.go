@@ -58,6 +58,7 @@ type SettingSelector struct {
 	Fields []SettingFields
 }
 
+// AllSettingFields returns a collection of all setting fields to use in SettingSelector.
 func AllSettingFields() []SettingFields {
 	return []SettingFields{
 		SettingFieldsKey,

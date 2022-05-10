@@ -5,6 +5,7 @@ package azservicebus_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -20,6 +21,9 @@ func ExampleClient_NewReceiverForSubscription() {
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForQueue() {
@@ -30,6 +34,9 @@ func ExampleClient_NewReceiverForQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
@@ -41,6 +48,9 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
@@ -53,6 +63,9 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 		},
 	)
 	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
+
+	// close the receiver when it's no longer needed
+	defer receiver.Close(context.TODO())
 }
 
 func ExampleReceiver_ReceiveMessages() {
@@ -80,6 +93,18 @@ func ExampleReceiver_ReceiveMessages() {
 		err = receiver.CompleteMessage(context.TODO(), message, nil)
 
 		if err != nil {
+			var sbErr *azservicebus.Error
+
+			if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
+				// The message lock has expired. This isn't fatal for the client, but it does mean
+				// that this message can be received by another Receiver (or potentially this one!).
+				fmt.Printf("Message lock expired\n")
+
+				// You can extend the message lock by calling receiver.RenewMessageLock(msg) before the
+				// message lock has expired.
+				continue
+			}
+
 			panic(err)
 		}
 

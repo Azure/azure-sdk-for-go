@@ -12,6 +12,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -86,17 +87,17 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range linkErrorCodes {
 			t.Run(code, func(t *testing.T) {
-				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
-				require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind, fmt.Sprintf("requires link recovery: %s", code))
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("requires link recovery: %s", code))
 			})
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
-			sbe := GetSBErrInfo(amqp.ErrLinkClosed)
-			require.EqualValues(t, RecoveryKindLink, sbe.RecoveryKind)
+			rk := GetRecoveryKind(amqp.ErrLinkClosed)
+			require.EqualValues(t, RecoveryKindLink, rk)
 
-			sbe = GetSBErrInfo(amqp.ErrSessionClosed)
-			require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind)
+			rk = GetRecoveryKind(amqp.ErrSessionClosed)
+			require.EqualValues(t, RecoveryKindConn, rk)
 		})
 	})
 
@@ -108,14 +109,14 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
-				require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind, fmt.Sprintf("requires connection recovery: %s", code))
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("requires connection recovery: %s", code))
 			})
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
-			sbe := GetSBErrInfo(amqp.ErrConnClosed)
-			require.EqualValues(t, RecoveryKindConn, sbe.RecoveryKind)
+			rk := GetRecoveryKind(amqp.ErrConnClosed)
+			require.EqualValues(t, RecoveryKindConn, rk)
 		})
 	})
 
@@ -128,8 +129,8 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
-				require.EqualValues(t, RecoveryKindFatal, sbe.RecoveryKind, fmt.Sprintf("cannot be recovered: %s", code))
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("cannot be recovered: %s", code))
 			})
 		}
 	})
@@ -143,8 +144,8 @@ func Test_recoveryKind(t *testing.T) {
 
 		for _, code := range codes {
 			t.Run(code, func(t *testing.T) {
-				sbe := GetSBErrInfo(&amqp.Error{Condition: amqp.ErrorCondition(code)})
-				require.EqualValues(t, RecoveryKindNone, sbe.RecoveryKind, fmt.Sprintf("no recovery needed: %s", code))
+				rk := GetRecoveryKind(&amqp.Error{Condition: amqp.ErrorCondition(code)})
+				require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("no recovery needed: %s", code))
 			})
 		}
 	})
@@ -161,7 +162,7 @@ func Test_IsNonRetriable(t *testing.T) {
 	}
 
 	for _, err := range errs {
-		require.EqualValues(t, RecoveryKindFatal, GetSBErrInfo(err).RecoveryKind)
+		require.EqualValues(t, RecoveryKindFatal, GetRecoveryKind(err))
 	}
 }
 
@@ -172,13 +173,13 @@ func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:operation-cancelled")},
 		errors.New("link is currently draining"), // not yet exposed from go-amqp
 		// simple timeouts from the mgmt link
-		rpcError{Resp: &RPCResponse{Code: 408}},
-		rpcError{Resp: &RPCResponse{Code: 503}},
-		rpcError{Resp: &RPCResponse{Code: 500}},
+		RPCError{Resp: &RPCResponse{Code: 408}},
+		RPCError{Resp: &RPCResponse{Code: 503}},
+		RPCError{Resp: &RPCResponse{Code: 500}},
 	}
 
 	for i, err := range tempErrors {
-		rk := GetSBErrInfo(err).RecoveryKind
+		rk := GetRecoveryKind(err)
 		require.EqualValues(t, RecoveryKindNone, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -197,12 +198,12 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	}
 
 	for i, err := range connErrors {
-		rk := GetSBErrInfo(err).RecoveryKind
+		rk := GetRecoveryKind(err)
 		require.EqualValues(t, RecoveryKindConn, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 
 	// unknown errors will just result in a connection recovery
-	rk := GetSBErrInfo(errors.New("Some unknown error")).RecoveryKind
+	rk := GetRecoveryKind(errors.New("Some unknown error"))
 	require.EqualValues(t, RecoveryKindConn, rk, "some unknown error")
 }
 
@@ -214,11 +215,11 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 		&amqp.Error{Condition: amqp.ErrorTransferLimitExceeded},
 		// this can happen when we're recovering the link - the client gets closed and the old link is still being
 		// used by this instance of the client. It needs to recover and attempt it again.
-		rpcError{Resp: &RPCResponse{Code: 401}},
+		RPCError{Resp: &RPCResponse{Code: 401}},
 	}
 
 	for i, err := range linkErrors {
-		rk := GetSBErrInfo(err).RecoveryKind
+		rk := GetRecoveryKind(err)
 		require.EqualValues(t, RecoveryKindLink, rk, fmt.Sprintf("[%d] %v", i, err))
 	}
 }
@@ -235,15 +236,53 @@ func Test_ServiceBusError_Fatal(t *testing.T) {
 	}
 
 	for i, cond := range fatalConditions {
-		rk := GetSBErrInfo(&amqp.Error{Condition: cond}).RecoveryKind
+		rk := GetRecoveryKind(&amqp.Error{Condition: cond})
 		require.EqualValues(t, RecoveryKindFatal, rk, fmt.Sprintf("[%d] %s", i, cond))
 	}
 
-	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}).RecoveryKind)
-	require.Equal(t, RecoveryKindFatal, GetSBErrInfo(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}).RecoveryKind)
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
 }
 
 func Test_IsLockLostError(t *testing.T) {
-	require.True(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
-	require.False(t, isLockLostError(rpcError{Resp: &RPCResponse{Code: http.StatusNotFound}}))
+	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+	require.True(t, isLockLostError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")}))
+
+	require.True(t, isLockLostError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}}))
+}
+
+func Test_TransformError(t *testing.T) {
+	var asExportedErr *exported.Error
+
+	err := TransformError(RPCError{Resp: &RPCResponse{Code: RPCResponseCodeLockLost}})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
+
+	// sanity check, an RPCError but it's not a azservicebus.Code type error.
+	err = TransformError(RPCError{Resp: &RPCResponse{Code: http.StatusNotFound}})
+	require.False(t, errors.As(err, &asExportedErr))
+
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorCondition("com.microsoft:message-lock-lost")})
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeLockLost, asExportedErr.Code)
+
+	// sanity check, an RPCError but it's not a azservicebus.Code type error.
+	err = TransformError(&amqp.Error{Condition: amqp.ErrorNotFound})
+	require.False(t, errors.As(err, &asExportedErr))
+
+	err = TransformError(amqp.ErrLinkClosed)
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
+
+	err = TransformError(amqp.ErrConnClosed)
+	require.ErrorAs(t, err, &asExportedErr)
+	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
+
+	// don't double wrap an already wrapped error
+	alreadyWrappedErr := &exported.Error{Code: exported.CodeConnectionLost}
+	err = TransformError(alreadyWrappedErr)
+	require.Equal(t, alreadyWrappedErr, err)
+
+	// and it's okay, for convenience, to pass a nil.
+	require.Nil(t, TransformError(nil))
 }

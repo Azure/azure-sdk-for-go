@@ -18,7 +18,7 @@ import (
 // getResponseFromError retrieves the response carried by
 // an AuthenticationFailedError or MSAL CallErr, if any
 func getResponseFromError(err error) *http.Response {
-	var a AuthenticationFailedError
+	var a *AuthenticationFailedError
 	var c msal.CallErr
 	var res *http.Response
 	if errors.As(err, &c) {
@@ -38,17 +38,17 @@ type AuthenticationFailedError struct {
 	message  string
 }
 
-func newAuthenticationFailedError(credType string, message string, resp *http.Response) AuthenticationFailedError {
-	return AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
+func newAuthenticationFailedError(credType string, message string, resp *http.Response) error {
+	return &AuthenticationFailedError{credType: credType, message: message, RawResponse: resp}
 }
 
-func newAuthenticationFailedErrorFromMSALError(credType string, err error) AuthenticationFailedError {
+func newAuthenticationFailedErrorFromMSALError(credType string, err error) error {
 	res := getResponseFromError(err)
 	return newAuthenticationFailedError(credType, err.Error(), res)
 }
 
 // Error implements the error interface. Note that the message contents are not contractual and can change over time.
-func (e AuthenticationFailedError) Error() string {
+func (e *AuthenticationFailedError) Error() string {
 	if e.RawResponse == nil {
 		return e.credType + ": " + e.message
 	}
@@ -76,7 +76,7 @@ func (e AuthenticationFailedError) Error() string {
 }
 
 // NonRetriable indicates the request which provoked this error shouldn't be retried.
-func (AuthenticationFailedError) NonRetriable() {
+func (*AuthenticationFailedError) NonRetriable() {
 	// marker method
 }
 
@@ -89,16 +89,16 @@ type credentialUnavailableError struct {
 	message  string
 }
 
-func newCredentialUnavailableError(credType, message string) credentialUnavailableError {
-	return credentialUnavailableError{credType: credType, message: message}
+func newCredentialUnavailableError(credType, message string) error {
+	return &credentialUnavailableError{credType: credType, message: message}
 }
 
-func (e credentialUnavailableError) Error() string {
+func (e *credentialUnavailableError) Error() string {
 	return e.credType + ": " + e.message
 }
 
 // NonRetriable indicates that this error should not be retried.
-func (e credentialUnavailableError) NonRetriable() {
+func (e *credentialUnavailableError) NonRetriable() {
 	// marker method
 }
 

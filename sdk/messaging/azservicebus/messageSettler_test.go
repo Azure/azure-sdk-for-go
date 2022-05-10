@@ -109,10 +109,10 @@ func TestMessageSettlementUsingReceiverWithReceiveAndDelete(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, messages)
 
-	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetSBErrInfo(receiver.AbandonMessage(ctx, messages[0], nil)).RecoveryKind)
-	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetSBErrInfo(receiver.CompleteMessage(ctx, messages[0], nil)).RecoveryKind)
-	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetSBErrInfo(receiver.DeferMessage(ctx, messages[0], nil)).RecoveryKind)
-	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetSBErrInfo(receiver.DeadLetterMessage(ctx, messages[0], nil)).RecoveryKind)
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.AbandonMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.CompleteMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.DeferMessage(ctx, messages[0], nil)))
+	require.EqualValues(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(receiver.DeadLetterMessage(ctx, messages[0], nil)))
 
 	require.EqualError(t, receiver.DeadLetterMessage(ctx, messages[0], nil), "messages that are received in `ReceiveModeReceiveAndDelete` mode are not settleable")
 }

@@ -82,6 +82,19 @@ type FakeAMQPReceiver struct {
 	}
 }
 
+type FakeRPCLink struct {
+	Resp  *RPCResponse
+	Error error
+}
+
+func (r *FakeRPCLink) Close(ctx context.Context) error {
+	return nil
+}
+
+func (r *FakeRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error) {
+	return r.Resp, r.Error
+}
+
 func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
 	r.RequestedCredits += credit
 

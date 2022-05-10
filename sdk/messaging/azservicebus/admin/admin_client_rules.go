@@ -405,15 +405,9 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 		ruleDesc.Name = putProps.Name
 	}
 
-	var mw []atom.MiddlewareFunc
-
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
@@ -421,7 +415,7 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 
 	var respEnv *atom.RuleEnvelope
 
-	httpResp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s/Rules/%s", topicName, subscriptionName, putProps.Name), putEnv, &respEnv, mw...)
+	httpResp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s/Rules/%s", topicName, subscriptionName, putProps.Name), putEnv, &respEnv, nil)
 
 	if err != nil {
 		return nil, nil, err

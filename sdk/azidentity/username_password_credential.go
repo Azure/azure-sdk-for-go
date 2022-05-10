@@ -55,22 +55,22 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if len(opts.Scopes) == 0 {
-		return nil, errors.New(credNameUserPassword + ": GetToken() requires at least one scope")
+		return azcore.AccessToken{}, errors.New(credNameUserPassword + ": GetToken() requires at least one scope")
 	}
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
 	if err == nil {
 		logGetTokenSuccess(c, opts)
-		return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 	}
 	ar, err = c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password)
 	if err != nil {
-		return nil, newAuthenticationFailedErrorFromMSALError(credNameUserPassword, err)
+		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameUserPassword, err)
 	}
 	c.account = ar.Account
 	logGetTokenSuccess(c, opts)
-	return &azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 
 var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

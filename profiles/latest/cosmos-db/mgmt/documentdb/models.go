@@ -277,6 +277,7 @@ const (
 type ServerVersion = original.ServerVersion
 
 const (
+	ServerVersionFourFullStopTwo  ServerVersion = original.ServerVersionFourFullStopTwo
 	ServerVersionFourFullStopZero ServerVersion = original.ServerVersionFourFullStopZero
 	ServerVersionThreeFullStopSix ServerVersion = original.ServerVersionThreeFullStopSix
 	ServerVersionThreeFullStopTwo ServerVersion = original.ServerVersionThreeFullStopTwo

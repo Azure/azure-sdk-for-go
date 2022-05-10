@@ -321,20 +321,14 @@ func (ac *Client) createOrUpdateTopicImpl(ctx context.Context, topicName string,
 
 	env := newTopicEnvelope(props, ac.em.TokenProvider())
 
-	var mw []atom.MiddlewareFunc
-
 	if !creating {
-		// an update requires the entity to already exist.
-		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
-			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-				req.Header.Set("If-Match", "*")
-				return next(ctx, req)
-			}
+		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+			"If-Match": []string{"*"},
 		})
 	}
 
 	var atomResp *atom.TopicEnvelope
-	resp, err := ac.em.Put(ctx, "/"+topicName, env, &atomResp, mw...)
+	resp, err := ac.em.Put(ctx, "/"+topicName, env, &atomResp, nil)
 
 	if err != nil {
 		return nil, nil, err

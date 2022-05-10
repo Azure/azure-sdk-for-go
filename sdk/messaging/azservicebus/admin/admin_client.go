@@ -28,8 +28,7 @@ type RetryOptions = exported.RetryOptions
 
 // ClientOptions allows you to set optional configuration for `Client`.
 type ClientOptions struct {
-	// RetryOptions controls how often operations are retried from this client.
-	RetryOptions *RetryOptions
+	azcore.ClientOptions
 }
 
 // NewClientFromConnectionString creates a Client authenticating using a connection string.
@@ -39,7 +38,13 @@ type ClientOptions struct {
 // Or it can be a connection string with a SharedAccessSignature:
 //   Endpoint=sb://<sb>.servicebus.windows.net;SharedAccessSignature=SharedAccessSignature sr=<sb>.servicebus.windows.net&sig=<base64-sig>&se=<expiry>&skn=<keyname>
 func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version)
+	var clientOptions *azcore.ClientOptions
+
+	if options != nil {
+		clientOptions = &options.ClientOptions
+	}
+
+	em, err := atom.NewEntityManagerWithConnectionString(connectionString, internal.Version, clientOptions)
 
 	if err != nil {
 		return nil, err
@@ -50,13 +55,13 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 
 // NewClient creates a Client authenticating using a TokenCredential.
 func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	var retryOptions exported.RetryOptions
+	var clientOptions *azcore.ClientOptions
 
-	if options != nil && options.RetryOptions != nil {
-		retryOptions = *options.RetryOptions
+	if options != nil {
+		clientOptions = &options.ClientOptions
 	}
 
-	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version, retryOptions)
+	em, err := atom.NewEntityManager(fullyQualifiedNamespace, tokenCredential, internal.Version, clientOptions)
 
 	if err != nil {
 		return nil, err

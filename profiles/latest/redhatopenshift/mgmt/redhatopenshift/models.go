@@ -12,52 +12,52 @@ package redhatopenshift
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift"
+	original "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2022-04-01/redhatopenshift"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type EncryptionAtHost = original.EncryptionAtHost
+
+const (
+	EncryptionAtHostDisabled EncryptionAtHost = original.EncryptionAtHostDisabled
+	EncryptionAtHostEnabled  EncryptionAtHost = original.EncryptionAtHostEnabled
+)
+
+type FipsValidatedModules = original.FipsValidatedModules
+
+const (
+	FipsValidatedModulesDisabled FipsValidatedModules = original.FipsValidatedModulesDisabled
+	FipsValidatedModulesEnabled  FipsValidatedModules = original.FipsValidatedModulesEnabled
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
-	AdminUpdating ProvisioningState = original.AdminUpdating
-	Creating      ProvisioningState = original.Creating
-	Deleting      ProvisioningState = original.Deleting
-	Failed        ProvisioningState = original.Failed
-	Succeeded     ProvisioningState = original.Succeeded
-	Updating      ProvisioningState = original.Updating
-)
-
-type VMSize = original.VMSize
-
-const (
-	StandardD2sV3 VMSize = original.StandardD2sV3
-	StandardD4sV3 VMSize = original.StandardD4sV3
-	StandardD8sV3 VMSize = original.StandardD8sV3
-)
-
-type VMSize1 = original.VMSize1
-
-const (
-	VMSize1StandardD2sV3 VMSize1 = original.VMSize1StandardD2sV3
-	VMSize1StandardD4sV3 VMSize1 = original.VMSize1StandardD4sV3
-	VMSize1StandardD8sV3 VMSize1 = original.VMSize1StandardD8sV3
+	ProvisioningStateAdminUpdating ProvisioningState = original.ProvisioningStateAdminUpdating
+	ProvisioningStateCreating      ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting      ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed        ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded     ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating      ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type Visibility = original.Visibility
 
 const (
-	Private Visibility = original.Private
-	Public  Visibility = original.Public
-)
-
-type Visibility1 = original.Visibility1
-
-const (
-	Visibility1Private Visibility1 = original.Visibility1Private
-	Visibility1Public  Visibility1 = original.Visibility1Public
+	VisibilityPrivate Visibility = original.VisibilityPrivate
+	VisibilityPublic  Visibility = original.VisibilityPublic
 )
 
 type APIServerProfile = original.APIServerProfile
@@ -72,6 +72,7 @@ type IngressProfile = original.IngressProfile
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
 type OpenShiftCluster = original.OpenShiftCluster
+type OpenShiftClusterAdminKubeconfig = original.OpenShiftClusterAdminKubeconfig
 type OpenShiftClusterCredentials = original.OpenShiftClusterCredentials
 type OpenShiftClusterList = original.OpenShiftClusterList
 type OpenShiftClusterListIterator = original.OpenShiftClusterListIterator
@@ -90,6 +91,7 @@ type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type ServicePrincipalProfile = original.ServicePrincipalProfile
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type WorkerProfile = original.WorkerProfile
 
@@ -123,17 +125,17 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleEncryptionAtHostValues() []EncryptionAtHost {
+	return original.PossibleEncryptionAtHostValues()
+}
+func PossibleFipsValidatedModulesValues() []FipsValidatedModules {
+	return original.PossibleFipsValidatedModulesValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
-}
-func PossibleVMSize1Values() []VMSize1 {
-	return original.PossibleVMSize1Values()
-}
-func PossibleVMSizeValues() []VMSize {
-	return original.PossibleVMSizeValues()
-}
-func PossibleVisibility1Values() []Visibility1 {
-	return original.PossibleVisibility1Values()
 }
 func PossibleVisibilityValues() []Visibility {
 	return original.PossibleVisibilityValues()

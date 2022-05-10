@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 	"github.com/stretchr/testify/require"
 )
 
@@ -378,12 +379,6 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
 	subscriptionName := fmt.Sprintf("sub-%X", time.Now().UnixNano())
-	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
-
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
-	require.NoError(t, err)
-
-	defer deleteQueue(t, adminClient, forwardToQueueName)
 
 	status := EntityStatusActive
 
@@ -453,11 +448,9 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 			EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
 			MaxDeliveryCount:                                to.Ptr(int32(11)),
 			Status:                                          &status,
-			// ForwardTo:                     &forwardToQueueName,
-			// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
-			EnableBatchedOperations: to.Ptr(false),
-			AutoDeleteOnIdle:        to.Ptr("PT11M"),
-			UserMetadata:            to.Ptr("user metadata"),
+			EnableBatchedOperations:                         to.Ptr(false),
+			AutoDeleteOnIdle:                                to.Ptr("PT11M"),
+			UserMetadata:                                    to.Ptr("user metadata"),
 		},
 	})
 	require.NoError(t, err)
@@ -472,12 +465,63 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		EnableDeadLetteringOnFilterEvaluationExceptions: to.Ptr(false),
 		MaxDeliveryCount:                                to.Ptr(int32(11)),
 		Status:                                          &status,
-		// ForwardTo:                     &forwardToQueueName,
-		// ForwardDeadLetteredMessagesTo: &forwardToQueueName,
-		EnableBatchedOperations: to.Ptr(false),
-		AutoDeleteOnIdle:        to.Ptr("PT11M"),
-		UserMetadata:            to.Ptr("user metadata"),
+		EnableBatchedOperations:                         to.Ptr(false),
+		AutoDeleteOnIdle:                                to.Ptr("PT11M"),
+		UserMetadata:                                    to.Ptr("user metadata"),
 	}, addSubWithPropsResp.SubscriptionProperties)
+}
+
+func TestAdminClient_Forwarding(t *testing.T) {
+	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+	require.NoError(t, err)
+
+	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
+	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
+	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
+
+	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName, nil)
+	require.NoError(t, err)
+
+	defer deleteQueue(t, adminClient, forwardToQueueName)
+
+	_, err = adminClient.CreateTopic(context.Background(), topicName, nil)
+	require.NoError(t, err)
+
+	defer deleteTopic(t, adminClient, topicName)
+
+	parsed, err := conn.ParsedConnectionFromStr(test.GetConnectionString(t))
+	require.NoError(t, err)
+	forwardToName := to.Ptr(fmt.Sprintf("sb://%s/%s", parsed.Namespace, forwardToQueueName))
+
+	_, err = adminClient.CreateSubscription(context.Background(), topicName, "sub1", &CreateSubscriptionOptions{
+		Properties: &SubscriptionProperties{
+			ForwardTo:                     forwardToName,
+			ForwardDeadLetteredMessagesTo: forwardToName,
+		},
+	})
+	require.NoError(t, err)
+
+	sub, err := adminClient.GetSubscription(context.Background(), topicName, "sub1", nil)
+	require.NoError(t, err)
+
+	require.Equal(t, forwardToName, sub.ForwardTo)
+	require.Equal(t, forwardToName, sub.ForwardDeadLetteredMessagesTo)
+
+	_, err = adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+		Properties: &QueueProperties{
+			ForwardTo:                     forwardToName,
+			ForwardDeadLetteredMessagesTo: forwardToName,
+		},
+	})
+	require.NoError(t, err)
+
+	_, err = adminClient.GetQueue(context.Background(), queueName, nil)
+	require.NoError(t, err)
+
+	defer deleteQueue(t, adminClient, queueName)
+
+	require.Equal(t, forwardToName, sub.ForwardTo)
+	require.Equal(t, forwardToName, sub.ForwardDeadLetteredMessagesTo)
 }
 
 func TestAdminClient_UpdateTopic(t *testing.T) {
@@ -1260,8 +1304,8 @@ type emwrap struct {
 	inner atom.EntityManager
 }
 
-func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
-	resp, err := em.inner.Put(ctx, entityPath, body, respObj, mw...)
+func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, options *atom.ExecuteOptions) (*http.Response, error) {
+	resp, err := em.inner.Put(ctx, entityPath, body, respObj, options)
 
 	if err != nil {
 		return resp, err
@@ -1271,13 +1315,13 @@ func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, 
 	return resp, err
 }
 
-func (em *emwrap) Delete(ctx context.Context, entityPath string, mw ...atom.MiddlewareFunc) (*http.Response, error) {
-	return em.inner.Delete(ctx, entityPath, mw...)
+func (em *emwrap) Delete(ctx context.Context, entityPath string) (*http.Response, error) {
+	return em.inner.Delete(ctx, entityPath)
 }
 func (em *emwrap) TokenProvider() auth.TokenProvider { return em.inner.TokenProvider() }
 
-func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
-	resp, err := em.inner.Get(ctx, entityPath, respObj, mw...)
+func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+	resp, err := em.inner.Get(ctx, entityPath, respObj)
 
 	if err != nil {
 		return resp, err
@@ -1403,7 +1447,7 @@ type entityManagerForPagerTests struct {
 	getPaths []string
 }
 
-func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}, mw ...atom.MiddlewareFunc) (*http.Response, error) {
+func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
 	em.getPaths = append(em.getPaths, entityPath)
 
 	switch feedPtrPtr := respObj.(type) {

@@ -9,8 +9,18 @@
   are not guaranteed to be stable. (#17596)
 - `admin.Client` can now manage authorization rules and subscription filters and 
   actions. (#17616)
+- Exported an official `*azservicebus.Error` type that gets returned if the failure is
+  actionable. This can indicate if the connection was lost and could not be
+  recovered with the configured retries or if a message lock was lost, which would cause
+  message settlement to fail. 
+
+  See the `ExampleReceiver_ReceiveMessages` in example_receiver_test.go for an example 
+  on how to use it. (#17786)
 
 ### Breaking Changes
+
+- `admin.Client` can now be configured using `azcore.Options`. (#17796)
+- `ReceivedMessage.TransactionPartitionKey` has been removed as this library doesn't support transactions.
 
 ### Bugs Fixed
 

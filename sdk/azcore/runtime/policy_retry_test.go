@@ -23,6 +23,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func testRetryOptions() *policy.RetryOptions {
@@ -602,6 +603,74 @@ func TestRetryPolicySuccessWithPerTryTimeout(t *testing.T) {
 	if !body.closed {
 		t.Fatal("request body wasn't closed")
 	}
+}
+
+func TestRetryPolicySuccessWithPerTryTimeoutNoRetry(t *testing.T) {
+	// ensure that the size of the payload is larger than the read buffer
+	// on the underlying transport (defaults to 4KB).  this will ensure
+	// that the writes will hit the network again so the bug will repro.
+	const bodySize = 1024 * 8
+	largeBody := make([]byte, bodySize)
+	for i := 0; i < bodySize; i++ {
+		largeBody[i] = byte(i % 256)
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(largeBody))
+	opt := testRetryOptions()
+	opt.TryTimeout = 10 * time.Second
+	pl := exported.NewPipeline(srv, NewRetryPolicy(opt))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NoError(t, resp.Body.Close())
+	require.Equal(t, largeBody, body)
+}
+
+func TestRetryPolicySuccessWithPerTryTimeoutNoRetryWithBodyDownload(t *testing.T) {
+	// ensure that the size of the payload is larger than the read buffer
+	// on the underlying transport (defaults to 4KB).  this will ensure
+	// that the writes will hit the network again so the bug will repro.
+	const bodySize = 1024 * 8
+	largeBody := make([]byte, bodySize)
+	for i := 0; i < bodySize; i++ {
+		largeBody[i] = byte(i % 256)
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody(largeBody))
+	opt := testRetryOptions()
+	opt.TryTimeout = 10 * time.Second
+	pl := exported.NewPipeline(srv, NewRetryPolicy(opt), policyFunc(bodyDownloadPolicy))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NoError(t, resp.Body.Close())
+	require.Equal(t, largeBody, body)
 }
 
 func newRewindTrackingBody(s string) *rewindTrackingBody {

@@ -116,7 +116,6 @@ Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sen
 Sending a single message:
 
 ```go
-// Send a single message
 err := sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world!"),
 }, nil)
@@ -127,8 +126,6 @@ err := sender.SendMessage(context.TODO(), &azservicebus.Message{
 You can also send messages in batches, which can be more efficient than sending them individually
 
 ```go
-// Sending multiple messages at a time using a MessageBatch
-
 // Create a message batch. It will automatically be sized for the Service Bus
 // Namespace's maximum message size.
 currentMessageBatch, err := sender.NewMessageBatch(context.TODO(), nil)

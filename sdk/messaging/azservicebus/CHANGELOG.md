@@ -26,6 +26,7 @@
 
 - Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
   couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
+- Fixing issue where an entity can return without runtime properties, causing a panic. (#)
 
 ### Other Changes
 

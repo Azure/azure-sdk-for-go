@@ -66,12 +66,12 @@ type Receiver struct {
 type ReceiverOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//
-	// `azservicebus.ReceiveModePeekLock` is the default. The message is locked, preventing multiple
+	// ReceiveModePeekLock is the default. The message is locked, preventing multiple
 	// receivers from processing the message at once. You control the lock state of the message
 	// using one of the message settlement functions like Receiver.CompleteMessage(), which removes
 	// it from Service Bus, or Receiver.AbandonMessage(), which makes it available again.
 	//
-	// `azservicebus.ReceiveModeReceiveAndDelete` causes Service Bus to remove the message as soon
+	// ReceiveModeReceiveAndDelete causes Service Bus to remove the message as soon
 	// as it's received.
 	//
 	// More information about receive modes:
@@ -173,7 +173,7 @@ type ReceiveMessagesOptions struct {
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
-// This function will block until at least one message is received or if the ctx is cancelled.
+// This function will block until at least one message is received or until the ctx is cancelled.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()

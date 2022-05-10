@@ -66,12 +66,12 @@ type Receiver struct {
 type ReceiverOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//
-	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+	// `azservicebus.ReceiveModePeekLock` is the default. The message is locked, preventing multiple
 	// receivers from processing the message at once. You control the lock state of the message
 	// using one of the message settlement functions like Receiver.CompleteMessage(), which removes
 	// it from Service Bus, or Receiver.AbandonMessage(), which makes it available again.
 	//
-	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+	// `azservicebus.ReceiveModeReceiveAndDelete` causes Service Bus to remove the message as soon
 	// as it's received.
 	//
 	// More information about receive modes:

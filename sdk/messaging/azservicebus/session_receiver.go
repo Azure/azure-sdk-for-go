@@ -120,10 +120,7 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 }
 
 // ReceiveMessages receives a fixed number of messages, up to maxMessages.
-// There are two ways to stop receiving messages:
-// 1. Cancelling the `ctx` parameter.
-// 2. An implicit timeout (default: 1 second) that starts after the first
-//    message has been received.
+// This function will block until at least one message is received or if the ctx is cancelled.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	return r.inner.ReceiveMessages(ctx, maxMessages, options)

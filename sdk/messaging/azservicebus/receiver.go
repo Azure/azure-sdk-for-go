@@ -173,10 +173,7 @@ type ReceiveMessagesOptions struct {
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
-// There are two ways to stop receiving messages:
-// 1. Cancelling the `ctx` parameter.
-// 2. An implicit timeout (default: 1 second) that starts after the first
-//    message has been received.
+// This function will block until at least one message is received or if the ctx is cancelled.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()

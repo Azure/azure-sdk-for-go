@@ -32,6 +32,7 @@
   * The internal poller types had their methods updated to conform to the `runtime.PollingHandler` interface.
   * The creation of resume tokens has been refactored so that implementers of `runtime.PollingHandler` don't need to know about it.
 * `NewPipeline()` places policies from `ClientOptions` after policies from `PipelineOptions`
+* Default User-Agent headers no longer include `azcore` version information
 
 ## 0.23.1 (2022-04-14)
 

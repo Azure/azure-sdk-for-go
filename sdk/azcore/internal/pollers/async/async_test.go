@@ -56,8 +56,6 @@ func TestCanResume(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
-
 	poller, err := New[struct{}](exported.Pipeline{}, nil, "")
 	require.NoError(t, err)
 	require.Empty(t, poller.CurState)
@@ -66,20 +64,20 @@ func TestNew(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, poller)
 
-	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, "this is an invalid polling URL")
 	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
 	require.Error(t, err)
 	require.Nil(t, poller)
 
-	resp = initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, fakeResourceURL)
 	poller, err = New[struct{}](exported.Pipeline{}, resp, "")
 	require.NoError(t, err)
 	require.Equal(t, fakePollingURL, poller.AsyncURL)
 	require.Equal(t, fakeResourceURL, poller.LocURL)
-	require.Equal(t, "Started", poller.CurState)
+	require.Equal(t, pollers.StatusInProgress, poller.CurState)
 	require.False(t, poller.Done())
 }
 
@@ -109,7 +107,7 @@ func TestFinalGetLocation(t *testing.T) {
 	const (
 		locURL = "https://foo.bar.baz/location"
 	)
-	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	resp.Header.Set(shared.HeaderLocation, locURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
@@ -140,7 +138,7 @@ func TestFinalGetLocation(t *testing.T) {
 }
 
 func TestFinalGetOrigin(t *testing.T) {
-	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		if surl := req.URL.String(); surl == fakePollingURL {
@@ -170,7 +168,7 @@ func TestFinalGetOrigin(t *testing.T) {
 }
 
 func TestNoFinalGet(t *testing.T) {
-	resp := initialResponse(http.MethodPost, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPost, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
@@ -191,7 +189,7 @@ func TestNoFinalGet(t *testing.T) {
 }
 
 func TestPatchNoFinalGet(t *testing.T) {
-	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
@@ -212,7 +210,7 @@ func TestPatchNoFinalGet(t *testing.T) {
 }
 
 func TestPollFailed(t *testing.T) {
-	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
@@ -235,7 +233,7 @@ func TestPollFailed(t *testing.T) {
 }
 
 func TestPollFailedError(t *testing.T) {
-	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
+	resp := initialResponse(http.MethodPatch, http.NoBody)
 	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return nil, errors.New("failed")

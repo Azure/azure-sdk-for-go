@@ -60,6 +60,9 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 		scheduledEnqueueTime := time.Now().Add(3 * time.Hour)
 
 		amqpMessage := &amqp.Message{
+			Data: [][]byte{
+				[]byte("hello"),
+			},
 			Annotations: map[interface{}]interface{}{
 				"x-opt-locked-until":            lockedUntil,
 				"x-opt-sequence-number":         int64(101),
@@ -72,6 +75,7 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 
 		receivedMessage := newReceivedMessage(amqpMessage)
 
+		require.Equal(t, []byte("hello"), receivedMessage.Body)
 		require.EqualValues(t, lockedUntil, *receivedMessage.LockedUntil)
 		require.EqualValues(t, int64(101), *receivedMessage.SequenceNumber)
 		require.EqualValues(t, "partitionKey1", *receivedMessage.PartitionKey)
@@ -186,4 +190,29 @@ func TestMessageState(t *testing.T) {
 		})
 		require.EqualValues(t, MessageStateActive, m.State)
 	})
+}
+
+func TestMessageWithIncorrectBody(t *testing.T) {
+	// these are cases where the simple ReceivedMessage can't represent the AMQP message's
+	// payload.
+	message := newReceivedMessage(&amqp.Message{})
+	require.Nil(t, message.Body)
+
+	message = newReceivedMessage(&amqp.Message{
+		Value: "hello",
+	})
+	require.Nil(t, message.Body)
+
+	message = newReceivedMessage(&amqp.Message{
+		Sequence: [][]any{},
+	})
+	require.Nil(t, message.Body)
+
+	message = newReceivedMessage(&amqp.Message{
+		Data: [][]byte{
+			[]byte("hello"),
+			[]byte("world"),
+		},
+	})
+	require.Nil(t, message.Body)
 }

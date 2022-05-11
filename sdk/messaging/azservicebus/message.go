@@ -314,7 +314,7 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 		State:          MessageStateActive,
 	}
 
-	if msg.rawAMQPMessage.Data != nil && len(msg.rawAMQPMessage.Data) == 1 {
+	if len(msg.rawAMQPMessage.Data) == 1 {
 		msg.Body = msg.rawAMQPMessage.Data[0]
 	}
 

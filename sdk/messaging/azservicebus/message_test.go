@@ -143,9 +143,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 	require.EqualValues(t, msg.To, amqpMsg.Properties.To, "to")
 	require.EqualValues(t, MessageStateActive, msg.State)
 
-	body, err := msg.Body()
-	require.NoError(t, err)
-	require.EqualValues(t, body, amqpMsg.Data[0], "data")
+	require.EqualValues(t, msg.Body, amqpMsg.Data[0], "data")
 
 	expectedAMQPEncodedLockTokenGUID := [16]byte{187, 49, 89, 205, 253, 254, 205, 77, 162, 38, 172, 76, 45, 235, 91, 225}
 

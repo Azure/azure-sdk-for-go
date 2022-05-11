@@ -120,9 +120,7 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 
-	bytes, err := messages[0].Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "hello world", string(bytes))
+	require.EqualValues(t, "hello world", string(messages[0].Body))
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
@@ -154,9 +152,7 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.NoError(t, err)
 
-	bytes, err := messages[0].Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "hello world", string(bytes))
+	require.EqualValues(t, "hello world", string(messages[0].Body))
 }
 
 const fastNotFoundDuration = 10 * time.Second

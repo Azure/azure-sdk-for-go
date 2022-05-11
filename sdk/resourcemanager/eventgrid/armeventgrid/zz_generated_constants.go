@@ -10,7 +10,7 @@ package armeventgrid
 
 const (
 	moduleName    = "armeventgrid"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.5.1"
 )
 
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.

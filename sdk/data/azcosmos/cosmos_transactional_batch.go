@@ -27,26 +27,26 @@ func (b *TransactionalBatch) CreateItem(item []byte, o *TransactionalBatchItemOp
 }
 
 // DeleteItem adds a delete operation to the batch.
-func (b *TransactionalBatch) DeleteItem(itemId string, o *TransactionalBatchItemOptions) {
+func (b *TransactionalBatch) DeleteItem(itemID string, o *TransactionalBatchItemOptions) {
 	if o == nil {
 		o = &TransactionalBatchItemOptions{}
 	}
 	b.operations = append(b.operations,
 		batchOperationDelete{
 			operationType: "Delete",
-			id:            itemId,
+			id:            itemID,
 			ifMatch:       o.IfMatchETag})
 }
 
 // ReplaceItem adds a replace operation to the batch.
-func (b *TransactionalBatch) ReplaceItem(itemId string, item []byte, o *TransactionalBatchItemOptions) {
+func (b *TransactionalBatch) ReplaceItem(itemID string, item []byte, o *TransactionalBatchItemOptions) {
 	if o == nil {
 		o = &TransactionalBatchItemOptions{}
 	}
 	b.operations = append(b.operations,
 		batchOperationReplace{
 			operationType: "Replace",
-			id:            itemId,
+			id:            itemID,
 			resourceBody:  item,
 			ifMatch:       o.IfMatchETag})
 }
@@ -64,11 +64,11 @@ func (b *TransactionalBatch) UpsertItem(item []byte, o *TransactionalBatchItemOp
 }
 
 // ReadItem adds a read operation to the batch.
-func (b *TransactionalBatch) ReadItem(itemId string, o *TransactionalBatchItemOptions) {
+func (b *TransactionalBatch) ReadItem(itemID string, o *TransactionalBatchItemOptions) {
 	b.operations = append(b.operations,
 		batchOperationRead{
 			operationType: "Read",
-			id:            itemId})
+			id:            itemID})
 }
 
 type batchOperation interface {

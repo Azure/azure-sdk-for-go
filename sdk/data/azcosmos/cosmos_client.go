@@ -238,6 +238,26 @@ func (c *Client) sendDeleteRequest(
 	return c.executeAndEnsureSuccessResponse(req)
 }
 
+func (c *Client) sendBatchRequest(
+	ctx context.Context,
+	path string,
+	batch []batchOperation,
+	operationContext pipelineRequestOptions,
+	requestOptions cosmosRequestOptions,
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
+	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.attachContent(batch, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return c.executeAndEnsureSuccessResponse(req)
+}
+
 func (c *Client) createRequest(
 	path string,
 	ctx context.Context,
@@ -288,7 +308,6 @@ func (c *Client) attachContent(content interface{}, req *policy.Request) error {
 	default:
 		// Otherwise, we need to marshal it
 		err = azruntime.MarshalAsJSON(req, content)
-
 	}
 
 	if err != nil {

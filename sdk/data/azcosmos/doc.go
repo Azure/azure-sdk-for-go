@@ -49,6 +49,7 @@ The following sections provide several code snippets covering some of the most c
 	- Creating a container
 	- Creating, reading, and deleting items
 	- Querying items
+	- Using Transactional Batch
 
 
 Creating a database
@@ -133,6 +134,49 @@ Querying items
 		for _, item := range queryResponse.Items {
 			var itemResponseBody map[string]interface{}
 			json.Unmarshal(item, &itemResponseBody)
+		}
+	}
+
+Using Transactional batch
+
+	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
+	batch := container.NewTransactionalBatch(pk)
+
+	item := map[string]string{
+		"id":    "1",
+		"myPartitionKeyProperty": "myPartitionKeyValue",
+		"otherValue": 10
+	}
+	marshalled, err := json.Marshal(item)
+	handle(err)
+
+	batch.CreateItem(marshalled, nil)
+	batch.ReadItem("otherExistingId", nil)
+	batch.DeleteItem("yetAnotherExistingId", nil)
+
+	batchResponse, err  := container.ExecuteTransactionalBatch(context, batch, nil)
+	handle(err)
+
+	if batchResponse.Success {
+		// Transaction succeeded
+		// We can inspect the individual operation results
+		for index, operation := range batchResponse.OperationResults {
+			fmt.Printf("Operation %v completed with status code %v consumed %v RU", index, operation.StatusCode, operation.RequestCharge)
+			if index == 1 {
+				// Read operation would have body available
+				var itemResponseBody map[string]string
+				err = json.Unmarshal(operation.ResourceBody, &itemResponseBody)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	} else {
+		// Transaction failed, look for the offending operation
+		for index, operation := range batchResponse.OperationResults {
+			if operation.StatusCode != http.StatusFailedDependency {
+				fmt.Printf("Transaction failed due to operation %v which failed with status code %v", index, operation.StatusCode)
+			}
 		}
 	}
 */

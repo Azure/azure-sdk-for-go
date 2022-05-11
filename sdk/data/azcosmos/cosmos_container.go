@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -454,6 +455,66 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 			return newQueryResponse(azResponse)
 		},
 	})
+}
+
+// NewTransactionalBatch creates a batch of operations to be committed as a single unit.
+// See https://docs.microsoft.com/azure/cosmos-db/sql/transactional-batch
+func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) TransactionalBatch {
+	return TransactionalBatch{partitionKey: partitionKey}
+}
+
+// ExecuteTransactionalBatch executes a transactional batch.
+// Once executed, verify the Success property of the response to determine if the batch was committed
+func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b TransactionalBatch, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
+	if len(b.operations) == 0 {
+		return TransactionalBatchResponse{}, errors.New("no operations in batch")
+	}
+
+	h := headerOptionsOverride{
+		partitionKey: &b.partitionKey,
+	}
+
+	if o == nil {
+		o = &TransactionalBatchOptions{}
+	} else {
+		h.enableContentResponseOnWrite = &o.EnableContentResponseOnWrite
+	}
+
+	// If contentResponseOnWrite is not enabled at the client level the
+	// service will not even send a batch response payload
+	// Instead we should automatically enforce contentResponseOnWrite for all
+	// batch requests whenever at least one of the item operations requires a content response (read operation)
+	enableContentResponseOnWriteForReadOperations := true
+	for _, op := range b.operations {
+		if op.getOperationType() == operationTypeRead {
+			h.enableContentResponseOnWrite = &enableContentResponseOnWriteForReadOperations
+			break
+		}
+	}
+
+	operationContext := pipelineRequestOptions{
+		resourceType:          resourceTypeDocument,
+		resourceAddress:       c.link,
+		isWriteOperation:      true,
+		headerOptionsOverride: &h}
+
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		return TransactionalBatchResponse{}, err
+	}
+
+	azResponse, err := c.database.client.sendBatchRequest(
+		ctx,
+		path,
+		b.operations,
+		operationContext,
+		o,
+		nil)
+	if err != nil {
+		return TransactionalBatchResponse{}, err
+	}
+
+	return newTransactionalBatchResponse(azResponse)
 }
 
 func (c *ContainerClient) getRID(ctx context.Context) (string, error) {

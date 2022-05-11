@@ -8,7 +8,7 @@ This client library enables client applications to connect to Azure Cosmos via t
 
 ### Prerequisites
 
-* Go versions 1.16 or higher
+* Go versions 1.18 or higher
 * An Azure subscription or free Azure Cosmos DB trial account
 
 Note: If you don't have an Azure subscription, create a free account before you begin.

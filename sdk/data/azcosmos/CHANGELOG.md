@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added Transactional Batch support
+
 ### Breaking Changes
 
 ### Bugs Fixed

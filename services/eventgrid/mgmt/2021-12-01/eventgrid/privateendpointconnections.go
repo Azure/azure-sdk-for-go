@@ -37,7 +37,7 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 // parentType - the type of the parent resource. This can be either \'topics\' or \'domains\'.
 // parentName - the name of the parent resource (namely, either, the topic name or domain name).
 // privateEndpointConnectionName - the name of the private endpoint connection connection.
-func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result PrivateEndpointConnectionsDeleteFuture, err error) {
+func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (result PrivateEndpointConnectionsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Delete")
 		defer func() {
@@ -64,7 +64,7 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentName":                    autorest.Encode("path", parentName),
 		"parentType":                    autorest.Encode("path", parentType),
@@ -119,7 +119,7 @@ func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Respon
 // parentType - the type of the parent resource. This can be either \'topics\' or \'domains\'.
 // parentName - the name of the parent resource (namely, either, the topic name or domain name).
 // privateEndpointConnectionName - the name of the private endpoint connection connection.
-func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result PrivateEndpointConnection, err error) {
+func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (result PrivateEndpointConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Get")
 		defer func() {
@@ -153,7 +153,7 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 }
 
 // GetPreparer prepares the Get request.
-func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentName":                    autorest.Encode("path", parentName),
 		"parentType":                    autorest.Encode("path", parentType),
@@ -206,7 +206,7 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
 // 100. If not specified, the default number of results to be returned is 20 items per page.
-func (client PrivateEndpointConnectionsClient) ListByResource(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result PrivateEndpointConnectionListResultPage, err error) {
+func (client PrivateEndpointConnectionsClient) ListByResource(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, filter string, top *int32) (result PrivateEndpointConnectionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.ListByResource")
 		defer func() {
@@ -245,7 +245,7 @@ func (client PrivateEndpointConnectionsClient) ListByResource(ctx context.Contex
 }
 
 // ListByResourcePreparer prepares the ListByResource request.
-func (client PrivateEndpointConnectionsClient) ListByResourcePreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) ListByResourcePreparer(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentName":        autorest.Encode("path", parentName),
 		"parentType":        autorest.Encode("path", parentType),
@@ -312,7 +312,7 @@ func (client PrivateEndpointConnectionsClient) listByResourceNextResults(ctx con
 }
 
 // ListByResourceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PrivateEndpointConnectionsClient) ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result PrivateEndpointConnectionListResultIterator, err error) {
+func (client PrivateEndpointConnectionsClient) ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, filter string, top *int32) (result PrivateEndpointConnectionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.ListByResource")
 		defer func() {
@@ -334,7 +334,7 @@ func (client PrivateEndpointConnectionsClient) ListByResourceComplete(ctx contex
 // parentName - the name of the parent resource (namely, either, the topic name or domain name).
 // privateEndpointConnectionName - the name of the private endpoint connection connection.
 // privateEndpointConnection - the private endpoint connection object to update.
-func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (result PrivateEndpointConnectionsUpdateFuture, err error) {
+func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (result PrivateEndpointConnectionsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Update")
 		defer func() {
@@ -361,7 +361,7 @@ func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PrivateEndpointConnectionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentName":                    autorest.Encode("path", parentName),
 		"parentType":                    autorest.Encode("path", parentType),

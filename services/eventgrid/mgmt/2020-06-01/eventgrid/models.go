@@ -516,6 +516,8 @@ type Domain struct {
 	autorest.Response `json:"-"`
 	// DomainProperties - Properties of the domain.
 	*DomainProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -560,6 +562,15 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.DomainProperties = &domainProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				d.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -614,7 +625,7 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 
 // DomainProperties properties of the Domain.
 type DomainProperties struct {
-	// PrivateEndpointConnections - List of private endpoint connections.
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the domain. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
 	ProvisioningState DomainProvisioningState `json:"provisioningState,omitempty"`
@@ -636,9 +647,6 @@ type DomainProperties struct {
 // MarshalJSON is the custom marshaler for DomainProperties.
 func (dp DomainProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dp.PrivateEndpointConnections != nil {
-		objectMap["privateEndpointConnections"] = dp.PrivateEndpointConnections
-	}
 	if dp.InputSchema != "" {
 		objectMap["inputSchema"] = dp.InputSchema
 	}
@@ -1038,8 +1046,10 @@ func (future *DomainsUpdateFuture) result(client DomainsClient) (d Domain, err e
 // DomainTopic domain Topic.
 type DomainTopic struct {
 	autorest.Response `json:"-"`
-	// DomainTopicProperties - Properties of the Domain Topic.
+	// DomainTopicProperties - READ-ONLY; Properties of the Domain Topic.
 	*DomainTopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the resource.
@@ -1051,9 +1061,6 @@ type DomainTopic struct {
 // MarshalJSON is the custom marshaler for DomainTopic.
 func (dt DomainTopic) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dt.DomainTopicProperties != nil {
-		objectMap["properties"] = dt.DomainTopicProperties
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1074,6 +1081,15 @@ func (dt *DomainTopic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dt.DomainTopicProperties = &domainTopicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				dt.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1110,8 +1126,14 @@ func (dt *DomainTopic) UnmarshalJSON(body []byte) error {
 
 // DomainTopicProperties properties of the Domain Topic.
 type DomainTopicProperties struct {
-	// ProvisioningState - Provisioning state of the domain topic. Possible values include: 'DomainTopicProvisioningStateCreating', 'DomainTopicProvisioningStateUpdating', 'DomainTopicProvisioningStateDeleting', 'DomainTopicProvisioningStateSucceeded', 'DomainTopicProvisioningStateCanceled', 'DomainTopicProvisioningStateFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the domain topic. Possible values include: 'DomainTopicProvisioningStateCreating', 'DomainTopicProvisioningStateUpdating', 'DomainTopicProvisioningStateDeleting', 'DomainTopicProvisioningStateSucceeded', 'DomainTopicProvisioningStateCanceled', 'DomainTopicProvisioningStateFailed'
 	ProvisioningState DomainTopicProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DomainTopicProperties.
+func (dtp DomainTopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1526,6 +1548,8 @@ type EventSubscription struct {
 	autorest.Response `json:"-"`
 	// EventSubscriptionProperties - Properties of the event subscription.
 	*EventSubscriptionProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Event Subscription resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the resource.
@@ -1560,6 +1584,15 @@ func (es *EventSubscription) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				es.EventSubscriptionProperties = &eventSubscriptionProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				es.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -3663,9 +3696,9 @@ type PrivateLinkResource struct {
 	*PrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource
+	// Name - Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of the resource
+	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4809,11 +4842,29 @@ func (sniaf StringNotInAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFil
 	return &sniaf, true
 }
 
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
 // Topic eventGrid Topic
 type Topic struct {
 	autorest.Response `json:"-"`
 	// TopicProperties - Properties of the topic.
 	*TopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -4858,6 +4909,15 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				t.TopicProperties = &topicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				t.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -4912,6 +4972,7 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 
 // TopicProperties properties of the Topic
 type TopicProperties struct {
+	// PrivateEndpointConnections - READ-ONLY
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the topic. Possible values include: 'TopicProvisioningStateCreating', 'TopicProvisioningStateUpdating', 'TopicProvisioningStateDeleting', 'TopicProvisioningStateSucceeded', 'TopicProvisioningStateCanceled', 'TopicProvisioningStateFailed'
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`
@@ -4933,9 +4994,6 @@ type TopicProperties struct {
 // MarshalJSON is the custom marshaler for TopicProperties.
 func (tp TopicProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tp.PrivateEndpointConnections != nil {
-		objectMap["privateEndpointConnections"] = tp.PrivateEndpointConnections
-	}
 	if tp.InputSchema != "" {
 		objectMap["inputSchema"] = tp.InputSchema
 	}
@@ -5286,6 +5344,49 @@ func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Cont
 		fn:  getNextPage,
 		tlr: cur,
 	}
+}
+
+// TopicsRegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TopicsRegenerateKeyFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(TopicsClient) (TopicSharedAccessKeys, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *TopicsRegenerateKeyFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for TopicsRegenerateKeyFuture.Result.
+func (future *TopicsRegenerateKeyFuture) result(client TopicsClient) (tsak TopicSharedAccessKeys, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.TopicsRegenerateKeyFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		tsak.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.TopicsRegenerateKeyFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tsak.Response.Response, err = future.GetResult(sender); err == nil && tsak.Response.Response.StatusCode != http.StatusNoContent {
+		tsak, err = client.RegenerateKeyResponder(tsak.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.TopicsRegenerateKeyFuture", "Result", tsak.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // TopicsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

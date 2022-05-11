@@ -305,6 +305,21 @@ func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 	return []PersistedConnectionStatus{PersistedConnectionStatusApproved, PersistedConnectionStatusDisconnected, PersistedConnectionStatusPending, PersistedConnectionStatusRejected}
 }
 
+// PrivateEndpointConnectionsParentType enumerates the values for private endpoint connections parent type.
+type PrivateEndpointConnectionsParentType string
+
+const (
+	// PrivateEndpointConnectionsParentTypeDomains ...
+	PrivateEndpointConnectionsParentTypeDomains PrivateEndpointConnectionsParentType = "domains"
+	// PrivateEndpointConnectionsParentTypeTopics ...
+	PrivateEndpointConnectionsParentTypeTopics PrivateEndpointConnectionsParentType = "topics"
+)
+
+// PossiblePrivateEndpointConnectionsParentTypeValues returns an array of possible values for the PrivateEndpointConnectionsParentType const type.
+func PossiblePrivateEndpointConnectionsParentTypeValues() []PrivateEndpointConnectionsParentType {
+	return []PrivateEndpointConnectionsParentType{PrivateEndpointConnectionsParentTypeDomains, PrivateEndpointConnectionsParentTypeTopics}
+}
+
 // PublicNetworkAccess enumerates the values for public network access.
 type PublicNetworkAccess string
 

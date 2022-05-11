@@ -609,9 +609,9 @@ type Domain struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1153,9 +1153,9 @@ type DomainTopic struct {
 	*DomainTopicProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1559,11 +1559,13 @@ type EventChannel struct {
 	autorest.Response `json:"-"`
 	// EventChannelProperties - Properties of the EventChannel.
 	*EventChannelProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Event Channel resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1593,6 +1595,15 @@ func (ec *EventChannel) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ec.EventChannelProperties = &eventChannelProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ec.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -2023,11 +2034,13 @@ type EventSubscription struct {
 	autorest.Response `json:"-"`
 	// EventSubscriptionProperties - Properties of the event subscription.
 	*EventSubscriptionProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Event Subscription resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2057,6 +2070,15 @@ func (es *EventSubscription) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				es.EventSubscriptionProperties = &eventSubscriptionProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				es.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -2896,9 +2918,9 @@ type EventType struct {
 	*EventTypeProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2989,9 +3011,9 @@ type ExtensionTopic struct {
 	*ExtensionTopicProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4007,15 +4029,17 @@ type PartnerNamespace struct {
 	autorest.Response `json:"-"`
 	// PartnerNamespaceProperties - Properties of the partner namespace.
 	*PartnerNamespaceProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Partner Namespace resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4051,6 +4075,15 @@ func (pn *PartnerNamespace) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pn.PartnerNamespaceProperties = &partnerNamespaceProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pn.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -4440,15 +4473,17 @@ type PartnerRegistration struct {
 	autorest.Response `json:"-"`
 	// PartnerRegistrationProperties - Properties of the partner registration.
 	*PartnerRegistrationProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Partner Registration resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4484,6 +4519,15 @@ func (pr *PartnerRegistration) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pr.PartnerRegistrationProperties = &partnerRegistrationProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pr.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -4838,15 +4882,17 @@ type PartnerTopic struct {
 	autorest.Response `json:"-"`
 	// PartnerTopicProperties - Properties of the partner topic.
 	*PartnerTopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Partner Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -4882,6 +4928,15 @@ func (pt *PartnerTopic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pt.PartnerTopicProperties = &partnerTopicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pt.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -5293,9 +5348,9 @@ type PartnerTopicType struct {
 	*PartnerTopicTypeProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5411,9 +5466,9 @@ type PrivateEndpointConnection struct {
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5736,9 +5791,9 @@ type PrivateLinkResource struct {
 	*PrivateLinkResourceProperties `json:"properties,omitempty"`
 	// ID - Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - Name of the resource
+	// Name - Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - Type of the resource
+	// Type - Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5983,9 +6038,9 @@ func NewPrivateLinkResourcesListResultPage(cur PrivateLinkResourcesListResult, g
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6888,20 +6943,38 @@ func (sniaf StringNotInAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvancedFil
 	return &sniaf, true
 }
 
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
 // SystemTopic eventGrid System Topic.
 type SystemTopic struct {
 	autorest.Response `json:"-"`
 	// SystemTopicProperties - Properties of the system topic.
 	*SystemTopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to System Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -6937,6 +7010,15 @@ func (st *SystemTopic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				st.SystemTopicProperties = &systemTopicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				st.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -7448,9 +7530,9 @@ type Topic struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -7989,9 +8071,9 @@ type TopicTypeInfo struct {
 	*TopicTypeProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -8178,9 +8260,9 @@ type TrackedResource struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the resource
+	// Name - READ-ONLY; Name of the resource.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the resource
+	// Type - READ-ONLY; Type of the resource.
 	Type *string `json:"type,omitempty"`
 }
 

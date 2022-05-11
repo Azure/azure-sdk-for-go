@@ -1,5 +1,5 @@
 {
-  "commit": "9d8640319ef481ae301b67b033d6ae0bd30422c3",
+  "commit": "a521662495d62ec86218f1d9786025ca693c7e0f",
   "readme": "/_/azure-rest-api-specs/specification/eventgrid/resource-manager/readme.md",
   "tag": "package-2021-10-preview",
   "use": "@microsoft.azure/autorest.go@2.1.187",

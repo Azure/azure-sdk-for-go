@@ -4870,15 +4870,17 @@ func (nniraf NumberNotInRangeAdvancedFilter) AsBasicAdvancedFilter() (BasicAdvan
 	return &nniraf, true
 }
 
-// Operation represents an operation returned by the GetOperations request
+// Operation represents an operation returned by the GetOperations request.
 type Operation struct {
-	// Name - Name of the operation
+	// Name - Name of the operation.
 	Name *string `json:"name,omitempty"`
-	// Display - Display name of the operation
+	// Display - Display name of the operation.
 	Display *OperationInfo `json:"display,omitempty"`
-	// Origin - Origin of the operation
+	// Origin - Origin of the operation.
 	Origin *string `json:"origin,omitempty"`
-	// Properties - Properties of the operation
+	// IsDataAction - This Boolean is used to determine if the operation is a data plane action or not.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Properties - Properties of the operation.
 	Properties interface{} `json:"properties,omitempty"`
 }
 

@@ -160,13 +160,15 @@ type EventSubscriptionIdentityType string
 const (
 	// SystemAssigned ...
 	SystemAssigned EventSubscriptionIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned EventSubscriptionIdentityType = "SystemAssigned, UserAssigned"
 	// UserAssigned ...
 	UserAssigned EventSubscriptionIdentityType = "UserAssigned"
 )
 
 // PossibleEventSubscriptionIdentityTypeValues returns an array of possible values for the EventSubscriptionIdentityType const type.
 func PossibleEventSubscriptionIdentityTypeValues() []EventSubscriptionIdentityType {
-	return []EventSubscriptionIdentityType{SystemAssigned, UserAssigned}
+	return []EventSubscriptionIdentityType{SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
 }
 
 // EventSubscriptionProvisioningState enumerates the values for event subscription provisioning state.

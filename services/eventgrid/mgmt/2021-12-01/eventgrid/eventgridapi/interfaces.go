@@ -110,11 +110,11 @@ var _ TopicsClientAPI = (*eventgrid.TopicsClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
-	Delete(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnectionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnection, err error)
-	ListByResource(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultPage, err error)
-	ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType string, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateEndpointConnectionName string, privateEndpointConnection eventgrid.PrivateEndpointConnection) (result eventgrid.PrivateEndpointConnectionsUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, parentType eventgrid.PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, parentType eventgrid.PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string) (result eventgrid.PrivateEndpointConnection, err error)
+	ListByResource(ctx context.Context, resourceGroupName string, parentType eventgrid.PrivateEndpointConnectionsParentType, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultPage, err error)
+	ListByResourceComplete(ctx context.Context, resourceGroupName string, parentType eventgrid.PrivateEndpointConnectionsParentType, parentName string, filter string, top *int32) (result eventgrid.PrivateEndpointConnectionListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, parentType eventgrid.PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, privateEndpointConnection eventgrid.PrivateEndpointConnection) (result eventgrid.PrivateEndpointConnectionsUpdateFuture, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*eventgrid.PrivateEndpointConnectionsClient)(nil)

@@ -154,7 +154,7 @@ Using Transactional batch
 	batch.ReadItem("otherExistingId", nil)
 	batch.DeleteItem("yetAnotherExistingId", nil)
 
-	batchResponse, err  := batch.Execute(context, nil)
+	batchResponse, err  := container.ExecuteTransactionalBatch(context, batch, nil)
 	handle(err)
 
 	if batchResponse.IsSuccess {

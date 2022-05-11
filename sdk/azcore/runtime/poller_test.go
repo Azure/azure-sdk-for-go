@@ -20,7 +20,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -860,58 +859,6 @@ func TestNewPollerBody(t *testing.T) {
 		t.Fatal(err)
 	}
 	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if v := *result.Field; v != "value" {
-		t.Fatalf("unexpected value %s", v)
-	}
-}
-
-func TestNewPollerARMLoc(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	srv.AppendResponse(mock.WithBody([]byte(successResp)))
-	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
-	resp.Header.Set(shared.HeaderLocation, srv.URL())
-	resp.StatusCode = http.StatusAccepted
-	pl := getPipeline(srv)
-	poller, err := NewPoller[mockType](resp, pl, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !closed() {
-		t.Fatal("initial response body wasn't closed")
-	}
-	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*armloc.Poller[mockType])(nil)) {
-		t.Fatalf("unexpected poller type %s", pt.String())
-	}
-	tk, err := poller.ResumeToken()
-	if err != nil {
-		t.Fatal(err)
-	}
-	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for {
-		if poller.Done() {
-			break
-		}
-		_, err = poller.Poll(context.Background())
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-	result, err := poller.Result(context.Background())
-	if err != nil {
-		t.Fatal(err)
-	}
-	if v := *result.Field; v != "value" {
-		t.Fatalf("unexpected value %s", v)
-	}
-	result, err = poller.Result(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}

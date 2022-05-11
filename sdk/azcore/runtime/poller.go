@@ -16,7 +16,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/loc"
@@ -88,8 +87,6 @@ func NewPoller[T any](resp *http.Response, pl exported.Pipeline, options *NewPol
 	} else if op.Applicable(resp) {
 		// op poller must be checked before loc as it can also have a location header
 		opr, err = op.New[T](pl, resp, options.FinalStateVia)
-	} else if armloc.Applicable(resp) {
-		opr, err = armloc.New[T](pl, resp)
 	} else if loc.Applicable(resp) {
 		opr, err = loc.New[T](pl, resp)
 	} else if body.Applicable(resp) {
@@ -150,8 +147,6 @@ func NewPollerFromResumeToken[T any](token string, pl exported.Pipeline, options
 	// now rehydrate the poller based on the encoded poller type
 	if async.CanResume(asJSON) {
 		opr, _ = async.New[T](pl, nil, "")
-	} else if armloc.CanResume(asJSON) {
-		opr, _ = armloc.New[T](pl, nil)
 	} else if body.CanResume(asJSON) {
 		opr, _ = body.New[T](pl, nil)
 	} else if loc.CanResume(asJSON) {

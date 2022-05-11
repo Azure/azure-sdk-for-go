@@ -87,7 +87,7 @@ func main() {
 Once you've created a [Client][godoc_client], you can interact with resources within a Service Bus Namespace:
 
 - [Queues][queue_concept]: Allows for sending and receiving messages. Often used for point-to-point communication.
-- [Topics][topic_concept]: As opposed to Queues, Topics are better suited to publish/subscribe scenarios. A topic can be sent to, but requires a subscription, of which there can be multiple in parallel, to consume from.
+- [Topics][topic_concept]: A topic is similar to a queue but splits the receiving and sending into separate entities. Messages are sent to a topic and are broadcast to Subscriptions, where they can be consumed independently, and in parallel by Receivers.
 - [Subscriptions][subscription_concept]: The mechanism to consume from a Topic. Each subscription is independent, and receives a copy of each message sent to the topic. Rules and Filters can be used to tailor which messages are received by a specific subscription.
 
 For more information about these resources, see [What is Azure Service Bus?][service_bus_overview].
@@ -113,48 +113,76 @@ Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sen
 
 > NOTE: Creating a `azservicebus.Client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme, using a [Service Principal](#using-a-service-principal) or a [Service Bus connection string](#using-a-connection-string).
 
+Sending a single message:
+
 ```go
-sender, err := client.NewSender("<queue or topic>", nil)
-
-if err != nil {
-  panic(err)
-}
-
-// send a single message
-err = sender.SendMessage(context.TODO(), &azservicebus.Message{
+err := sender.SendMessage(context.TODO(), &azservicebus.Message{
   Body: []byte("hello world!"),
 }, nil)
 ```
+
+#### Sending multiple messages using a batch
 
 You can also send messages in batches, which can be more efficient than sending them individually
 
 ```go
 // Create a message batch. It will automatically be sized for the Service Bus
 // Namespace's maximum message size.
-messageBatch, err := sender.NewMessageBatch(context.TODO(), nil)
+currentMessageBatch, err := sender.NewMessageBatch(context.TODO(), nil)
 
 if err != nil {
   panic(err)
 }
 
-// Add a message to our message batch. This can be called multiple times.
-err = messageBatch.AddMessage(&azservicebus.Message{
-    Body: []byte(fmt.Sprintf("hello world")),
-}, nil)
+messagesToSend := []*azservicebus.Message{
+  // any messages that you'd want to send would be here, or sourced from
+  // somewhere else.
+}
 
-if errors.Is(err, azservicebus.ErrMessageTooLarge) {
-  fmt.Printf("Message batch is full. We should send it and create a new one.\n")
+for i := 0; i < len(messagesToSend); i++ {
+  // Add a message to our message batch. This can be called multiple times.
+  err = currentMessageBatch.AddMessage(messagesToSend[i], nil)
 
-  // send what we have since the batch is full
-  err := sender.SendMessageBatch(context.TODO(), messageBatch, nil)
+  if errors.Is(err, azservicebus.ErrMessageTooLarge) {
+    if currentMessageBatch.NumMessages() == 0 {
+      // This means the message itself is too large to be sent, even on its own.
+      // This will require intervention from the user.
+      panic("Single message is too large to be sent in a batch.")
+    }
+
+    fmt.Printf("Message batch is full. Sending it and creating a new one.\n")
+
+    // send what we have since the batch is full
+    err := sender.SendMessageBatch(context.TODO(), currentMessageBatch, nil)
+
+    if err != nil {
+      panic(err)
+    }
+
+    // Create a new batch and retry adding this message to our batch.
+    newBatch, err := sender.NewMessageBatch(context.TODO(), nil)
+
+    if err != nil {
+      panic(err)
+    }
+
+    currentMessageBatch = newBatch
+
+    // rewind the counter and attempt to add the message again (this batch
+    // was full so it didn't go out with the previous SendMessageBatch call).
+    i--
+  } else if err != nil {
+    panic(err)
+  }
+}
+
+// check if any messages are remaining to be sent.
+if currentMessageBatch.NumMessages() > 0 {
+  err := sender.SendMessageBatch(context.TODO(), currentMessageBatch, nil)
 
   if err != nil {
     panic(err)
   }
-  
-  // Create a new batch, add this message and start again.
-} else if err != nil {
-  panic(err)
 }
 ```
 

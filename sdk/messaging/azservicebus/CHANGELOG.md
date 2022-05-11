@@ -186,7 +186,7 @@
 - AdminClient has been moved into the `admin` subpackage.
 - ReceivedMessage.Body is now a function that returns a ([]byte, error), rather than being a field.
   This protects against a potential data-loss scenario where a message is received with a payload 
-  encoded in the sequence or value sections of an AMQP message, which cannot be prpoerly represented
+  encoded in the sequence or value sections of an AMQP message, which cannot be properly represented
   in the .Body. This will now return an error.
 - Functions that have options or might have options in the future have an additional *options parameter.
   As usual, passing 'nil' ignores the options, and will cause the function to use defaults.

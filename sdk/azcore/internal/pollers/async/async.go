@@ -18,6 +18,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+// see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md
+
 // Applicable returns true if the LRO is using Azure-AsyncOperation.
 func Applicable(resp *http.Response) bool {
 	return resp.Header.Get(shared.HeaderAzureAsync) != ""
@@ -77,23 +79,8 @@ func New[T any](pl exported.Pipeline, resp *http.Response, finalState pollers.Fi
 		OrigURL:    resp.Request.URL.String(),
 		Method:     resp.Request.Method,
 		FinalState: finalState,
+		CurState:   pollers.StatusInProgress,
 	}
-	// check for provisioning state
-	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoBody) || state == "" {
-		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
-		// contain a provisioning state.  to maintain compat with track 1 and other implementations
-		// we are explicitly relaxing this requirement.
-		/*if resp.Request.Method == http.MethodPut {
-			// initial response for a PUT requires a provisioning state
-			return nil, err
-		}*/
-		// for DELETE/PATCH/POST, provisioning state is optional
-		state = pollers.StatusInProgress
-	} else if err != nil {
-		return nil, err
-	}
-	p.CurState = state
 	return p, nil
 }
 

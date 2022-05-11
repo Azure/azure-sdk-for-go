@@ -60,12 +60,9 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	require.EqualValues(t, 5, len(messages))
 
 	for i := 0; i < 5; i++ {
-		body, err := messages[i].Body()
-		require.NoError(t, err)
-
 		require.EqualValues(t,
 			fmt.Sprintf("[%d]: send five, receive five", i),
-			string(body))
+			string(messages[i].Body))
 
 		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i], nil))
 	}
@@ -380,11 +377,8 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(repeekedMessages))
 
-	body, err := peekedMessages2[0].Body()
-	require.NoError(t, err)
-
 	require.EqualValues(t, []string{
-		string(body),
+		string(peekedMessages2[0].Body),
 	}, getSortedBodies(repeekedMessages))
 
 	// and peek again (note it won't reset so there'll be "nothing")
@@ -789,19 +783,7 @@ func (messages receivedMessageSlice) Len() int {
 }
 
 func (messages receivedMessageSlice) Less(i, j int) bool {
-	bodyI, err := messages[i].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	bodyJ, err := messages[j].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	return string(bodyI) < string(bodyJ)
+	return string(messages[i].Body) < string(messages[j].Body)
 }
 
 func (messages receivedMessageSlice) Swap(i, j int) {

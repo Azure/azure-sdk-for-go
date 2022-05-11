@@ -21,6 +21,7 @@
 
 - `admin.Client` can now be configured using `azcore.Options`. (#17796)
 - `ReceivedMessage.TransactionPartitionKey` has been removed as this library doesn't support transactions.
+- `ReceivedMessage.Body()` is now a field. `Body` will be nil in the cases where it would have returned an error (where the underlying AMQP message had a payload in .Value, .Sequence or had multiple byte slices in .Data). (#17888)
 
 ### Bugs Fixed
 

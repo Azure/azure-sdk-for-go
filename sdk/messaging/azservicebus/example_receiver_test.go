@@ -88,6 +88,11 @@ func ExampleReceiver_ReceiveMessages() {
 	}
 
 	for _, message := range messages {
+		// The message body is a []byte. For this example we're just assuming that the body
+		// was a string, converted to bytes but any []byte payload is valid.
+		var body []byte = message.Body
+		fmt.Printf("Message received with body: %s\n", string(body))
+
 		// For more information about settling messages:
 		// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
 		err = receiver.CompleteMessage(context.TODO(), message, nil)

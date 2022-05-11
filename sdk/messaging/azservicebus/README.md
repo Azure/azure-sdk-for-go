@@ -219,13 +219,30 @@ if err != nil {
 }
 
 for _, message := range messages {
+  // The message body is a []byte. For this example we're just assuming that the body
+  // was a string, converted to bytes but any []byte payload is valid.
+  var body []byte = message.Body
+  fmt.Printf("Message received with body: %s\n", string(body))
+
   // For more information about settling messages:
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
   err = receiver.CompleteMessage(context.TODO(), message, nil)
 
   if err != nil {
+    var sbErr *azservicebus.Error
+
+    if errors.As(err, &sbErr) && sbErr.Code == azservicebus.CodeLockLost {
+      // The message lock has expired. This isn't fatal for the client, but it does mean
+      // that this message can be received by another Receiver (or potentially this one!).
+      fmt.Printf("Message lock expired\n")
+
+      // You can extend the message lock by calling receiver.RenewMessageLock(msg) before the
+      // message lock has expired.
+      continue
+    }
+
     panic(err)
-  }
+	}
 
   fmt.Printf("Received and completed the message\n")
 }

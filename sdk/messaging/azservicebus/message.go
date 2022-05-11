@@ -4,7 +4,6 @@
 package azservicebus
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -17,6 +16,9 @@ import (
 type ReceivedMessage struct {
 	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]interface{}
+
+	// Body is the payload for a message.
+	Body []byte
 
 	// ContentType describes the payload of the message, with a descriptor following
 	// the format of Content-Type, specified by RFC2045 (ex: "application/json").
@@ -137,17 +139,6 @@ const (
 	// MessageStateScheduled indicates the message is scheduled.
 	MessageStateScheduled MessageState = 2
 )
-
-// Body returns the body for this received message.
-// If the body not compatible with ReceivedMessage this function will return an error.
-func (rm *ReceivedMessage) Body() ([]byte, error) {
-	// TODO: does this come back as a zero length array if the body is empty (which is allowed)
-	if rm.rawAMQPMessage.Data == nil || len(rm.rawAMQPMessage.Data) != 1 {
-		return nil, errors.New("AMQP message Data section is improperly encoded for ReceivedMessage")
-	}
-
-	return rm.rawAMQPMessage.Data[0], nil
-}
 
 // Message is a message with a body and commonly used properties.
 // Properties that are pointers are optional.
@@ -321,6 +312,10 @@ func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
 		rawAMQPMessage: amqpMsg,
 		State:          MessageStateActive,
+	}
+
+	if len(msg.rawAMQPMessage.Data) == 1 {
+		msg.Body = msg.rawAMQPMessage.Data[0]
 	}
 
 	if amqpMsg.Properties != nil {

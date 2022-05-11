@@ -198,9 +198,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		require.NoError(t, err)
 
 		require.EqualValues(t, "first send", messages[0].ApplicationProperties["Status"])
-		body, err := messages[0].Body()
-		require.NoError(t, err)
-		require.EqualValues(t, "ResendableMessage", string(body))
+		require.EqualValues(t, "ResendableMessage", string(messages[0].Body))
 
 		if complete {
 			require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
@@ -215,9 +213,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		messages, err = receiver.ReceiveMessages(ctx, 1, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, "resend", messages[0].ApplicationProperties["Status"])
-		body, err = messages[0].Body()
-		require.NoError(t, err)
-		require.EqualValues(t, "ResendableMessage", string(body))
+		require.EqualValues(t, "ResendableMessage", string(messages[0].Body))
 
 		if complete {
 			require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
@@ -229,14 +225,11 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 }
 
 func messageFromReceivedMessage(t *testing.T, receivedMessage *ReceivedMessage) *Message {
-	body, err := receivedMessage.Body()
-	require.NoError(t, err)
-
 	newMsg := &Message{
 		MessageID:             &receivedMessage.MessageID,
 		ContentType:           receivedMessage.ContentType,
 		CorrelationID:         receivedMessage.CorrelationID,
-		Body:                  body,
+		Body:                  receivedMessage.Body,
 		SessionID:             receivedMessage.SessionID,
 		Subject:               receivedMessage.Subject,
 		ReplyTo:               receivedMessage.ReplyTo,
@@ -430,13 +423,7 @@ func getSortedBodies(messages []*ReceivedMessage) []string {
 	var bodies []string
 
 	for _, msg := range messages {
-		body, err := msg.Body()
-
-		if err != nil {
-			panic(err)
-		}
-
-		bodies = append(bodies, string(body))
+		bodies = append(bodies, string(msg.Body))
 	}
 
 	return bodies
@@ -450,19 +437,7 @@ func (rm receivedMessages) Len() int {
 
 // Less compares the messages assuming the .Body field is a valid string.
 func (rm receivedMessages) Less(i, j int) bool {
-	bodyI, err := rm[i].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	bodyJ, err := rm[j].Body()
-
-	if err != nil {
-		panic(err)
-	}
-
-	return string(bodyI) < string(bodyJ)
+	return string(rm[i].Body) < string(rm[j].Body)
 }
 
 func (rm receivedMessages) Swap(i, j int) {

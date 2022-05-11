@@ -19,11 +19,11 @@ type TransactionalBatchResponse struct {
 	// OperationResults contains the individual batch operation results.
 	// The order of the results is the same as the order of the operations in the batch.
 	OperationResults []TransactionalBatchResponseOperationResult
-	// IsSuccess indicates if the transaction was successfully committed.
+	// Success indicates if the transaction was successfully committed.
 	// If false, one of the operations in the batch failed.
 	// Inspect the OperationResults, any operation with status code http.StatusFailedDependency is a dependency failure.
 	// The cause of the batch failure is the first operation with status code different from http.StatusFailedDependency.
-	IsSuccess bool
+	Success bool
 }
 
 func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchResponse, error) {
@@ -33,7 +33,7 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 
 	response.SessionToken = resp.Header.Get(cosmosHeaderSessionToken)
 
-	response.IsSuccess = resp.StatusCode != http.StatusMultiStatus
+	response.Success = resp.StatusCode != http.StatusMultiStatus
 
 	if err := runtime.UnmarshalAsJSON(resp, &response.OperationResults); err != nil {
 		return TransactionalBatchResponse{}, err

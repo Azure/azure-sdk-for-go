@@ -45,7 +45,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Expected 2 operation results, got %v", len(response.OperationResults))
 	}
 
-	if !response.IsSuccess {
+	if !response.Success {
 		t.Fatalf("Expected committed to be true, got false")
 	}
 
@@ -79,7 +79,7 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
 
-	if !response2.IsSuccess {
+	if !response2.Success {
 		t.Fatalf("Expected committed to be true, got false")
 	}
 
@@ -128,8 +128,8 @@ func TestItemTransactionalBatch(t *testing.T) {
 		t.Fatalf("Failed to execute batch: %v", err)
 	}
 
-	if !response3.IsSuccess {
-		t.Fatalf("Expected IsSuccess to be true, got false")
+	if !response3.Success {
+		t.Fatalf("Expected Success to be true, got false")
 	}
 
 	if len(response3.OperationResults) != 2 {
@@ -200,8 +200,8 @@ func TestItemTransactionalBatchError(t *testing.T) {
 		t.Fatalf("Expected status code 207, got %v", response.RawResponse.StatusCode)
 	}
 
-	if response.IsSuccess {
-		t.Fatalf("Expected IsSuccess to be false, got true")
+	if response.Success {
+		t.Fatalf("Expected Success to be false, got true")
 	}
 
 	if len(response.OperationResults) != 2 {

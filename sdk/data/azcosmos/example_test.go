@@ -651,7 +651,7 @@ func ExampleContainerClient_NewTransactionalBatch() {
 		panic(err)
 	}
 
-	if batchResponse.IsSuccess {
+	if batchResponse.Success {
 		// Transaction succeeded
 		// We can inspect the individual operation results
 		for index, operation := range batchResponse.OperationResults {

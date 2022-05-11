@@ -464,7 +464,7 @@ func (c *ContainerClient) NewTransactionalBatch(partitionKey PartitionKey) Trans
 }
 
 // ExecuteTransactionalBatch executes a transactional batch.
-// Once executed, verify the IsSuccess property of the response to determine if the batch was committed
+// Once executed, verify the Success property of the response to determine if the batch was committed
 func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b TransactionalBatch, o *TransactionalBatchOptions) (TransactionalBatchResponse, error) {
 	if len(b.operations) == 0 {
 		return TransactionalBatchResponse{}, errors.New("no operations in batch")

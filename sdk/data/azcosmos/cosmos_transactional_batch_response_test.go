@@ -46,8 +46,8 @@ func TestTransactionalBatchResponseParsing(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if !parsedResponse.IsSuccess {
-		t.Errorf("Expected IsSuccess to be true, but got false")
+	if !parsedResponse.Success {
+		t.Errorf("Expected Success to be true, but got false")
 	}
 
 	if parsedResponse.RawResponse == nil {
@@ -138,7 +138,7 @@ func TestTransactionalBatchResponseParsing_Failed(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if parsedResponse.IsSuccess {
-		t.Errorf("Expected IsSuccess to be false, but got true")
+	if parsedResponse.Success {
+		t.Errorf("Expected Success to be false, but got true")
 	}
 }

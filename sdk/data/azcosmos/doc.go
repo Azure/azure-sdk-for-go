@@ -157,7 +157,7 @@ Using Transactional batch
 	batchResponse, err  := container.ExecuteTransactionalBatch(context, batch, nil)
 	handle(err)
 
-	if batchResponse.IsSuccess {
+	if batchResponse.Success {
 		// Transaction succeeded
 		// We can inspect the individual operation results
 		for index, operation := range batchResponse.OperationResults {

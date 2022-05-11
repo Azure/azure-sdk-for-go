@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* Renamed `ListSecretsOptions` to `ListPropertiesOfSecretsOptions` and `ListSecretVersionsOptions` to `ListPropertiesOfSecretVersionsOptions`
 
 ### Bugs Fixed
 

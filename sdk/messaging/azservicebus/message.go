@@ -17,9 +17,7 @@ type ReceivedMessage struct {
 	// ApplicationProperties can be used to store custom metadata for a message.
 	ApplicationProperties map[string]interface{}
 
-	// Body corresponds to the first byte array in the Data section of an AMQP message.
-	// If the payload for the message is in the Value or Sequence section, or if the Data
-	// section has multiple byte arrays then this field will be nil.
+	// Body is the payload for a message.
 	Body []byte
 
 	// ContentType describes the payload of the message, with a descriptor following

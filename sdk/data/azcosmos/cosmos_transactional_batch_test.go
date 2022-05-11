@@ -75,7 +75,7 @@ func TestTransactionalBatchUpsertItem(t *testing.T) {
 
 	options := &TransactionalBatchItemOptions{}
 	etag := azcore.ETag("someEtag")
-	options.IfMatchEtag = &etag
+	options.IfMatchETag = &etag
 	batch.UpsertItem(itemMarshall, options)
 
 	if len(batch.operations) != 1 {
@@ -92,7 +92,7 @@ func TestTransactionalBatchUpsertItem(t *testing.T) {
 		t.Errorf("Expected operation type %v, but got %v", "Upsert", asUpsert.operationType)
 	}
 
-	if asUpsert.ifMatch != options.IfMatchEtag {
+	if asUpsert.ifMatch != options.IfMatchETag {
 		t.Errorf("Expected ifMatch %v, but got %v", etag, asUpsert.ifMatch)
 	}
 
@@ -112,7 +112,7 @@ func TestTransactionalBatchReplaceItem(t *testing.T) {
 
 	options := &TransactionalBatchItemOptions{}
 	etag := azcore.ETag("someEtag")
-	options.IfMatchEtag = &etag
+	options.IfMatchETag = &etag
 	itemId := "bar"
 	batch.ReplaceItem(itemId, itemMarshall, options)
 
@@ -134,7 +134,7 @@ func TestTransactionalBatchReplaceItem(t *testing.T) {
 		t.Errorf("Expected id %v, but got %v", itemId, asReplace.id)
 	}
 
-	if asReplace.ifMatch != options.IfMatchEtag {
+	if asReplace.ifMatch != options.IfMatchETag {
 		t.Errorf("Expected ifMatch %v, but got %v", etag, asReplace.ifMatch)
 	}
 
@@ -148,7 +148,7 @@ func TestTransactionalBatchDeleteItem(t *testing.T) {
 	batch.partitionKey = NewPartitionKeyString("foo")
 	options := &TransactionalBatchItemOptions{}
 	etag := azcore.ETag("someEtag")
-	options.IfMatchEtag = &etag
+	options.IfMatchETag = &etag
 	itemId := "bar"
 	batch.DeleteItem(itemId, options)
 
@@ -166,7 +166,7 @@ func TestTransactionalBatchDeleteItem(t *testing.T) {
 		t.Errorf("Expected operation type %v, but got %v", "Delete", asDelete.operationType)
 	}
 
-	if asDelete.ifMatch != options.IfMatchEtag {
+	if asDelete.ifMatch != options.IfMatchETag {
 		t.Errorf("Expected ifMatch %v, but got %v", etag, asDelete.ifMatch)
 	}
 

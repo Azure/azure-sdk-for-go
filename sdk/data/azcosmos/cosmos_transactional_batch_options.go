@@ -27,9 +27,9 @@ type TransactionalBatchOptions struct {
 
 // TransactionalBatchItemOptions includes options for the specific operation inside a TransactionalBatch
 type TransactionalBatchItemOptions struct {
-	// IfMatchEtag is used to ensure optimistic concurrency control.
+	// IfMatchETag is used to ensure optimistic concurrency control.
 	// https://docs.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control
-	IfMatchEtag *azcore.ETag
+	IfMatchETag *azcore.ETag
 }
 
 func (options *TransactionalBatchOptions) toHeaders() *map[string]string {

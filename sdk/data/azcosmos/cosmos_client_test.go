@@ -384,7 +384,7 @@ func TestSendBatch(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	_, err = client.sendBatchRequest("/", context.Background(), batch.operations, operationContext, &TransactionalBatchOptions{}, nil)
+	_, err = client.sendBatchRequest(context.Background(), "/", batch.operations, operationContext, &TransactionalBatchOptions{}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

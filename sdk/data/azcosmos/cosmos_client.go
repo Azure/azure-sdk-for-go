@@ -239,8 +239,8 @@ func (c *Client) sendDeleteRequest(
 }
 
 func (c *Client) sendBatchRequest(
-	path string,
 	ctx context.Context,
+	path string,
 	batch []batchOperation,
 	operationContext pipelineRequestOptions,
 	requestOptions cosmosRequestOptions,

@@ -504,8 +504,8 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	}
 
 	azResponse, err := c.database.client.sendBatchRequest(
-		path,
 		ctx,
+		path,
 		b.operations,
 		operationContext,
 		o,

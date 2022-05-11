@@ -18,7 +18,7 @@ type TransactionalBatchResponse struct {
 	SessionToken string
 	// OperationResults contains the individual batch operation results.
 	// The order of the results is the same as the order of the operations in the batch.
-	OperationResults []TransactionalBatchResponseOperationResult
+	OperationResults []TransactionalBatchResult
 	// Success indicates if the transaction was successfully committed.
 	// If false, one of the operations in the batch failed.
 	// Inspect the OperationResults, any operation with status code http.StatusFailedDependency is a dependency failure.
@@ -42,8 +42,8 @@ func newTransactionalBatchResponse(resp *http.Response) (TransactionalBatchRespo
 	return response, nil
 }
 
-// TransactionalBatchResponseOperationResult represents the result of a single operation in a batch.
-type TransactionalBatchResponseOperationResult struct {
+// TransactionalBatchResult represents the result of a single operation in a batch.
+type TransactionalBatchResult struct {
 	// StatusCode contains the status code of the operation.
 	StatusCode int32
 	// RequestCharge contains the request charge for the operation.
@@ -56,7 +56,7 @@ type TransactionalBatchResponseOperationResult struct {
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface
-func (or *TransactionalBatchResponseOperationResult) UnmarshalJSON(b []byte) error {
+func (or *TransactionalBatchResult) UnmarshalJSON(b []byte) error {
 	var attributes map[string]json.RawMessage
 	err := json.Unmarshal(b, &attributes)
 	if err != nil {

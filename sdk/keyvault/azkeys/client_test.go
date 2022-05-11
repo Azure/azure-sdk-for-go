@@ -500,17 +500,28 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			})
 			require.NoError(t, err)
 
-			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-				HardwareProtected: to.Ptr(true),
-				Properties: &Properties{
-					Exportable: to.Ptr(true),
-				},
-				ReleasePolicy: &ReleasePolicy{
-					Immutable:     to.Ptr(true),
-					EncodedPolicy: marshalledPolicy,
-				},
-				Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
-			})
+			// retry creating the release policy because Key Vault sometimes can't reach
+			// the fake attestation service we use in CI for several minutes after deployment
+			var createResp CreateRSAKeyResponse
+			for i := 0; i < 5; i++ {
+				createResp, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+					HardwareProtected: to.Ptr(true),
+					Properties: &Properties{
+						Exportable: to.Ptr(true),
+					},
+					ReleasePolicy: &ReleasePolicy{
+						Immutable:     to.Ptr(true),
+						EncodedPolicy: marshalledPolicy,
+					},
+					Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
+				})
+				if err == nil {
+					break
+				}
+				if recording.GetRecordMode() != recording.PlaybackMode {
+					time.Sleep(time.Minute)
+				}
+			}
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 

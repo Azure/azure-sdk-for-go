@@ -1,14 +1,12 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
+## 0.5.0 (2022-05-12)
 
 ### Breaking Changes
-
-### Bugs Fixed
+* Removed `ExpiringResource` and its dependencies in favor of shared implementation from `internal/temporal`.
 
 ### Other Changes
+* Updated to latest versions of `azcore` and `internal`.
 
 ## 0.4.0 (2022-04-22)
 

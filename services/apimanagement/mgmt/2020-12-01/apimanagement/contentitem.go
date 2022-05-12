@@ -31,7 +31,7 @@ func NewContentItemClientWithBaseURI(baseURI string, subscriptionID string) Cont
 	return ContentItemClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates new content item
+// CreateOrUpdate creates a new developer portal's content item specified by the provided content type.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -130,7 +130,7 @@ func (client ContentItemClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete removes specified content item.
+// Delete removes the specified developer portal's content item.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -226,7 +226,7 @@ func (client ContentItemClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get returns content item details
+// Get returns the developer portal's content item specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -320,7 +320,8 @@ func (client ContentItemClient) GetResponder(resp *http.Response) (result Conten
 	return
 }
 
-// GetEntityTag returns content item metadata
+// GetEntityTag returns the entity state (ETag) version of the developer portal's content item specified by its
+// identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -413,7 +414,7 @@ func (client ContentItemClient) GetEntityTagResponder(resp *http.Response) (resu
 	return
 }
 
-// ListByService returns list of content items
+// ListByService lists developer portal's content items specified by the provided content type.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

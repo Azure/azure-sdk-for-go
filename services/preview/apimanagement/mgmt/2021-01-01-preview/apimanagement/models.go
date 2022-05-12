@@ -7819,7 +7819,7 @@ type IssueUpdateContractProperties struct {
 type KeyVaultContractCreateProperties struct {
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
@@ -7829,7 +7829,7 @@ type KeyVaultContractProperties struct {
 	LastStatus *KeyVaultLastAccessStatusContractProperties `json:"lastStatus,omitempty"`
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 

@@ -211,17 +211,17 @@ func PossibleConnectivityStatusTypeValues() []ConnectivityStatusType {
 type ContentFormat string
 
 const (
-	// Openapi The contents are inline and Content Type is a OpenApi 3.0 Document in YAML format.
+	// Openapi The contents are inline and Content Type is a OpenAPI 3.0 YAML Document.
 	Openapi ContentFormat = "openapi"
-	// Openapijson The contents are inline and Content Type is a OpenApi 3.0 Document in JSON format.
+	// Openapijson The contents are inline and Content Type is a OpenAPI 3.0 JSON Document.
 	Openapijson ContentFormat = "openapi+json"
-	// OpenapijsonLink The Open Api 3.0 Json document is hosted on a publicly accessible internet address.
+	// OpenapijsonLink The OpenAPI 3.0 JSON document is hosted on a publicly accessible internet address.
 	OpenapijsonLink ContentFormat = "openapi+json-link"
-	// OpenapiLink The Open Api 3.0 document is hosted on a publicly accessible internet address.
+	// OpenapiLink The OpenAPI 3.0 YAML document is hosted on a publicly accessible internet address.
 	OpenapiLink ContentFormat = "openapi-link"
-	// SwaggerJSON The contents are inline and Content Type is a OpenApi 2.0 Document.
+	// SwaggerJSON The contents are inline and Content Type is a OpenAPI 2.0 JSON Document.
 	SwaggerJSON ContentFormat = "swagger-json"
-	// SwaggerLinkJSON The Open Api 2.0 document is hosted on a publicly accessible internet address.
+	// SwaggerLinkJSON The OpenAPI 2.0 JSON document is hosted on a publicly accessible internet address.
 	SwaggerLinkJSON ContentFormat = "swagger-link-json"
 	// WadlLinkJSON The WADL document is hosted on a publicly accessible internet address.
 	WadlLinkJSON ContentFormat = "wadl-link-json"
@@ -242,12 +242,14 @@ func PossibleContentFormatValues() []ContentFormat {
 type ExportFormat string
 
 const (
-	// ExportFormatOpenapi Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
+	// ExportFormatOpenapi Export the Api Definition in OpenAPI 3.0 Specification as YAML document to Storage
+	// Blob.
 	ExportFormatOpenapi ExportFormat = "openapi-link"
-	// ExportFormatOpenapiJSON Export the Api Definition in OpenApi Specification 3.0 as JSON document to
+	// ExportFormatOpenapiJSON Export the Api Definition in OpenAPI 3.0 Specification as JSON document to
 	// Storage Blob.
 	ExportFormatOpenapiJSON ExportFormat = "openapi+json-link"
-	// ExportFormatSwagger Export the Api Definition in OpenApi Specification 2.0 format to the Storage Blob.
+	// ExportFormatSwagger Export the Api Definition in OpenAPI 2.0 Specification as JSON document to the
+	// Storage Blob.
 	ExportFormatSwagger ExportFormat = "swagger-link"
 	// ExportFormatWadl Export the Api Definition in WADL Schema to Storage Blob.
 	ExportFormatWadl ExportFormat = "wadl-link"

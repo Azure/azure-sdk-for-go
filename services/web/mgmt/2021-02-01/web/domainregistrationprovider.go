@@ -31,8 +31,7 @@ func NewDomainRegistrationProviderClientWithBaseURI(baseURI string, subscription
 	return DomainRegistrationProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListOperations description for Implements Csm operations Api to exposes the list of available Csm Apis under the
-// resource provider
+// ListOperations implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 func (client DomainRegistrationProviderClient) ListOperations(ctx context.Context) (result CsmOperationCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainRegistrationProviderClient.ListOperations")

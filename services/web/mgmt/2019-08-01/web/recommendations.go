@@ -31,7 +31,7 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return RecommendationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// DisableAllForHostingEnvironment description for Disable all recommendations for an app.
+// DisableAllForHostingEnvironment disable all recommendations for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // environmentName - name of the app.
@@ -115,7 +115,7 @@ func (client RecommendationsClient) DisableAllForHostingEnvironmentResponder(res
 	return
 }
 
-// DisableAllForWebApp description for Disable all recommendations for an app.
+// DisableAllForWebApp disable all recommendations for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - name of the app.
@@ -198,7 +198,7 @@ func (client RecommendationsClient) DisableAllForWebAppResponder(resp *http.Resp
 	return
 }
 
-// DisableRecommendationForHostingEnvironment description for Disables the specific rule for a web site permanently.
+// DisableRecommendationForHostingEnvironment disables the specific rule for a web site permanently.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // environmentName - site name
@@ -284,7 +284,7 @@ func (client RecommendationsClient) DisableRecommendationForHostingEnvironmentRe
 	return
 }
 
-// DisableRecommendationForSite description for Disables the specific rule for a web site permanently.
+// DisableRecommendationForSite disables the specific rule for a web site permanently.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site name
@@ -369,8 +369,8 @@ func (client RecommendationsClient) DisableRecommendationForSiteResponder(resp *
 	return
 }
 
-// DisableRecommendationForSubscription description for Disables the specified rule so it will not apply to a
-// subscription in the future.
+// DisableRecommendationForSubscription disables the specified rule so it will not apply to a subscription in the
+// future.
 // Parameters:
 // name - rule name
 func (client RecommendationsClient) DisableRecommendationForSubscription(ctx context.Context, name string) (result autorest.Response, err error) {
@@ -443,7 +443,7 @@ func (client RecommendationsClient) DisableRecommendationForSubscriptionResponde
 	return
 }
 
-// GetRuleDetailsByHostingEnvironment description for Get a recommendation rule for an app.
+// GetRuleDetailsByHostingEnvironment get a recommendation rule for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // hostingEnvironmentName - name of the hosting environment.
@@ -538,7 +538,7 @@ func (client RecommendationsClient) GetRuleDetailsByHostingEnvironmentResponder(
 	return
 }
 
-// GetRuleDetailsByWebApp description for Get a recommendation rule for an app.
+// GetRuleDetailsByWebApp get a recommendation rule for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - name of the app.
@@ -633,7 +633,7 @@ func (client RecommendationsClient) GetRuleDetailsByWebAppResponder(resp *http.R
 	return
 }
 
-// List description for List all recommendations for a subscription.
+// List list all recommendations for a subscription.
 // Parameters:
 // featured - specify <code>true</code> to return only the most critical recommendations. The default is
 // <code>false</code>, which returns all recommendations.
@@ -758,8 +758,7 @@ func (client RecommendationsClient) ListComplete(ctx context.Context, featured *
 	return
 }
 
-// ListHistoryForHostingEnvironment description for Get past recommendations for an app, optionally specified by the
-// time range.
+// ListHistoryForHostingEnvironment get past recommendations for an app, optionally specified by the time range.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // hostingEnvironmentName - name of the hosting environment.
@@ -896,7 +895,7 @@ func (client RecommendationsClient) ListHistoryForHostingEnvironmentComplete(ctx
 	return
 }
 
-// ListHistoryForWebApp description for Get past recommendations for an app, optionally specified by the time range.
+// ListHistoryForWebApp get past recommendations for an app, optionally specified by the time range.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - name of the app.
@@ -1033,7 +1032,7 @@ func (client RecommendationsClient) ListHistoryForWebAppComplete(ctx context.Con
 	return
 }
 
-// ListRecommendedRulesForHostingEnvironment description for Get all recommendations for an app.
+// ListRecommendedRulesForHostingEnvironment get all recommendations for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // hostingEnvironmentName - name of the app.
@@ -1169,7 +1168,7 @@ func (client RecommendationsClient) ListRecommendedRulesForHostingEnvironmentCom
 	return
 }
 
-// ListRecommendedRulesForWebApp description for Get all recommendations for an app.
+// ListRecommendedRulesForWebApp get all recommendations for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - name of the app.
@@ -1305,7 +1304,7 @@ func (client RecommendationsClient) ListRecommendedRulesForWebAppComplete(ctx co
 	return
 }
 
-// ResetAllFilters description for Reset all recommendation opt-out settings for a subscription.
+// ResetAllFilters reset all recommendation opt-out settings for a subscription.
 func (client RecommendationsClient) ResetAllFilters(ctx context.Context) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationsClient.ResetAllFilters")
@@ -1375,7 +1374,7 @@ func (client RecommendationsClient) ResetAllFiltersResponder(resp *http.Response
 	return
 }
 
-// ResetAllFiltersForHostingEnvironment description for Reset all recommendation opt-out settings for an app.
+// ResetAllFiltersForHostingEnvironment reset all recommendation opt-out settings for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // environmentName - name of the app.
@@ -1459,7 +1458,7 @@ func (client RecommendationsClient) ResetAllFiltersForHostingEnvironmentResponde
 	return
 }
 
-// ResetAllFiltersForWebApp description for Reset all recommendation opt-out settings for an app.
+// ResetAllFiltersForWebApp reset all recommendation opt-out settings for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - name of the app.

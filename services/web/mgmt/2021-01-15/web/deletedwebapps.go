@@ -30,7 +30,7 @@ func NewDeletedWebAppsClientWithBaseURI(baseURI string, subscriptionID string) D
 	return DeletedWebAppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetDeletedWebAppByLocation description for Get deleted app for a subscription at location.
+// GetDeletedWebAppByLocation get deleted app for a subscription at location.
 // Parameters:
 // deletedSiteID - the numeric ID of the deleted app, e.g. 12345
 func (client DeletedWebAppsClient) GetDeletedWebAppByLocation(ctx context.Context, location string, deletedSiteID string) (result DeletedSite, err error) {
@@ -105,7 +105,7 @@ func (client DeletedWebAppsClient) GetDeletedWebAppByLocationResponder(resp *htt
 	return
 }
 
-// List description for Get all deleted apps for a subscription.
+// List get all deleted apps for a subscription.
 func (client DeletedWebAppsClient) List(ctx context.Context) (result DeletedWebAppCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeletedWebAppsClient.List")
@@ -218,7 +218,7 @@ func (client DeletedWebAppsClient) ListComplete(ctx context.Context) (result Del
 	return
 }
 
-// ListByLocation description for Get all deleted apps for a subscription at location
+// ListByLocation get all deleted apps for a subscription at location
 func (client DeletedWebAppsClient) ListByLocation(ctx context.Context, location string) (result DeletedWebAppCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeletedWebAppsClient.ListByLocation")

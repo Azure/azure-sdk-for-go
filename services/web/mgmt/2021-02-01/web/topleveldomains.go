@@ -30,7 +30,7 @@ func NewTopLevelDomainsClientWithBaseURI(baseURI string, subscriptionID string) 
 	return TopLevelDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get description for Get details of a top-level domain.
+// Get get details of a top-level domain.
 // Parameters:
 // name - name of the top-level domain.
 func (client TopLevelDomainsClient) Get(ctx context.Context, name string) (result TopLevelDomain, err error) {
@@ -104,7 +104,7 @@ func (client TopLevelDomainsClient) GetResponder(resp *http.Response) (result To
 	return
 }
 
-// List description for Get all top-level domains supported for registration.
+// List get all top-level domains supported for registration.
 func (client TopLevelDomainsClient) List(ctx context.Context) (result TopLevelDomainCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TopLevelDomainsClient.List")
@@ -217,7 +217,7 @@ func (client TopLevelDomainsClient) ListComplete(ctx context.Context) (result To
 	return
 }
 
-// ListAgreements description for Gets all legal agreements that user needs to accept before purchasing a domain.
+// ListAgreements gets all legal agreements that user needs to accept before purchasing a domain.
 // Parameters:
 // name - name of the top-level domain.
 // agreementOption - domain agreement options.

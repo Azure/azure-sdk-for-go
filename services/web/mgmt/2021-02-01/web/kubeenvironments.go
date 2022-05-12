@@ -32,7 +32,7 @@ func NewKubeEnvironmentsClientWithBaseURI(baseURI string, subscriptionID string)
 	return KubeEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate description for Creates or updates a Kubernetes Environment.
+// CreateOrUpdate creates or updates a Kubernetes Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Kubernetes Environment.
@@ -122,7 +122,7 @@ func (client KubeEnvironmentsClient) CreateOrUpdateResponder(resp *http.Response
 	return
 }
 
-// Delete description for Delete a Kubernetes Environment.
+// Delete delete a Kubernetes Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Kubernetes Environment.
@@ -208,7 +208,7 @@ func (client KubeEnvironmentsClient) DeleteResponder(resp *http.Response) (resul
 	return
 }
 
-// Get description for Get the properties of a Kubernetes Environment.
+// Get get the properties of a Kubernetes Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Kubernetes Environment.
@@ -292,7 +292,7 @@ func (client KubeEnvironmentsClient) GetResponder(resp *http.Response) (result K
 	return
 }
 
-// ListByResourceGroup description for Get all the Kubernetes Environments in a resource group.
+// ListByResourceGroup get all the Kubernetes Environments in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client KubeEnvironmentsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result KubeEnvironmentCollectionPage, err error) {
@@ -416,7 +416,7 @@ func (client KubeEnvironmentsClient) ListByResourceGroupComplete(ctx context.Con
 	return
 }
 
-// ListBySubscription description for Get all Kubernetes Environments for a subscription.
+// ListBySubscription get all Kubernetes Environments for a subscription.
 func (client KubeEnvironmentsClient) ListBySubscription(ctx context.Context) (result KubeEnvironmentCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/KubeEnvironmentsClient.ListBySubscription")
@@ -529,7 +529,7 @@ func (client KubeEnvironmentsClient) ListBySubscriptionComplete(ctx context.Cont
 	return
 }
 
-// Update description for Creates or updates a Kubernetes Environment.
+// Update creates or updates a Kubernetes Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Kubernetes Environment.

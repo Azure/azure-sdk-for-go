@@ -30,7 +30,7 @@ func NewProviderClientWithBaseURI(baseURI string, subscriptionID string) Provide
 	return ProviderClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetAvailableStacks description for Get available application frameworks and their versions
+// GetAvailableStacks get available application frameworks and their versions
 func (client ProviderClient) GetAvailableStacks(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacks")
@@ -142,7 +142,7 @@ func (client ProviderClient) GetAvailableStacksComplete(ctx context.Context, osT
 	return
 }
 
-// GetAvailableStacksOnPrem description for Get available application frameworks and their versions
+// GetAvailableStacksOnPrem get available application frameworks and their versions
 func (client ProviderClient) GetAvailableStacksOnPrem(ctx context.Context, osTypeSelected string) (result ApplicationStackCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.GetAvailableStacksOnPrem")
@@ -258,8 +258,8 @@ func (client ProviderClient) GetAvailableStacksOnPremComplete(ctx context.Contex
 	return
 }
 
-// ListOperations description for Gets all available operations for the Microsoft.Web resource provider. Also exposes
-// resource metric definitions
+// ListOperations gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric
+// definitions
 func (client ProviderClient) ListOperations(ctx context.Context) (result CsmOperationCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProviderClient.ListOperations")

@@ -31,7 +31,7 @@ func NewDomainsClientWithBaseURI(baseURI string, subscriptionID string) DomainsC
 	return DomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckAvailability description for Check if a domain is available for registration.
+// CheckAvailability check if a domain is available for registration.
 // Parameters:
 // identifier - name of the domain.
 func (client DomainsClient) CheckAvailability(ctx context.Context, identifier NameIdentifier) (result DomainAvailabilityCheckResult, err error) {
@@ -106,7 +106,7 @@ func (client DomainsClient) CheckAvailabilityResponder(resp *http.Response) (res
 	return
 }
 
-// CreateOrUpdate description for Creates or updates a domain.
+// CreateOrUpdate creates or updates a domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of the domain.
@@ -254,8 +254,8 @@ func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result
 	return
 }
 
-// CreateOrUpdateOwnershipIdentifier description for Creates an ownership identifier for a domain or updates identifier
-// details for an existing identifier
+// CreateOrUpdateOwnershipIdentifier creates an ownership identifier for a domain or updates identifier details for an
+// existing identifier
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.
@@ -344,7 +344,7 @@ func (client DomainsClient) CreateOrUpdateOwnershipIdentifierResponder(resp *htt
 	return
 }
 
-// Delete description for Delete a domain.
+// Delete delete a domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of the domain.
@@ -432,7 +432,7 @@ func (client DomainsClient) DeleteResponder(resp *http.Response) (result autores
 	return
 }
 
-// DeleteOwnershipIdentifier description for Delete ownership identifier for domain
+// DeleteOwnershipIdentifier delete ownership identifier for domain
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.
@@ -517,7 +517,7 @@ func (client DomainsClient) DeleteOwnershipIdentifierResponder(resp *http.Respon
 	return
 }
 
-// Get description for Get a domain.
+// Get get a domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of the domain.
@@ -601,7 +601,7 @@ func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, er
 	return
 }
 
-// GetControlCenterSsoRequest description for Generate a single sign-on request for the domain management portal.
+// GetControlCenterSsoRequest generate a single sign-on request for the domain management portal.
 func (client DomainsClient) GetControlCenterSsoRequest(ctx context.Context) (result DomainControlCenterSsoRequest, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.GetControlCenterSsoRequest")
@@ -672,7 +672,7 @@ func (client DomainsClient) GetControlCenterSsoRequestResponder(resp *http.Respo
 	return
 }
 
-// GetOwnershipIdentifier description for Get ownership identifier for domain
+// GetOwnershipIdentifier get ownership identifier for domain
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.
@@ -758,7 +758,7 @@ func (client DomainsClient) GetOwnershipIdentifierResponder(resp *http.Response)
 	return
 }
 
-// List description for Get all domains in a subscription.
+// List get all domains in a subscription.
 func (client DomainsClient) List(ctx context.Context) (result DomainCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.List")
@@ -871,7 +871,7 @@ func (client DomainsClient) ListComplete(ctx context.Context) (result DomainColl
 	return
 }
 
-// ListByResourceGroup description for Get all domains in a resource group.
+// ListByResourceGroup get all domains in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client DomainsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DomainCollectionPage, err error) {
@@ -995,7 +995,7 @@ func (client DomainsClient) ListByResourceGroupComplete(ctx context.Context, res
 	return
 }
 
-// ListOwnershipIdentifiers description for Lists domain ownership identifiers.
+// ListOwnershipIdentifiers lists domain ownership identifiers.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.
@@ -1121,7 +1121,7 @@ func (client DomainsClient) ListOwnershipIdentifiersComplete(ctx context.Context
 	return
 }
 
-// ListRecommendations description for Get domain name recommendations based on keywords.
+// ListRecommendations get domain name recommendations based on keywords.
 // Parameters:
 // parameters - search parameters for domain name recommendations.
 func (client DomainsClient) ListRecommendations(ctx context.Context, parameters DomainRecommendationSearchParameters) (result NameIdentifierCollectionPage, err error) {
@@ -1238,7 +1238,7 @@ func (client DomainsClient) ListRecommendationsComplete(ctx context.Context, par
 	return
 }
 
-// Renew description for Renew a domain.
+// Renew renew a domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of the domain.
@@ -1405,7 +1405,7 @@ func (client DomainsClient) TransferOutResponder(resp *http.Response) (result Do
 	return
 }
 
-// Update description for Creates or updates a domain.
+// Update creates or updates a domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of the domain.
@@ -1494,8 +1494,8 @@ func (client DomainsClient) UpdateResponder(resp *http.Response) (result Domain,
 	return
 }
 
-// UpdateOwnershipIdentifier description for Creates an ownership identifier for a domain or updates identifier details
-// for an existing identifier
+// UpdateOwnershipIdentifier creates an ownership identifier for a domain or updates identifier details for an existing
+// identifier
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.

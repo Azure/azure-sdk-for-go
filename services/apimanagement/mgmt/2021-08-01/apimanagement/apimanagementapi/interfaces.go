@@ -739,6 +739,18 @@ type ReportsClientAPI interface {
 
 var _ ReportsClientAPI = (*apimanagement.ReportsClient)(nil)
 
+// GlobalSchemaClientAPI contains the set of methods on the GlobalSchemaClient type.
+type GlobalSchemaClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, parameters apimanagement.GlobalSchemaContract, ifMatch string) (result apimanagement.GlobalSchemaCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, ifMatch string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (result apimanagement.GlobalSchemaContract, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.GlobalSchemaCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result apimanagement.GlobalSchemaCollectionIterator, err error)
+}
+
+var _ GlobalSchemaClientAPI = (*apimanagement.GlobalSchemaClient)(nil)
+
 // TenantSettingsClientAPI contains the set of methods on the TenantSettingsClient type.
 type TenantSettingsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.TenantSettingsContract, err error)

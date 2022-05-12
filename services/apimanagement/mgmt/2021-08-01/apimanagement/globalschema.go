@@ -15,34 +15,32 @@ import (
 	"net/http"
 )
 
-// APISchemaClient is the apiManagement Client
-type APISchemaClient struct {
+// GlobalSchemaClient is the apiManagement Client
+type GlobalSchemaClient struct {
 	BaseClient
 }
 
-// NewAPISchemaClient creates an instance of the APISchemaClient client.
-func NewAPISchemaClient(subscriptionID string) APISchemaClient {
-	return NewAPISchemaClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewGlobalSchemaClient creates an instance of the GlobalSchemaClient client.
+func NewGlobalSchemaClient(subscriptionID string) GlobalSchemaClient {
+	return NewGlobalSchemaClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAPISchemaClientWithBaseURI creates an instance of the APISchemaClient client using a custom endpoint.  Use this
-// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAPISchemaClientWithBaseURI(baseURI string, subscriptionID string) APISchemaClient {
-	return APISchemaClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewGlobalSchemaClientWithBaseURI creates an instance of the GlobalSchemaClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewGlobalSchemaClientWithBaseURI(baseURI string, subscriptionID string) GlobalSchemaClient {
+	return GlobalSchemaClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates schema configuration for the API.
+// CreateOrUpdate creates new or updates existing specified Schema of the API Management service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
 // schemaID - schema id identifier. Must be unique in the current API Management service instance.
-// parameters - the schema contents to apply.
+// parameters - create or update parameters.
 // ifMatch - eTag of the Entity. Not required when creating an entity, but required when updating an entity.
-func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (result APISchemaCreateOrUpdateFuture, err error) {
+func (client GlobalSchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, parameters GlobalSchemaContract, ifMatch string) (result GlobalSchemaCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -56,28 +54,21 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiid,
-			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: schemaID,
 			Constraints: []validation.Constraint{{Target: "schemaID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.SchemaContractProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.SchemaContractProperties.ContentType", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APISchemaClient", "CreateOrUpdate", err.Error())
+				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("apimanagement.GlobalSchemaClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, apiid, schemaID, parameters, ifMatch)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, schemaID, parameters, ifMatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -85,9 +76,8 @@ func (client APISchemaClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, parameters SchemaContract, ifMatch string) (*http.Request, error) {
+func (client GlobalSchemaClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, parameters GlobalSchemaContract, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"schemaId":          autorest.Encode("path", schemaID),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -103,7 +93,7 @@ func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/schemas/{schemaId}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
@@ -115,7 +105,7 @@ func (client APISchemaClient) CreateOrUpdatePreparer(ctx context.Context, resour
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (future APISchemaCreateOrUpdateFuture, err error) {
+func (client GlobalSchemaClient) CreateOrUpdateSender(req *http.Request) (future GlobalSchemaCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
@@ -131,7 +121,7 @@ func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (future AP
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (result SchemaContract, err error) {
+func (client GlobalSchemaClient) CreateOrUpdateResponder(resp *http.Response) (result GlobalSchemaContract, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
@@ -141,19 +131,16 @@ func (client APISchemaClient) CreateOrUpdateResponder(resp *http.Response) (resu
 	return
 }
 
-// Delete deletes the schema configuration at the Api.
+// Delete deletes specific Schema.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
 // schemaID - schema id identifier. Must be unique in the current API Management service instance.
 // ifMatch - eTag of the Entity. ETag should match the current entity state from the header response of the GET
 // request or it should be * for unconditional update.
-// force - if true removes all references to the schema before deleting it.
-func (client APISchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, ifMatch string, force *bool) (result autorest.Response, err error) {
+func (client GlobalSchemaClient) Delete(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, ifMatch string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -167,32 +154,28 @@ func (client APISchemaClient) Delete(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiid,
-			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: schemaID,
 			Constraints: []validation.Constraint{{Target: "schemaID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APISchemaClient", "Delete", err.Error())
+		return result, validation.NewError("apimanagement.GlobalSchemaClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, apiid, schemaID, ifMatch, force)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName, schemaID, ifMatch)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -200,9 +183,8 @@ func (client APISchemaClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client APISchemaClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string, ifMatch string, force *bool) (*http.Request, error) {
+func (client GlobalSchemaClient) DeletePreparer(ctx context.Context, resourceGroupName string, serviceName string, schemaID string, ifMatch string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"schemaId":          autorest.Encode("path", schemaID),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -213,14 +195,11 @@ func (client APISchemaClient) DeletePreparer(ctx context.Context, resourceGroupN
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if force != nil {
-		queryParameters["force"] = autorest.Encode("query", *force)
-	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/schemas/{schemaId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("If-Match", autorest.String(ifMatch)))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -228,13 +207,13 @@ func (client APISchemaClient) DeletePreparer(ctx context.Context, resourceGroupN
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client APISchemaClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client GlobalSchemaClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GlobalSchemaClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -243,16 +222,14 @@ func (client APISchemaClient) DeleteResponder(resp *http.Response) (result autor
 	return
 }
 
-// Get get the schema configuration at the API level.
+// Get gets the details of the Schema specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
 // schemaID - schema id identifier. Must be unique in the current API Management service instance.
-func (client APISchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (result SchemaContract, err error) {
+func (client GlobalSchemaClient) Get(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (result GlobalSchemaContract, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -266,32 +243,28 @@ func (client APISchemaClient) Get(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiid,
-			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: schemaID,
 			Constraints: []validation.Constraint{{Target: "schemaID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APISchemaClient", "Get", err.Error())
+		return result, validation.NewError("apimanagement.GlobalSchemaClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, apiid, schemaID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, schemaID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -299,9 +272,8 @@ func (client APISchemaClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetPreparer prepares the Get request.
-func (client APISchemaClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (*http.Request, error) {
+func (client GlobalSchemaClient) GetPreparer(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"schemaId":          autorest.Encode("path", schemaID),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -316,20 +288,20 @@ func (client APISchemaClient) GetPreparer(ctx context.Context, resourceGroupName
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/schemas/{schemaId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client APISchemaClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client GlobalSchemaClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaContract, err error) {
+func (client GlobalSchemaClient) GetResponder(resp *http.Response) (result GlobalSchemaContract, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -339,16 +311,14 @@ func (client APISchemaClient) GetResponder(resp *http.Response) (result SchemaCo
 	return
 }
 
-// GetEntityTag gets the entity state (Etag) version of the schema specified by its identifier.
+// GetEntityTag gets the entity state (Etag) version of the Schema specified by its identifier.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
 // schemaID - schema id identifier. Must be unique in the current API Management service instance.
-func (client APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (result autorest.Response, err error) {
+func (client GlobalSchemaClient) GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.GetEntityTag")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.GetEntityTag")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -362,32 +332,28 @@ func (client APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiid,
-			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: schemaID,
 			Constraints: []validation.Constraint{{Target: "schemaID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "schemaID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APISchemaClient", "GetEntityTag", err.Error())
+		return result, validation.NewError("apimanagement.GlobalSchemaClient", "GetEntityTag", err.Error())
 	}
 
-	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, apiid, schemaID)
+	req, err := client.GetEntityTagPreparer(ctx, resourceGroupName, serviceName, schemaID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "GetEntityTag", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "GetEntityTag", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetEntityTagSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "GetEntityTag", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "GetEntityTag", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetEntityTagResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "GetEntityTag", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "GetEntityTag", resp, "Failure responding to request")
 		return
 	}
 
@@ -395,9 +361,8 @@ func (client APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNam
 }
 
 // GetEntityTagPreparer prepares the GetEntityTag request.
-func (client APISchemaClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, schemaID string) (*http.Request, error) {
+func (client GlobalSchemaClient) GetEntityTagPreparer(ctx context.Context, resourceGroupName string, serviceName string, schemaID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"schemaId":          autorest.Encode("path", schemaID),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -412,20 +377,20 @@ func (client APISchemaClient) GetEntityTagPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/schemas/{schemaId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
-func (client APISchemaClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
+func (client GlobalSchemaClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
 // closes the http.Response Body.
-func (client APISchemaClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GlobalSchemaClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -434,24 +399,22 @@ func (client APISchemaClient) GetEntityTagResponder(resp *http.Response) (result
 	return
 }
 
-// ListByAPI get the schema configuration at the API level.
+// ListByService lists a collection of schemas registered with service instance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
-// apiid - API revision identifier. Must be unique in the current API Management service instance. Non-current
-// revision has ;rev=n as a suffix where n is the revision number.
 // filter - |     Field     |     Usage     |     Supported operators     |     Supported functions
-// |</br>|-------------|-------------|-------------|-------------|</br>| contentType | filter | ge, le, eq, ne,
-// gt, lt | substringof, contains, startswith, endswith |</br>
+// |</br>|-------------|-------------|-------------|-------------|</br>| name | filter | ge, le, eq, ne, gt, lt
+// | substringof, contains, startswith, endswith |</br>
 // top - number of records to return.
 // skip - number of records to skip.
-func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result SchemaCollectionPage, err error) {
+func (client GlobalSchemaClient) ListByService(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result GlobalSchemaCollectionPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.ListByAPI")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.ListByService")
 		defer func() {
 			sc := -1
-			if result.sc.Response.Response != nil {
-				sc = result.sc.Response.Response.StatusCode
+			if result.gsc.Response.Response != nil {
+				sc = result.gsc.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -461,39 +424,35 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "serviceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "serviceName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
-		{TargetValue: apiid,
-			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("apimanagement.APISchemaClient", "ListByAPI", err.Error())
+		return result, validation.NewError("apimanagement.GlobalSchemaClient", "ListByService", err.Error())
 	}
 
-	result.fn = client.listByAPINextResults
-	req, err := client.ListByAPIPreparer(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	result.fn = client.listByServiceNextResults
+	req, err := client.ListByServicePreparer(ctx, resourceGroupName, serviceName, filter, top, skip)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "ListByAPI", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "ListByService", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByAPISender(req)
+	resp, err := client.ListByServiceSender(req)
 	if err != nil {
-		result.sc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "ListByAPI", resp, "Failure sending request")
+		result.gsc.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "ListByService", resp, "Failure sending request")
 		return
 	}
 
-	result.sc, err = client.ListByAPIResponder(resp)
+	result.gsc, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "ListByAPI", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "ListByService", resp, "Failure responding to request")
 		return
 	}
-	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+	if result.gsc.hasNextLink() && result.gsc.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -501,10 +460,9 @@ func (client APISchemaClient) ListByAPI(ctx context.Context, resourceGroupName s
 	return
 }
 
-// ListByAPIPreparer prepares the ListByAPI request.
-func (client APISchemaClient) ListByAPIPreparer(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
+// ListByServicePreparer prepares the ListByService request.
+func (client GlobalSchemaClient) ListByServicePreparer(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"apiId":             autorest.Encode("path", apiid),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -527,20 +485,20 @@ func (client APISchemaClient) ListByAPIPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/schemas", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByAPISender sends the ListByAPI request. The method will close the
+// ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
-func (client APISchemaClient) ListByAPISender(req *http.Request) (*http.Response, error) {
+func (client GlobalSchemaClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByAPIResponder handles the response to the ListByAPI request. The method always
+// ListByServiceResponder handles the response to the ListByService request. The method always
 // closes the http.Response Body.
-func (client APISchemaClient) ListByAPIResponder(resp *http.Response) (result SchemaCollection, err error) {
+func (client GlobalSchemaClient) ListByServiceResponder(resp *http.Response) (result GlobalSchemaCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -550,31 +508,31 @@ func (client APISchemaClient) ListByAPIResponder(resp *http.Response) (result Sc
 	return
 }
 
-// listByAPINextResults retrieves the next set of results, if any.
-func (client APISchemaClient) listByAPINextResults(ctx context.Context, lastResults SchemaCollection) (result SchemaCollection, err error) {
-	req, err := lastResults.schemaCollectionPreparer(ctx)
+// listByServiceNextResults retrieves the next set of results, if any.
+func (client GlobalSchemaClient) listByServiceNextResults(ctx context.Context, lastResults GlobalSchemaCollection) (result GlobalSchemaCollection, err error) {
+	req, err := lastResults.globalSchemaCollectionPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "listByAPINextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "listByServiceNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByAPISender(req)
+	resp, err := client.ListByServiceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "listByAPINextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "listByServiceNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByAPIResponder(resp)
+	result, err = client.ListByServiceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.APISchemaClient", "listByAPINextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaClient", "listByServiceNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByAPIComplete enumerates all values, automatically crossing page boundaries as required.
-func (client APISchemaClient) ListByAPIComplete(ctx context.Context, resourceGroupName string, serviceName string, apiid string, filter string, top *int32, skip *int32) (result SchemaCollectionIterator, err error) {
+// ListByServiceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client GlobalSchemaClient) ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, filter string, top *int32, skip *int32) (result GlobalSchemaCollectionIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/APISchemaClient.ListByAPI")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaClient.ListByService")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -583,6 +541,6 @@ func (client APISchemaClient) ListByAPIComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByAPI(ctx, resourceGroupName, serviceName, apiid, filter, top, skip)
+	result.page, err = client.ListByService(ctx, resourceGroupName, serviceName, filter, top, skip)
 	return
 }

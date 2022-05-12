@@ -31,7 +31,7 @@ func NewAppServicePlansClientWithBaseURI(baseURI string, subscriptionID string) 
 	return AppServicePlansClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate description for Creates or updates an App Service Plan.
+// CreateOrUpdate creates or updates an App Service Plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -121,7 +121,7 @@ func (client AppServicePlansClient) CreateOrUpdateResponder(resp *http.Response)
 	return
 }
 
-// CreateOrUpdateVnetRoute description for Create or update a Virtual Network route in an App Service plan.
+// CreateOrUpdateVnetRoute create or update a Virtual Network route in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -212,7 +212,7 @@ func (client AppServicePlansClient) CreateOrUpdateVnetRouteResponder(resp *http.
 	return
 }
 
-// Delete description for Delete an App Service plan.
+// Delete delete an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -295,7 +295,7 @@ func (client AppServicePlansClient) DeleteResponder(resp *http.Response) (result
 	return
 }
 
-// DeleteHybridConnection description for Delete a Hybrid Connection in use in an App Service plan.
+// DeleteHybridConnection delete a Hybrid Connection in use in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -382,7 +382,7 @@ func (client AppServicePlansClient) DeleteHybridConnectionResponder(resp *http.R
 	return
 }
 
-// DeleteVnetRoute description for Delete a Virtual Network route in an App Service plan.
+// DeleteVnetRoute delete a Virtual Network route in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -469,7 +469,7 @@ func (client AppServicePlansClient) DeleteVnetRouteResponder(resp *http.Response
 	return
 }
 
-// Get description for Get an App Service plan.
+// Get get an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -553,7 +553,7 @@ func (client AppServicePlansClient) GetResponder(resp *http.Response) (result Ap
 	return
 }
 
-// GetHybridConnection description for Retrieve a Hybrid Connection in use in an App Service plan.
+// GetHybridConnection retrieve a Hybrid Connection in use in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -641,8 +641,7 @@ func (client AppServicePlansClient) GetHybridConnectionResponder(resp *http.Resp
 	return
 }
 
-// GetHybridConnectionPlanLimit description for Get the maximum number of Hybrid Connections allowed in an App Service
-// plan.
+// GetHybridConnectionPlanLimit get the maximum number of Hybrid Connections allowed in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -726,7 +725,7 @@ func (client AppServicePlansClient) GetHybridConnectionPlanLimitResponder(resp *
 	return
 }
 
-// GetRouteForVnet description for Get a Virtual Network route in an App Service plan.
+// GetRouteForVnet get a Virtual Network route in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -814,7 +813,7 @@ func (client AppServicePlansClient) GetRouteForVnetResponder(resp *http.Response
 	return
 }
 
-// GetServerFarmSkus description for Gets all selectable SKUs for a given App Service Plan
+// GetServerFarmSkus gets all selectable SKUs for a given App Service Plan
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of App Service Plan
@@ -898,7 +897,7 @@ func (client AppServicePlansClient) GetServerFarmSkusResponder(resp *http.Respon
 	return
 }
 
-// GetVnetFromServerFarm description for Get a Virtual Network associated with an App Service plan.
+// GetVnetFromServerFarm get a Virtual Network associated with an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -984,7 +983,7 @@ func (client AppServicePlansClient) GetVnetFromServerFarmResponder(resp *http.Re
 	return
 }
 
-// GetVnetGateway description for Get a Virtual Network gateway.
+// GetVnetGateway get a Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1072,7 +1071,7 @@ func (client AppServicePlansClient) GetVnetGatewayResponder(resp *http.Response)
 	return
 }
 
-// List description for Get all App Service plans for a subscription.
+// List get all App Service plans for a subscription.
 // Parameters:
 // detailed - specify <code>true</code> to return all App Service plan properties. The default is
 // <code>false</code>, which returns a subset of the properties.
@@ -1192,7 +1191,7 @@ func (client AppServicePlansClient) ListComplete(ctx context.Context, detailed *
 	return
 }
 
-// ListByResourceGroup description for Get all App Service plans in a resource group.
+// ListByResourceGroup get all App Service plans in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client AppServicePlansClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AppServicePlanCollectionPage, err error) {
@@ -1316,7 +1315,7 @@ func (client AppServicePlansClient) ListByResourceGroupComplete(ctx context.Cont
 	return
 }
 
-// ListCapabilities description for List all capabilities of an App Service plan.
+// ListCapabilities list all capabilities of an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1400,7 +1399,7 @@ func (client AppServicePlansClient) ListCapabilitiesResponder(resp *http.Respons
 	return
 }
 
-// ListHybridConnectionKeys description for Get the send key name and value of a Hybrid Connection.
+// ListHybridConnectionKeys get the send key name and value of a Hybrid Connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1488,7 +1487,7 @@ func (client AppServicePlansClient) ListHybridConnectionKeysResponder(resp *http
 	return
 }
 
-// ListHybridConnections description for Retrieve all Hybrid Connections in use in an App Service plan.
+// ListHybridConnections retrieve all Hybrid Connections in use in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1614,7 +1613,7 @@ func (client AppServicePlansClient) ListHybridConnectionsComplete(ctx context.Co
 	return
 }
 
-// ListRoutesForVnet description for Get all routes that are associated with a Virtual Network in an App Service plan.
+// ListRoutesForVnet get all routes that are associated with a Virtual Network in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1700,7 +1699,7 @@ func (client AppServicePlansClient) ListRoutesForVnetResponder(resp *http.Respon
 	return
 }
 
-// ListUsages description for Gets server farm usage information
+// ListUsages gets server farm usage information
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of App Service Plan
@@ -1831,7 +1830,7 @@ func (client AppServicePlansClient) ListUsagesComplete(ctx context.Context, reso
 	return
 }
 
-// ListVnets description for Get all Virtual Networks associated with an App Service plan.
+// ListVnets get all Virtual Networks associated with an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -1915,7 +1914,7 @@ func (client AppServicePlansClient) ListVnetsResponder(resp *http.Response) (res
 	return
 }
 
-// ListWebApps description for Get all apps associated with an App Service plan.
+// ListWebApps get all apps associated with an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2055,7 +2054,7 @@ func (client AppServicePlansClient) ListWebAppsComplete(ctx context.Context, res
 	return
 }
 
-// ListWebAppsByHybridConnection description for Get all apps that use a Hybrid Connection in an App Service Plan.
+// ListWebAppsByHybridConnection get all apps that use a Hybrid Connection in an App Service Plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2185,7 +2184,7 @@ func (client AppServicePlansClient) ListWebAppsByHybridConnectionComplete(ctx co
 	return
 }
 
-// RebootWorker description for Reboot a worker machine in an App Service plan.
+// RebootWorker reboot a worker machine in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2270,7 +2269,7 @@ func (client AppServicePlansClient) RebootWorkerResponder(resp *http.Response) (
 	return
 }
 
-// RestartWebApps description for Restart all apps in an App Service plan.
+// RestartWebApps restart all apps in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2359,7 +2358,7 @@ func (client AppServicePlansClient) RestartWebAppsResponder(resp *http.Response)
 	return
 }
 
-// Update description for Creates or updates an App Service Plan.
+// Update creates or updates an App Service Plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2446,7 +2445,7 @@ func (client AppServicePlansClient) UpdateResponder(resp *http.Response) (result
 	return
 }
 
-// UpdateVnetGateway description for Update a Virtual Network gateway.
+// UpdateVnetGateway update a Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.
@@ -2540,7 +2539,7 @@ func (client AppServicePlansClient) UpdateVnetGatewayResponder(resp *http.Respon
 	return
 }
 
-// UpdateVnetRoute description for Create or update a Virtual Network route in an App Service plan.
+// UpdateVnetRoute create or update a Virtual Network route in an App Service plan.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service plan.

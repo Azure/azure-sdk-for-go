@@ -45,7 +45,7 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	}
 }
 
-// CheckNameAvailability description for Check if a resource name is available.
+// CheckNameAvailability check if a resource name is available.
 // Parameters:
 // request - name availability request.
 func (client BaseClient) CheckNameAvailability(ctx context.Context, request ResourceNameAvailabilityRequest) (result ResourceNameAvailability, err error) {
@@ -126,84 +126,7 @@ func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (re
 	return
 }
 
-// GenerateGithubAccessTokenForAppserviceCLIAsync description for Exchange code for GitHub access token for AppService
-// CLI
-func (client BaseClient) GenerateGithubAccessTokenForAppserviceCLIAsync(ctx context.Context, request AppserviceGithubTokenRequest) (result AppserviceGithubToken, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GenerateGithubAccessTokenForAppserviceCLIAsync")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: request,
-			Constraints: []validation.Constraint{{Target: "request.Code", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "request.State", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.BaseClient", "GenerateGithubAccessTokenForAppserviceCLIAsync", err.Error())
-	}
-
-	req, err := client.GenerateGithubAccessTokenForAppserviceCLIAsyncPreparer(ctx, request)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.BaseClient", "GenerateGithubAccessTokenForAppserviceCLIAsync", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GenerateGithubAccessTokenForAppserviceCLIAsyncSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.BaseClient", "GenerateGithubAccessTokenForAppserviceCLIAsync", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GenerateGithubAccessTokenForAppserviceCLIAsyncResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.BaseClient", "GenerateGithubAccessTokenForAppserviceCLIAsync", resp, "Failure responding to request")
-		return
-	}
-
-	return
-}
-
-// GenerateGithubAccessTokenForAppserviceCLIAsyncPreparer prepares the GenerateGithubAccessTokenForAppserviceCLIAsync request.
-func (client BaseClient) GenerateGithubAccessTokenForAppserviceCLIAsyncPreparer(ctx context.Context, request AppserviceGithubTokenRequest) (*http.Request, error) {
-	const APIVersion = "2020-12-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Web/generateGithubAccessTokenForAppserviceCLI"),
-		autorest.WithJSON(request),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GenerateGithubAccessTokenForAppserviceCLIAsyncSender sends the GenerateGithubAccessTokenForAppserviceCLIAsync request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GenerateGithubAccessTokenForAppserviceCLIAsyncSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// GenerateGithubAccessTokenForAppserviceCLIAsyncResponder handles the response to the GenerateGithubAccessTokenForAppserviceCLIAsync request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GenerateGithubAccessTokenForAppserviceCLIAsyncResponder(resp *http.Response) (result AppserviceGithubToken, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetPublishingUser description for Gets publishing user
+// GetPublishingUser gets publishing user
 func (client BaseClient) GetPublishingUser(ctx context.Context) (result User, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetPublishingUser")
@@ -270,7 +193,7 @@ func (client BaseClient) GetPublishingUserResponder(resp *http.Response) (result
 	return
 }
 
-// GetSourceControl description for Gets source control token
+// GetSourceControl gets source control token
 // Parameters:
 // sourceControlType - type of source control
 func (client BaseClient) GetSourceControl(ctx context.Context, sourceControlType string) (result SourceControl, err error) {
@@ -343,7 +266,7 @@ func (client BaseClient) GetSourceControlResponder(resp *http.Response) (result 
 	return
 }
 
-// GetSubscriptionDeploymentLocations description for Gets list of available geo regions plus ministamps
+// GetSubscriptionDeploymentLocations gets list of available geo regions plus ministamps
 func (client BaseClient) GetSubscriptionDeploymentLocations(ctx context.Context) (result DeploymentLocations, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetSubscriptionDeploymentLocations")
@@ -414,7 +337,7 @@ func (client BaseClient) GetSubscriptionDeploymentLocationsResponder(resp *http.
 	return
 }
 
-// ListBillingMeters description for Gets a list of meters for a given location.
+// ListBillingMeters gets a list of meters for a given location.
 // Parameters:
 // billingLocation - azure Location of billable resource
 // osType - app Service OS type meters used for
@@ -536,7 +459,7 @@ func (client BaseClient) ListBillingMetersComplete(ctx context.Context, billingL
 	return
 }
 
-// ListGeoRegions description for Get a list of available geographical regions.
+// ListGeoRegions get a list of available geographical regions.
 // Parameters:
 // sku - name of SKU used to filter the regions.
 // linuxWorkersEnabled - specify <code>true</code> if you want to filter to only regions that support Linux
@@ -669,7 +592,7 @@ func (client BaseClient) ListGeoRegionsComplete(ctx context.Context, sku SkuName
 	return
 }
 
-// ListPremierAddOnOffers description for List all premier add-on offers.
+// ListPremierAddOnOffers list all premier add-on offers.
 func (client BaseClient) ListPremierAddOnOffers(ctx context.Context) (result PremierAddOnOfferCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListPremierAddOnOffers")
@@ -782,7 +705,7 @@ func (client BaseClient) ListPremierAddOnOffersComplete(ctx context.Context) (re
 	return
 }
 
-// ListSiteIdentifiersAssignedToHostName description for List all apps that are assigned to a hostname.
+// ListSiteIdentifiersAssignedToHostName list all apps that are assigned to a hostname.
 // Parameters:
 // nameIdentifier - hostname information.
 func (client BaseClient) ListSiteIdentifiersAssignedToHostName(ctx context.Context, nameIdentifier NameIdentifier) (result IdentifierCollectionPage, err error) {
@@ -899,7 +822,7 @@ func (client BaseClient) ListSiteIdentifiersAssignedToHostNameComplete(ctx conte
 	return
 }
 
-// ListSkus description for List all SKUs.
+// ListSkus list all SKUs.
 func (client BaseClient) ListSkus(ctx context.Context) (result SkuInfos, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListSkus")
@@ -970,7 +893,7 @@ func (client BaseClient) ListSkusResponder(resp *http.Response) (result SkuInfos
 	return
 }
 
-// ListSourceControls description for Gets the source controls available for Azure websites.
+// ListSourceControls gets the source controls available for Azure websites.
 func (client BaseClient) ListSourceControls(ctx context.Context) (result SourceControlCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListSourceControls")
@@ -1079,7 +1002,7 @@ func (client BaseClient) ListSourceControlsComplete(ctx context.Context) (result
 	return
 }
 
-// Move description for Move resources between resource groups.
+// Move move resources between resource groups.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // moveResourceEnvelope - object that represents the resource to move.
@@ -1169,7 +1092,7 @@ func (client BaseClient) MoveResponder(resp *http.Response) (result autorest.Res
 	return
 }
 
-// UpdatePublishingUser description for Updates publishing user
+// UpdatePublishingUser updates publishing user
 // Parameters:
 // userDetails - details of publishing user
 func (client BaseClient) UpdatePublishingUser(ctx context.Context, userDetails User) (result User, err error) {
@@ -1247,7 +1170,7 @@ func (client BaseClient) UpdatePublishingUserResponder(resp *http.Response) (res
 	return
 }
 
-// UpdateSourceControl description for Updates source control token
+// UpdateSourceControl updates source control token
 // Parameters:
 // sourceControlType - type of source control
 // requestMessage - source control token information
@@ -1323,7 +1246,7 @@ func (client BaseClient) UpdateSourceControlResponder(resp *http.Response) (resu
 	return
 }
 
-// Validate description for Validate if a resource can be created.
+// Validate validate if a resource can be created.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // validateRequest - request with the resources to validate.
@@ -1419,7 +1342,7 @@ func (client BaseClient) ValidateResponder(resp *http.Response) (result Validate
 	return
 }
 
-// ValidateMove description for Validate whether a resource can be moved.
+// ValidateMove validate whether a resource can be moved.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // moveResourceEnvelope - object that represents the resource to move.
@@ -1509,8 +1432,8 @@ func (client BaseClient) ValidateMoveResponder(resp *http.Response) (result auto
 	return
 }
 
-// VerifyHostingEnvironmentVnet description for Verifies if this VNET is compatible with an App Service Environment by
-// analyzing the Network Security Group rules.
+// VerifyHostingEnvironmentVnet verifies if this VNET is compatible with an App Service Environment by analyzing the
+// Network Security Group rules.
 // Parameters:
 // parameters - VNET information
 func (client BaseClient) VerifyHostingEnvironmentVnet(ctx context.Context, parameters VnetParameters) (result VnetValidationFailureDetails, err error) {

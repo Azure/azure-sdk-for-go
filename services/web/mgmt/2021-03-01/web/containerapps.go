@@ -31,7 +31,7 @@ func NewContainerAppsClientWithBaseURI(baseURI string, subscriptionID string) Co
 	return ContainerAppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate description for Create or update a Container App.
+// CreateOrUpdate create or update a Container App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Container App.
@@ -120,7 +120,7 @@ func (client ContainerAppsClient) CreateOrUpdateResponder(resp *http.Response) (
 	return
 }
 
-// Delete description for Delete a Container App.
+// Delete delete a Container App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the Container App.

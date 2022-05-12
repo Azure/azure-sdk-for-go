@@ -116,7 +116,7 @@ func (client PrivateEndpointConnectionClient) CreateOrUpdateSender(req *http.Req
 func (client PrivateEndpointConnectionClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -297,7 +297,7 @@ func (client PrivateEndpointConnectionClient) GetByNameResponder(resp *http.Resp
 	return
 }
 
-// GetPrivateLinkResource description for Gets the private link resources
+// GetPrivateLinkResource gets the private link resources
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.
@@ -467,7 +467,7 @@ func (client PrivateEndpointConnectionClient) ListByServiceResponder(resp *http.
 	return
 }
 
-// ListPrivateLinkResources description for Gets the private link resources
+// ListPrivateLinkResources gets the private link resources
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceName - the name of the API Management service.

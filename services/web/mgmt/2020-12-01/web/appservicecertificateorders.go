@@ -32,7 +32,7 @@ func NewAppServiceCertificateOrdersClientWithBaseURI(baseURI string, subscriptio
 	return AppServiceCertificateOrdersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate description for Create or update a certificate purchase order.
+// CreateOrUpdate create or update a certificate purchase order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -122,7 +122,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateResponder(resp *ht
 	return
 }
 
-// CreateOrUpdateCertificate description for Creates or updates a certificate and associates with key vault secret.
+// CreateOrUpdateCertificate creates or updates a certificate and associates with key vault secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -214,7 +214,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateRespond
 	return
 }
 
-// Delete description for Delete an existing certificate order.
+// Delete delete an existing certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -297,7 +297,7 @@ func (client AppServiceCertificateOrdersClient) DeleteResponder(resp *http.Respo
 	return
 }
 
-// DeleteCertificate description for Delete the certificate associated with a certificate order.
+// DeleteCertificate delete the certificate associated with a certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -382,7 +382,7 @@ func (client AppServiceCertificateOrdersClient) DeleteCertificateResponder(resp 
 	return
 }
 
-// Get description for Get a certificate order.
+// Get get a certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order..
@@ -466,7 +466,7 @@ func (client AppServiceCertificateOrdersClient) GetResponder(resp *http.Response
 	return
 }
 
-// GetCertificate description for Get the certificate associated with a certificate order.
+// GetCertificate get the certificate associated with a certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -552,7 +552,7 @@ func (client AppServiceCertificateOrdersClient) GetCertificateResponder(resp *ht
 	return
 }
 
-// List description for List all certificate orders in a subscription.
+// List list all certificate orders in a subscription.
 func (client AppServiceCertificateOrdersClient) List(ctx context.Context) (result AppServiceCertificateOrderCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceCertificateOrdersClient.List")
@@ -665,7 +665,7 @@ func (client AppServiceCertificateOrdersClient) ListComplete(ctx context.Context
 	return
 }
 
-// ListByResourceGroup description for Get certificate orders in a resource group.
+// ListByResourceGroup get certificate orders in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client AppServiceCertificateOrdersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AppServiceCertificateOrderCollectionPage, err error) {
@@ -789,7 +789,7 @@ func (client AppServiceCertificateOrdersClient) ListByResourceGroupComplete(ctx 
 	return
 }
 
-// ListCertificates description for List all certificates associated with a certificate order.
+// ListCertificates list all certificates associated with a certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -915,7 +915,7 @@ func (client AppServiceCertificateOrdersClient) ListCertificatesComplete(ctx con
 	return
 }
 
-// Reissue description for Reissue an existing certificate order.
+// Reissue reissue an existing certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1001,7 +1001,7 @@ func (client AppServiceCertificateOrdersClient) ReissueResponder(resp *http.Resp
 	return
 }
 
-// Renew description for Renew an existing certificate order.
+// Renew renew an existing certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1087,7 +1087,7 @@ func (client AppServiceCertificateOrdersClient) RenewResponder(resp *http.Respon
 	return
 }
 
-// ResendEmail description for Resend certificate email.
+// ResendEmail resend certificate email.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1170,7 +1170,7 @@ func (client AppServiceCertificateOrdersClient) ResendEmailResponder(resp *http.
 	return
 }
 
-// ResendRequestEmails description for Verify domain ownership for this certificate order.
+// ResendRequestEmails verify domain ownership for this certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1256,7 +1256,7 @@ func (client AppServiceCertificateOrdersClient) ResendRequestEmailsResponder(res
 	return
 }
 
-// RetrieveCertificateActions description for Retrieve the list of certificate actions.
+// RetrieveCertificateActions retrieve the list of certificate actions.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate order.
@@ -1340,7 +1340,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateActionsRespon
 	return
 }
 
-// RetrieveCertificateEmailHistory description for Retrieve email history.
+// RetrieveCertificateEmailHistory retrieve email history.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate order.
@@ -1424,7 +1424,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistoryR
 	return
 }
 
-// RetrieveSiteSeal description for Verify domain ownership for this certificate order.
+// RetrieveSiteSeal verify domain ownership for this certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1511,7 +1511,7 @@ func (client AppServiceCertificateOrdersClient) RetrieveSiteSealResponder(resp *
 	return
 }
 
-// Update description for Create or update a certificate purchase order.
+// Update create or update a certificate purchase order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1598,7 +1598,7 @@ func (client AppServiceCertificateOrdersClient) UpdateResponder(resp *http.Respo
 	return
 }
 
-// UpdateCertificate description for Creates or updates a certificate and associates with key vault secret.
+// UpdateCertificate creates or updates a certificate and associates with key vault secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.
@@ -1687,7 +1687,7 @@ func (client AppServiceCertificateOrdersClient) UpdateCertificateResponder(resp 
 	return
 }
 
-// ValidatePurchaseInformation description for Validate information for a certificate order.
+// ValidatePurchaseInformation validate information for a certificate order.
 // Parameters:
 // appServiceCertificateOrder - information for a certificate order.
 func (client AppServiceCertificateOrdersClient) ValidatePurchaseInformation(ctx context.Context, appServiceCertificateOrder AppServiceCertificateOrder) (result autorest.Response, err error) {
@@ -1761,7 +1761,7 @@ func (client AppServiceCertificateOrdersClient) ValidatePurchaseInformationRespo
 	return
 }
 
-// VerifyDomainOwnership description for Verify domain ownership for this certificate order.
+// VerifyDomainOwnership verify domain ownership for this certificate order.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - name of the certificate order.

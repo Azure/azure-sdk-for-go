@@ -30,7 +30,7 @@ func NewGlobalClientWithBaseURI(baseURI string, subscriptionID string) GlobalCli
 	return GlobalClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetDeletedWebApp description for Get deleted app for a subscription.
+// GetDeletedWebApp get deleted app for a subscription.
 // Parameters:
 // deletedSiteID - the numeric ID of the deleted app, e.g. 12345
 func (client GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID string) (result DeletedSite, err error) {
@@ -104,7 +104,7 @@ func (client GlobalClient) GetDeletedWebAppResponder(resp *http.Response) (resul
 	return
 }
 
-// GetDeletedWebAppSnapshots description for Get all deleted apps for a subscription.
+// GetDeletedWebAppSnapshots get all deleted apps for a subscription.
 // Parameters:
 // deletedSiteID - the numeric ID of the deleted app, e.g. 12345
 func (client GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, deletedSiteID string) (result ListSnapshot, err error) {
@@ -178,7 +178,7 @@ func (client GlobalClient) GetDeletedWebAppSnapshotsResponder(resp *http.Respons
 	return
 }
 
-// GetSubscriptionOperationWithAsyncResponse description for Gets an operation in a subscription and given region
+// GetSubscriptionOperationWithAsyncResponse gets an operation in a subscription and given region
 // Parameters:
 // location - location name
 // operationID - operation Id

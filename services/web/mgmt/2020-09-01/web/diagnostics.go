@@ -32,7 +32,7 @@ func NewDiagnosticsClientWithBaseURI(baseURI string, subscriptionID string) Diag
 	return DiagnosticsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ExecuteSiteAnalysis description for Execute Analysis
+// ExecuteSiteAnalysis execute Analysis
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -135,7 +135,7 @@ func (client DiagnosticsClient) ExecuteSiteAnalysisResponder(resp *http.Response
 	return
 }
 
-// ExecuteSiteAnalysisSlot description for Execute Analysis
+// ExecuteSiteAnalysisSlot execute Analysis
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -240,7 +240,7 @@ func (client DiagnosticsClient) ExecuteSiteAnalysisSlotResponder(resp *http.Resp
 	return
 }
 
-// ExecuteSiteDetector description for Execute Detector
+// ExecuteSiteDetector execute Detector
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -343,7 +343,7 @@ func (client DiagnosticsClient) ExecuteSiteDetectorResponder(resp *http.Response
 	return
 }
 
-// ExecuteSiteDetectorSlot description for Execute Detector
+// ExecuteSiteDetectorSlot execute Detector
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -448,7 +448,7 @@ func (client DiagnosticsClient) ExecuteSiteDetectorSlotResponder(resp *http.Resp
 	return
 }
 
-// GetHostingEnvironmentDetectorResponse description for Get Hosting Environment Detector Response
+// GetHostingEnvironmentDetectorResponse get Hosting Environment Detector Response
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - app Service Environment Name
@@ -549,7 +549,7 @@ func (client DiagnosticsClient) GetHostingEnvironmentDetectorResponseResponder(r
 	return
 }
 
-// GetSiteAnalysis description for Get Site Analysis
+// GetSiteAnalysis get Site Analysis
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -637,7 +637,7 @@ func (client DiagnosticsClient) GetSiteAnalysisResponder(resp *http.Response) (r
 	return
 }
 
-// GetSiteAnalysisSlot description for Get Site Analysis
+// GetSiteAnalysisSlot get Site Analysis
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -727,7 +727,7 @@ func (client DiagnosticsClient) GetSiteAnalysisSlotResponder(resp *http.Response
 	return
 }
 
-// GetSiteDetector description for Get Detector
+// GetSiteDetector get Detector
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -815,7 +815,7 @@ func (client DiagnosticsClient) GetSiteDetectorResponder(resp *http.Response) (r
 	return
 }
 
-// GetSiteDetectorResponse description for Get site detector response
+// GetSiteDetectorResponse get site detector response
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -916,7 +916,7 @@ func (client DiagnosticsClient) GetSiteDetectorResponseResponder(resp *http.Resp
 	return
 }
 
-// GetSiteDetectorResponseSlot description for Get site detector response
+// GetSiteDetectorResponseSlot get site detector response
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1019,7 +1019,7 @@ func (client DiagnosticsClient) GetSiteDetectorResponseSlotResponder(resp *http.
 	return
 }
 
-// GetSiteDetectorSlot description for Get Detector
+// GetSiteDetectorSlot get Detector
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1109,7 +1109,7 @@ func (client DiagnosticsClient) GetSiteDetectorSlotResponder(resp *http.Response
 	return
 }
 
-// GetSiteDiagnosticCategory description for Get Diagnostics Category
+// GetSiteDiagnosticCategory get Diagnostics Category
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1195,7 +1195,7 @@ func (client DiagnosticsClient) GetSiteDiagnosticCategoryResponder(resp *http.Re
 	return
 }
 
-// GetSiteDiagnosticCategorySlot description for Get Diagnostics Category
+// GetSiteDiagnosticCategorySlot get Diagnostics Category
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1283,7 +1283,7 @@ func (client DiagnosticsClient) GetSiteDiagnosticCategorySlotResponder(resp *htt
 	return
 }
 
-// ListHostingEnvironmentDetectorResponses description for List Hosting Environment Detector Responses
+// ListHostingEnvironmentDetectorResponses list Hosting Environment Detector Responses
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site Name
@@ -1409,7 +1409,7 @@ func (client DiagnosticsClient) ListHostingEnvironmentDetectorResponsesComplete(
 	return
 }
 
-// ListSiteAnalyses description for Get Site Analyses
+// ListSiteAnalyses get Site Analyses
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1537,7 +1537,7 @@ func (client DiagnosticsClient) ListSiteAnalysesComplete(ctx context.Context, re
 	return
 }
 
-// ListSiteAnalysesSlot description for Get Site Analyses
+// ListSiteAnalysesSlot get Site Analyses
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1667,7 +1667,7 @@ func (client DiagnosticsClient) ListSiteAnalysesSlotComplete(ctx context.Context
 	return
 }
 
-// ListSiteDetectorResponses description for List Site Detector Responses
+// ListSiteDetectorResponses list Site Detector Responses
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1793,7 +1793,7 @@ func (client DiagnosticsClient) ListSiteDetectorResponsesComplete(ctx context.Co
 	return
 }
 
-// ListSiteDetectorResponsesSlot description for List Site Detector Responses
+// ListSiteDetectorResponsesSlot list Site Detector Responses
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -1921,7 +1921,7 @@ func (client DiagnosticsClient) ListSiteDetectorResponsesSlotComplete(ctx contex
 	return
 }
 
-// ListSiteDetectors description for Get Detectors
+// ListSiteDetectors get Detectors
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -2049,7 +2049,7 @@ func (client DiagnosticsClient) ListSiteDetectorsComplete(ctx context.Context, r
 	return
 }
 
-// ListSiteDetectorsSlot description for Get Detectors
+// ListSiteDetectorsSlot get Detectors
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -2179,7 +2179,7 @@ func (client DiagnosticsClient) ListSiteDetectorsSlotComplete(ctx context.Contex
 	return
 }
 
-// ListSiteDiagnosticCategories description for Get Diagnostics Categories
+// ListSiteDiagnosticCategories get Diagnostics Categories
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name
@@ -2305,7 +2305,7 @@ func (client DiagnosticsClient) ListSiteDiagnosticCategoriesComplete(ctx context
 	return
 }
 
-// ListSiteDiagnosticCategoriesSlot description for Get Diagnostics Categories
+// ListSiteDiagnosticCategoriesSlot get Diagnostics Categories
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // siteName - site Name

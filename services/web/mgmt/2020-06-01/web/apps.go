@@ -31,7 +31,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 	return AppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// AddPremierAddOn description for Updates a named add-on of an app.
+// AddPremierAddOn updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -120,7 +120,7 @@ func (client AppsClient) AddPremierAddOnResponder(resp *http.Response) (result P
 	return
 }
 
-// AddPremierAddOnSlot description for Updates a named add-on of an app.
+// AddPremierAddOnSlot updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -212,7 +212,7 @@ func (client AppsClient) AddPremierAddOnSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// AnalyzeCustomHostname description for Analyze a custom hostname.
+// AnalyzeCustomHostname analyze a custom hostname.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -300,7 +300,7 @@ func (client AppsClient) AnalyzeCustomHostnameResponder(resp *http.Response) (re
 	return
 }
 
-// AnalyzeCustomHostnameSlot description for Analyze a custom hostname.
+// AnalyzeCustomHostnameSlot analyze a custom hostname.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -390,8 +390,7 @@ func (client AppsClient) AnalyzeCustomHostnameSlotResponder(resp *http.Response)
 	return
 }
 
-// ApplySlotConfigToProduction description for Applies the configuration settings from the target slot onto the current
-// slot.
+// ApplySlotConfigToProduction applies the configuration settings from the target slot onto the current slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -480,8 +479,7 @@ func (client AppsClient) ApplySlotConfigToProductionResponder(resp *http.Respons
 	return
 }
 
-// ApplySlotConfigurationSlot description for Applies the configuration settings from the target slot onto the current
-// slot.
+// ApplySlotConfigurationSlot applies the configuration settings from the target slot onto the current slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -572,7 +570,7 @@ func (client AppsClient) ApplySlotConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// ApproveOrRejectPrivateEndpointConnection description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection approves or rejects a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the site.
@@ -662,7 +660,7 @@ func (client AppsClient) ApproveOrRejectPrivateEndpointConnectionResponder(resp 
 	return
 }
 
-// Backup description for Creates a backup of an app.
+// Backup creates a backup of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -758,7 +756,7 @@ func (client AppsClient) BackupResponder(resp *http.Response) (result BackupItem
 	return
 }
 
-// BackupSlot description for Creates a backup of an app.
+// BackupSlot creates a backup of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -857,7 +855,7 @@ func (client AppsClient) BackupSlotResponder(resp *http.Response) (result Backup
 	return
 }
 
-// CopyProductionSlot description for Copies a deployment slot to another deployment slot of an app.
+// CopyProductionSlot copies a deployment slot to another deployment slot of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -959,7 +957,7 @@ func (client AppsClient) CopyProductionSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// CopySlotSlot description for Copies a deployment slot to another deployment slot of an app.
+// CopySlotSlot copies a deployment slot to another deployment slot of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1063,7 +1061,7 @@ func (client AppsClient) CopySlotSlotResponder(resp *http.Response) (result auto
 	return
 }
 
-// CreateDeployment description for Create a deployment for an app, or a deployment slot.
+// CreateDeployment create a deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1152,7 +1150,7 @@ func (client AppsClient) CreateDeploymentResponder(resp *http.Response) (result 
 	return
 }
 
-// CreateDeploymentSlot description for Create a deployment for an app, or a deployment slot.
+// CreateDeploymentSlot create a deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1244,7 +1242,7 @@ func (client AppsClient) CreateDeploymentSlotResponder(resp *http.Response) (res
 	return
 }
 
-// CreateFunction description for Create function for web site, or a deployment slot.
+// CreateFunction create function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -1336,7 +1334,7 @@ func (client AppsClient) CreateFunctionResponder(resp *http.Response) (result Fu
 	return
 }
 
-// CreateInstanceFunctionSlot description for Create function for web site, or a deployment slot.
+// CreateInstanceFunctionSlot create function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -1430,7 +1428,7 @@ func (client AppsClient) CreateInstanceFunctionSlotResponder(resp *http.Response
 	return
 }
 
-// CreateInstanceMSDeployOperation description for Invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperation invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1522,7 +1520,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationResponder(resp *http.Res
 	return
 }
 
-// CreateInstanceMSDeployOperationSlot description for Invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperationSlot invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1616,7 +1614,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotResponder(resp *http
 	return
 }
 
-// CreateMSDeployOperation description for Invoke the MSDeploy web app extension.
+// CreateMSDeployOperation invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1706,7 +1704,7 @@ func (client AppsClient) CreateMSDeployOperationResponder(resp *http.Response) (
 	return
 }
 
-// CreateMSDeployOperationSlot description for Invoke the MSDeploy web app extension.
+// CreateMSDeployOperationSlot invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1798,8 +1796,7 @@ func (client AppsClient) CreateMSDeployOperationSlotResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdate description for Creates a new web, mobile, or API app in an existing resource group, or updates an
-// existing app.
+// CreateOrUpdate creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -1905,7 +1902,7 @@ func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result Si
 	return
 }
 
-// CreateOrUpdateConfiguration description for Updates the configuration of an app.
+// CreateOrUpdateConfiguration updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2003,7 +2000,7 @@ func (client AppsClient) CreateOrUpdateConfigurationResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdateConfigurationSlot description for Updates the configuration of an app.
+// CreateOrUpdateConfigurationSlot updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2104,8 +2101,8 @@ func (client AppsClient) CreateOrUpdateConfigurationSlotResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdateDomainOwnershipIdentifier description for Creates a domain ownership identifier for web app, or
-// updates an existing ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifier creates a domain ownership identifier for web app, or updates an existing
+// ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2194,8 +2191,8 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierResponder(resp *
 	return
 }
 
-// CreateOrUpdateDomainOwnershipIdentifierSlot description for Creates a domain ownership identifier for web app, or
-// updates an existing ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifierSlot creates a domain ownership identifier for web app, or updates an
+// existing ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2287,7 +2284,7 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotResponder(re
 	return
 }
 
-// CreateOrUpdateFunctionSecret description for Add or update a function secret.
+// CreateOrUpdateFunctionSecret add or update a function secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -2378,7 +2375,7 @@ func (client AppsClient) CreateOrUpdateFunctionSecretResponder(resp *http.Respon
 	return
 }
 
-// CreateOrUpdateFunctionSecretSlot description for Add or update a function secret.
+// CreateOrUpdateFunctionSecretSlot add or update a function secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -2471,7 +2468,7 @@ func (client AppsClient) CreateOrUpdateFunctionSecretSlotResponder(resp *http.Re
 	return
 }
 
-// CreateOrUpdateHostNameBinding description for Creates a hostname binding for an app.
+// CreateOrUpdateHostNameBinding creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2560,7 +2557,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingResponder(resp *http.Respo
 	return
 }
 
-// CreateOrUpdateHostNameBindingSlot description for Creates a hostname binding for an app.
+// CreateOrUpdateHostNameBindingSlot creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2652,7 +2649,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlotResponder(resp *http.R
 	return
 }
 
-// CreateOrUpdateHostSecret description for Add or update a host level secret.
+// CreateOrUpdateHostSecret add or update a host level secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -2743,7 +2740,7 @@ func (client AppsClient) CreateOrUpdateHostSecretResponder(resp *http.Response) 
 	return
 }
 
-// CreateOrUpdateHostSecretSlot description for Add or update a host level secret.
+// CreateOrUpdateHostSecretSlot add or update a host level secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -2836,7 +2833,7 @@ func (client AppsClient) CreateOrUpdateHostSecretSlotResponder(resp *http.Respon
 	return
 }
 
-// CreateOrUpdateHybridConnection description for Creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnection creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -2927,7 +2924,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionResponder(resp *http.Resp
 	return
 }
 
-// CreateOrUpdateHybridConnectionSlot description for Creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnectionSlot creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -3020,7 +3017,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionSlotResponder(resp *http.
 	return
 }
 
-// CreateOrUpdatePublicCertificate description for Creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificate creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3110,7 +3107,7 @@ func (client AppsClient) CreateOrUpdatePublicCertificateResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdatePublicCertificateSlot description for Creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificateSlot creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3203,8 +3200,8 @@ func (client AppsClient) CreateOrUpdatePublicCertificateSlotResponder(resp *http
 	return
 }
 
-// CreateOrUpdateRelayServiceConnection description for Creates a new hybrid connection configuration (PUT), or updates
-// an existing one (PATCH).
+// CreateOrUpdateRelayServiceConnection creates a new hybrid connection configuration (PUT), or updates an existing one
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3293,8 +3290,8 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionResponder(resp *htt
 	return
 }
 
-// CreateOrUpdateRelayServiceConnectionSlot description for Creates a new hybrid connection configuration (PUT), or
-// updates an existing one (PATCH).
+// CreateOrUpdateRelayServiceConnectionSlot creates a new hybrid connection configuration (PUT), or updates an existing
+// one (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3386,15 +3383,13 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 	return
 }
 
-// CreateOrUpdateSlot description for Creates a new web, mobile, or API app in an existing resource group, or updates
-// an existing app.
+// CreateOrUpdateSlot creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, slot string) (result AppsCreateOrUpdateSlotFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSlot")
@@ -3496,7 +3491,7 @@ func (client AppsClient) CreateOrUpdateSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// CreateOrUpdateSourceControl description for Updates the source control configuration of an app.
+// CreateOrUpdateSourceControl updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3586,7 +3581,7 @@ func (client AppsClient) CreateOrUpdateSourceControlResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdateSourceControlSlot description for Updates the source control configuration of an app.
+// CreateOrUpdateSourceControlSlot updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3679,9 +3674,9 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnection description for Integrates this Web App with a Virtual Network. This
-// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
-// already been delegated, and is not
+// CreateOrUpdateSwiftVirtualNetworkConnection integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -3769,9 +3764,9 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionResponder(re
 	return
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnectionSlot description for Integrates this Web App with a Virtual Network. This
-// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
-// already been delegated, and is not
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that
+// 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -3862,8 +3857,8 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlotResponde
 	return
 }
 
-// CreateOrUpdateVnetConnection description for Adds a Virtual Network connection to an app or slot (PUT) or updates
-// the connection properties (PATCH).
+// CreateOrUpdateVnetConnection adds a Virtual Network connection to an app or slot (PUT) or updates the connection
+// properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3952,8 +3947,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionResponder(resp *http.Respon
 	return
 }
 
-// CreateOrUpdateVnetConnectionGateway description for Adds a gateway to a connected Virtual Network (PUT) or updates
-// it (PATCH).
+// CreateOrUpdateVnetConnectionGateway adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4047,8 +4041,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewayResponder(resp *http
 	return
 }
 
-// CreateOrUpdateVnetConnectionGatewaySlot description for Adds a gateway to a connected Virtual Network (PUT) or
-// updates it (PATCH).
+// CreateOrUpdateVnetConnectionGatewaySlot adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4145,8 +4138,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlotResponder(resp *
 	return
 }
 
-// CreateOrUpdateVnetConnectionSlot description for Adds a Virtual Network connection to an app or slot (PUT) or
-// updates the connection properties (PATCH).
+// CreateOrUpdateVnetConnectionSlot adds a Virtual Network connection to an app or slot (PUT) or updates the connection
+// properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4238,7 +4231,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// Delete description for Deletes a web, mobile, or API app, or one of the deployment slots.
+// Delete deletes a web, mobile, or API app, or one of the deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app to delete.
@@ -4330,7 +4323,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// DeleteBackup description for Deletes a backup of an app by its ID.
+// DeleteBackup deletes a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4415,7 +4408,7 @@ func (client AppsClient) DeleteBackupResponder(resp *http.Response) (result auto
 	return
 }
 
-// DeleteBackupConfiguration description for Deletes the backup configuration of an app.
+// DeleteBackupConfiguration deletes the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4498,7 +4491,7 @@ func (client AppsClient) DeleteBackupConfigurationResponder(resp *http.Response)
 	return
 }
 
-// DeleteBackupConfigurationSlot description for Deletes the backup configuration of an app.
+// DeleteBackupConfigurationSlot deletes the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4584,7 +4577,7 @@ func (client AppsClient) DeleteBackupConfigurationSlotResponder(resp *http.Respo
 	return
 }
 
-// DeleteBackupSlot description for Deletes a backup of an app by its ID.
+// DeleteBackupSlot deletes a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4672,7 +4665,7 @@ func (client AppsClient) DeleteBackupSlotResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteContinuousWebJob description for Delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJob delete a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -4757,7 +4750,7 @@ func (client AppsClient) DeleteContinuousWebJobResponder(resp *http.Response) (r
 	return
 }
 
-// DeleteContinuousWebJobSlot description for Delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJobSlot delete a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -4845,7 +4838,7 @@ func (client AppsClient) DeleteContinuousWebJobSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteDeployment description for Delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeployment delete a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4930,7 +4923,7 @@ func (client AppsClient) DeleteDeploymentResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteDeploymentSlot description for Delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeploymentSlot delete a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5018,7 +5011,7 @@ func (client AppsClient) DeleteDeploymentSlotResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteDomainOwnershipIdentifier description for Deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifier deletes a domain ownership identifier for a web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5103,7 +5096,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierResponder(resp *http.Res
 	return
 }
 
-// DeleteDomainOwnershipIdentifierSlot description for Deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifierSlot deletes a domain ownership identifier for a web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5191,7 +5184,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierSlotResponder(resp *http
 	return
 }
 
-// DeleteFunction description for Delete a function for web site, or a deployment slot.
+// DeleteFunction delete a function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5276,7 +5269,7 @@ func (client AppsClient) DeleteFunctionResponder(resp *http.Response) (result au
 	return
 }
 
-// DeleteFunctionSecret description for Delete a function secret.
+// DeleteFunctionSecret delete a function secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5363,7 +5356,7 @@ func (client AppsClient) DeleteFunctionSecretResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteFunctionSecretSlot description for Delete a function secret.
+// DeleteFunctionSecretSlot delete a function secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5452,7 +5445,7 @@ func (client AppsClient) DeleteFunctionSecretSlotResponder(resp *http.Response) 
 	return
 }
 
-// DeleteHostNameBinding description for Deletes a hostname binding for an app.
+// DeleteHostNameBinding deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5537,7 +5530,7 @@ func (client AppsClient) DeleteHostNameBindingResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteHostNameBindingSlot description for Deletes a hostname binding for an app.
+// DeleteHostNameBindingSlot deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5625,7 +5618,7 @@ func (client AppsClient) DeleteHostNameBindingSlotResponder(resp *http.Response)
 	return
 }
 
-// DeleteHostSecret description for Delete a host level secret.
+// DeleteHostSecret delete a host level secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5712,7 +5705,7 @@ func (client AppsClient) DeleteHostSecretResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteHostSecretSlot description for Delete a host level secret.
+// DeleteHostSecretSlot delete a host level secret.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5801,7 +5794,7 @@ func (client AppsClient) DeleteHostSecretSlotResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteHybridConnection description for Removes a Hybrid Connection from this site.
+// DeleteHybridConnection removes a Hybrid Connection from this site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -5888,7 +5881,7 @@ func (client AppsClient) DeleteHybridConnectionResponder(resp *http.Response) (r
 	return
 }
 
-// DeleteHybridConnectionSlot description for Removes a Hybrid Connection from this site.
+// DeleteHybridConnectionSlot removes a Hybrid Connection from this site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -5977,7 +5970,7 @@ func (client AppsClient) DeleteHybridConnectionSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteInstanceFunctionSlot description for Delete a function for web site, or a deployment slot.
+// DeleteInstanceFunctionSlot delete a function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6064,8 +6057,8 @@ func (client AppsClient) DeleteInstanceFunctionSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteInstanceProcess description for Terminate a process by its ID for a web site, or a deployment slot, or
-// specific scaled-out instance in a web site.
+// DeleteInstanceProcess terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6153,8 +6146,8 @@ func (client AppsClient) DeleteInstanceProcessResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteInstanceProcessSlot description for Terminate a process by its ID for a web site, or a deployment slot, or
-// specific scaled-out instance in a web site.
+// DeleteInstanceProcessSlot terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6245,7 +6238,7 @@ func (client AppsClient) DeleteInstanceProcessSlotResponder(resp *http.Response)
 	return
 }
 
-// DeletePremierAddOn description for Delete a premier add-on from an app.
+// DeletePremierAddOn delete a premier add-on from an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6330,7 +6323,7 @@ func (client AppsClient) DeletePremierAddOnResponder(resp *http.Response) (resul
 	return
 }
 
-// DeletePremierAddOnSlot description for Delete a premier add-on from an app.
+// DeletePremierAddOnSlot delete a premier add-on from an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6418,7 +6411,7 @@ func (client AppsClient) DeletePremierAddOnSlotResponder(resp *http.Response) (r
 	return
 }
 
-// DeletePrivateEndpointConnection description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection deletes a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the site.
@@ -6506,8 +6499,8 @@ func (client AppsClient) DeletePrivateEndpointConnectionResponder(resp *http.Res
 	return
 }
 
-// DeleteProcess description for Terminate a process by its ID for a web site, or a deployment slot, or specific
-// scaled-out instance in a web site.
+// DeleteProcess terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
+// a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6592,8 +6585,8 @@ func (client AppsClient) DeleteProcessResponder(resp *http.Response) (result aut
 	return
 }
 
-// DeleteProcessSlot description for Terminate a process by its ID for a web site, or a deployment slot, or specific
-// scaled-out instance in a web site.
+// DeleteProcessSlot terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6681,7 +6674,7 @@ func (client AppsClient) DeleteProcessSlotResponder(resp *http.Response) (result
 	return
 }
 
-// DeletePublicCertificate description for Deletes a hostname binding for an app.
+// DeletePublicCertificate deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6766,7 +6759,7 @@ func (client AppsClient) DeletePublicCertificateResponder(resp *http.Response) (
 	return
 }
 
-// DeletePublicCertificateSlot description for Deletes a hostname binding for an app.
+// DeletePublicCertificateSlot deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6854,7 +6847,7 @@ func (client AppsClient) DeletePublicCertificateSlotResponder(resp *http.Respons
 	return
 }
 
-// DeleteRelayServiceConnection description for Deletes a relay service connection by its name.
+// DeleteRelayServiceConnection deletes a relay service connection by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6939,7 +6932,7 @@ func (client AppsClient) DeleteRelayServiceConnectionResponder(resp *http.Respon
 	return
 }
 
-// DeleteRelayServiceConnectionSlot description for Deletes a relay service connection by its name.
+// DeleteRelayServiceConnectionSlot deletes a relay service connection by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7027,7 +7020,7 @@ func (client AppsClient) DeleteRelayServiceConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// DeleteSiteExtension description for Remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtension remove a site extension from a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -7112,7 +7105,7 @@ func (client AppsClient) DeleteSiteExtensionResponder(resp *http.Response) (resu
 	return
 }
 
-// DeleteSiteExtensionSlot description for Remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtensionSlot remove a site extension from a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -7200,7 +7193,7 @@ func (client AppsClient) DeleteSiteExtensionSlotResponder(resp *http.Response) (
 	return
 }
 
-// DeleteSlot description for Deletes a web, mobile, or API app, or one of the deployment slots.
+// DeleteSlot deletes a web, mobile, or API app, or one of the deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app to delete.
@@ -7294,7 +7287,7 @@ func (client AppsClient) DeleteSlotResponder(resp *http.Response) (result autore
 	return
 }
 
-// DeleteSourceControl description for Deletes the source control configuration of an app.
+// DeleteSourceControl deletes the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7377,7 +7370,7 @@ func (client AppsClient) DeleteSourceControlResponder(resp *http.Response) (resu
 	return
 }
 
-// DeleteSourceControlSlot description for Deletes the source control configuration of an app.
+// DeleteSourceControlSlot deletes the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7463,8 +7456,7 @@ func (client AppsClient) DeleteSourceControlSlotResponder(resp *http.Response) (
 	return
 }
 
-// DeleteSwiftVirtualNetwork description for Deletes a Swift Virtual Network connection from an app (or deployment
-// slot).
+// DeleteSwiftVirtualNetwork deletes a Swift Virtual Network connection from an app (or deployment slot).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7547,8 +7539,7 @@ func (client AppsClient) DeleteSwiftVirtualNetworkResponder(resp *http.Response)
 	return
 }
 
-// DeleteSwiftVirtualNetworkSlot description for Deletes a Swift Virtual Network connection from an app (or deployment
-// slot).
+// DeleteSwiftVirtualNetworkSlot deletes a Swift Virtual Network connection from an app (or deployment slot).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7634,7 +7625,7 @@ func (client AppsClient) DeleteSwiftVirtualNetworkSlotResponder(resp *http.Respo
 	return
 }
 
-// DeleteTriggeredWebJob description for Delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJob delete a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -7719,7 +7710,7 @@ func (client AppsClient) DeleteTriggeredWebJobResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteTriggeredWebJobSlot description for Delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJobSlot delete a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -7807,8 +7798,7 @@ func (client AppsClient) DeleteTriggeredWebJobSlotResponder(resp *http.Response)
 	return
 }
 
-// DeleteVnetConnection description for Deletes a connection from an app (or deployment slot to a named virtual
-// network.
+// DeleteVnetConnection deletes a connection from an app (or deployment slot to a named virtual network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7893,8 +7883,7 @@ func (client AppsClient) DeleteVnetConnectionResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteVnetConnectionSlot description for Deletes a connection from an app (or deployment slot to a named virtual
-// network.
+// DeleteVnetConnectionSlot deletes a connection from an app (or deployment slot to a named virtual network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7982,8 +7971,8 @@ func (client AppsClient) DeleteVnetConnectionSlotResponder(resp *http.Response) 
 	return
 }
 
-// DiscoverBackup description for Discovers an existing app backup that can be restored from a blob in Azure storage.
-// Use this to get information about the databases stored in a backup.
+// DiscoverBackup discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get
+// information about the databases stored in a backup.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8075,8 +8064,8 @@ func (client AppsClient) DiscoverBackupResponder(resp *http.Response) (result Re
 	return
 }
 
-// DiscoverBackupSlot description for Discovers an existing app backup that can be restored from a blob in Azure
-// storage. Use this to get information about the databases stored in a backup.
+// DiscoverBackupSlot discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
+// get information about the databases stored in a backup.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8171,8 +8160,7 @@ func (client AppsClient) DiscoverBackupSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GenerateNewSitePublishingPassword description for Generates a new publishing password for an app (or deployment
-// slot, if specified).
+// GenerateNewSitePublishingPassword generates a new publishing password for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8255,8 +8243,8 @@ func (client AppsClient) GenerateNewSitePublishingPasswordResponder(resp *http.R
 	return
 }
 
-// GenerateNewSitePublishingPasswordSlot description for Generates a new publishing password for an app (or deployment
-// slot, if specified).
+// GenerateNewSitePublishingPasswordSlot generates a new publishing password for an app (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8342,7 +8330,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlotResponder(resp *ht
 	return
 }
 
-// Get description for Gets the details of a web, mobile, or API app.
+// Get gets the details of a web, mobile, or API app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8426,7 +8414,7 @@ func (client AppsClient) GetResponder(resp *http.Response) (result Site, err err
 	return
 }
 
-// GetAuthSettings description for Gets the Authentication/Authorization settings of an app.
+// GetAuthSettings gets the Authentication/Authorization settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8510,7 +8498,7 @@ func (client AppsClient) GetAuthSettingsResponder(resp *http.Response) (result S
 	return
 }
 
-// GetAuthSettingsSlot description for Gets the Authentication/Authorization settings of an app.
+// GetAuthSettingsSlot gets the Authentication/Authorization settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8597,7 +8585,7 @@ func (client AppsClient) GetAuthSettingsSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetAuthSettingsV2 description for Gets site's Authentication / Authorization settings for apps via the V2 format
+// GetAuthSettingsV2 gets site's Authentication / Authorization settings for apps via the V2 format
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8681,7 +8669,7 @@ func (client AppsClient) GetAuthSettingsV2Responder(resp *http.Response) (result
 	return
 }
 
-// GetAuthSettingsV2Slot description for Gets site's Authentication / Authorization settings for apps via the V2 format
+// GetAuthSettingsV2Slot gets site's Authentication / Authorization settings for apps via the V2 format
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8768,7 +8756,7 @@ func (client AppsClient) GetAuthSettingsV2SlotResponder(resp *http.Response) (re
 	return
 }
 
-// GetBackupConfiguration description for Gets the backup configuration of an app.
+// GetBackupConfiguration gets the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8852,7 +8840,7 @@ func (client AppsClient) GetBackupConfigurationResponder(resp *http.Response) (r
 	return
 }
 
-// GetBackupConfigurationSlot description for Gets the backup configuration of an app.
+// GetBackupConfigurationSlot gets the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8939,7 +8927,7 @@ func (client AppsClient) GetBackupConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// GetBackupStatus description for Gets a backup of an app by its ID.
+// GetBackupStatus gets a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9025,7 +9013,7 @@ func (client AppsClient) GetBackupStatusResponder(resp *http.Response) (result B
 	return
 }
 
-// GetBackupStatusSlot description for Gets a backup of an app by its ID.
+// GetBackupStatusSlot gets a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9114,8 +9102,8 @@ func (client AppsClient) GetBackupStatusSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetBasicPublishingCredentialsPolicies description for Returns whether Scm basic auth is allowed and whether Ftp is
-// allowed for a given site.
+// GetBasicPublishingCredentialsPolicies returns whether Scm basic auth is allowed and whether Ftp is allowed for a
+// given site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9199,8 +9187,8 @@ func (client AppsClient) GetBasicPublishingCredentialsPoliciesResponder(resp *ht
 	return
 }
 
-// GetConfiguration description for Gets the configuration of an app, such as platform version and bitness, default
-// documents, virtual applications, Always On, etc.
+// GetConfiguration gets the configuration of an app, such as platform version and bitness, default documents, virtual
+// applications, Always On, etc.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9284,8 +9272,8 @@ func (client AppsClient) GetConfigurationResponder(resp *http.Response) (result 
 	return
 }
 
-// GetConfigurationSlot description for Gets the configuration of an app, such as platform version and bitness, default
-// documents, virtual applications, Always On, etc.
+// GetConfigurationSlot gets the configuration of an app, such as platform version and bitness, default documents,
+// virtual applications, Always On, etc.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9372,7 +9360,7 @@ func (client AppsClient) GetConfigurationSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetConfigurationSnapshot description for Gets a snapshot of the configuration of an app at a previous point in time.
+// GetConfigurationSnapshot gets a snapshot of the configuration of an app at a previous point in time.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9458,8 +9446,7 @@ func (client AppsClient) GetConfigurationSnapshotResponder(resp *http.Response) 
 	return
 }
 
-// GetConfigurationSnapshotSlot description for Gets a snapshot of the configuration of an app at a previous point in
-// time.
+// GetConfigurationSnapshotSlot gets a snapshot of the configuration of an app at a previous point in time.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9548,7 +9535,7 @@ func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Respon
 	return
 }
 
-// GetContainerLogsZip description for Gets the ZIP archived docker log files for the given site
+// GetContainerLogsZip gets the ZIP archived docker log files for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9631,7 +9618,7 @@ func (client AppsClient) GetContainerLogsZipResponder(resp *http.Response) (resu
 	return
 }
 
-// GetContainerLogsZipSlot description for Gets the ZIP archived docker log files for the given site
+// GetContainerLogsZipSlot gets the ZIP archived docker log files for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9716,7 +9703,7 @@ func (client AppsClient) GetContainerLogsZipSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetContinuousWebJob description for Gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJob gets a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -9802,7 +9789,7 @@ func (client AppsClient) GetContinuousWebJobResponder(resp *http.Response) (resu
 	return
 }
 
-// GetContinuousWebJobSlot description for Gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJobSlot gets a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -9891,7 +9878,7 @@ func (client AppsClient) GetContinuousWebJobSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetDeployment description for Get a deployment by its ID for an app, or a deployment slot.
+// GetDeployment get a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9977,7 +9964,7 @@ func (client AppsClient) GetDeploymentResponder(resp *http.Response) (result Dep
 	return
 }
 
-// GetDeploymentSlot description for Get a deployment by its ID for an app, or a deployment slot.
+// GetDeploymentSlot get a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10066,7 +10053,7 @@ func (client AppsClient) GetDeploymentSlotResponder(resp *http.Response) (result
 	return
 }
 
-// GetDiagnosticLogsConfiguration description for Gets the logging configuration of an app.
+// GetDiagnosticLogsConfiguration gets the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10150,7 +10137,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationResponder(resp *http.Resp
 	return
 }
 
-// GetDiagnosticLogsConfigurationSlot description for Gets the logging configuration of an app.
+// GetDiagnosticLogsConfigurationSlot gets the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10237,7 +10224,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationSlotResponder(resp *http.
 	return
 }
 
-// GetDomainOwnershipIdentifier description for Get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifier get domain ownership identifier for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10323,7 +10310,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierResponder(resp *http.Respon
 	return
 }
 
-// GetDomainOwnershipIdentifierSlot description for Get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifierSlot get domain ownership identifier for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10412,7 +10399,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierSlotResponder(resp *http.Re
 	return
 }
 
-// GetFtpAllowed description for Returns whether FTP is allowed on the site or not.
+// GetFtpAllowed returns whether FTP is allowed on the site or not.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10496,7 +10483,7 @@ func (client AppsClient) GetFtpAllowedResponder(resp *http.Response) (result Csm
 	return
 }
 
-// GetFunction description for Get function information by its ID for web site, or a deployment slot.
+// GetFunction get function information by its ID for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10582,7 +10569,7 @@ func (client AppsClient) GetFunctionResponder(resp *http.Response) (result Funct
 	return
 }
 
-// GetFunctionsAdminToken description for Fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminToken fetch a short lived token that can be exchanged for a master key.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -10666,7 +10653,7 @@ func (client AppsClient) GetFunctionsAdminTokenResponder(resp *http.Response) (r
 	return
 }
 
-// GetFunctionsAdminTokenSlot description for Fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminTokenSlot fetch a short lived token that can be exchanged for a master key.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -10752,7 +10739,7 @@ func (client AppsClient) GetFunctionsAdminTokenSlotResponder(resp *http.Response
 	return
 }
 
-// GetHostNameBinding description for Get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBinding get the named hostname binding for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10838,7 +10825,7 @@ func (client AppsClient) GetHostNameBindingResponder(resp *http.Response) (resul
 	return
 }
 
-// GetHostNameBindingSlot description for Get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBindingSlot get the named hostname binding for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -10927,7 +10914,7 @@ func (client AppsClient) GetHostNameBindingSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetHybridConnection description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnection retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -11015,7 +11002,7 @@ func (client AppsClient) GetHybridConnectionResponder(resp *http.Response) (resu
 	return
 }
 
-// GetHybridConnectionSlot description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnectionSlot retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -11105,7 +11092,7 @@ func (client AppsClient) GetHybridConnectionSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetInstanceFunctionSlot description for Get function information by its ID for web site, or a deployment slot.
+// GetInstanceFunctionSlot get function information by its ID for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -11193,7 +11180,7 @@ func (client AppsClient) GetInstanceFunctionSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetInstanceInfo description for Gets all scale-out instances of an app.
+// GetInstanceInfo gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11278,7 +11265,7 @@ func (client AppsClient) GetInstanceInfoResponder(resp *http.Response) (result S
 	return
 }
 
-// GetInstanceInfoSlot description for Gets all scale-out instances of an app.
+// GetInstanceInfoSlot gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11365,7 +11352,7 @@ func (client AppsClient) GetInstanceInfoSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetInstanceMSDeployLog description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceMSDeployLog get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11451,7 +11438,7 @@ func (client AppsClient) GetInstanceMSDeployLogResponder(resp *http.Response) (r
 	return
 }
 
-// GetInstanceMSDeployLogSlot description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceMSDeployLogSlot get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11539,7 +11526,7 @@ func (client AppsClient) GetInstanceMSDeployLogSlotResponder(resp *http.Response
 	return
 }
 
-// GetInstanceMsDeployStatus description for Get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatus get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11625,7 +11612,7 @@ func (client AppsClient) GetInstanceMsDeployStatusResponder(resp *http.Response)
 	return
 }
 
-// GetInstanceMsDeployStatusSlot description for Get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatusSlot get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11713,8 +11700,7 @@ func (client AppsClient) GetInstanceMsDeployStatusSlotResponder(resp *http.Respo
 	return
 }
 
-// GetInstanceProcess description for Get process information by its ID for a specific scaled-out instance in a web
-// site.
+// GetInstanceProcess get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -11803,8 +11789,7 @@ func (client AppsClient) GetInstanceProcessResponder(resp *http.Response) (resul
 	return
 }
 
-// GetInstanceProcessDump description for Get a memory dump of a process by its ID for a specific scaled-out instance
-// in a web site.
+// GetInstanceProcessDump get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -11892,8 +11877,8 @@ func (client AppsClient) GetInstanceProcessDumpResponder(resp *http.Response) (r
 	return
 }
 
-// GetInstanceProcessDumpSlot description for Get a memory dump of a process by its ID for a specific scaled-out
-// instance in a web site.
+// GetInstanceProcessDumpSlot get a memory dump of a process by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -11984,8 +11969,7 @@ func (client AppsClient) GetInstanceProcessDumpSlotResponder(resp *http.Response
 	return
 }
 
-// GetInstanceProcessModule description for Get process information by its ID for a specific scaled-out instance in a
-// web site.
+// GetInstanceProcessModule get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12076,8 +12060,7 @@ func (client AppsClient) GetInstanceProcessModuleResponder(resp *http.Response) 
 	return
 }
 
-// GetInstanceProcessModuleSlot description for Get process information by its ID for a specific scaled-out instance in
-// a web site.
+// GetInstanceProcessModuleSlot get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12171,8 +12154,7 @@ func (client AppsClient) GetInstanceProcessModuleSlotResponder(resp *http.Respon
 	return
 }
 
-// GetInstanceProcessSlot description for Get process information by its ID for a specific scaled-out instance in a web
-// site.
+// GetInstanceProcessSlot get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12264,8 +12246,8 @@ func (client AppsClient) GetInstanceProcessSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetMigrateMySQLStatus description for Returns the status of MySql in app migration, if one is active, and whether or
-// not MySql in app is enabled
+// GetMigrateMySQLStatus returns the status of MySql in app migration, if one is active, and whether or not MySql in
+// app is enabled
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12349,8 +12331,8 @@ func (client AppsClient) GetMigrateMySQLStatusResponder(resp *http.Response) (re
 	return
 }
 
-// GetMigrateMySQLStatusSlot description for Returns the status of MySql in app migration, if one is active, and
-// whether or not MySql in app is enabled
+// GetMigrateMySQLStatusSlot returns the status of MySql in app migration, if one is active, and whether or not MySql
+// in app is enabled
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12436,7 +12418,7 @@ func (client AppsClient) GetMigrateMySQLStatusSlotResponder(resp *http.Response)
 	return
 }
 
-// GetMSDeployLog description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLog get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12520,7 +12502,7 @@ func (client AppsClient) GetMSDeployLogResponder(resp *http.Response) (result MS
 	return
 }
 
-// GetMSDeployLogSlot description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLogSlot get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12606,7 +12588,7 @@ func (client AppsClient) GetMSDeployLogSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GetMSDeployStatus description for Get the status of the last MSDeploy operation.
+// GetMSDeployStatus get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12690,7 +12672,7 @@ func (client AppsClient) GetMSDeployStatusResponder(resp *http.Response) (result
 	return
 }
 
-// GetMSDeployStatusSlot description for Get the status of the last MSDeploy operation.
+// GetMSDeployStatusSlot get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -12776,8 +12758,7 @@ func (client AppsClient) GetMSDeployStatusSlotResponder(resp *http.Response) (re
 	return
 }
 
-// GetNetworkTraceOperation description for Gets a named operation for a network trace capturing (or deployment slot,
-// if specified).
+// GetNetworkTraceOperation gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12863,8 +12844,8 @@ func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) 
 	return
 }
 
-// GetNetworkTraceOperationSlot description for Gets a named operation for a network trace capturing (or deployment
-// slot, if specified).
+// GetNetworkTraceOperationSlot gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12953,8 +12934,8 @@ func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Respon
 	return
 }
 
-// GetNetworkTraceOperationSlotV2 description for Gets a named operation for a network trace capturing (or deployment
-// slot, if specified).
+// GetNetworkTraceOperationSlotV2 gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13043,8 +13024,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Resp
 	return
 }
 
-// GetNetworkTraceOperationV2 description for Gets a named operation for a network trace capturing (or deployment slot,
-// if specified).
+// GetNetworkTraceOperationV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13130,8 +13110,7 @@ func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response
 	return
 }
 
-// GetNetworkTraces description for Gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTraces gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13217,8 +13196,7 @@ func (client AppsClient) GetNetworkTracesResponder(resp *http.Response) (result 
 	return
 }
 
-// GetNetworkTracesSlot description for Gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTracesSlot gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13307,8 +13285,7 @@ func (client AppsClient) GetNetworkTracesSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetNetworkTracesSlotV2 description for Gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTracesSlotV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13397,8 +13374,7 @@ func (client AppsClient) GetNetworkTracesSlotV2Responder(resp *http.Response) (r
 	return
 }
 
-// GetNetworkTracesV2 description for Gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTracesV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13484,7 +13460,7 @@ func (client AppsClient) GetNetworkTracesV2Responder(resp *http.Response) (resul
 	return
 }
 
-// GetPremierAddOn description for Gets a named add-on of an app.
+// GetPremierAddOn gets a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13570,7 +13546,7 @@ func (client AppsClient) GetPremierAddOnResponder(resp *http.Response) (result P
 	return
 }
 
-// GetPremierAddOnSlot description for Gets a named add-on of an app.
+// GetPremierAddOnSlot gets a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13659,8 +13635,8 @@ func (client AppsClient) GetPremierAddOnSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetPrivateAccess description for Gets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// GetPrivateAccess gets data around private site access enablement and authorized Virtual Networks that can access the
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -13744,8 +13720,8 @@ func (client AppsClient) GetPrivateAccessResponder(resp *http.Response) (result 
 	return
 }
 
-// GetPrivateAccessSlot description for Gets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// GetPrivateAccessSlot gets data around private site access enablement and authorized Virtual Networks that can access
+// the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -13831,7 +13807,7 @@ func (client AppsClient) GetPrivateAccessSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetPrivateEndpointConnection description for Gets a private endpoint connection
+// GetPrivateEndpointConnection gets a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the site.
@@ -13916,7 +13892,7 @@ func (client AppsClient) GetPrivateEndpointConnectionResponder(resp *http.Respon
 	return
 }
 
-// GetPrivateLinkResources description for Gets the private link resources
+// GetPrivateLinkResources gets the private link resources
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the site.
@@ -14000,7 +13976,7 @@ func (client AppsClient) GetPrivateLinkResourcesResponder(resp *http.Response) (
 	return
 }
 
-// GetProcess description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcess get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14086,8 +14062,7 @@ func (client AppsClient) GetProcessResponder(resp *http.Response) (result Proces
 	return
 }
 
-// GetProcessDump description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web
-// site.
+// GetProcessDump get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14172,8 +14147,7 @@ func (client AppsClient) GetProcessDumpResponder(resp *http.Response) (result Re
 	return
 }
 
-// GetProcessDumpSlot description for Get a memory dump of a process by its ID for a specific scaled-out instance in a
-// web site.
+// GetProcessDumpSlot get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14261,7 +14235,7 @@ func (client AppsClient) GetProcessDumpSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GetProcessModule description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessModule get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14349,8 +14323,7 @@ func (client AppsClient) GetProcessModuleResponder(resp *http.Response) (result 
 	return
 }
 
-// GetProcessModuleSlot description for Get process information by its ID for a specific scaled-out instance in a web
-// site.
+// GetProcessModuleSlot get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14441,7 +14414,7 @@ func (client AppsClient) GetProcessModuleSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetProcessSlot description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessSlot get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14530,7 +14503,7 @@ func (client AppsClient) GetProcessSlotResponder(resp *http.Response) (result Pr
 	return
 }
 
-// GetPublicCertificate description for Get the named public certificate for an app (or deployment slot, if specified).
+// GetPublicCertificate get the named public certificate for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14616,8 +14589,7 @@ func (client AppsClient) GetPublicCertificateResponder(resp *http.Response) (res
 	return
 }
 
-// GetPublicCertificateSlot description for Get the named public certificate for an app (or deployment slot, if
-// specified).
+// GetPublicCertificateSlot get the named public certificate for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14706,7 +14678,7 @@ func (client AppsClient) GetPublicCertificateSlotResponder(resp *http.Response) 
 	return
 }
 
-// GetRelayServiceConnection description for Gets a hybrid connection configuration by its name.
+// GetRelayServiceConnection gets a hybrid connection configuration by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14792,7 +14764,7 @@ func (client AppsClient) GetRelayServiceConnectionResponder(resp *http.Response)
 	return
 }
 
-// GetRelayServiceConnectionSlot description for Gets a hybrid connection configuration by its name.
+// GetRelayServiceConnectionSlot gets a hybrid connection configuration by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14881,7 +14853,7 @@ func (client AppsClient) GetRelayServiceConnectionSlotResponder(resp *http.Respo
 	return
 }
 
-// GetScmAllowed description for Returns whether Scm basic auth is allowed on the site or not.
+// GetScmAllowed returns whether Scm basic auth is allowed on the site or not.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14965,7 +14937,7 @@ func (client AppsClient) GetScmAllowedResponder(resp *http.Response) (result Csm
 	return
 }
 
-// GetSiteExtension description for Get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtension get site extension information by its ID for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15051,7 +15023,7 @@ func (client AppsClient) GetSiteExtensionResponder(resp *http.Response) (result 
 	return
 }
 
-// GetSiteExtensionSlot description for Get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtensionSlot get site extension information by its ID for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15139,7 +15111,7 @@ func (client AppsClient) GetSiteExtensionSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetSitePhpErrorLogFlag description for Gets web app's event logs.
+// GetSitePhpErrorLogFlag gets web app's event logs.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -15223,7 +15195,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagResponder(resp *http.Response) (r
 	return
 }
 
-// GetSitePhpErrorLogFlagSlot description for Gets web app's event logs.
+// GetSitePhpErrorLogFlagSlot gets web app's event logs.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -15309,7 +15281,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagSlotResponder(resp *http.Response
 	return
 }
 
-// GetSlot description for Gets the details of a web, mobile, or API app.
+// GetSlot gets the details of a web, mobile, or API app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15395,7 +15367,7 @@ func (client AppsClient) GetSlotResponder(resp *http.Response) (result Site, err
 	return
 }
 
-// GetSourceControl description for Gets the source control configuration of an app.
+// GetSourceControl gets the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15479,7 +15451,7 @@ func (client AppsClient) GetSourceControlResponder(resp *http.Response) (result 
 	return
 }
 
-// GetSourceControlSlot description for Gets the source control configuration of an app.
+// GetSourceControlSlot gets the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15566,7 +15538,7 @@ func (client AppsClient) GetSourceControlSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetSwiftVirtualNetworkConnection description for Gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnection gets a Swift Virtual Network connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15650,7 +15622,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionResponder(resp *http.Re
 	return
 }
 
-// GetSwiftVirtualNetworkConnectionSlot description for Gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnectionSlot gets a Swift Virtual Network connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15737,7 +15709,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionSlotResponder(resp *htt
 	return
 }
 
-// GetTriggeredWebJob description for Gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJob gets a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15823,8 +15795,7 @@ func (client AppsClient) GetTriggeredWebJobResponder(resp *http.Response) (resul
 	return
 }
 
-// GetTriggeredWebJobHistory description for Gets a triggered web job's history by its ID for an app, , or a deployment
-// slot.
+// GetTriggeredWebJobHistory gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15912,8 +15883,7 @@ func (client AppsClient) GetTriggeredWebJobHistoryResponder(resp *http.Response)
 	return
 }
 
-// GetTriggeredWebJobHistorySlot description for Gets a triggered web job's history by its ID for an app, , or a
-// deployment slot.
+// GetTriggeredWebJobHistorySlot gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16003,7 +15973,7 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotResponder(resp *http.Respo
 	return
 }
 
-// GetTriggeredWebJobSlot description for Gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJobSlot gets a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16091,7 +16061,7 @@ func (client AppsClient) GetTriggeredWebJobSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetVnetConnection description for Gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnection gets a virtual network the app (or deployment slot) is connected to by name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16177,7 +16147,7 @@ func (client AppsClient) GetVnetConnectionResponder(resp *http.Response) (result
 	return
 }
 
-// GetVnetConnectionGateway description for Gets an app's Virtual Network gateway.
+// GetVnetConnectionGateway gets an app's Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16265,7 +16235,7 @@ func (client AppsClient) GetVnetConnectionGatewayResponder(resp *http.Response) 
 	return
 }
 
-// GetVnetConnectionGatewaySlot description for Gets an app's Virtual Network gateway.
+// GetVnetConnectionGatewaySlot gets an app's Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16356,7 +16326,7 @@ func (client AppsClient) GetVnetConnectionGatewaySlotResponder(resp *http.Respon
 	return
 }
 
-// GetVnetConnectionSlot description for Gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnectionSlot gets a virtual network the app (or deployment slot) is connected to by name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16445,7 +16415,7 @@ func (client AppsClient) GetVnetConnectionSlotResponder(resp *http.Response) (re
 	return
 }
 
-// GetWebJob description for Get webjob information for an app, or a deployment slot.
+// GetWebJob get webjob information for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16531,7 +16501,7 @@ func (client AppsClient) GetWebJobResponder(resp *http.Response) (result Job, er
 	return
 }
 
-// GetWebJobSlot description for Get webjob information for an app, or a deployment slot.
+// GetWebJobSlot get webjob information for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16620,7 +16590,7 @@ func (client AppsClient) GetWebJobSlotResponder(resp *http.Response) (result Job
 	return
 }
 
-// GetWebSiteContainerLogs description for Gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogs gets the last lines of docker logs for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -16703,7 +16673,7 @@ func (client AppsClient) GetWebSiteContainerLogsResponder(resp *http.Response) (
 	return
 }
 
-// GetWebSiteContainerLogsSlot description for Gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogsSlot gets the last lines of docker logs for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -16788,7 +16758,7 @@ func (client AppsClient) GetWebSiteContainerLogsSlotResponder(resp *http.Respons
 	return
 }
 
-// InstallSiteExtension description for Install site extension on a web site, or a deployment slot.
+// InstallSiteExtension install site extension on a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16877,7 +16847,7 @@ func (client AppsClient) InstallSiteExtensionResponder(resp *http.Response) (res
 	return
 }
 
-// InstallSiteExtensionSlot description for Install site extension on a web site, or a deployment slot.
+// InstallSiteExtensionSlot install site extension on a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -16968,7 +16938,7 @@ func (client AppsClient) InstallSiteExtensionSlotResponder(resp *http.Response) 
 	return
 }
 
-// IsCloneable description for Shows whether an app can be cloned to another resource group or subscription.
+// IsCloneable shows whether an app can be cloned to another resource group or subscription.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17052,7 +17022,7 @@ func (client AppsClient) IsCloneableResponder(resp *http.Response) (result SiteC
 	return
 }
 
-// IsCloneableSlot description for Shows whether an app can be cloned to another resource group or subscription.
+// IsCloneableSlot shows whether an app can be cloned to another resource group or subscription.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17138,7 +17108,7 @@ func (client AppsClient) IsCloneableSlotResponder(resp *http.Response) (result S
 	return
 }
 
-// List description for Get all apps for a subscription.
+// List get all apps for a subscription.
 func (client AppsClient) List(ctx context.Context) (result AppCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.List")
@@ -17251,7 +17221,7 @@ func (client AppsClient) ListComplete(ctx context.Context) (result AppCollection
 	return
 }
 
-// ListApplicationSettings description for Gets the application settings of an app.
+// ListApplicationSettings gets the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17335,7 +17305,7 @@ func (client AppsClient) ListApplicationSettingsResponder(resp *http.Response) (
 	return
 }
 
-// ListApplicationSettingsSlot description for Gets the application settings of an app.
+// ListApplicationSettingsSlot gets the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17422,7 +17392,7 @@ func (client AppsClient) ListApplicationSettingsSlotResponder(resp *http.Respons
 	return
 }
 
-// ListAzureStorageAccounts description for Gets the Azure storage account configurations of an app.
+// ListAzureStorageAccounts gets the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17506,7 +17476,7 @@ func (client AppsClient) ListAzureStorageAccountsResponder(resp *http.Response) 
 	return
 }
 
-// ListAzureStorageAccountsSlot description for Gets the Azure storage account configurations of an app.
+// ListAzureStorageAccountsSlot gets the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17593,7 +17563,7 @@ func (client AppsClient) ListAzureStorageAccountsSlotResponder(resp *http.Respon
 	return
 }
 
-// ListBackups description for Gets existing backups of an app.
+// ListBackups gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17719,7 +17689,7 @@ func (client AppsClient) ListBackupsComplete(ctx context.Context, resourceGroupN
 	return
 }
 
-// ListBackupsSlot description for Gets existing backups of an app.
+// ListBackupsSlot gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17848,9 +17818,9 @@ func (client AppsClient) ListBackupsSlotComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListBackupStatusSecrets description for Gets status of a web app backup that may be in progress, including secrets
-// associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup
-// if a new URL is passed in the request body.
+// ListBackupStatusSecrets gets status of a web app backup that may be in progress, including secrets associated with
+// the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
+// passed in the request body.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -17948,9 +17918,9 @@ func (client AppsClient) ListBackupStatusSecretsResponder(resp *http.Response) (
 	return
 }
 
-// ListBackupStatusSecretsSlot description for Gets status of a web app backup that may be in progress, including
-// secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for
-// the backup if a new URL is passed in the request body.
+// ListBackupStatusSecretsSlot gets status of a web app backup that may be in progress, including secrets associated
+// with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
+// URL is passed in the request body.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -18050,7 +18020,7 @@ func (client AppsClient) ListBackupStatusSecretsSlotResponder(resp *http.Respons
 	return
 }
 
-// ListByResourceGroup description for Gets all web, mobile, and API apps in the specified resource group.
+// ListByResourceGroup gets all web, mobile, and API apps in the specified resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // includeSlots - specify <strong>true</strong> to include deployment slots in results. The default is false,
@@ -18179,7 +18149,7 @@ func (client AppsClient) ListByResourceGroupComplete(ctx context.Context, resour
 	return
 }
 
-// ListConfigurations description for List the configurations of an app
+// ListConfigurations list the configurations of an app
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18305,8 +18275,8 @@ func (client AppsClient) ListConfigurationsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListConfigurationSnapshotInfo description for Gets a list of web app configuration snapshots identifiers. Each
-// element of the list contains a timestamp and the ID of the snapshot.
+// ListConfigurationSnapshotInfo gets a list of web app configuration snapshots identifiers. Each element of the list
+// contains a timestamp and the ID of the snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18432,8 +18402,8 @@ func (client AppsClient) ListConfigurationSnapshotInfoComplete(ctx context.Conte
 	return
 }
 
-// ListConfigurationSnapshotInfoSlot description for Gets a list of web app configuration snapshots identifiers. Each
-// element of the list contains a timestamp and the ID of the snapshot.
+// ListConfigurationSnapshotInfoSlot gets a list of web app configuration snapshots identifiers. Each element of the
+// list contains a timestamp and the ID of the snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18562,7 +18532,7 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlotComplete(ctx context.C
 	return
 }
 
-// ListConfigurationsSlot description for List the configurations of an app
+// ListConfigurationsSlot list the configurations of an app
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18691,7 +18661,7 @@ func (client AppsClient) ListConfigurationsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListConnectionStrings description for Gets the connection strings of an app.
+// ListConnectionStrings gets the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18775,7 +18745,7 @@ func (client AppsClient) ListConnectionStringsResponder(resp *http.Response) (re
 	return
 }
 
-// ListConnectionStringsSlot description for Gets the connection strings of an app.
+// ListConnectionStringsSlot gets the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18862,7 +18832,7 @@ func (client AppsClient) ListConnectionStringsSlotResponder(resp *http.Response)
 	return
 }
 
-// ListContinuousWebJobs description for List continuous web jobs for an app, or a deployment slot.
+// ListContinuousWebJobs list continuous web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -18988,7 +18958,7 @@ func (client AppsClient) ListContinuousWebJobsComplete(ctx context.Context, reso
 	return
 }
 
-// ListContinuousWebJobsSlot description for List continuous web jobs for an app, or a deployment slot.
+// ListContinuousWebJobsSlot list continuous web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19117,7 +19087,7 @@ func (client AppsClient) ListContinuousWebJobsSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListDeploymentLog description for List deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLog list deployment log for specific deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19204,7 +19174,7 @@ func (client AppsClient) ListDeploymentLogResponder(resp *http.Response) (result
 	return
 }
 
-// ListDeploymentLogSlot description for List deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLogSlot list deployment log for specific deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19294,7 +19264,7 @@ func (client AppsClient) ListDeploymentLogSlotResponder(resp *http.Response) (re
 	return
 }
 
-// ListDeployments description for List deployments for an app, or a deployment slot.
+// ListDeployments list deployments for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19420,7 +19390,7 @@ func (client AppsClient) ListDeploymentsComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListDeploymentsSlot description for List deployments for an app, or a deployment slot.
+// ListDeploymentsSlot list deployments for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19549,7 +19519,7 @@ func (client AppsClient) ListDeploymentsSlotComplete(ctx context.Context, resour
 	return
 }
 
-// ListDomainOwnershipIdentifiers description for Lists ownership identifiers for domain associated with web app.
+// ListDomainOwnershipIdentifiers lists ownership identifiers for domain associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19675,7 +19645,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersComplete(ctx context.Cont
 	return
 }
 
-// ListDomainOwnershipIdentifiersSlot description for Lists ownership identifiers for domain associated with web app.
+// ListDomainOwnershipIdentifiersSlot lists ownership identifiers for domain associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19804,7 +19774,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlotComplete(ctx context.
 	return
 }
 
-// ListFunctionKeys description for Get function keys for a function in a web site, or a deployment slot.
+// ListFunctionKeys get function keys for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19890,7 +19860,7 @@ func (client AppsClient) ListFunctionKeysResponder(resp *http.Response) (result 
 	return
 }
 
-// ListFunctionKeysSlot description for Get function keys for a function in a web site, or a deployment slot.
+// ListFunctionKeysSlot get function keys for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19978,7 +19948,7 @@ func (client AppsClient) ListFunctionKeysSlotResponder(resp *http.Response) (res
 	return
 }
 
-// ListFunctions description for List the functions for a web site, or a deployment slot.
+// ListFunctions list the functions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20104,7 +20074,7 @@ func (client AppsClient) ListFunctionsComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListFunctionSecrets description for Get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecrets get function secrets for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20190,7 +20160,7 @@ func (client AppsClient) ListFunctionSecretsResponder(resp *http.Response) (resu
 	return
 }
 
-// ListFunctionSecretsSlot description for Get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecretsSlot get function secrets for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20278,7 +20248,7 @@ func (client AppsClient) ListFunctionSecretsSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListHostKeys description for Get host secrets for a function app.
+// ListHostKeys get host secrets for a function app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20362,7 +20332,7 @@ func (client AppsClient) ListHostKeysResponder(resp *http.Response) (result Host
 	return
 }
 
-// ListHostKeysSlot description for Get host secrets for a function app.
+// ListHostKeysSlot get host secrets for a function app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20448,7 +20418,7 @@ func (client AppsClient) ListHostKeysSlotResponder(resp *http.Response) (result 
 	return
 }
 
-// ListHostNameBindings description for Get hostname bindings for an app or a deployment slot.
+// ListHostNameBindings get hostname bindings for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -20574,7 +20544,7 @@ func (client AppsClient) ListHostNameBindingsComplete(ctx context.Context, resou
 	return
 }
 
-// ListHostNameBindingsSlot description for Get hostname bindings for an app or a deployment slot.
+// ListHostNameBindingsSlot get hostname bindings for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -20703,7 +20673,7 @@ func (client AppsClient) ListHostNameBindingsSlotComplete(ctx context.Context, r
 	return
 }
 
-// ListHybridConnections description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnections retrieves all Service Bus Hybrid Connections used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -20787,7 +20757,7 @@ func (client AppsClient) ListHybridConnectionsResponder(resp *http.Response) (re
 	return
 }
 
-// ListHybridConnectionsSlot description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnectionsSlot retrieves all Service Bus Hybrid Connections used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -20873,7 +20843,7 @@ func (client AppsClient) ListHybridConnectionsSlotResponder(resp *http.Response)
 	return
 }
 
-// ListInstanceFunctionsSlot description for List the functions for a web site, or a deployment slot.
+// ListInstanceFunctionsSlot list the functions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21001,7 +20971,7 @@ func (client AppsClient) ListInstanceFunctionsSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListInstanceIdentifiers description for Gets all scale-out instances of an app.
+// ListInstanceIdentifiers gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21127,7 +21097,7 @@ func (client AppsClient) ListInstanceIdentifiersComplete(ctx context.Context, re
 	return
 }
 
-// ListInstanceIdentifiersSlot description for Gets all scale-out instances of an app.
+// ListInstanceIdentifiersSlot gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21255,8 +21225,8 @@ func (client AppsClient) ListInstanceIdentifiersSlotComplete(ctx context.Context
 	return
 }
 
-// ListInstanceProcesses description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// ListInstanceProcesses get list of processes for a web site, or a deployment slot, or for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21385,8 +21355,8 @@ func (client AppsClient) ListInstanceProcessesComplete(ctx context.Context, reso
 	return
 }
 
-// ListInstanceProcessesSlot description for Get list of processes for a web site, or a deployment slot, or for a
-// specific scaled-out instance in a web site.
+// ListInstanceProcessesSlot get list of processes for a web site, or a deployment slot, or for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21518,8 +21488,8 @@ func (client AppsClient) ListInstanceProcessesSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListInstanceProcessModules description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// ListInstanceProcessModules list module information for a process by its ID for a specific scaled-out instance in a
+// web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21650,8 +21620,8 @@ func (client AppsClient) ListInstanceProcessModulesComplete(ctx context.Context,
 	return
 }
 
-// ListInstanceProcessModulesSlot description for List module information for a process by its ID for a specific
-// scaled-out instance in a web site.
+// ListInstanceProcessModulesSlot list module information for a process by its ID for a specific scaled-out instance in
+// a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21785,8 +21755,7 @@ func (client AppsClient) ListInstanceProcessModulesSlotComplete(ctx context.Cont
 	return
 }
 
-// ListInstanceProcessThreads description for List the threads in a process by its ID for a specific scaled-out
-// instance in a web site.
+// ListInstanceProcessThreads list the threads in a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21917,8 +21886,8 @@ func (client AppsClient) ListInstanceProcessThreadsComplete(ctx context.Context,
 	return
 }
 
-// ListInstanceProcessThreadsSlot description for List the threads in a process by its ID for a specific scaled-out
-// instance in a web site.
+// ListInstanceProcessThreadsSlot list the threads in a process by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22052,7 +22021,7 @@ func (client AppsClient) ListInstanceProcessThreadsSlotComplete(ctx context.Cont
 	return
 }
 
-// ListMetadata description for Gets the metadata of an app.
+// ListMetadata gets the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22136,7 +22105,7 @@ func (client AppsClient) ListMetadataResponder(resp *http.Response) (result Stri
 	return
 }
 
-// ListMetadataSlot description for Gets the metadata of an app.
+// ListMetadataSlot gets the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22223,7 +22192,7 @@ func (client AppsClient) ListMetadataSlotResponder(resp *http.Response) (result 
 	return
 }
 
-// ListNetworkFeatures description for Gets all network features used by the app (or deployment slot, if specified).
+// ListNetworkFeatures gets all network features used by the app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22309,8 +22278,7 @@ func (client AppsClient) ListNetworkFeaturesResponder(resp *http.Response) (resu
 	return
 }
 
-// ListNetworkFeaturesSlot description for Gets all network features used by the app (or deployment slot, if
-// specified).
+// ListNetworkFeaturesSlot gets all network features used by the app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22399,7 +22367,7 @@ func (client AppsClient) ListNetworkFeaturesSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListPerfMonCounters description for Gets perfmon counters for web app.
+// ListPerfMonCounters gets perfmon counters for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -22531,7 +22499,7 @@ func (client AppsClient) ListPerfMonCountersComplete(ctx context.Context, resour
 	return
 }
 
-// ListPerfMonCountersSlot description for Gets perfmon counters for web app.
+// ListPerfMonCountersSlot gets perfmon counters for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -22665,7 +22633,7 @@ func (client AppsClient) ListPerfMonCountersSlotComplete(ctx context.Context, re
 	return
 }
 
-// ListPremierAddOns description for Gets the premier add-ons of an app.
+// ListPremierAddOns gets the premier add-ons of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22749,7 +22717,7 @@ func (client AppsClient) ListPremierAddOnsResponder(resp *http.Response) (result
 	return
 }
 
-// ListPremierAddOnsSlot description for Gets the premier add-ons of an app.
+// ListPremierAddOnsSlot gets the premier add-ons of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22836,8 +22804,8 @@ func (client AppsClient) ListPremierAddOnsSlotResponder(resp *http.Response) (re
 	return
 }
 
-// ListProcesses description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// ListProcesses get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
+// web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22963,8 +22931,8 @@ func (client AppsClient) ListProcessesComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListProcessesSlot description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// ListProcessesSlot get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
+// in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23093,8 +23061,7 @@ func (client AppsClient) ListProcessesSlotComplete(ctx context.Context, resource
 	return
 }
 
-// ListProcessModules description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// ListProcessModules list module information for a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23222,8 +23189,8 @@ func (client AppsClient) ListProcessModulesComplete(ctx context.Context, resourc
 	return
 }
 
-// ListProcessModulesSlot description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// ListProcessModulesSlot list module information for a process by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23354,8 +23321,7 @@ func (client AppsClient) ListProcessModulesSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListProcessThreads description for List the threads in a process by its ID for a specific scaled-out instance in a
-// web site.
+// ListProcessThreads list the threads in a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23483,8 +23449,7 @@ func (client AppsClient) ListProcessThreadsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListProcessThreadsSlot description for List the threads in a process by its ID for a specific scaled-out instance in
-// a web site.
+// ListProcessThreadsSlot list the threads in a process by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23615,7 +23580,7 @@ func (client AppsClient) ListProcessThreadsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListPublicCertificates description for Get public certificates for an app or a deployment slot.
+// ListPublicCertificates get public certificates for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23741,7 +23706,7 @@ func (client AppsClient) ListPublicCertificatesComplete(ctx context.Context, res
 	return
 }
 
-// ListPublicCertificatesSlot description for Get public certificates for an app or a deployment slot.
+// ListPublicCertificatesSlot get public certificates for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23870,7 +23835,7 @@ func (client AppsClient) ListPublicCertificatesSlotComplete(ctx context.Context,
 	return
 }
 
-// ListPublishingCredentials description for Gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentials gets the Git/FTP publishing credentials of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23957,7 +23922,7 @@ func (client AppsClient) ListPublishingCredentialsResponder(resp *http.Response)
 	return
 }
 
-// ListPublishingCredentialsSlot description for Gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentialsSlot gets the Git/FTP publishing credentials of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24047,8 +24012,7 @@ func (client AppsClient) ListPublishingCredentialsSlotResponder(resp *http.Respo
 	return
 }
 
-// ListPublishingProfileXMLWithSecrets description for Gets the publishing profile for an app (or deployment slot, if
-// specified).
+// ListPublishingProfileXMLWithSecrets gets the publishing profile for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24135,8 +24099,7 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsResponder(resp *http
 	return
 }
 
-// ListPublishingProfileXMLWithSecretsSlot description for Gets the publishing profile for an app (or deployment slot,
-// if specified).
+// ListPublishingProfileXMLWithSecretsSlot gets the publishing profile for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24226,8 +24189,7 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsSlotResponder(resp *
 	return
 }
 
-// ListRelayServiceConnections description for Gets hybrid connections configured for an app (or deployment slot, if
-// specified).
+// ListRelayServiceConnections gets hybrid connections configured for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24311,8 +24273,7 @@ func (client AppsClient) ListRelayServiceConnectionsResponder(resp *http.Respons
 	return
 }
 
-// ListRelayServiceConnectionsSlot description for Gets hybrid connections configured for an app (or deployment slot,
-// if specified).
+// ListRelayServiceConnectionsSlot gets hybrid connections configured for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24399,7 +24360,7 @@ func (client AppsClient) ListRelayServiceConnectionsSlotResponder(resp *http.Res
 	return
 }
 
-// ListSiteBackups description for Gets existing backups of an app.
+// ListSiteBackups gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24525,7 +24486,7 @@ func (client AppsClient) ListSiteBackupsComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListSiteBackupsSlot description for Gets existing backups of an app.
+// ListSiteBackupsSlot gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24654,7 +24615,7 @@ func (client AppsClient) ListSiteBackupsSlotComplete(ctx context.Context, resour
 	return
 }
 
-// ListSiteExtensions description for Get list of siteextensions for a web site, or a deployment slot.
+// ListSiteExtensions get list of siteextensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -24780,7 +24741,7 @@ func (client AppsClient) ListSiteExtensionsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListSiteExtensionsSlot description for Get list of siteextensions for a web site, or a deployment slot.
+// ListSiteExtensionsSlot get list of siteextensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -24908,7 +24869,7 @@ func (client AppsClient) ListSiteExtensionsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListSitePushSettings description for Gets the Push settings associated with web app.
+// ListSitePushSettings gets the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -24992,7 +24953,7 @@ func (client AppsClient) ListSitePushSettingsResponder(resp *http.Response) (res
 	return
 }
 
-// ListSitePushSettingsSlot description for Gets the Push settings associated with web app.
+// ListSitePushSettingsSlot gets the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -25078,8 +25039,8 @@ func (client AppsClient) ListSitePushSettingsSlotResponder(resp *http.Response) 
 	return
 }
 
-// ListSlotConfigurationNames description for Gets the names of app settings and connection strings that stick to the
-// slot (not swapped).
+// ListSlotConfigurationNames gets the names of app settings and connection strings that stick to the slot (not
+// swapped).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25163,8 +25124,7 @@ func (client AppsClient) ListSlotConfigurationNamesResponder(resp *http.Response
 	return
 }
 
-// ListSlotDifferencesFromProduction description for Get the difference in configuration settings between two web app
-// slots.
+// ListSlotDifferencesFromProduction get the difference in configuration settings between two web app slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25296,7 +25256,7 @@ func (client AppsClient) ListSlotDifferencesFromProductionComplete(ctx context.C
 	return
 }
 
-// ListSlotDifferencesSlot description for Get the difference in configuration settings between two web app slots.
+// ListSlotDifferencesSlot get the difference in configuration settings between two web app slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25430,7 +25390,7 @@ func (client AppsClient) ListSlotDifferencesSlotComplete(ctx context.Context, re
 	return
 }
 
-// ListSlots description for Gets an app's deployment slots.
+// ListSlots gets an app's deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25556,7 +25516,7 @@ func (client AppsClient) ListSlotsComplete(ctx context.Context, resourceGroupNam
 	return
 }
 
-// ListSnapshots description for Returns all Snapshots to the user.
+// ListSnapshots returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -25682,7 +25642,7 @@ func (client AppsClient) ListSnapshotsComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListSnapshotsFromDRSecondary description for Returns all Snapshots to the user from DRSecondary endpoint.
+// ListSnapshotsFromDRSecondary returns all Snapshots to the user from DRSecondary endpoint.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -25808,7 +25768,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondaryComplete(ctx context.Contex
 	return
 }
 
-// ListSnapshotsFromDRSecondarySlot description for Returns all Snapshots to the user from DRSecondary endpoint.
+// ListSnapshotsFromDRSecondarySlot returns all Snapshots to the user from DRSecondary endpoint.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -25936,7 +25896,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondarySlotComplete(ctx context.Co
 	return
 }
 
-// ListSnapshotsSlot description for Returns all Snapshots to the user.
+// ListSnapshotsSlot returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -26064,7 +26024,7 @@ func (client AppsClient) ListSnapshotsSlotComplete(ctx context.Context, resource
 	return
 }
 
-// ListSyncFunctionTriggers description for This is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggers this is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26148,7 +26108,7 @@ func (client AppsClient) ListSyncFunctionTriggersResponder(resp *http.Response) 
 	return
 }
 
-// ListSyncFunctionTriggersSlot description for This is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggersSlot this is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26234,7 +26194,7 @@ func (client AppsClient) ListSyncFunctionTriggersSlotResponder(resp *http.Respon
 	return
 }
 
-// ListSyncStatus description for This is to allow calling via powershell and ARM template.
+// ListSyncStatus this is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26317,7 +26277,7 @@ func (client AppsClient) ListSyncStatusResponder(resp *http.Response) (result au
 	return
 }
 
-// ListSyncStatusSlot description for This is to allow calling via powershell and ARM template.
+// ListSyncStatusSlot this is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26402,7 +26362,7 @@ func (client AppsClient) ListSyncStatusSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// ListTriggeredWebJobHistory description for List a triggered web job's history for an app, or a deployment slot.
+// ListTriggeredWebJobHistory list a triggered web job's history for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -26530,7 +26490,7 @@ func (client AppsClient) ListTriggeredWebJobHistoryComplete(ctx context.Context,
 	return
 }
 
-// ListTriggeredWebJobHistorySlot description for List a triggered web job's history for an app, or a deployment slot.
+// ListTriggeredWebJobHistorySlot list a triggered web job's history for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -26660,7 +26620,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotComplete(ctx context.Cont
 	return
 }
 
-// ListTriggeredWebJobs description for List triggered web jobs for an app, or a deployment slot.
+// ListTriggeredWebJobs list triggered web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -26786,7 +26746,7 @@ func (client AppsClient) ListTriggeredWebJobsComplete(ctx context.Context, resou
 	return
 }
 
-// ListTriggeredWebJobsSlot description for List triggered web jobs for an app, or a deployment slot.
+// ListTriggeredWebJobsSlot list triggered web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -26915,7 +26875,7 @@ func (client AppsClient) ListTriggeredWebJobsSlotComplete(ctx context.Context, r
 	return
 }
 
-// ListUsages description for Gets the quota usage information of an app (or deployment slot, if specified).
+// ListUsages gets the quota usage information of an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27047,7 +27007,7 @@ func (client AppsClient) ListUsagesComplete(ctx context.Context, resourceGroupNa
 	return
 }
 
-// ListUsagesSlot description for Gets the quota usage information of an app (or deployment slot, if specified).
+// ListUsagesSlot gets the quota usage information of an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27182,7 +27142,7 @@ func (client AppsClient) ListUsagesSlotComplete(ctx context.Context, resourceGro
 	return
 }
 
-// ListVnetConnections description for Gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnections gets the virtual networks the app (or deployment slot) is connected to.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27266,7 +27226,7 @@ func (client AppsClient) ListVnetConnectionsResponder(resp *http.Response) (resu
 	return
 }
 
-// ListVnetConnectionsSlot description for Gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnectionsSlot gets the virtual networks the app (or deployment slot) is connected to.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27353,7 +27313,7 @@ func (client AppsClient) ListVnetConnectionsSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListWebJobs description for List webjobs for an app, or a deployment slot.
+// ListWebJobs list webjobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -27479,7 +27439,7 @@ func (client AppsClient) ListWebJobsComplete(ctx context.Context, resourceGroupN
 	return
 }
 
-// ListWebJobsSlot description for List webjobs for an app, or a deployment slot.
+// ListWebJobsSlot list webjobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -27608,7 +27568,7 @@ func (client AppsClient) ListWebJobsSlotComplete(ctx context.Context, resourceGr
 	return
 }
 
-// MigrateMySQL description for Migrates a local (in-app) MySql database to a remote MySql database.
+// MigrateMySQL migrates a local (in-app) MySql database to a remote MySql database.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -27701,7 +27661,7 @@ func (client AppsClient) MigrateMySQLResponder(resp *http.Response) (result Oper
 	return
 }
 
-// MigrateStorage description for Restores a web app.
+// MigrateStorage restores a web app.
 // Parameters:
 // subscriptionName - azure subscription.
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -27798,8 +27758,8 @@ func (client AppsClient) MigrateStorageResponder(resp *http.Response) (result St
 	return
 }
 
-// PutPrivateAccessVnet description for Sets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// PutPrivateAccessVnet sets data around private site access enablement and authorized Virtual Networks that can access
+// the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -27886,8 +27846,8 @@ func (client AppsClient) PutPrivateAccessVnetResponder(resp *http.Response) (res
 	return
 }
 
-// PutPrivateAccessVnetSlot description for Sets data around private site access enablement and authorized Virtual
-// Networks that can access the site.
+// PutPrivateAccessVnetSlot sets data around private site access enablement and authorized Virtual Networks that can
+// access the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -27976,7 +27936,7 @@ func (client AppsClient) PutPrivateAccessVnetSlotResponder(resp *http.Response) 
 	return
 }
 
-// RecoverSiteConfigurationSnapshot description for Reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshot reverts the configuration of an app to a previous snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28061,7 +28021,7 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotResponder(resp *http.Re
 	return
 }
 
-// RecoverSiteConfigurationSnapshotSlot description for Reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshotSlot reverts the configuration of an app to a previous snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28149,8 +28109,8 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlotResponder(resp *htt
 	return
 }
 
-// ResetProductionSlotConfig description for Resets the configuration settings of the current slot if they were
-// previously modified by calling the API with POST.
+// ResetProductionSlotConfig resets the configuration settings of the current slot if they were previously modified by
+// calling the API with POST.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28233,8 +28193,8 @@ func (client AppsClient) ResetProductionSlotConfigResponder(resp *http.Response)
 	return
 }
 
-// ResetSlotConfigurationSlot description for Resets the configuration settings of the current slot if they were
-// previously modified by calling the API with POST.
+// ResetSlotConfigurationSlot resets the configuration settings of the current slot if they were previously modified by
+// calling the API with POST.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28320,7 +28280,7 @@ func (client AppsClient) ResetSlotConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// Restart description for Restarts an app (or deployment slot, if specified).
+// Restart restarts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28413,7 +28373,7 @@ func (client AppsClient) RestartResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// RestartSlot description for Restarts an app (or deployment slot, if specified).
+// RestartSlot restarts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28508,7 +28468,7 @@ func (client AppsClient) RestartSlotResponder(resp *http.Response) (result autor
 	return
 }
 
-// Restore description for Restores a specific backup to another app (or deployment slot, if specified).
+// Restore restores a specific backup to another app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28604,7 +28564,7 @@ func (client AppsClient) RestoreResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// RestoreFromBackupBlob description for Restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlob restores an app from a backup blob in Azure Storage.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28698,7 +28658,7 @@ func (client AppsClient) RestoreFromBackupBlobResponder(resp *http.Response) (re
 	return
 }
 
-// RestoreFromBackupBlobSlot description for Restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlobSlot restores an app from a backup blob in Azure Storage.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28795,7 +28755,7 @@ func (client AppsClient) RestoreFromBackupBlobSlotResponder(resp *http.Response)
 	return
 }
 
-// RestoreFromDeletedApp description for Restores a deleted web app to this web app.
+// RestoreFromDeletedApp restores a deleted web app to this web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -28884,7 +28844,7 @@ func (client AppsClient) RestoreFromDeletedAppResponder(resp *http.Response) (re
 	return
 }
 
-// RestoreFromDeletedAppSlot description for Restores a deleted web app to this web app.
+// RestoreFromDeletedAppSlot restores a deleted web app to this web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -28975,7 +28935,7 @@ func (client AppsClient) RestoreFromDeletedAppSlotResponder(resp *http.Response)
 	return
 }
 
-// RestoreSlot description for Restores a specific backup to another app (or deployment slot, if specified).
+// RestoreSlot restores a specific backup to another app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29074,7 +29034,7 @@ func (client AppsClient) RestoreSlotResponder(resp *http.Response) (result autor
 	return
 }
 
-// RestoreSnapshot description for Restores a web app from a snapshot.
+// RestoreSnapshot restores a web app from a snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -29167,7 +29127,7 @@ func (client AppsClient) RestoreSnapshotResponder(resp *http.Response) (result a
 	return
 }
 
-// RestoreSnapshotSlot description for Restores a web app from a snapshot.
+// RestoreSnapshotSlot restores a web app from a snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -29262,7 +29222,7 @@ func (client AppsClient) RestoreSnapshotSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// RunTriggeredWebJob description for Run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJob run a triggered web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -29347,7 +29307,7 @@ func (client AppsClient) RunTriggeredWebJobResponder(resp *http.Response) (resul
 	return
 }
 
-// RunTriggeredWebJobSlot description for Run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJobSlot run a triggered web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -29434,7 +29394,7 @@ func (client AppsClient) RunTriggeredWebJobSlotResponder(resp *http.Response) (r
 	return
 }
 
-// Start description for Starts an app (or deployment slot, if specified).
+// Start starts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29517,7 +29477,7 @@ func (client AppsClient) StartResponder(resp *http.Response) (result autorest.Re
 	return
 }
 
-// StartContinuousWebJob description for Start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJob start a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -29602,7 +29562,7 @@ func (client AppsClient) StartContinuousWebJobResponder(resp *http.Response) (re
 	return
 }
 
-// StartContinuousWebJobSlot description for Start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJobSlot start a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -29690,7 +29650,7 @@ func (client AppsClient) StartContinuousWebJobSlotResponder(resp *http.Response)
 	return
 }
 
-// StartNetworkTrace description for Start capturing network packets for the site.
+// StartNetworkTrace start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29789,7 +29749,7 @@ func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result
 	return
 }
 
-// StartNetworkTraceSlot description for Start capturing network packets for the site.
+// StartNetworkTraceSlot start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29890,7 +29850,7 @@ func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (re
 	return
 }
 
-// StartSlot description for Starts an app (or deployment slot, if specified).
+// StartSlot starts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29975,7 +29935,7 @@ func (client AppsClient) StartSlotResponder(resp *http.Response) (result autores
 	return
 }
 
-// StartWebSiteNetworkTrace description for Start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTrace start capturing network packets for the site (To be deprecated).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30071,7 +30031,7 @@ func (client AppsClient) StartWebSiteNetworkTraceResponder(resp *http.Response) 
 	return
 }
 
-// StartWebSiteNetworkTraceOperation description for Start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperation start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30170,7 +30130,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.R
 	return
 }
 
-// StartWebSiteNetworkTraceOperationSlot description for Start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperationSlot start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30271,7 +30231,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *ht
 	return
 }
 
-// StartWebSiteNetworkTraceSlot description for Start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTraceSlot start capturing network packets for the site (To be deprecated).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30369,7 +30329,7 @@ func (client AppsClient) StartWebSiteNetworkTraceSlotResponder(resp *http.Respon
 	return
 }
 
-// Stop description for Stops an app (or deployment slot, if specified).
+// Stop stops an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30452,7 +30412,7 @@ func (client AppsClient) StopResponder(resp *http.Response) (result autorest.Res
 	return
 }
 
-// StopContinuousWebJob description for Stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJob stop a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -30537,7 +30497,7 @@ func (client AppsClient) StopContinuousWebJobResponder(resp *http.Response) (res
 	return
 }
 
-// StopContinuousWebJobSlot description for Stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJobSlot stop a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -30625,7 +30585,7 @@ func (client AppsClient) StopContinuousWebJobSlotResponder(resp *http.Response) 
 	return
 }
 
-// StopNetworkTrace description for Stop ongoing capturing network packets for the site.
+// StopNetworkTrace stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30708,7 +30668,7 @@ func (client AppsClient) StopNetworkTraceResponder(resp *http.Response) (result 
 	return
 }
 
-// StopNetworkTraceSlot description for Stop ongoing capturing network packets for the site.
+// StopNetworkTraceSlot stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30793,7 +30753,7 @@ func (client AppsClient) StopNetworkTraceSlotResponder(resp *http.Response) (res
 	return
 }
 
-// StopSlot description for Stops an app (or deployment slot, if specified).
+// StopSlot stops an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30878,7 +30838,7 @@ func (client AppsClient) StopSlotResponder(resp *http.Response) (result autorest
 	return
 }
 
-// StopWebSiteNetworkTrace description for Stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTrace stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -30961,7 +30921,7 @@ func (client AppsClient) StopWebSiteNetworkTraceResponder(resp *http.Response) (
 	return
 }
 
-// StopWebSiteNetworkTraceSlot description for Stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTraceSlot stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -31046,7 +31006,7 @@ func (client AppsClient) StopWebSiteNetworkTraceSlotResponder(resp *http.Respons
 	return
 }
 
-// SwapSlotSlot description for Swaps two deployment slots of an app.
+// SwapSlotSlot swaps two deployment slots of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31140,7 +31100,7 @@ func (client AppsClient) SwapSlotSlotResponder(resp *http.Response) (result auto
 	return
 }
 
-// SwapSlotWithProduction description for Swaps two deployment slots of an app.
+// SwapSlotWithProduction swaps two deployment slots of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31232,7 +31192,7 @@ func (client AppsClient) SwapSlotWithProductionResponder(resp *http.Response) (r
 	return
 }
 
-// SyncFunctions description for Syncs function trigger metadata to the management database
+// SyncFunctions syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31315,7 +31275,7 @@ func (client AppsClient) SyncFunctionsResponder(resp *http.Response) (result aut
 	return
 }
 
-// SyncFunctionsSlot description for Syncs function trigger metadata to the management database
+// SyncFunctionsSlot syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31400,7 +31360,7 @@ func (client AppsClient) SyncFunctionsSlotResponder(resp *http.Response) (result
 	return
 }
 
-// SyncFunctionTriggers description for Syncs function trigger metadata to the management database
+// SyncFunctionTriggers syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31483,7 +31443,7 @@ func (client AppsClient) SyncFunctionTriggersResponder(resp *http.Response) (res
 	return
 }
 
-// SyncFunctionTriggersSlot description for Syncs function trigger metadata to the management database
+// SyncFunctionTriggersSlot syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31568,7 +31528,7 @@ func (client AppsClient) SyncFunctionTriggersSlotResponder(resp *http.Response) 
 	return
 }
 
-// SyncRepository description for Sync web app repository.
+// SyncRepository sync web app repository.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -31651,7 +31611,7 @@ func (client AppsClient) SyncRepositoryResponder(resp *http.Response) (result au
 	return
 }
 
-// SyncRepositorySlot description for Sync web app repository.
+// SyncRepositorySlot sync web app repository.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -31736,8 +31696,7 @@ func (client AppsClient) SyncRepositorySlotResponder(resp *http.Response) (resul
 	return
 }
 
-// Update description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing
-// app.
+// Update creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -31825,7 +31784,7 @@ func (client AppsClient) UpdateResponder(resp *http.Response) (result Site, err 
 	return
 }
 
-// UpdateApplicationSettings description for Replaces the application settings of an app.
+// UpdateApplicationSettings replaces the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31912,7 +31871,7 @@ func (client AppsClient) UpdateApplicationSettingsResponder(resp *http.Response)
 	return
 }
 
-// UpdateApplicationSettingsSlot description for Replaces the application settings of an app.
+// UpdateApplicationSettingsSlot replaces the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32002,7 +31961,7 @@ func (client AppsClient) UpdateApplicationSettingsSlotResponder(resp *http.Respo
 	return
 }
 
-// UpdateAuthSettings description for Updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettings updates the Authentication / Authorization settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32089,7 +32048,7 @@ func (client AppsClient) UpdateAuthSettingsResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdateAuthSettingsSlot description for Updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettingsSlot updates the Authentication / Authorization settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32178,8 +32137,7 @@ func (client AppsClient) UpdateAuthSettingsSlotResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateAuthSettingsV2 description for Updates site's Authentication / Authorization settings for apps via the V2
-// format
+// UpdateAuthSettingsV2 updates site's Authentication / Authorization settings for apps via the V2 format
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32266,8 +32224,7 @@ func (client AppsClient) UpdateAuthSettingsV2Responder(resp *http.Response) (res
 	return
 }
 
-// UpdateAuthSettingsV2Slot description for Updates site's Authentication / Authorization settings for apps via the V2
-// format
+// UpdateAuthSettingsV2Slot updates site's Authentication / Authorization settings for apps via the V2 format
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32356,7 +32313,7 @@ func (client AppsClient) UpdateAuthSettingsV2SlotResponder(resp *http.Response) 
 	return
 }
 
-// UpdateAzureStorageAccounts description for Updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccounts updates the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32443,7 +32400,7 @@ func (client AppsClient) UpdateAzureStorageAccountsResponder(resp *http.Response
 	return
 }
 
-// UpdateAzureStorageAccountsSlot description for Updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccountsSlot updates the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32533,7 +32490,7 @@ func (client AppsClient) UpdateAzureStorageAccountsSlotResponder(resp *http.Resp
 	return
 }
 
-// UpdateBackupConfiguration description for Updates the backup configuration of an app.
+// UpdateBackupConfiguration updates the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32629,7 +32586,7 @@ func (client AppsClient) UpdateBackupConfigurationResponder(resp *http.Response)
 	return
 }
 
-// UpdateBackupConfigurationSlot description for Updates the backup configuration of an app.
+// UpdateBackupConfigurationSlot updates the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32728,7 +32685,7 @@ func (client AppsClient) UpdateBackupConfigurationSlotResponder(resp *http.Respo
 	return
 }
 
-// UpdateConfiguration description for Updates the configuration of an app.
+// UpdateConfiguration updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32815,7 +32772,7 @@ func (client AppsClient) UpdateConfigurationResponder(resp *http.Response) (resu
 	return
 }
 
-// UpdateConfigurationSlot description for Updates the configuration of an app.
+// UpdateConfigurationSlot updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32905,7 +32862,7 @@ func (client AppsClient) UpdateConfigurationSlotResponder(resp *http.Response) (
 	return
 }
 
-// UpdateConnectionStrings description for Replaces the connection strings of an app.
+// UpdateConnectionStrings replaces the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32992,7 +32949,7 @@ func (client AppsClient) UpdateConnectionStringsResponder(resp *http.Response) (
 	return
 }
 
-// UpdateConnectionStringsSlot description for Replaces the connection strings of an app.
+// UpdateConnectionStringsSlot replaces the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33082,7 +33039,7 @@ func (client AppsClient) UpdateConnectionStringsSlotResponder(resp *http.Respons
 	return
 }
 
-// UpdateDiagnosticLogsConfig description for Updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfig updates the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33185,7 +33142,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigResponder(resp *http.Response
 	return
 }
 
-// UpdateDiagnosticLogsConfigSlot description for Updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfigSlot updates the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33291,8 +33248,8 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlotResponder(resp *http.Resp
 	return
 }
 
-// UpdateDomainOwnershipIdentifier description for Creates a domain ownership identifier for web app, or updates an
-// existing ownership identifier.
+// UpdateDomainOwnershipIdentifier creates a domain ownership identifier for web app, or updates an existing ownership
+// identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33381,8 +33338,8 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierResponder(resp *http.Res
 	return
 }
 
-// UpdateDomainOwnershipIdentifierSlot description for Creates a domain ownership identifier for web app, or updates an
-// existing ownership identifier.
+// UpdateDomainOwnershipIdentifierSlot creates a domain ownership identifier for web app, or updates an existing
+// ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33474,7 +33431,7 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlotResponder(resp *http
 	return
 }
 
-// UpdateFtpAllowed description for Updates whether FTP is allowed on the site or not.
+// UpdateFtpAllowed updates whether FTP is allowed on the site or not.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33563,7 +33520,7 @@ func (client AppsClient) UpdateFtpAllowedResponder(resp *http.Response) (result 
 	return
 }
 
-// UpdateHybridConnection description for Creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnection creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -33654,7 +33611,7 @@ func (client AppsClient) UpdateHybridConnectionResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateHybridConnectionSlot description for Creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnectionSlot creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -33747,7 +33704,7 @@ func (client AppsClient) UpdateHybridConnectionSlotResponder(resp *http.Response
 	return
 }
 
-// UpdateMetadata description for Replaces the metadata of an app.
+// UpdateMetadata replaces the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33834,7 +33791,7 @@ func (client AppsClient) UpdateMetadataResponder(resp *http.Response) (result St
 	return
 }
 
-// UpdateMetadataSlot description for Replaces the metadata of an app.
+// UpdateMetadataSlot replaces the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33924,7 +33881,7 @@ func (client AppsClient) UpdateMetadataSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdatePremierAddOn description for Updates a named add-on of an app.
+// UpdatePremierAddOn updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34013,7 +33970,7 @@ func (client AppsClient) UpdatePremierAddOnResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdatePremierAddOnSlot description for Updates a named add-on of an app.
+// UpdatePremierAddOnSlot updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34105,8 +34062,8 @@ func (client AppsClient) UpdatePremierAddOnSlotResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateRelayServiceConnection description for Creates a new hybrid connection configuration (PUT), or updates an
-// existing one (PATCH).
+// UpdateRelayServiceConnection creates a new hybrid connection configuration (PUT), or updates an existing one
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34195,8 +34152,8 @@ func (client AppsClient) UpdateRelayServiceConnectionResponder(resp *http.Respon
 	return
 }
 
-// UpdateRelayServiceConnectionSlot description for Creates a new hybrid connection configuration (PUT), or updates an
-// existing one (PATCH).
+// UpdateRelayServiceConnectionSlot creates a new hybrid connection configuration (PUT), or updates an existing one
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34288,7 +34245,7 @@ func (client AppsClient) UpdateRelayServiceConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// UpdateScmAllowed description for Updates whether user publishing credentials are allowed on the site or not.
+// UpdateScmAllowed updates whether user publishing credentials are allowed on the site or not.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34377,7 +34334,7 @@ func (client AppsClient) UpdateScmAllowedResponder(resp *http.Response) (result 
 	return
 }
 
-// UpdateSitePushSettings description for Updates the Push settings associated with web app.
+// UpdateSitePushSettings updates the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -34467,7 +34424,7 @@ func (client AppsClient) UpdateSitePushSettingsResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateSitePushSettingsSlot description for Updates the Push settings associated with web app.
+// UpdateSitePushSettingsSlot updates the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -34559,15 +34516,13 @@ func (client AppsClient) UpdateSitePushSettingsSlotResponder(resp *http.Response
 	return
 }
 
-// UpdateSlot description for Creates a new web, mobile, or API app in an existing resource group, or updates an
-// existing app.
+// UpdateSlot creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 func (client AppsClient) UpdateSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, slot string) (result Site, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateSlot")
@@ -34651,8 +34606,8 @@ func (client AppsClient) UpdateSlotResponder(resp *http.Response) (result Site, 
 	return
 }
 
-// UpdateSlotConfigurationNames description for Updates the names of application settings and connection string that
-// remain with the slot during swap operation.
+// UpdateSlotConfigurationNames updates the names of application settings and connection string that remain with the
+// slot during swap operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34739,7 +34694,7 @@ func (client AppsClient) UpdateSlotConfigurationNamesResponder(resp *http.Respon
 	return
 }
 
-// UpdateSourceControl description for Updates the source control configuration of an app.
+// UpdateSourceControl updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34826,7 +34781,7 @@ func (client AppsClient) UpdateSourceControlResponder(resp *http.Response) (resu
 	return
 }
 
-// UpdateSourceControlSlot description for Updates the source control configuration of an app.
+// UpdateSourceControlSlot updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -34916,9 +34871,9 @@ func (client AppsClient) UpdateSourceControlSlotResponder(resp *http.Response) (
 	return
 }
 
-// UpdateSwiftVirtualNetworkConnection description for Integrates this Web App with a Virtual Network. This requires
-// that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already
-// been delegated, and is not
+// UpdateSwiftVirtualNetworkConnection integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -35006,9 +34961,9 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionResponder(resp *http
 	return
 }
 
-// UpdateSwiftVirtualNetworkConnectionSlot description for Integrates this Web App with a Virtual Network. This
-// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
-// already been delegated, and is not
+// UpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -35099,8 +35054,8 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlotResponder(resp *
 	return
 }
 
-// UpdateVnetConnection description for Adds a Virtual Network connection to an app or slot (PUT) or updates the
-// connection properties (PATCH).
+// UpdateVnetConnection adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -35189,8 +35144,7 @@ func (client AppsClient) UpdateVnetConnectionResponder(resp *http.Response) (res
 	return
 }
 
-// UpdateVnetConnectionGateway description for Adds a gateway to a connected Virtual Network (PUT) or updates it
-// (PATCH).
+// UpdateVnetConnectionGateway adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -35281,8 +35235,7 @@ func (client AppsClient) UpdateVnetConnectionGatewayResponder(resp *http.Respons
 	return
 }
 
-// UpdateVnetConnectionGatewaySlot description for Adds a gateway to a connected Virtual Network (PUT) or updates it
-// (PATCH).
+// UpdateVnetConnectionGatewaySlot adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -35376,8 +35329,8 @@ func (client AppsClient) UpdateVnetConnectionGatewaySlotResponder(resp *http.Res
 	return
 }
 
-// UpdateVnetConnectionSlot description for Adds a Virtual Network connection to an app or slot (PUT) or updates the
-// connection properties (PATCH).
+// UpdateVnetConnectionSlot adds a Virtual Network connection to an app or slot (PUT) or updates the connection
+// properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.

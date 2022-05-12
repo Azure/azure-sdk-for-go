@@ -6301,6 +6301,304 @@ type GenerateSsoURLResult struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// GlobalSchemaCollection the response of the list schema operation.
+type GlobalSchemaCollection struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Global Schema Contract value.
+	Value *[]GlobalSchemaContract `json:"value,omitempty"`
+	// Count - Total record count number.
+	Count *int64 `json:"count,omitempty"`
+	// NextLink - READ-ONLY; Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GlobalSchemaCollection.
+func (gsc GlobalSchemaCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gsc.Count != nil {
+		objectMap["count"] = gsc.Count
+	}
+	return json.Marshal(objectMap)
+}
+
+// GlobalSchemaCollectionIterator provides access to a complete listing of GlobalSchemaContract values.
+type GlobalSchemaCollectionIterator struct {
+	i    int
+	page GlobalSchemaCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GlobalSchemaCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GlobalSchemaCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GlobalSchemaCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GlobalSchemaCollectionIterator) Response() GlobalSchemaCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GlobalSchemaCollectionIterator) Value() GlobalSchemaContract {
+	if !iter.page.NotDone() {
+		return GlobalSchemaContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GlobalSchemaCollectionIterator type.
+func NewGlobalSchemaCollectionIterator(page GlobalSchemaCollectionPage) GlobalSchemaCollectionIterator {
+	return GlobalSchemaCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gsc GlobalSchemaCollection) IsEmpty() bool {
+	return gsc.Value == nil || len(*gsc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (gsc GlobalSchemaCollection) hasNextLink() bool {
+	return gsc.NextLink != nil && len(*gsc.NextLink) != 0
+}
+
+// globalSchemaCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gsc GlobalSchemaCollection) globalSchemaCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !gsc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gsc.NextLink)))
+}
+
+// GlobalSchemaCollectionPage contains a page of GlobalSchemaContract values.
+type GlobalSchemaCollectionPage struct {
+	fn  func(context.Context, GlobalSchemaCollection) (GlobalSchemaCollection, error)
+	gsc GlobalSchemaCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GlobalSchemaCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalSchemaCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.gsc)
+		if err != nil {
+			return err
+		}
+		page.gsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GlobalSchemaCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GlobalSchemaCollectionPage) NotDone() bool {
+	return !page.gsc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GlobalSchemaCollectionPage) Response() GlobalSchemaCollection {
+	return page.gsc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GlobalSchemaCollectionPage) Values() []GlobalSchemaContract {
+	if page.gsc.IsEmpty() {
+		return nil
+	}
+	return *page.gsc.Value
+}
+
+// Creates a new instance of the GlobalSchemaCollectionPage type.
+func NewGlobalSchemaCollectionPage(cur GlobalSchemaCollection, getNextPage func(context.Context, GlobalSchemaCollection) (GlobalSchemaCollection, error)) GlobalSchemaCollectionPage {
+	return GlobalSchemaCollectionPage{
+		fn:  getNextPage,
+		gsc: cur,
+	}
+}
+
+// GlobalSchemaContract global Schema Contract details.
+type GlobalSchemaContract struct {
+	autorest.Response `json:"-"`
+	// GlobalSchemaContractProperties - Properties of the Global Schema.
+	*GlobalSchemaContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GlobalSchemaContract.
+func (gsc GlobalSchemaContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gsc.GlobalSchemaContractProperties != nil {
+		objectMap["properties"] = gsc.GlobalSchemaContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GlobalSchemaContract struct.
+func (gsc *GlobalSchemaContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var globalSchemaContractProperties GlobalSchemaContractProperties
+				err = json.Unmarshal(*v, &globalSchemaContractProperties)
+				if err != nil {
+					return err
+				}
+				gsc.GlobalSchemaContractProperties = &globalSchemaContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gsc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gsc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gsc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// GlobalSchemaContractProperties schema create or update contract Properties.
+type GlobalSchemaContractProperties struct {
+	// SchemaType - Schema Type. Immutable. Possible values include: 'SchemaTypeXML', 'SchemaTypeJSON'
+	SchemaType SchemaType `json:"schemaType,omitempty"`
+	// Description - Free-form schema entity description.
+	Description *string `json:"description,omitempty"`
+	// Value - Json-encoded string for non json-based schema.
+	Value interface{} `json:"value,omitempty"`
+	// Document - Global Schema document object for json-based schema formats(e.g. json schema).
+	Document interface{} `json:"document,omitempty"`
+}
+
+// GlobalSchemaCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GlobalSchemaCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(GlobalSchemaClient) (GlobalSchemaContract, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *GlobalSchemaCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for GlobalSchemaCreateOrUpdateFuture.Result.
+func (future *GlobalSchemaCreateOrUpdateFuture) result(client GlobalSchemaClient) (gsc GlobalSchemaContract, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		gsc.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("apimanagement.GlobalSchemaCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gsc.Response.Response, err = future.GetResult(sender); err == nil && gsc.Response.Response.StatusCode != http.StatusNoContent {
+		gsc, err = client.CreateOrUpdateResponder(gsc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.GlobalSchemaCreateOrUpdateFuture", "Result", gsc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // GroupCollection paged Group list representation.
 type GroupCollection struct {
 	autorest.Response `json:"-"`
@@ -7989,7 +8287,7 @@ type IssueUpdateContractProperties struct {
 type KeyVaultContractCreateProperties struct {
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
@@ -7999,7 +8297,7 @@ type KeyVaultContractProperties struct {
 	LastStatus *KeyVaultLastAccessStatusContractProperties `json:"lastStatus,omitempty"`
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
@@ -13350,10 +13648,10 @@ func NewSchemaCollectionPage(cur SchemaCollection, getNextPage func(context.Cont
 	}
 }
 
-// SchemaContract schema Contract details.
+// SchemaContract API Schema Contract details.
 type SchemaContract struct {
 	autorest.Response `json:"-"`
-	// SchemaContractProperties - Properties of the Schema.
+	// SchemaContractProperties - Properties of the API Schema.
 	*SchemaContractProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -13427,7 +13725,7 @@ func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 type SchemaContractProperties struct {
 	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). </br> - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL` Schema use `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi` Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
 	ContentType *string `json:"contentType,omitempty"`
-	// SchemaDocumentProperties - Create or update Properties of the Schema Document.
+	// SchemaDocumentProperties - Create or update Properties of the API Schema Document.
 	*SchemaDocumentProperties `json:"document,omitempty"`
 }
 
@@ -13476,13 +13774,13 @@ func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SchemaDocumentProperties schema Document Properties.
+// SchemaDocumentProperties api Schema Document Properties.
 type SchemaDocumentProperties struct {
 	// Value - Json escaped string defining the document representing the Schema. Used for schemas other than Swagger/OpenAPI.
 	Value *string `json:"value,omitempty"`
-	// Definitions - Types definitions. Used for OpenAPI v2 (Swagger) schemas only, null otherwise.
+	// Definitions - Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
 	Definitions interface{} `json:"definitions,omitempty"`
-	// Components - Types definitions. Used for OpenAPI v3 schemas only, null otherwise.
+	// Components - Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
 	Components interface{} `json:"components,omitempty"`
 }
 

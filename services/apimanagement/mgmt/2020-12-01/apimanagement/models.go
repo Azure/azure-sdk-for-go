@@ -7716,7 +7716,7 @@ type IssueUpdateContractProperties struct {
 type KeyVaultContractCreateProperties struct {
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires Api Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
@@ -7726,7 +7726,7 @@ type KeyVaultContractProperties struct {
 	LastStatus *KeyVaultLastAccessStatusContractProperties `json:"lastStatus,omitempty"`
 	// SecretIdentifier - Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires Api Management service to be configured with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// IdentityClientID - SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
+	// IdentityClientID - Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 }
 
@@ -9659,9 +9659,81 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 	}
 }
 
-// OperationResultContract operation Result.
+// OperationResultContract long Running Git Operation Results.
 type OperationResultContract struct {
 	autorest.Response `json:"-"`
+	// OperationResultContractProperties - Properties of the Operation Contract.
+	*OperationResultContractProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationResultContract.
+func (orc OperationResultContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if orc.OperationResultContractProperties != nil {
+		objectMap["properties"] = orc.OperationResultContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OperationResultContract struct.
+func (orc *OperationResultContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var operationResultContractProperties OperationResultContractProperties
+				err = json.Unmarshal(*v, &operationResultContractProperties)
+				if err != nil {
+					return err
+				}
+				orc.OperationResultContractProperties = &operationResultContractProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				orc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				orc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				orc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// OperationResultContractProperties operation Result.
+type OperationResultContractProperties struct {
 	// ID - Operation result identifier.
 	ID *string `json:"id,omitempty"`
 	// Status - Status of an async operation. Possible values include: 'Started', 'InProgress', 'Succeeded', 'Failed'
@@ -9678,26 +9750,26 @@ type OperationResultContract struct {
 	ActionLog *[]OperationResultLogItemContract `json:"actionLog,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for OperationResultContract.
-func (orc OperationResultContract) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for OperationResultContractProperties.
+func (orcp OperationResultContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if orc.ID != nil {
-		objectMap["id"] = orc.ID
+	if orcp.ID != nil {
+		objectMap["id"] = orcp.ID
 	}
-	if orc.Status != "" {
-		objectMap["status"] = orc.Status
+	if orcp.Status != "" {
+		objectMap["status"] = orcp.Status
 	}
-	if orc.Started != nil {
-		objectMap["started"] = orc.Started
+	if orcp.Started != nil {
+		objectMap["started"] = orcp.Started
 	}
-	if orc.Updated != nil {
-		objectMap["updated"] = orc.Updated
+	if orcp.Updated != nil {
+		objectMap["updated"] = orcp.Updated
 	}
-	if orc.ResultInfo != nil {
-		objectMap["resultInfo"] = orc.ResultInfo
+	if orcp.ResultInfo != nil {
+		objectMap["resultInfo"] = orcp.ResultInfo
 	}
-	if orc.Error != nil {
-		objectMap["error"] = orc.Error
+	if orcp.Error != nil {
+		objectMap["error"] = orcp.Error
 	}
 	return json.Marshal(objectMap)
 }
@@ -15250,9 +15322,48 @@ func (future *TenantConfigurationSaveFuture) result(client TenantConfigurationCl
 	return
 }
 
-// TenantConfigurationSyncStateContract tenant Configuration Synchronization State.
+// TenantConfigurationSyncStateContract result of Tenant Configuration Sync State.
 type TenantConfigurationSyncStateContract struct {
 	autorest.Response `json:"-"`
+	// TenantConfigurationSyncStateContractProperties - Properties returned Tenant Configuration Sync State check.
+	*TenantConfigurationSyncStateContractProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TenantConfigurationSyncStateContract.
+func (tcssc TenantConfigurationSyncStateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tcssc.TenantConfigurationSyncStateContractProperties != nil {
+		objectMap["properties"] = tcssc.TenantConfigurationSyncStateContractProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TenantConfigurationSyncStateContract struct.
+func (tcssc *TenantConfigurationSyncStateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var tenantConfigurationSyncStateContractProperties TenantConfigurationSyncStateContractProperties
+				err = json.Unmarshal(*v, &tenantConfigurationSyncStateContractProperties)
+				if err != nil {
+					return err
+				}
+				tcssc.TenantConfigurationSyncStateContractProperties = &tenantConfigurationSyncStateContractProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// TenantConfigurationSyncStateContractProperties tenant Configuration Synchronization State.
+type TenantConfigurationSyncStateContractProperties struct {
 	// Branch - The name of Git branch.
 	Branch *string `json:"branch,omitempty"`
 	// CommitID - The latest commit Id.
@@ -15267,6 +15378,8 @@ type TenantConfigurationSyncStateContract struct {
 	SyncDate *date.Time `json:"syncDate,omitempty"`
 	// ConfigurationChangeDate - The date of the latest configuration change. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
+	// LastOperationID - Most recent tenant configuration operation identifier
+	LastOperationID *string `json:"lastOperationId,omitempty"`
 }
 
 // TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a

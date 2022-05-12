@@ -32,7 +32,7 @@ func NewResourceHealthMetadataClientWithBaseURI(baseURI string, subscriptionID s
 	return ResourceHealthMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetBySite description for Gets the category of ResourceHealthMetadata to use for the given site
+// GetBySite gets the category of ResourceHealthMetadata to use for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app
@@ -116,7 +116,7 @@ func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Respons
 	return
 }
 
-// GetBySiteSlot description for Gets the category of ResourceHealthMetadata to use for the given site
+// GetBySiteSlot gets the category of ResourceHealthMetadata to use for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app
@@ -202,7 +202,7 @@ func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Res
 	return
 }
 
-// List description for List all ResourceHealthMetadata for all sites in the subscription.
+// List list all ResourceHealthMetadata for all sites in the subscription.
 func (client ResourceHealthMetadataClient) List(ctx context.Context) (result ResourceHealthMetadataCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceHealthMetadataClient.List")
@@ -315,8 +315,7 @@ func (client ResourceHealthMetadataClient) ListComplete(ctx context.Context) (re
 	return
 }
 
-// ListByResourceGroup description for List all ResourceHealthMetadata for all sites in the resource group in the
-// subscription.
+// ListByResourceGroup list all ResourceHealthMetadata for all sites in the resource group in the subscription.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client ResourceHealthMetadataClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ResourceHealthMetadataCollectionPage, err error) {
@@ -440,7 +439,7 @@ func (client ResourceHealthMetadataClient) ListByResourceGroupComplete(ctx conte
 	return
 }
 
-// ListBySite description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// ListBySite gets the category of ResourceHealthMetadata to use for the given site as a collection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -566,7 +565,7 @@ func (client ResourceHealthMetadataClient) ListBySiteComplete(ctx context.Contex
 	return
 }
 
-// ListBySiteSlot description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// ListBySiteSlot gets the category of ResourceHealthMetadata to use for the given site as a collection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.

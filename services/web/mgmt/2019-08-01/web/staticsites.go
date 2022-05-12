@@ -31,8 +31,8 @@ func NewStaticSitesClientWithBaseURI(baseURI string, subscriptionID string) Stat
 	return StaticSitesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdateStaticSite description for Creates a new static site in an existing resource group, or updates an
-// existing static site.
+// CreateOrUpdateStaticSite creates a new static site in an existing resource group, or updates an existing static
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site to create or update.
@@ -119,8 +119,8 @@ func (client StaticSitesClient) CreateOrUpdateStaticSiteResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdateStaticSiteBuildFunctionAppSettings description for Creates or updates the function app settings of a
-// static site build.
+// CreateOrUpdateStaticSiteBuildFunctionAppSettings creates or updates the function app settings of a static site
+// build.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -208,8 +208,8 @@ func (client StaticSitesClient) CreateOrUpdateStaticSiteBuildFunctionAppSettings
 	return
 }
 
-// CreateOrUpdateStaticSiteCustomDomain description for Creates a new static site custom domain in an existing resource
-// group and static site.
+// CreateOrUpdateStaticSiteCustomDomain creates a new static site custom domain in an existing resource group and
+// static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -295,8 +295,7 @@ func (client StaticSitesClient) CreateOrUpdateStaticSiteCustomDomainResponder(re
 	return
 }
 
-// CreateOrUpdateStaticSiteFunctionAppSettings description for Creates or updates the function app settings of a static
-// site.
+// CreateOrUpdateStaticSiteFunctionAppSettings creates or updates the function app settings of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -382,7 +381,7 @@ func (client StaticSitesClient) CreateOrUpdateStaticSiteFunctionAppSettingsRespo
 	return
 }
 
-// CreateUserRolesInvitationLink description for Creates an invitation link for a user with the role
+// CreateUserRolesInvitationLink creates an invitation link for a user with the role
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -468,7 +467,7 @@ func (client StaticSitesClient) CreateUserRolesInvitationLinkResponder(resp *htt
 	return
 }
 
-// DeleteStaticSite description for Deletes a static site.
+// DeleteStaticSite deletes a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site to delete.
@@ -551,7 +550,7 @@ func (client StaticSitesClient) DeleteStaticSiteResponder(resp *http.Response) (
 	return
 }
 
-// DeleteStaticSiteBuild description for Deletes a static site build.
+// DeleteStaticSiteBuild deletes a static site build.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -636,7 +635,7 @@ func (client StaticSitesClient) DeleteStaticSiteBuildResponder(resp *http.Respon
 	return
 }
 
-// DeleteStaticSiteCustomDomain description for Deletes a custom domain.
+// DeleteStaticSiteCustomDomain deletes a custom domain.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -721,7 +720,7 @@ func (client StaticSitesClient) DeleteStaticSiteCustomDomainResponder(resp *http
 	return
 }
 
-// DeleteStaticSiteUser description for Deletes the user entry from the static site.
+// DeleteStaticSiteUser deletes the user entry from the static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the staticsite.
@@ -808,7 +807,7 @@ func (client StaticSitesClient) DeleteStaticSiteUserResponder(resp *http.Respons
 	return
 }
 
-// DetachStaticSite description for Detaches a static site.
+// DetachStaticSite detaches a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site to detach.
@@ -891,7 +890,7 @@ func (client StaticSitesClient) DetachStaticSiteResponder(resp *http.Response) (
 	return
 }
 
-// GetStaticSite description for Gets the details of a static site.
+// GetStaticSite gets the details of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -975,7 +974,7 @@ func (client StaticSitesClient) GetStaticSiteResponder(resp *http.Response) (res
 	return
 }
 
-// GetStaticSiteBuild description for Gets the details of a static site build.
+// GetStaticSiteBuild gets the details of a static site build.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1061,7 +1060,7 @@ func (client StaticSitesClient) GetStaticSiteBuildResponder(resp *http.Response)
 	return
 }
 
-// GetStaticSiteBuilds description for Gets all static site builds for a particular static site.
+// GetStaticSiteBuilds gets all static site builds for a particular static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1187,7 +1186,7 @@ func (client StaticSitesClient) GetStaticSiteBuildsComplete(ctx context.Context,
 	return
 }
 
-// GetStaticSitesByResourceGroup description for Gets all static sites in the specified resource group.
+// GetStaticSitesByResourceGroup gets all static sites in the specified resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client StaticSitesClient) GetStaticSitesByResourceGroup(ctx context.Context, resourceGroupName string) (result StaticSiteCollectionPage, err error) {
@@ -1311,7 +1310,7 @@ func (client StaticSitesClient) GetStaticSitesByResourceGroupComplete(ctx contex
 	return
 }
 
-// List description for Get all Static Sites for a subscription.
+// List get all Static Sites for a subscription.
 func (client StaticSitesClient) List(ctx context.Context) (result StaticSiteCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/StaticSitesClient.List")
@@ -1424,7 +1423,7 @@ func (client StaticSitesClient) ListComplete(ctx context.Context) (result Static
 	return
 }
 
-// ListStaticSiteBuildFunctionAppSettings description for Gets the application settings of a static site.
+// ListStaticSiteBuildFunctionAppSettings gets the application settings of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1510,7 +1509,7 @@ func (client StaticSitesClient) ListStaticSiteBuildFunctionAppSettingsResponder(
 	return
 }
 
-// ListStaticSiteBuildFunctions description for Gets the functions of a particular static site build.
+// ListStaticSiteBuildFunctions gets the functions of a particular static site build.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1638,7 +1637,7 @@ func (client StaticSitesClient) ListStaticSiteBuildFunctionsComplete(ctx context
 	return
 }
 
-// ListStaticSiteCustomDomains description for Gets all static site custom domains for a particular static site.
+// ListStaticSiteCustomDomains gets all static site custom domains for a particular static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site resource to search in.
@@ -1764,7 +1763,7 @@ func (client StaticSitesClient) ListStaticSiteCustomDomainsComplete(ctx context.
 	return
 }
 
-// ListStaticSiteFunctionAppSettings description for Gets the application settings of a static site.
+// ListStaticSiteFunctionAppSettings gets the application settings of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1848,7 +1847,7 @@ func (client StaticSitesClient) ListStaticSiteFunctionAppSettingsResponder(resp 
 	return
 }
 
-// ListStaticSiteFunctions description for Gets the functions of a static site.
+// ListStaticSiteFunctions gets the functions of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -1974,7 +1973,7 @@ func (client StaticSitesClient) ListStaticSiteFunctionsComplete(ctx context.Cont
 	return
 }
 
-// ListStaticSiteSecrets description for Lists the secrets for an existing static site.
+// ListStaticSiteSecrets lists the secrets for an existing static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -2058,7 +2057,7 @@ func (client StaticSitesClient) ListStaticSiteSecretsResponder(resp *http.Respon
 	return
 }
 
-// ListStaticSiteUsers description for Gets the list of users of a static site.
+// ListStaticSiteUsers gets the list of users of a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -2186,7 +2185,7 @@ func (client StaticSitesClient) ListStaticSiteUsersComplete(ctx context.Context,
 	return
 }
 
-// ResetStaticSiteAPIKey description for Resets the api key for an existing static site.
+// ResetStaticSiteAPIKey resets the api key for an existing static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -2271,8 +2270,7 @@ func (client StaticSitesClient) ResetStaticSiteAPIKeyResponder(resp *http.Respon
 	return
 }
 
-// UpdateStaticSite description for Creates a new static site in an existing resource group, or updates an existing
-// static site.
+// UpdateStaticSite creates a new static site in an existing resource group, or updates an existing static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site to create or update.
@@ -2359,7 +2357,7 @@ func (client StaticSitesClient) UpdateStaticSiteResponder(resp *http.Response) (
 	return
 }
 
-// UpdateStaticSiteUser description for Updates a user entry with the listed roles
+// UpdateStaticSiteUser updates a user entry with the listed roles
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.
@@ -2450,8 +2448,7 @@ func (client StaticSitesClient) UpdateStaticSiteUserResponder(resp *http.Respons
 	return
 }
 
-// ValidateCustomDomainCanBeAddedToStaticSite description for Validates a particular custom domain can be added to a
-// static site.
+// ValidateCustomDomainCanBeAddedToStaticSite validates a particular custom domain can be added to a static site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the static site.

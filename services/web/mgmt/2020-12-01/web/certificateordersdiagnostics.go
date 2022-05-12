@@ -33,8 +33,8 @@ func NewCertificateOrdersDiagnosticsClientWithBaseURI(baseURI string, subscripti
 	return CertificateOrdersDiagnosticsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// GetAppServiceCertificateOrderDetectorResponse description for Microsoft.CertificateRegistration call to get a
-// detector response from App Lens.
+// GetAppServiceCertificateOrderDetectorResponse microsoft.CertificateRegistration call to get a detector response from
+// App Lens.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - the certificate order name for which the response is needed.
@@ -135,8 +135,8 @@ func (client CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderDe
 	return
 }
 
-// ListAppServiceCertificateOrderDetectorResponse description for Microsoft.CertificateRegistration to get the list of
-// detectors for this RP.
+// ListAppServiceCertificateOrderDetectorResponse microsoft.CertificateRegistration to get the list of detectors for
+// this RP.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // certificateOrderName - the certificate order name for which the response is needed.

@@ -31,7 +31,7 @@ func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) Cer
 	return CertificatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate description for Create or update a certificate.
+// CreateOrUpdate create or update a certificate.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate.
@@ -121,7 +121,7 @@ func (client CertificatesClient) CreateOrUpdateResponder(resp *http.Response) (r
 	return
 }
 
-// Delete description for Delete a certificate.
+// Delete delete a certificate.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate.
@@ -204,7 +204,7 @@ func (client CertificatesClient) DeleteResponder(resp *http.Response) (result au
 	return
 }
 
-// Get description for Get a certificate.
+// Get get a certificate.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate.
@@ -288,7 +288,7 @@ func (client CertificatesClient) GetResponder(resp *http.Response) (result Certi
 	return
 }
 
-// List description for Get all certificates for a subscription.
+// List get all certificates for a subscription.
 func (client CertificatesClient) List(ctx context.Context) (result CertificateCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CertificatesClient.List")
@@ -401,7 +401,7 @@ func (client CertificatesClient) ListComplete(ctx context.Context) (result Certi
 	return
 }
 
-// ListByResourceGroup description for Get all certificates in a resource group.
+// ListByResourceGroup get all certificates in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client CertificatesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result CertificateCollectionPage, err error) {
@@ -525,7 +525,7 @@ func (client CertificatesClient) ListByResourceGroupComplete(ctx context.Context
 	return
 }
 
-// Update description for Create or update a certificate.
+// Update create or update a certificate.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the certificate.

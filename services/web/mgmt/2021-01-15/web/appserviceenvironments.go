@@ -32,7 +32,7 @@ func NewAppServiceEnvironmentsClientWithBaseURI(baseURI string, subscriptionID s
 	return AppServiceEnvironmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ApproveOrRejectPrivateEndpointConnection description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection approves or rejects a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -122,7 +122,7 @@ func (client AppServiceEnvironmentsClient) ApproveOrRejectPrivateEndpointConnect
 	return
 }
 
-// ChangeVnet description for Move an App Service Environment to a different VNET.
+// ChangeVnet move an App Service Environment to a different VNET.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -257,7 +257,7 @@ func (client AppServiceEnvironmentsClient) ChangeVnetComplete(ctx context.Contex
 	return
 }
 
-// CreateOrUpdate description for Create or update an App Service Environment.
+// CreateOrUpdate create or update an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -352,7 +352,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Re
 	return
 }
 
-// CreateOrUpdateMultiRolePool description for Create or update a multi-role pool.
+// CreateOrUpdateMultiRolePool create or update a multi-role pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -442,7 +442,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(
 	return
 }
 
-// CreateOrUpdateWorkerPool description for Create or update a worker pool.
+// CreateOrUpdateWorkerPool create or update a worker pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -534,7 +534,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(res
 	return
 }
 
-// Delete description for Delete an App Service Environment.
+// Delete delete an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -625,7 +625,7 @@ func (client AppServiceEnvironmentsClient) DeleteResponder(resp *http.Response) 
 	return
 }
 
-// DeletePrivateEndpointConnection description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection deletes a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -713,7 +713,7 @@ func (client AppServiceEnvironmentsClient) DeletePrivateEndpointConnectionRespon
 	return
 }
 
-// Get description for Get the properties of an App Service Environment.
+// Get get the properties of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -797,7 +797,7 @@ func (client AppServiceEnvironmentsClient) GetResponder(resp *http.Response) (re
 	return
 }
 
-// GetAseV3NetworkingConfiguration description for Get networking configuration of an App Service Environment
+// GetAseV3NetworkingConfiguration get networking configuration of an App Service Environment
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -881,7 +881,7 @@ func (client AppServiceEnvironmentsClient) GetAseV3NetworkingConfigurationRespon
 	return
 }
 
-// GetDiagnosticsItem description for Get a diagnostics item for an App Service Environment.
+// GetDiagnosticsItem get a diagnostics item for an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -967,8 +967,8 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemResponder(resp *htt
 	return
 }
 
-// GetInboundNetworkDependenciesEndpoints description for Get the network endpoints of all inbound dependencies of an
-// App Service Environment.
+// GetInboundNetworkDependenciesEndpoints get the network endpoints of all inbound dependencies of an App Service
+// Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1094,7 +1094,7 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 	return
 }
 
-// GetMultiRolePool description for Get properties of a multi-role pool.
+// GetMultiRolePool get properties of a multi-role pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1178,8 +1178,8 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.
 	return
 }
 
-// GetOutboundNetworkDependenciesEndpoints description for Get the network endpoints of all outbound dependencies of an
-// App Service Environment.
+// GetOutboundNetworkDependenciesEndpoints get the network endpoints of all outbound dependencies of an App Service
+// Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1305,7 +1305,7 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 	return
 }
 
-// GetPrivateEndpointConnection description for Gets a private endpoint connection
+// GetPrivateEndpointConnection gets a private endpoint connection
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1391,8 +1391,7 @@ func (client AppServiceEnvironmentsClient) GetPrivateEndpointConnectionResponder
 	return
 }
 
-// GetPrivateEndpointConnectionList description for Gets the list of private endpoints associated with a hosting
-// environment
+// GetPrivateEndpointConnectionList gets the list of private endpoints associated with a hosting environment
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1518,7 +1517,7 @@ func (client AppServiceEnvironmentsClient) GetPrivateEndpointConnectionListCompl
 	return
 }
 
-// GetPrivateLinkResources description for Gets the private link resources
+// GetPrivateLinkResources gets the private link resources
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1602,7 +1601,7 @@ func (client AppServiceEnvironmentsClient) GetPrivateLinkResourcesResponder(resp
 	return
 }
 
-// GetVipInfo description for Get IP addresses assigned to an App Service Environment.
+// GetVipInfo get IP addresses assigned to an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1686,7 +1685,7 @@ func (client AppServiceEnvironmentsClient) GetVipInfoResponder(resp *http.Respon
 	return
 }
 
-// GetWorkerPool description for Get properties of a worker pool.
+// GetWorkerPool get properties of a worker pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -1772,7 +1771,7 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolResponder(resp *http.Res
 	return
 }
 
-// List description for Get all App Service Environments for a subscription.
+// List get all App Service Environments for a subscription.
 func (client AppServiceEnvironmentsClient) List(ctx context.Context) (result AppServiceEnvironmentCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppServiceEnvironmentsClient.List")
@@ -1885,7 +1884,7 @@ func (client AppServiceEnvironmentsClient) ListComplete(ctx context.Context) (re
 	return
 }
 
-// ListAppServicePlans description for Get all App Service plans in an App Service Environment.
+// ListAppServicePlans get all App Service plans in an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2011,7 +2010,7 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlansComplete(ctx conte
 	return
 }
 
-// ListByResourceGroup description for Get all App Service Environments in a resource group.
+// ListByResourceGroup get all App Service Environments in a resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 func (client AppServiceEnvironmentsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AppServiceEnvironmentCollectionPage, err error) {
@@ -2135,7 +2134,7 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroupComplete(ctx conte
 	return
 }
 
-// ListCapacities description for Get the used, available, and total worker capacity an App Service Environment.
+// ListCapacities get the used, available, and total worker capacity an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2261,7 +2260,7 @@ func (client AppServiceEnvironmentsClient) ListCapacitiesComplete(ctx context.Co
 	return
 }
 
-// ListDiagnostics description for Get diagnostic information for an App Service Environment.
+// ListDiagnostics get diagnostic information for an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2345,8 +2344,7 @@ func (client AppServiceEnvironmentsClient) ListDiagnosticsResponder(resp *http.R
 	return
 }
 
-// ListMultiRoleMetricDefinitions description for Get metric definitions for a multi-role pool of an App Service
-// Environment.
+// ListMultiRoleMetricDefinitions get metric definitions for a multi-role pool of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2472,8 +2470,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsComplet
 	return
 }
 
-// ListMultiRolePoolInstanceMetricDefinitions description for Get metric definitions for a specific instance of a
-// multi-role pool of an App Service Environment.
+// ListMultiRolePoolInstanceMetricDefinitions get metric definitions for a specific instance of a multi-role pool of an
+// App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2601,7 +2599,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 	return
 }
 
-// ListMultiRolePools description for Get all multi-role pools.
+// ListMultiRolePools get all multi-role pools.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2727,7 +2725,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolsComplete(ctx contex
 	return
 }
 
-// ListMultiRolePoolSkus description for Get available SKUs for scaling a multi-role pool.
+// ListMultiRolePoolSkus get available SKUs for scaling a multi-role pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2853,7 +2851,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusComplete(ctx con
 	return
 }
 
-// ListMultiRoleUsages description for Get usage metrics for a multi-role pool of an App Service Environment.
+// ListMultiRoleUsages get usage metrics for a multi-role pool of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -2979,7 +2977,7 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesComplete(ctx conte
 	return
 }
 
-// ListOperations description for List all currently running operations on the App Service Environment.
+// ListOperations list all currently running operations on the App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3063,7 +3061,7 @@ func (client AppServiceEnvironmentsClient) ListOperationsResponder(resp *http.Re
 	return
 }
 
-// ListUsages description for Get global usage metrics of an App Service Environment.
+// ListUsages get global usage metrics of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3195,7 +3193,7 @@ func (client AppServiceEnvironmentsClient) ListUsagesComplete(ctx context.Contex
 	return
 }
 
-// ListWebApps description for Get all apps in an App Service Environment.
+// ListWebApps get all apps in an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3325,8 +3323,7 @@ func (client AppServiceEnvironmentsClient) ListWebAppsComplete(ctx context.Conte
 	return
 }
 
-// ListWebWorkerMetricDefinitions description for Get metric definitions for a worker pool of an App Service
-// Environment.
+// ListWebWorkerMetricDefinitions get metric definitions for a worker pool of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3454,7 +3451,7 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsComplet
 	return
 }
 
-// ListWebWorkerUsages description for Get usage metrics for a worker pool of an App Service Environment.
+// ListWebWorkerUsages get usage metrics for a worker pool of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3582,8 +3579,8 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesComplete(ctx conte
 	return
 }
 
-// ListWorkerPoolInstanceMetricDefinitions description for Get metric definitions for a specific instance of a worker
-// pool of an App Service Environment.
+// ListWorkerPoolInstanceMetricDefinitions get metric definitions for a specific instance of a worker pool of an App
+// Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3713,7 +3710,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 	return
 }
 
-// ListWorkerPools description for Get all worker pools of an App Service Environment.
+// ListWorkerPools get all worker pools of an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3839,7 +3836,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolsComplete(ctx context.C
 	return
 }
 
-// ListWorkerPoolSkus description for Get available SKUs for scaling a worker pool.
+// ListWorkerPoolSkus get available SKUs for scaling a worker pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -3967,7 +3964,7 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusComplete(ctx contex
 	return
 }
 
-// Reboot description for Reboot all machines in an App Service Environment.
+// Reboot reboot all machines in an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4050,7 +4047,7 @@ func (client AppServiceEnvironmentsClient) RebootResponder(resp *http.Response) 
 	return
 }
 
-// Resume description for Resume an App Service Environment.
+// Resume resume an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4178,7 +4175,7 @@ func (client AppServiceEnvironmentsClient) ResumeComplete(ctx context.Context, r
 	return
 }
 
-// Suspend description for Suspend an App Service Environment.
+// Suspend suspend an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4306,7 +4303,7 @@ func (client AppServiceEnvironmentsClient) SuspendComplete(ctx context.Context, 
 	return
 }
 
-// Update description for Create or update an App Service Environment.
+// Update create or update an App Service Environment.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4393,7 +4390,7 @@ func (client AppServiceEnvironmentsClient) UpdateResponder(resp *http.Response) 
 	return
 }
 
-// UpdateAseNetworkingConfiguration description for Update networking configuration of an App Service Environment
+// UpdateAseNetworkingConfiguration update networking configuration of an App Service Environment
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4479,7 +4476,7 @@ func (client AppServiceEnvironmentsClient) UpdateAseNetworkingConfigurationRespo
 	return
 }
 
-// UpdateMultiRolePool description for Create or update a multi-role pool.
+// UpdateMultiRolePool create or update a multi-role pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.
@@ -4566,7 +4563,7 @@ func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolResponder(resp *ht
 	return
 }
 
-// UpdateWorkerPool description for Create or update a worker pool.
+// UpdateWorkerPool create or update a worker pool.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the App Service Environment.

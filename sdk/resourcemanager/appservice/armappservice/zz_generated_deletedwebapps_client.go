@@ -54,7 +54,7 @@ func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// GetDeletedWebAppByLocation - Description for Get deleted app for a subscription at location.
+// GetDeletedWebAppByLocation - Get deleted app for a subscription at location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deletedSiteID - The numeric ID of the deleted app, e.g. 12345
 // options - DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
@@ -109,7 +109,7 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(res
 	return result, nil
 }
 
-// NewListPager - Description for Get all deleted apps for a subscription.
+// NewListPager - Get all deleted apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
 func (client *DeletedWebAppsClient) NewListPager(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
@@ -167,7 +167,7 @@ func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (Del
 	return result, nil
 }
 
-// NewListByLocationPager - Description for Get all deleted apps for a subscription at location
+// NewListByLocationPager - Get all deleted apps for a subscription at location
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
 // method.

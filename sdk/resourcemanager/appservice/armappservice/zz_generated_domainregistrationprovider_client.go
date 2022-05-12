@@ -48,8 +48,7 @@ func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, opti
 	return client, nil
 }
 
-// NewListOperationsPager - Description for Implements Csm operations Api to exposes the list of available Csm Apis under
-// the resource provider
+// NewListOperationsPager - Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
 // method.

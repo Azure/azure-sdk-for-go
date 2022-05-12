@@ -55,7 +55,7 @@ func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
+// DisableAllForHostingEnvironment - Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // environmentName - Name of the app.
@@ -103,7 +103,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 	return req, nil
 }
 
-// DisableAllForWebApp - Description for Disable all recommendations for an app.
+// DisableAllForWebApp - Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
@@ -150,7 +150,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 	return req, nil
 }
 
-// DisableRecommendationForHostingEnvironment - Description for Disables the specific rule for a web site permanently.
+// DisableRecommendationForHostingEnvironment - Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // environmentName - Site name
@@ -203,7 +203,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 	return req, nil
 }
 
-// DisableRecommendationForSite - Description for Disables the specific rule for a web site permanently.
+// DisableRecommendationForSite - Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site name
@@ -255,8 +255,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 	return req, nil
 }
 
-// DisableRecommendationForSubscription - Description for Disables the specified rule so it will not apply to a subscription
-// in the future.
+// DisableRecommendationForSubscription - Disables the specified rule so it will not apply to a subscription in the future.
 // If the operation fails it returns an *azcore.ResponseError type.
 // name - Rule name
 // options - RecommendationsClientDisableRecommendationForSubscriptionOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSubscription
@@ -298,7 +297,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 	return req, nil
 }
 
-// GetRuleDetailsByHostingEnvironment - Description for Get a recommendation rule for an app.
+// GetRuleDetailsByHostingEnvironment - Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the hosting environment.
@@ -365,7 +364,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleRes
 	return result, nil
 }
 
-// GetRuleDetailsByWebApp - Description for Get a recommendation rule for an app.
+// GetRuleDetailsByWebApp - Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
@@ -432,7 +431,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 	return result, nil
 }
 
-// NewListPager - Description for List all recommendations for a subscription.
+// NewListPager - List all recommendations for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
@@ -498,8 +497,7 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 	return result, nil
 }
 
-// NewListHistoryForHostingEnvironmentPager - Description for Get past recommendations for an app, optionally specified by
-// the time range.
+// NewListHistoryForHostingEnvironmentPager - Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the hosting environment.
@@ -576,7 +574,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 	return result, nil
 }
 
-// NewListHistoryForWebAppPager - Description for Get past recommendations for an app, optionally specified by the time range.
+// NewListHistoryForWebAppPager - Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
@@ -653,7 +651,7 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListRecommendedRulesForHostingEnvironmentPager - Description for Get all recommendations for a hosting environment.
+// NewListRecommendedRulesForHostingEnvironmentPager - Get all recommendations for a hosting environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // hostingEnvironmentName - Name of the app.
@@ -730,7 +728,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 	return result, nil
 }
 
-// NewListRecommendedRulesForWebAppPager - Description for Get all recommendations for an app.
+// NewListRecommendedRulesForWebAppPager - Get all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.
@@ -807,7 +805,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse
 	return result, nil
 }
 
-// ResetAllFilters - Description for Reset all recommendation opt-out settings for a subscription.
+// ResetAllFilters - Reset all recommendation opt-out settings for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - RecommendationsClientResetAllFiltersOptions contains the optional parameters for the RecommendationsClient.ResetAllFilters
 // method.
@@ -844,7 +842,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// ResetAllFiltersForHostingEnvironment - Description for Reset all recommendation opt-out settings for an app.
+// ResetAllFiltersForHostingEnvironment - Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // environmentName - Name of the app.
@@ -892,7 +890,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 	return req, nil
 }
 
-// ResetAllFiltersForWebApp - Description for Reset all recommendation opt-out settings for an app.
+// ResetAllFiltersForWebApp - Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Name of the app.

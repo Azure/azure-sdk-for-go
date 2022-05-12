@@ -54,7 +54,7 @@ func NewCertificateOrdersClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Description for Create or update a certificate purchase order.
+// BeginCreateOrUpdate - Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -73,7 +73,7 @@ func (client *CertificateOrdersClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Description for Create or update a certificate purchase order.
+// CreateOrUpdate - Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateOrdersClient) createOrUpdate(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName CertificateOrder, options *CertificateOrdersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, certificateOrderName, certificateDistinguishedName, options)
@@ -116,7 +116,7 @@ func (client *CertificateOrdersClient) createOrUpdateCreateRequest(ctx context.C
 	return req, runtime.MarshalAsJSON(req, certificateDistinguishedName)
 }
 
-// BeginCreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
+// BeginCreateOrUpdateCertificate - Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -136,7 +136,7 @@ func (client *CertificateOrdersClient) BeginCreateOrUpdateCertificate(ctx contex
 	}
 }
 
-// CreateOrUpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
+// CreateOrUpdateCertificate - Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateOrdersClient) createOrUpdateCertificate(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate CertificateResource, options *CertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCertificateCreateRequest(ctx, resourceGroupName, certificateOrderName, name, keyVaultCertificate, options)
@@ -183,7 +183,7 @@ func (client *CertificateOrdersClient) createOrUpdateCertificateCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, keyVaultCertificate)
 }
 
-// Delete - Description for Delete an existing certificate order.
+// Delete - Delete an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -230,7 +230,7 @@ func (client *CertificateOrdersClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// DeleteCertificate - Description for Delete the certificate associated with a certificate order.
+// DeleteCertificate - Delete the certificate associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -282,7 +282,7 @@ func (client *CertificateOrdersClient) deleteCertificateCreateRequest(ctx contex
 	return req, nil
 }
 
-// Get - Description for Get a certificate order.
+// Get - Get a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order..
@@ -337,7 +337,7 @@ func (client *CertificateOrdersClient) getHandleResponse(resp *http.Response) (C
 	return result, nil
 }
 
-// GetCertificate - Description for Get the certificate associated with a certificate order.
+// GetCertificate - Get the certificate associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -398,7 +398,7 @@ func (client *CertificateOrdersClient) getCertificateHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListPager - Description for List all certificate orders in a subscription.
+// NewListPager - List all certificate orders in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
 func (client *CertificateOrdersClient) NewListPager(options *CertificateOrdersClientListOptions) *runtime.Pager[CertificateOrdersClientListResponse] {
@@ -456,7 +456,7 @@ func (client *CertificateOrdersClient) listHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get certificate orders in a resource group.
+// NewListByResourceGroupPager - Get certificate orders in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
@@ -520,7 +520,7 @@ func (client *CertificateOrdersClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
-// NewListCertificatesPager - Description for List all certificates associated with a certificate order.
+// NewListCertificatesPager - List all certificates associated with a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -589,7 +589,7 @@ func (client *CertificateOrdersClient) listCertificatesHandleResponse(resp *http
 	return result, nil
 }
 
-// Reissue - Description for Reissue an existing certificate order.
+// Reissue - Reissue an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -637,7 +637,7 @@ func (client *CertificateOrdersClient) reissueCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, reissueCertificateOrderRequest)
 }
 
-// Renew - Description for Renew an existing certificate order.
+// Renew - Renew an existing certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -684,7 +684,7 @@ func (client *CertificateOrdersClient) renewCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, renewCertificateOrderRequest)
 }
 
-// ResendEmail - Description for Resend certificate email.
+// ResendEmail - Resend certificate email.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -780,7 +780,7 @@ func (client *CertificateOrdersClient) resendRequestEmailsCreateRequest(ctx cont
 	return req, runtime.MarshalAsJSON(req, nameIdentifier)
 }
 
-// RetrieveCertificateActions - Description for Retrieve the list of certificate actions.
+// RetrieveCertificateActions - Retrieve the list of certificate actions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate order.
@@ -836,7 +836,7 @@ func (client *CertificateOrdersClient) retrieveCertificateActionsHandleResponse(
 	return result, nil
 }
 
-// RetrieveCertificateEmailHistory - Description for Retrieve email history.
+// RetrieveCertificateEmailHistory - Retrieve email history.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate order.
@@ -955,7 +955,7 @@ func (client *CertificateOrdersClient) retrieveSiteSealHandleResponse(resp *http
 	return result, nil
 }
 
-// Update - Description for Create or update a certificate purchase order.
+// Update - Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -1012,7 +1012,7 @@ func (client *CertificateOrdersClient) updateHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// UpdateCertificate - Description for Creates or updates a certificate and associates with key vault secret.
+// UpdateCertificate - Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.
@@ -1074,7 +1074,7 @@ func (client *CertificateOrdersClient) updateCertificateHandleResponse(resp *htt
 	return result, nil
 }
 
-// ValidatePurchaseInformation - Description for Validate information for a certificate order.
+// ValidatePurchaseInformation - Validate information for a certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // appServiceCertificateOrder - Information for a certificate order.
 // options - CertificateOrdersClientValidatePurchaseInformationOptions contains the optional parameters for the CertificateOrdersClient.ValidatePurchaseInformation
@@ -1112,7 +1112,7 @@ func (client *CertificateOrdersClient) validatePurchaseInformationCreateRequest(
 	return req, runtime.MarshalAsJSON(req, appServiceCertificateOrder)
 }
 
-// VerifyDomainOwnership - Description for Verify domain ownership for this certificate order.
+// VerifyDomainOwnership - Verify domain ownership for this certificate order.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - Name of the certificate order.

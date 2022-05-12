@@ -54,7 +54,7 @@ func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// Get - Description for Get details of a top-level domain.
+// Get - Get details of a top-level domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // name - Name of the top-level domain.
 // options - TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
@@ -104,7 +104,7 @@ func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (Top
 	return result, nil
 }
 
-// NewListPager - Description for Get all top-level domains supported for registration.
+// NewListPager - Get all top-level domains supported for registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
 func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
@@ -162,7 +162,7 @@ func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (To
 	return result, nil
 }
 
-// NewListAgreementsPager - Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+// NewListAgreementsPager - Gets all legal agreements that user needs to accept before purchasing a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // name - Name of the top-level domain.
 // agreementOption - Domain agreement options.

@@ -55,8 +55,8 @@ func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector
-// response from App Lens.
+// GetAppServiceCertificateOrderDetectorResponse - Microsoft.CertificateRegistration call to get a detector response from
+// App Lens.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - The certificate order name for which the response is needed.
@@ -126,8 +126,8 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	return result, nil
 }
 
-// NewListAppServiceCertificateOrderDetectorResponsePager - Description for Microsoft.CertificateRegistration to get the list
-// of detectors for this RP.
+// NewListAppServiceCertificateOrderDetectorResponsePager - Microsoft.CertificateRegistration to get the list of detectors
+// for this RP.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - The certificate order name for which the response is needed.

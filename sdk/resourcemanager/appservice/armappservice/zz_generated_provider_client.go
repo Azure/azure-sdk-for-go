@@ -54,7 +54,7 @@ func NewProviderClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// NewGetAvailableStacksPager - Description for Get available application frameworks and their versions
+// NewGetAvailableStacksPager - Get available application frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks
 // method.
@@ -112,7 +112,7 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewGetAvailableStacksOnPremPager - Description for Get available application frameworks and their versions
+// NewGetAvailableStacksOnPremPager - Get available application frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
 // method.
@@ -174,7 +174,7 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewGetFunctionAppStacksPager - Description for Get available Function app frameworks and their versions
+// NewGetFunctionAppStacksPager - Get available Function app frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
 // method.
@@ -232,8 +232,7 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewGetFunctionAppStacksForLocationPager - Description for Get available Function app frameworks and their versions for
-// location
+// NewGetFunctionAppStacksForLocationPager - Get available Function app frameworks and their versions for location
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Function App stack location.
 // options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
@@ -296,7 +295,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp
 	return result, nil
 }
 
-// NewGetWebAppStacksPager - Description for Get available Web app frameworks and their versions
+// NewGetWebAppStacksPager - Get available Web app frameworks and their versions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks
 // method.
@@ -354,7 +353,7 @@ func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewGetWebAppStacksForLocationPager - Description for Get available Web app frameworks and their versions for location
+// NewGetWebAppStacksForLocationPager - Get available Web app frameworks and their versions for location
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Web App stack location.
 // options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
@@ -417,8 +416,8 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListOperationsPager - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes
-// resource metric definitions
+// NewListOperationsPager - Gets all available operations for the Microsoft.Web resource provider. Also exposes resource metric
+// definitions
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {

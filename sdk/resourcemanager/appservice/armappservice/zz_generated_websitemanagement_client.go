@@ -55,7 +55,7 @@ func NewWebSiteManagementClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// CheckNameAvailability - Description for Check if a resource name is available.
+// CheckNameAvailability - Check if a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
 // request - Name availability request.
 // options - WebSiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.CheckNameAvailability
@@ -102,7 +102,7 @@ func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp 
 	return result, nil
 }
 
-// GetPublishingUser - Description for Gets publishing user
+// GetPublishingUser - Gets publishing user
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientGetPublishingUserOptions contains the optional parameters for the WebSiteManagementClient.GetPublishingUser
 // method.
@@ -144,7 +144,7 @@ func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetSourceControl - Description for Gets source control token
+// GetSourceControl - Gets source control token
 // If the operation fails it returns an *azcore.ResponseError type.
 // sourceControlType - Type of source control
 // options - WebSiteManagementClientGetSourceControlOptions contains the optional parameters for the WebSiteManagementClient.GetSourceControl
@@ -191,7 +191,7 @@ func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *http
 	return result, nil
 }
 
-// GetSubscriptionDeploymentLocations - Description for Gets list of available geo regions plus ministamps
+// GetSubscriptionDeploymentLocations - Gets list of available geo regions plus ministamps
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions contains the optional parameters for the WebSiteManagementClient.GetSubscriptionDeploymentLocations
 // method.
@@ -237,7 +237,7 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleR
 	return result, nil
 }
 
-// NewListBillingMetersPager - Description for Gets a list of meters for a given location.
+// NewListBillingMetersPager - Gets a list of meters for a given location.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
 // method.
@@ -361,7 +361,7 @@ func (client *WebSiteManagementClient) listCustomHostNameSitesHandleResponse(res
 	return result, nil
 }
 
-// NewListGeoRegionsPager - Description for Get a list of available geographical regions.
+// NewListGeoRegionsPager - Get a list of available geographical regions.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
 // method.
@@ -432,7 +432,7 @@ func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListPremierAddOnOffersPager - Description for List all premier add-on offers.
+// NewListPremierAddOnOffersPager - List all premier add-on offers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
 // method.
@@ -491,7 +491,7 @@ func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp
 	return result, nil
 }
 
-// ListSKUs - Description for List all SKUs.
+// ListSKUs - List all SKUs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListSKUsOptions contains the optional parameters for the WebSiteManagementClient.ListSKUs
 // method.
@@ -537,7 +537,7 @@ func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListSiteIdentifiersAssignedToHostNamePager - Description for List all apps that are assigned to a hostname.
+// NewListSiteIdentifiersAssignedToHostNamePager - List all apps that are assigned to a hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
 // nameIdentifier - Hostname information.
 // options - WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the
@@ -597,7 +597,7 @@ func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHand
 	return result, nil
 }
 
-// NewListSourceControlsPager - Description for Gets the source controls available for Azure websites.
+// NewListSourceControlsPager - Gets the source controls available for Azure websites.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
 // method.
@@ -652,7 +652,7 @@ func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *ht
 	return result, nil
 }
 
-// Move - Description for Move resources between resource groups.
+// Move - Move resources between resource groups.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // moveResourceEnvelope - Object that represents the resource to move.
@@ -694,7 +694,7 @@ func (client *WebSiteManagementClient) moveCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, moveResourceEnvelope)
 }
 
-// UpdatePublishingUser - Description for Updates publishing user
+// UpdatePublishingUser - Updates publishing user
 // If the operation fails it returns an *azcore.ResponseError type.
 // userDetails - Details of publishing user
 // options - WebSiteManagementClientUpdatePublishingUserOptions contains the optional parameters for the WebSiteManagementClient.UpdatePublishingUser
@@ -737,7 +737,7 @@ func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *
 	return result, nil
 }
 
-// UpdateSourceControl - Description for Updates source control token
+// UpdateSourceControl - Updates source control token
 // If the operation fails it returns an *azcore.ResponseError type.
 // sourceControlType - Type of source control
 // requestMessage - Source control token information
@@ -785,7 +785,7 @@ func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *h
 	return result, nil
 }
 
-// Validate - Description for Validate if a resource can be created.
+// Validate - Validate if a resource can be created.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // validateRequest - Request with the resources to validate.
@@ -837,7 +837,7 @@ func (client *WebSiteManagementClient) validateHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// ValidateMove - Description for Validate whether a resource can be moved.
+// ValidateMove - Validate whether a resource can be moved.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // moveResourceEnvelope - Object that represents the resource to move.
@@ -880,8 +880,8 @@ func (client *WebSiteManagementClient) validateMoveCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, moveResourceEnvelope)
 }
 
-// VerifyHostingEnvironmentVnet - Description for Verifies if this VNET is compatible with an App Service Environment by analyzing
-// the Network Security Group rules.
+// VerifyHostingEnvironmentVnet - Verifies if this VNET is compatible with an App Service Environment by analyzing the Network
+// Security Group rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 // parameters - VNET information
 // options - WebSiteManagementClientVerifyHostingEnvironmentVnetOptions contains the optional parameters for the WebSiteManagementClient.VerifyHostingEnvironmentVnet

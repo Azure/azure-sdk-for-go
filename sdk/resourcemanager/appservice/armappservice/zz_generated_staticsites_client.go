@@ -55,7 +55,7 @@ func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -75,7 +75,7 @@ func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(c
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
@@ -122,8 +122,8 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateR
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// BeginCreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an
-// existing static site.
+// BeginCreateOrUpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to create or update.
@@ -142,8 +142,7 @@ func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Conte
 	}
 }
 
-// CreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing
-// static site.
+// CreateOrUpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteEnvelope, options)
@@ -186,7 +185,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx conte
 	return req, runtime.MarshalAsJSON(req, staticSiteEnvelope)
 }
 
-// CreateOrUpdateStaticSiteAppSettings - Description for Creates or updates the app settings of a static site.
+// CreateOrUpdateStaticSiteAppSettings - Creates or updates the app settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -243,7 +242,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleRespon
 	return result, nil
 }
 
-// CreateOrUpdateStaticSiteBuildAppSettings - Description for Creates or updates the app settings of a static site build.
+// CreateOrUpdateStaticSiteBuildAppSettings - Creates or updates the app settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -305,8 +304,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleR
 	return result, nil
 }
 
-// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Description for Creates or updates the function app settings of a static
-// site build.
+// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Creates or updates the function app settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -368,8 +366,8 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 	return result, nil
 }
 
-// BeginCreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
-// group and static site.
+// BeginCreateOrUpdateStaticSiteCustomDomain - Creates a new static site custom domain in an existing resource group and static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -390,8 +388,8 @@ func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx c
 	}
 }
 
-// CreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
-// group and static site.
+// CreateOrUpdateStaticSiteCustomDomain - Creates a new static site custom domain in an existing resource group and static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
@@ -438,8 +436,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateReque
 	return req, runtime.MarshalAsJSON(req, staticSiteCustomDomainRequestPropertiesEnvelope)
 }
 
-// CreateOrUpdateStaticSiteFunctionAppSettings - Description for Creates or updates the function app settings of a static
-// site.
+// CreateOrUpdateStaticSiteFunctionAppSettings - Creates or updates the function app settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -496,7 +493,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHand
 	return result, nil
 }
 
-// CreateUserRolesInvitationLink - Description for Creates an invitation link for a user with the role
+// CreateUserRolesInvitationLink - Creates an invitation link for a user with the role
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -552,7 +549,7 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkHandleResponse(res
 	return result, nil
 }
 
-// BeginCreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
+// BeginCreateZipDeploymentForStaticSite - Deploys zipped content to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -571,7 +568,7 @@ func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx conte
 	}
 }
 
-// CreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
+// CreateZipDeploymentForStaticSite - Deploys zipped content to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteZipDeploymentEnvelope, options)
@@ -614,8 +611,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(c
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// BeginCreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static
-// site.
+// BeginCreateZipDeploymentForStaticSiteBuild - Deploys zipped content to a specific environment of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -635,7 +631,7 @@ func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx 
 	}
 }
 
-// CreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static site.
+// CreateZipDeploymentForStaticSiteBuild - Deploys zipped content to a specific environment of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, options)
@@ -682,7 +678,7 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequ
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -701,7 +697,7 @@ func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx contex
 	}
 }
 
-// DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
@@ -748,7 +744,7 @@ func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ct
 	return req, nil
 }
 
-// BeginDeleteStaticSite - Description for Deletes a static site.
+// BeginDeleteStaticSite - Deletes a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to delete.
@@ -766,7 +762,7 @@ func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, reso
 	}
 }
 
-// DeleteStaticSite - Description for Deletes a static site.
+// DeleteStaticSite - Deletes a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
@@ -809,7 +805,7 @@ func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDeleteStaticSiteBuild - Description for Deletes a static site build.
+// BeginDeleteStaticSiteBuild - Deletes a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -828,7 +824,7 @@ func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context,
 	}
 }
 
-// DeleteStaticSiteBuild - Description for Deletes a static site build.
+// DeleteStaticSiteBuild - Deletes a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, options)
@@ -875,7 +871,7 @@ func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.
 	return req, nil
 }
 
-// BeginDeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
+// BeginDeleteStaticSiteCustomDomain - Deletes a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -894,7 +890,7 @@ func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.C
 	}
 }
 
-// DeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
+// DeleteStaticSiteCustomDomain - Deletes a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, options)
@@ -941,7 +937,7 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx c
 	return req, nil
 }
 
-// DeleteStaticSiteUser - Description for Deletes the user entry from the static site.
+// DeleteStaticSiteUser - Deletes the user entry from the static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the staticsite.
@@ -998,7 +994,7 @@ func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.C
 	return req, nil
 }
 
-// BeginDetachStaticSite - Description for Detaches a static site.
+// BeginDetachStaticSite - Detaches a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to detach.
@@ -1016,7 +1012,7 @@ func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, reso
 	}
 }
 
-// DetachStaticSite - Description for Detaches a static site.
+// DetachStaticSite - Detaches a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*http.Response, error) {
 	req, err := client.detachStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
@@ -1059,7 +1055,7 @@ func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DetachUserProvidedFunctionAppFromStaticSite - Description for Detach the user provided function app from the static site
+// DetachUserProvidedFunctionAppFromStaticSite - Detach the user provided function app from the static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1111,8 +1107,7 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCrea
 	return req, nil
 }
 
-// DetachUserProvidedFunctionAppFromStaticSiteBuild - Description for Detach the user provided function app from the static
-// site build
+// DetachUserProvidedFunctionAppFromStaticSiteBuild - Detach the user provided function app from the static site build
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1169,7 +1164,7 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuil
 	return req, nil
 }
 
-// GetPrivateEndpointConnection - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnection - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1230,8 +1225,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoint connections associated with
-// a static site
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoint connections associated with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1300,7 +1294,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleResponse(
 	return result, nil
 }
 
-// GetPrivateLinkResources - Description for Gets the private link resources
+// GetPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -1356,7 +1350,7 @@ func (client *StaticSitesClient) getPrivateLinkResourcesHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetStaticSite - Description for Gets the details of a static site.
+// GetStaticSite - Gets the details of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1412,7 +1406,7 @@ func (client *StaticSitesClient) getStaticSiteHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetStaticSiteBuild - Description for Gets the details of a static site build.
+// GetStaticSiteBuild - Gets the details of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1473,7 +1467,7 @@ func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewGetStaticSiteBuildsPager - Description for Gets all static site builds for a particular static site.
+// NewGetStaticSiteBuildsPager - Gets all static site builds for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1542,7 +1536,7 @@ func (client *StaticSitesClient) getStaticSiteBuildsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetStaticSiteCustomDomain - Description for Gets an existing custom domain for a particular static site.
+// GetStaticSiteCustomDomain - Gets an existing custom domain for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site resource to search in.
@@ -1603,7 +1597,7 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *h
 	return result, nil
 }
 
-// NewGetStaticSitesByResourceGroupPager - Description for Gets all static sites in the specified resource group.
+// NewGetStaticSitesByResourceGroupPager - Gets all static sites in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
@@ -1667,8 +1661,7 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppForStaticSite - Description for Gets the details of the user provided function app registered
-// with a static site
+// GetUserProvidedFunctionAppForStaticSite - Gets the details of the user provided function app registered with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1729,8 +1722,8 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleRe
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppForStaticSiteBuild - Description for Gets the details of the user provided function app registered
-// with a static site build
+// GetUserProvidedFunctionAppForStaticSiteBuild - Gets the details of the user provided function app registered with a static
+// site build
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1796,8 +1789,8 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHan
 	return result, nil
 }
 
-// NewGetUserProvidedFunctionAppsForStaticSitePager - Description for Gets the details of the user provided function apps
-// registered with a static site
+// NewGetUserProvidedFunctionAppsForStaticSitePager - Gets the details of the user provided function apps registered with
+// a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1866,8 +1859,8 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleR
 	return result, nil
 }
 
-// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager - Description for Gets the details of the user provided function
-// apps registered with a static site build
+// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager - Gets the details of the user provided function apps registered
+// with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -1941,7 +1934,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHa
 	return result, nil
 }
 
-// NewListPager - Description for Get all Static Sites for a subscription.
+// NewListPager - Get all Static Sites for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
 func (client *StaticSitesClient) NewListPager(options *StaticSitesClientListOptions) *runtime.Pager[StaticSitesClientListResponse] {
@@ -1999,7 +1992,7 @@ func (client *StaticSitesClient) listHandleResponse(resp *http.Response) (Static
 	return result, nil
 }
 
-// ListStaticSiteAppSettings - Description for Gets the application settings of a static site.
+// ListStaticSiteAppSettings - Gets the application settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2055,7 +2048,7 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsHandleResponse(resp *h
 	return result, nil
 }
 
-// ListStaticSiteBuildAppSettings - Description for Gets the application settings of a static site build.
+// ListStaticSiteBuildAppSettings - Gets the application settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2116,7 +2109,7 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleResponse(re
 	return result, nil
 }
 
-// ListStaticSiteBuildFunctionAppSettings - Description for Gets the application settings of a static site build.
+// ListStaticSiteBuildFunctionAppSettings - Gets the application settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2177,7 +2170,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleRes
 	return result, nil
 }
 
-// NewListStaticSiteBuildFunctionsPager - Description for Gets the functions of a particular static site build.
+// NewListStaticSiteBuildFunctionsPager - Gets the functions of a particular static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2251,7 +2244,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleResponse(resp
 	return result, nil
 }
 
-// ListStaticSiteConfiguredRoles - Description for Lists the roles configured for the static site.
+// ListStaticSiteConfiguredRoles - Lists the roles configured for the static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2307,7 +2300,7 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(res
 	return result, nil
 }
 
-// NewListStaticSiteCustomDomainsPager - Description for Gets all static site custom domains for a particular static site.
+// NewListStaticSiteCustomDomainsPager - Gets all static site custom domains for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site resource to search in.
@@ -2376,7 +2369,7 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleResponse(resp 
 	return result, nil
 }
 
-// ListStaticSiteFunctionAppSettings - Description for Gets the application settings of a static site.
+// ListStaticSiteFunctionAppSettings - Gets the application settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2432,7 +2425,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse
 	return result, nil
 }
 
-// NewListStaticSiteFunctionsPager - Description for Gets the functions of a static site.
+// NewListStaticSiteFunctionsPager - Gets the functions of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2501,7 +2494,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListStaticSiteSecrets - Description for Lists the secrets for an existing static site.
+// ListStaticSiteSecrets - Lists the secrets for an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2557,7 +2550,7 @@ func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListStaticSiteUsersPager - Description for Gets the list of users of a static site.
+// NewListStaticSiteUsersPager - Gets the list of users of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2631,7 +2624,7 @@ func (client *StaticSitesClient) listStaticSiteUsersHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// PreviewWorkflow - Description for Generates a preview workflow file for the static site
+// PreviewWorkflow - Generates a preview workflow file for the static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Location where you plan to create the static site.
 // staticSitesWorkflowPreviewRequest - A JSON representation of the StaticSitesWorkflowPreviewRequest properties. See example.
@@ -2683,8 +2676,7 @@ func (client *StaticSitesClient) previewWorkflowHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginRegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static
-// site
+// BeginRegisterUserProvidedFunctionAppWithStaticSite - Register a user provided function app with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2704,7 +2696,7 @@ func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticS
 	}
 }
 
-// RegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static site
+// RegisterUserProvidedFunctionAppWithStaticSite - Register a user provided function app with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteCreateRequest(ctx, resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
@@ -2754,8 +2746,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a
-// static site build
+// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Register a user provided function app with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2776,8 +2767,7 @@ func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticS
 	}
 }
 
-// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a static
-// site build
+// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Register a user provided function app with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
@@ -2831,7 +2821,7 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// ResetStaticSiteAPIKey - Description for Resets the api key for an existing static site.
+// ResetStaticSiteAPIKey - Resets the api key for an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -2878,8 +2868,7 @@ func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, resetPropertiesEnvelope)
 }
 
-// UpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static
-// site.
+// UpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to create or update.
@@ -2936,7 +2925,7 @@ func (client *StaticSitesClient) updateStaticSiteHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateStaticSiteUser - Description for Updates a user entry with the listed roles
+// UpdateStaticSiteUser - Updates a user entry with the listed roles
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -3003,8 +2992,7 @@ func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.R
 	return result, nil
 }
 
-// BeginValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to
-// a static site.
+// BeginValidateCustomDomainCanBeAddedToStaticSite - Validates a particular custom domain can be added to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
@@ -3025,8 +3013,7 @@ func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite
 	}
 }
 
-// ValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to a static
-// site.
+// ValidateCustomDomainCanBeAddedToStaticSite - Validates a particular custom domain can be added to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*http.Response, error) {
 	req, err := client.validateCustomDomainCanBeAddedToStaticSiteCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)

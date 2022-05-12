@@ -55,7 +55,7 @@ func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -73,7 +73,7 @@ func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
@@ -120,7 +120,7 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreate
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// BeginChangeVnet - Description for Move an App Service Environment to a different VNET.
+// BeginChangeVnet - Move an App Service Environment to a different VNET.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -162,7 +162,7 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 	}
 }
 
-// ChangeVnet - Description for Move an App Service Environment to a different VNET.
+// ChangeVnet - Move an App Service Environment to a different VNET.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*http.Response, error) {
 	req, err := client.changeVnetCreateRequest(ctx, resourceGroupName, name, vnetInfo, options)
@@ -214,7 +214,7 @@ func (client *EnvironmentsClient) changeVnetHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Description for Create or update an App Service Environment.
+// BeginCreateOrUpdate - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -233,7 +233,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Description for Create or update an App Service Environment.
+// CreateOrUpdate - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
@@ -276,7 +276,7 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope)
 }
 
-// BeginCreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
+// BeginCreateOrUpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -295,7 +295,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.C
 	}
 }
 
-// CreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
+// CreateOrUpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateMultiRolePoolCreateRequest(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
@@ -338,7 +338,7 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx c
 	return req, runtime.MarshalAsJSON(req, multiRolePoolEnvelope)
 }
 
-// BeginCreateOrUpdateWorkerPool - Description for Create or update a worker pool.
+// BeginCreateOrUpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -358,7 +358,7 @@ func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Cont
 	}
 }
 
-// CreateOrUpdateWorkerPool - Description for Create or update a worker pool.
+// CreateOrUpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateWorkerPoolCreateRequest(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
@@ -405,7 +405,7 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx cont
 	return req, runtime.MarshalAsJSON(req, workerPoolEnvelope)
 }
 
-// BeginDelete - Description for Delete an App Service Environment.
+// BeginDelete - Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -423,7 +423,7 @@ func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Description for Delete an App Service Environment.
+// Delete - Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
@@ -469,7 +469,7 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -487,7 +487,7 @@ func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx conte
 	}
 }
 
-// DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
@@ -534,7 +534,7 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(c
 	return req, nil
 }
 
-// Get - Description for Get the properties of an App Service Environment.
+// Get - Get the properties of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -589,7 +589,7 @@ func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (Enviro
 	return result, nil
 }
 
-// GetAseV3NetworkingConfiguration - Description for Get networking configuration of an App Service Environment
+// GetAseV3NetworkingConfiguration - Get networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -645,7 +645,7 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(
 	return result, nil
 }
 
-// GetDiagnosticsItem - Description for Get a diagnostics item for an App Service Environment.
+// GetDiagnosticsItem - Get a diagnostics item for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -706,8 +706,8 @@ func (client *EnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewGetInboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all inbound dependencies
-// of an App Service Environment.
+// NewGetInboundNetworkDependenciesEndpointsPager - Get the network endpoints of all inbound dependencies of an App Service
+// Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -776,7 +776,7 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleRe
 	return result, nil
 }
 
-// GetMultiRolePool - Description for Get properties of a multi-role pool.
+// GetMultiRolePool - Get properties of a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -832,8 +832,8 @@ func (client *EnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewGetOutboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all outbound dependencies
-// of an App Service Environment.
+// NewGetOutboundNetworkDependenciesEndpointsPager - Get the network endpoints of all outbound dependencies of an App Service
+// Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -902,7 +902,7 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleR
 	return result, nil
 }
 
-// GetPrivateEndpointConnection - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnection - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -963,8 +963,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionHandleResponse(res
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoints associated with a hosting
-// environment
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoints associated with a hosting environment
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1033,7 +1032,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListHandleResponse
 	return result, nil
 }
 
-// GetPrivateLinkResources - Description for Gets the private link resources
+// GetPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1089,7 +1088,7 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetVipInfo - Description for Get IP addresses assigned to an App Service Environment.
+// GetVipInfo - Get IP addresses assigned to an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1144,7 +1143,7 @@ func (client *EnvironmentsClient) getVipInfoHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetWorkerPool - Description for Get properties of a worker pool.
+// GetWorkerPool - Get properties of a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1205,7 +1204,7 @@ func (client *EnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListPager - Description for Get all App Service Environments for a subscription.
+// NewListPager - Get all App Service Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
 func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
@@ -1263,7 +1262,7 @@ func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (Envir
 	return result, nil
 }
 
-// NewListAppServicePlansPager - Description for Get all App Service plans in an App Service Environment.
+// NewListAppServicePlansPager - Get all App Service plans in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1332,7 +1331,7 @@ func (client *EnvironmentsClient) listAppServicePlansHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all App Service Environments in a resource group.
+// NewListByResourceGroupPager - Get all App Service Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.ListByResourceGroup
@@ -1396,7 +1395,7 @@ func (client *EnvironmentsClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListCapacitiesPager - Description for Get the used, available, and total worker capacity an App Service Environment.
+// NewListCapacitiesPager - Get the used, available, and total worker capacity an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1465,7 +1464,7 @@ func (client *EnvironmentsClient) listCapacitiesHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListDiagnostics - Description for Get diagnostic information for an App Service Environment.
+// ListDiagnostics - Get diagnostic information for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1521,8 +1520,7 @@ func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListMultiRoleMetricDefinitionsPager - Description for Get metric definitions for a multi-role pool of an App Service
-// Environment.
+// NewListMultiRoleMetricDefinitionsPager - Get metric definitions for a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1591,8 +1589,8 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// NewListMultiRolePoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of
-// a multi-role pool of an App Service Environment.
+// NewListMultiRolePoolInstanceMetricDefinitionsPager - Get metric definitions for a specific instance of a multi-role pool
+// of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1666,7 +1664,7 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHand
 	return result, nil
 }
 
-// NewListMultiRolePoolSKUsPager - Description for Get available SKUs for scaling a multi-role pool.
+// NewListMultiRolePoolSKUsPager - Get available SKUs for scaling a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1735,7 +1733,7 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListMultiRolePoolsPager - Description for Get all multi-role pools.
+// NewListMultiRolePoolsPager - Get all multi-role pools.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1804,7 +1802,7 @@ func (client *EnvironmentsClient) listMultiRolePoolsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListMultiRoleUsagesPager - Description for Get usage metrics for a multi-role pool of an App Service Environment.
+// NewListMultiRoleUsagesPager - Get usage metrics for a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1873,7 +1871,7 @@ func (client *EnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListOperations - Description for List all currently running operations on the App Service Environment.
+// ListOperations - List all currently running operations on the App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -1929,7 +1927,7 @@ func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListUsagesPager - Description for Get global usage metrics of an App Service Environment.
+// NewListUsagesPager - Get global usage metrics of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2002,7 +2000,7 @@ func (client *EnvironmentsClient) listUsagesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListWebAppsPager - Description for Get all apps in an App Service Environment.
+// NewListWebAppsPager - Get all apps in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2074,7 +2072,7 @@ func (client *EnvironmentsClient) listWebAppsHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListWebWorkerMetricDefinitionsPager - Description for Get metric definitions for a worker pool of an App Service Environment.
+// NewListWebWorkerMetricDefinitionsPager - Get metric definitions for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2148,7 +2146,7 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// NewListWebWorkerUsagesPager - Description for Get usage metrics for a worker pool of an App Service Environment.
+// NewListWebWorkerUsagesPager - Get usage metrics for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2222,8 +2220,8 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListWorkerPoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of a worker
-// pool of an App Service Environment.
+// NewListWorkerPoolInstanceMetricDefinitionsPager - Get metric definitions for a specific instance of a worker pool of an
+// App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2302,7 +2300,7 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleR
 	return result, nil
 }
 
-// NewListWorkerPoolSKUsPager - Description for Get available SKUs for scaling a worker pool.
+// NewListWorkerPoolSKUsPager - Get available SKUs for scaling a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2376,7 +2374,7 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListWorkerPoolsPager - Description for Get all worker pools of an App Service Environment.
+// NewListWorkerPoolsPager - Get all worker pools of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2445,7 +2443,7 @@ func (client *EnvironmentsClient) listWorkerPoolsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// Reboot - Description for Reboot all machines in an App Service Environment.
+// Reboot - Reboot all machines in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2491,7 +2489,7 @@ func (client *EnvironmentsClient) rebootCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// BeginResume - Description for Resume an App Service Environment.
+// BeginResume - Resume an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2532,7 +2530,7 @@ func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroup
 	}
 }
 
-// Resume - Description for Resume an App Service Environment.
+// Resume - Resume an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, options)
@@ -2584,7 +2582,7 @@ func (client *EnvironmentsClient) resumeHandleResponse(resp *http.Response) (Env
 	return result, nil
 }
 
-// BeginSuspend - Description for Suspend an App Service Environment.
+// BeginSuspend - Suspend an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2625,7 +2623,7 @@ func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGrou
 	}
 }
 
-// Suspend - Description for Suspend an App Service Environment.
+// Suspend - Suspend an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, options)
@@ -2677,7 +2675,7 @@ func (client *EnvironmentsClient) suspendHandleResponse(resp *http.Response) (En
 	return result, nil
 }
 
-// Update - Description for Create or update an App Service Environment.
+// Update - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2733,7 +2731,7 @@ func (client *EnvironmentsClient) updateHandleResponse(resp *http.Response) (Env
 	return result, nil
 }
 
-// UpdateAseNetworkingConfiguration - Description for Update networking configuration of an App Service Environment
+// UpdateAseNetworkingConfiguration - Update networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2789,7 +2787,7 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationHandleResponse
 	return result, nil
 }
 
-// UpdateMultiRolePool - Description for Create or update a multi-role pool.
+// UpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
@@ -2846,7 +2844,7 @@ func (client *EnvironmentsClient) updateMultiRolePoolHandleResponse(resp *http.R
 	return result, nil
 }
 
-// UpdateWorkerPool - Description for Create or update a worker pool.
+// UpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.

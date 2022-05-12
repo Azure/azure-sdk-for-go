@@ -54,7 +54,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// CreateOrUpdate - Description for Create or update a certificate.
+// CreateOrUpdate - Create or update a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
@@ -111,7 +111,7 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// Delete - Description for Delete a certificate.
+// Delete - Delete a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
@@ -157,7 +157,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// Get - Description for Get a certificate.
+// Get - Get a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
@@ -212,7 +212,7 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 	return result, nil
 }
 
-// NewListPager - Description for Get all certificates for a subscription.
+// NewListPager - Get all certificates for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
 func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
@@ -275,7 +275,7 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all certificates in a resource group.
+// NewListByResourceGroupPager - Get all certificates in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
@@ -339,7 +339,7 @@ func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// Update - Description for Create or update a certificate.
+// Update - Create or update a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.

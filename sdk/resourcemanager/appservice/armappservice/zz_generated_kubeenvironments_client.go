@@ -54,7 +54,7 @@ func NewKubeEnvironmentsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
+// BeginCreateOrUpdate - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
@@ -73,7 +73,7 @@ func (client *KubeEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
+// CreateOrUpdate - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubeEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, kubeEnvironmentEnvelope, options)
@@ -116,7 +116,7 @@ func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, kubeEnvironmentEnvelope)
 }
 
-// BeginDelete - Description for Delete a Kubernetes Environment.
+// BeginDelete - Delete a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
@@ -134,7 +134,7 @@ func (client *KubeEnvironmentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Description for Delete a Kubernetes Environment.
+// Delete - Delete a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *KubeEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
@@ -177,7 +177,7 @@ func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// Get - Description for Get the properties of a Kubernetes Environment.
+// Get - Get the properties of a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
@@ -232,7 +232,7 @@ func (client *KubeEnvironmentsClient) getHandleResponse(resp *http.Response) (Ku
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all the Kubernetes Environments in a resource group.
+// NewListByResourceGroupPager - Get all the Kubernetes Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.ListByResourceGroup
@@ -296,7 +296,7 @@ func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Description for Get all Kubernetes Environments for a subscription.
+// NewListBySubscriptionPager - Get all Kubernetes Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.ListBySubscription
 // method.
@@ -355,7 +355,7 @@ func (client *KubeEnvironmentsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// Update - Description for Creates or updates a Kubernetes Environment.
+// Update - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.

@@ -54,7 +54,7 @@ func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, o
 	return client, nil
 }
 
-// GetDeletedWebApp - Description for Get deleted app for a subscription.
+// GetDeletedWebApp - Get deleted app for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deletedSiteID - The numeric ID of the deleted app, e.g. 12345
 // options - GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
@@ -104,7 +104,7 @@ func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetDeletedWebAppSnapshots - Description for Get all deleted apps for a subscription.
+// GetDeletedWebAppSnapshots - Get all deleted apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // deletedSiteID - The numeric ID of the deleted app, e.g. 12345
 // options - GlobalClientGetDeletedWebAppSnapshotsOptions contains the optional parameters for the GlobalClient.GetDeletedWebAppSnapshots
@@ -155,7 +155,7 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetSubscriptionOperationWithAsyncResponse - Description for Gets an operation in a subscription and given region
+// GetSubscriptionOperationWithAsyncResponse - Gets an operation in a subscription and given region
 // If the operation fails it returns an *azcore.ResponseError type.
 // location - Location name
 // operationID - Operation Id

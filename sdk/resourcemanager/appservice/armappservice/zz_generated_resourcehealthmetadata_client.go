@@ -54,7 +54,7 @@ func NewResourceHealthMetadataClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// GetBySite - Description for Gets the category of ResourceHealthMetadata to use for the given site
+// GetBySite - Gets the category of ResourceHealthMetadata to use for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app
@@ -110,7 +110,7 @@ func (client *ResourceHealthMetadataClient) getBySiteHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetBySiteSlot - Description for Gets the category of ResourceHealthMetadata to use for the given site
+// GetBySiteSlot - Gets the category of ResourceHealthMetadata to use for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app
@@ -171,7 +171,7 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListPager - Description for List all ResourceHealthMetadata for all sites in the subscription.
+// NewListPager - List all ResourceHealthMetadata for all sites in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.List
 // method.
@@ -230,8 +230,7 @@ func (client *ResourceHealthMetadataClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for List all ResourceHealthMetadata for all sites in the resource group in the
-// subscription.
+// NewListByResourceGroupPager - List all ResourceHealthMetadata for all sites in the resource group in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - ResourceHealthMetadataClientListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadataClient.ListByResourceGroup
@@ -295,7 +294,7 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupHandleResponse(re
 	return result, nil
 }
 
-// NewListBySitePager - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// NewListBySitePager - Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -364,7 +363,7 @@ func (client *ResourceHealthMetadataClient) listBySiteHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListBySiteSlotPager - Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection
+// NewListBySiteSlotPager - Gets the category of ResourceHealthMetadata to use for the given site as a collection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.

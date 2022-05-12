@@ -55,7 +55,7 @@ func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Description for Creates or updates an App Service Plan.
+// BeginCreateOrUpdate - Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -74,7 +74,7 @@ func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrUpdate - Description for Creates or updates an App Service Plan.
+// CreateOrUpdate - Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, options *PlansClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, appServicePlan, options)
@@ -117,7 +117,7 @@ func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	return req, runtime.MarshalAsJSON(req, appServicePlan)
 }
 
-// CreateOrUpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
+// CreateOrUpdateVnetRoute - Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -184,7 +184,7 @@ func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// Delete - Description for Delete an App Service plan.
+// Delete - Delete an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -230,7 +230,7 @@ func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// DeleteHybridConnection - Description for Delete a Hybrid Connection in use in an App Service plan.
+// DeleteHybridConnection - Delete a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -287,7 +287,7 @@ func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DeleteVnetRoute - Description for Delete a Virtual Network route in an App Service plan.
+// DeleteVnetRoute - Delete a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -343,7 +343,7 @@ func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// Get - Description for Get an App Service plan.
+// Get - Get an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -398,7 +398,7 @@ func (client *PlansClient) getHandleResponse(resp *http.Response) (PlansClientGe
 	return result, nil
 }
 
-// GetHybridConnection - Description for Retrieve a Hybrid Connection in use in an App Service plan.
+// GetHybridConnection - Retrieve a Hybrid Connection in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -464,7 +464,7 @@ func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetHybridConnectionPlanLimit - Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+// GetHybridConnectionPlanLimit - Get the maximum number of Hybrid Connections allowed in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -520,7 +520,7 @@ func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http
 	return result, nil
 }
 
-// GetRouteForVnet - Description for Get a Virtual Network route in an App Service plan.
+// GetRouteForVnet - Get a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -585,7 +585,7 @@ func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response) (P
 	return result, nil
 }
 
-// GetServerFarmSKUs - Description for Gets all selectable SKUs for a given App Service Plan
+// GetServerFarmSKUs - Gets all selectable SKUs for a given App Service Plan
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
@@ -640,7 +640,7 @@ func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetVnetFromServerFarm - Description for Get a Virtual Network associated with an App Service plan.
+// GetVnetFromServerFarm - Get a Virtual Network associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -701,7 +701,7 @@ func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetVnetGateway - Description for Get a Virtual Network gateway.
+// GetVnetGateway - Get a Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -766,7 +766,7 @@ func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (Pl
 	return result, nil
 }
 
-// NewListPager - Description for Get all App Service plans for a subscription.
+// NewListPager - Get all App Service plans for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - PlansClientListOptions contains the optional parameters for the PlansClient.List method.
 func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
@@ -827,7 +827,7 @@ func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientL
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all App Service plans in a resource group.
+// NewListByResourceGroupPager - Get all App Service plans in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup
@@ -891,7 +891,7 @@ func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListCapabilities - Description for List all capabilities of an App Service plan.
+// ListCapabilities - List all capabilities of an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -946,7 +946,7 @@ func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListHybridConnectionKeys - Description for Get the send key name and value of a Hybrid Connection.
+// ListHybridConnectionKeys - Get the send key name and value of a Hybrid Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1012,7 +1012,7 @@ func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListHybridConnectionsPager - Description for Retrieve all Hybrid Connections in use in an App Service plan.
+// NewListHybridConnectionsPager - Retrieve all Hybrid Connections in use in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1081,7 +1081,7 @@ func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListRoutesForVnet - Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+// ListRoutesForVnet - Get all routes that are associated with a Virtual Network in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1141,7 +1141,7 @@ func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListUsagesPager - Description for Gets server farm usage information
+// NewListUsagesPager - Gets server farm usage information
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of App Service Plan
@@ -1214,7 +1214,7 @@ func (client *PlansClient) listUsagesHandleResponse(resp *http.Response) (PlansC
 	return result, nil
 }
 
-// ListVnets - Description for Get all Virtual Networks associated with an App Service plan.
+// ListVnets - Get all Virtual Networks associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1269,7 +1269,7 @@ func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansCl
 	return result, nil
 }
 
-// NewListWebAppsPager - Description for Get all apps associated with an App Service plan.
+// NewListWebAppsPager - Get all apps associated with an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1348,7 +1348,7 @@ func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (Plans
 	return result, nil
 }
 
-// NewListWebAppsByHybridConnectionPager - Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+// NewListWebAppsByHybridConnectionPager - Get all apps that use a Hybrid Connection in an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1427,7 +1427,7 @@ func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *htt
 	return result, nil
 }
 
-// RebootWorker - Description for Reboot a worker machine in an App Service plan.
+// RebootWorker - Reboot a worker machine in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1478,7 +1478,7 @@ func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// RestartWebApps - Description for Restart all apps in an App Service plan.
+// RestartWebApps - Restart all apps in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1527,7 +1527,7 @@ func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// Update - Description for Creates or updates an App Service Plan.
+// Update - Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1583,7 +1583,7 @@ func (client *PlansClient) updateHandleResponse(resp *http.Response) (PlansClien
 	return result, nil
 }
 
-// UpdateVnetGateway - Description for Update a Virtual Network gateway.
+// UpdateVnetGateway - Update a Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.
@@ -1649,7 +1649,7 @@ func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// UpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
+// UpdateVnetRoute - Create or update a Virtual Network route in an App Service plan.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service plan.

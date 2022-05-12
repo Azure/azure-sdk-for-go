@@ -55,7 +55,7 @@ func NewWebAppsClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// AddPremierAddOn - Description for Updates a named add-on of an app.
+// AddPremierAddOn - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -116,7 +116,7 @@ func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// AddPremierAddOnSlot - Description for Updates a named add-on of an app.
+// AddPremierAddOnSlot - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -184,7 +184,7 @@ func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// AnalyzeCustomHostname - Description for Analyze a custom hostname.
+// AnalyzeCustomHostname - Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -243,7 +243,7 @@ func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// AnalyzeCustomHostnameSlot - Description for Analyze a custom hostname.
+// AnalyzeCustomHostnameSlot - Analyze a custom hostname.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -307,8 +307,7 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ApplySlotConfigToProduction - Description for Applies the configuration settings from the target slot onto the current
-// slot.
+// ApplySlotConfigToProduction - Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -356,7 +355,7 @@ func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, slotSwapEntity)
 }
 
-// ApplySlotConfigurationSlot - Description for Applies the configuration settings from the target slot onto the current slot.
+// ApplySlotConfigurationSlot - Applies the configuration settings from the target slot onto the current slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -409,7 +408,7 @@ func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context
 	return req, runtime.MarshalAsJSON(req, slotSwapEntity)
 }
 
-// BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -427,7 +426,7 @@ func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx c
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
@@ -474,7 +473,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionCreateReque
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// BeginApproveOrRejectPrivateEndpointConnectionSlot - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnectionSlot - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -492,7 +491,7 @@ func (client *WebAppsClient) BeginApproveOrRejectPrivateEndpointConnectionSlot(c
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnectionSlot - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnectionSlot - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionSlotCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, slot, privateEndpointWrapper, options)
@@ -543,7 +542,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlotCreateR
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// Backup - Description for Creates a backup of an app.
+// Backup - Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -599,7 +598,7 @@ func (client *WebAppsClient) backupHandleResponse(resp *http.Response) (WebAppsC
 	return result, nil
 }
 
-// BackupSlot - Description for Creates a backup of an app.
+// BackupSlot - Creates a backup of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -660,7 +659,7 @@ func (client *WebAppsClient) backupSlotHandleResponse(resp *http.Response) (WebA
 	return result, nil
 }
 
-// CreateDeployment - Description for Create a deployment for an app, or a deployment slot.
+// CreateDeployment - Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -722,7 +721,7 @@ func (client *WebAppsClient) createDeploymentHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// CreateDeploymentSlot - Description for Create a deployment for an app, or a deployment slot.
+// CreateDeploymentSlot - Create a deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -789,7 +788,7 @@ func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// BeginCreateFunction - Description for Create function for web site, or a deployment slot.
+// BeginCreateFunction - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -809,7 +808,7 @@ func (client *WebAppsClient) BeginCreateFunction(ctx context.Context, resourceGr
 	}
 }
 
-// CreateFunction - Description for Create function for web site, or a deployment slot.
+// CreateFunction - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateFunctionOptions) (*http.Response, error) {
 	req, err := client.createFunctionCreateRequest(ctx, resourceGroupName, name, functionName, functionEnvelope, options)
@@ -856,7 +855,7 @@ func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, functionEnvelope)
 }
 
-// BeginCreateInstanceFunctionSlot - Description for Create function for web site, or a deployment slot.
+// BeginCreateInstanceFunctionSlot - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -877,7 +876,7 @@ func (client *WebAppsClient) BeginCreateInstanceFunctionSlot(ctx context.Context
 	}
 }
 
-// CreateInstanceFunctionSlot - Description for Create function for web site, or a deployment slot.
+// CreateInstanceFunctionSlot - Create function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, options *WebAppsClientBeginCreateInstanceFunctionSlotOptions) (*http.Response, error) {
 	req, err := client.createInstanceFunctionSlotCreateRequest(ctx, resourceGroupName, name, functionName, slot, functionEnvelope, options)
@@ -928,7 +927,7 @@ func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context
 	return req, runtime.MarshalAsJSON(req, functionEnvelope)
 }
 
-// BeginCreateInstanceMSDeployOperation - Description for Invoke the MSDeploy web app extension.
+// BeginCreateInstanceMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -948,7 +947,7 @@ func (client *WebAppsClient) BeginCreateInstanceMSDeployOperation(ctx context.Co
 	}
 }
 
-// CreateInstanceMSDeployOperation - Description for Invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*http.Response, error) {
 	req, err := client.createInstanceMSDeployOperationCreateRequest(ctx, resourceGroupName, name, instanceID, msDeploy, options)
@@ -995,7 +994,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx co
 	return req, runtime.MarshalAsJSON(req, msDeploy)
 }
 
-// BeginCreateInstanceMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
+// BeginCreateInstanceMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -1016,7 +1015,7 @@ func (client *WebAppsClient) BeginCreateInstanceMSDeployOperationSlot(ctx contex
 	}
 }
 
-// CreateInstanceMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, options *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*http.Response, error) {
 	req, err := client.createInstanceMSDeployOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, msDeploy, options)
@@ -1067,7 +1066,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, msDeploy)
 }
 
-// BeginCreateMSDeployOperation - Description for Invoke the MSDeploy web app extension.
+// BeginCreateMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -1086,7 +1085,7 @@ func (client *WebAppsClient) BeginCreateMSDeployOperation(ctx context.Context, r
 	}
 }
 
-// CreateMSDeployOperation - Description for Invoke the MSDeploy web app extension.
+// CreateMSDeployOperation - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationOptions) (*http.Response, error) {
 	req, err := client.createMSDeployOperationCreateRequest(ctx, resourceGroupName, name, msDeploy, options)
@@ -1129,7 +1128,7 @@ func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Co
 	return req, runtime.MarshalAsJSON(req, msDeploy)
 }
 
-// BeginCreateMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
+// BeginCreateMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -1149,7 +1148,7 @@ func (client *WebAppsClient) BeginCreateMSDeployOperationSlot(ctx context.Contex
 	}
 }
 
-// CreateMSDeployOperationSlot - Description for Invoke the MSDeploy web app extension.
+// CreateMSDeployOperationSlot - Invoke the MSDeploy web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, options *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*http.Response, error) {
 	req, err := client.createMSDeployOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, msDeploy, options)
@@ -1196,7 +1195,7 @@ func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, msDeploy)
 }
 
-// CreateOneDeployOperation - Description for Invoke the OneDeploy publish web app extension.
+// CreateOneDeployOperation - Invoke the OneDeploy publish web app extension.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -1252,8 +1251,7 @@ func (client *WebAppsClient) createOneDeployOperationHandleResponse(resp *http.R
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an
-// existing app.
+// BeginCreateOrUpdate - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
@@ -1272,8 +1270,7 @@ func (client *WebAppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing
-// app.
+// CreateOrUpdate - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, siteEnvelope, options)
@@ -1316,7 +1313,7 @@ func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, siteEnvelope)
 }
 
-// CreateOrUpdateConfiguration - Description for Updates the configuration of an app.
+// CreateOrUpdateConfiguration - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1373,7 +1370,7 @@ func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *htt
 	return result, nil
 }
 
-// CreateOrUpdateConfigurationSlot - Description for Updates the configuration of an app.
+// CreateOrUpdateConfigurationSlot - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1435,8 +1432,8 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp 
 	return result, nil
 }
 
-// CreateOrUpdateDomainOwnershipIdentifier - Description for Creates a domain ownership identifier for web app, or updates
-// an existing ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifier - Creates a domain ownership identifier for web app, or updates an existing ownership
+// identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1498,8 +1495,8 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleRespon
 	return result, nil
 }
 
-// CreateOrUpdateDomainOwnershipIdentifierSlot - Description for Creates a domain ownership identifier for web app, or updates
-// an existing ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifierSlot - Creates a domain ownership identifier for web app, or updates an existing
+// ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1566,7 +1563,7 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleRe
 	return result, nil
 }
 
-// CreateOrUpdateFunctionSecret - Description for Add or update a function secret.
+// CreateOrUpdateFunctionSecret - Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -1633,7 +1630,7 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *ht
 	return result, nil
 }
 
-// CreateOrUpdateFunctionSecretSlot - Description for Add or update a function secret.
+// CreateOrUpdateFunctionSecretSlot - Add or update a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -1705,7 +1702,7 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp
 	return result, nil
 }
 
-// CreateOrUpdateHostNameBinding - Description for Creates a hostname binding for an app.
+// CreateOrUpdateHostNameBinding - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1767,7 +1764,7 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *h
 	return result, nil
 }
 
-// CreateOrUpdateHostNameBindingSlot - Description for Creates a hostname binding for an app.
+// CreateOrUpdateHostNameBindingSlot - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -1834,7 +1831,7 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(res
 	return result, nil
 }
 
-// CreateOrUpdateHostSecret - Description for Add or update a host level secret.
+// CreateOrUpdateHostSecret - Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -1901,7 +1898,7 @@ func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *http.R
 	return result, nil
 }
 
-// CreateOrUpdateHostSecretSlot - Description for Add or update a host level secret.
+// CreateOrUpdateHostSecretSlot - Add or update a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -1973,7 +1970,7 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// CreateOrUpdateHybridConnection - Description for Creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnection - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -2040,7 +2037,7 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *
 	return result, nil
 }
 
-// CreateOrUpdateHybridConnectionSlot - Description for Creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnectionSlot - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -2112,7 +2109,7 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(re
 	return result, nil
 }
 
-// CreateOrUpdatePublicCertificate - Description for Creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificate - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2174,7 +2171,7 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp 
 	return result, nil
 }
 
-// CreateOrUpdatePublicCertificateSlot - Description for Creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificateSlot - Creates a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2241,8 +2238,8 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(r
 	return result, nil
 }
 
-// CreateOrUpdateRelayServiceConnection - Description for Creates a new hybrid connection configuration (PUT), or updates
-// an existing one (PATCH).
+// CreateOrUpdateRelayServiceConnection - Creates a new hybrid connection configuration (PUT), or updates an existing one
+// (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2304,8 +2301,8 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(
 	return result, nil
 }
 
-// CreateOrUpdateRelayServiceConnectionSlot - Description for Creates a new hybrid connection configuration (PUT), or updates
-// an existing one (PATCH).
+// CreateOrUpdateRelayServiceConnectionSlot - Creates a new hybrid connection configuration (PUT), or updates an existing
+// one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2373,8 +2370,7 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleRespo
 	return result, nil
 }
 
-// BeginCreateOrUpdateSlot - Description for Creates a new web, mobile, or API app in an existing resource group, or updates
-// an existing app.
+// BeginCreateOrUpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
@@ -2395,8 +2391,7 @@ func (client *WebAppsClient) BeginCreateOrUpdateSlot(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdateSlot - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an
-// existing app.
+// CreateOrUpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, options *WebAppsClientBeginCreateOrUpdateSlotOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSlotCreateRequest(ctx, resourceGroupName, name, slot, siteEnvelope, options)
@@ -2443,7 +2438,7 @@ func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context
 	return req, runtime.MarshalAsJSON(req, siteEnvelope)
 }
 
-// BeginCreateOrUpdateSourceControl - Description for Updates the source control configuration of an app.
+// BeginCreateOrUpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2462,7 +2457,7 @@ func (client *WebAppsClient) BeginCreateOrUpdateSourceControl(ctx context.Contex
 	}
 }
 
-// CreateOrUpdateSourceControl - Description for Updates the source control configuration of an app.
+// CreateOrUpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSourceControlCreateRequest(ctx, resourceGroupName, name, siteSourceControl, options)
@@ -2505,7 +2500,7 @@ func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx contex
 	return req, runtime.MarshalAsJSON(req, siteSourceControl)
 }
 
-// BeginCreateOrUpdateSourceControlSlot - Description for Updates the source control configuration of an app.
+// BeginCreateOrUpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2526,7 +2521,7 @@ func (client *WebAppsClient) BeginCreateOrUpdateSourceControlSlot(ctx context.Co
 	}
 }
 
-// CreateOrUpdateSourceControlSlot - Description for Updates the source control configuration of an app.
+// CreateOrUpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, options *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSourceControlSlotCreateRequest(ctx, resourceGroupName, name, slot, siteSourceControl, options)
@@ -2573,10 +2568,10 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx co
 	return req, runtime.MarshalAsJSON(req, siteSourceControl)
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck - Description for Integrates this Web App with a Virtual Network.
-// This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
-// already been
-// delegated, and is not in use by another App Service Plan other than the one this App is in.
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck - Integrates this Web App with a Virtual Network. This requires that
+// 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated,
+// and is
+// not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2633,10 +2628,10 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 	return result, nil
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot - Description for Integrates this Web App with a Virtual Network.
-// This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
-// already been
-// delegated, and is not in use by another App Service Plan other than the one this App is in.
+// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot - Integrates this Web App with a Virtual Network. This requires
+// that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
+// delegated, and is
+// not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2699,8 +2694,8 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 	return result, nil
 }
 
-// CreateOrUpdateVnetConnection - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the
-// connection properties (PATCH).
+// CreateOrUpdateVnetConnection - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
+// (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2762,8 +2757,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *ht
 	return result, nil
 }
 
-// CreateOrUpdateVnetConnectionGateway - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it
-// (PATCH).
+// CreateOrUpdateVnetConnectionGateway - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2830,8 +2824,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(r
 	return result, nil
 }
 
-// CreateOrUpdateVnetConnectionGatewaySlot - Description for Adds a gateway to a connected Virtual Network (PUT) or updates
-// it (PATCH).
+// CreateOrUpdateVnetConnectionGatewaySlot - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2904,8 +2897,8 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleRespon
 	return result, nil
 }
 
-// CreateOrUpdateVnetConnectionSlot - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates
-// the connection properties (PATCH).
+// CreateOrUpdateVnetConnectionSlot - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection
+// properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -2973,7 +2966,7 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp
 	return result, nil
 }
 
-// Delete - Description for Deletes a web, mobile, or API app, or one of the deployment slots.
+// Delete - Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app to delete.
@@ -3025,7 +3018,7 @@ func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// DeleteBackup - Description for Deletes a backup of an app by its ID.
+// DeleteBackup - Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3076,7 +3069,7 @@ func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// DeleteBackupConfiguration - Description for Deletes the backup configuration of an app.
+// DeleteBackupConfiguration - Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3123,7 +3116,7 @@ func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.
 	return req, nil
 }
 
-// DeleteBackupConfigurationSlot - Description for Deletes the backup configuration of an app.
+// DeleteBackupConfigurationSlot - Deletes the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3176,7 +3169,7 @@ func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx cont
 	return req, nil
 }
 
-// DeleteBackupSlot - Description for Deletes a backup of an app by its ID.
+// DeleteBackupSlot - Deletes a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3233,7 +3226,7 @@ func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// DeleteContinuousWebJob - Description for Delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJob - Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3285,7 +3278,7 @@ func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// DeleteContinuousWebJobSlot - Description for Delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJobSlot - Delete a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3342,7 +3335,7 @@ func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context
 	return req, nil
 }
 
-// DeleteDeployment - Description for Delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeployment - Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3394,7 +3387,7 @@ func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// DeleteDeploymentSlot - Description for Delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeploymentSlot - Delete a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3451,7 +3444,7 @@ func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DeleteDomainOwnershipIdentifier - Description for Deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifier - Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3503,7 +3496,7 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx co
 	return req, nil
 }
 
-// DeleteDomainOwnershipIdentifierSlot - Description for Deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifierSlot - Deletes a domain ownership identifier for a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3560,7 +3553,7 @@ func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ct
 	return req, nil
 }
 
-// DeleteFunction - Description for Delete a function for web site, or a deployment slot.
+// DeleteFunction - Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3611,7 +3604,7 @@ func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// DeleteFunctionSecret - Description for Delete a function secret.
+// DeleteFunctionSecret - Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3668,7 +3661,7 @@ func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DeleteFunctionSecretSlot - Description for Delete a function secret.
+// DeleteFunctionSecretSlot - Delete a function secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3730,7 +3723,7 @@ func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.C
 	return req, nil
 }
 
-// DeleteHostNameBinding - Description for Deletes a hostname binding for an app.
+// DeleteHostNameBinding - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3782,7 +3775,7 @@ func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// DeleteHostNameBindingSlot - Description for Deletes a hostname binding for an app.
+// DeleteHostNameBindingSlot - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -3839,7 +3832,7 @@ func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.
 	return req, nil
 }
 
-// DeleteHostSecret - Description for Delete a host level secret.
+// DeleteHostSecret - Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3896,7 +3889,7 @@ func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// DeleteHostSecretSlot - Description for Delete a host level secret.
+// DeleteHostSecretSlot - Delete a host level secret.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -3958,7 +3951,7 @@ func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DeleteHybridConnection - Description for Removes a Hybrid Connection from this site.
+// DeleteHybridConnection - Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -4015,7 +4008,7 @@ func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// DeleteHybridConnectionSlot - Description for Removes a Hybrid Connection from this site.
+// DeleteHybridConnectionSlot - Removes a Hybrid Connection from this site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -4077,7 +4070,7 @@ func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context
 	return req, nil
 }
 
-// DeleteInstanceFunctionSlot - Description for Delete a function for web site, or a deployment slot.
+// DeleteInstanceFunctionSlot - Delete a function for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4134,8 +4127,8 @@ func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context
 	return req, nil
 }
 
-// DeleteInstanceProcess - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific
-// scaled-out instance in a web site.
+// DeleteInstanceProcess - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4193,8 +4186,8 @@ func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// DeleteInstanceProcessSlot - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific
-// scaled-out instance in a web site.
+// DeleteInstanceProcessSlot - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4257,7 +4250,7 @@ func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.
 	return req, nil
 }
 
-// DeletePremierAddOn - Description for Delete a premier add-on from an app.
+// DeletePremierAddOn - Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4309,7 +4302,7 @@ func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// DeletePremierAddOnSlot - Description for Delete a premier add-on from an app.
+// DeletePremierAddOnSlot - Delete a premier add-on from an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4367,7 +4360,7 @@ func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -4385,7 +4378,7 @@ func (client *WebAppsClient) BeginDeletePrivateEndpointConnection(ctx context.Co
 	}
 }
 
-// DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
@@ -4432,7 +4425,7 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionCreateRequest(ctx co
 	return req, nil
 }
 
-// BeginDeletePrivateEndpointConnectionSlot - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnectionSlot - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -4450,7 +4443,7 @@ func (client *WebAppsClient) BeginDeletePrivateEndpointConnectionSlot(ctx contex
 	}
 }
 
-// DeletePrivateEndpointConnectionSlot - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnectionSlot - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) deletePrivateEndpointConnectionSlot(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionSlotCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, slot, options)
@@ -4501,8 +4494,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlotCreateRequest(ct
 	return req, nil
 }
 
-// DeleteProcess - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
-// instance in a web site.
+// DeleteProcess - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
+// a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4553,8 +4546,8 @@ func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// DeleteProcessSlot - Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
-// instance in a web site.
+// DeleteProcessSlot - Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4611,7 +4604,7 @@ func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// DeletePublicCertificate - Description for Deletes a hostname binding for an app.
+// DeletePublicCertificate - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4663,7 +4656,7 @@ func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// DeletePublicCertificateSlot - Description for Deletes a hostname binding for an app.
+// DeletePublicCertificateSlot - Deletes a hostname binding for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4720,7 +4713,7 @@ func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx contex
 	return req, nil
 }
 
-// DeleteRelayServiceConnection - Description for Deletes a relay service connection by its name.
+// DeleteRelayServiceConnection - Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4772,7 +4765,7 @@ func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx conte
 	return req, nil
 }
 
-// DeleteRelayServiceConnectionSlot - Description for Deletes a relay service connection by its name.
+// DeleteRelayServiceConnectionSlot - Deletes a relay service connection by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -4830,7 +4823,7 @@ func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx c
 	return req, nil
 }
 
-// DeleteSiteExtension - Description for Remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtension - Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4882,7 +4875,7 @@ func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// DeleteSiteExtensionSlot - Description for Remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtensionSlot - Remove a site extension from a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -4939,7 +4932,7 @@ func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// DeleteSlot - Description for Deletes a web, mobile, or API app, or one of the deployment slots.
+// DeleteSlot - Deletes a web, mobile, or API app, or one of the deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app to delete.
@@ -4996,7 +4989,7 @@ func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// DeleteSourceControl - Description for Deletes the source control configuration of an app.
+// DeleteSourceControl - Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5046,7 +5039,7 @@ func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// DeleteSourceControlSlot - Description for Deletes the source control configuration of an app.
+// DeleteSourceControlSlot - Deletes the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5102,7 +5095,7 @@ func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// DeleteSwiftVirtualNetwork - Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
+// DeleteSwiftVirtualNetwork - Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5149,7 +5142,7 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.
 	return req, nil
 }
 
-// DeleteSwiftVirtualNetworkSlot - Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
+// DeleteSwiftVirtualNetworkSlot - Deletes a Swift Virtual Network connection from an app (or deployment slot).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5201,7 +5194,7 @@ func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx cont
 	return req, nil
 }
 
-// DeleteTriggeredWebJob - Description for Delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJob - Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -5253,7 +5246,7 @@ func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// DeleteTriggeredWebJobSlot - Description for Delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJobSlot - Delete a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -5310,7 +5303,7 @@ func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.
 	return req, nil
 }
 
-// DeleteVnetConnection - Description for Deletes a connection from an app (or deployment slot to a named virtual network.
+// DeleteVnetConnection - Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5362,7 +5355,7 @@ func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// DeleteVnetConnectionSlot - Description for Deletes a connection from an app (or deployment slot to a named virtual network.
+// DeleteVnetConnectionSlot - Deletes a connection from an app (or deployment slot to a named virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5419,8 +5412,8 @@ func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.C
 	return req, nil
 }
 
-// DiscoverBackup - Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use
-// this to get information about the databases stored in a backup.
+// DiscoverBackup - Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
+// about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5476,8 +5469,8 @@ func (client *WebAppsClient) discoverBackupHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// DiscoverBackupSlot - Description for Discovers an existing app backup that can be restored from a blob in Azure storage.
-// Use this to get information about the databases stored in a backup.
+// DiscoverBackupSlot - Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get
+// information about the databases stored in a backup.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5539,8 +5532,7 @@ func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GenerateNewSitePublishingPassword - Description for Generates a new publishing password for an app (or deployment slot,
-// if specified).
+// GenerateNewSitePublishingPassword - Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5587,8 +5579,7 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx 
 	return req, nil
 }
 
-// GenerateNewSitePublishingPasswordSlot - Description for Generates a new publishing password for an app (or deployment slot,
-// if specified).
+// GenerateNewSitePublishingPasswordSlot - Generates a new publishing password for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5641,7 +5632,7 @@ func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(
 	return req, nil
 }
 
-// Get - Description for Gets the details of a web, mobile, or API app.
+// Get - Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5696,7 +5687,7 @@ func (client *WebAppsClient) getHandleResponse(resp *http.Response) (WebAppsClie
 	return result, nil
 }
 
-// GetAppSettingKeyVaultReference - Description for Gets the config reference and status of an app
+// GetAppSettingKeyVaultReference - Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5757,7 +5748,7 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *
 	return result, nil
 }
 
-// GetAppSettingKeyVaultReferenceSlot - Description for Gets the config reference and status of an app
+// GetAppSettingKeyVaultReferenceSlot - Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5822,7 +5813,7 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(re
 	return result, nil
 }
 
-// NewGetAppSettingsKeyVaultReferencesPager - Description for Gets the config reference app settings and status of an app
+// NewGetAppSettingsKeyVaultReferencesPager - Gets the config reference app settings and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5891,8 +5882,7 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp
 	return result, nil
 }
 
-// NewGetAppSettingsKeyVaultReferencesSlotPager - Description for Gets the config reference app settings and status of an
-// app
+// NewGetAppSettingsKeyVaultReferencesSlotPager - Gets the config reference app settings and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -5965,7 +5955,7 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(
 	return result, nil
 }
 
-// GetAuthSettings - Description for Gets the Authentication/Authorization settings of an app.
+// GetAuthSettings - Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6020,7 +6010,7 @@ func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetAuthSettingsSlot - Description for Gets the Authentication/Authorization settings of an app.
+// GetAuthSettingsSlot - Gets the Authentication/Authorization settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6081,7 +6071,7 @@ func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetAuthSettingsV2 - Description for Gets site's Authentication / Authorization settings for apps via the V2 format
+// GetAuthSettingsV2 - Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6137,7 +6127,7 @@ func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetAuthSettingsV2Slot - Description for Gets site's Authentication / Authorization settings for apps via the V2 format
+// GetAuthSettingsV2Slot - Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6198,8 +6188,7 @@ func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetAuthSettingsV2WithoutSecrets - Description for Gets site's Authentication / Authorization settings for apps via the
-// V2 format
+// GetAuthSettingsV2WithoutSecrets - Gets site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6316,7 +6305,7 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotHandleResponse(r
 	return result, nil
 }
 
-// GetBackupConfiguration - Description for Gets the backup configuration of an app.
+// GetBackupConfiguration - Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6372,7 +6361,7 @@ func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetBackupConfigurationSlot - Description for Gets the backup configuration of an app.
+// GetBackupConfigurationSlot - Gets the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6434,7 +6423,7 @@ func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// GetBackupStatus - Description for Gets a backup of an app by its ID.
+// GetBackupStatus - Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6494,7 +6483,7 @@ func (client *WebAppsClient) getBackupStatusHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetBackupStatusSlot - Description for Gets a backup of an app by its ID.
+// GetBackupStatusSlot - Gets a backup of an app by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6560,8 +6549,8 @@ func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetConfiguration - Description for Gets the configuration of an app, such as platform version and bitness, default documents,
-// virtual applications, Always On, etc.
+// GetConfiguration - Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
+// Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6617,8 +6606,8 @@ func (client *WebAppsClient) getConfigurationHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetConfigurationSlot - Description for Gets the configuration of an app, such as platform version and bitness, default
-// documents, virtual applications, Always On, etc.
+// GetConfigurationSlot - Gets the configuration of an app, such as platform version and bitness, default documents, virtual
+// applications, Always On, etc.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6679,7 +6668,7 @@ func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetConfigurationSnapshot - Description for Gets a snapshot of the configuration of an app at a previous point in time.
+// GetConfigurationSnapshot - Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6740,7 +6729,7 @@ func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetConfigurationSnapshotSlot - Description for Gets a snapshot of the configuration of an app at a previous point in time.
+// GetConfigurationSnapshotSlot - Gets a snapshot of the configuration of an app at a previous point in time.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -6806,7 +6795,7 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetContainerLogsZip - Description for Gets the ZIP archived docker log files for the given site
+// GetContainerLogsZip - Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -6854,7 +6843,7 @@ func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// GetContainerLogsZipSlot - Description for Gets the ZIP archived docker log files for the given site
+// GetContainerLogsZipSlot - Gets the ZIP archived docker log files for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -6907,7 +6896,7 @@ func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// GetContinuousWebJob - Description for Gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJob - Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -6968,7 +6957,7 @@ func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetContinuousWebJobSlot - Description for Gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJobSlot - Gets a continuous web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -7034,7 +7023,7 @@ func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetDeployment - Description for Get a deployment by its ID for an app, or a deployment slot.
+// GetDeployment - Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7094,7 +7083,7 @@ func (client *WebAppsClient) getDeploymentHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// GetDeploymentSlot - Description for Get a deployment by its ID for an app, or a deployment slot.
+// GetDeploymentSlot - Get a deployment by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7160,7 +7149,7 @@ func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetDiagnosticLogsConfiguration - Description for Gets the logging configuration of an app.
+// GetDiagnosticLogsConfiguration - Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7216,7 +7205,7 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *
 	return result, nil
 }
 
-// GetDiagnosticLogsConfigurationSlot - Description for Gets the logging configuration of an app.
+// GetDiagnosticLogsConfigurationSlot - Gets the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7278,7 +7267,7 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(re
 	return result, nil
 }
 
-// GetDomainOwnershipIdentifier - Description for Get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifier - Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7339,7 +7328,7 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetDomainOwnershipIdentifierSlot - Description for Get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifierSlot - Get domain ownership identifier for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7405,7 +7394,7 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp
 	return result, nil
 }
 
-// GetFtpAllowed - Description for Returns whether FTP is allowed on the site or not.
+// GetFtpAllowed - Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7460,7 +7449,7 @@ func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// GetFtpAllowedSlot - Description for Returns whether FTP is allowed on the site or not.
+// GetFtpAllowedSlot - Returns whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7520,7 +7509,7 @@ func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetFunction - Description for Get function information by its ID for web site, or a deployment slot.
+// GetFunction - Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -7580,7 +7569,7 @@ func (client *WebAppsClient) getFunctionHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// GetFunctionsAdminToken - Description for Fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminToken - Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -7636,7 +7625,7 @@ func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetFunctionsAdminTokenSlot - Description for Fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminTokenSlot - Fetch a short lived token that can be exchanged for a master key.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -7697,7 +7686,7 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// GetHostNameBinding - Description for Get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBinding - Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7758,7 +7747,7 @@ func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetHostNameBindingSlot - Description for Get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBindingSlot - Get the named hostname binding for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -7824,7 +7813,7 @@ func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetHybridConnection - Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnection - Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -7890,7 +7879,7 @@ func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetHybridConnectionSlot - Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnectionSlot - Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -7961,7 +7950,7 @@ func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetInstanceFunctionSlot - Description for Get function information by its ID for web site, or a deployment slot.
+// GetInstanceFunctionSlot - Get function information by its ID for web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8027,7 +8016,7 @@ func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetInstanceInfo - Description for Gets all scale-out instances of an app.
+// GetInstanceInfo - Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -8086,7 +8075,7 @@ func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetInstanceInfoSlot - Description for Gets all scale-out instances of an app.
+// GetInstanceInfoSlot - Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -8151,7 +8140,7 @@ func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetInstanceMSDeployLog - Description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceMSDeployLog - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8212,7 +8201,7 @@ func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetInstanceMSDeployLogSlot - Description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceMSDeployLogSlot - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8278,7 +8267,7 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// GetInstanceMsDeployStatus - Description for Get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatus - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8339,7 +8328,7 @@ func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetInstanceMsDeployStatusSlot - Description for Get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatusSlot - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8405,7 +8394,7 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *h
 	return result, nil
 }
 
-// GetInstanceProcess - Description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcess - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8472,8 +8461,7 @@ func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetInstanceProcessDump - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in
-// a web site.
+// GetInstanceProcessDump - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8532,8 +8520,7 @@ func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// GetInstanceProcessDumpSlot - Description for Get a memory dump of a process by its ID for a specific scaled-out instance
-// in a web site.
+// GetInstanceProcessDumpSlot - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8597,8 +8584,7 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context
 	return req, nil
 }
 
-// GetInstanceProcessModule - Description for Get process information by its ID for a specific scaled-out instance in a web
-// site.
+// GetInstanceProcessModule - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8670,8 +8656,7 @@ func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetInstanceProcessModuleSlot - Description for Get process information by its ID for a specific scaled-out instance in
-// a web site.
+// GetInstanceProcessModuleSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8748,8 +8733,7 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetInstanceProcessSlot - Description for Get process information by its ID for a specific scaled-out instance in a web
-// site.
+// GetInstanceProcessSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -8821,7 +8805,7 @@ func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetMSDeployLog - Description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLog - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8876,7 +8860,7 @@ func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// GetMSDeployLogSlot - Description for Get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLogSlot - Get the MSDeploy Log for the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8937,7 +8921,7 @@ func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetMSDeployStatus - Description for Get the status of the last MSDeploy operation.
+// GetMSDeployStatus - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -8993,7 +8977,7 @@ func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetMSDeployStatusSlot - Description for Get the status of the last MSDeploy operation.
+// GetMSDeployStatusSlot - Get the status of the last MSDeploy operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -9054,8 +9038,8 @@ func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetMigrateMySQLStatus - Description for Returns the status of MySql in app migration, if one is active, and whether or
-// not MySql in app is enabled
+// GetMigrateMySQLStatus - Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
+// is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -9111,8 +9095,8 @@ func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetMigrateMySQLStatusSlot - Description for Returns the status of MySql in app migration, if one is active, and whether
-// or not MySql in app is enabled
+// GetMigrateMySQLStatusSlot - Returns the status of MySql in app migration, if one is active, and whether or not MySql in
+// app is enabled
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -9173,8 +9157,7 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetNetworkTraceOperation - Description for Gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTraceOperation - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9235,8 +9218,7 @@ func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetNetworkTraceOperationSlot - Description for Gets a named operation for a network trace capturing (or deployment slot,
-// if specified).
+// GetNetworkTraceOperationSlot - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9302,8 +9284,7 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetNetworkTraceOperationSlotV2 - Description for Gets a named operation for a network trace capturing (or deployment slot,
-// if specified).
+// GetNetworkTraceOperationSlotV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9369,8 +9350,7 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *
 	return result, nil
 }
 
-// GetNetworkTraceOperationV2 - Description for Gets a named operation for a network trace capturing (or deployment slot,
-// if specified).
+// GetNetworkTraceOperationV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9431,7 +9411,7 @@ func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *http
 	return result, nil
 }
 
-// GetNetworkTraces - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTraces - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9492,7 +9472,7 @@ func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetNetworkTracesSlot - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesSlot - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9558,7 +9538,7 @@ func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetNetworkTracesSlotV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesSlotV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9624,7 +9604,7 @@ func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetNetworkTracesV2 - Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesV2 - Gets a named operation for a network trace capturing (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9685,8 +9665,7 @@ func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetOneDeployStatus - Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the
-// site
+// GetOneDeployStatus - Invoke onedeploy status API /api/deployments and gets the deployment status for the site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -9742,7 +9721,7 @@ func (client *WebAppsClient) getOneDeployStatusHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetPremierAddOn - Description for Gets a named add-on of an app.
+// GetPremierAddOn - Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9802,7 +9781,7 @@ func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetPremierAddOnSlot - Description for Gets a named add-on of an app.
+// GetPremierAddOnSlot - Gets a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -9868,8 +9847,8 @@ func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetPrivateAccess - Description for Gets data around private site access enablement and authorized Virtual Networks that
-// can access the site.
+// GetPrivateAccess - Gets data around private site access enablement and authorized Virtual Networks that can access the
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -9925,8 +9904,8 @@ func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetPrivateAccessSlot - Description for Gets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// GetPrivateAccessSlot - Gets data around private site access enablement and authorized Virtual Networks that can access
+// the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -9987,7 +9966,7 @@ func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetPrivateEndpointConnection - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnection - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10048,8 +10027,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoint connections associated with
-// a site
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoint connections associated with a site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10118,8 +10096,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListSlotPager - Description for Gets the list of private endpoint connections associated
-// with a site
+// NewGetPrivateEndpointConnectionListSlotPager - Gets the list of private endpoint connections associated with a site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10193,7 +10170,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(
 	return result, nil
 }
 
-// GetPrivateEndpointConnectionSlot - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnectionSlot - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10259,7 +10236,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp
 	return result, nil
 }
 
-// GetPrivateLinkResources - Description for Gets the private link resources
+// GetPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10315,7 +10292,7 @@ func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetPrivateLinkResourcesSlot - Description for Gets the private link resources
+// GetPrivateLinkResourcesSlot - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
@@ -10375,7 +10352,7 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetProcess - Description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcess - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10435,7 +10412,7 @@ func (client *WebAppsClient) getProcessHandleResponse(resp *http.Response) (WebA
 	return result, nil
 }
 
-// GetProcessDump - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
+// GetProcessDump - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10487,8 +10464,7 @@ func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// GetProcessDumpSlot - Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web
-// site.
+// GetProcessDumpSlot - Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10546,7 +10522,7 @@ func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// GetProcessModule - Description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessModule - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10612,7 +10588,7 @@ func (client *WebAppsClient) getProcessModuleHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetProcessModuleSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessModuleSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10683,7 +10659,7 @@ func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetProcessSlot - Description for Get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessSlot - Get process information by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -10748,7 +10724,7 @@ func (client *WebAppsClient) getProcessSlotHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// GetPublicCertificate - Description for Get the named public certificate for an app (or deployment slot, if specified).
+// GetPublicCertificate - Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -10809,7 +10785,7 @@ func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetPublicCertificateSlot - Description for Get the named public certificate for an app (or deployment slot, if specified).
+// GetPublicCertificateSlot - Get the named public certificate for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -10875,7 +10851,7 @@ func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetRelayServiceConnection - Description for Gets a hybrid connection configuration by its name.
+// GetRelayServiceConnection - Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -10936,7 +10912,7 @@ func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetRelayServiceConnectionSlot - Description for Gets a hybrid connection configuration by its name.
+// GetRelayServiceConnectionSlot - Gets a hybrid connection configuration by its name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11003,7 +10979,7 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *h
 	return result, nil
 }
 
-// GetScmAllowed - Description for Returns whether Scm basic auth is allowed on the site or not.
+// GetScmAllowed - Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11058,7 +11034,7 @@ func (client *WebAppsClient) getScmAllowedHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// GetScmAllowedSlot - Description for Returns whether Scm basic auth is allowed on the site or not.
+// GetScmAllowedSlot - Returns whether Scm basic auth is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11118,7 +11094,7 @@ func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetSiteConnectionStringKeyVaultReference - Description for Gets the config reference and status of an app
+// GetSiteConnectionStringKeyVaultReference - Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11178,7 +11154,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleRespo
 	return result, nil
 }
 
-// GetSiteConnectionStringKeyVaultReferenceSlot - Description for Gets the config reference and status of an app
+// GetSiteConnectionStringKeyVaultReferenceSlot - Gets the config reference and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11242,8 +11218,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleR
 	return result, nil
 }
 
-// NewGetSiteConnectionStringKeyVaultReferencesPager - Description for Gets the config reference app settings and status of
-// an app
+// NewGetSiteConnectionStringKeyVaultReferencesPager - Gets the config reference app settings and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11312,8 +11287,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResp
 	return result, nil
 }
 
-// NewGetSiteConnectionStringKeyVaultReferencesSlotPager - Description for Gets the config reference app settings and status
-// of an app
+// NewGetSiteConnectionStringKeyVaultReferencesSlotPager - Gets the config reference app settings and status of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11386,7 +11360,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandle
 	return result, nil
 }
 
-// GetSiteExtension - Description for Get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtension - Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -11447,7 +11421,7 @@ func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetSiteExtensionSlot - Description for Get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtensionSlot - Get site extension information by its ID for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -11513,7 +11487,7 @@ func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetSitePhpErrorLogFlag - Description for Gets web app's event logs.
+// GetSitePhpErrorLogFlag - Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -11569,7 +11543,7 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetSitePhpErrorLogFlagSlot - Description for Gets web app's event logs.
+// GetSitePhpErrorLogFlagSlot - Gets web app's event logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -11630,7 +11604,7 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// GetSlot - Description for Gets the details of a web, mobile, or API app.
+// GetSlot - Gets the details of a web, mobile, or API app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11690,7 +11664,7 @@ func (client *WebAppsClient) getSlotHandleResponse(resp *http.Response) (WebApps
 	return result, nil
 }
 
-// GetSourceControl - Description for Gets the source control configuration of an app.
+// GetSourceControl - Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11746,7 +11720,7 @@ func (client *WebAppsClient) getSourceControlHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// GetSourceControlSlot - Description for Gets the source control configuration of an app.
+// GetSourceControlSlot - Gets the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11808,7 +11782,7 @@ func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// GetSwiftVirtualNetworkConnection - Description for Gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnection - Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11864,7 +11838,7 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp
 	return result, nil
 }
 
-// GetSwiftVirtualNetworkConnectionSlot - Description for Gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnectionSlot - Gets a Swift Virtual Network connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -11926,7 +11900,7 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(
 	return result, nil
 }
 
-// GetTriggeredWebJob - Description for Gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJob - Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -11987,8 +11961,7 @@ func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// GetTriggeredWebJobHistory - Description for Gets a triggered web job's history by its ID for an app, , or a deployment
-// slot.
+// GetTriggeredWebJobHistory - Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12054,8 +12027,7 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *http.
 	return result, nil
 }
 
-// GetTriggeredWebJobHistorySlot - Description for Gets a triggered web job's history by its ID for an app, , or a deployment
-// slot.
+// GetTriggeredWebJobHistorySlot - Gets a triggered web job's history by its ID for an app, , or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12126,7 +12098,7 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *h
 	return result, nil
 }
 
-// GetTriggeredWebJobSlot - Description for Gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJobSlot - Gets a triggered web job by its ID for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12192,7 +12164,7 @@ func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// GetVnetConnection - Description for Gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnection - Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12253,7 +12225,7 @@ func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetVnetConnectionGateway - Description for Gets an app's Virtual Network gateway.
+// GetVnetConnectionGateway - Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12319,7 +12291,7 @@ func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *http.R
 	return result, nil
 }
 
-// GetVnetConnectionGatewaySlot - Description for Gets an app's Virtual Network gateway.
+// GetVnetConnectionGatewaySlot - Gets an app's Virtual Network gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12391,7 +12363,7 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetVnetConnectionSlot - Description for Gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnectionSlot - Gets a virtual network the app (or deployment slot) is connected to by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12458,7 +12430,7 @@ func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetWebJob - Description for Get webjob information for an app, or a deployment slot.
+// GetWebJob - Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12518,7 +12490,7 @@ func (client *WebAppsClient) getWebJobHandleResponse(resp *http.Response) (WebAp
 	return result, nil
 }
 
-// GetWebJobSlot - Description for Get webjob information for an app, or a deployment slot.
+// GetWebJobSlot - Get webjob information for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12583,7 +12555,7 @@ func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// GetWebSiteContainerLogs - Description for Gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogs - Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -12631,7 +12603,7 @@ func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// GetWebSiteContainerLogsSlot - Description for Gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogsSlot - Gets the last lines of docker logs for the given site
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -12684,7 +12656,7 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx contex
 	return req, nil
 }
 
-// BeginInstallSiteExtension - Description for Install site extension on a web site, or a deployment slot.
+// BeginInstallSiteExtension - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12703,7 +12675,7 @@ func (client *WebAppsClient) BeginInstallSiteExtension(ctx context.Context, reso
 	}
 }
 
-// InstallSiteExtension - Description for Install site extension on a web site, or a deployment slot.
+// InstallSiteExtension - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *WebAppsClientBeginInstallSiteExtensionOptions) (*http.Response, error) {
 	req, err := client.installSiteExtensionCreateRequest(ctx, resourceGroupName, name, siteExtensionID, options)
@@ -12750,7 +12722,7 @@ func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginInstallSiteExtensionSlot - Description for Install site extension on a web site, or a deployment slot.
+// BeginInstallSiteExtensionSlot - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -12770,7 +12742,7 @@ func (client *WebAppsClient) BeginInstallSiteExtensionSlot(ctx context.Context, 
 	}
 }
 
-// InstallSiteExtensionSlot - Description for Install site extension on a web site, or a deployment slot.
+// InstallSiteExtensionSlot - Install site extension on a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *WebAppsClientBeginInstallSiteExtensionSlotOptions) (*http.Response, error) {
 	req, err := client.installSiteExtensionSlotCreateRequest(ctx, resourceGroupName, name, siteExtensionID, slot, options)
@@ -12821,7 +12793,7 @@ func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.C
 	return req, nil
 }
 
-// IsCloneable - Description for Shows whether an app can be cloned to another resource group or subscription.
+// IsCloneable - Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12876,7 +12848,7 @@ func (client *WebAppsClient) isCloneableHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// IsCloneableSlot - Description for Shows whether an app can be cloned to another resource group or subscription.
+// IsCloneableSlot - Shows whether an app can be cloned to another resource group or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -12936,7 +12908,7 @@ func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListPager - Description for Get all apps for a subscription.
+// NewListPager - Get all apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
 func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *runtime.Pager[WebAppsClientListResponse] {
@@ -12994,7 +12966,7 @@ func (client *WebAppsClient) listHandleResponse(resp *http.Response) (WebAppsCli
 	return result, nil
 }
 
-// ListApplicationSettings - Description for Gets the application settings of an app.
+// ListApplicationSettings - Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13050,7 +13022,7 @@ func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListApplicationSettingsSlot - Description for Gets the application settings of an app.
+// ListApplicationSettingsSlot - Gets the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13112,7 +13084,7 @@ func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListAzureStorageAccounts - Description for Gets the Azure storage account configurations of an app.
+// ListAzureStorageAccounts - Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13168,7 +13140,7 @@ func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListAzureStorageAccountsSlot - Description for Gets the Azure storage account configurations of an app.
+// ListAzureStorageAccountsSlot - Gets the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13230,9 +13202,9 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListBackupStatusSecrets - Description for Gets status of a web app backup that may be in progress, including secrets associated
-// with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the
-// backup if a new URL is passed in the request body.
+// ListBackupStatusSecrets - Gets status of a web app backup that may be in progress, including secrets associated with the
+// backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
+// URL is passed in the request body.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -13294,9 +13266,9 @@ func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListBackupStatusSecretsSlot - Description for Gets status of a web app backup that may be in progress, including secrets
-// associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the
-// backup if a new URL is passed in the request body.
+// ListBackupStatusSecretsSlot - Gets status of a web app backup that may be in progress, including secrets associated with
+// the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
+// URL is passed in the request body.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -13363,7 +13335,7 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListBackupsPager - Description for Gets existing backups of an app.
+// NewListBackupsPager - Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13431,7 +13403,7 @@ func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// NewListBackupsSlotPager - Description for Gets existing backups of an app.
+// NewListBackupsSlotPager - Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13504,8 +13476,8 @@ func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListBasicPublishingCredentialsPoliciesPager - Description for Returns whether Scm basic auth is allowed and whether
-// Ftp is allowed for a given site.
+// NewListBasicPublishingCredentialsPoliciesPager - Returns whether Scm basic auth is allowed and whether Ftp is allowed for
+// a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13574,8 +13546,8 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleRespons
 	return result, nil
 }
 
-// NewListBasicPublishingCredentialsPoliciesSlotPager - Description for Returns whether Scm basic auth is allowed and whether
-// Ftp is allowed for a given site.
+// NewListBasicPublishingCredentialsPoliciesSlotPager - Returns whether Scm basic auth is allowed and whether Ftp is allowed
+// for a given site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13648,7 +13620,7 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleRes
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Gets all web, mobile, and API apps in the specified resource group.
+// NewListByResourceGroupPager - Gets all web, mobile, and API apps in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup
@@ -13715,8 +13687,8 @@ func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListConfigurationSnapshotInfoPager - Description for Gets a list of web app configuration snapshots identifiers. Each
-// element of the list contains a timestamp and the ID of the snapshot.
+// NewListConfigurationSnapshotInfoPager - Gets a list of web app configuration snapshots identifiers. Each element of the
+// list contains a timestamp and the ID of the snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13785,8 +13757,8 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *h
 	return result, nil
 }
 
-// NewListConfigurationSnapshotInfoSlotPager - Description for Gets a list of web app configuration snapshots identifiers.
-// Each element of the list contains a timestamp and the ID of the snapshot.
+// NewListConfigurationSnapshotInfoSlotPager - Gets a list of web app configuration snapshots identifiers. Each element of
+// the list contains a timestamp and the ID of the snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13860,7 +13832,7 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(res
 	return result, nil
 }
 
-// NewListConfigurationsPager - Description for List the configurations of an app
+// NewListConfigurationsPager - List the configurations of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -13929,7 +13901,7 @@ func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListConfigurationsSlotPager - Description for List the configurations of an app
+// NewListConfigurationsSlotPager - List the configurations of an app
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14003,7 +13975,7 @@ func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListConnectionStrings - Description for Gets the connection strings of an app.
+// ListConnectionStrings - Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14059,7 +14031,7 @@ func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListConnectionStringsSlot - Description for Gets the connection strings of an app.
+// ListConnectionStringsSlot - Gets the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14121,7 +14093,7 @@ func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListContinuousWebJobsPager - Description for List continuous web jobs for an app, or a deployment slot.
+// NewListContinuousWebJobsPager - List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14190,7 +14162,7 @@ func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListContinuousWebJobsSlotPager - Description for List continuous web jobs for an app, or a deployment slot.
+// NewListContinuousWebJobsSlotPager - List continuous web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14264,7 +14236,7 @@ func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListDeploymentLog - Description for List deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLog - List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14325,7 +14297,7 @@ func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListDeploymentLogSlot - Description for List deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLogSlot - List deployment log for specific deployment for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14391,7 +14363,7 @@ func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListDeploymentsPager - Description for List deployments for an app, or a deployment slot.
+// NewListDeploymentsPager - List deployments for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14459,7 +14431,7 @@ func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListDeploymentsSlotPager - Description for List deployments for an app, or a deployment slot.
+// NewListDeploymentsSlotPager - List deployments for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14533,7 +14505,7 @@ func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListDomainOwnershipIdentifiersPager - Description for Lists ownership identifiers for domain associated with web app.
+// NewListDomainOwnershipIdentifiersPager - Lists ownership identifiers for domain associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14602,8 +14574,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *
 	return result, nil
 }
 
-// NewListDomainOwnershipIdentifiersSlotPager - Description for Lists ownership identifiers for domain associated with web
-// app.
+// NewListDomainOwnershipIdentifiersSlotPager - Lists ownership identifiers for domain associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -14677,7 +14648,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(re
 	return result, nil
 }
 
-// ListFunctionKeys - Description for Get function keys for a function in a web site, or a deployment slot.
+// ListFunctionKeys - Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14738,7 +14709,7 @@ func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListFunctionKeysSlot - Description for Get function keys for a function in a web site, or a deployment slot.
+// ListFunctionKeysSlot - Get function keys for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14804,7 +14775,7 @@ func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListFunctionSecrets - Description for Get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecrets - Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14865,7 +14836,7 @@ func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListFunctionSecretsSlot - Description for Get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecretsSlot - Get function secrets for a function in a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14931,7 +14902,7 @@ func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListFunctionsPager - Description for List the functions for a web site, or a deployment slot.
+// NewListFunctionsPager - List the functions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -14999,7 +14970,7 @@ func (client *WebAppsClient) listFunctionsHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// ListHostKeys - Description for Get host secrets for a function app.
+// ListHostKeys - Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15054,7 +15025,7 @@ func (client *WebAppsClient) listHostKeysHandleResponse(resp *http.Response) (We
 	return result, nil
 }
 
-// ListHostKeysSlot - Description for Get host secrets for a function app.
+// ListHostKeysSlot - Get host secrets for a function app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15115,7 +15086,7 @@ func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListHostNameBindingsPager - Description for Get hostname bindings for an app or a deployment slot.
+// NewListHostNameBindingsPager - Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -15184,7 +15155,7 @@ func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListHostNameBindingsSlotPager - Description for Get hostname bindings for an app or a deployment slot.
+// NewListHostNameBindingsSlotPager - Get hostname bindings for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -15258,7 +15229,7 @@ func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListHybridConnections - Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnections - Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -15314,7 +15285,7 @@ func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListHybridConnectionsSlot - Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnectionsSlot - Retrieves all Service Bus Hybrid Connections used by this Web App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -15375,7 +15346,7 @@ func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListInstanceFunctionsSlotPager - Description for List the functions for a web site, or a deployment slot.
+// NewListInstanceFunctionsSlotPager - List the functions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15449,7 +15420,7 @@ func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListInstanceIdentifiersPager - Description for Gets all scale-out instances of an app.
+// NewListInstanceIdentifiersPager - Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -15518,7 +15489,7 @@ func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListInstanceIdentifiersSlotPager - Description for Gets all scale-out instances of an app.
+// NewListInstanceIdentifiersSlotPager - Gets all scale-out instances of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -15592,8 +15563,8 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListInstanceProcessModulesPager - Description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListInstanceProcessModulesPager - List module information for a process by its ID for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15673,8 +15644,8 @@ func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListInstanceProcessModulesSlotPager - Description for List module information for a process by its ID for a specific
-// scaled-out instance in a web site.
+// NewListInstanceProcessModulesSlotPager - List module information for a process by its ID for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15759,8 +15730,8 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *
 	return result, nil
 }
 
-// NewListInstanceProcessThreadsPager - Description for List the threads in a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListInstanceProcessThreadsPager - List the threads in a process by its ID for a specific scaled-out instance in a web
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15840,8 +15811,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListInstanceProcessThreadsSlotPager - Description for List the threads in a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListInstanceProcessThreadsSlotPager - List the threads in a process by its ID for a specific scaled-out instance in
+// a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -15926,8 +15897,8 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *
 	return result, nil
 }
 
-// NewListInstanceProcessesPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// NewListInstanceProcessesPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16002,8 +15973,8 @@ func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListInstanceProcessesSlotPager - Description for Get list of processes for a web site, or a deployment slot, or for
-// a specific scaled-out instance in a web site.
+// NewListInstanceProcessesSlotPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
+// instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16083,7 +16054,7 @@ func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListMetadata - Description for Gets the metadata of an app.
+// ListMetadata - Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16138,7 +16109,7 @@ func (client *WebAppsClient) listMetadataHandleResponse(resp *http.Response) (We
 	return result, nil
 }
 
-// ListMetadataSlot - Description for Gets the metadata of an app.
+// ListMetadataSlot - Gets the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16199,7 +16170,7 @@ func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// ListNetworkFeatures - Description for Gets all network features used by the app (or deployment slot, if specified).
+// ListNetworkFeatures - Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16260,7 +16231,7 @@ func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListNetworkFeaturesSlot - Description for Gets all network features used by the app (or deployment slot, if specified).
+// ListNetworkFeaturesSlot - Gets all network features used by the app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16326,7 +16297,7 @@ func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListPerfMonCountersPager - Description for Gets perfmon counters for web app.
+// NewListPerfMonCountersPager - Gets perfmon counters for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -16400,7 +16371,7 @@ func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListPerfMonCountersSlotPager - Description for Gets perfmon counters for web app.
+// NewListPerfMonCountersSlotPager - Gets perfmon counters for web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -16479,7 +16450,7 @@ func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ListPremierAddOns - Description for Gets the premier add-ons of an app.
+// ListPremierAddOns - Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16535,7 +16506,7 @@ func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListPremierAddOnsSlot - Description for Gets the premier add-ons of an app.
+// ListPremierAddOnsSlot - Gets the premier add-ons of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -16597,8 +16568,8 @@ func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListProcessModulesPager - Description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListProcessModulesPager - List module information for a process by its ID for a specific scaled-out instance in a web
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16672,8 +16643,8 @@ func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListProcessModulesSlotPager - Description for List module information for a process by its ID for a specific scaled-out
-// instance in a web site.
+// NewListProcessModulesSlotPager - List module information for a process by its ID for a specific scaled-out instance in
+// a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16752,8 +16723,7 @@ func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListProcessThreadsPager - Description for List the threads in a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListProcessThreadsPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16827,8 +16797,7 @@ func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListProcessThreadsSlotPager - Description for List the threads in a process by its ID for a specific scaled-out instance
-// in a web site.
+// NewListProcessThreadsSlotPager - List the threads in a process by its ID for a specific scaled-out instance in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16907,8 +16876,8 @@ func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListProcessesPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out
-// instance in a web site.
+// NewListProcessesPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -16976,8 +16945,8 @@ func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// NewListProcessesSlotPager - Description for Get list of processes for a web site, or a deployment slot, or for a specific
-// scaled-out instance in a web site.
+// NewListProcessesSlotPager - Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
+// in a web site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -17051,7 +17020,7 @@ func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// NewListPublicCertificatesPager - Description for Get public certificates for an app or a deployment slot.
+// NewListPublicCertificatesPager - Get public certificates for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17120,7 +17089,7 @@ func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListPublicCertificatesSlotPager - Description for Get public certificates for an app or a deployment slot.
+// NewListPublicCertificatesSlotPager - Get public certificates for an app or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17194,7 +17163,7 @@ func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// BeginListPublishingCredentials - Description for Gets the Git/FTP publishing credentials of an app.
+// BeginListPublishingCredentials - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17212,7 +17181,7 @@ func (client *WebAppsClient) BeginListPublishingCredentials(ctx context.Context,
 	}
 }
 
-// ListPublishingCredentials - Description for Gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentials - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginListPublishingCredentialsOptions) (*http.Response, error) {
 	req, err := client.listPublishingCredentialsCreateRequest(ctx, resourceGroupName, name, options)
@@ -17255,7 +17224,7 @@ func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.
 	return req, nil
 }
 
-// BeginListPublishingCredentialsSlot - Description for Gets the Git/FTP publishing credentials of an app.
+// BeginListPublishingCredentialsSlot - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17275,7 +17244,7 @@ func (client *WebAppsClient) BeginListPublishingCredentialsSlot(ctx context.Cont
 	}
 }
 
-// ListPublishingCredentialsSlot - Description for Gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentialsSlot - Gets the Git/FTP publishing credentials of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginListPublishingCredentialsSlotOptions) (*http.Response, error) {
 	req, err := client.listPublishingCredentialsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
@@ -17322,7 +17291,7 @@ func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx cont
 	return req, nil
 }
 
-// ListPublishingProfileXMLWithSecrets - Description for Gets the publishing profile for an app (or deployment slot, if specified).
+// ListPublishingProfileXMLWithSecrets - Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17372,8 +17341,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 	return req, runtime.MarshalAsJSON(req, publishingProfileOptions)
 }
 
-// ListPublishingProfileXMLWithSecretsSlot - Description for Gets the publishing profile for an app (or deployment slot, if
-// specified).
+// ListPublishingProfileXMLWithSecretsSlot - Gets the publishing profile for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17429,7 +17397,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 	return req, runtime.MarshalAsJSON(req, publishingProfileOptions)
 }
 
-// ListRelayServiceConnections - Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
+// ListRelayServiceConnections - Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17485,8 +17453,7 @@ func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListRelayServiceConnectionsSlot - Description for Gets hybrid connections configured for an app (or deployment slot, if
-// specified).
+// ListRelayServiceConnectionsSlot - Gets hybrid connections configured for an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17548,7 +17515,7 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp 
 	return result, nil
 }
 
-// NewListSiteBackupsPager - Description for Gets existing backups of an app.
+// NewListSiteBackupsPager - Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17616,7 +17583,7 @@ func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListSiteBackupsSlotPager - Description for Gets existing backups of an app.
+// NewListSiteBackupsSlotPager - Gets existing backups of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -17690,7 +17657,7 @@ func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListSiteExtensionsPager - Description for Get list of siteextensions for a web site, or a deployment slot.
+// NewListSiteExtensionsPager - Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -17759,7 +17726,7 @@ func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListSiteExtensionsSlotPager - Description for Get list of siteextensions for a web site, or a deployment slot.
+// NewListSiteExtensionsSlotPager - Get list of siteextensions for a web site, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -17833,7 +17800,7 @@ func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// ListSitePushSettings - Description for Gets the Push settings associated with web app.
+// ListSitePushSettings - Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -17889,7 +17856,7 @@ func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// ListSitePushSettingsSlot - Description for Gets the Push settings associated with web app.
+// ListSitePushSettingsSlot - Gets the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -17950,8 +17917,7 @@ func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListSlotConfigurationNames - Description for Gets the names of app settings and connection strings that stick to the slot
-// (not swapped).
+// ListSlotConfigurationNames - Gets the names of app settings and connection strings that stick to the slot (not swapped).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18007,8 +17973,7 @@ func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListSlotDifferencesFromProductionPager - Description for Get the difference in configuration settings between two web
-// app slots.
+// NewListSlotDifferencesFromProductionPager - Get the difference in configuration settings between two web app slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18078,7 +18043,7 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(res
 	return result, nil
 }
 
-// NewListSlotDifferencesSlotPager - Description for Get the difference in configuration settings between two web app slots.
+// NewListSlotDifferencesSlotPager - Get the difference in configuration settings between two web app slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18153,7 +18118,7 @@ func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListSlotsPager - Description for Gets an app's deployment slots.
+// NewListSlotsPager - Gets an app's deployment slots.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18221,7 +18186,7 @@ func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response) (WebAp
 	return result, nil
 }
 
-// NewListSnapshotsPager - Description for Returns all Snapshots to the user.
+// NewListSnapshotsPager - Returns all Snapshots to the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
@@ -18289,7 +18254,7 @@ func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response) (W
 	return result, nil
 }
 
-// NewListSnapshotsFromDRSecondaryPager - Description for Returns all Snapshots to the user from DRSecondary endpoint.
+// NewListSnapshotsFromDRSecondaryPager - Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
@@ -18358,7 +18323,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListSnapshotsFromDRSecondarySlotPager - Description for Returns all Snapshots to the user from DRSecondary endpoint.
+// NewListSnapshotsFromDRSecondarySlotPager - Returns all Snapshots to the user from DRSecondary endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
@@ -18432,7 +18397,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp
 	return result, nil
 }
 
-// NewListSnapshotsSlotPager - Description for Returns all Snapshots to the user.
+// NewListSnapshotsSlotPager - Returns all Snapshots to the user.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Website Name.
@@ -18506,7 +18471,7 @@ func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// ListSyncFunctionTriggers - Description for This is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggers - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18562,7 +18527,7 @@ func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListSyncFunctionTriggersSlot - Description for This is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggersSlot - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18623,7 +18588,7 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// ListSyncStatus - Description for This is to allow calling via powershell and ARM template.
+// ListSyncStatus - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18669,7 +18634,7 @@ func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// ListSyncStatusSlot - Description for This is to allow calling via powershell and ARM template.
+// ListSyncStatusSlot - This is to allow calling via powershell and ARM template.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -18721,7 +18686,7 @@ func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// NewListTriggeredWebJobHistoryPager - Description for List a triggered web job's history for an app, or a deployment slot.
+// NewListTriggeredWebJobHistoryPager - List a triggered web job's history for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -18795,8 +18760,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListTriggeredWebJobHistorySlotPager - Description for List a triggered web job's history for an app, or a deployment
-// slot.
+// NewListTriggeredWebJobHistorySlotPager - List a triggered web job's history for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -18875,7 +18839,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *
 	return result, nil
 }
 
-// NewListTriggeredWebJobsPager - Description for List triggered web jobs for an app, or a deployment slot.
+// NewListTriggeredWebJobsPager - List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -18944,7 +18908,7 @@ func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListTriggeredWebJobsSlotPager - Description for List triggered web jobs for an app, or a deployment slot.
+// NewListTriggeredWebJobsSlotPager - List triggered web jobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -19018,7 +18982,7 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListUsagesPager - Description for Gets the quota usage information of an app (or deployment slot, if specified).
+// NewListUsagesPager - Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19091,7 +19055,7 @@ func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response) (WebA
 	return result, nil
 }
 
-// NewListUsagesSlotPager - Description for Gets the quota usage information of an app (or deployment slot, if specified).
+// NewListUsagesSlotPager - Gets the quota usage information of an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19169,7 +19133,7 @@ func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// ListVnetConnections - Description for Gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnections - Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19225,7 +19189,7 @@ func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListVnetConnectionsSlot - Description for Gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnectionsSlot - Gets the virtual networks the app (or deployment slot) is connected to.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19287,7 +19251,7 @@ func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListWebJobsPager - Description for List webjobs for an app, or a deployment slot.
+// NewListWebJobsPager - List webjobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -19355,7 +19319,7 @@ func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response) (Web
 	return result, nil
 }
 
-// NewListWebJobsSlotPager - Description for List webjobs for an app, or a deployment slot.
+// NewListWebJobsSlotPager - List webjobs for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -19428,7 +19392,7 @@ func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// BeginMigrateMySQL - Description for Migrates a local (in-app) MySql database to a remote MySql database.
+// BeginMigrateMySQL - Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -19447,7 +19411,7 @@ func (client *WebAppsClient) BeginMigrateMySQL(ctx context.Context, resourceGrou
 	}
 }
 
-// MigrateMySQL - Description for Migrates a local (in-app) MySql database to a remote MySql database.
+// MigrateMySQL - Migrates a local (in-app) MySql database to a remote MySql database.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, options *WebAppsClientBeginMigrateMySQLOptions) (*http.Response, error) {
 	req, err := client.migrateMySQLCreateRequest(ctx, resourceGroupName, name, migrationRequestEnvelope, options)
@@ -19490,7 +19454,7 @@ func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, reso
 	return req, runtime.MarshalAsJSON(req, migrationRequestEnvelope)
 }
 
-// BeginMigrateStorage - Description for Restores a web app.
+// BeginMigrateStorage - Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // subscriptionName - Azure subscription.
 // resourceGroupName - Name of the resource group to which the resource belongs.
@@ -19510,7 +19474,7 @@ func (client *WebAppsClient) BeginMigrateStorage(ctx context.Context, subscripti
 	}
 }
 
-// MigrateStorage - Description for Restores a web app.
+// MigrateStorage - Restores a web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, options *WebAppsClientBeginMigrateStorageOptions) (*http.Response, error) {
 	req, err := client.migrateStorageCreateRequest(ctx, subscriptionName, resourceGroupName, name, migrationOptions, options)
@@ -19554,8 +19518,8 @@ func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, su
 	return req, runtime.MarshalAsJSON(req, migrationOptions)
 }
 
-// PutPrivateAccessVnet - Description for Sets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// PutPrivateAccessVnet - Sets data around private site access enablement and authorized Virtual Networks that can access
+// the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -19612,8 +19576,8 @@ func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// PutPrivateAccessVnetSlot - Description for Sets data around private site access enablement and authorized Virtual Networks
-// that can access the site.
+// PutPrivateAccessVnetSlot - Sets data around private site access enablement and authorized Virtual Networks that can access
+// the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -19675,7 +19639,7 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// RecoverSiteConfigurationSnapshot - Description for Reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshot - Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19727,7 +19691,7 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx c
 	return req, nil
 }
 
-// RecoverSiteConfigurationSnapshotSlot - Description for Reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshotSlot - Reverts the configuration of an app to a previous snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19784,8 +19748,8 @@ func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(c
 	return req, nil
 }
 
-// ResetProductionSlotConfig - Description for Resets the configuration settings of the current slot if they were previously
-// modified by calling the API with POST.
+// ResetProductionSlotConfig - Resets the configuration settings of the current slot if they were previously modified by calling
+// the API with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19832,8 +19796,8 @@ func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.
 	return req, nil
 }
 
-// ResetSlotConfigurationSlot - Description for Resets the configuration settings of the current slot if they were previously
-// modified by calling the API with POST.
+// ResetSlotConfigurationSlot - Resets the configuration settings of the current slot if they were previously modified by
+// calling the API with POST.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19886,7 +19850,7 @@ func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context
 	return req, nil
 }
 
-// Restart - Description for Restarts an app (or deployment slot, if specified).
+// Restart - Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19938,7 +19902,7 @@ func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// RestartSlot - Description for Restarts an app (or deployment slot, if specified).
+// RestartSlot - Restarts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -19995,7 +19959,7 @@ func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// BeginRestore - Description for Restores a specific backup to another app (or deployment slot, if specified).
+// BeginRestore - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20014,7 +19978,7 @@ func (client *WebAppsClient) BeginRestore(ctx context.Context, resourceGroupName
 	}
 }
 
-// Restore - Description for Restores a specific backup to another app (or deployment slot, if specified).
+// Restore - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, options *WebAppsClientBeginRestoreOptions) (*http.Response, error) {
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, name, backupID, request, options)
@@ -20061,7 +20025,7 @@ func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceG
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// BeginRestoreFromBackupBlob - Description for Restores an app from a backup blob in Azure Storage.
+// BeginRestoreFromBackupBlob - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20080,7 +20044,7 @@ func (client *WebAppsClient) BeginRestoreFromBackupBlob(ctx context.Context, res
 	}
 }
 
-// RestoreFromBackupBlob - Description for Restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlob - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobOptions) (*http.Response, error) {
 	req, err := client.restoreFromBackupBlobCreateRequest(ctx, resourceGroupName, name, request, options)
@@ -20123,7 +20087,7 @@ func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// BeginRestoreFromBackupBlobSlot - Description for Restores an app from a backup blob in Azure Storage.
+// BeginRestoreFromBackupBlobSlot - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20143,7 +20107,7 @@ func (client *WebAppsClient) BeginRestoreFromBackupBlobSlot(ctx context.Context,
 	}
 }
 
-// RestoreFromBackupBlobSlot - Description for Restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlobSlot - Restores an app from a backup blob in Azure Storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (*http.Response, error) {
 	req, err := client.restoreFromBackupBlobSlotCreateRequest(ctx, resourceGroupName, name, slot, request, options)
@@ -20190,7 +20154,7 @@ func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// BeginRestoreFromDeletedApp - Description for Restores a deleted web app to this web app.
+// BeginRestoreFromDeletedApp - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -20209,7 +20173,7 @@ func (client *WebAppsClient) BeginRestoreFromDeletedApp(ctx context.Context, res
 	}
 }
 
-// RestoreFromDeletedApp - Description for Restores a deleted web app to this web app.
+// RestoreFromDeletedApp - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppOptions) (*http.Response, error) {
 	req, err := client.restoreFromDeletedAppCreateRequest(ctx, resourceGroupName, name, restoreRequest, options)
@@ -20252,7 +20216,7 @@ func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Cont
 	return req, runtime.MarshalAsJSON(req, restoreRequest)
 }
 
-// BeginRestoreFromDeletedAppSlot - Description for Restores a deleted web app to this web app.
+// BeginRestoreFromDeletedAppSlot - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -20272,7 +20236,7 @@ func (client *WebAppsClient) BeginRestoreFromDeletedAppSlot(ctx context.Context,
 	}
 }
 
-// RestoreFromDeletedAppSlot - Description for Restores a deleted web app to this web app.
+// RestoreFromDeletedAppSlot - Restores a deleted web app to this web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, options *WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (*http.Response, error) {
 	req, err := client.restoreFromDeletedAppSlotCreateRequest(ctx, resourceGroupName, name, slot, restoreRequest, options)
@@ -20319,7 +20283,7 @@ func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.
 	return req, runtime.MarshalAsJSON(req, restoreRequest)
 }
 
-// BeginRestoreSlot - Description for Restores a specific backup to another app (or deployment slot, if specified).
+// BeginRestoreSlot - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20340,7 +20304,7 @@ func (client *WebAppsClient) BeginRestoreSlot(ctx context.Context, resourceGroup
 	}
 }
 
-// RestoreSlot - Description for Restores a specific backup to another app (or deployment slot, if specified).
+// RestoreSlot - Restores a specific backup to another app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, options *WebAppsClientBeginRestoreSlotOptions) (*http.Response, error) {
 	req, err := client.restoreSlotCreateRequest(ctx, resourceGroupName, name, backupID, slot, request, options)
@@ -20391,7 +20355,7 @@ func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
-// BeginRestoreSnapshot - Description for Restores a web app from a snapshot.
+// BeginRestoreSnapshot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -20411,7 +20375,7 @@ func (client *WebAppsClient) BeginRestoreSnapshot(ctx context.Context, resourceG
 	}
 }
 
-// RestoreSnapshot - Description for Restores a web app from a snapshot.
+// RestoreSnapshot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotOptions) (*http.Response, error) {
 	req, err := client.restoreSnapshotCreateRequest(ctx, resourceGroupName, name, restoreRequest, options)
@@ -20454,7 +20418,7 @@ func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, r
 	return req, runtime.MarshalAsJSON(req, restoreRequest)
 }
 
-// BeginRestoreSnapshotSlot - Description for Restores a web app from a snapshot.
+// BeginRestoreSnapshotSlot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -20475,7 +20439,7 @@ func (client *WebAppsClient) BeginRestoreSnapshotSlot(ctx context.Context, resou
 	}
 }
 
-// RestoreSnapshotSlot - Description for Restores a web app from a snapshot.
+// RestoreSnapshotSlot - Restores a web app from a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, options *WebAppsClientBeginRestoreSnapshotSlotOptions) (*http.Response, error) {
 	req, err := client.restoreSnapshotSlotCreateRequest(ctx, resourceGroupName, name, slot, restoreRequest, options)
@@ -20522,7 +20486,7 @@ func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Contex
 	return req, runtime.MarshalAsJSON(req, restoreRequest)
 }
 
-// RunTriggeredWebJob - Description for Run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJob - Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -20574,7 +20538,7 @@ func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// RunTriggeredWebJobSlot - Description for Run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJobSlot - Run a triggered web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -20631,7 +20595,7 @@ func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// Start - Description for Starts an app (or deployment slot, if specified).
+// Start - Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20677,7 +20641,7 @@ func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGro
 	return req, nil
 }
 
-// StartContinuousWebJob - Description for Start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJob - Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -20729,7 +20693,7 @@ func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// StartContinuousWebJobSlot - Description for Start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJobSlot - Start a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -20786,7 +20750,7 @@ func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.
 	return req, nil
 }
 
-// BeginStartNetworkTrace - Description for Start capturing network packets for the site.
+// BeginStartNetworkTrace - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -20804,7 +20768,7 @@ func (client *WebAppsClient) BeginStartNetworkTrace(ctx context.Context, resourc
 	}
 }
 
-// StartNetworkTrace - Description for Start capturing network packets for the site.
+// StartNetworkTrace - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartNetworkTraceOptions) (*http.Response, error) {
 	req, err := client.startNetworkTraceCreateRequest(ctx, resourceGroupName, name, options)
@@ -20856,7 +20820,7 @@ func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// BeginStartNetworkTraceSlot - Description for Start capturing network packets for the site.
+// BeginStartNetworkTraceSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -20875,7 +20839,7 @@ func (client *WebAppsClient) BeginStartNetworkTraceSlot(ctx context.Context, res
 	}
 }
 
-// StartNetworkTraceSlot - Description for Start capturing network packets for the site.
+// StartNetworkTraceSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartNetworkTraceSlotOptions) (*http.Response, error) {
 	req, err := client.startNetworkTraceSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
@@ -20931,7 +20895,7 @@ func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// StartSlot - Description for Starts an app (or deployment slot, if specified).
+// StartSlot - Starts an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -20982,7 +20946,7 @@ func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// StartWebSiteNetworkTrace - Description for Start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTrace - Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21047,7 +21011,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *http.R
 	return result, nil
 }
 
-// BeginStartWebSiteNetworkTraceOperation - Description for Start capturing network packets for the site.
+// BeginStartWebSiteNetworkTraceOperation - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21065,7 +21029,7 @@ func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperation(ctx context.
 	}
 }
 
-// StartWebSiteNetworkTraceOperation - Description for Start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperation - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (*http.Response, error) {
 	req, err := client.startWebSiteNetworkTraceOperationCreateRequest(ctx, resourceGroupName, name, options)
@@ -21117,7 +21081,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx 
 	return req, nil
 }
 
-// BeginStartWebSiteNetworkTraceOperationSlot - Description for Start capturing network packets for the site.
+// BeginStartWebSiteNetworkTraceOperationSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21136,7 +21100,7 @@ func (client *WebAppsClient) BeginStartWebSiteNetworkTraceOperationSlot(ctx cont
 	}
 }
 
-// StartWebSiteNetworkTraceOperationSlot - Description for Start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperationSlot - Start capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (*http.Response, error) {
 	req, err := client.startWebSiteNetworkTraceOperationSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
@@ -21192,7 +21156,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(
 	return req, nil
 }
 
-// StartWebSiteNetworkTraceSlot - Description for Start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTraceSlot - Start capturing network packets for the site (To be deprecated).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21262,7 +21226,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *ht
 	return result, nil
 }
 
-// Stop - Description for Stops an app (or deployment slot, if specified).
+// Stop - Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21308,7 +21272,7 @@ func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// StopContinuousWebJob - Description for Stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJob - Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -21360,7 +21324,7 @@ func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// StopContinuousWebJobSlot - Description for Stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJobSlot - Stop a continuous web job for an app, or a deployment slot.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site name.
@@ -21417,7 +21381,7 @@ func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.C
 	return req, nil
 }
 
-// StopNetworkTrace - Description for Stop ongoing capturing network packets for the site.
+// StopNetworkTrace - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21464,7 +21428,7 @@ func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// StopNetworkTraceSlot - Description for Stop ongoing capturing network packets for the site.
+// StopNetworkTraceSlot - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21516,7 +21480,7 @@ func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// StopSlot - Description for Stops an app (or deployment slot, if specified).
+// StopSlot - Stops an app (or deployment slot, if specified).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21567,7 +21531,7 @@ func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// StopWebSiteNetworkTrace - Description for Stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTrace - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21614,7 +21578,7 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// StopWebSiteNetworkTraceSlot - Description for Stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTraceSlot - Stop ongoing capturing network packets for the site.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -21666,7 +21630,7 @@ func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx contex
 	return req, nil
 }
 
-// BeginSwapSlot - Description for Swaps two deployment slots of an app.
+// BeginSwapSlot - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21685,7 +21649,7 @@ func (client *WebAppsClient) BeginSwapSlot(ctx context.Context, resourceGroupNam
 	}
 }
 
-// SwapSlot - Description for Swaps two deployment slots of an app.
+// SwapSlot - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotOptions) (*http.Response, error) {
 	req, err := client.swapSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
@@ -21732,7 +21696,7 @@ func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resource
 	return req, runtime.MarshalAsJSON(req, slotSwapEntity)
 }
 
-// BeginSwapSlotWithProduction - Description for Swaps two deployment slots of an app.
+// BeginSwapSlotWithProduction - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21751,7 +21715,7 @@ func (client *WebAppsClient) BeginSwapSlotWithProduction(ctx context.Context, re
 	}
 }
 
-// SwapSlotWithProduction - Description for Swaps two deployment slots of an app.
+// SwapSlotWithProduction - Swaps two deployment slots of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, options *WebAppsClientBeginSwapSlotWithProductionOptions) (*http.Response, error) {
 	req, err := client.swapSlotWithProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
@@ -21794,7 +21758,7 @@ func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Con
 	return req, runtime.MarshalAsJSON(req, slotSwapEntity)
 }
 
-// SyncFunctionTriggers - Description for Syncs function trigger metadata to the management database
+// SyncFunctionTriggers - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21841,7 +21805,7 @@ func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// SyncFunctionTriggersSlot - Description for Syncs function trigger metadata to the management database
+// SyncFunctionTriggersSlot - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21893,7 +21857,7 @@ func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.C
 	return req, nil
 }
 
-// SyncFunctions - Description for Syncs function trigger metadata to the management database
+// SyncFunctions - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21939,7 +21903,7 @@ func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// SyncFunctionsSlot - Description for Syncs function trigger metadata to the management database
+// SyncFunctionsSlot - Syncs function trigger metadata to the management database
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -21991,7 +21955,7 @@ func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// SyncRepository - Description for Sync web app repository.
+// SyncRepository - Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22037,7 +22001,7 @@ func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// SyncRepositorySlot - Description for Sync web app repository.
+// SyncRepositorySlot - Sync web app repository.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22089,7 +22053,7 @@ func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// Update - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+// Update - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
@@ -22145,7 +22109,7 @@ func (client *WebAppsClient) updateHandleResponse(resp *http.Response) (WebAppsC
 	return result, nil
 }
 
-// UpdateApplicationSettings - Description for Replaces the application settings of an app.
+// UpdateApplicationSettings - Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22202,7 +22166,7 @@ func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *http.
 	return result, nil
 }
 
-// UpdateApplicationSettingsSlot - Description for Replaces the application settings of an app.
+// UpdateApplicationSettingsSlot - Replaces the application settings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22265,7 +22229,7 @@ func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *h
 	return result, nil
 }
 
-// UpdateAuthSettings - Description for Updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettings - Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22322,7 +22286,7 @@ func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// UpdateAuthSettingsSlot - Description for Updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettingsSlot - Updates the Authentication / Authorization settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22384,7 +22348,7 @@ func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// UpdateAuthSettingsV2 - Description for Updates site's Authentication / Authorization settings for apps via the V2 format
+// UpdateAuthSettingsV2 - Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22441,7 +22405,7 @@ func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateAuthSettingsV2Slot - Description for Updates site's Authentication / Authorization settings for apps via the V2 format
+// UpdateAuthSettingsV2Slot - Updates site's Authentication / Authorization settings for apps via the V2 format
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -22503,7 +22467,7 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// UpdateAzureStorageAccounts - Description for Updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccounts - Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22560,7 +22524,7 @@ func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *http
 	return result, nil
 }
 
-// UpdateAzureStorageAccountsSlot - Description for Updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccountsSlot - Updates the Azure storage account configurations of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22623,7 +22587,7 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *
 	return result, nil
 }
 
-// UpdateBackupConfiguration - Description for Updates the backup configuration of an app.
+// UpdateBackupConfiguration - Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22680,7 +22644,7 @@ func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *http.
 	return result, nil
 }
 
-// UpdateBackupConfigurationSlot - Description for Updates the backup configuration of an app.
+// UpdateBackupConfigurationSlot - Updates the backup configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22743,7 +22707,7 @@ func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *h
 	return result, nil
 }
 
-// UpdateConfiguration - Description for Updates the configuration of an app.
+// UpdateConfiguration - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22800,7 +22764,7 @@ func (client *WebAppsClient) updateConfigurationHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// UpdateConfigurationSlot - Description for Updates the configuration of an app.
+// UpdateConfigurationSlot - Updates the configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22862,7 +22826,7 @@ func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// UpdateConnectionStrings - Description for Replaces the connection strings of an app.
+// UpdateConnectionStrings - Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22919,7 +22883,7 @@ func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// UpdateConnectionStringsSlot - Description for Replaces the connection strings of an app.
+// UpdateConnectionStringsSlot - Replaces the connection strings of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -22982,7 +22946,7 @@ func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// UpdateDiagnosticLogsConfig - Description for Updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfig - Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23039,7 +23003,7 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *http
 	return result, nil
 }
 
-// UpdateDiagnosticLogsConfigSlot - Description for Updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfigSlot - Updates the logging configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23102,8 +23066,7 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *
 	return result, nil
 }
 
-// UpdateDomainOwnershipIdentifier - Description for Creates a domain ownership identifier for web app, or updates an existing
-// ownership identifier.
+// UpdateDomainOwnershipIdentifier - Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23165,8 +23128,8 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp 
 	return result, nil
 }
 
-// UpdateDomainOwnershipIdentifierSlot - Description for Creates a domain ownership identifier for web app, or updates an
-// existing ownership identifier.
+// UpdateDomainOwnershipIdentifierSlot - Creates a domain ownership identifier for web app, or updates an existing ownership
+// identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23233,7 +23196,7 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(r
 	return result, nil
 }
 
-// UpdateFtpAllowed - Description for Updates whether FTP is allowed on the site or not.
+// UpdateFtpAllowed - Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23289,7 +23252,7 @@ func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// UpdateFtpAllowedSlot - Description for Updates whether FTP is allowed on the site or not.
+// UpdateFtpAllowedSlot - Updates whether FTP is allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23349,7 +23312,7 @@ func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateHybridConnection - Description for Creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnection - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -23416,7 +23379,7 @@ func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// UpdateHybridConnectionSlot - Description for Creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnectionSlot - Creates a new Hybrid Connection using a Service Bus relay.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - The name of the web app.
@@ -23488,7 +23451,7 @@ func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// UpdateMetadata - Description for Replaces the metadata of an app.
+// UpdateMetadata - Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23544,7 +23507,7 @@ func (client *WebAppsClient) updateMetadataHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// UpdateMetadataSlot - Description for Replaces the metadata of an app.
+// UpdateMetadataSlot - Replaces the metadata of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23606,7 +23569,7 @@ func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// UpdatePremierAddOn - Description for Updates a named add-on of an app.
+// UpdatePremierAddOn - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23668,7 +23631,7 @@ func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// UpdatePremierAddOnSlot - Description for Updates a named add-on of an app.
+// UpdatePremierAddOnSlot - Updates a named add-on of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23736,8 +23699,7 @@ func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// UpdateRelayServiceConnection - Description for Creates a new hybrid connection configuration (PUT), or updates an existing
-// one (PATCH).
+// UpdateRelayServiceConnection - Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23799,8 +23761,7 @@ func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *ht
 	return result, nil
 }
 
-// UpdateRelayServiceConnectionSlot - Description for Creates a new hybrid connection configuration (PUT), or updates an existing
-// one (PATCH).
+// UpdateRelayServiceConnectionSlot - Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23868,7 +23829,7 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp
 	return result, nil
 }
 
-// UpdateScmAllowed - Description for Updates whether user publishing credentials are allowed on the site or not.
+// UpdateScmAllowed - Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23924,7 +23885,7 @@ func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// UpdateScmAllowedSlot - Description for Updates whether user publishing credentials are allowed on the site or not.
+// UpdateScmAllowedSlot - Updates whether user publishing credentials are allowed on the site or not.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -23984,7 +23945,7 @@ func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateSitePushSettings - Description for Updates the Push settings associated with web app.
+// UpdateSitePushSettings - Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -24041,7 +24002,7 @@ func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// UpdateSitePushSettingsSlot - Description for Updates the Push settings associated with web app.
+// UpdateSitePushSettingsSlot - Updates the Push settings associated with web app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of web app.
@@ -24103,8 +24064,7 @@ func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *http
 	return result, nil
 }
 
-// UpdateSlot - Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing
-// app.
+// UpdateSlot - Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
@@ -24166,8 +24126,8 @@ func (client *WebAppsClient) updateSlotHandleResponse(resp *http.Response) (WebA
 	return result, nil
 }
 
-// UpdateSlotConfigurationNames - Description for Updates the names of application settings and connection string that remain
-// with the slot during swap operation.
+// UpdateSlotConfigurationNames - Updates the names of application settings and connection string that remain with the slot
+// during swap operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24224,7 +24184,7 @@ func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *ht
 	return result, nil
 }
 
-// UpdateSourceControl - Description for Updates the source control configuration of an app.
+// UpdateSourceControl - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24281,7 +24241,7 @@ func (client *WebAppsClient) updateSourceControlHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// UpdateSourceControlSlot - Description for Updates the source control configuration of an app.
+// UpdateSourceControlSlot - Updates the source control configuration of an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24344,9 +24304,9 @@ func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// UpdateSwiftVirtualNetworkConnectionWithCheck - Description for Integrates this Web App with a Virtual Network. This requires
-// that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
-// delegated, and is not in use by another App Service Plan other than the one this App is in.
+// UpdateSwiftVirtualNetworkConnectionWithCheck - Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported"
+// is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is
+// not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24403,10 +24363,10 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleR
 	return result, nil
 }
 
-// UpdateSwiftVirtualNetworkConnectionWithCheckSlot - Description for Integrates this Web App with a Virtual Network. This
-// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already
-// been
-// delegated, and is not in use by another App Service Plan other than the one this App is in.
+// UpdateSwiftVirtualNetworkConnectionWithCheckSlot - Integrates this Web App with a Virtual Network. This requires that 1)
+// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated,
+// and is
+// not in use by another App Service Plan other than the one this App is in.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24469,8 +24429,7 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHan
 	return result, nil
 }
 
-// UpdateVnetConnection - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection
-// properties (PATCH).
+// UpdateVnetConnection - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24532,7 +24491,7 @@ func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateVnetConnectionGateway - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// UpdateVnetConnectionGateway - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24599,7 +24558,7 @@ func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *htt
 	return result, nil
 }
 
-// UpdateVnetConnectionGatewaySlot - Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// UpdateVnetConnectionGatewaySlot - Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.
@@ -24672,8 +24631,8 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp 
 	return result, nil
 }
 
-// UpdateVnetConnectionSlot - Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection
-// properties (PATCH).
+// UpdateVnetConnectionSlot - Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
+// (PATCH).
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the app.

@@ -54,7 +54,7 @@ func NewContainerAppsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Description for Create or update a Container App.
+// BeginCreateOrUpdate - Create or update a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Container App.
@@ -72,7 +72,7 @@ func (client *ContainerAppsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Description for Create or update a Container App.
+// CreateOrUpdate - Create or update a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ContainerAppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, containerAppEnvelope ContainerApp, options *ContainerAppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, containerAppEnvelope, options)
@@ -115,7 +115,7 @@ func (client *ContainerAppsClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, runtime.MarshalAsJSON(req, containerAppEnvelope)
 }
 
-// BeginDelete - Description for Delete a Container App.
+// BeginDelete - Delete a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Container App.
@@ -133,7 +133,7 @@ func (client *ContainerAppsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Description for Delete a Container App.
+// Delete - Delete a Container App.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ContainerAppsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ContainerAppsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)

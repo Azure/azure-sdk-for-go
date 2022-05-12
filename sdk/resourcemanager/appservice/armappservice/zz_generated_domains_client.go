@@ -55,7 +55,7 @@ func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
-// CheckAvailability - Description for Check if a domain is available for registration.
+// CheckAvailability - Check if a domain is available for registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 // identifier - Name of the domain.
 // options - DomainsClientCheckAvailabilityOptions contains the optional parameters for the DomainsClient.CheckAvailability
@@ -102,7 +102,7 @@ func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Description for Creates or updates a domain.
+// BeginCreateOrUpdate - Creates or updates a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of the domain.
@@ -121,7 +121,7 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Description for Creates or updates a domain.
+// CreateOrUpdate - Creates or updates a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domain, options)
@@ -164,8 +164,8 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	return req, runtime.MarshalAsJSON(req, domain)
 }
 
-// CreateOrUpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier
-// details for an existing identifier
+// CreateOrUpdateOwnershipIdentifier - Creates an ownership identifier for a domain or updates identifier details for an existing
+// identifier
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.
@@ -227,7 +227,7 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(res
 	return result, nil
 }
 
-// Delete - Description for Delete a domain.
+// Delete - Delete a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of the domain.
@@ -276,7 +276,7 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// DeleteOwnershipIdentifier - Description for Delete ownership identifier for domain
+// DeleteOwnershipIdentifier - Delete ownership identifier for domain
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.
@@ -328,7 +328,7 @@ func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.
 	return req, nil
 }
 
-// Get - Description for Get a domain.
+// Get - Get a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of the domain.
@@ -383,7 +383,7 @@ func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsClie
 	return result, nil
 }
 
-// GetControlCenterSsoRequest - Description for Generate a single sign-on request for the domain management portal.
+// GetControlCenterSsoRequest - Generate a single sign-on request for the domain management portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainsClientGetControlCenterSsoRequestOptions contains the optional parameters for the DomainsClient.GetControlCenterSsoRequest
 // method.
@@ -429,7 +429,7 @@ func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *http
 	return result, nil
 }
 
-// GetOwnershipIdentifier - Description for Get ownership identifier for domain
+// GetOwnershipIdentifier - Get ownership identifier for domain
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.
@@ -490,7 +490,7 @@ func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewListPager - Description for Get all domains in a subscription.
+// NewListPager - Get all domains in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 // options - DomainsClientListOptions contains the optional parameters for the DomainsClient.List method.
 func (client *DomainsClient) NewListPager(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
@@ -548,7 +548,7 @@ func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsCli
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all domains in a resource group.
+// NewListByResourceGroupPager - Get all domains in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup
@@ -612,7 +612,7 @@ func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListOwnershipIdentifiersPager - Description for Lists domain ownership identifiers.
+// NewListOwnershipIdentifiersPager - Lists domain ownership identifiers.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.
@@ -681,7 +681,7 @@ func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListRecommendationsPager - Description for Get domain name recommendations based on keywords.
+// NewListRecommendationsPager - Get domain name recommendations based on keywords.
 // If the operation fails it returns an *azcore.ResponseError type.
 // parameters - Search parameters for domain name recommendations.
 // options - DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.ListRecommendations
@@ -741,7 +741,7 @@ func (client *DomainsClient) listRecommendationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// Renew - Description for Renew a domain.
+// Renew - Renew a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of the domain.
@@ -842,7 +842,7 @@ func (client *DomainsClient) transferOutHandleResponse(resp *http.Response) (Dom
 	return result, nil
 }
 
-// Update - Description for Creates or updates a domain.
+// Update - Creates or updates a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of the domain.
@@ -898,8 +898,8 @@ func (client *DomainsClient) updateHandleResponse(resp *http.Response) (DomainsC
 	return result, nil
 }
 
-// UpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier details
-// for an existing identifier
+// UpdateOwnershipIdentifier - Creates an ownership identifier for a domain or updates identifier details for an existing
+// identifier
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // domainName - Name of domain.

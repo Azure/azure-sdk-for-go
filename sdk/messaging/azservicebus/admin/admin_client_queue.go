@@ -273,7 +273,7 @@ func (ac *Client) NewListQueuesPager(options *ListQueuesOptions) *runtime.Pager[
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesResponse]{
 		More: func(ltr ListQueuesResponse) bool {
 			return ep.More()
 		},
@@ -323,7 +323,7 @@ func (ac *Client) NewListQueuesRuntimePropertiesPager(options *ListQueuesRuntime
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesRuntimePropertiesResponse]{
 		More: func(ltr ListQueuesRuntimePropertiesResponse) bool {
 			return ep.More()
 		},

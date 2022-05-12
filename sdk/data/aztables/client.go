@@ -221,7 +221,7 @@ func (t *Client) NewListEntitiesPager(listOptions *ListEntitiesOptions) *runtime
 	if listOptions == nil {
 		listOptions = &ListEntitiesOptions{}
 	}
-	return runtime.NewPager(runtime.PageProcessor[ListEntitiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListEntitiesResponse]{
 		More: func(page ListEntitiesResponse) bool {
 			if page.NextPartitionKey == nil || len(*page.NextPartitionKey) == 0 || page.NextRowKey == nil || len(*page.NextRowKey) == 0 {
 				return false

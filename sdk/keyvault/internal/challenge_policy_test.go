@@ -7,10 +7,14 @@
 package internal
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
 
@@ -27,15 +31,29 @@ var authResourceScope = "Bearer authorization=\"https://login.microsoftonline.co
 var resourceScopeAuth = "Bearer resource=\"%s\" scope=\"%s\", authorization=\"https://login.microsoftonline.com/%s\""
 
 func TestParseTenantID(t *testing.T) {
+	tenant := parseTenant("")
+	require.NotNil(t, tenant)
+	require.Empty(t, *tenant)
+
 	sampleURL := "https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000"
-	tenant := parseTenant(sampleURL)
-	if *tenant != fakeTenant {
-		t.Fatalf("tenant was not properly parsed, got %s, expected %s", *tenant, fakeTenant)
-	}
+	tenant = parseTenant(sampleURL)
+	require.NotNil(t, tenant)
+	require.Equal(t, fakeTenant, *tenant, "tenant was not properly parsed, got %s, expected %s", *tenant, fakeTenant)
+}
+
+type credentialFunc func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error)
+
+func (cf credentialFunc) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return cf(ctx, options)
 }
 
 func TestFindScopeAndTenant(t *testing.T) {
-	p := KeyVaultChallengePolicy{}
+	p := NewKeyVaultChallengePolicy(credentialFunc(func(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
+		return azcore.AccessToken{
+			Token:     "fake_token",
+			ExpiresOn: time.Now().Add(time.Hour),
+		}, nil
+	}))
 	resp := http.Response{}
 	resp.Header = http.Header{}
 
@@ -116,4 +134,18 @@ func TestFindScopeAndTenant(t *testing.T) {
 	if *p.tenantID != fakeTenant {
 		t.Fatalf("tenant ID was not properly parsed, got %s, expected %s", *p.tenantID, fakeTenant)
 	}
+
+	resp.Header.Set("WWW-Authenticate", "this is an invalid value")
+	err = p.findScopeAndTenant(&resp)
+	var challengeError *challengePolicyError
+	require.ErrorAs(t, err, &challengeError)
+
+	resp.Header = http.Header{}
+	err = p.findScopeAndTenant(&resp)
+	require.ErrorAs(t, err, &challengeError)
 }
+
+// TODO: add test coverage for the following
+//   func (k *KeyVaultChallengePolicy) Do
+//   func (k KeyVaultChallengePolicy) getChallengeRequest
+//   func acquire

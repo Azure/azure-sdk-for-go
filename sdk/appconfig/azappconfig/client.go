@@ -457,7 +457,7 @@ type ListRevisionsOptions struct {
 // configuration setting entities that match the specified setting selector.
 func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRevisionsOptions) *runtime.Pager[ListRevisionsPage] {
 	pagerInternal := c.appConfigClient.NewGetRevisionsPager(selector.toGenerated())
-	return runtime.NewPager(runtime.PageProcessor[ListRevisionsPage]{
+	return runtime.NewPager(runtime.PagingHandler[ListRevisionsPage]{
 		More: func(ListRevisionsPage) bool {
 			return pagerInternal.More()
 		},

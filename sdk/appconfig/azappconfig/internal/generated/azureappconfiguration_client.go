@@ -543,7 +543,7 @@ func (client *AzureAppConfigurationClient) getKeyValueHandleResponse(resp *http.
 // options - AzureAppConfigurationClientGetKeyValuesOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeyValues
 // method.
 func (client *AzureAppConfigurationClient) NewGetKeyValuesPager(options *AzureAppConfigurationClientGetKeyValuesOptions) *runtime.Pager[AzureAppConfigurationClientGetKeyValuesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetKeyValuesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetKeyValuesResponse]{
 		More: func(page AzureAppConfigurationClientGetKeyValuesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -619,7 +619,7 @@ func (client *AzureAppConfigurationClient) getKeyValuesHandleResponse(resp *http
 // options - AzureAppConfigurationClientGetKeysOptions contains the optional parameters for the AzureAppConfigurationClient.GetKeys
 // method.
 func (client *AzureAppConfigurationClient) NewGetKeysPager(options *AzureAppConfigurationClientGetKeysOptions) *runtime.Pager[AzureAppConfigurationClientGetKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetKeysResponse]{
 		More: func(page AzureAppConfigurationClientGetKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -689,7 +689,7 @@ func (client *AzureAppConfigurationClient) getKeysHandleResponse(resp *http.Resp
 // options - AzureAppConfigurationClientGetLabelsOptions contains the optional parameters for the AzureAppConfigurationClient.GetLabels
 // method.
 func (client *AzureAppConfigurationClient) NewGetLabelsPager(options *AzureAppConfigurationClientGetLabelsOptions) *runtime.Pager[AzureAppConfigurationClientGetLabelsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetLabelsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetLabelsResponse]{
 		More: func(page AzureAppConfigurationClientGetLabelsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -762,7 +762,7 @@ func (client *AzureAppConfigurationClient) getLabelsHandleResponse(resp *http.Re
 // options - AzureAppConfigurationClientGetRevisionsOptions contains the optional parameters for the AzureAppConfigurationClient.GetRevisions
 // method.
 func (client *AzureAppConfigurationClient) NewGetRevisionsPager(options *AzureAppConfigurationClientGetRevisionsOptions) *runtime.Pager[AzureAppConfigurationClientGetRevisionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureAppConfigurationClientGetRevisionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationClientGetRevisionsResponse]{
 		More: func(page AzureAppConfigurationClientGetRevisionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

@@ -89,7 +89,7 @@ func NewIterator[TItem any, TPage PageConstraint[TItem]](pager *runtime.Pager[TP
 ***Usage***
 ```go
 ctx := context.TODO() // your context
-iter := NewIterator[*armresources.ResourceGroup](rgClient.NewListPager(nil))
+iter := NewIterator[armresources.ResourceGroup](rgClient.NewListPager(nil))
 for iter.More() {
     rg, err := iter.NextItem(ctx)
     if err != nil {
@@ -165,7 +165,7 @@ If you do not care about the underlaying detail about the LRO, you can use the f
 ***Synchronized wrapper utility***
 
 ```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 ```
 
 ```go
@@ -190,7 +190,7 @@ func NewOperationWaiter[TResult any](poller *runtime.Poller[TResult], err error)
 
 ```go
 ctx := context.TODO() // your context
-resp, err := NewOperationWaiter(BeginCreate(ctx, "resource_identifier", "additonal_parameter", nil)).Wait(ctx, time.Second)
+resp, err := NewOperationWaiter(client.BeginCreate(ctx, "resource_identifier", "additonal_parameter", nil)).Wait(ctx, time.Second)
 // dealing with `resp`
 ```
 ### Reference

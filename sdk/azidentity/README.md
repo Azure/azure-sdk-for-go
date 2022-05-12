@@ -97,7 +97,7 @@ To configure `DefaultAzureCredential` to authenticate a user-assigned managed id
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
-`DefaultAzureCredential` is generally the quickest way to get started developing apps for Azure. For more advanced scenarios, [ChainedTokenCredential][chain_cred_ref] links multiple credential instances to be tried sequentially when authenticating. It will try each chained credential in turn until one provides a token or fails to authenticate due to an error.
+`DefaultAzureCredential` is generally the quickest way to get started developing apps for Azure. For more advanced scenarios, `ChainedTokenCredential` links multiple credential instances to be tried sequentially when authenticating. It will try each chained credential in turn until one provides a token or fails to authenticate due to an error.
 
 The following example demonstrates creating a credential, which will attempt to authenticate using managed identity. It will fall back to authenticating via the Azure CLI when a managed identity is unavailable.
 
@@ -110,7 +110,7 @@ azCLI, err := azidentity.NewAzureCLICredential(nil)
 if err != nil {
   // handle error
 }
-chain, err := azidentity.NewChainedTokenCredential([]azcore.TokenCredential{managed, azCLI})
+chain, err := azidentity.NewChainedTokenCredential([]azcore.TokenCredential{managed, azCLI}, nil)
 if err != nil {
   // handle error
 }
@@ -158,23 +158,23 @@ client := armresources.NewResourceGroupsClient("subscription ID", chain, nil)
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|id of an Azure Active Directory application
-|`AZURE_TENANT_ID`|id of the application's Azure Active Directory tenant
+|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
+|`AZURE_TENANT_ID`|ID of the application's Azure Active Directory tenant
 |`AZURE_CLIENT_SECRET`|one of the application's client secrets
 
 #### Service principal with certificate
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|id of an Azure Active Directory application
-|`AZURE_TENANT_ID`|id of the application's Azure Active Directory tenant
-|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a PEM-encoded certificate file including private key (without password protection)
+|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
+|`AZURE_TENANT_ID`|ID of the application's Azure Active Directory tenant
+|`AZURE_CLIENT_CERTIFICATE_PATH`|path to a certificate file including private key (without password protection)
 
 #### Username and password
 
 |variable name|value
 |-|-
-|`AZURE_CLIENT_ID`|id of an Azure Active Directory application
+|`AZURE_CLIENT_ID`|ID of an Azure Active Directory application
 |`AZURE_USERNAME`|a username (usually an email address)
 |`AZURE_PASSWORD`|that user's password
 
@@ -236,4 +236,4 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazidentity%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fazidentity%2FREADME.png)

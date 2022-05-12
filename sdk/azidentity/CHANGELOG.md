@@ -1,6 +1,6 @@
 # Release History
 
-## 0.15.0 (Unreleased)
+## 1.0.0 (2022-05-12)
 
 ### Features Added
 * `DefaultAzureCredential` reads environment variable `AZURE_CLIENT_ID` for the
@@ -19,6 +19,7 @@
 
 ### Other Changes
 * `GetToken()` returns an error when the caller specifies no scope
+* Updated to the latest versions of `golang.org/x/crypto`, `azcore` and `internal`
 
 ## 0.14.0 (2022-04-05)
 

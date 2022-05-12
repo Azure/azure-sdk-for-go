@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.18
+// +build go1.18
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -11,5 +11,5 @@ const (
 	component = "azidentity"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	version = "v0.15.0"
+	version = "v1.0.0"
 )

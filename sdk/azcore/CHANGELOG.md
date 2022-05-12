@@ -1,6 +1,6 @@
 # Release History
 
-## 0.24.0 (Unreleased)
+## 1.0.0 (2022-05-12)
 
 ### Features Added
 * Added interface `runtime.PollingHandler` to support custom poller implementations.

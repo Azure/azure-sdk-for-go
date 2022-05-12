@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0
-	github.com/Azure/azure-sdk-for-go/sdk/messaging/internal v0.1.0
+	github.com/Azure/azure-sdk-for-go/sdk/messaging/internal v0.1.1
 	github.com/Azure/go-amqp v0.17.4
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 )

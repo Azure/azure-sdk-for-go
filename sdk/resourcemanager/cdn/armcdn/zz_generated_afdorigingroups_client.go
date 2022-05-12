@@ -324,7 +324,8 @@ func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of the given AzureFrontDoor origin group under the given
+// CDN profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource

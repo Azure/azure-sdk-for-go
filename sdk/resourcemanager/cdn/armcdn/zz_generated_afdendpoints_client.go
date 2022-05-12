@@ -329,7 +329,8 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN
+// profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
@@ -552,7 +553,8 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 	return req, runtime.MarshalAsJSON(req, endpointUpdateProperties)
 }
 
-// ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+// ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api
+// isn't work for apex domain.
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource

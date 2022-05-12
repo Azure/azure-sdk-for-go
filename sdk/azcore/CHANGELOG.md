@@ -27,6 +27,8 @@
   * `Result()` will cache the terminal result or error but not transient errors, allowing for additional retries.
 
 ### Other Changes
+* Updated to latest `internal` module and absorbed breaking changes.
+  * Use `temporal.Resource` and deleted copy.
 * The internal poller implementation has been refactored.
   * The implementation in `internal/pollers/poller.go` has been merged into `runtime/poller.go` with some slight modification.
   * The internal poller types had their methods updated to conform to the `runtime.PollingHandler` interface.

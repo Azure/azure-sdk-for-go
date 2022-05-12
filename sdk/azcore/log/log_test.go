@@ -17,7 +17,7 @@ import (
 func TestLoggingDefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
 	SetListener(nil)
-	log.Write(log.EventRequest, "this should work just fine")
+	log.Write(EventRequest, "this should work just fine")
 
 	testlog := map[Event]string{}
 	SetListener(func(cls Event, msg string) {

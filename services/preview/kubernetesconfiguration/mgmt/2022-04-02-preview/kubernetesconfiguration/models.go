@@ -2260,41 +2260,37 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // properties for a resource. Except properties bag, there cannot be a top level property outside of this
 // set.
 type ResourceModelWithAllowedPropertySet struct {
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag     *string                                      `json:"etag,omitempty"`
+	Identity *ResourceModelWithAllowedPropertySetIdentity `json:"identity,omitempty"`
+	Sku      *ResourceModelWithAllowedPropertySetSku      `json:"sku,omitempty"`
+	Plan     *ResourceModelWithAllowedPropertySetPlan     `json:"plan,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
-	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
-	Kind *string `json:"kind,omitempty"`
-	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
-	Etag *string `json:"etag,omitempty"`
-	// Tags - Resource tags.
-	Tags     map[string]*string                           `json:"tags"`
-	Identity *ResourceModelWithAllowedPropertySetIdentity `json:"identity,omitempty"`
-	Sku      *ResourceModelWithAllowedPropertySetSku      `json:"sku,omitempty"`
-	Plan     *ResourceModelWithAllowedPropertySetPlan     `json:"plan,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySet.
 func (rmwaps ResourceModelWithAllowedPropertySet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if rmwaps.Location != nil {
-		objectMap["location"] = rmwaps.Location
-	}
 	if rmwaps.ManagedBy != nil {
 		objectMap["managedBy"] = rmwaps.ManagedBy
 	}
 	if rmwaps.Kind != nil {
 		objectMap["kind"] = rmwaps.Kind
-	}
-	if rmwaps.Tags != nil {
-		objectMap["tags"] = rmwaps.Tags
 	}
 	if rmwaps.Identity != nil {
 		objectMap["identity"] = rmwaps.Identity
@@ -2304,6 +2300,12 @@ func (rmwaps ResourceModelWithAllowedPropertySet) MarshalJSON() ([]byte, error) 
 	}
 	if rmwaps.Plan != nil {
 		objectMap["plan"] = rmwaps.Plan
+	}
+	if rmwaps.Tags != nil {
+		objectMap["tags"] = rmwaps.Tags
+	}
+	if rmwaps.Location != nil {
+		objectMap["location"] = rmwaps.Location
 	}
 	return json.Marshal(objectMap)
 }

@@ -1,7 +1,7 @@
 // Package kubernetesconfiguration implements the Azure ARM Kubernetesconfiguration service API version
 // 2019-11-01-preview.
 //
-// Use these APIs to create Source Control Configuration resources through ARM, for Kubernetes Clusters.
+// KubernetesConfiguration Client
 package kubernetesconfiguration
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

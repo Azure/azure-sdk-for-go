@@ -248,7 +248,7 @@ func (client *PrivateEndpointConnectionClient) getByNameHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetPrivateLinkResource - Description for Gets the private link resources
+// GetPrivateLinkResource - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
@@ -372,7 +372,7 @@ func (client *PrivateEndpointConnectionClient) listByServiceHandleResponse(resp 
 	return result, nil
 }
 
-// ListPrivateLinkResources - Description for Gets the private link resources
+// ListPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.

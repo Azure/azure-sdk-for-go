@@ -621,7 +621,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			var attempts []int32
 
-			err := links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+			err := links.Retry(context.Background(), log.Event("NotUsed"), "OverallOperation", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
 				return testData.Err
 			}, exported.RetryOptions{
@@ -634,7 +634,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			logMessages := endLogging()
 
 			if testData.ExpectReset {
-				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] (OverallOperation) Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
 			} else {
 				for _, msg := range logMessages {
 					require.NotContains(t, msg, "Link was previously detached")

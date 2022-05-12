@@ -7,7 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.0.0
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.4.0
 	github.com/golang-jwt/jwt/v4 v4.2.0
-	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
+	golang.org/x/crypto v0.0.0-20220511200225-c6db032c6c88
 )
 
 require (

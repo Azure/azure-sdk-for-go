@@ -95,7 +95,7 @@ func (e *emulatorTests) marshallItem(id string, pk string) []byte {
 type emulatorTokenCredential struct {
 }
 
-func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	header := `{"typ":"JWT","alg":"RS256","x5t":"CosmosEmulatorPrimaryMaster","kid":"CosmosEmulatorPrimaryMaster"}`
 	unixNow := time.Now().Unix()
 	expiration := unixNow + 7200
@@ -130,7 +130,7 @@ func (c *emulatorTokenCredential) GetToken(ctx context.Context, options policy.T
 
 	token := headerBase64 + "." + payloadBase64 + "." + masterKeyBase64
 
-	return &azcore.AccessToken{
+	return azcore.AccessToken{
 		Token:     token,
 		ExpiresOn: time.Unix(expiration, 0),
 	}, nil

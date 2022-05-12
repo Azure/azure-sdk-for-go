@@ -1,16 +1,13 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 0.3.1 (2022-05-12)
 
 ### Features Added
 
 * Added Transactional Batch support
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+* Update to latest `azcore` and `internal` modules
 
 ## 0.3.0 (2022-05-10)
 

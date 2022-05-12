@@ -493,7 +493,7 @@ func (client *KeyVaultClient) getCertificateIssuerHandleResponse(resp *http.Resp
 // options - KeyVaultClientGetCertificateIssuersOptions contains the optional parameters for the KeyVaultClient.GetCertificateIssuers
 // method.
 func (client *KeyVaultClient) NewGetCertificateIssuersPager(vaultBaseURL string, options *KeyVaultClientGetCertificateIssuersOptions) *runtime.Pager[KeyVaultClientGetCertificateIssuersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateIssuersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetCertificateIssuersResponse]{
 		More: func(page KeyVaultClientGetCertificateIssuersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -658,7 +658,7 @@ func (client *KeyVaultClient) getCertificatePolicyHandleResponse(resp *http.Resp
 // options - KeyVaultClientGetCertificateVersionsOptions contains the optional parameters for the KeyVaultClient.GetCertificateVersions
 // method.
 func (client *KeyVaultClient) NewGetCertificateVersionsPager(vaultBaseURL string, certificateName string, options *KeyVaultClientGetCertificateVersionsOptions) *runtime.Pager[KeyVaultClientGetCertificateVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificateVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetCertificateVersionsResponse]{
 		More: func(page KeyVaultClientGetCertificateVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -724,7 +724,7 @@ func (client *KeyVaultClient) getCertificateVersionsHandleResponse(resp *http.Re
 // options - KeyVaultClientGetCertificatesOptions contains the optional parameters for the KeyVaultClient.GetCertificates
 // method.
 func (client *KeyVaultClient) NewGetCertificatesPager(vaultBaseURL string, options *KeyVaultClientGetCertificatesOptions) *runtime.Pager[KeyVaultClientGetCertificatesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetCertificatesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetCertificatesResponse]{
 		More: func(page KeyVaultClientGetCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -843,7 +843,7 @@ func (client *KeyVaultClient) getDeletedCertificateHandleResponse(resp *http.Res
 // options - KeyVaultClientGetDeletedCertificatesOptions contains the optional parameters for the KeyVaultClient.GetDeletedCertificates
 // method.
 func (client *KeyVaultClient) NewGetDeletedCertificatesPager(vaultBaseURL string, options *KeyVaultClientGetDeletedCertificatesOptions) *runtime.Pager[KeyVaultClientGetDeletedCertificatesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedCertificatesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetDeletedCertificatesResponse]{
 		More: func(page KeyVaultClientGetDeletedCertificatesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

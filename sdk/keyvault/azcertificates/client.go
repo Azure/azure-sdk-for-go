@@ -638,7 +638,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 // certificate are not listed in the response. This operation requires the certificates/list permission.
 func (c *Client) NewListPropertiesOfCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
 	pager := c.genClient.NewGetCertificatesPager(c.vaultURL, nil)
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfCertificatesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificatesResponse]{
 		More: func(page ListPropertiesOfCertificatesResponse) bool {
 			return pager.More()
 		},
@@ -687,7 +687,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 // requires the certificates/list permission.
 func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
 	pager := c.genClient.NewGetCertificateVersionsPager(c.vaultURL, certificateName, nil)
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfCertificateVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificateVersionsResponse]{
 		More: func(page ListPropertiesOfCertificateVersionsResponse) bool {
 			return pager.More()
 		},
@@ -888,7 +888,7 @@ func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuer
 // requires the certificates/manageissuers/getissuers permission.
 func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListIssuersPropertiesOfIssuersResponse] {
 	pager := c.genClient.NewGetCertificateIssuersPager(c.vaultURL, nil)
-	return runtime.NewPager(runtime.PageProcessor[ListIssuersPropertiesOfIssuersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListIssuersPropertiesOfIssuersResponse]{
 		More: func(page ListIssuersPropertiesOfIssuersResponse) bool {
 			return pager.More()
 		},
@@ -1534,7 +1534,7 @@ type ListDeletedCertificatesOptions struct {
 // only be enabled on soft-delete enabled vaults.
 func (c *Client) NewListDeletedCertificatesPager(options *ListDeletedCertificatesOptions) *runtime.Pager[ListDeletedCertificatesResponse] {
 	pager := c.genClient.NewGetDeletedCertificatesPager(c.vaultURL, nil)
-	return runtime.NewPager(runtime.PageProcessor[ListDeletedCertificatesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedCertificatesResponse]{
 		More: func(page ListDeletedCertificatesResponse) bool {
 			return pager.More()
 		},

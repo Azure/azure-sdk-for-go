@@ -425,10 +425,6 @@ type UpdateSecretPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpdateSecretOptions {
-	return &internal.KeyVaultClientUpdateSecretOptions{}
-}
-
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
 	Secret
@@ -804,7 +800,7 @@ type ListDeletedSecretsOptions struct {
 // ListDeletedSecrets lists all versions of the specified secret. The full secret identifier and attributes are provided
 // in the response. No values are returned for the secrets. This operation requires the secrets/list permission.
 func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) *runtime.Pager[ListDeletedSecretsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListDeletedSecretsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretsResponse]{
 		More: func(page ListDeletedSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -865,7 +861,7 @@ func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersi
 // attributes are provided in the response. No values are returned for the secrets. This operation
 // requires the secrets/list permission.
 func (c *Client) ListPropertiesOfSecretVersions(name string, options *ListSecretVersionsOptions) *runtime.Pager[ListPropertiesOfSecretVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfSecretVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfSecretVersionsResponse]{
 		More: func(page ListPropertiesOfSecretVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -926,7 +922,7 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 // however, only the base secret identifier and its attributes are provided in the response. Individual
 // secret versions are not listed in the response. This operation requires the secrets/list permission.
 func (c *Client) ListPropertiesOfSecrets(options *ListSecretsOptions) *runtime.Pager[ListPropertiesOfSecretsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfSecretsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfSecretsResponse]{
 		More: func(page ListPropertiesOfSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

@@ -395,7 +395,7 @@ func (client *ExtensionsClient) update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil

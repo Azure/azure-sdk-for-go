@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/kubernetesconfiguration/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/kubernetesconfiguration/resource-manager/readme.go.md
+- /mnt/vss/_work/1/s/azure-rest-api-specs/specification/kubernetesconfiguration/resource-manager/readme.md
+- /mnt/vss/_work/1/s/azure-rest-api-specs/specification/kubernetesconfiguration/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.5.0
+module-version: 0.5.1
 
 ```

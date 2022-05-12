@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## `v64.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2021-10-01/keyvault`
+- `github.com/Azure/azure-sdk-for-go/services/preview/dynatrace/mgmt/2021-09-01-preview/dynatrace`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/CHANGELOG.md) |
+
 ## `v64.0.0`
 
 ### New Packages
@@ -11,14 +30,14 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/cosmos-db/mgmt/2021-10-15/documentdb/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/cosmos-db/mgmt/2021-10-15/documentdb/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/recoveryservices/mgmt/2021-12-01/backup/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/recoveryservices/mgmt/2021-12-01/backup/CHANGELOG.md) |
 
 ### Deprecated Packages
 - `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer`

@@ -1,14 +1,9 @@
 # Release History
 
-## 0.8.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.8.1 (2022-05-12)
 
 ### Other Changes
+* Update to latest `azcore` and `internal` modules
 
 ## 0.8.0 (2022-04-20)
 

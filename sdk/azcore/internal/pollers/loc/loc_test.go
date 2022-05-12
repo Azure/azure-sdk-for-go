@@ -9,9 +9,12 @@ package loc
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
+	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/stretchr/testify/require"
@@ -62,6 +65,7 @@ func TestNew(t *testing.T) {
 	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
 	poller, err = New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
+	require.NotNil(t, poller)
 
 	resp = initialResponse()
 	resp.Header.Set(shared.HeaderLocation, "this is a bad polling URL")
@@ -117,6 +121,43 @@ func TestUpdateFailed(t *testing.T) {
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
 	require.NoError(t, err)
+	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
 	err = poller.Result(context.Background(), nil)
 	require.Error(t, err)
+}
+
+func TestUpdateFailedWithProvisioningState(t *testing.T) {
+	resp := initialResponse()
+	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
+	poller, err := New[struct{}](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+		if surl := req.URL.String(); surl == fakeLocationURL {
+			resp := &http.Response{
+				StatusCode: http.StatusAccepted,
+				Body:       http.NoBody,
+				Header:     http.Header{},
+			}
+			resp.Header.Set(shared.HeaderLocation, fakeLocationURL2)
+			return resp, nil
+		} else if surl == fakeLocationURL2 {
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "failed" } }`)),
+			}, nil
+		} else {
+			return nil, fmt.Errorf("test bug, unhandled URL %s", surl)
+		}
+	})), resp)
+	require.NoError(t, err)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusAccepted, resp.StatusCode)
+	require.False(t, poller.Done())
+	resp, err = poller.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, poller.Done())
+	err = poller.Result(context.Background(), nil)
+	var respErr *azcore.ResponseError
+	require.ErrorAs(t, err, &respErr)
 }

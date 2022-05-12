@@ -157,16 +157,16 @@ func TestPollFailed(t *testing.T) {
 	resp := initialResponse(http.MethodPatch, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
-			StatusCode: http.StatusBadRequest,
+			StatusCode: http.StatusOK,
 			Header:     http.Header{},
-			Body:       io.NopCloser(strings.NewReader(`{ "provisioningState": "failed" }`)),
+			Body:       io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "failed" } }`)),
 		}, nil
 	})), resp)
 	require.NoError(t, err)
 	require.False(t, poller.Done())
 	resp, err = poller.Poll(context.Background())
 	require.NoError(t, err)
-	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
 	require.True(t, poller.Done())
 	var result widget
 	err = poller.Result(context.Background(), &result)

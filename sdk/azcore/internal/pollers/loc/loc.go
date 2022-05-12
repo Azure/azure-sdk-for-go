@@ -46,7 +46,7 @@ type Poller[T any] struct {
 
 	Type     string `json:"type"`
 	PollURL  string `json:"pollURL"`
-	CurState int    `json:"state"`
+	CurState string `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response.
@@ -69,13 +69,12 @@ func New[T any](pl exported.Pipeline, resp *http.Response) (*Poller[T], error) {
 		resp:     resp,
 		Type:     kind,
 		PollURL:  locURL,
-		CurState: resp.StatusCode,
+		CurState: pollers.StatusInProgress,
 	}, nil
 }
 
 func (p *Poller[T]) Done() bool {
-	// anything other than a 202 indicates a terminal state
-	return p.CurState != http.StatusAccepted
+	return pollers.IsTerminalState(p.CurState)
 }
 
 func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
@@ -84,15 +83,22 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 		if h := resp.Header.Get(shared.HeaderLocation); h != "" {
 			p.PollURL = h
 		}
-		p.CurState = resp.StatusCode
+		// if provisioning state is available, use that.  this is only
+		// for some ARM LRO scenarios (e.g. DELETE with a Location header)
+		// so if it's missing then use HTTP status code.
+		provState, _ := pollers.GetProvisioningState(resp)
 		p.resp = resp
-		if p.CurState == http.StatusAccepted {
-			return pollers.StatusInProgress, nil
-		} else if p.CurState > 199 && p.CurState < 300 {
+		if provState != "" {
+			p.CurState = provState
+		} else if resp.StatusCode == http.StatusAccepted {
+			p.CurState = pollers.StatusInProgress
+		} else if resp.StatusCode > 199 && resp.StatusCode < 300 {
 			// any 2xx other than a 202 indicates success
-			return pollers.StatusSucceeded, nil
+			p.CurState = pollers.StatusSucceeded
+		} else {
+			p.CurState = pollers.StatusFailed
 		}
-		return pollers.StatusFailed, nil
+		return p.CurState, nil
 	})
 	if err != nil {
 		return nil, err
@@ -101,5 +107,5 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 }
 
 func (p *Poller[T]) Result(ctx context.Context, out *T) error {
-	return pollers.ResultHelper(p.resp, p.resp.StatusCode > 399, out)
+	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

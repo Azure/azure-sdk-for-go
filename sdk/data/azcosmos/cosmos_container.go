@@ -428,7 +428,7 @@ func (c *ContainerClient) NewQueryItemsPager(query string, partitionKey Partitio
 
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
-	return runtime.NewPager(runtime.PageProcessor[QueryItemsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
 			return page.ContinuationToken != ""
 		},

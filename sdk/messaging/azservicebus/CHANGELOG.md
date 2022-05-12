@@ -30,8 +30,6 @@
 - Fixing bug where there was a chance that internally cached messages would not be returned when
   the receiver was draining. (#17893)
 
-### Other Changes
-
 ## 0.4.0 (2022-04-06)
 
 ### Features Added

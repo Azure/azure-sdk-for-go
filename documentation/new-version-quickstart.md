@@ -1,18 +1,11 @@
 
 # Getting Started - New Azure Go SDK
 
-We are excited to announce that a new set of management libraries are
-now production-ready. Those packages share a number of new features
-such as Azure Identity support, HTTP pipeline, error-handling.,etc, and
-they also follow the new Azure SDK guidelines which create easy-to-use
-APIs that are idiomatic, compatible, and dependable.
+We are excited to announce that a new set of management libraries are now production-ready. Those packages share a number of new features such as Azure Identity support, HTTP pipeline, error-handling.,etc, and they also follow the new Azure SDK guidelines which create easy-to-use APIs that are idiomatic, compatible, and dependable.
 
-You can find the full list of those new libraries
-[here](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk).
+You can find the full list of those new libraries [here](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk).
 
-In this basic quickstart guide, we will walk you through how to
-authenticate to Azure and start interacting with Azure resources. There are several possible approaches to
-authentication. This document illustrates the most common scenario.
+In this basic quickstart guide, we will walk you through how to authenticate to Azure and start interacting with Azure resources. There are several possible approaches to authentication. This document illustrates the most common scenario.
 
 ## Migration from older versions of Azure management libraries for Go
 
@@ -101,6 +94,10 @@ Before creating a client, you will need to provide a credential for authenticati
 Our default option is to use **DefaultAzureCredential**. It combines common production credentials with development credentials.
 
 ```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+```
+
+```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
 ```
 
@@ -114,9 +111,18 @@ Once you have a credential, you will need to decide what service to use and crea
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
 ```go
+import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+```
+
+```go
 client, err := armcompute.NewVirtualMachinesClient("<subscription ID>", credential, nil)
 ```
 You can use the same pattern to connect with other Azure services that you are using. For example, in order to manage Virtual Network resources, you would install the Network package and create a `VirtualNetwork` Client:
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+import "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+```
 
 ```go
 client, err := armnetwork.NewVirtualNetworksClient("<subscription ID>", credential, nil)
@@ -324,28 +330,15 @@ For further infomation about the new SDK including advanced API usage and troubl
 
 ## Need help?
 
--   File an issue via [Github
-    Issues](https://github.com/Azure/azure-sdk-for-go/issues)
--   Check [previous
-    questions](https://stackoverflow.com/questions/tagged/azure+go)
-    or ask new ones on StackOverflow using azure and Go tags.
+- File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-go/issues)
+- Check [previous questions](https://stackoverflow.com/questions/tagged/azure+go) or ask new ones on StackOverflow using azure and Go tags.
 
 ## Contributing
 
-For details on contributing to this repository, see the contributing
-guide.
+For details on contributing to this repository, see the [contributing guide](../CONTRIBUTING.md).
 
-This project welcomes contributions and suggestions. Most contributions
-require you to agree to a Contributor License Agreement (CLA) declaring
-that you have the right to, and actually do, grant us the rights to use
-your contribution. For details, visit <https://cla.microsoft.com>.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, please visit https://cla.microsoft.com.
 
-When you submit a pull request, a CLA-bot will automatically determine
-whether you need to provide a CLA and decorate the PR appropriately
-(e.g., label, comment). Simply follow the instructions provided by the
-bot. You will only need to do this once across all repositories using
-our CLA.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
 
-This project has adopted the Microsoft Open Source Code of Conduct. For
-more information see the Code of Conduct FAQ or contact
-[opencode@microsoft.com](mailto:opencode@microsoft.com) with any questions or comments.
+This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any questions or comments.

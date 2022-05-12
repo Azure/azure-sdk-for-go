@@ -214,8 +214,9 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 	}
 
 	return NewRPCLink(RPCLinkArgs{
-		Client:  &amqpwrap.AMQPClientWrapper{Inner: client},
-		Address: managementPath,
+		Client:   &amqpwrap.AMQPClientWrapper{Inner: client},
+		Address:  managementPath,
+		LogEvent: exported.EventReceiver,
 	})
 }
 

@@ -42,7 +42,7 @@ func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error) {
 	require.ErrorIs(t, err, expectedErr)
 
 	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
-	require.ErrorIs(t, err, expectedErr)
+	require.ErrorIs(t, err, context.Canceled)
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)

@@ -288,12 +288,24 @@ type DeletedVaultProperties struct {
 	ScheduledPurgeDate *date.Time `json:"scheduledPurgeDate,omitempty"`
 	// Tags - READ-ONLY; Tags of the original vault.
 	Tags map[string]*string `json:"tags"`
+	// PurgeProtectionEnabled - READ-ONLY; Purge protection status of the original vault.
+	PurgeProtectionEnabled *bool `json:"purgeProtectionEnabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DeletedVaultProperties.
 func (dvp DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// DimensionProperties type of operation: get, read, delete, etc.
+type DimensionProperties struct {
+	// Name - Name of dimension.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Display name of dimension.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ToBeExportedForShoebox - Property to specify whether the dimension should be exported for shoebox.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // IPRule a rule governing the accessibility of a vault from a specific ip address or ip range.
@@ -655,6 +667,32 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
+// MetricSpecification metric specification of operation.
+type MetricSpecification struct {
+	// Name - Name of metric specification.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Display name of Metric specification.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayDescription - Display description of Metric specification.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Unit - The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
+	Unit *string `json:"unit,omitempty"`
+	// AggregationType - The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
+	AggregationType *string `json:"aggregationType,omitempty"`
+	// SupportedAggregationTypes - The supported aggregation types for the metrics.
+	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
+	// SupportedTimeGrainTypes - The supported time grain types for the metrics.
+	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
+	// LockAggregationType - The metric lock aggregation type.
+	LockAggregationType *string `json:"lockAggregationType,omitempty"`
+	// Dimensions - The dimensions of metric
+	Dimensions *[]DimensionProperties `json:"dimensions,omitempty"`
+	// FillGapWithZero - Property to specify whether to fill gap with zero.
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// InternalMetricName - The internal metric name.
+	InternalMetricName *string `json:"internalMetricName,omitempty"`
+}
+
 // NetworkRuleSet a set of rules governing the network accessibility of a vault.
 type NetworkRuleSet struct {
 	// Bypass - Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'.  If not specified the default is 'AzureServices'. Possible values include: 'AzureServices', 'None'
@@ -677,6 +715,8 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 	// OperationProperties - Properties of operation, include metric specifications.
 	*OperationProperties `json:"properties,omitempty"`
+	// IsDataAction - Property to specify whether the action is a data action.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
@@ -693,6 +733,9 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	}
 	if o.OperationProperties != nil {
 		objectMap["properties"] = o.OperationProperties
+	}
+	if o.IsDataAction != nil {
+		objectMap["isDataAction"] = o.IsDataAction
 	}
 	return json.Marshal(objectMap)
 }
@@ -741,6 +784,15 @@ func (o *Operation) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				o.OperationProperties = &operationProperties
+			}
+		case "isDataAction":
+			if v != nil {
+				var isDataAction bool
+				err = json.Unmarshal(*v, &isDataAction)
+				if err != nil {
+					return err
+				}
+				o.IsDataAction = &isDataAction
 			}
 		}
 	}
@@ -955,6 +1007,8 @@ type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Resource properties.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// Etag - Modified whenever there is a change in the state of private endpoint connection.
+	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the key vault resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the key vault resource.
@@ -972,6 +1026,9 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pec.PrivateEndpointConnectionProperties != nil {
 		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	if pec.Etag != nil {
+		objectMap["etag"] = pec.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -993,6 +1050,15 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pec.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -1047,6 +1113,10 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 
 // PrivateEndpointConnectionItem private endpoint connection item.
 type PrivateEndpointConnectionItem struct {
+	// ID - Id of private endpoint connection.
+	ID *string `json:"id,omitempty"`
+	// Etag - Modified whenever there is a change in the state of private endpoint connection.
+	Etag *string `json:"etag,omitempty"`
 	// PrivateEndpointConnectionProperties - Private endpoint connection properties.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
@@ -1054,6 +1124,12 @@ type PrivateEndpointConnectionItem struct {
 // MarshalJSON is the custom marshaler for PrivateEndpointConnectionItem.
 func (peci PrivateEndpointConnectionItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if peci.ID != nil {
+		objectMap["id"] = peci.ID
+	}
+	if peci.Etag != nil {
+		objectMap["etag"] = peci.Etag
+	}
 	if peci.PrivateEndpointConnectionProperties != nil {
 		objectMap["properties"] = peci.PrivateEndpointConnectionProperties
 	}
@@ -1069,6 +1145,24 @@ func (peci *PrivateEndpointConnectionItem) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				peci.ID = &ID
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				peci.Etag = &etag
+			}
 		case "properties":
 			if v != nil {
 				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
@@ -1264,8 +1358,8 @@ type PrivateLinkServiceConnectionState struct {
 	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval or rejection.
 	Description *string `json:"description,omitempty"`
-	// ActionRequired - A message indicating if changes on the service provider require any updates on the consumer.
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // Resource key Vault resource
@@ -1451,6 +1545,8 @@ func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.
 type ServiceSpecification struct {
 	// LogSpecifications - Log specifications of operation.
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
+	// MetricSpecifications - Metric specifications of operation.
+	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
 // Sku SKU details
@@ -1751,7 +1847,7 @@ type VaultPatchProperties struct {
 	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
 	// EnableSoftDelete - Property to specify whether the 'soft delete' functionality is enabled for this key vault. Once set to true, it cannot be reverted to false.
 	EnableSoftDelete *bool `json:"enableSoftDelete,omitempty"`
-	// EnableRbacAuthorization - Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be  ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the value of this property will not change.
+	// EnableRbacAuthorization - Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be  ignored. When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the value of this property will not change.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 	// SoftDeleteRetentionInDays - softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
@@ -1771,8 +1867,10 @@ type VaultProperties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// AccessPolicies - An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required.
 	AccessPolicies *[]AccessPolicyEntry `json:"accessPolicies,omitempty"`
-	// VaultURI - The URI of the vault for performing operations on keys and secrets.
+	// VaultURI - The URI of the vault for performing operations on keys and secrets. This property is readonly
 	VaultURI *string `json:"vaultUri,omitempty"`
+	// HsmPoolResourceID - READ-ONLY; The resource id of HSM Pool.
+	HsmPoolResourceID *string `json:"hsmPoolResourceId,omitempty"`
 	// EnabledForDeployment - Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
 	EnabledForDeployment *bool `json:"enabledForDeployment,omitempty"`
 	// EnabledForDiskEncryption - Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
@@ -1783,7 +1881,7 @@ type VaultProperties struct {
 	EnableSoftDelete *bool `json:"enableSoftDelete,omitempty"`
 	// SoftDeleteRetentionInDays - softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
-	// EnableRbacAuthorization - Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be  ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC.
+	// EnableRbacAuthorization - Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be  ignored. When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 	// CreateMode - The vault's create mode to indicate whether the vault need to be recovered or not. Possible values include: 'CreateModeRecover', 'CreateModeDefault'
 	CreateMode CreateMode `json:"createMode,omitempty"`
@@ -1791,6 +1889,8 @@ type VaultProperties struct {
 	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 	// NetworkAcls - Rules governing the accessibility of the key vault from specific network locations.
 	NetworkAcls *NetworkRuleSet `json:"networkAcls,omitempty"`
+	// ProvisioningState - Provisioning state of the vault. Possible values include: 'VaultProvisioningStateSucceeded', 'VaultProvisioningStateRegisteringDNS'
+	ProvisioningState VaultProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections associated with the key vault.
 	PrivateEndpointConnections *[]PrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty"`
 }
@@ -1836,6 +1936,9 @@ func (vp VaultProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vp.NetworkAcls != nil {
 		objectMap["networkAcls"] = vp.NetworkAcls
+	}
+	if vp.ProvisioningState != "" {
+		objectMap["provisioningState"] = vp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -1924,4 +2027,6 @@ func (future *VaultsPurgeDeletedFuture) result(client VaultsClient) (ar autorest
 type VirtualNetworkRule struct {
 	// ID - Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
 	ID *string `json:"id,omitempty"`
+	// IgnoreMissingVnetServiceEndpoint - Property to specify whether NRP will ignore the check if parent subnet has serviceEndpoints configured.
+	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }

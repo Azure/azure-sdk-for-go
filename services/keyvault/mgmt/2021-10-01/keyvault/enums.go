@@ -23,6 +23,19 @@ func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return []AccessPolicyUpdateKind{Add, Remove, Replace}
 }
 
+// ActionsRequired enumerates the values for actions required.
+type ActionsRequired string
+
+const (
+	// None ...
+	None ActionsRequired = "None"
+)
+
+// PossibleActionsRequiredValues returns an array of possible values for the ActionsRequired const type.
+func PossibleActionsRequiredValues() []ActionsRequired {
+	return []ActionsRequired{None}
+}
+
 // CertificatePermissions enumerates the values for certificate permissions.
 type CertificatePermissions string
 
@@ -100,6 +113,25 @@ const (
 // PossibleDeletionRecoveryLevelValues returns an array of possible values for the DeletionRecoveryLevel const type.
 func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	return []DeletionRecoveryLevel{Purgeable, Recoverable, RecoverableProtectedSubscription, RecoverablePurgeable}
+}
+
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// IdentityTypeApplication ...
+	IdentityTypeApplication IdentityType = "Application"
+	// IdentityTypeKey ...
+	IdentityTypeKey IdentityType = "Key"
+	// IdentityTypeManagedIdentity ...
+	IdentityTypeManagedIdentity IdentityType = "ManagedIdentity"
+	// IdentityTypeUser ...
+	IdentityTypeUser IdentityType = "User"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{IdentityTypeApplication, IdentityTypeKey, IdentityTypeManagedIdentity, IdentityTypeUser}
 }
 
 // JSONWebKeyCurveName enumerates the values for json web key curve name.
@@ -210,6 +242,21 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 	return []KeyPermissions{KeyPermissionsAll, KeyPermissionsBackup, KeyPermissionsCreate, KeyPermissionsDecrypt, KeyPermissionsDelete, KeyPermissionsEncrypt, KeyPermissionsGet, KeyPermissionsImport, KeyPermissionsList, KeyPermissionsPurge, KeyPermissionsRecover, KeyPermissionsRestore, KeyPermissionsSign, KeyPermissionsUnwrapKey, KeyPermissionsUpdate, KeyPermissionsVerify, KeyPermissionsWrapKey}
 }
 
+// ManagedHsmSkuName enumerates the values for managed hsm sku name.
+type ManagedHsmSkuName string
+
+const (
+	// CustomB32 ...
+	CustomB32 ManagedHsmSkuName = "Custom_B32"
+	// StandardB1 ...
+	StandardB1 ManagedHsmSkuName = "Standard_B1"
+)
+
+// PossibleManagedHsmSkuNameValues returns an array of possible values for the ManagedHsmSkuName const type.
+func PossibleManagedHsmSkuNameValues() []ManagedHsmSkuName {
+	return []ManagedHsmSkuName{CustomB32, StandardB1}
+}
+
 // NetworkRuleAction enumerates the values for network rule action.
 type NetworkRuleAction string
 
@@ -229,15 +276,15 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 type NetworkRuleBypassOptions string
 
 const (
-	// AzureServices ...
-	AzureServices NetworkRuleBypassOptions = "AzureServices"
-	// None ...
-	None NetworkRuleBypassOptions = "None"
+	// NetworkRuleBypassOptionsAzureServices ...
+	NetworkRuleBypassOptionsAzureServices NetworkRuleBypassOptions = "AzureServices"
+	// NetworkRuleBypassOptionsNone ...
+	NetworkRuleBypassOptionsNone NetworkRuleBypassOptions = "None"
 )
 
 // PossibleNetworkRuleBypassOptionsValues returns an array of possible values for the NetworkRuleBypassOptions const type.
 func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
-	return []NetworkRuleBypassOptions{AzureServices, None}
+	return []NetworkRuleBypassOptions{NetworkRuleBypassOptionsAzureServices, NetworkRuleBypassOptionsNone}
 }
 
 // PrivateEndpointConnectionProvisioningState enumerates the values for private endpoint connection
@@ -281,6 +328,49 @@ const (
 // PossiblePrivateEndpointServiceConnectionStatusValues returns an array of possible values for the PrivateEndpointServiceConnectionStatus const type.
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return []PrivateEndpointServiceConnectionStatus{PrivateEndpointServiceConnectionStatusApproved, PrivateEndpointServiceConnectionStatusDisconnected, PrivateEndpointServiceConnectionStatusPending, PrivateEndpointServiceConnectionStatusRejected}
+}
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateActivated The managed HSM pool is ready for normal use.
+	ProvisioningStateActivated ProvisioningState = "Activated"
+	// ProvisioningStateDeleting The managed HSM Pool is currently being deleted.
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed Provisioning of the managed HSM Pool has failed.
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateProvisioning The managed HSM Pool is currently being provisioned.
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	// ProvisioningStateRestoring The managed HSM pool is being restored from full HSM backup.
+	ProvisioningStateRestoring ProvisioningState = "Restoring"
+	// ProvisioningStateSecurityDomainRestore The managed HSM pool is waiting for a security domain restore
+	// action.
+	ProvisioningStateSecurityDomainRestore ProvisioningState = "SecurityDomainRestore"
+	// ProvisioningStateSucceeded The managed HSM Pool has been full provisioned.
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating The managed HSM Pool is currently being updated.
+	ProvisioningStateUpdating ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateActivated, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateProvisioning, ProvisioningStateRestoring, ProvisioningStateSecurityDomainRestore, ProvisioningStateSucceeded, ProvisioningStateUpdating}
+}
+
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// Disabled ...
+	Disabled PublicNetworkAccess = "Disabled"
+	// Enabled ...
+	Enabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{Disabled, Enabled}
 }
 
 // Reason enumerates the values for reason.

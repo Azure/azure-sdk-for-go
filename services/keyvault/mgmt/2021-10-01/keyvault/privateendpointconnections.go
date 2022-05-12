@@ -79,7 +79,7 @@ func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Contex
 		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2019-09-01"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -173,7 +173,7 @@ func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, 
 		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2019-09-01"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -201,6 +201,130 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByResource the List operation gets information about the private endpoint connections associated with the vault.
+// Parameters:
+// resourceGroupName - name of the resource group that contains the key vault.
+// vaultName - the name of the key vault.
+func (client PrivateEndpointConnectionsClient) ListByResource(ctx context.Context, resourceGroupName string, vaultName string) (result PrivateEndpointConnectionListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.ListByResource")
+		defer func() {
+			sc := -1
+			if result.peclr.Response.Response != nil {
+				sc = result.peclr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("keyvault.PrivateEndpointConnectionsClient", "ListByResource", err.Error())
+	}
+
+	result.fn = client.listByResourceNextResults
+	req, err := client.ListByResourcePreparer(ctx, resourceGroupName, vaultName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "ListByResource", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByResourceSender(req)
+	if err != nil {
+		result.peclr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "ListByResource", resp, "Failure sending request")
+		return
+	}
+
+	result.peclr, err = client.ListByResourceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "ListByResource", resp, "Failure responding to request")
+		return
+	}
+	if result.peclr.hasNextLink() && result.peclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListByResourcePreparer prepares the ListByResource request.
+func (client PrivateEndpointConnectionsClient) ListByResourcePreparer(ctx context.Context, resourceGroupName string, vaultName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vaultName":         autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2021-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateEndpointConnections", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByResourceSender sends the ListByResource request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateEndpointConnectionsClient) ListByResourceSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByResourceResponder handles the response to the ListByResource request. The method always
+// closes the http.Response Body.
+func (client PrivateEndpointConnectionsClient) ListByResourceResponder(resp *http.Response) (result PrivateEndpointConnectionListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceNextResults retrieves the next set of results, if any.
+func (client PrivateEndpointConnectionsClient) listByResourceNextResults(ctx context.Context, lastResults PrivateEndpointConnectionListResult) (result PrivateEndpointConnectionListResult, err error) {
+	req, err := lastResults.privateEndpointConnectionListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "listByResourceNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "listByResourceNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "listByResourceNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PrivateEndpointConnectionsClient) ListByResourceComplete(ctx context.Context, resourceGroupName string, vaultName string) (result PrivateEndpointConnectionListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.ListByResource")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResource(ctx, resourceGroupName, vaultName)
 	return
 }
 
@@ -258,7 +382,7 @@ func (client PrivateEndpointConnectionsClient) PutPreparer(ctx context.Context, 
 		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2019-09-01"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

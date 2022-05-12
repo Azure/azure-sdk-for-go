@@ -343,3 +343,18 @@ const (
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return []StoragePermissions{StoragePermissionsAll, StoragePermissionsBackup, StoragePermissionsDelete, StoragePermissionsDeletesas, StoragePermissionsGet, StoragePermissionsGetsas, StoragePermissionsList, StoragePermissionsListsas, StoragePermissionsPurge, StoragePermissionsRecover, StoragePermissionsRegeneratekey, StoragePermissionsRestore, StoragePermissionsSet, StoragePermissionsSetsas, StoragePermissionsUpdate}
 }
+
+// VaultProvisioningState enumerates the values for vault provisioning state.
+type VaultProvisioningState string
+
+const (
+	// VaultProvisioningStateRegisteringDNS ...
+	VaultProvisioningStateRegisteringDNS VaultProvisioningState = "RegisteringDns"
+	// VaultProvisioningStateSucceeded ...
+	VaultProvisioningStateSucceeded VaultProvisioningState = "Succeeded"
+)
+
+// PossibleVaultProvisioningStateValues returns an array of possible values for the VaultProvisioningState const type.
+func PossibleVaultProvisioningStateValues() []VaultProvisioningState {
+	return []VaultProvisioningState{VaultProvisioningStateRegisteringDNS, VaultProvisioningStateSucceeded}
+}

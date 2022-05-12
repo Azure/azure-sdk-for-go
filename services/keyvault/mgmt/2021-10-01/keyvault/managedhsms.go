@@ -70,7 +70,7 @@ func (client ManagedHsmsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -151,7 +151,7 @@ func (client ManagedHsmsClient) DeletePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -236,7 +236,7 @@ func (client ManagedHsmsClient) GetPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -261,6 +261,82 @@ func (client ManagedHsmsClient) GetResponder(resp *http.Response) (result Manage
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetDeleted gets the specified deleted managed HSM.
+// Parameters:
+// name - the name of the deleted managed HSM.
+// location - the location of the deleted managed HSM.
+func (client ManagedHsmsClient) GetDeleted(ctx context.Context, name string, location string) (result DeletedManagedHsm, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHsmsClient.GetDeleted")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetDeletedPreparer(ctx, name, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "GetDeleted", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDeletedSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "GetDeleted", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDeletedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "GetDeleted", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetDeletedPreparer prepares the GetDeleted request.
+func (client ManagedHsmsClient) GetDeletedPreparer(ctx context.Context, name string, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"name":           autorest.Encode("path", name),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDeletedSender sends the GetDeleted request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedHsmsClient) GetDeletedSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDeletedResponder handles the response to the GetDeleted request. The method always
+// closes the http.Response Body.
+func (client ManagedHsmsClient) GetDeletedResponder(resp *http.Response) (result DeletedManagedHsm, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -317,7 +393,7 @@ func (client ManagedHsmsClient) ListByResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -435,7 +511,7 @@ func (client ManagedHsmsClient) ListBySubscriptionPreparer(ctx context.Context, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -506,6 +582,197 @@ func (client ManagedHsmsClient) ListBySubscriptionComplete(ctx context.Context, 
 	return
 }
 
+// ListDeleted the List operation gets information about the deleted managed HSMs associated with the subscription.
+func (client ManagedHsmsClient) ListDeleted(ctx context.Context) (result DeletedManagedHsmListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHsmsClient.ListDeleted")
+		defer func() {
+			sc := -1
+			if result.dmhlr.Response.Response != nil {
+				sc = result.dmhlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listDeletedNextResults
+	req, err := client.ListDeletedPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "ListDeleted", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListDeletedSender(req)
+	if err != nil {
+		result.dmhlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "ListDeleted", resp, "Failure sending request")
+		return
+	}
+
+	result.dmhlr, err = client.ListDeletedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "ListDeleted", resp, "Failure responding to request")
+		return
+	}
+	if result.dmhlr.hasNextLink() && result.dmhlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListDeletedPreparer prepares the ListDeleted request.
+func (client ManagedHsmsClient) ListDeletedPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedManagedHSMs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListDeletedSender sends the ListDeleted request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedHsmsClient) ListDeletedSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListDeletedResponder handles the response to the ListDeleted request. The method always
+// closes the http.Response Body.
+func (client ManagedHsmsClient) ListDeletedResponder(resp *http.Response) (result DeletedManagedHsmListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listDeletedNextResults retrieves the next set of results, if any.
+func (client ManagedHsmsClient) listDeletedNextResults(ctx context.Context, lastResults DeletedManagedHsmListResult) (result DeletedManagedHsmListResult, err error) {
+	req, err := lastResults.deletedManagedHsmListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "listDeletedNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListDeletedSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "listDeletedNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListDeletedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "listDeletedNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListDeletedComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ManagedHsmsClient) ListDeletedComplete(ctx context.Context) (result DeletedManagedHsmListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHsmsClient.ListDeleted")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListDeleted(ctx)
+	return
+}
+
+// PurgeDeleted permanently deletes the specified managed HSM.
+// Parameters:
+// name - the name of the soft-deleted managed HSM.
+// location - the location of the soft-deleted managed HSM.
+func (client ManagedHsmsClient) PurgeDeleted(ctx context.Context, name string, location string) (result ManagedHsmsPurgeDeletedFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHsmsClient.PurgeDeleted")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PurgeDeletedPreparer(ctx, name, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "PurgeDeleted", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.PurgeDeletedSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsClient", "PurgeDeleted", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// PurgeDeletedPreparer prepares the PurgeDeleted request.
+func (client ManagedHsmsClient) PurgeDeletedPreparer(ctx context.Context, name string, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"name":           autorest.Encode("path", name),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-10-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedManagedHSMs/{name}/purge", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PurgeDeletedSender sends the PurgeDeleted request. The method will close the
+// http.Response Body if it receives an error.
+func (client ManagedHsmsClient) PurgeDeletedSender(req *http.Request) (future ManagedHsmsPurgeDeletedFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// PurgeDeletedResponder handles the response to the PurgeDeleted request. The method always
+// closes the http.Response Body.
+func (client ManagedHsmsClient) PurgeDeletedResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Update update a managed HSM Pool in the specified subscription.
 // Parameters:
 // resourceGroupName - name of the resource group that contains the managed HSM pool.
@@ -545,7 +812,7 @@ func (client ManagedHsmsClient) UpdatePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-04-01-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

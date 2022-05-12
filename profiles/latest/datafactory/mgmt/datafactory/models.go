@@ -2252,6 +2252,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkResourcesWrapper = original.PrivateLinkResourcesWrapper
+type PurviewConfiguration = original.PurviewConfiguration
 type QueryDataFlowDebugSessionsResponse = original.QueryDataFlowDebugSessionsResponse
 type QueryDataFlowDebugSessionsResponseIterator = original.QueryDataFlowDebugSessionsResponseIterator
 type QueryDataFlowDebugSessionsResponsePage = original.QueryDataFlowDebugSessionsResponsePage

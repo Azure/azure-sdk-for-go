@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 )
 
 const headerAuthorization = "Authorization"
@@ -27,7 +28,7 @@ const bearerHeader = "Bearer "
 
 type KeyVaultChallengePolicy struct {
 	// mainResource is the resource to be retrieved using the tenant specified in the credential
-	mainResource *ExpiringResource[*azcore.AccessToken, acquiringResourceState]
+	mainResource *temporal.Resource[azcore.AccessToken, acquiringResourceState]
 	cred         azcore.TokenCredential
 	scope        *string
 	tenantID     *string
@@ -36,7 +37,7 @@ type KeyVaultChallengePolicy struct {
 func NewKeyVaultChallengePolicy(cred azcore.TokenCredential) *KeyVaultChallengePolicy {
 	return &KeyVaultChallengePolicy{
 		cred:         cred,
-		mainResource: NewExpiringResource(acquire),
+		mainResource: temporal.NewResource(acquire),
 	}
 }
 
@@ -68,7 +69,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 	}
 
-	tk, err := k.mainResource.GetResource(as)
+	tk, err := k.mainResource.Get(as)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +89,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 	// If it fails and has a 401, try it with a new token
 	if resp.StatusCode == 401 {
 		// Force a new token
-		k.mainResource.Reset()
+		k.mainResource.Expire()
 
 		// Find the scope and tenant again in case they have changed
 		err := k.findScopeAndTenant(resp)
@@ -97,7 +98,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return resp, cloneReqErr
 		}
 
-		tk, err := k.mainResource.GetResource(as)
+		tk, err := k.mainResource.Get(as)
 		if err != nil {
 			return resp, err
 		}
@@ -213,7 +214,7 @@ type acquiringResourceState struct {
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
-func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, newExpiration time.Time, err error) {
+func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
 	tk, err := state.p.cred.GetToken(
 		state.req.Raw().Context(),
 		policy.TokenRequestOptions{
@@ -221,7 +222,7 @@ func acquire(state acquiringResourceState) (newResource *azcore.AccessToken, new
 		},
 	)
 	if err != nil {
-		return nil, time.Time{}, err
+		return azcore.AccessToken{}, time.Time{}, err
 	}
 	return tk, tk.ExpiresOn, nil
 }

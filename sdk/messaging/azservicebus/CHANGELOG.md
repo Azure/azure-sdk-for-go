@@ -27,6 +27,8 @@
 
 - Fixing issue where the AcceptNextSessionForQueue and AcceptNextSessionForSubscription 
   couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
+- Fixing bug where there was a chance that internally cached messages would not be returned when
+  the receiver was draining. (#17893)
 
 ### Other Changes
 

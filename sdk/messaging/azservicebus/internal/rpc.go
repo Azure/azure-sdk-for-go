@@ -38,6 +38,8 @@ type (
 		responseMu              sync.Mutex
 		startResponseRouterOnce *sync.Once
 		responseMap             map[string]chan rpcResponse
+		rpcLinkCtx              context.Context
+		rpcLinkCtxCancel        context.CancelFunc
 		broadcastErr            error // the error that caused the responseMap to be nil'd
 
 		logEvent azlog.Event
@@ -156,6 +158,7 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 
 	link.sender = sender
 	link.receiver = receiver
+	link.rpcLinkCtx, link.rpcLinkCtxCancel = context.WithCancel(context.Background())
 
 	return link, nil
 }
@@ -169,13 +172,15 @@ func (l *rpcLink) startResponseRouter() {
 	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
 
 	for {
-		res, err := l.receiver.Receive(context.Background())
+		res, err := l.receiver.Receive(l.rpcLinkCtx)
 
 		if err != nil {
 			// if the link or connection has a malfunction that would require it to restart then
 			// we need to bail out, broadcasting to all affected callers/consumers.
 			if GetRecoveryKind(err) != RecoveryKindNone {
-				azlog.Writef(l.logEvent, "Error in RPCLink, stopping response router: %s", err.Error())
+				if !IsCancelError(err) {
+					azlog.Writef(l.logEvent, "Error in RPCLink, stopping response router: %s", err.Error())
+				}
 				l.broadcastError(err)
 				break
 			}
@@ -317,6 +322,8 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, err
 
 // Close the link receiver, sender and session
 func (l *rpcLink) Close(ctx context.Context) error {
+	l.rpcLinkCtxCancel()
+
 	if err := l.closeReceiver(ctx); err != nil {
 		_ = l.closeSender(ctx)
 		_ = l.closeSession(ctx)

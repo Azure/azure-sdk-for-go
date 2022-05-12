@@ -373,19 +373,22 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	}
 
 	flushAndReturn := func(lastErr error) ([]*ReceivedMessage, error) {
-		flushPrefetchedMessages(ctx, linksWithID.Receiver, &all)
+		flushPrefetchedMessages(linksWithID.Receiver, &all)
 
 		if len(all) > 0 {
 			// users don't typically check the other values in the return if the 'err' is non-nil
 			// so if we have any messages we'll just return them and nil out the error.
 			// If it's persistent they'll see it on their next ReceiveMessages() call.
+			log.Writef(EventReceiver, "Received %d/%d messages", len(all), maxMessages)
 			return all, nil
 		} else {
 			if internal.GetRecoveryKind(lastErr) == internal.RecoveryKindFatal {
+				log.Writef(EventReceiver, "Fatal error when receiving: %#v", lastErr)
 				return nil, lastErr
 			}
 
 			// there's no material difference here, so let them fail on the next call to ReceiveMessages() instead.
+			log.Writef(EventReceiver, "Non-fatal error occurred and no messages were received. Will recover on next call: %v", lastErr)
 			return nil, nil
 		}
 	}
@@ -399,10 +402,14 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			return flushAndReturn(err)
 		}
 
-		// user cancelled, fall through so we drain the link since it's still active.
+		// user cancelled (or we hit our "afte first message" timer).
+		// Fall through so we drain the link since it's still active.
+		log.Writef(EventReceiver, "Context has been cancelled")
 	}
 
 	if len(all) < maxMessages { // drain if there are excess credits
+		log.Writef(EventReceiver, "Draining to clear %d credits", maxMessages-len(all))
+
 		drainCtx, drainCtxcancel := context.WithTimeout(context.Background(), r.defaultDrainTimeout)
 		defer drainCtxcancel()
 
@@ -414,6 +421,8 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			cleanup(err)
 
 			if internal.IsCancelError(err) {
+				log.Writef(EventReceiver, "Drain didn't complete in %s, link was recreated", r.defaultDrainTimeout)
+
 				// this cancellation is entirely on us - we cleaned up as best we can
 				// but the user isn't expected to know about this detail so we don't
 				// return the cancellation error.
@@ -428,10 +437,13 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	// we only get here if we got exactly the # of messages they asked for
 	// in the initial set of link.Receive() calls above.
+	log.Writef(EventReceiver, "Received %d/%d messages", len(all), maxMessages)
 	return all, nil
 }
 
 func fetchMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessages int, defaultTimeAfterFirstMessage time.Duration, messages *[]*ReceivedMessage) error {
+	log.Writef(EventReceiver, "Fetching messages, issuing %d credits", maxMessages)
+
 	if err := receiver.IssueCredit(uint32(maxMessages)); err != nil {
 		return err
 	}
@@ -462,9 +474,16 @@ func fetchMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessa
 
 // flushPrefetchedMessages makes a best-effort attempt at flushing the internal channel for the link. This is
 // a purely in-memory operation so should work even if the link itself has failed.
-func flushPrefetchedMessages(ctx context.Context, receiver internal.AMQPReceiver, messages *[]*ReceivedMessage) {
+func flushPrefetchedMessages(receiver internal.AMQPReceiver, messages *[]*ReceivedMessage) {
+	count := 0
+	defer func() {
+		if count > 0 {
+			log.Writef(EventReceiver, "Flushed %d messages from receiver's internal cache", count)
+		}
+	}()
+
 	for {
-		am, err := receiver.Prefetched(ctx)
+		am, err := receiver.Prefetched(context.Background())
 
 		// we've removed any code of consequence from Prefetched.
 		if am == nil || err != nil {
@@ -472,6 +491,7 @@ func flushPrefetchedMessages(ctx context.Context, receiver internal.AMQPReceiver
 		}
 
 		*messages = append(*messages, newReceivedMessage(am))
+		count++
 	}
 }
 

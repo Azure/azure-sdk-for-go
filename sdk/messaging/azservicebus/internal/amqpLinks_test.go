@@ -33,7 +33,7 @@ func (pe fakeNetError) Timeout() bool   { return pe.timeout }
 func (pe fakeNetError) Temporary() bool { return pe.temp }
 func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
-func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error) {
+func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error, expectedRPCError error) {
 	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
@@ -42,7 +42,7 @@ func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error) {
 	require.ErrorIs(t, err, expectedErr)
 
 	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
-	require.ErrorIs(t, err, expectedErr)
+	require.ErrorIs(t, err, expectedRPCError)
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)
@@ -138,7 +138,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	require.NoError(t, amqpClient.Close())
 
 	// all the links are dead because the connection is dead.
-	assertFailedLinks(t, lwr, amqp.ErrConnClosed)
+	assertFailedLinks(t, lwr, amqp.ErrConnClosed, amqp.ErrConnClosed)
 
 	// now we'll recover, which should recreate everything
 	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrConnClosed))
@@ -156,7 +156,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	_ = actualLinks.Receiver.Close(context.Background())
 	_ = actualLinks.RPCLink.Close(context.Background())
 
-	assertFailedLinks(t, lwr, amqp.ErrLinkClosed)
+	assertFailedLinks(t, lwr, amqp.ErrLinkClosed, context.Canceled)
 
 	lwr, err = links.Get(context.Background())
 	require.NoError(t, err)
@@ -621,7 +621,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 
 			var attempts []int32
 
-			err := links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
+			err := links.Retry(context.Background(), log.Event("NotUsed"), "OverallOperation", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 				attempts = append(attempts, args.I)
 				return testData.Err
 			}, exported.RetryOptions{
@@ -634,7 +634,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 			logMessages := endLogging()
 
 			if testData.ExpectReset {
-				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
+				require.Contains(t, logMessages, fmt.Sprintf("[azsb.Conn] (OverallOperation) Link was previously detached. Attempting quick reconnect to recover from error: %s", err.Error()))
 			} else {
 				for _, msg := range logMessages {
 					require.NotContains(t, msg, "Link was previously detached")

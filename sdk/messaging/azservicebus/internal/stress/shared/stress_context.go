@@ -13,6 +13,7 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
 
@@ -64,7 +65,7 @@ func MustCreateStressContext(testName string) *StressContext {
 
 	ctx, cancel := NewCtrlCContext()
 
-	azlog.SetEvents("azsb.Conn", "azsb.Auth", "azsb.Retry", "azsb.Mgmt")
+	azlog.SetEvents(azservicebus.EventAdmin, azservicebus.EventAuth, azservicebus.EventConn, azservicebus.EventReceiver, azservicebus.EventSender)
 
 	logMessages := make(chan string, 10000)
 

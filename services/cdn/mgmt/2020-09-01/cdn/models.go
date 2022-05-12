@@ -1803,7 +1803,7 @@ type AFDOriginProperties struct {
 	// Weight - Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
 	Weight *int32 `json:"weight,omitempty"`
 	// SharedPrivateLinkResource - The properties of the private link resource for private origin.
-	SharedPrivateLinkResource interface{} `json:"sharedPrivateLinkResource,omitempty"`
+	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties `json:"sharedPrivateLinkResource,omitempty"`
 	// EnabledState - Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend pool. Possible values include: 'EnabledStateEnabled', 'EnabledStateDisabled'
 	EnabledState EnabledState `json:"enabledState,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status. Possible values include: 'AfdProvisioningStateSucceeded', 'AfdProvisioningStateFailed', 'AfdProvisioningStateUpdating', 'AfdProvisioningStateDeleting', 'AfdProvisioningStateCreating'
@@ -2023,7 +2023,7 @@ type AFDOriginUpdatePropertiesParameters struct {
 	// Weight - Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
 	Weight *int32 `json:"weight,omitempty"`
 	// SharedPrivateLinkResource - The properties of the private link resource for private origin.
-	SharedPrivateLinkResource interface{} `json:"sharedPrivateLinkResource,omitempty"`
+	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties `json:"sharedPrivateLinkResource,omitempty"`
 	// EnabledState - Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend pool. Possible values include: 'EnabledStateEnabled', 'EnabledStateDisabled'
 	EnabledState EnabledState `json:"enabledState,omitempty"`
 }
@@ -9369,7 +9369,7 @@ type RouteProperties struct {
 	// PatternsToMatch - The route patterns of the rule.
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CompressionSettings - compression settings.
-	CompressionSettings interface{} `json:"compressionSettings,omitempty"`
+	CompressionSettings *CompressionSettings `json:"compressionSettings,omitempty"`
 	// QueryStringCachingBehavior - Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'AfdQueryStringCachingBehaviorIgnoreQueryString', 'AfdQueryStringCachingBehaviorUseQueryString', 'AfdQueryStringCachingBehaviorNotSet'
 	QueryStringCachingBehavior AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'ForwardingProtocolHTTPOnly', 'ForwardingProtocolHTTPSOnly', 'ForwardingProtocolMatchRequest'
@@ -9601,7 +9601,7 @@ type RouteUpdatePropertiesParameters struct {
 	// PatternsToMatch - The route patterns of the rule.
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
 	// CompressionSettings - compression settings.
-	CompressionSettings interface{} `json:"compressionSettings,omitempty"`
+	CompressionSettings *CompressionSettings `json:"compressionSettings,omitempty"`
 	// QueryStringCachingBehavior - Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching to prevent requests that contain query strings from being cached, or cache every request with a unique URL. Possible values include: 'AfdQueryStringCachingBehaviorIgnoreQueryString', 'AfdQueryStringCachingBehaviorUseQueryString', 'AfdQueryStringCachingBehaviorNotSet'
 	QueryStringCachingBehavior AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'ForwardingProtocolHTTPOnly', 'ForwardingProtocolHTTPSOnly', 'ForwardingProtocolMatchRequest'

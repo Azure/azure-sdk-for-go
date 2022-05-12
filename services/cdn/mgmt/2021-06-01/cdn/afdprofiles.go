@@ -31,7 +31,7 @@ func NewAFDProfilesClientWithBaseURI(baseURI string, subscriptionID string) AFDP
 	return AFDProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckHostNameAvailability validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+// CheckHostNameAvailability check the name availability of a host name.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
@@ -121,7 +121,7 @@ func (client AFDProfilesClient) CheckHostNameAvailabilityResponder(resp *http.Re
 	return
 }
 
-// ListResourceUsage checks the quota and actual usage of endpoints under the given CDN profile.
+// ListResourceUsage checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is

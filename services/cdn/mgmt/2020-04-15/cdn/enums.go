@@ -960,13 +960,21 @@ type Transform string
 const (
 	// Lowercase ...
 	Lowercase Transform = "Lowercase"
+	// RemoveNulls ...
+	RemoveNulls Transform = "RemoveNulls"
+	// Trim ...
+	Trim Transform = "Trim"
 	// Uppercase ...
 	Uppercase Transform = "Uppercase"
+	// URLDecode ...
+	URLDecode Transform = "UrlDecode"
+	// URLEncode ...
+	URLEncode Transform = "UrlEncode"
 )
 
 // PossibleTransformValues returns an array of possible values for the Transform const type.
 func PossibleTransformValues() []Transform {
-	return []Transform{Lowercase, Uppercase}
+	return []Transform{Lowercase, RemoveNulls, Trim, Uppercase, URLDecode, URLEncode}
 }
 
 // TransformType enumerates the values for transform type.

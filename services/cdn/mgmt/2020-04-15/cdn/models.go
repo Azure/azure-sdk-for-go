@@ -479,6 +479,8 @@ type CustomDomainProperties struct {
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
 	// CustomHTTPSProvisioningSubstate - READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
 	CustomHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty"`
+	// CustomHTTPSParameters - Certificate parameters for securing custom HTTPS
+	CustomHTTPSParameters BasicCustomDomainHTTPSParameters `json:"customHttpsParameters,omitempty"`
 	// ValidationData - Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
 	ValidationData *string `json:"validationData,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status of the custom domain.
@@ -491,10 +493,88 @@ func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
 	if cdp.HostName != nil {
 		objectMap["hostName"] = cdp.HostName
 	}
+	objectMap["customHttpsParameters"] = cdp.CustomHTTPSParameters
 	if cdp.ValidationData != nil {
 		objectMap["validationData"] = cdp.ValidationData
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomDomainProperties struct.
+func (cdp *CustomDomainProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hostName":
+			if v != nil {
+				var hostName string
+				err = json.Unmarshal(*v, &hostName)
+				if err != nil {
+					return err
+				}
+				cdp.HostName = &hostName
+			}
+		case "resourceState":
+			if v != nil {
+				var resourceState CustomDomainResourceState
+				err = json.Unmarshal(*v, &resourceState)
+				if err != nil {
+					return err
+				}
+				cdp.ResourceState = resourceState
+			}
+		case "customHttpsProvisioningState":
+			if v != nil {
+				var customHTTPSProvisioningState CustomHTTPSProvisioningState
+				err = json.Unmarshal(*v, &customHTTPSProvisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningState = customHTTPSProvisioningState
+			}
+		case "customHttpsProvisioningSubstate":
+			if v != nil {
+				var customHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate
+				err = json.Unmarshal(*v, &customHTTPSProvisioningSubstate)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningSubstate = customHTTPSProvisioningSubstate
+			}
+		case "customHttpsParameters":
+			if v != nil {
+				customHTTPSParameters, err := unmarshalBasicCustomDomainHTTPSParameters(*v)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSParameters = customHTTPSParameters
+			}
+		case "validationData":
+			if v != nil {
+				var validationData string
+				err = json.Unmarshal(*v, &validationData)
+				if err != nil {
+					return err
+				}
+				cdp.ValidationData = &validationData
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.ProvisioningState = &provisioningState
+			}
+		}
+	}
+
+	return nil
 }
 
 // CustomDomainPropertiesParameters the JSON object that contains the properties of the custom domain to
@@ -585,6 +665,92 @@ func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (cd 
 		cd, err = client.DeleteResponder(cd.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteFuture", "Result", cd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CustomDomainsDisableCustomHTTPSFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsDisableCustomHTTPSFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (CustomDomain, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsDisableCustomHTTPSFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsDisableCustomHTTPSFuture.Result.
+func (future *CustomDomainsDisableCustomHTTPSFuture) result(client CustomDomainsClient) (cd CustomDomain, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDisableCustomHTTPSFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cd.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDisableCustomHTTPSFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd, err = client.DisableCustomHTTPSResponder(cd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDisableCustomHTTPSFuture", "Result", cd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CustomDomainsEnableCustomHTTPSFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsEnableCustomHTTPSFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CustomDomainsClient) (CustomDomain, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CustomDomainsEnableCustomHTTPSFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CustomDomainsEnableCustomHTTPSFuture.Result.
+func (future *CustomDomainsEnableCustomHTTPSFuture) result(client CustomDomainsClient) (cd CustomDomain, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsEnableCustomHTTPSFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cd.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsEnableCustomHTTPSFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd, err = client.EnableCustomHTTPSResponder(cd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsEnableCustomHTTPSFuture", "Result", cd.Response.Response, "Failure responding to request")
 		}
 	}
 	return

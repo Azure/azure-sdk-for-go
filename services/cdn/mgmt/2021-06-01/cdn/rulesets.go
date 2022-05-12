@@ -423,7 +423,8 @@ func (client RuleSetsClient) ListByProfileComplete(ctx context.Context, resource
 	return
 }
 
-// ListResourceUsage checks the quota and actual usage of endpoints under the given CDN profile.
+// ListResourceUsage checks the quota and actual usage of the given AzureFrontDoor rule set under the given CDN
+// profile.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique

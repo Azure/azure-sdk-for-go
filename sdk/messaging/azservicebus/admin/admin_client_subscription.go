@@ -220,7 +220,7 @@ func (ac *Client) NewListSubscriptionsPager(topicName string, options *ListSubsc
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListSubscriptionsResponse]{
 		More: func(ltr ListSubscriptionsResponse) bool {
 			return ep.More()
 		},
@@ -275,7 +275,7 @@ func (ac *Client) NewListSubscriptionsRuntimePropertiesPager(topicName string, o
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListSubscriptionsRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListSubscriptionsRuntimePropertiesResponse]{
 		More: func(ltr ListSubscriptionsRuntimePropertiesResponse) bool {
 			return ep.More()
 		},

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.1 (Unreleased)
+## 0.4.1 (2022-05-12)
 
 ### Features Added
 
@@ -29,8 +29,6 @@
   couldn't be cancelled, forcing the user to wait for the service to timeout. (#17598)
 - Fixing bug where there was a chance that internally cached messages would not be returned when
   the receiver was draining. (#17893)
-
-### Other Changes
 
 ## 0.4.0 (2022-04-06)
 

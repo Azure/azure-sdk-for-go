@@ -23,8 +23,8 @@ type fakeTokenCredential struct {
 	expires time.Time
 }
 
-func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
+func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{
 		ExpiresOn: ftc.expires,
 	}, nil
 }

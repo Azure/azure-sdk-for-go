@@ -203,7 +203,7 @@ func (ac *Client) NewListTopicsPager(options *ListTopicsOptions) *runtime.Pager[
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsResponse]{
 		More: func(ltr ListTopicsResponse) bool {
 			return ep.More()
 		},
@@ -255,7 +255,7 @@ func (ac *Client) NewListTopicsRuntimePropertiesPager(options *ListTopicsRuntime
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsRuntimePropertiesResponse]{
 		More: func(ltr ListTopicsRuntimePropertiesResponse) bool {
 			return ep.More()
 		},

@@ -42,6 +42,7 @@ func Run(remainingArgs []string) {
 		"receiveCancellation":      ReceiveCancellation,
 		"idleFastReconnect":        IdleFastReconnect,
 		"mostlyIdleReceiver":       MostlyIdleReceiver,
+		"sendAndReceiveDrain":      SendAndReceiveDrain,
 	}
 
 	if len(remainingArgs) == 0 {

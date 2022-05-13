@@ -109,6 +109,12 @@ func checkMessages(sc *shared.StressContext, queueName string, numSent int, stat
 		defer cancel()
 
 		messages, err := receiver.ReceiveMessages(ctx, numSent, nil)
+
+		if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+			// test is over or we received nothing (ie, we're probably done)
+			break
+		}
+
 		sc.PanicOnError("failed to receive messages", err)
 
 		if len(messages) == 0 {

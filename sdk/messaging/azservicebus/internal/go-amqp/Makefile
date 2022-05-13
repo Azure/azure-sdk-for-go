@@ -1,4 +1,4 @@
-PACKAGE := github.com/Azure/go-amqp
+PACKAGE := github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp
 FUZZ_DIR := ./fuzz
 
 all: test

@@ -7,4 +7,4 @@ the most common AMQP protocols in use today.
 The example below shows how to use this package to connect
 to a Microsoft Azure Service Bus queue.
 */
-package amqp // import "github.com/Azure/go-amqp"
+package amqp // import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"

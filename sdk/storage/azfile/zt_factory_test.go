@@ -105,8 +105,7 @@ func getGenericCredential(recording *testframework.Recording, accountType testAc
 
 // 1. ServiceClient -----------------------------------------------------------------------------------------------------
 
-func getServiceClient(recording *testframework.Recording, accountType testAccountType,
-	options *ClientOptions) (*ServiceClient, error) {
+func getServiceClient(_require *require.Assertions, recording *testframework.Recording, accountType testAccountType, options *ClientOptions) *ServiceClient {
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
@@ -118,13 +117,15 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 
 	cred, err := getGenericCredential(recording, accountType)
 	if err != nil {
-		return nil, err
+		_require.Nil("Unable to fetch service client because " + err.Error())
 	}
 
 	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".file.core.windows.net/")
-	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
-
-	return serviceClient, err
+	svcClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
+	if err != nil {
+		_require.Nil("Unable to fetch service client because " + err.Error())
+	}
+	return svcClient
 }
 
 //nolint
@@ -343,8 +344,8 @@ func generateName(prefix string) string {
 func generateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
-func generateShareName(testName string) string {
-	return sharePrefix + generateEntityName(testName)
+func generateShareName(prefix string, testName string) string {
+	return prefix + generateEntityName(testName)
 }
 
 func generateDirectoryName(testName string) string {

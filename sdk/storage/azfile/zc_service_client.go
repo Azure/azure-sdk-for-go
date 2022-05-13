@@ -106,10 +106,10 @@ func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetProperti
 	return toServiceSetPropertiesResponse(setPropertiesResponse), handleError(err)
 }
 
-// ListContainers operation returns a pager of the containers under the specified account.
+// ListShares operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s *ServiceClient) ListContainers(o *ServiceListSharesOptions) *ServiceListSharesPager {
+func (s *ServiceClient) ListShares(o *ServiceListSharesOptions) *ServiceListSharesPager {
 	listOptions := o.format()
 	pager := s.client.ListSharesSegment(listOptions)
 

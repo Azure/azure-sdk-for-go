@@ -14,10 +14,8 @@ import (
 
 func (s *azfileLiveTestSuite) TestDirNewDirectoryClient() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
 	srClient, err := svcClient.NewShareClient(sharePrefix)
 	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
@@ -31,10 +29,8 @@ func (s *azfileLiveTestSuite) TestDirNewDirectoryClient() {
 
 func (s *azfileLiveTestSuite) TestDirCreateFileURL() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
 	srClient, err := svcClient.NewShareClient(sharePrefix)
 	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
@@ -49,11 +45,9 @@ func (s *azfileLiveTestSuite) TestDirCreateFileURL() {
 func (s *azfileLiveTestSuite) TestDirCreateDeleteDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -81,11 +75,9 @@ func (s *azfileLiveTestSuite) TestDirSetProperties() {
 
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -111,11 +103,9 @@ func (s *azfileLiveTestSuite) TestDirSetProperties() {
 func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -166,11 +156,9 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -216,11 +204,9 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 func (s *azfileLiveTestSuite) TestDirCreateEndWithSlash() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -247,11 +233,9 @@ func (s *azfileLiveTestSuite) TestDirCreateEndWithSlash() {
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -281,11 +265,9 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataDefault() {
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -321,11 +303,9 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataNonDefault() {
 func (s *azfileLiveTestSuite) TestDirSetMetadataNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -335,22 +315,20 @@ func (s *azfileLiveTestSuite) TestDirSetMetadataNegative() {
 		"!@#$%^&*()": "!@#$%^&*()",
 	}
 
-	_, err = dirClient.SetMetadata(context.Background(), md, nil)
+	_, err := dirClient.SetMetadata(context.Background(), md, nil)
 	_require.NotNil(err)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetPropertiesNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	dirClient := getDirectoryClientFromShare(_require, generateDirectoryName(testName), srClient)
 
-	_, err = dirClient.GetProperties(ctx, nil)
+	_, err := dirClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
 	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
@@ -358,11 +336,9 @@ func (s *azfileLiveTestSuite) TestDirGetPropertiesNegative() {
 func (s *azfileLiveTestSuite) TestDirGetPropertiesWithBaseDirectory() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient, err := srClient.NewRootDirectoryClient()
@@ -383,11 +359,9 @@ func (s *azfileLiveTestSuite) TestDirGetPropertiesWithBaseDirectory() {
 func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)

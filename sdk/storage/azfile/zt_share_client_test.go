@@ -18,27 +18,20 @@ import (
 func (s *azfileLiveTestSuite) TestShareCreateRootDirectoryURL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareClient := createNewShare(_require, generateShareName(testName), svcClient)
+	shareClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, shareClient, nil)
 }
 
 func (s *azfileLiveTestSuite) TestPutAndGetPermission() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(testName)
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
-	_require.Nil(err)
 
 	// Create a permission and check that it's not empty.
 	createResp, err := srClient.CreatePermission(ctx, sampleSDDL, nil)
@@ -58,10 +51,8 @@ func (s *azfileLiveTestSuite) TestPutAndGetPermission() {
 
 func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
 	srClient, err := svcClient.NewShareClient(sharePrefix)
 	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
@@ -121,11 +112,9 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -140,10 +129,8 @@ func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 
 func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidName() {
 	_require := require.New(s.T())
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
 	srClient, err := svcClient.NewShareClient("foo bar")
 	_require.Nil(err)
 
@@ -155,11 +142,9 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidName() {
 func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -170,11 +155,9 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
 func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -185,11 +168,9 @@ func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -218,11 +199,9 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -249,15 +228,13 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
-	_, err = srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Ptr(int32(-1))})
+	_, err := srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Ptr(int32(-1))})
 	_require.NotNil(err)
 	_require.Contains(err.Error(), "validation failed: share quote cannot be negative")
 }
@@ -265,11 +242,9 @@ func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
 func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -281,11 +256,9 @@ func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -338,11 +311,9 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -395,11 +366,9 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -426,11 +395,9 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -442,11 +409,9 @@ func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyACL() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -466,7 +431,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyAC
 		}
 	}
 
-	_, err = srClient.SetPermissions(ctx, permissions, nil)
+	_, err := srClient.SetPermissions(ctx, permissions, nil)
 	_require.Nil(err)
 
 	resp, err := srClient.GetPermissions(ctx, nil)
@@ -488,11 +453,9 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyAC
 func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -512,7 +475,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 		}
 	}
 
-	_, err = srClient.SetPermissions(ctx, permissions, nil)
+	_, err := srClient.SetPermissions(ctx, permissions, nil)
 	_require.Nil(err)
 
 	_, err = srClient.SetPermissions(ctx, []*SignedIdentifier{}, nil)
@@ -527,11 +490,9 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -551,23 +512,21 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes(
 		}
 	}
 
-	_, err = srClient.SetPermissions(ctx, permissions, nil)
+	_, err := srClient.SetPermissions(ctx, permissions, nil)
 	_require.Nil(err)
 }
 
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNilPolicySlice() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
 
-	_, err = srClient.SetPermissions(ctx, nil, nil)
+	_, err := srClient.SetPermissions(ctx, nil, nil)
 	_require.Nil(err)
 }
 
@@ -575,11 +534,9 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNilPolicySlice() {
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -603,18 +560,16 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 		}
 	}
 
-	_, err = srClient.SetPermissions(ctx, permissions, nil)
+	_, err := srClient.SetPermissions(ctx, permissions, nil)
 	validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -641,11 +596,9 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -676,29 +629,25 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 func (s *azfileLiveTestSuite) TestShareSetMetadataNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
 	md := map[string]string{
 		"!@#$%^&*()": "!@#$%^&*()",
 	}
-	_, err = srClient.SetMetadata(context.Background(), md, nil)
+	_, err := srClient.SetMetadata(context.Background(), md, nil)
 	_require.NotNil(err)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetStats() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -723,11 +672,9 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -739,11 +686,9 @@ func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -881,11 +826,9 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient, err := getShareClient(shareName, svcClient)
 	_require.Nil(err)
 
@@ -897,15 +840,13 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
-	_, err = srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
+	_, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
 	_require.NotNil(err)
 }
 
@@ -913,11 +854,9 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 
@@ -941,11 +880,9 @@ func validateShareDeleted(_require *require.Assertions, srClient *ShareClient) {
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -982,15 +919,13 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	shareName := generateShareName(testName)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 
-	_, err = srClient.CreateSnapshot(ctx, nil)
+	_, err := srClient.CreateSnapshot(ctx, nil)
 	_require.Nil(err)
 	_, err = srClient.Delete(ctx, nil)
 	validateStorageError(_require, err, StorageErrorCodeShareHasSnapshots)

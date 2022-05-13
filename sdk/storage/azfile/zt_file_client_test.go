@@ -30,12 +30,9 @@ var (
 func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(testName)
+	shareName := generateShareName(sharePrefix, testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -92,16 +89,14 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &FileCreateOptions{
+	_, err := fClient.Create(ctx, &FileCreateOptions{
 		Metadata: basicMetadata,
 	})
 	_require.Nil(err)
@@ -114,15 +109,13 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &FileCreateOptions{FileHTTPHeaders: &basicHeaders})
+	_, err := fClient.Create(ctx, &FileCreateOptions{FileHTTPHeaders: &basicHeaders})
 	_require.Nil(err)
 
 	_, err = fClient.GetProperties(ctx, nil)
@@ -135,15 +128,13 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
 func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Create(ctx, &FileCreateOptions{
+	_, err := fClient.Create(ctx, &FileCreateOptions{
 		Metadata:        map[string]string{"!@#$%^&*()": "!@#$%^&*()"},
 		FileHTTPHeaders: &FileHTTPHeaders{},
 	})
@@ -548,11 +539,9 @@ func waitForCopy(_require *require.Assertions, copyfClient *FileClient, fileCopy
 func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, "src"+generateFileName(testName), fileDefaultData, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -595,17 +584,15 @@ func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
 	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-	_, err = copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
+	_, err := copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
 	_require.Nil(err)
 
 	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
@@ -621,17 +608,15 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
 func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
 	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-	_, err = copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
+	_, err := copyfClient.Create(ctx, &FileCreateOptions{Metadata: basicMetadata})
 	_require.Nil(err)
 
 	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: map[string]string{}})
@@ -647,32 +632,28 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
 func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
-	_, err = copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
+	_, err := copyfClient.StartCopy(ctx, fClient.URL(), &FileStartCopyOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
 	_require.NotNil(err)
 }
 
 func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, "src"+generateFileName(testName), srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
-	_, err = copyfClient.StartCopy(ctx, fClient.URL(), nil)
+	_, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
 	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
 
@@ -838,16 +819,14 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
 	copyfClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
-	_, err = copyfClient.AbortCopy(ctx, "copynotstarted", nil)
+	_, err := copyfClient.AbortCopy(ctx, "copynotstarted", nil)
 	validateStorageError(_require, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
@@ -1183,15 +1162,13 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 func (s *azfileLiveTestSuite) TestFileDownloadDataNonExistentFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.Download(ctx, 0, CountToEnd, nil)
+	_, err := fClient.Download(ctx, 0, CountToEnd, nil)
 	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
 
@@ -1217,15 +1194,13 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataNonExistentFile() {
 func (s *azfileLiveTestSuite) TestFileDownloadDataOffsetOutOfRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
-	_, err = fClient.Download(ctx, int64(len(fileDefaultData)), CountToEnd, nil)
+	_, err := fClient.Download(ctx, int64(len(fileDefaultData)), CountToEnd, nil)
 	validateStorageError(_require, err, StorageErrorCodeInvalidRange)
 }
 
@@ -1249,11 +1224,9 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataOffsetOutOfRange() {
 func (s *azfileLiveTestSuite) TestFileDownloadDataEntireFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1269,11 +1242,9 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataEntireFile() {
 func (s *azfileLiveTestSuite) TestFileDownloadDataCountExact() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1288,11 +1259,9 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountExact() {
 func (s *azfileLiveTestSuite) TestFileDownloadDataCountOutOfRange() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1324,15 +1293,13 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountOutOfRange() {
 func (s *azfileLiveTestSuite) TestFileUploadRangeNilBody() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
-	_, err = fClient.UploadRange(ctx, 0, nil, nil)
+	_, err := fClient.UploadRange(ctx, 0, nil, nil)
 	_require.NotNil(err)
 	_require.Contains(err.Error(), "body must not be nil")
 }
@@ -1340,15 +1307,13 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeNilBody() {
 func (s *azfileLiveTestSuite) TestFileUploadRangeEmptyBody() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
-	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader([]byte{})), nil)
+	_, err := fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader([]byte{})), nil)
 	_require.NotNil(err)
 	_require.Contains(err.Error(), "body must contain readable data whose size is > 0")
 }
@@ -1356,27 +1321,23 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeEmptyBody() {
 func (s *azfileLiveTestSuite) TestFileUploadRangeNonExistentFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	rsc, _ := generateData(12)
-	_, err = fClient.UploadRange(ctx, 0, rsc, nil)
+	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
@@ -1416,11 +1377,9 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
@@ -1430,7 +1389,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 	_, incorrectMD5 := generateData(16)
 
 	// Upload range with incorrect transactional MD5
-	_, err = fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: incorrectMD5[:]})
+	_, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: incorrectMD5[:]})
 	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
@@ -1491,18 +1450,16 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	fileSize := int64(512 * 10)
 
-	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
+	_, err := fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
 	_require.Nil(err)
 
 	defer delFile(_require, fClient)
@@ -1535,18 +1492,16 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 func (s *azfileLiveTestSuite) TestClearRangeDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
 	defer delFile(_require, fClient)
 
 	rsc, _ := generateData(2048)
-	_, err = fClient.UploadRange(ctx, 0, rsc, nil)
+	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
 
 	clearResp, err := fClient.ClearRange(ctx, 0, 2048, nil)
@@ -1561,18 +1516,16 @@ func (s *azfileLiveTestSuite) TestClearRangeDefault() {
 func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 4096, srClient)
 	defer delFile(_require, fClient)
 
 	rsc, _ := generateData(2048)
-	_, err = fClient.UploadRange(ctx, 2048, rsc, nil)
+	_, err := fClient.UploadRange(ctx, 2048, rsc, nil)
 	_require.Nil(err)
 
 	clearResp, err := fClient.ClearRange(ctx, 2048, 2048, nil)
@@ -1587,18 +1540,16 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
 func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
 	defer delFile(_require, fClient)
 
 	rsc, _ := generateData(2048)
-	_, err = fClient.UploadRange(ctx, 0, rsc, nil)
+	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
 
 	clearResp, err := fClient.ClearRange(ctx, 1024, 1024, nil)
@@ -1615,18 +1566,16 @@ func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
 func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), int64(1), srClient)
 	defer delFile(_require, fClient)
 
 	d := []byte{1}
-	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(d)), nil)
+	_, err := fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(d)), nil)
 	_require.Nil(err)
 
 	clearResp, err := fClient.ClearRange(ctx, 0, 1, nil)
@@ -1665,27 +1614,23 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidCount() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient, _ := getShareClient(generateShareName(testName), svcClient)
+	srClient, _ := getShareClient(generateShareName(sharePrefix, testName), svcClient)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err = fClient.ClearRange(ctx, 0, 0, nil)
+	_, err := fClient.ClearRange(ctx, 0, 0, nil)
 	_require.NotNil(err)
 	_require.Equal(strings.Contains(err.Error(), "invalid argument: either offset is < 0 or count <= 0"), true)
 }
 
 func setupGetRangeListTest(_require *require.Assertions, testName string) (srClient *ShareClient, fClient *FileClient) {
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	_require.Nil(err)
-	srClient = createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+	srClient = createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	fClient = createNewFileFromShare(_require, generateFileName(testName), int64(testFileRangeSize), srClient)
 
 	rsc, _ := generateData(testFileRangeSize)
-	_, err = fClient.UploadRange(ctx, 0, rsc, nil)
+	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
 	return
 }
@@ -1699,11 +1644,9 @@ func validateBasicGetRangeList(_require *require.Assertions, resp FileGetRangeLi
 func (s *azfileLiveTestSuite) TestFileGetRangeListDefaultEmptyFile() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
@@ -1784,11 +1727,9 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListSnapshot() {
 func (s *azfileLiveTestSuite) TestUnexpectedEOFRecovery() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
 
 	defer delShare(_require, srClient, &ShareDeleteOptions{
 		DeleteSnapshots: &deleteSnapshotsInclude,
@@ -1824,12 +1765,9 @@ func (s *azfileLiveTestSuite) TestUnexpectedEOFRecovery() {
 func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient, err := getShareClient(generateShareName(testName), svcClient)
+	srClient, err := getShareClient(generateShareName(sharePrefix, testName), svcClient)
 	cResp, err := srClient.Create(ctx, &ShareCreateOptions{
 		Quota: &fileShareMaxQuota,
 	})

@@ -427,7 +427,7 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListPr
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
 func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListPropertiesOfKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfKeysResponse]{
 		More: func(page ListPropertiesOfKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1000,7 +1000,7 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 // an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
 func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListDeletedKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedKeysResponse]{
 		More: func(page ListDeletedKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1080,7 +1080,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
 func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *runtime.Pager[ListPropertiesOfKeyVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ListPropertiesOfKeyVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfKeyVersionsResponse]{
 		More: func(page ListPropertiesOfKeyVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

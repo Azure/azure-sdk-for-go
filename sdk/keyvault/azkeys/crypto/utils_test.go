@@ -98,8 +98,8 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
+func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{
 		Token:     "faketoken",
 		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
 	}, nil

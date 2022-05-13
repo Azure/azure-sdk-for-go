@@ -375,7 +375,7 @@ func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedKeysOptions contains the optional parameters for the KeyVaultClient.GetDeletedKeys method.
 func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetDeletedKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetDeletedKeysResponse]{
 		More: func(page KeyVaultClientGetDeletedKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -544,7 +544,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Resp
 // keyName - The name of the key.
 // options - KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
 func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeyVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetKeyVersionsResponse]{
 		More: func(page KeyVaultClientGetKeyVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -611,7 +611,7 @@ func (client *KeyVaultClient) GetKeyVersionsHandleResponse(resp *http.Response) 
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
 func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KeyVaultClientGetKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetKeysResponse]{
 		More: func(page KeyVaultClientGetKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

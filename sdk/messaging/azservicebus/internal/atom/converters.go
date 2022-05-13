@@ -5,7 +5,7 @@ package atom
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvider) *QueueEnvelope {

@@ -1,5 +1,5 @@
 // Copyright (C) 2017 Kale Blankenship
-// Portions Copyright (C) Microsoft Corporation
+// Portions Copyright (c) Microsoft Corporation
 package amqp
 
 import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"

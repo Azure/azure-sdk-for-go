@@ -2,7 +2,7 @@
 // +build !debug
 
 // Copyright (C) 2017 Kale Blankenship
-// Portions Copyright (C) Microsoft Corporation
+// Portions Copyright (c) Microsoft Corporation
 package amqp
 
 // dummy functions used when debugging is not enabled

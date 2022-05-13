@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:25:45 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
     method: PUT
   response:
     body: ""
@@ -23,22 +23,24 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:25:45 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       Etag:
-      - '"0x8DA1891BDCBD083"'
+      - '"0x8DA347696E93B6C"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:25:45 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4fd063c2-901e-0077-0d7a-4a5aec000000
+      - 831774f0-301e-0046-525f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
     code: 201
     duration: ""
 - request:
-    body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2021-06-11T20:00:00Z</Expiry><Start>2049-06-11T20:00:00Z</Start></AccessPolicy><Id>0000</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2021-06-11T20:00:00Z</Expiry><Start>2049-06-11T20:00:00Z</Start></AccessPolicy><Id>0001</Id></SignedIdentifier></SignedIdentifiers>
+    body: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2021-06-11T20:00:00Z</Expiry><Start>2049-06-11T20:00:00Z</Start></AccessPolicy><Id>0000</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2021-06-11T20:00:00Z</Expiry><Start>2049-06-11T20:00:00Z</Start></AccessPolicy><Id>0001</Id></SignedIdentifier></SignedIdentifiers>
     form: {}
     headers:
       Accept:
@@ -46,18 +48,18 @@ interactions:
       Authorization:
       - sanitized
       Content-Length:
-      - "393"
+      - "432"
       Content-Type:
       - application/xml
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:25:45 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?comp=acl&restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?comp=acl&restype=container
     method: PUT
   response:
     body: ""
@@ -65,15 +67,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:25:46 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       Etag:
-      - '"0x8DA1891BE0A2077"'
+      - '"0x8DA347696F4C1D5"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:25:46 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4fd065cc-901e-0077-577a-4a5aec000000
+      - 831774f9-301e-0046-595f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -88,12 +90,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:25:45 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
     method: DELETE
   response:
     body: ""
@@ -101,11 +103,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:25:46 GMT
+      - Fri, 13 May 2022 00:21:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4fd067aa-901e-0077-017a-4a5aec000000
+      - 83177517-301e-0046-725f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

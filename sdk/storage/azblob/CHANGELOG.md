@@ -1,14 +1,9 @@
 # Release History
 
-## 0.4.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.4.1 (2022-05-12)
 
 ### Other Changes
+* Updated to latest `azcore` and `internal` modules
 
 ## 0.4.0 (2022-04-19)
 

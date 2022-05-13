@@ -83,9 +83,34 @@ const (
 )
 
 // NewRecording initializes a new Recording instance
+// Deprecated: use NewRecordingWithOptions instead.
 func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
+	return NewRecordingWithOptions(c, mode, &NewRecordingOptions{
+		// preserve the old behavior to avoid a breaking change
+		PathToRecordings: "recordings/",
+	})
+}
+
+// NewRecordingOptions contains the optional parameters when creating a Recording.
+type NewRecordingOptions struct {
+	// PathToRecordings is used to specify a custom path to the recording files.
+	// When empty, it defaults to testdata/recordings/.
+	// NOTE: recordings should *always* be under the testdata directory.
+	PathToRecordings string
+}
+
+// NewRecording initializes a new Recording instance
+func NewRecordingWithOptions(c TestContext, mode RecordMode, opts *NewRecordingOptions) (*Recording, error) {
+	if opts == nil {
+		opts = &NewRecordingOptions{}
+	}
+	cp := *opts
+	if cp.PathToRecordings == "" {
+		cp.PathToRecordings = "testdata/recordings/"
+	}
+
 	// create recorder based on the test name, recordMode, variables, and sanitizers
-	recPath, varPath := getFilePaths(c.Name())
+	recPath, varPath := getFilePaths(cp.PathToRecordings, c.Name())
 	rec, err := recorder.NewAsMode(recPath, modeMap[mode], nil)
 	if err != nil {
 		return nil, err
@@ -383,8 +408,16 @@ func (r *Recording) initNow() {
 }
 
 // getFilePaths returns (recordingFilePath, variablesFilePath)
-func getFilePaths(name string) (string, string) {
-	recPath := "recordings/" + name
+func getFilePaths(path, name string) (string, string) {
+	var recPath string
+	// normally we'd use filepath.Join but it will convert the
+	// file path separator chars to the OS it's built on.
+	if strings.HasSuffix(path, "/") {
+		recPath = path + name
+	} else {
+		recPath = path + "/" + name
+	}
+
 	varPath := fmt.Sprintf("%s-variables.yaml", recPath)
 	return recPath, varPath
 }

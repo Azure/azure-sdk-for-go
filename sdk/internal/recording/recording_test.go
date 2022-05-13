@@ -614,3 +614,13 @@ func TestVariables(t *testing.T) {
 		require.NoError(t, err)
 	}()
 }
+
+func TestGetFilePaths(t *testing.T) {
+	path, vars := getFilePaths("custom/path1", "test1")
+	require.Equal(t, "custom/path1/test1", path)
+	require.Equal(t, "custom/path1/test1-variables.yaml", vars)
+
+	path, vars = getFilePaths("custom/path2/", "test1")
+	require.Equal(t, "custom/path2/test1", path)
+	require.Equal(t, "custom/path2/test1-variables.yaml", vars)
+}

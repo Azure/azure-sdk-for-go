@@ -1,14 +1,16 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0 (Unreleased)
 
 ### Features Added
+* Added `recording.NewRecordingWithOptions` and corresponding `NewRecordingOptions` type to allow specifying custom recordings directory.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* The default recordings directory for `recording.NewRecordingWithOptions` is now under `testdata`.  The old constructor is unaffected.
 
 ## 1.0.0 (2022-05-12)
 

@@ -39,6 +39,8 @@ func FiniteSendAndReceiveTest(remainingArgs []string) {
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("failed to create sender", err)
 
+	// 50000 isn't particularly special, but it does give us a decent # of receives
+	// so we get a decent view into our performance.
 	const messageLimit = 50000
 
 	log.Printf("Sending %d messages (all messages will be sent before receiving begins)", messageLimit)

@@ -32,10 +32,17 @@ func ConstantDetachment(remainingArgs []string) {
 	sender, err := client.NewSender(queueName, nil)
 	sc.PanicOnError("create a sender", err)
 
+	// this number isn't too special, but it gives us long enough so that
+	// we are guaranteed that these detaches will interfere with our receiving.
+	// Bug filed for this particular test, pertaining to settlement counting:
+	//   https://github.com/Azure/azure-sdk-for-go/issues/17945)
 	const maxMessages = 20000
 
 	shared.MustGenerateMessages(sc, sender, maxMessages, 1024, stats)
 
+	// We'll give it a little time for the messages to show up in the runtime properties.
+	// Just a simple sanity check that we don't have a bug in our message generator and that
+	// they all exist on the remote entity.
 	time.Sleep(10 * time.Second)
 
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)

@@ -10,7 +10,7 @@ package armextendedlocation
 
 const (
 	moduleName    = "armextendedlocation"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.4.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

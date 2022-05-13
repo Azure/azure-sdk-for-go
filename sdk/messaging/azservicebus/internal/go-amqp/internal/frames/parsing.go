@@ -1,3 +1,5 @@
+// Copyright (C) 2017 Kale Blankenship
+// Portions Copyright (C) Microsoft Corporation
 package frames
 
 import (

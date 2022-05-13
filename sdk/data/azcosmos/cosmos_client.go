@@ -34,7 +34,7 @@ func (c *Client) Endpoint() string {
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
 func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*Client, error) {
-	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{newSharedKeyCredPolicy(cred)}, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newSharedKeyCredPolicy(cred), o)}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -46,10 +46,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, pipeline: newPipeline([]policy.Policy{azruntime.NewBearerTokenPolicy(cred, scope, nil), &cosmosBearerTokenPolicy{}}, o)}, nil
+	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
 }
 
-func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.Pipeline {
+func newPipeline(authPolicy policy.Policy, options *ClientOptions) azruntime.Pipeline {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -61,7 +61,9 @@ func newPipeline(authPolicy []policy.Policy, options *ClientOptions) azruntime.P
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
 				},
 			},
-			PerRetry: authPolicy,
+			PerRetry: []policy.Policy{
+				authPolicy,
+			},
 		},
 		&options.ClientOptions)
 }

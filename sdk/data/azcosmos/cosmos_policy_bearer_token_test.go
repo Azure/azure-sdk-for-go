@@ -135,8 +135,8 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	}
 	b := newCosmosBearerTokenPolicy(mockCredential{}, nil, nil)
 	pipeline := runtime.NewPipeline("azcosmostest", "v1.0.0", runtime.PipelineOptions{}, &policy.ClientOptions{
-		Transport: srv,
-		Retry: retryOpts,
+		Transport:        srv,
+		Retry:            retryOpts,
 		PerRetryPolicies: []policy.Policy{b}})
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {

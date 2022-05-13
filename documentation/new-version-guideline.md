@@ -35,70 +35,6 @@ for pager.More() {
 
 > NOTE: No IO calls are made until the NextPage() method is invoked. The read consistency across pages is determined by the service implement.
 
-### Item iterator
-
-If you do not care about the underlaying detail about the pageable operation, you can use the following generic utility to create a per-item iterator for all pageable operation.
-
-***Item iterator utility***
-
-```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-```
-
-```go
-type PageConstraint[TItem any] interface {
-	Items() []*TItem
-}
-
-type Iterator[TItem any, TPage PageConstraint[TItem]] struct {
-	pager *runtime.Pager[TPage]
-	cur   []*TItem
-	index int
-}
-
-func (iter *Iterator[TItem, TPage]) More() bool {
-	return iter.pager.More() || iter.index < len(iter.cur)
-}
-
-func (iter *Iterator[TItem, TPage]) NextItem(ctx context.Context) (*TItem, error) {
-	if iter.index == len(iter.cur) && !iter.pager.More() {
-		return nil, errors.New("no more items")
-	}
-	if iter.cur == nil || iter.index == len(iter.cur) {
-		// first page or page exhausted
-		page, err := iter.pager.NextPage(ctx)
-		if err != nil {
-			return nil, err
-		}
-		iter.cur = page.Items()
-		iter.index = 0
-	}
-	item := iter.cur[iter.index]
-	// advance item
-	iter.index++
-	return item, nil
-}
-
-func NewIterator[TItem any, TPage PageConstraint[TItem]](pager *runtime.Pager[TPage]) *Iterator[TItem, TPage] {
-	return &Iterator[TItem, TPage]{
-		pager: pager,
-	}
-}
-```
-
-***Usage***
-```go
-ctx := context.TODO() // your context
-iter := NewIterator[armresources.ResourceGroup](rgClient.NewListPager(nil))
-for iter.More() {
-    rg, err := iter.NextItem(ctx)
-    if err != nil {
-        // handle error...
-    }
-    // dealing with `rg`
-}
-```
-
 ### Reference
 
 For more information, you can refer to [design guidelines of Paging](https://azure.github.io/azure-sdk/golang_introduction.html#methods-returning-collections-paging) and [API reference of pager](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime#Pager).
@@ -115,14 +51,12 @@ poller, err := client.BeginCreate(ctx, "resource_identifier", "additonal_paramet
 if err != nil {
     // handle error...
 }
-resp, err = poller.PollUntilDone(ctx, 5 * time.Second)
+resp, err = poller.PollUntilDone(ctx, nil)
 if err != nil {
     // handle error...
 }
 // dealing with `resp`
 ```
-
-> NOTE: You will need to pass a polling interval to `PollUntilDone` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on best practices and recommended intervals for your specific use cases.
 
 ### Resume Tokens
 
@@ -149,7 +83,7 @@ if err != nil {
 poller, err = client.BeginCreate(ctx, "", "", &armresources.ResourceGroupsClientBeginCreateOptions{
     ResumeToken: token,
 })
-resp, err = poller.PollUntilDone(ctx, 5 * time.Second)
+resp, err = poller.PollUntilDone(ctx, nil)
 if err != nil {
     // handle error...
 }
@@ -162,10 +96,12 @@ if err != nil {
 
 If you do not care about the underlaying detail about the LRO, you can use the following generic utility to create an synchronized wrapper for all LRO.
 
+> NOTE: The error return of `Wait` includes the error of starting LRO and error of interval polling. Also, the wrapper will hide the `poller` which means you cannot recovery from an LRO accidentally interrupt. 
+
 ***Synchronized wrapper utility***
 
 ```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 ```
 
 ```go

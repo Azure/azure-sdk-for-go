@@ -136,7 +136,7 @@ poller, err := client.BeginCreateOrUpdate(context.TODO(), "<resource group name>
 if err != nil {
     log.Fatal(err)
 }
-resp, err := poller.PollUntilDone(context.TODO(), 30*time.Second)
+resp, err := poller.PollUntilDone(context.TODO(), nil)
 if err != nil {
     log.Fatal(err)
 }

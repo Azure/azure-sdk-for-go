@@ -273,7 +273,7 @@ func deleteResourceGroup(ctx context.Context, credential azcore.TokenCredential)
     if err != nil {
         return err
     }
-    _, err = poller.PollUntilDone(ctx, interval)
+    _, err = poller.PollUntilDone(ctx, nil)
     return err
 }
 ```

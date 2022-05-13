@@ -7,8 +7,6 @@ Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservic
 - Send messages to an Azure Service Bus Queue or Topic
 - Receive messages from an Azure Service Bus Queue or Subscription
 
-**NOTE**: This library is currently a preview. There may be breaking interface changes until it reaches semantic version `v1.0.0`.
-
 Key links:
 - [Source code][source]
 - [API Reference Documentation][godoc]

@@ -1,14 +1,10 @@
 # Release History
 
-## 0.4.2 (Unreleased)
+## 1.0.0 (2022-05-16)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- First stable release of the azservicebus package.
 
 ## 0.4.1 (2022-05-12)
 

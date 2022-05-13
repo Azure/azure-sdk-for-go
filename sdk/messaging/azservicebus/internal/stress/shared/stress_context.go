@@ -65,7 +65,7 @@ func MustCreateStressContext(testName string) *StressContext {
 
 	ctx, cancel := NewCtrlCContext()
 
-	azlog.SetEvents(azservicebus.EventAdmin, azservicebus.EventAuth, azservicebus.EventConn, azservicebus.EventReceiver, azservicebus.EventSender)
+	azlog.SetEvents(azservicebus.EventSender, azservicebus.EventReceiver, azservicebus.EventConn, azservicebus.EventAuth)
 
 	logMessages := make(chan string, 10000)
 

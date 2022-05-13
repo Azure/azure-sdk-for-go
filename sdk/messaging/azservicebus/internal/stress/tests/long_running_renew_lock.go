@@ -5,6 +5,7 @@ package tests
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"time"
@@ -50,7 +51,7 @@ func LongRunningRenewLockTest(remainingArgs []string) {
 		i++
 		err := receiver.RenewMessageLock(ctx, messages[0], nil)
 
-		if err == context.Canceled || err == context.DeadlineExceeded {
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 			log.Printf("Cancellation/deadline exceeded. Can stop, will complete message now")
 
 			err = receiver.CompleteMessage(context.Background(), messages[0], nil)

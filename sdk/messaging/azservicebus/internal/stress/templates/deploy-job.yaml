@@ -16,6 +16,7 @@ spec:
       args: 
       - "tests"
       # (this is injected automatically. The full list of scenarios is in `../values.yaml`)
-      - {{ .Scenario }}
+      - {{ .Stress.Scenario }}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
+

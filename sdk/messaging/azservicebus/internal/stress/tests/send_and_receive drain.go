@@ -77,14 +77,8 @@ func SendAndReceiveDrain(remainingArgs []string) {
 			log.Printf("Got %d messages, completing...", len(messages))
 
 			for _, m := range messages {
-				body, err := m.Body()
-
-				if err != nil {
-					panic(err)
-				}
-
-				if len(body) != bodyLen {
-					sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", bodyLen, len(body)))
+				if len(m.Body) != bodyLen {
+					sc.PanicOnError("Body length issue", fmt.Errorf("Invalid body length - expected %d, got %d", bodyLen, len(m.Body)))
 				}
 
 				if err := receiver.CompleteMessage(sc.Context, m, nil); err != nil {

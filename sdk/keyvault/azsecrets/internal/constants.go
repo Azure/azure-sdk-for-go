@@ -10,7 +10,7 @@ package internal
 
 const (
 	ModuleName    = "azsecrets"
-	ModuleVersion = "v0.7.1"
+	ModuleVersion = "v0.7.2"
 )
 
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for secrets in the current vault. If it

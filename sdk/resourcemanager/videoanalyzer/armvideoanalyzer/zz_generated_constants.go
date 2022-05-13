@@ -10,7 +10,7 @@ package armvideoanalyzer
 
 const (
 	moduleName    = "armvideoanalyzer"
-	moduleVersion = "v0.4.1"
+	moduleVersion = "v0.4.2"
 )
 
 // AccessPolicyEccAlgo - Elliptical curve algorithm to be used: ES256, ES384 or ES512.

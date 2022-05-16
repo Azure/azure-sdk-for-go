@@ -23,12 +23,12 @@ func ExampleProviderResourceTypesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresources.NewProviderResourceTypesClient("<subscription-id>", cred, nil)
+	client, err := armresources.NewProviderResourceTypesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-provider-namespace>",
+		"Microsoft.TestRP",
 		&armresources.ProviderResourceTypesClientListOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

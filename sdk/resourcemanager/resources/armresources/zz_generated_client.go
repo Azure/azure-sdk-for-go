@@ -39,7 +39,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 }
 
 // CheckExistence - Checks whether a resource exists.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group containing the resource to check. The name is case insensitive.
 // resourceProviderNamespace - The resource provider of the resource to check.
 // parentResourcePath - The parent resource identity.
@@ -72,11 +73,10 @@ func (client *Client) CheckExistence(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClientCheckExistenceResponse{}, err
 	}
-	result := ClientCheckExistenceResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent, http.StatusNotFound) {
+		return ClientCheckExistenceResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return ClientCheckExistenceResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkExistenceCreateRequest creates the CheckExistence request.
@@ -107,11 +107,12 @@ func (client *Client) checkExistenceCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CheckExistenceByID - Checks by ID whether a resource exists.
+// Generated from API version 2021-04-01
 // resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
@@ -125,11 +126,10 @@ func (client *Client) CheckExistenceByID(ctx context.Context, resourceID string,
 	if err != nil {
 		return ClientCheckExistenceByIDResponse{}, err
 	}
-	result := ClientCheckExistenceByIDResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent, http.StatusNotFound) {
+		return ClientCheckExistenceByIDResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return ClientCheckExistenceByIDResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkExistenceByIDCreateRequest creates the CheckExistenceByID request.
@@ -143,12 +143,13 @@ func (client *Client) checkExistenceByIDCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Creates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group for the resource. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
 // parentResourcePath - The parent resource identity.
@@ -157,20 +158,21 @@ func (client *Client) checkExistenceByIDCreateRequest(ctx context.Context, resou
 // apiVersion - The API version to use for the operation.
 // parameters - Parameters for creating or updating the resource.
 // options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClientCreateOrUpdateResponse], error) {
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -214,32 +216,34 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginCreateOrUpdateByID - Create a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
 // parameters - Create or update resource parameters.
 // options - ClientBeginCreateOrUpdateByIDOptions contains the optional parameters for the Client.BeginCreateOrUpdateByID
 // method.
-func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*armruntime.Poller[ClientCreateOrUpdateByIDResponse], error) {
+func (client *Client) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*runtime.Poller[ClientCreateOrUpdateByIDResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientCreateOrUpdateByIDResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateOrUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateByID - Create a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginCreateOrUpdateByIDOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
@@ -266,12 +270,13 @@ func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group that contains the resource to delete. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
 // parentResourcePath - The parent resource identity.
@@ -279,20 +284,21 @@ func (client *Client) createOrUpdateByIDCreateRequest(ctx context.Context, resou
 // resourceName - The name of the resource to delete.
 // apiVersion - The API version to use for the operation.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
@@ -336,30 +342,32 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteByID - Deletes a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
 // options - ClientBeginDeleteByIDOptions contains the optional parameters for the Client.BeginDeleteByID method.
-func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*armruntime.Poller[ClientDeleteByIDResponse], error) {
+func (client *Client) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*runtime.Poller[ClientDeleteByIDResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientDeleteByIDResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientDeleteByIDResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteByIDResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteByID - Deletes a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ClientBeginDeleteByIDOptions) (*http.Response, error) {
 	req, err := client.deleteByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
@@ -386,12 +394,13 @@ func (client *Client) deleteByIDCreateRequest(ctx context.Context, resourceID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group containing the resource to get. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
 // parentResourcePath - The parent resource identity.
@@ -442,7 +451,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -457,6 +466,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // GetByID - Gets a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
@@ -487,7 +497,7 @@ func (client *Client) getByIDCreateRequest(ctx context.Context, resourceID strin
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -502,9 +512,10 @@ func (client *Client) getByIDHandleResponse(resp *http.Response) (ClientGetByIDR
 
 // NewListPager - Get all the resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -554,7 +565,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	}
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -569,10 +580,11 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListByResourceGroupPager - Get all the resources for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The resource group with the resources to get.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
 func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -626,7 +638,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 	}
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -644,18 +656,19 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 // source group and the target group are locked for the duration of the operation. Write and delete operations are blocked
 // on the groups until the move completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // sourceResourceGroupName - The name of the resource group from the source subscription containing the resources to be moved.
 // parameters - Parameters for moving resources.
 // options - ClientBeginMoveResourcesOptions contains the optional parameters for the Client.BeginMoveResources method.
-func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*armruntime.Poller[ClientMoveResourcesResponse], error) {
+func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*runtime.Poller[ClientMoveResourcesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientMoveResourcesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientMoveResourcesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientMoveResourcesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientMoveResourcesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -664,6 +677,7 @@ func (client *Client) BeginMoveResources(ctx context.Context, sourceResourceGrou
 // source group and the target group are locked for the duration of the operation. Write and delete operations are blocked
 // on the groups until the move completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) moveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginMoveResourcesOptions) (*http.Response, error) {
 	req, err := client.moveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -697,12 +711,13 @@ func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceReso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginUpdate - Updates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group for the resource. The name is case insensitive.
 // resourceProviderNamespace - The namespace of the resource provider.
 // parentResourcePath - The parent resource identity.
@@ -711,20 +726,21 @@ func (client *Client) moveResourcesCreateRequest(ctx context.Context, sourceReso
 // apiVersion - The API version to use for the operation.
 // parameters - Parameters for updating the resource.
 // options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*armruntime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -768,31 +784,33 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginUpdateByID - Updates a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceID - The fully qualified ID of the resource, including the resource name and resource type. Use the format,
 // /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}
 // apiVersion - The API version to use for the operation.
 // parameters - Update resource parameters.
 // options - ClientBeginUpdateByIDOptions contains the optional parameters for the Client.BeginUpdateByID method.
-func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*armruntime.Poller[ClientUpdateByIDResponse], error) {
+func (client *Client) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*runtime.Poller[ClientUpdateByIDResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientUpdateByIDResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientUpdateByIDResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientUpdateByIDResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateByIDResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdateByID - Updates a resource by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ClientBeginUpdateByIDOptions) (*http.Response, error) {
 	req, err := client.updateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
@@ -819,7 +837,7 @@ func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", apiVersion)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -829,20 +847,21 @@ func (client *Client) updateByIDCreateRequest(ctx context.Context, resourceID st
 // If validation fails, it returns HTTP response code 409 (Conflict) with an
 // error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // sourceResourceGroupName - The name of the resource group from the source subscription containing the resources to be validated
 // for move.
 // parameters - Parameters for moving resources.
 // options - ClientBeginValidateMoveResourcesOptions contains the optional parameters for the Client.BeginValidateMoveResources
 // method.
-func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*armruntime.Poller[ClientValidateMoveResourcesResponse], error) {
+func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*runtime.Poller[ClientValidateMoveResourcesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientValidateMoveResourcesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientValidateMoveResourcesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientValidateMoveResourcesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientValidateMoveResourcesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -852,6 +871,7 @@ func (client *Client) BeginValidateMoveResources(ctx context.Context, sourceReso
 // If validation fails, it returns HTTP response code 409 (Conflict) with an
 // error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *Client) validateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters MoveInfo, options *ClientBeginValidateMoveResourcesOptions) (*http.Response, error) {
 	req, err := client.validateMoveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -885,6 +905,6 @@ func (client *Client) validateMoveResourcesCreateRequest(ctx context.Context, so
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

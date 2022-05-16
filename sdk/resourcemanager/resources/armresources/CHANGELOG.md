@@ -1,5 +1,65 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*DeploymentsClient.BeginDeleteAtSubscriptionScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteAtSubscriptionScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteAtSubscriptionScopeResponse], error)`
+- Function `*Client.BeginDeleteByID` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteByIDResponse], error)` to `(*runtime.Poller[ClientDeleteByIDResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtManagementGroupScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteAtManagementGroupScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteAtManagementGroupScopeResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*ResourceGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ResourceGroupsClientDeleteResponse], error)` to `(*runtime.Poller[ResourceGroupsClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteAtScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteAtScopeResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIfAtManagementGroupScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientWhatIfAtManagementGroupScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientWhatIfAtManagementGroupScopeResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIfAtTenantScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientWhatIfAtTenantScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientWhatIfAtTenantScopeResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginValidateMoveResources` return value(s) have been changed from `(*armruntime.Poller[ClientValidateMoveResourcesResponse], error)` to `(*runtime.Poller[ClientValidateMoveResourcesResponse], error)`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientValidateResponse], error)` to `(*runtime.Poller[DeploymentsClientValidateResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtManagementGroupScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientValidateAtManagementGroupScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientValidateAtManagementGroupScopeResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtSubscriptionScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientValidateAtSubscriptionScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientValidateAtSubscriptionScopeResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientValidateAtScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientValidateAtScopeResponse], error)`
+- Function `*DeploymentsClient.BeginValidateAtTenantScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientValidateAtTenantScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientValidateAtTenantScopeResponse], error)`
+- Function `*Client.BeginCreateOrUpdateByID` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateByIDResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateByIDResponse], error)`
+- Function `*Client.BeginMoveResources` return value(s) have been changed from `(*armruntime.Poller[ClientMoveResourcesResponse], error)` to `(*runtime.Poller[ClientMoveResourcesResponse], error)`
+- Function `*DeploymentsClient.BeginDeleteAtTenantScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteAtTenantScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteAtTenantScopeResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], error)`
+- Function `*Client.BeginUpdateByID` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateByIDResponse], error)` to `(*runtime.Poller[ClientUpdateByIDResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtTenantScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateAtTenantScopeResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateAtScopeResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], error)`
+- Function `*ResourceGroupsClient.BeginExportTemplate` return value(s) have been changed from `(*armruntime.Poller[ResourceGroupsClientExportTemplateResponse], error)` to `(*runtime.Poller[ResourceGroupsClientExportTemplateResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIfAtSubscriptionScope` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientWhatIfAtSubscriptionScopeResponse], error)` to `(*runtime.Poller[DeploymentsClientWhatIfAtSubscriptionScopeResponse], error)`
+- Function `*DeploymentsClient.BeginWhatIf` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientWhatIfResponse], error)` to `(*runtime.Poller[DeploymentsClientWhatIfResponse], error)`
+- Function `DeploymentPropertiesExtended.MarshalJSON` has been removed
+- Function `TagsListResult.MarshalJSON` has been removed
+- Function `Permission.MarshalJSON` has been removed
+- Function `ProviderExtendedLocation.MarshalJSON` has been removed
+- Function `Provider.MarshalJSON` has been removed
+- Function `Dependency.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ProviderResourceType.MarshalJSON` has been removed
+- Function `WhatIfChange.MarshalJSON` has been removed
+- Function `DeploymentListResult.MarshalJSON` has been removed
+- Function `ResourceGroupListResult.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `Alias.MarshalJSON` has been removed
+- Function `ProviderPermissionListResult.MarshalJSON` has been removed
+- Function `RoleDefinition.MarshalJSON` has been removed
+- Function `ZoneMapping.MarshalJSON` has been removed
+- Function `ProviderResourceTypeListResult.MarshalJSON` has been removed
+- Function `ProviderListResult.MarshalJSON` has been removed
+- Function `AliasPath.MarshalJSON` has been removed
+- Function `DeploymentOperationsListResult.MarshalJSON` has been removed
+- Function `WhatIfPropertyChange.MarshalJSON` has been removed
+- Function `WhatIfOperationProperties.MarshalJSON` has been removed
+- Function `TagDetails.MarshalJSON` has been removed
+- Function `ResourceListResult.MarshalJSON` has been removed
+- Function `DeploymentOperationProperties.MarshalJSON` has been removed
+- Function `DeploymentExtended.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,15 +24,15 @@ func ExampleDiskRestorePointClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewDiskRestorePointClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewDiskRestorePointClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<restore-point-collection-name>",
-		"<vm-restore-point-name>",
-		"<disk-restore-point-name>",
+		"myResourceGroup",
+		"rpc",
+		"vmrp",
+		"TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,19 +48,18 @@ func ExampleDiskRestorePointClient_NewListByRestorePointPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewDiskRestorePointClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewDiskRestorePointClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRestorePointPager("<resource-group-name>",
-		"<restore-point-collection-name>",
-		"<vm-restore-point-name>",
+	pager := client.NewListByRestorePointPager("myResourceGroup",
+		"rpc",
+		"vmrp",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -78,24 +75,24 @@ func ExampleDiskRestorePointClient_BeginGrantAccess() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewDiskRestorePointClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewDiskRestorePointClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginGrantAccess(ctx,
-		"<resource-group-name>",
-		"<restore-point-collection-name>",
-		"<vm-restore-point-name>",
-		"<disk-restore-point-name>",
+		"myResourceGroup",
+		"rpc",
+		"vmrp",
+		"TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
 		armcompute.GrantAccessData{
 			Access:            to.Ptr(armcompute.AccessLevelRead),
 			DurationInSeconds: to.Ptr[int32](300),
 		},
-		&armcompute.DiskRestorePointClientBeginGrantAccessOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -110,20 +107,20 @@ func ExampleDiskRestorePointClient_BeginRevokeAccess() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewDiskRestorePointClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewDiskRestorePointClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRevokeAccess(ctx,
-		"<resource-group-name>",
-		"<restore-point-collection-name>",
-		"<vm-restore-point-name>",
-		"<disk-restore-point-name>",
-		&armcompute.DiskRestorePointClientBeginRevokeAccessOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"rpc",
+		"vmrp",
+		"TestDisk45ceb03433006d1baee0_b70cd924-3362-4a80-93c2-9415eaa12745",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

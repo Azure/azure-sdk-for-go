@@ -19,24 +19,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListVirtualMachinesInASubscriptionByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListBySubscription_ByLocation.json
 func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("<location>",
+	pager := client.NewListByLocationPager("eastus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -45,30 +44,30 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Capture_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Capture_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCapture(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaa",
 		armcompute.VirtualMachineCaptureParameters{
-			DestinationContainerName: to.Ptr("<destination-container-name>"),
+			DestinationContainerName: to.Ptr("aaaaaaa"),
 			OverwriteVhds:            to.Ptr(true),
-			VhdPrefix:                to.Ptr("<vhd-prefix>"),
+			VhdPrefix:                to.Ptr("aaaaaaaaa"),
 		},
-		&armcompute.VirtualMachinesClientBeginCaptureOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -76,22 +75,22 @@ func ExampleVirtualMachinesClient_BeginCapture() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateALinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVM",
 		armcompute.VirtualMachine{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armcompute.VirtualMachineProperties{
 				HardwareProfile: &armcompute.HardwareProfile{
 					VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
@@ -99,16 +98,16 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 				NetworkProfile: &armcompute.NetworkProfile{
 					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
 								Primary: to.Ptr(true),
 							},
 						}},
 				},
 				OSProfile: &armcompute.OSProfile{
-					AdminPassword: to.Ptr("<admin-password>"),
-					AdminUsername: to.Ptr("<admin-username>"),
-					ComputerName:  to.Ptr("<computer-name>"),
+					AdminPassword: to.Ptr("{your-password}"),
+					AdminUsername: to.Ptr("{your-username}"),
+					ComputerName:  to.Ptr("myVM"),
 					LinuxConfiguration: &armcompute.LinuxConfiguration{
 						PatchSettings: &armcompute.LinuxPatchSettings{
 							AssessmentMode: to.Ptr(armcompute.LinuxPatchAssessmentModeImageDefault),
@@ -118,13 +117,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 				},
 				StorageProfile: &armcompute.StorageProfile{
 					ImageReference: &armcompute.ImageReference{
-						Offer:     to.Ptr("<offer>"),
-						Publisher: to.Ptr("<publisher>"),
-						SKU:       to.Ptr("<sku>"),
-						Version:   to.Ptr("<version>"),
+						Offer:     to.Ptr("UbuntuServer"),
+						Publisher: to.Ptr("Canonical"),
+						SKU:       to.Ptr("16.04-LTS"),
+						Version:   to.Ptr("latest"),
 					},
 					OSDisk: &armcompute.OSDisk{
-						Name:         to.Ptr("<name>"),
+						Name:         to.Ptr("myVMosdisk"),
 						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
 						ManagedDisk: &armcompute.ManagedDiskParameters{
@@ -134,11 +133,11 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armcompute.VirtualMachinesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -146,20 +145,20 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/UpdateVMDetachDataDiskUsingToBeDetachedProperty.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
 func ExampleVirtualMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVM",
 		armcompute.VirtualMachineUpdate{
 			Properties: &armcompute.VirtualMachineProperties{
 				HardwareProfile: &armcompute.HardwareProfile{
@@ -168,16 +167,16 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 				NetworkProfile: &armcompute.NetworkProfile{
 					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
 								Primary: to.Ptr(true),
 							},
 						}},
 				},
 				OSProfile: &armcompute.OSProfile{
-					AdminPassword: to.Ptr("<admin-password>"),
-					AdminUsername: to.Ptr("<admin-username>"),
-					ComputerName:  to.Ptr("<computer-name>"),
+					AdminPassword: to.Ptr("{your-password}"),
+					AdminUsername: to.Ptr("{your-username}"),
+					ComputerName:  to.Ptr("myVM"),
 				},
 				StorageProfile: &armcompute.StorageProfile{
 					DataDisks: []*armcompute.DataDisk{
@@ -194,13 +193,13 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 							ToBeDetached: to.Ptr(false),
 						}},
 					ImageReference: &armcompute.ImageReference{
-						Offer:     to.Ptr("<offer>"),
-						Publisher: to.Ptr("<publisher>"),
-						SKU:       to.Ptr("<sku>"),
-						Version:   to.Ptr("<version>"),
+						Offer:     to.Ptr("WindowsServer"),
+						Publisher: to.Ptr("MicrosoftWindowsServer"),
+						SKU:       to.Ptr("2016-Datacenter"),
+						Version:   to.Ptr("latest"),
 					},
 					OSDisk: &armcompute.OSDisk{
-						Name:         to.Ptr("<name>"),
+						Name:         to.Ptr("myVMosdisk"),
 						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
 						ManagedDisk: &armcompute.ManagedDiskParameters{
@@ -210,11 +209,11 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 				},
 			},
 		},
-		&armcompute.VirtualMachinesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -222,46 +221,44 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ForceDeleteVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginDeleteOptions{ForceDeletion: to.Ptr(true),
-			ResumeToken: "",
-		})
+		"myResourceGroup",
+		"myVM",
+		&armcompute.VirtualMachinesClientBeginDeleteOptions{ForceDeletion: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVM",
 		&armcompute.VirtualMachinesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -270,20 +267,20 @@ func ExampleVirtualMachinesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineInstanceView.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
 func ExampleVirtualMachinesClient_InstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.InstanceView(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVM",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -292,94 +289,91 @@ func ExampleVirtualMachinesClient_InstanceView() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ConvertToManagedDisks_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginConvertToManagedDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginConvertToManagedDisks(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginConvertToManagedDisksOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Deallocate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Deallocate_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeallocate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: to.Ptr(true),
-			ResumeToken: "",
-		})
+		"rgcompute",
+		"aaaaaaaaaa",
+		&armcompute.VirtualMachinesClientBeginDeallocateOptions{Hibernate: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GeneralizeVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Generalize.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Generalize(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_List_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		&armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager("rgcompute",
+		&armcompute.VirtualMachinesClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -388,25 +382,24 @@ func ExampleVirtualMachinesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_ListAll_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListAll_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: to.Ptr("<status-only>"),
-		Filter: to.Ptr("<filter>"),
+	pager := client.NewListAllPager(&armcompute.VirtualMachinesClientListAllOptions{StatusOnly: to.Ptr("aaaaaa"),
+		Filter: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -415,25 +408,24 @@ func ExampleVirtualMachinesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListAvailableVmSizes_VirtualMachines.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_ListAvailableVmSizes.json
 func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAvailableSizesPager("<resource-group-name>",
-		"<vm-name>",
+	pager := client.NewListAvailableSizesPager("myResourceGroup",
+		"myVmName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -442,170 +434,167 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPowerOff(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true),
-			ResumeToken: "",
-		})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		&armcompute.VirtualMachinesClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ReapplyVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Reapply.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReapply(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginReapplyOptions{ResumeToken: ""})
+		"ResourceGroup",
+		"VMName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Restart_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginRestartOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Start_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Start_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginStartOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRedeploy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRedeploy(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginRedeployOptions{ResumeToken: ""})
+		"rgcompute",
+		"a",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ReimageVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReimage(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroup",
+		"myVMName",
 		&armcompute.VirtualMachinesClientBeginReimageOptions{Parameters: &armcompute.VirtualMachineReimageParameters{
 			TempDisk: to.Ptr(true),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RetrieveBootDiagnosticsDataVirtualMachine.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RetrieveBootDiagnosticsData(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"ResourceGroup",
+		"VMName",
 		&armcompute.VirtualMachinesClientRetrieveBootDiagnosticsDataOptions{SasURIExpirationTimeInMinutes: to.Ptr[int32](60)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -614,69 +603,69 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPerformMaintenance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPerformMaintenance(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginPerformMaintenanceOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SimulateEvictionOfVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_SimulateEviction.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SimulateEviction(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"ResourceGroup",
+		"VMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineAssessPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_AssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAssessPatches(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachinesClientBeginAssessPatchesOptions{ResumeToken: ""})
+		"myResourceGroupName",
+		"myVMName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -684,22 +673,22 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineInstallPatches.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachine_InstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginInstallPatches(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"myVMName",
 		armcompute.VirtualMachineInstallPatchesParameters{
-			MaximumDuration: to.Ptr("<maximum-duration>"),
+			MaximumDuration: to.Ptr("PT4H"),
 			RebootSetting:   to.Ptr(armcompute.VMGuestPatchRebootSettingIfRequired),
 			WindowsParameters: &armcompute.WindowsParameters{
 				ClassificationsToInclude: []*armcompute.VMGuestPatchClassificationWindows{
@@ -708,11 +697,11 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 				MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T02:36:43.0539904+00:00"); return t }()),
 			},
 		},
-		&armcompute.VirtualMachinesClientBeginInstallPatchesOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -720,28 +709,28 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachinesClient("24fb23e3-6ba3-41f0-9b6e-e41131d5d61e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRunCommand(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
+		"crptestar98131",
+		"vm3036",
 		armcompute.RunCommandInput{
-			CommandID: to.Ptr("<command-id>"),
+			CommandID: to.Ptr("RunPowerShellScript"),
 		},
-		&armcompute.VirtualMachinesClientBeginRunCommandOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

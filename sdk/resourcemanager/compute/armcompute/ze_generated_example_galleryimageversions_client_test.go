@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,52 +24,52 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-image-name>",
-		"<gallery-image-version-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryImageName",
+		"1.0.0",
 		armcompute.GalleryImageVersion{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armcompute.GalleryImageVersionProperties{
 				PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 					TargetRegions: []*armcompute.TargetRegion{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("West US"),
 							Encryption: &armcompute.EncryptionImages{
 								DataDiskImages: []*armcompute.DataDiskImageEncryption{
 									{
-										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherWestUSDiskEncryptionSet"),
 										Lun:                 to.Ptr[int32](0),
 									},
 									{
-										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"),
 										Lun:                 to.Ptr[int32](1),
 									}},
 								OSDiskImage: &armcompute.OSDiskImageEncryption{
-									DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+									DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myWestUSDiskEncryptionSet"),
 								},
 							},
 							RegionalReplicaCount: to.Ptr[int32](1),
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("East US"),
 							Encryption: &armcompute.EncryptionImages{
 								DataDiskImages: []*armcompute.DataDiskImageEncryption{
 									{
-										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myOtherEastUSDiskEncryptionSet"),
 										Lun:                 to.Ptr[int32](0),
 									},
 									{
-										DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+										DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"),
 										Lun:                 to.Ptr[int32](1),
 									}},
 								OSDiskImage: &armcompute.OSDiskImageEncryption{
-									DiskEncryptionSetID: to.Ptr("<disk-encryption-set-id>"),
+									DiskEncryptionSetID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet"),
 								},
 							},
 							RegionalReplicaCount: to.Ptr[int32](2),
@@ -80,16 +78,16 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate() {
 				},
 				StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
 					Source: &armcompute.GalleryArtifactVersionSource{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
 					},
 				},
 			},
 		},
-		&armcompute.GalleryImageVersionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -104,41 +102,41 @@ func ExampleGalleryImageVersionsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-image-name>",
-		"<gallery-image-version-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryImageName",
+		"1.0.0",
 		armcompute.GalleryImageVersionUpdate{
 			Properties: &armcompute.GalleryImageVersionProperties{
 				PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 					TargetRegions: []*armcompute.TargetRegion{
 						{
-							Name:                 to.Ptr("<name>"),
+							Name:                 to.Ptr("West US"),
 							RegionalReplicaCount: to.Ptr[int32](1),
 						},
 						{
-							Name:                 to.Ptr("<name>"),
+							Name:                 to.Ptr("East US"),
 							RegionalReplicaCount: to.Ptr[int32](2),
 							StorageAccountType:   to.Ptr(armcompute.StorageAccountTypeStandardZRS),
 						}},
 				},
 				StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
 					Source: &armcompute.GalleryArtifactVersionSource{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}"),
 					},
 				},
 			},
 		},
-		&armcompute.GalleryImageVersionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -153,15 +151,15 @@ func ExampleGalleryImageVersionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-image-name>",
-		"<gallery-image-version-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryImageName",
+		"1.0.0",
 		&armcompute.GalleryImageVersionsClientGetOptions{Expand: to.Ptr(armcompute.ReplicationStatusTypesReplicationStatus)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -177,20 +175,20 @@ func ExampleGalleryImageVersionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-image-name>",
-		"<gallery-image-version-name>",
-		&armcompute.GalleryImageVersionsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryImageName",
+		"1.0.0",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -203,19 +201,18 @@ func ExampleGalleryImageVersionsClient_NewListByGalleryImagePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryImageVersionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryImageVersionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGalleryImagePager("<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-image-name>",
+	pager := client.NewListByGalleryImagePager("myResourceGroup",
+		"myGalleryName",
+		"myGalleryImageName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

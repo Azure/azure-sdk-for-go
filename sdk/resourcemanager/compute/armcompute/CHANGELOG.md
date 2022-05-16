@@ -1,5 +1,245 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*VirtualMachinesClient.BeginPowerOff` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientPowerOffResponse], error)` to `(*runtime.Poller[VirtualMachinesClientPowerOffResponse], error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMExtensionsClientDeleteResponse], error)`
+- Function `*VirtualMachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineExtensionsClientUpdateResponse], error)`
+- Function `*GalleryImagesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GalleryImagesClientDeleteResponse], error)` to `(*runtime.Poller[GalleryImagesClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginPerformMaintenance` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientPerformMaintenanceResponse], error)` to `(*runtime.Poller[VirtualMachinesClientPerformMaintenanceResponse], error)`
+- Function `*GalleryApplicationVersionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationVersionsClientDeleteResponse], error)` to `(*runtime.Poller[GalleryApplicationVersionsClientDeleteResponse], error)`
+- Function `*VirtualMachineExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineExtensionsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*CapacityReservationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CapacityReservationsClientDeleteResponse], error)` to `(*runtime.Poller[CapacityReservationsClientDeleteResponse], error)`
+- Function `*CloudServicesClient.BeginPowerOff` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientPowerOffResponse], error)` to `(*runtime.Poller[CloudServicesClientPowerOffResponse], error)`
+- Function `*CloudServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientDeleteResponse], error)` to `(*runtime.Poller[CloudServicesClientDeleteResponse], error)`
+- Function `*DiskAccessesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskAccessesClientUpdateResponse], error)` to `(*runtime.Poller[DiskAccessesClientUpdateResponse], error)`
+- Function `*GalleryImageVersionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryImageVersionsClientUpdateResponse], error)` to `(*runtime.Poller[GalleryImageVersionsClientUpdateResponse], error)`
+- Function `*DiskAccessesClient.BeginUpdateAPrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[DiskAccessesClientUpdateAPrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[DiskAccessesClientUpdateAPrivateEndpointConnectionResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginRebuild` return value(s) have been changed from `(*armruntime.Poller[CloudServiceRoleInstancesClientRebuildResponse], error)` to `(*runtime.Poller[CloudServiceRoleInstancesClientRebuildResponse], error)`
+- Function `*DiskAccessesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DiskAccessesClientDeleteResponse], error)` to `(*runtime.Poller[DiskAccessesClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginDeallocate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientDeallocateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientDeallocateResponse], error)`
+- Function `*RestorePointCollectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RestorePointCollectionsClientDeleteResponse], error)` to `(*runtime.Poller[RestorePointCollectionsClientDeleteResponse], error)`
+- Function `*DisksClient.BeginRevokeAccess` return value(s) have been changed from `(*armruntime.Poller[DisksClientRevokeAccessResponse], error)` to `(*runtime.Poller[DisksClientRevokeAccessResponse], error)`
+- Function `*CapacityReservationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[CapacityReservationsClientUpdateResponse], error)` to `(*runtime.Poller[CapacityReservationsClientUpdateResponse], error)`
+- Function `*DiskEncryptionSetsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskEncryptionSetsClientUpdateResponse], error)` to `(*runtime.Poller[DiskEncryptionSetsClientUpdateResponse], error)`
+- Function `*GalleryImageVersionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GalleryImageVersionsClientDeleteResponse], error)` to `(*runtime.Poller[GalleryImageVersionsClientDeleteResponse], error)`
+- Function `*DiskEncryptionSetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DiskEncryptionSetsClientDeleteResponse], error)` to `(*runtime.Poller[DiskEncryptionSetsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientDeleteResponse], error)`
+- Function `*DisksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DisksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DisksClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientUpdateResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineRunCommandsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineRunCommandsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRedeployResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientRedeployResponse], error)`
+- Function `*DisksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DisksClientUpdateResponse], error)` to `(*runtime.Poller[DisksClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientRestartResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientRestartResponse], error)`
+- Function `*GalleryImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryImagesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GalleryImagesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRunCommand` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRunCommandResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientRunCommandResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimageAll` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageAllResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientReimageAllResponse], error)`
+- Function `*GalleryImageVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryImageVersionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GalleryImageVersionsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientUpdateResponse], error)`
+- Function `*RestorePointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RestorePointsClientDeleteResponse], error)` to `(*runtime.Poller[RestorePointsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientStartResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientStartResponse], error)`
+- Function `*GalleriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleriesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GalleriesClientCreateOrUpdateResponse], error)`
+- Function `*DiskAccessesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskAccessesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DiskAccessesClientCreateOrUpdateResponse], error)`
+- Function `*GalleryApplicationVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationVersionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GalleryApplicationVersionsClientCreateOrUpdateResponse], error)`
+- Function `*DiskAccessesClient.BeginDeleteAPrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[DiskAccessesClientDeleteAPrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[DiskAccessesClientDeleteAPrivateEndpointConnectionResponse], error)`
+- Function `*CloudServicesUpdateDomainClient.BeginWalkUpdateDomain` return value(s) have been changed from `(*armruntime.Poller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse], error)` to `(*runtime.Poller[CloudServicesUpdateDomainClientWalkUpdateDomainResponse], error)`
+- Function `*DedicatedHostsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[DedicatedHostsClientRestartResponse], error)` to `(*runtime.Poller[DedicatedHostsClientRestartResponse], error)`
+- Function `*GalleriesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GalleriesClientDeleteResponse], error)` to `(*runtime.Poller[GalleriesClientDeleteResponse], error)`
+- Function `*GalleryApplicationVersionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationVersionsClientUpdateResponse], error)` to `(*runtime.Poller[GalleryApplicationVersionsClientUpdateResponse], error)`
+- Function `*GalleryImagesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryImagesClientUpdateResponse], error)` to `(*runtime.Poller[GalleryImagesClientUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CloudServicesClientCreateOrUpdateResponse], error)`
+- Function `*SnapshotsClient.BeginRevokeAccess` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientRevokeAccessResponse], error)` to `(*runtime.Poller[SnapshotsClientRevokeAccessResponse], error)`
+- Function `*SnapshotsClient.BeginGrantAccess` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientGrantAccessResponse], error)` to `(*runtime.Poller[SnapshotsClientGrantAccessResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientCreateOrUpdateResponse], error)`
+- Function `*LogAnalyticsClient.BeginExportThrottledRequests` return value(s) have been changed from `(*armruntime.Poller[LogAnalyticsClientExportThrottledRequestsResponse], error)` to `(*runtime.Poller[LogAnalyticsClientExportThrottledRequestsResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientReimageResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientReimageResponse], error)`
+- Function `*CapacityReservationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CapacityReservationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CapacityReservationsClientCreateOrUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientReimageResponse], error)` to `(*runtime.Poller[CloudServicesClientReimageResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeallocate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientDeallocateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientDeallocateResponse], error)`
+- Function `*VirtualMachinesClient.BeginConvertToManagedDisks` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientConvertToManagedDisksResponse], error)` to `(*runtime.Poller[VirtualMachinesClientConvertToManagedDisksResponse], error)`
+- Function `*ImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ImagesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ImagesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientReimageResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientReimageResponse], error)`
+- Function `*VirtualMachinesClient.BeginCapture` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientCaptureResponse], error)` to `(*runtime.Poller[VirtualMachinesClientCaptureResponse], error)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachinesClientDeleteResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineRunCommandsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineRunCommandsClientUpdateResponse], error)`
+- Function `*DisksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DisksClientDeleteResponse], error)` to `(*runtime.Poller[DisksClientDeleteResponse], error)`
+- Function `*GalleryApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GalleryApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientReimageResponse], error)` to `(*runtime.Poller[VirtualMachinesClientReimageResponse], error)`
+- Function `*DedicatedHostsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DedicatedHostsClientUpdateResponse], error)` to `(*runtime.Poller[DedicatedHostsClientUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginRunCommand` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRunCommandResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRunCommandResponse], error)`
+- Function `*DisksClient.BeginGrantAccess` return value(s) have been changed from `(*armruntime.Poller[DisksClientGrantAccessResponse], error)` to `(*runtime.Poller[DisksClientGrantAccessResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginReimageAll` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientReimageAllResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientReimageAllResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientRedeployResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientRedeployResponse], error)`
+- Function `*VirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientUpdateResponse], error)` to `(*runtime.Poller[CloudServicesClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginDeallocate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientDeallocateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientDeallocateResponse], error)`
+- Function `*CloudServicesClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientRestartResponse], error)` to `(*runtime.Poller[CloudServicesClientRestartResponse], error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*RestorePointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RestorePointsClientCreateResponse], error)` to `(*runtime.Poller[RestorePointsClientCreateResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientRestartResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientRestartResponse], error)`
+- Function `*GalleriesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleriesClientUpdateResponse], error)` to `(*runtime.Poller[GalleriesClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `*ImagesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ImagesClientDeleteResponse], error)` to `(*runtime.Poller[ImagesClientDeleteResponse], error)`
+- Function `*ImagesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ImagesClientUpdateResponse], error)` to `(*runtime.Poller[ImagesClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetVMRunCommandsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMRunCommandsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginReapply` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientReapplyResponse], error)` to `(*runtime.Poller[VirtualMachinesClientReapplyResponse], error)`
+- Function `*DiskRestorePointClient.BeginGrantAccess` return value(s) have been changed from `(*armruntime.Poller[DiskRestorePointClientGrantAccessResponse], error)` to `(*runtime.Poller[DiskRestorePointClientGrantAccessResponse], error)`
+- Function `*VirtualMachineRunCommandsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineRunCommandsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineRunCommandsClientDeleteResponse], error)`
+- Function `*CloudServicesClient.BeginRebuild` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientRebuildResponse], error)` to `(*runtime.Poller[CloudServicesClientRebuildResponse], error)`
+- Function `*VirtualMachinesClient.BeginAssessPatches` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientAssessPatchesResponse], error)` to `(*runtime.Poller[VirtualMachinesClientAssessPatchesResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginPerformMaintenance` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientPerformMaintenanceResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientPerformMaintenanceResponse], error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `*SnapshotsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientUpdateResponse], error)` to `(*runtime.Poller[SnapshotsClientUpdateResponse], error)`
+- Function `*SnapshotsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SnapshotsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginInstallPatches` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientInstallPatchesResponse], error)` to `(*runtime.Poller[VirtualMachinesClientInstallPatchesResponse], error)`
+- Function `*VirtualMachineScaleSetVMExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMExtensionsClientUpdateResponse], error)`
+- Function `*CloudServicesClient.BeginDeleteInstances` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientDeleteInstancesResponse], error)` to `(*runtime.Poller[CloudServicesClientDeleteInstancesResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[CloudServiceRoleInstancesClientRestartResponse], error)` to `(*runtime.Poller[CloudServiceRoleInstancesClientRestartResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPowerOff` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientPowerOffResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientPowerOffResponse], error)`
+- Function `*VirtualMachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineExtensionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginDeleteInstances` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientDeleteInstancesResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientDeleteInstancesResponse], error)`
+- Function `*GalleryApplicationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationsClientUpdateResponse], error)` to `(*runtime.Poller[GalleryApplicationsClientUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginUpdateInstances` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientUpdateInstancesResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientUpdateInstancesResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[CloudServiceRoleInstancesClientReimageResponse], error)` to `(*runtime.Poller[CloudServiceRoleInstancesClientReimageResponse], error)`
+- Function `*LogAnalyticsClient.BeginExportRequestRateByInterval` return value(s) have been changed from `(*armruntime.Poller[LogAnalyticsClientExportRequestRateByIntervalResponse], error)` to `(*runtime.Poller[LogAnalyticsClientExportRequestRateByIntervalResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginPowerOff` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientPowerOffResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientPowerOffResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginPerformMaintenance` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], error)`
+- Function `*DiskRestorePointClient.BeginRevokeAccess` return value(s) have been changed from `(*armruntime.Poller[DiskRestorePointClientRevokeAccessResponse], error)` to `(*runtime.Poller[DiskRestorePointClientRevokeAccessResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginSetOrchestrationServiceState` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientSetOrchestrationServiceStateResponse], error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetExtensionsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*SnapshotsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientDeleteResponse], error)` to `(*runtime.Poller[SnapshotsClientDeleteResponse], error)`
+- Function `*GallerySharingProfileClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GallerySharingProfileClientUpdateResponse], error)` to `(*runtime.Poller[GallerySharingProfileClientUpdateResponse], error)`
+- Function `*GalleryApplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GalleryApplicationsClientDeleteResponse], error)` to `(*runtime.Poller[GalleryApplicationsClientDeleteResponse], error)`
+- Function `*DedicatedHostsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DedicatedHostsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DedicatedHostsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineScaleSetExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetExtensionsClientUpdateResponse], error)`
+- Function `*DiskEncryptionSetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskEncryptionSetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DiskEncryptionSetsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRestartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRestartResponse], error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], error)`
+- Function `*CloudServicesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[CloudServicesClientStartResponse], error)` to `(*runtime.Poller[CloudServicesClientStartResponse], error)`
+- Function `*VirtualMachineScaleSetRollingUpgradesClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetRollingUpgradesClientCancelResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetRollingUpgradesClientCancelResponse], error)`
+- Function `*DedicatedHostsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DedicatedHostsClientDeleteResponse], error)` to `(*runtime.Poller[DedicatedHostsClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetVMsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetVMsClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetVMsClientUpdateResponse], error)`
+- Function `*CloudServiceRoleInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CloudServiceRoleInstancesClientDeleteResponse], error)` to `(*runtime.Poller[CloudServiceRoleInstancesClientDeleteResponse], error)`
+- Function `*VirtualMachineScaleSetsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineScaleSetsClientStartResponse], error)` to `(*runtime.Poller[VirtualMachineScaleSetsClientStartResponse], error)`
+- Type of `DiskRestorePointInstanceView.ReplicationStatus` has been changed from `interface{}` to `*DiskRestorePointReplicationStatus`
+- Type of `DiskRestorePointReplicationStatus.Status` has been changed from `interface{}` to `*InstanceViewStatus`
+- Function `DedicatedHostGroupListResult.MarshalJSON` has been removed
+- Function `ResourceSKURestrictions.MarshalJSON` has been removed
+- Function `RunCommandListResult.MarshalJSON` has been removed
+- Function `GalleryApplicationVersionList.MarshalJSON` has been removed
+- Function `CommunityGalleryImageProperties.MarshalJSON` has been removed
+- Function `VirtualMachineListResult.MarshalJSON` has been removed
+- Function `VirtualMachineAssessPatchesResult.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetListResult.MarshalJSON` has been removed
+- Function `VirtualMachineExtensionsListResult.MarshalJSON` has been removed
+- Function `GalleryImageList.MarshalJSON` has been removed
+- Function `DiskRestorePointList.MarshalJSON` has been removed
+- Function `VirtualMachineRunCommandsListResult.MarshalJSON` has been removed
+- Function `DiskRestorePointProperties.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetInstanceView.MarshalJSON` has been removed
+- Function `ResourceSKUZoneDetails.MarshalJSON` has been removed
+- Function `VirtualMachineSoftwarePatchProperties.MarshalJSON` has been removed
+- Function `RoleInstance.MarshalJSON` has been removed
+- Function `GalleryApplicationList.MarshalJSON` has been removed
+- Function `GalleryList.MarshalJSON` has been removed
+- Function `AvailabilitySetListResult.MarshalJSON` has been removed
+- Function `DiskEncryptionSetList.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `RoleInstanceView.MarshalJSON` has been removed
+- Function `RoleInstanceListResult.MarshalJSON` has been removed
+- Function `SharedGalleryImageVersionProperties.MarshalJSON` has been removed
+- Function `VirtualMachineSizeListResult.MarshalJSON` has been removed
+- Function `ResourceSKUsResult.MarshalJSON` has been removed
+- Function `SnapshotList.MarshalJSON` has been removed
+- Function `RoleInstanceNetworkProfile.MarshalJSON` has been removed
+- Function `ResourceSKURestrictionInfo.MarshalJSON` has been removed
+- Function `VirtualMachineInstallPatchesResult.MarshalJSON` has been removed
+- Function `SharedGalleryImageProperties.MarshalJSON` has been removed
+- Function `CommunityGalleryImageVersionProperties.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetVMListResult.MarshalJSON` has been removed
+- Function `SharedGalleryImageVersionList.MarshalJSON` has been removed
+- Function `ResourceURIList.MarshalJSON` has been removed
+- Function `OSVersionListResult.MarshalJSON` has been removed
+- Function `ResourceInstanceViewStatus.MarshalJSON` has been removed
+- Function `RunCommandResult.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetListOSUpgradeHistory.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetListWithLinkResult.MarshalJSON` has been removed
+- Function `PatchInstallationDetail.MarshalJSON` has been removed
+- Function `UpgradeOperationHistoryStatus.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetListSKUsResult.MarshalJSON` has been removed
+- Function `CloudServiceInstanceView.MarshalJSON` has been removed
+- Function `DedicatedHostListResult.MarshalJSON` has been removed
+- Function `RestorePointCollectionListResult.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsSummary.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `SharedGalleryImageList.MarshalJSON` has been removed
+- Function `OSFamilyProperties.MarshalJSON` has been removed
+- Function `CapacityReservationGroupListResult.MarshalJSON` has been removed
+- Function `ProximityPlacementGroupListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ResourceSKU.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `CapacityReservationListResult.MarshalJSON` has been removed
+- Function `OSFamilyListResult.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetInstanceViewStatusesSummary.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetExtensionListResult.MarshalJSON` has been removed
+- Function `InstanceViewStatusesSummary.MarshalJSON` has been removed
+- Function `CloudServiceRoleListResult.MarshalJSON` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+- Function `CloudServiceListResult.MarshalJSON` has been removed
+- Function `RunCommandDocument.MarshalJSON` has been removed
+- Function `ListUsagesResult.MarshalJSON` has been removed
+- Function `GalleryImageVersionList.MarshalJSON` has been removed
+- Function `ImageListResult.MarshalJSON` has been removed
+- Function `DiskList.MarshalJSON` has been removed
+- Function `VirtualMachineScaleSetVMExtensionsListResult.MarshalJSON` has been removed
+- Function `CommunityGalleryInfo.MarshalJSON` has been removed
+- Function `DiskAccessList.MarshalJSON` has been removed
+- Function `SharedGalleryList.MarshalJSON` has been removed
+- Function `UpdateDomainListResult.MarshalJSON` has been removed
+- Function `SSHPublicKeysGroupListResult.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New const `LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever`
+- New const `WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`
+- New const `LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`
+- New const `WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever`
+- New const `LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways`
+- New const `StorageAccountTypesPremiumV2LRS`
+- New const `WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New const `WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways`
+- New function `ProximityPlacementGroupPropertiesIntent.MarshalJSON() ([]byte, error)`
+- New function `PossibleLinuxVMGuestPatchAutomaticByPlatformRebootSettingValues() []LinuxVMGuestPatchAutomaticByPlatformRebootSetting`
+- New function `PossibleWindowsVMGuestPatchAutomaticByPlatformRebootSettingValues() []WindowsVMGuestPatchAutomaticByPlatformRebootSetting`
+- New function `ResourceWithOptionalLocation.MarshalJSON() ([]byte, error)`
+- New struct `DedicatedHostGroupPropertiesAdditionalCapabilities`
+- New struct `LinuxVMGuestPatchAutomaticByPlatformSettings`
+- New struct `ProximityPlacementGroupPropertiesIntent`
+- New struct `ResourceWithOptionalLocation`
+- New struct `WindowsVMGuestPatchAutomaticByPlatformSettings`
+- New field `Zones` in struct `ProximityPlacementGroup`
+- New field `Intent` in struct `ProximityPlacementGroupProperties`
+- New field `AutomaticByPlatformSettings` in struct `LinuxPatchSettings`
+- New field `AdditionalCapabilities` in struct `DedicatedHostGroupProperties`
+- New field `DeleteOption` in struct `VirtualMachineScaleSetDataDisk`
+- New field `DeleteOption` in struct `VirtualMachineScaleSetOSDisk`
+- New field `DeleteOption` in struct `VirtualMachineScaleSetUpdateOSDisk`
+- New field `AutomaticByPlatformSettings` in struct `PatchSettings`
+- New field `UseRollingUpgradePolicy` in struct `AutomaticOSUpgradePolicy`
+- New field `Identity` in struct `VirtualMachineScaleSetVM`
+- New field `TreatFailureAsDeploymentFailure` in struct `VMGalleryApplication`
+- New field `EnableAutomaticUpgrade` in struct `VMGalleryApplication`
+- New field `CompletionPercent` in struct `DiskRestorePointReplicationStatus`
+
+
 ## 0.7.0 (2022-04-15)
 ### Breaking Changes
 

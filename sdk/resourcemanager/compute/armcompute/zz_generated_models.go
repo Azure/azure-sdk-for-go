@@ -102,6 +102,10 @@ type AutomaticOSUpgradePolicy struct {
 	// [https://docs.microsoft.com/dotnet/api/microsoft.azure.management.compute.models.windowsconfiguration.enableautomaticupdates?view=azure-dotnet]
 	// is automatically set to false and cannot be set to true.
 	EnableAutomaticOSUpgrade *bool `json:"enableAutomaticOSUpgrade,omitempty"`
+
+	// Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Default value is false. Auto OS Upgrade
+	// will fallback to the default policy if no policy is defined on the VMSS.
+	UseRollingUpgradePolicy *bool `json:"useRollingUpgradePolicy,omitempty"`
 }
 
 // AutomaticOSUpgradeProperties - Describes automatic OS upgrade properties on the image.
@@ -517,7 +521,7 @@ type CapacityReservationProperties struct {
 	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Capacity Reservation resource was created.
-	// Minimum api-version: 2021-11-01.
+	// Minimum api-version: 2022-03-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; A list of all virtual machine resource ids that are associated with the capacity reservation.
@@ -1397,6 +1401,10 @@ type DedicatedHostGroupProperties struct {
 	// REQUIRED; Number of fault domains that the host group can span.
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 
+	// Enables or disables a capability on the dedicated host group.
+	// Minimum api-version: 2022-03-01.
+	AdditionalCapabilities *DedicatedHostGroupPropertiesAdditionalCapabilities `json:"additionalCapabilities,omitempty"`
+
 	// Specifies whether virtual machines or virtual machine scale sets can be placed automatically on the dedicated host group.
 	// Automatic placement means resources are allocated on dedicated hosts, that are
 	// chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when not provided.
@@ -1409,6 +1417,19 @@ type DedicatedHostGroupProperties struct {
 	// READ-ONLY; The dedicated host group instance view, which has the list of instance view of the dedicated hosts under the
 	// dedicated host group.
 	InstanceView *DedicatedHostGroupInstanceView `json:"instanceView,omitempty" azure:"ro"`
+}
+
+// DedicatedHostGroupPropertiesAdditionalCapabilities - Enables or disables a capability on the dedicated host group.
+// Minimum api-version: 2022-03-01.
+type DedicatedHostGroupPropertiesAdditionalCapabilities struct {
+	// The flag that enables or disables a capability to have UltraSSD Enabled Virtual Machines on Dedicated Hosts of the Dedicated
+	// Host Group. For the Virtual Machines to be UltraSSD Enabled,
+	// UltraSSDEnabled flag for the resource needs to be set true as well. The value is defaulted to 'false' when not provided.
+	// Please refer to
+	// https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more details on Ultra SSD feature.
+	// NOTE: The ultraSSDEnabled setting can only be enabled for Host Groups that are created as zonal.
+	// Minimum api-version: 2022-03-01.
+	UltraSSDEnabled *bool `json:"ultraSSDEnabled,omitempty"`
 }
 
 // DedicatedHostGroupUpdate - Specifies information about the dedicated host group that the dedicated host should be assigned
@@ -1530,7 +1551,7 @@ type DedicatedHostProperties struct {
 	ProvisioningTime *time.Time `json:"provisioningTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Dedicated Host resource was created.
-	// Minimum api-version: 2021-11-01.
+	// Minimum api-version: 2022-03-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; A list of references to all virtual machines in the Dedicated Host.
@@ -2092,7 +2113,7 @@ type DiskRestorePointInstanceView struct {
 	ID *string `json:"id,omitempty"`
 
 	// The disk restore point replication status information.
-	ReplicationStatus interface{} `json:"replicationStatus,omitempty"`
+	ReplicationStatus *DiskRestorePointReplicationStatus `json:"replicationStatus,omitempty"`
 }
 
 // DiskRestorePointList - The List Disk Restore Points operation response.
@@ -2158,8 +2179,11 @@ type DiskRestorePointProperties struct {
 
 // DiskRestorePointReplicationStatus - The instance view of a disk restore point.
 type DiskRestorePointReplicationStatus struct {
+	// Replication completion percentage.
+	CompletionPercent *int32 `json:"completionPercent,omitempty"`
+
 	// The resource status information.
-	Status interface{} `json:"status,omitempty"`
+	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
 // DiskSKU - The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, or StandardSSDZRS.
@@ -3654,6 +3678,9 @@ type LinuxPatchSettings struct {
 	// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
 	AssessmentMode *LinuxPatchAssessmentMode `json:"assessmentMode,omitempty"`
 
+	// Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Linux.
+	AutomaticByPlatformSettings *LinuxVMGuestPatchAutomaticByPlatformSettings `json:"automaticByPlatformSettings,omitempty"`
+
 	// Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines associated to virtual machine scale
 	// set with OrchestrationMode as Flexible.
 	// Possible values are:
@@ -3661,6 +3688,13 @@ type LinuxPatchSettings struct {
 	// AutomaticByPlatform - The virtual machine will be automatically updated by the platform. The property provisionVMAgent
 	// must be true
 	PatchMode *LinuxVMGuestPatchMode `json:"patchMode,omitempty"`
+}
+
+// LinuxVMGuestPatchAutomaticByPlatformSettings - Specifies additional settings to be applied when patch mode AutomaticByPlatform
+// is selected in Linux patch settings.
+type LinuxVMGuestPatchAutomaticByPlatformSettings struct {
+	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
+	RebootSetting *LinuxVMGuestPatchAutomaticByPlatformRebootSetting `json:"rebootSetting,omitempty"`
 }
 
 // ListUsagesResult - The List Usages operation response.
@@ -4020,9 +4054,7 @@ type OSProfile struct {
 	// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 
-	// Specifies whether the guest provision signal is required to infer provision success of the virtual machine. Note: This
-	// property is for private testing only, and all customers must not set the property
-	// to false.
+	// Optional property which must either be set to True or omitted.
 	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
 
 	// Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine
@@ -4180,6 +4212,9 @@ type PatchSettings struct {
 	// ImageDefault - You control the timing of patch assessments on a virtual machine.
 	// AutomaticByPlatform - The platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
 	AssessmentMode *WindowsPatchAssessmentMode `json:"assessmentMode,omitempty"`
+
+	// Specifies additional settings for patch mode AutomaticByPlatform in VM Guest Patching on Windows.
+	AutomaticByPlatformSettings *WindowsVMGuestPatchAutomaticByPlatformSettings `json:"automaticByPlatformSettings,omitempty"`
 
 	// Enables customers to patch their Azure VMs without requiring a reboot. For enableHotpatching, the 'provisionVMAgent' must
 	// be set to true and 'patchMode' must be set to 'AutomaticByPlatform'.
@@ -4358,6 +4393,10 @@ type ProximityPlacementGroup struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
 
+	// Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the
+	// proximity placement group can be created.
+	Zones []*string `json:"zones,omitempty"`
+
 	// READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty" azure:"ro"`
 
@@ -4382,6 +4421,9 @@ type ProximityPlacementGroupProperties struct {
 	// Describes colocation status of the Proximity Placement Group.
 	ColocationStatus *InstanceViewStatus `json:"colocationStatus,omitempty"`
 
+	// Specifies the user intent of the proximity placement group.
+	Intent *ProximityPlacementGroupPropertiesIntent `json:"intent,omitempty"`
+
 	// Specifies the type of the proximity placement group.
 	// Possible values are:
 	// Standard : Co-locate resources within an Azure region or Availability Zone.
@@ -4396,6 +4438,12 @@ type ProximityPlacementGroupProperties struct {
 
 	// READ-ONLY; A list of references to all virtual machines in the proximity placement group.
 	VirtualMachines []*SubResourceWithColocationStatus `json:"virtualMachines,omitempty" azure:"ro"`
+}
+
+// ProximityPlacementGroupPropertiesIntent - Specifies the user intent of the proximity placement group.
+type ProximityPlacementGroupPropertiesIntent struct {
+	// Specifies possible sizes of virtual machines that can be created in the proximity placement group.
+	VMSizes []*string `json:"vmSizes,omitempty"`
 }
 
 // ProximityPlacementGroupUpdate - Specifies information about the proximity placement group.
@@ -4776,6 +4824,24 @@ type ResourceURIList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// ResourceWithOptionalLocation - The Resource model definition with location property as optional.
+type ResourceWithOptionalLocation struct {
+	// Resource location
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // RestorePoint - Restore Point details.
 type RestorePoint struct {
 	// The restore point properties.
@@ -4903,6 +4969,11 @@ type RestorePointInstanceView struct {
 
 // RestorePointProperties - The restore point properties.
 type RestorePointProperties struct {
+	// ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only CrashConsistent
+	// is accepted as a valid input. Please refer to
+	// https://aka.ms/RestorePoints for more details.
+	ConsistencyMode *ConsistencyModeTypes `json:"consistencyMode,omitempty"`
+
 	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks
 	// will be included.
 	ExcludeDisks []*APIEntityReference `json:"excludeDisks,omitempty"`
@@ -4912,9 +4983,6 @@ type RestorePointProperties struct {
 
 	// Gets the creation time of the restore point.
 	TimeCreated *time.Time `json:"timeCreated,omitempty"`
-
-	// READ-ONLY; Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details.
-	ConsistencyMode *ConsistencyModeTypes `json:"consistencyMode,omitempty" azure:"ro"`
 
 	// READ-ONLY; The restore point instance view.
 	InstanceView *RestorePointInstanceView `json:"instanceView,omitempty" azure:"ro"`
@@ -6231,11 +6299,18 @@ type VMGalleryApplication struct {
 	// Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided
 	ConfigurationReference *string `json:"configurationReference,omitempty"`
 
+	// If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated for the
+	// VM/VMSS
+	EnableAutomaticUpgrade *bool `json:"enableAutomaticUpgrade,omitempty"`
+
 	// Optional, Specifies the order in which the packages have to be installed
 	Order *int32 `json:"order,omitempty"`
 
 	// Optional, Specifies a passthrough value for more generic context.
 	Tags *string `json:"tags,omitempty"`
+
+	// Optional, If true, any failure for any operation in the VmApplication will fail the deployment
+	TreatFailureAsDeploymentFailure *bool `json:"treatFailureAsDeploymentFailure,omitempty"`
 }
 
 type VMScaleSetConvertToSinglePlacementGroupInput struct {
@@ -6418,7 +6493,7 @@ type VirtualMachineCaptureResult struct {
 
 // VirtualMachineExtension - Describes a Virtual Machine Extension.
 type VirtualMachineExtension struct {
-	// REQUIRED; Resource location
+	// Resource location
 	Location *string `json:"location,omitempty"`
 
 	// Describes the properties of a Virtual Machine Extension.
@@ -7169,7 +7244,7 @@ type VirtualMachineProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Virtual Machine resource was created.
-	// Minimum api-version: 2021-11-01.
+	// Minimum api-version: 2022-03-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS
@@ -7448,6 +7523,14 @@ type VirtualMachineScaleSetDataDisk struct {
 	// Default: None for Standard storage. ReadOnly for Premium storage
 	Caching *CachingTypes `json:"caching,omitempty"`
 
+	// Specifies whether data disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
+	// Flexible OrchestrationMode only).
+	// Possible values:
+	// Delete If this value is used, the data disk is deleted when the VMSS Flex VM is deleted.
+	// Detach If this value is used, the data disk is retained after VMSS Flex VM is deleted.
+	// The default value is set to Delete.
+	DeleteOption *DiskDeleteOptionTypes `json:"deleteOption,omitempty"`
+
 	// Specifies the Read-Write IOPS for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS. If not
 	// specified, a default value would be assigned based on diskSizeGB.
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
@@ -7603,7 +7686,7 @@ type VirtualMachineScaleSetExtensionsClientListOptions struct {
 
 // VirtualMachineScaleSetHardwareProfile - Specifies the hardware settings for the virtual machine scale set.
 type VirtualMachineScaleSetHardwareProfile struct {
-	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-11-01.
+	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2022-03-01.
 	// Please follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
 	VMSizeProperties *VMSizeProperties `json:"vmSizeProperties,omitempty"`
 }
@@ -7843,6 +7926,15 @@ type VirtualMachineScaleSetOSDisk struct {
 	// Default: None for Standard storage. ReadOnly for Premium storage
 	Caching *CachingTypes `json:"caching,omitempty"`
 
+	// Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
+	// Flexible OrchestrationMode only).
+	// Possible values:
+	// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
+	// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
+	// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
+	// delete option for Ephemeral OS Disk.
+	DeleteOption *DiskDeleteOptionTypes `json:"deleteOption,omitempty"`
+
 	// Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
 	DiffDiskSettings *DiffDiskSettings `json:"diffDiskSettings,omitempty"`
 
@@ -7990,7 +8082,7 @@ type VirtualMachineScaleSetProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the time at which the Virtual Machine Scale Set resource was created.
-	// Minimum api-version: 2021-11-01.
+	// Minimum api-version: 2022-03-01.
 	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
@@ -8245,6 +8337,15 @@ type VirtualMachineScaleSetUpdateOSDisk struct {
 	// The caching type.
 	Caching *CachingTypes `json:"caching,omitempty"`
 
+	// Specifies whether OS Disk should be deleted or detached upon VMSS Flex deletion (This feature is available for VMSS with
+	// Flexible OrchestrationMode only).
+	// Possible values:
+	// Delete If this value is used, the OS disk is deleted when VMSS Flex VM is deleted.
+	// Detach If this value is used, the OS disk is retained after VMSS Flex VM is deleted.
+	// The default value is set to Delete. For an Ephemeral OS Disk, the default value is set to Delete. User cannot change the
+	// delete option for Ephemeral OS Disk.
+	DeleteOption *DiskDeleteOptionTypes `json:"deleteOption,omitempty"`
+
 	// Specifies the size of the operating system disk in gigabytes. This element can be used to overwrite the size of the disk
 	// in a virtual machine image.
 	// This value cannot be larger than 1023 GB
@@ -8394,6 +8495,9 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 type VirtualMachineScaleSetVM struct {
 	// REQUIRED; Resource location
 	Location *string `json:"location,omitempty"`
+
+	// The identity of the virtual machine, if configured.
+	Identity *VirtualMachineIdentity `json:"identity,omitempty"`
 
 	// Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace
 	// images. Before you can use a marketplace image from an API, you must
@@ -8609,7 +8713,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 
 	// Specifies the hardware profile related details of a scale set.
-	// Minimum api-version: 2021-11-01.
+	// Minimum api-version: 2022-03-01.
 	HardwareProfile *VirtualMachineScaleSetHardwareProfile `json:"hardwareProfile,omitempty"`
 
 	// Specifies that the image or disk that is being used was licensed on-premises.
@@ -9426,4 +9530,11 @@ type WindowsParameters struct {
 
 	// This is used to install patches that were published on or before this given max published date.
 	MaxPatchPublishDate *time.Time `json:"maxPatchPublishDate,omitempty"`
+}
+
+// WindowsVMGuestPatchAutomaticByPlatformSettings - Specifies additional settings to be applied when patch mode AutomaticByPlatform
+// is selected in Windows patch settings.
+type WindowsVMGuestPatchAutomaticByPlatformSettings struct {
+	// Specifies the reboot setting for all AutomaticByPlatform patch installation operations.
+	RebootSetting *WindowsVMGuestPatchAutomaticByPlatformRebootSetting `json:"rebootSetting,omitempty"`
 }

@@ -39,7 +39,7 @@ func NewSharedGalleryImagesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSharedGalleryImagesClient(subscriptionID string, credential azcore.Token
 
 // Get - Get a shared gallery image by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // location - Resource location.
 // galleryUniqueName - The unique name of the Shared Gallery.
 // galleryImageName - The name of the Shared Gallery Image Definition from which the Image Versions are to be listed.
@@ -102,7 +103,7 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - List shared gallery images by subscription id or tenant id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // location - Resource location.
 // galleryUniqueName - The unique name of the Shared Gallery.
 // options - SharedGalleryImagesClientListOptions contains the optional parameters for the SharedGalleryImagesClient.List
 // method.
 func (client *SharedGalleryImagesClient) NewListPager(location string, galleryUniqueName string, options *SharedGalleryImagesClientListOptions) *runtime.Pager[SharedGalleryImagesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SharedGalleryImagesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SharedGalleryImagesClientListResponse]{
 		More: func(page SharedGalleryImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 		reqQP.Set("sharedTo", string(*options.SharedTo))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

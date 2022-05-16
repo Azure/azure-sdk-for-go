@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,29 +24,29 @@ func ExampleGalleryApplicationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryApplicationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-application-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryApplicationName",
 		armcompute.GalleryApplication{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armcompute.GalleryApplicationProperties{
-				Description:         to.Ptr("<description>"),
-				Eula:                to.Ptr("<eula>"),
-				PrivacyStatementURI: to.Ptr("<privacy-statement-uri>"),
-				ReleaseNoteURI:      to.Ptr("<release-note-uri>"),
+				Description:         to.Ptr("This is the gallery application description."),
+				Eula:                to.Ptr("This is the gallery application EULA."),
+				PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+				ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
 				SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
 			},
 		},
-		&armcompute.GalleryApplicationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -63,28 +61,28 @@ func ExampleGalleryApplicationsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryApplicationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-application-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryApplicationName",
 		armcompute.GalleryApplicationUpdate{
 			Properties: &armcompute.GalleryApplicationProperties{
-				Description:         to.Ptr("<description>"),
-				Eula:                to.Ptr("<eula>"),
-				PrivacyStatementURI: to.Ptr("<privacy-statement-uri>"),
-				ReleaseNoteURI:      to.Ptr("<release-note-uri>"),
+				Description:         to.Ptr("This is the gallery application description."),
+				Eula:                to.Ptr("This is the gallery application EULA."),
+				PrivacyStatementURI: to.Ptr("myPrivacyStatementUri}"),
+				ReleaseNoteURI:      to.Ptr("myReleaseNoteUri"),
 				SupportedOSType:     to.Ptr(armcompute.OperatingSystemTypesWindows),
 			},
 		},
-		&armcompute.GalleryApplicationsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -99,14 +97,14 @@ func ExampleGalleryApplicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryApplicationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-application-name>",
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryApplicationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -122,19 +120,19 @@ func ExampleGalleryApplicationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryApplicationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
-		"<gallery-application-name>",
-		&armcompute.GalleryApplicationsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myGalleryName",
+		"myGalleryApplicationName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -147,18 +145,17 @@ func ExampleGalleryApplicationsClient_NewListByGalleryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGalleryApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGalleryApplicationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGalleryPager("<resource-group-name>",
-		"<gallery-name>",
+	pager := client.NewListByGalleryPager("myResourceGroup",
+		"myGalleryName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

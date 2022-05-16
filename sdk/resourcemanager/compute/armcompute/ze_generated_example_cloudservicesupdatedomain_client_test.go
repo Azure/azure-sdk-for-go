@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
@@ -25,21 +23,19 @@ func ExampleCloudServicesUpdateDomainClient_BeginWalkUpdateDomain() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesUpdateDomainClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesUpdateDomainClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginWalkUpdateDomain(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		1,
-		&armcompute.CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions{Parameters: nil,
-			ResumeToken: "",
-		})
+		&armcompute.CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -52,13 +48,13 @@ func ExampleCloudServicesUpdateDomainClient_GetUpdateDomain() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesUpdateDomainClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesUpdateDomainClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetUpdateDomain(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		1,
 		nil)
 	if err != nil {
@@ -75,18 +71,17 @@ func ExampleCloudServicesUpdateDomainClient_NewListUpdateDomainsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesUpdateDomainClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesUpdateDomainClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUpdateDomainsPager("<resource-group-name>",
-		"<cloud-service-name>",
+	pager := client.NewListUpdateDomainsPager("ConstosoRG",
+		"{cs-name}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

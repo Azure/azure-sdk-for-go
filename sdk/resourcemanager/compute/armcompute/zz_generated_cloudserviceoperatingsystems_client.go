@@ -39,7 +39,7 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewCloudServiceOperatingSystemsClient(subscriptionID string, credential azc
 // GetOSFamily - Gets properties of a guest operating system family that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // location - Name of the location that the OS family pertains to.
 // osFamilyName - Name of the OS family.
 // options - CloudServiceOperatingSystemsClientGetOSFamilyOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSFamily
@@ -99,7 +100,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -115,6 +116,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSFamilyHandleResponse(resp
 // GetOSVersion - Gets properties of a guest operating system version that can be specified in the XML service configuration
 // (.cscfg) for a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // location - Name of the location that the OS version pertains to.
 // osVersionName - Name of the OS version.
 // options - CloudServiceOperatingSystemsClientGetOSVersionOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.GetOSVersion
@@ -156,7 +158,7 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -173,11 +175,12 @@ func (client *CloudServiceOperatingSystemsClient) getOSVersionHandleResponse(res
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS Families. Do this till nextLink is null to fetch all the OS Families.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // location - Name of the location that the OS families pertain to.
 // options - CloudServiceOperatingSystemsClientListOSFamiliesOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSFamilies
 // method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSFamiliesPager(location string, options *CloudServiceOperatingSystemsClientListOSFamiliesOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSFamiliesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSFamiliesResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSFamiliesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -222,7 +225,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,11 +242,12 @@ func (client *CloudServiceOperatingSystemsClient) listOSFamiliesHandleResponse(r
 // configuration (.cscfg) for a cloud service. Use nextLink property in the response to get the next page
 // of OS versions. Do this till nextLink is null to fetch all the OS versions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // location - Name of the location that the OS versions pertain to.
 // options - CloudServiceOperatingSystemsClientListOSVersionsOptions contains the optional parameters for the CloudServiceOperatingSystemsClient.ListOSVersions
 // method.
 func (client *CloudServiceOperatingSystemsClient) NewListOSVersionsPager(location string, options *CloudServiceOperatingSystemsClientListOSVersionsOptions) *runtime.Pager[CloudServiceOperatingSystemsClientListOSVersionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudServiceOperatingSystemsClientListOSVersionsResponse]{
 		More: func(page CloudServiceOperatingSystemsClientListOSVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +292,7 @@ func (client *CloudServiceOperatingSystemsClient) listOSVersionsCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

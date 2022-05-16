@@ -23,13 +23,13 @@ func ExampleCommunityGalleriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCommunityGalleriesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCommunityGalleriesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<public-gallery-name>",
+		"myLocation",
+		"publicGalleryName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

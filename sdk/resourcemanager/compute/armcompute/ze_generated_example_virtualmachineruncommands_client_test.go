@@ -12,31 +12,28 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommandList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/RunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location>",
+	pager := client.NewListPager("SoutheastAsia",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -45,20 +42,20 @@ func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VirtualMachineRunCommandGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/RunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("24fb23e3-6ba3-41f0-9b6e-e41131d5d61e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<command-id>",
+		"SoutheastAsia",
+		"RunPowerShellScript",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,47 +64,47 @@ func ExampleVirtualMachineRunCommandsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/CreateOrUpdateRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myVM",
+		"myRunCommand",
 		armcompute.VirtualMachineRunCommand{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armcompute.VirtualMachineRunCommandProperties{
 				AsyncExecution: to.Ptr(false),
 				Parameters: []*armcompute.RunCommandInputParameter{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("param1"),
+						Value: to.Ptr("value1"),
 					},
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("param2"),
+						Value: to.Ptr("value2"),
 					}},
-				RunAsPassword: to.Ptr("<run-as-password>"),
-				RunAsUser:     to.Ptr("<run-as-user>"),
+				RunAsPassword: to.Ptr("<runAsPassword>"),
+				RunAsUser:     to.Ptr("user1"),
 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-					Script: to.Ptr("<script>"),
+					Script: to.Ptr("Write-Host Hello World!"),
 				},
 				TimeoutInSeconds: to.Ptr[int32](3600),
 			},
 		},
-		&armcompute.VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,33 +112,33 @@ func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/UpdateRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_Update.json
 func ExampleVirtualMachineRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myVM",
+		"myRunCommand",
 		armcompute.VirtualMachineRunCommandUpdate{
 			Properties: &armcompute.VirtualMachineRunCommandProperties{
 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-					Script: to.Ptr("<script>"),
+					Script: to.Ptr("Write-Host Script Source Updated!"),
 				},
 			},
 		},
-		&armcompute.VirtualMachineRunCommandsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -149,46 +146,46 @@ func ExampleVirtualMachineRunCommandsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/DeleteRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_Delete.json
 func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<run-command-name>",
-		&armcompute.VirtualMachineRunCommandsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myVM",
+		"myRunCommand",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/GetRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByVirtualMachine(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myVM",
+		"myRunCommand",
 		&armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -197,25 +194,24 @@ func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/ListRunCommandsInVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineRunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVirtualMachinePager("<resource-group-name>",
-		"<vm-name>",
+	pager := client.NewListByVirtualMachinePager("myResourceGroup",
+		"myVM",
 		&armcompute.VirtualMachineRunCommandsClientListByVirtualMachineOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

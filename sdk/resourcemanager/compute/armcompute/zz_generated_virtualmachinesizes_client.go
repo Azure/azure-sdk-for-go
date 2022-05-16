@@ -39,7 +39,7 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 
 // NewListPager - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/rest/api/compute/resourceskus/list]
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // location - The location upon which virtual-machine-sizes is queried.
 // options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.List
 // method.
 func (client *VirtualMachineSizesClient) NewListPager(location string, options *VirtualMachineSizesClientListOptions) *runtime.Pager[VirtualMachineSizesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineSizesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineSizesClientListResponse]{
 		More: func(page VirtualMachineSizesClientListResponse) bool {
 			return false
 		},
@@ -98,9 +99,9 @@ func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

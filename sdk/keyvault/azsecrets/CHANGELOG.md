@@ -5,6 +5,12 @@
 ### Features Added
 
 ### Breaking Changes
+* Renamed methods which return `Pager[T]`:
+  * `ListDeletedSecrets` to `NewListDeletedSecretsPager`
+  * `ListPropertiesOfSecrets` to `NewListPropertiesOfSecretsPager`
+  * `NewListPropertiesOfSecretVersionsPager` to `NewListPropertiesOfSecretVersionsPager`
+* Renamed `ListSecretVersionsOptions` to `ListPropertiesOfSecretVersionsOptions` and
+  `ListSecretsOptions` to `ListPropertiesOfSecretsOptions`
 
 ### Bugs Fixed
 

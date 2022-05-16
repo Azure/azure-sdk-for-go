@@ -169,7 +169,7 @@ func TestListKeys(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			pager := client.ListPropertiesOfKeys(nil)
+			pager := client.NewListPropertiesOfKeysPager(nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -594,7 +594,7 @@ func TestListDeletedKeys(t *testing.T) {
 			_, err = pollerResp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 
-			pager := client.ListDeletedKeys(nil)
+			pager := client.NewListDeletedKeysPager(nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -628,7 +628,7 @@ func TestListKeyVersions(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			pager := client.ListPropertiesOfKeyVersions(key, nil)
+			pager := client.NewListPropertiesOfKeyVersionsPager(key, nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)

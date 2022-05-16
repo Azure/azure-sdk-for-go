@@ -140,7 +140,7 @@ func ExampleClient_BeginDeleteKey() {
 	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
-func ExampleClient_ListPropertiesOfKeys() {
+func ExampleClient_NewListPropertiesOfKeysPager() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleClient_ListPropertiesOfKeys() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfKeys(nil)
+	pager := client.NewListPropertiesOfKeysPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {

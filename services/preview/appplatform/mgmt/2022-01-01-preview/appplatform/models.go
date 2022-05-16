@@ -3712,7 +3712,7 @@ type CloudErrorBody struct {
 
 // ClusterResourceProperties service properties payload
 type ClusterResourceProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the Service. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving', 'ProvisioningStateMoved', 'ProvisioningStateMoveFailed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the Service. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateStarting', 'ProvisioningStateStopping', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateMoving', 'ProvisioningStateMoved', 'ProvisioningStateMoveFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// NetworkProfile - Network profile of the Service
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
@@ -7251,10 +7251,33 @@ type OperationDetail struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'ActionTypeInternal'
+	ActionType ActionType `json:"actionType,omitempty"`
 	// Origin - Origin of the operation
 	Origin *string `json:"origin,omitempty"`
 	// Properties - Properties of the operation
 	Properties *OperationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDetail.
+func (od OperationDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if od.Name != nil {
+		objectMap["name"] = od.Name
+	}
+	if od.IsDataAction != nil {
+		objectMap["isDataAction"] = od.IsDataAction
+	}
+	if od.Display != nil {
+		objectMap["display"] = od.Display
+	}
+	if od.Origin != nil {
+		objectMap["origin"] = od.Origin
+	}
+	if od.Properties != nil {
+		objectMap["properties"] = od.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay operation display payload

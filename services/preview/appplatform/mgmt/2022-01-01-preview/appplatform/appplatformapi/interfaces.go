@@ -115,7 +115,7 @@ type BuildServiceAgentPoolClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string) (result appplatform.BuildServiceAgentPoolResource, err error)
 	List(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string) (result appplatform.BuildServiceAgentPoolResourceCollectionPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string) (result appplatform.BuildServiceAgentPoolResourceCollectionIterator, err error)
-	UpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, poolSize appplatform.BuildServiceAgentPoolSizeProperties) (result appplatform.BuildServiceAgentPoolUpdatePutFuture, err error)
+	UpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource appplatform.BuildServiceAgentPoolResource) (result appplatform.BuildServiceAgentPoolUpdatePutFuture, err error)
 }
 
 var _ BuildServiceAgentPoolClientAPI = (*appplatform.BuildServiceAgentPoolClient)(nil)

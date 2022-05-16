@@ -2380,6 +2380,8 @@ type MetricDimension struct {
 	Name *string `json:"name,omitempty"`
 	// DisplayName - Localized friendly display name of the dimension
 	DisplayName *string `json:"displayName,omitempty"`
+	// ToBeExportedForShoebox - Whether this dimension should be included for the Shoebox export scenario
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring
@@ -2404,6 +2406,8 @@ type MetricSpecification struct {
 	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
 	// Dimensions - Dimensions of the metric
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// SourceMdmNamespace - Name of the MDM namespace. Optional.
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
 }
 
 // MonitoringSettingProperties monitoring Setting properties payload
@@ -2574,6 +2578,8 @@ type NetworkProfile struct {
 	AppNetworkResourceGroup *string `json:"appNetworkResourceGroup,omitempty"`
 	// OutboundIPs - READ-ONLY; Desired outbound IP resources for Azure Spring Cloud instance.
 	OutboundIPs *NetworkProfileOutboundIPs `json:"outboundIPs,omitempty"`
+	// RequiredTraffics - READ-ONLY; Required inbound or outbound traffics for Azure Spring Cloud instance.
+	RequiredTraffics *[]RequiredTraffic `json:"requiredTraffics,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NetworkProfile.
@@ -2617,10 +2623,33 @@ type OperationDetail struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
+	ActionType ActionType `json:"actionType,omitempty"`
 	// Origin - Origin of the operation
 	Origin *string `json:"origin,omitempty"`
 	// Properties - Properties of the operation
 	Properties *OperationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDetail.
+func (od OperationDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if od.Name != nil {
+		objectMap["name"] = od.Name
+	}
+	if od.IsDataAction != nil {
+		objectMap["isDataAction"] = od.IsDataAction
+	}
+	if od.Display != nil {
+		objectMap["display"] = od.Display
+	}
+	if od.Origin != nil {
+		objectMap["origin"] = od.Origin
+	}
+	if od.Properties != nil {
+		objectMap["properties"] = od.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay operation display payload
@@ -2684,6 +2713,26 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 type RegenerateTestKeyRequestPayload struct {
 	// KeyType - Type of the test key. Possible values include: 'Primary', 'Secondary'
 	KeyType TestKeyType `json:"keyType,omitempty"`
+}
+
+// RequiredTraffic required inbound or outbound traffic for Azure Spring Cloud instance.
+type RequiredTraffic struct {
+	// Protocol - READ-ONLY; The protocol of required traffic
+	Protocol *string `json:"protocol,omitempty"`
+	// Port - READ-ONLY; The port of required traffic
+	Port *int32 `json:"port,omitempty"`
+	// Ips - READ-ONLY; The ip list of required traffic
+	Ips *[]string `json:"ips,omitempty"`
+	// Fqdns - READ-ONLY; The FQDN list of required traffic
+	Fqdns *[]string `json:"fqdns,omitempty"`
+	// Direction - READ-ONLY; The direction of required traffic. Possible values include: 'Inbound', 'Outbound'
+	Direction TrafficDirection `json:"direction,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RequiredTraffic.
+func (rt RequiredTraffic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource the core properties of ARM resources.

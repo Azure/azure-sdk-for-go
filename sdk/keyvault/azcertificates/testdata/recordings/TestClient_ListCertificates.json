@@ -1032,7 +1032,7 @@
             "subject": ""
           }
         ],
-        "nextLink": "https://thething.vault.azure.net:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTVJV05sY25ScFptbGpZWFJsTDB4SlUxUkRSVkpVVXpFeU16azFOVGsyTnpNeEwxQlBURWxEV1NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ"
+        "nextLink": "https://fakekvurl.vault.azure.net/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMTIhTURBd01ETTVJV05sY25ScFptbGpZWFJsTDB4SlUxUkRSVkpVVXpFeU16azFOVGsyTnpNeEwxQlBURWxEV1NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ"
       }
     },
     {

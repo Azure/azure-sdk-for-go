@@ -38,7 +38,7 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates a new workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // parameters - Parameters supplied to the create or update a workspace.
 // options - WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
 // method.
-func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error) {
+func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspacesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspacesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, parameters, options)
 	if err != nil {
@@ -112,29 +114,31 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
-func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*armruntime.Poller[WorkspacesClientDeleteResponse], error) {
+func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*runtime.Poller[WorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspacesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspacesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
@@ -172,12 +176,13 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -218,7 +223,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,11 +238,12 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 
 // NewListByResourceGroupPager - Gets all the workspaces within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.ListByResourceGroup
 // method.
 func (client *WorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) *runtime.Pager[WorkspacesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListByResourceGroupResponse]{
 		More: func(page WorkspacesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -282,7 +288,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,10 +303,11 @@ func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Gets all the workspaces within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // options - WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.ListBySubscription
 // method.
 func (client *WorkspacesClient) NewListBySubscriptionPager(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListBySubscriptionResponse]{
 		More: func(page WorkspacesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -341,7 +348,7 @@ func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -356,24 +363,26 @@ func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginUpdate - Updates a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // parameters - The update to the workspace.
 // options - WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
-func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspaceUpdate, options *WorkspacesClientBeginUpdateOptions) (*armruntime.Poller[WorkspacesClientUpdateResponse], error) {
+func (client *WorkspacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspaceUpdate, options *WorkspacesClientBeginUpdateOptions) (*runtime.Poller[WorkspacesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, workspaceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspacesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspacesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspacesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspacesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspaceUpdate, options *WorkspacesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, parameters, options)
 	if err != nil {
@@ -411,6 +420,6 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

@@ -12,51 +12,49 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallDelete.json
 func ExampleAzureFirewallsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<azure-firewall-name>",
-		&armnetwork.AzureFirewallsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"azurefirewall",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallGet.json
 func ExampleAzureFirewallsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<azure-firewall-name>",
+		"rg1",
+		"azurefirewall",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,29 +63,29 @@ func ExampleAzureFirewallsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallPut.json
 func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<azure-firewall-name>",
+		"rg1",
+		"azurefirewall",
 		armnetwork.AzureFirewall{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 			Properties: &armnetwork.AzureFirewallPropertiesFormat{
 				ApplicationRuleCollections: []*armnetwork.AzureFirewallApplicationRuleCollection{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("apprulecoll"),
 						Properties: &armnetwork.AzureFirewallApplicationRuleCollectionPropertiesFormat{
 							Action: &armnetwork.AzureFirewallRCAction{
 								Type: to.Ptr(armnetwork.AzureFirewallRCActionTypeDeny),
@@ -95,8 +93,8 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 							Priority: to.Ptr[int32](110),
 							Rules: []*armnetwork.AzureFirewallApplicationRule{
 								{
-									Name:        to.Ptr("<name>"),
-									Description: to.Ptr("<description>"),
+									Name:        to.Ptr("rule1"),
+									Description: to.Ptr("Deny inbound rule"),
 									Protocols: []*armnetwork.AzureFirewallApplicationRuleProtocol{
 										{
 											Port:         to.Ptr[int32](443),
@@ -112,19 +110,19 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 					}},
 				IPConfigurations: []*armnetwork.AzureFirewallIPConfiguration{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("azureFirewallIpConfiguration"),
 						Properties: &armnetwork.AzureFirewallIPConfigurationPropertiesFormat{
 							PublicIPAddress: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"),
 							},
 							Subnet: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"),
 							},
 						},
 					}},
 				NatRuleCollections: []*armnetwork.AzureFirewallNatRuleCollection{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("natrulecoll"),
 						Properties: &armnetwork.AzureFirewallNatRuleCollectionProperties{
 							Action: &armnetwork.AzureFirewallNatRCAction{
 								Type: to.Ptr(armnetwork.AzureFirewallNatRCActionTypeDnat),
@@ -132,8 +130,8 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 							Priority: to.Ptr[int32](112),
 							Rules: []*armnetwork.AzureFirewallNatRule{
 								{
-									Name:        to.Ptr("<name>"),
-									Description: to.Ptr("<description>"),
+									Name:        to.Ptr("DNAT-HTTPS-traffic"),
+									Description: to.Ptr("D-NAT all outbound web traffic for inspection"),
 									DestinationAddresses: []*string{
 										to.Ptr("1.2.3.4")},
 									DestinationPorts: []*string{
@@ -142,12 +140,12 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 										to.Ptr(armnetwork.AzureFirewallNetworkRuleProtocolTCP)},
 									SourceAddresses: []*string{
 										to.Ptr("*")},
-									TranslatedAddress: to.Ptr("<translated-address>"),
-									TranslatedPort:    to.Ptr("<translated-port>"),
+									TranslatedAddress: to.Ptr("1.2.3.5"),
+									TranslatedPort:    to.Ptr("8443"),
 								},
 								{
-									Name:        to.Ptr("<name>"),
-									Description: to.Ptr("<description>"),
+									Name:        to.Ptr("DNAT-HTTP-traffic-With-FQDN"),
+									Description: to.Ptr("D-NAT all inbound web traffic for inspection"),
 									DestinationAddresses: []*string{
 										to.Ptr("1.2.3.4")},
 									DestinationPorts: []*string{
@@ -156,14 +154,14 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 										to.Ptr(armnetwork.AzureFirewallNetworkRuleProtocolTCP)},
 									SourceAddresses: []*string{
 										to.Ptr("*")},
-									TranslatedFqdn: to.Ptr("<translated-fqdn>"),
-									TranslatedPort: to.Ptr("<translated-port>"),
+									TranslatedFqdn: to.Ptr("internalhttpserver"),
+									TranslatedPort: to.Ptr("880"),
 								}},
 						},
 					}},
 				NetworkRuleCollections: []*armnetwork.AzureFirewallNetworkRuleCollection{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("netrulecoll"),
 						Properties: &armnetwork.AzureFirewallNetworkRuleCollectionPropertiesFormat{
 							Action: &armnetwork.AzureFirewallRCAction{
 								Type: to.Ptr(armnetwork.AzureFirewallRCActionTypeDeny),
@@ -171,8 +169,8 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 							Priority: to.Ptr[int32](112),
 							Rules: []*armnetwork.AzureFirewallNetworkRule{
 								{
-									Name:        to.Ptr("<name>"),
-									Description: to.Ptr("<description>"),
+									Name:        to.Ptr("L4-traffic"),
+									Description: to.Ptr("Block traffic based on source IPs and ports"),
 									DestinationAddresses: []*string{
 										to.Ptr("*")},
 									DestinationPorts: []*string{
@@ -185,8 +183,8 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 										to.Ptr("10.1.4.12-10.1.4.255")},
 								},
 								{
-									Name:        to.Ptr("<name>"),
-									Description: to.Ptr("<description>"),
+									Name:        to.Ptr("L4-traffic-with-FQDN"),
+									Description: to.Ptr("Block traffic based on source IPs and ports to amazon"),
 									DestinationFqdns: []*string{
 										to.Ptr("www.amazon.com")},
 									DestinationPorts: []*string{
@@ -207,11 +205,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 			},
 			Zones: []*string{},
 		},
-		&armnetwork.AzureFirewallsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -219,31 +217,31 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallUpdateTags.json
 func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateTags(ctx,
-		"<resource-group-name>",
-		"<azure-firewall-name>",
+		"azfwtest",
+		"fw1",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armnetwork.AzureFirewallsClientBeginUpdateTagsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -251,24 +249,23 @@ func ExampleAzureFirewallsClient_BeginUpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallListByResourceGroup.json
 func ExampleAzureFirewallsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -277,14 +274,14 @@ func ExampleAzureFirewallsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/AzureFirewallListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/AzureFirewallListBySubscription.json
 func ExampleAzureFirewallsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -293,7 +290,6 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

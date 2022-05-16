@@ -12,45 +12,43 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionShareableLinkCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionShareableLinkCreate.json
 func ExampleManagementClient_BeginPutBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPutBastionShareableLink(ctx,
-		"<resource-group-name>",
-		"<bastion-host-name>",
+		"rg1",
+		"bastionhosttenant",
 		armnetwork.BastionShareableLinkListRequest{
 			VMs: []*armnetwork.BastionShareableLink{
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm1"),
 					},
 				},
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm2"),
 					},
 				}},
 		},
-		&armnetwork.ManagementClientBeginPutBastionShareableLinkOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -58,7 +56,6 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 		nextResult, err := res.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -67,66 +64,66 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionShareableLinkDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionShareableLinkDelete.json
 func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteBastionShareableLink(ctx,
-		"<resource-group-name>",
-		"<bastion-host-name>",
+		"rg1",
+		"bastionhosttenant",
 		armnetwork.BastionShareableLinkListRequest{
 			VMs: []*armnetwork.BastionShareableLink{
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm1"),
 					},
 				},
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm2"),
 					},
 				}},
 		},
-		&armnetwork.ManagementClientBeginDeleteBastionShareableLinkOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionShareableLinkGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionShareableLinkGet.json
 func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetBastionShareableLinkPager("<resource-group-name>",
-		"<bastion-host-name>",
+	pager := client.NewGetBastionShareableLinkPager("rg1",
+		"bastionhosttenant",
 		armnetwork.BastionShareableLinkListRequest{
 			VMs: []*armnetwork.BastionShareableLink{
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm1"),
 					},
 				},
 				{
 					VM: &armnetwork.VM{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/subid/resourceGroups/rgx/providers/Microsoft.Compute/virtualMachines/vm2"),
 					},
 				}},
 		},
@@ -135,7 +132,6 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -144,25 +140,25 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionSessionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionSessionsList.json
 func ExampleManagementClient_BeginGetActiveSessions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginGetActiveSessions(ctx,
-		"<resource-group-name>",
-		"<bastion-host-name>",
-		&armnetwork.ManagementClientBeginGetActiveSessionsOptions{ResumeToken: ""})
+		"rg1",
+		"bastionhosttenant",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -170,7 +166,6 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 		nextResult, err := res.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -179,26 +174,25 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/BastionSessionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/BastionSessionDelete.json
 func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewDisconnectActiveSessionsPager("<resource-group-name>",
-		"<bastion-host-name>",
+	pager := client.NewDisconnectActiveSessionsPager("rg1",
+		"bastionhosttenant",
 		armnetwork.SessionIDs{},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -207,20 +201,20 @@ func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualWanSupportedSecurityProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualWanSupportedSecurityProviders.json
 func ExampleManagementClient_SupportedSecurityProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.SupportedSecurityProviders(ctx,
-		"<resource-group-name>",
-		"<virtual-wanname>",
+		"rg1",
+		"wan1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -229,29 +223,29 @@ func ExampleManagementClient_SupportedSecurityProviders() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
 func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnprofile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewManagementClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx,
-		"<resource-group-name>",
-		"<virtual-wanname>",
+		"rg1",
+		"wan1",
 		armnetwork.VirtualWanVPNProfileParameters{
 			AuthenticationMethod:             to.Ptr(armnetwork.AuthenticationMethodEAPTLS),
-			VPNServerConfigurationResourceID: to.Ptr("<vpnserver-configuration-resource-id>"),
+			VPNServerConfigurationResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/vpnServerConfigurations/vpnconfig1"),
 		},
-		&armnetwork.ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

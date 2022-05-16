@@ -12,53 +12,51 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
-		"<rule-collection-group-name>",
-		&armnetwork.FirewallPolicyRuleCollectionGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"firewallPolicy",
+		"ruleCollectionGroup1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
-		"<rule-collection-group-name>",
+		"rg1",
+		"firewallPolicy",
+		"ruleCollectionGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,27 +65,27 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyNatRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
-		"<rule-collection-group-name>",
+		"rg1",
+		"firewallPolicy",
+		"ruleCollectionGroup1",
 		armnetwork.FirewallPolicyRuleCollectionGroup{
 			Properties: &armnetwork.FirewallPolicyRuleCollectionGroupProperties{
 				Priority: to.Ptr[int32](100),
 				RuleCollections: []armnetwork.FirewallPolicyRuleCollectionClassification{
 					&armnetwork.FirewallPolicyNatRuleCollection{
-						Name:               to.Ptr("<name>"),
+						Name:               to.Ptr("Example-Nat-Rule-Collection"),
 						Priority:           to.Ptr[int32](100),
 						RuleCollectionType: to.Ptr(armnetwork.FirewallPolicyRuleCollectionTypeFirewallPolicyNatRuleCollection),
 						Action: &armnetwork.FirewallPolicyNatRuleCollectionAction{
@@ -95,7 +93,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate() {
 						},
 						Rules: []armnetwork.FirewallPolicyRuleClassification{
 							&armnetwork.NatRule{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("nat-rule1"),
 								RuleType: to.Ptr(armnetwork.FirewallPolicyRuleTypeNatRule),
 								DestinationAddresses: []*string{
 									to.Ptr("152.23.32.23")},
@@ -107,17 +105,17 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate() {
 								SourceAddresses: []*string{
 									to.Ptr("2.2.2.2")},
 								SourceIPGroups: []*string{},
-								TranslatedFqdn: to.Ptr("<translated-fqdn>"),
-								TranslatedPort: to.Ptr("<translated-port>"),
+								TranslatedFqdn: to.Ptr("internalhttp.server.net"),
+								TranslatedPort: to.Ptr("8080"),
 							}},
 					}},
 			},
 		},
-		&armnetwork.FirewallPolicyRuleCollectionGroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -125,25 +123,24 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyRuleCollectionGroupsClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<firewall-policy-name>",
+	pager := client.NewListPager("rg1",
+		"firewallPolicy",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

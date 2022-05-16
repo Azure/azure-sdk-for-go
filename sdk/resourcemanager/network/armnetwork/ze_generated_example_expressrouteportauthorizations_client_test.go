@@ -12,26 +12,25 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointDnsZoneGroupDelete.json
-func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRoutePortAuthorizationDelete.json
+func ExampleExpressRoutePortAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	client, err := armnetwork.NewExpressRoutePortAuthorizationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
 		"rg1",
-		"testPe",
-		"testPdnsgroup",
+		"expressRoutePortName",
+		"authorizationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,21 +41,21 @@ func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointDnsZoneGroupGet.json
-func ExamplePrivateDNSZoneGroupsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRoutePortAuthorizationGet.json
+func ExampleExpressRoutePortAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	client, err := armnetwork.NewExpressRoutePortAuthorizationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"rg1",
-		"testPe",
-		"testPdnsgroup",
+		"expressRoutePortName",
+		"authorizationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,30 +64,23 @@ func ExamplePrivateDNSZoneGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointDnsZoneGroupCreate.json
-func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRoutePortAuthorizationCreate.json
+func ExampleExpressRoutePortAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	client, err := armnetwork.NewExpressRoutePortAuthorizationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"rg1",
-		"testPe",
-		"testPdnsgroup",
-		armnetwork.PrivateDNSZoneGroup{
-			Properties: &armnetwork.PrivateDNSZoneGroupPropertiesFormat{
-				PrivateDNSZoneConfigs: []*armnetwork.PrivateDNSZoneConfig{
-					{
-						Properties: &armnetwork.PrivateDNSZonePropertiesFormat{
-							PrivateDNSZoneID: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateDnsZones/zone1.com"),
-						},
-					}},
-			},
+		"expressRoutePortName",
+		"authorizatinName",
+		armnetwork.ExpressRoutePortAuthorization{
+			Properties: &armnetwork.ExpressRoutePortAuthorizationPropertiesFormat{},
 		},
 		nil)
 	if err != nil {
@@ -102,19 +94,19 @@ func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/PrivateEndpointDnsZoneGroupList.json
-func ExamplePrivateDNSZoneGroupsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ExpressRoutePortAuthorizationList.json
+func ExampleExpressRoutePortAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateDNSZoneGroupsClient("subId", cred, nil)
+	client, err := armnetwork.NewExpressRoutePortAuthorizationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testPe",
-		"rg1",
+	pager := client.NewListPager("rg1",
+		"expressRoutePortName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

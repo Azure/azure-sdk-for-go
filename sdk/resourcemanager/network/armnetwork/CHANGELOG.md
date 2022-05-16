@@ -1,5 +1,516 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*RoutesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RoutesClientDeleteResponse], error)` to `(*runtime.Poller[RoutesClientDeleteResponse], error)`
+- Function `*PublicIPAddressesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PublicIPAddressesClientDeleteResponse], error)` to `(*runtime.Poller[PublicIPAddressesClientDeleteResponse], error)`
+- Function `*VPNLinkConnectionsClient.BeginGetIkeSas` return value(s) have been changed from `(*armruntime.Poller[VPNLinkConnectionsClientGetIkeSasResponse], error)` to `(*runtime.Poller[VPNLinkConnectionsClientGetIkeSasResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginListRoutesTable` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitsClientListRoutesTableResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitsClientListRoutesTableResponse], error)`
+- Function `*DdosProtectionPlansClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DdosProtectionPlansClientDeleteResponse], error)` to `(*runtime.Poller[DdosProtectionPlansClientDeleteResponse], error)`
+- Function `*RoutingIntentClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RoutingIntentClientDeleteResponse], error)` to `(*runtime.Poller[RoutingIntentClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginStartPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse], error)`
+- Function `*VirtualHubRouteTableV2SClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualHubRouteTableV2SClientDeleteResponse], error)` to `(*runtime.Poller[VirtualHubRouteTableV2SClientDeleteResponse], error)`
+- Function `*SecurityPartnerProvidersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SecurityPartnerProvidersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SecurityPartnerProvidersClientCreateOrUpdateResponse], error)`
+- Function `*PacketCapturesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PacketCapturesClientCreateResponse], error)` to `(*runtime.Poller[PacketCapturesClientCreateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*PrivateDNSZoneGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateDNSZoneGroupsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateDNSZoneGroupsClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitConnectionsClientDeleteResponse], error)`
+- Function `*AzureFirewallsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AzureFirewallsClientDeleteResponse], error)` to `(*runtime.Poller[AzureFirewallsClientDeleteResponse], error)`
+- Function `*VirtualNetworkTapsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkTapsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkTapsClientCreateOrUpdateResponse], error)`
+- Function `*InterfacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InterfacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InterfacesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVPNProfilePackageURL` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse], error)`
+- Function `*WatchersClient.BeginGetVMSecurityRules` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetVMSecurityRulesResponse], error)` to `(*runtime.Poller[WatchersClientGetVMSecurityRulesResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientStopResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientStopResponse], error)`
+- Function `*SecurityPartnerProvidersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SecurityPartnerProvidersClientDeleteResponse], error)` to `(*runtime.Poller[SecurityPartnerProvidersClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error)`
+- Function `*PacketCapturesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PacketCapturesClientDeleteResponse], error)` to `(*runtime.Poller[PacketCapturesClientDeleteResponse], error)`
+- Function `*PrivateEndpointsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointsClientCreateOrUpdateResponse], error)`
+- Function `*VPNServerConfigurationsAssociatedWithVirtualWanClient.BeginList` return value(s) have been changed from `(*armruntime.Poller[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse], error)` to `(*runtime.Poller[VPNServerConfigurationsAssociatedWithVirtualWanClientListResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginReset` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientResetResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientResetResponse], error)`
+- Function `*VirtualAppliancesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualAppliancesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualAppliancesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginStartPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientStartPacketCaptureResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientStartPacketCaptureResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibility` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse], error)` to `(*runtime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityResponse], error)`
+- Function `*WatchersClient.BeginGetAzureReachabilityReport` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetAzureReachabilityReportResponse], error)` to `(*runtime.Poller[WatchersClientGetAzureReachabilityReportResponse], error)`
+- Function `*CustomIPPrefixesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomIPPrefixesClientDeleteResponse], error)` to `(*runtime.Poller[CustomIPPrefixesClientDeleteResponse], error)`
+- Function `*WatchersClient.BeginVerifyIPFlow` return value(s) have been changed from `(*armruntime.Poller[WatchersClientVerifyIPFlowResponse], error)` to `(*runtime.Poller[WatchersClientVerifyIPFlowResponse], error)`
+- Function `*VPNServerConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VPNServerConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[VPNServerConfigurationsClientDeleteResponse], error)`
+- Function `*VPNGatewaysClient.BeginStartPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientStartPacketCaptureResponse], error)` to `(*runtime.Poller[VPNGatewaysClientStartPacketCaptureResponse], error)`
+- Function `*BastionHostsClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[BastionHostsClientUpdateTagsResponse], error)` to `(*runtime.Poller[BastionHostsClientUpdateTagsResponse], error)`
+- Function `*RouteTablesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RouteTablesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RouteTablesClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListRoutesTableSummary` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableSummaryResponse], error)`
+- Function `*VirtualNetworksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworksClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworksClientDeleteResponse], error)`
+- Function `*VirtualHubIPConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualHubIPConfigurationClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualHubIPConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*FirewallPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FirewallPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FirewallPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*RoutingIntentClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RoutingIntentClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RoutingIntentClientCreateOrUpdateResponse], error)`
+- Function `*ProfilesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ProfilesClientDeleteResponse], error)` to `(*runtime.Poller[ProfilesClientDeleteResponse], error)`
+- Function `*VirtualWansClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualWansClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualWansClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientDeleteResponse], error)`
+- Function `*DdosCustomPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DdosCustomPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DdosCustomPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error)`
+- Function `*InterfacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[InterfacesClientDeleteResponse], error)` to `(*runtime.Poller[InterfacesClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesClientDeleteResponse], error)`
+- Function `*VirtualHubBgpConnectionClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualHubBgpConnectionClientDeleteResponse], error)` to `(*runtime.Poller[VirtualHubBgpConnectionClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LoadBalancersClientDeleteResponse], error)` to `(*runtime.Poller[LoadBalancersClientDeleteResponse], error)`
+- Function `*FlowLogsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FlowLogsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FlowLogsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewayNatRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayNatRulesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayNatRulesClientDeleteResponse], error)`
+- Function `*AzureFirewallsClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[AzureFirewallsClientUpdateTagsResponse], error)` to `(*runtime.Poller[AzureFirewallsClientUpdateTagsResponse], error)`
+- Function `*ExpressRouteCircuitAuthorizationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitAuthorizationsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginResetSharedKey` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientResetSharedKeyResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*ServiceEndpointPolicyDefinitionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceEndpointPolicyDefinitionsClientDeleteResponse], error)` to `(*runtime.Poller[ServiceEndpointPolicyDefinitionsClientDeleteResponse], error)`
+- Function `*SubnetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SubnetsClientDeleteResponse], error)` to `(*runtime.Poller[SubnetsClientDeleteResponse], error)`
+- Function `*ExpressRouteConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)`
+- Function `*VirtualWansClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualWansClientDeleteResponse], error)` to `(*runtime.Poller[VirtualWansClientDeleteResponse], error)`
+- Function `*SecurityRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SecurityRulesClientDeleteResponse], error)` to `(*runtime.Poller[SecurityRulesClientDeleteResponse], error)`
+- Function `*ServiceEndpointPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceEndpointPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceEndpointPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*VPNConnectionsClient.BeginStopPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VPNConnectionsClientStopPacketCaptureResponse], error)` to `(*runtime.Poller[VPNConnectionsClientStopPacketCaptureResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginStopPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse], error)`
+- Function `*NatRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NatRulesClientDeleteResponse], error)` to `(*runtime.Poller[NatRulesClientDeleteResponse], error)`
+- Function `*VirtualAppliancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualAppliancesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualAppliancesClientDeleteResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConnectionMonitorsClientDeleteResponse], error)` to `(*runtime.Poller[ConnectionMonitorsClientDeleteResponse], error)`
+- Function `*InterfacesClient.BeginGetEffectiveRouteTable` return value(s) have been changed from `(*armruntime.Poller[InterfacesClientGetEffectiveRouteTableResponse], error)` to `(*runtime.Poller[InterfacesClientGetEffectiveRouteTableResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetLearnedRoutes` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error)`
+- Function `*DscpConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DscpConfigurationClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DscpConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginGetTroubleshootingResult` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetTroubleshootingResultResponse], error)` to `(*runtime.Poller[WatchersClientGetTroubleshootingResultResponse], error)`
+- Function `*PacketCapturesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[PacketCapturesClientStopResponse], error)` to `(*runtime.Poller[PacketCapturesClientStopResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientUpdateTagsResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientUpdateTagsResponse], error)`
+- Function `*VirtualRouterPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualRouterPeeringsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualRouterPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*VPNGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VPNGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCircuitPeeringsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitPeeringsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitPeeringsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginDisconnectVirtualNetworkGatewayVPNConnections` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginResetConnection` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientResetConnectionResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientResetConnectionResponse], error)`
+- Function `*HubVirtualNetworkConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[HubVirtualNetworkConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[HubVirtualNetworkConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteGatewaysClientUpdateTagsResponse], error)` to `(*runtime.Poller[ExpressRouteGatewaysClientUpdateTagsResponse], error)`
+- Function `*InterfacesClient.BeginListEffectiveNetworkSecurityGroups` return value(s) have been changed from `(*armruntime.Poller[InterfacesClientListEffectiveNetworkSecurityGroupsResponse], error)` to `(*runtime.Poller[InterfacesClientListEffectiveNetworkSecurityGroupsResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitsClientDeleteResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientUpdateTagsResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientUpdateTagsResponse], error)`
+- Function `*SubnetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SubnetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SubnetsClientCreateOrUpdateResponse], error)`
+- Function `*RoutesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RoutesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RoutesClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginGetNetworkConfigurationDiagnostic` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetNetworkConfigurationDiagnosticResponse], error)` to `(*runtime.Poller[WatchersClientGetNetworkConfigurationDiagnosticResponse], error)`
+- Function `*ExpressRoutePortsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRoutePortsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRoutePortsClientDeleteResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginBackendHealthOnDemand` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientBackendHealthOnDemandResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientBackendHealthOnDemandResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginSetVpnclientIPSecParameters` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientSetVpnclientIPSecParametersResponse], error)`
+- Function `*RouteFiltersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RouteFiltersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RouteFiltersClientCreateOrUpdateResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientDeleteResponse], error)`
+- Function `*WatchersClient.BeginGetFlowLogStatus` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetFlowLogStatusResponse], error)` to `(*runtime.Poller[WatchersClientGetFlowLogStatusResponse], error)`
+- Function `*IPGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IPGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IPGroupsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkPeeringsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkPeeringsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkPeeringsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*FirewallPolicyRuleCollectionGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FirewallPolicyRuleCollectionGroupsClientDeleteResponse], error)` to `(*runtime.Poller[FirewallPolicyRuleCollectionGroupsClientDeleteResponse], error)`
+- Function `*PublicIPAddressesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PublicIPAddressesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PublicIPAddressesClientCreateOrUpdateResponse], error)`
+- Function `*NatGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NatGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[NatGatewaysClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginListArpTable` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitsClientListArpTableResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitsClientListArpTableResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientUpdateTagsResponse], error)`
+- Function `*NatGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NatGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NatGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*PublicIPPrefixesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PublicIPPrefixesClientDeleteResponse], error)` to `(*runtime.Poller[PublicIPPrefixesClientDeleteResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ConnectionMonitorsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ConnectionMonitorsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationSecurityGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationSecurityGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationSecurityGroupsClientCreateOrUpdateResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginGenerateVPNProfile` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientGenerateVPNProfileResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientGenerateVPNProfileResponse], error)`
+- Function `*InterfaceTapConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[InterfaceTapConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[InterfaceTapConfigurationsClientDeleteResponse], error)`
+- Function `*HubRouteTablesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[HubRouteTablesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[HubRouteTablesClientCreateOrUpdateResponse], error)`
+- Function `*VPNGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[VPNGatewaysClientDeleteResponse], error)`
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse], error)` to `(*runtime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientUpdateResponse], error)`
+- Function `*PrivateEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointsClientDeleteResponse], error)`
+- Function `*RouteFilterRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RouteFilterRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RouteFilterRulesClientCreateOrUpdateResponse], error)`
+- Function `*VPNGatewaysClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientUpdateTagsResponse], error)` to `(*runtime.Poller[VPNGatewaysClientUpdateTagsResponse], error)`
+- Function `*VirtualHubRouteTableV2SClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualHubRouteTableV2SClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualHubRouteTableV2SClientCreateOrUpdateResponse], error)`
+- Function `*HubRouteTablesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[HubRouteTablesClientDeleteResponse], error)` to `(*runtime.Poller[HubRouteTablesClientDeleteResponse], error)`
+- Function `*VirtualApplianceSitesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualApplianceSitesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualApplianceSitesClientDeleteResponse], error)`
+- Function `*NatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NatRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NatRulesClientCreateOrUpdateResponse], error)`
+- Function `*RouteFilterRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RouteFilterRulesClientDeleteResponse], error)` to `(*runtime.Poller[RouteFilterRulesClientDeleteResponse], error)`
+- Function `*PacketCapturesClient.BeginGetStatus` return value(s) have been changed from `(*armruntime.Poller[PacketCapturesClientGetStatusResponse], error)` to `(*runtime.Poller[PacketCapturesClientGetStatusResponse], error)`
+- Function `*ExpressRouteCrossConnectionPeeringsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionPeeringsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionPeeringsClientDeleteResponse], error)`
+- Function `*BastionHostsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BastionHostsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BastionHostsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginGetIkeSas` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientGetIkeSasResponse], error)`
+- Function `*IPGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IPGroupsClientDeleteResponse], error)` to `(*runtime.Poller[IPGroupsClientDeleteResponse], error)`
+- Function `*ExpressRouteConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteConnectionsClientDeleteResponse], error)`
+- Function `*SecurityRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SecurityRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SecurityRulesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkPeeringsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListRoutesTable` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionsClientListRoutesTableResponse], error)`
+- Function `*CustomIPPrefixesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomIPPrefixesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomIPPrefixesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes` return value(s) have been changed from `(*armruntime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error)` to `(*runtime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error)`
+- Function `*ExpressRoutePortsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRoutePortsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRoutePortsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientDeleteResponse], error)`
+- Function `*SecurityGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SecurityGroupsClientDeleteResponse], error)` to `(*runtime.Poller[SecurityGroupsClientDeleteResponse], error)`
+- Function `*ApplicationSecurityGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationSecurityGroupsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationSecurityGroupsClientDeleteResponse], error)`
+- Function `*RouteFiltersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RouteFiltersClientDeleteResponse], error)` to `(*runtime.Poller[RouteFiltersClientDeleteResponse], error)`
+- Function `*LoadBalancersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LoadBalancersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LoadBalancersClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteCrossConnectionsClient.BeginListArpTable` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionsClientListArpTableResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionsClientListArpTableResponse], error)`
+- Function `*InboundSecurityRuleClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InboundSecurityRuleClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InboundSecurityRuleClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginSetSharedKey` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientSetSharedKeyResponse], error)`
+- Function `*ExpressRouteGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*ManagementClient.BeginDeleteBastionShareableLink` return value(s) have been changed from `(*armruntime.Poller[ManagementClientDeleteBastionShareableLinkResponse], error)` to `(*runtime.Poller[ManagementClientDeleteBastionShareableLinkResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealthDetailed` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthDetailedResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[PrivateLinkServicesClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*LocalNetworkGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LocalNetworkGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[LocalNetworkGatewaysClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewayNatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayNatRulesClientCreateOrUpdateResponse], error)`
+- Function `*VPNConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VPNConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VPNConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ExpressRouteGatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteGatewaysClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteGatewaysClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitAuthorizationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error)`
+- Function `*FirewallPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FirewallPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[FirewallPoliciesClientDeleteResponse], error)`
+- Function `*SecurityGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SecurityGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SecurityGroupsClientCreateOrUpdateResponse], error)`
+- Function `*VPNSitesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VPNSitesClientDeleteResponse], error)` to `(*runtime.Poller[VPNSitesClientDeleteResponse], error)`
+- Function `*DdosCustomPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DdosCustomPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[DdosCustomPoliciesClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancersClient.BeginListInboundNatRulePortMappings` return value(s) have been changed from `(*armruntime.Poller[LoadBalancersClientListInboundNatRulePortMappingsResponse], error)` to `(*runtime.Poller[LoadBalancersClientListInboundNatRulePortMappingsResponse], error)`
+- Function `*ServiceEndpointPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceEndpointPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[ServiceEndpointPoliciesClientDeleteResponse], error)`
+- Function `*FlowLogsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FlowLogsClientDeleteResponse], error)` to `(*runtime.Poller[FlowLogsClientDeleteResponse], error)`
+- Function `*VirtualNetworkTapsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkTapsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkTapsClientDeleteResponse], error)`
+- Function `*ApplicationGatewayPrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*LoadBalancerBackendAddressPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LoadBalancerBackendAddressPoolsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse], error)` to `(*runtime.Poller[PrivateLinkServicesClientCheckPrivateLinkServiceVisibilityByResourceGroupResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGeneratevpnclientpackage` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse], error)`
+- Function `*VPNConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VPNConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[VPNConnectionsClientDeleteResponse], error)`
+- Function `*VirtualHubBgpConnectionsClient.BeginListAdvertisedRoutes` return value(s) have been changed from `(*armruntime.Poller[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse], error)` to `(*runtime.Poller[VirtualHubBgpConnectionsClientListAdvertisedRoutesResponse], error)`
+- Function `*VirtualRoutersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualRoutersClientDeleteResponse], error)` to `(*runtime.Poller[VirtualRoutersClientDeleteResponse], error)`
+- Function `*ExpressRouteCircuitPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginQuery` return value(s) have been changed from `(*armruntime.Poller[ConnectionMonitorsClientQueryResponse], error)` to `(*runtime.Poller[ConnectionMonitorsClientQueryResponse], error)`
+- Function `*VirtualHubIPConfigurationClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualHubIPConfigurationClientDeleteResponse], error)` to `(*runtime.Poller[VirtualHubIPConfigurationClientDeleteResponse], error)`
+- Function `*BastionHostsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BastionHostsClientDeleteResponse], error)` to `(*runtime.Poller[BastionHostsClientDeleteResponse], error)`
+- Function `*VPNServerConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VPNServerConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VPNServerConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*InboundNatRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InboundNatRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InboundNatRulesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualHubBgpConnectionsClient.BeginListLearnedRoutes` return value(s) have been changed from `(*armruntime.Poller[VirtualHubBgpConnectionsClientListLearnedRoutesResponse], error)` to `(*runtime.Poller[VirtualHubBgpConnectionsClientListLearnedRoutesResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ConnectionMonitorsClientStartResponse], error)` to `(*runtime.Poller[ConnectionMonitorsClientStartResponse], error)`
+- Function `*InboundNatRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[InboundNatRulesClientDeleteResponse], error)` to `(*runtime.Poller[InboundNatRulesClientDeleteResponse], error)`
+- Function `*DdosProtectionPlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DdosProtectionPlansClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DdosProtectionPlansClientCreateOrUpdateResponse], error)`
+- Function `*VPNGatewaysClient.BeginReset` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientResetResponse], error)` to `(*runtime.Poller[VPNGatewaysClientResetResponse], error)`
+- Function `*ManagementClient.BeginPutBastionShareableLink` return value(s) have been changed from `(*armruntime.Poller[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]], error)` to `(*runtime.Poller[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]], error)`
+- Function `*SubnetsClient.BeginUnprepareNetworkPolicies` return value(s) have been changed from `(*armruntime.Poller[SubnetsClientUnprepareNetworkPoliciesResponse], error)` to `(*runtime.Poller[SubnetsClientUnprepareNetworkPoliciesResponse], error)`
+- Function `*FirewallPolicyRuleCollectionGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FirewallPolicyRuleCollectionGroupsClientCreateOrUpdateResponse], error)`
+- Function `*ConnectionMonitorsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ConnectionMonitorsClientStopResponse], error)` to `(*runtime.Poller[ConnectionMonitorsClientStopResponse], error)`
+- Function `*WatchersClient.BeginCheckConnectivity` return value(s) have been changed from `(*armruntime.Poller[WatchersClientCheckConnectivityResponse], error)` to `(*runtime.Poller[WatchersClientCheckConnectivityResponse], error)`
+- Function `*VirtualHubsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualHubsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualHubsClientDeleteResponse], error)`
+- Function `*VirtualApplianceSitesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualApplianceSitesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualApplianceSitesClientCreateOrUpdateResponse], error)`
+- Function `*InterfaceTapConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InterfaceTapConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InterfaceTapConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientIPSecParameters` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientIPSecParametersResponse], error)`
+- Function `*WebApplicationFirewallPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WebApplicationFirewallPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[WebApplicationFirewallPoliciesClientDeleteResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginGetP2SVPNConnectionHealth` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientGetP2SVPNConnectionHealthResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WatchersClientDeleteResponse], error)` to `(*runtime.Poller[WatchersClientDeleteResponse], error)`
+- Function `*ServiceEndpointPolicyDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceEndpointPolicyDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `*HubVirtualNetworkConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[HubVirtualNetworkConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[HubVirtualNetworkConnectionsClientDeleteResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGenerateVPNProfile` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientGenerateVPNProfileResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientGenerateVPNProfileResponse], error)`
+- Function `*IPAllocationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IPAllocationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IPAllocationsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginStopPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientStopPacketCaptureResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientStopPacketCaptureResponse], error)`
+- Function `*WatchersClient.BeginSetFlowLogConfiguration` return value(s) have been changed from `(*armruntime.Poller[WatchersClientSetFlowLogConfigurationResponse], error)` to `(*runtime.Poller[WatchersClientSetFlowLogConfigurationResponse], error)`
+- Function `*ExpressRouteCrossConnectionPeeringsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCrossConnectionPeeringsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginBackendHealth` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientBackendHealthResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientBackendHealthResponse], error)`
+- Function `*VPNSitesConfigurationClient.BeginDownload` return value(s) have been changed from `(*armruntime.Poller[VPNSitesConfigurationClientDownloadResponse], error)` to `(*runtime.Poller[VPNSitesConfigurationClientDownloadResponse], error)`
+- Function `*PrivateDNSZoneGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateDNSZoneGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateDNSZoneGroupsClientCreateOrUpdateResponse], error)`
+- Function `*SubnetsClient.BeginPrepareNetworkPolicies` return value(s) have been changed from `(*armruntime.Poller[SubnetsClientPrepareNetworkPoliciesResponse], error)` to `(*runtime.Poller[SubnetsClientPrepareNetworkPoliciesResponse], error)`
+- Function `*VPNSitesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VPNSitesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VPNSitesClientCreateOrUpdateResponse], error)`
+- Function `*WatchersClient.BeginListAvailableProviders` return value(s) have been changed from `(*armruntime.Poller[WatchersClientListAvailableProvidersResponse], error)` to `(*runtime.Poller[WatchersClientListAvailableProvidersResponse], error)`
+- Function `*LocalNetworkGatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LocalNetworkGatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LocalNetworkGatewaysClientCreateOrUpdateResponse], error)`
+- Function `*DscpConfigurationClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DscpConfigurationClientDeleteResponse], error)` to `(*runtime.Poller[DscpConfigurationClientDeleteResponse], error)`
+- Function `*VirtualHubBgpConnectionClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualHubBgpConnectionClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualHubBgpConnectionClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginResetVPNClientSharedKey` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse], error)`
+- Function `*VirtualRoutersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualRoutersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualRoutersClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancersClient.BeginSwapPublicIPAddresses` return value(s) have been changed from `(*armruntime.Poller[LoadBalancersClientSwapPublicIPAddressesResponse], error)` to `(*runtime.Poller[LoadBalancersClientSwapPublicIPAddressesResponse], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginReset` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewaysClientResetResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewaysClientResetResponse], error)`
+- Function `*WatchersClient.BeginGetTroubleshooting` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetTroubleshootingResponse], error)` to `(*runtime.Poller[WatchersClientGetTroubleshootingResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginListRoutesTableSummary` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitsClientListRoutesTableSummaryResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitsClientListRoutesTableSummaryResponse], error)`
+- Function `*VirtualRouterPeeringsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualRouterPeeringsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualRouterPeeringsClientDeleteResponse], error)`
+- Function `*VPNConnectionsClient.BeginStartPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VPNConnectionsClientStartPacketCaptureResponse], error)` to `(*runtime.Poller[VPNConnectionsClientStartPacketCaptureResponse], error)`
+- Function `*VirtualNetworkGatewayConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkGatewayConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkGatewayConnectionsClientDeleteResponse], error)`
+- Function `*VPNLinkConnectionsClient.BeginResetConnection` return value(s) have been changed from `(*armruntime.Poller[VPNLinkConnectionsClientResetConnectionResponse], error)` to `(*runtime.Poller[VPNLinkConnectionsClientResetConnectionResponse], error)`
+- Function `*P2SVPNGatewaysClient.BeginDisconnectP2SVPNConnections` return value(s) have been changed from `(*armruntime.Poller[P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse], error)` to `(*runtime.Poller[P2SVPNGatewaysClientDisconnectP2SVPNConnectionsResponse], error)`
+- Function `*ExpressRouteCircuitsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExpressRouteCircuitsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExpressRouteCircuitsClientCreateOrUpdateResponse], error)`
+- Function `*RouteTablesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RouteTablesClientDeleteResponse], error)` to `(*runtime.Poller[RouteTablesClientDeleteResponse], error)`
+- Function `*AzureFirewallsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AzureFirewallsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AzureFirewallsClientCreateOrUpdateResponse], error)`
+- Function `*LoadBalancerBackendAddressPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LoadBalancerBackendAddressPoolsClientDeleteResponse], error)` to `(*runtime.Poller[LoadBalancerBackendAddressPoolsClientDeleteResponse], error)`
+- Function `*IPAllocationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IPAllocationsClientDeleteResponse], error)` to `(*runtime.Poller[IPAllocationsClientDeleteResponse], error)`
+- Function `*VPNGatewaysClient.BeginStopPacketCapture` return value(s) have been changed from `(*armruntime.Poller[VPNGatewaysClientStopPacketCaptureResponse], error)` to `(*runtime.Poller[VPNGatewaysClientStopPacketCaptureResponse], error)`
+- Function `*PublicIPPrefixesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PublicIPPrefixesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PublicIPPrefixesClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationGatewaysClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ApplicationGatewaysClientStartResponse], error)` to `(*runtime.Poller[ApplicationGatewaysClientStartResponse], error)`
+- Function `*VirtualHubsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualHubsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualHubsClientCreateOrUpdateResponse], error)`
+- Function `*ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile` return value(s) have been changed from `(*armruntime.Poller[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse], error)` to `(*runtime.Poller[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse], error)`
+- Function `*ManagementClient.BeginGetActiveSessions` return value(s) have been changed from `(*armruntime.Poller[*runtime.Pager[ManagementClientGetActiveSessionsResponse]], error)` to `(*runtime.Poller[*runtime.Pager[ManagementClientGetActiveSessionsResponse]], error)`
+- Function `*WatchersClient.BeginGetNextHop` return value(s) have been changed from `(*armruntime.Poller[WatchersClientGetNextHopResponse], error)` to `(*runtime.Poller[WatchersClientGetNextHopResponse], error)`
+- Type of `SingleQueryResult.Direction` has been changed from `*SingleQueryResultDirection` to `*FirewallPolicyIDPSSignatureDirection`
+- Type of `SingleQueryResult.Mode` has been changed from `*SingleQueryResultMode` to `*FirewallPolicyIDPSSignatureMode`
+- Type of `SingleQueryResult.Severity` has been changed from `*SingleQueryResultSeverity` to `*FirewallPolicyIDPSSignatureSeverity`
+- Type of `OrderBy.Order` has been changed from `*OrderByOrder` to `*FirewallPolicyIDPSQuerySortOrder`
+- Const `OrderByOrderDescending` has been removed
+- Const `SingleQueryResultDirectionZero` has been removed
+- Const `SingleQueryResultDirectionTwo` has been removed
+- Const `SingleQueryResultDirectionOne` has been removed
+- Const `SingleQueryResultSeverityThree` has been removed
+- Const `SingleQueryResultModeOne` has been removed
+- Const `SingleQueryResultModeZero` has been removed
+- Const `SingleQueryResultModeTwo` has been removed
+- Const `OrderByOrderAscending` has been removed
+- Const `SingleQueryResultSeverityOne` has been removed
+- Const `SingleQueryResultSeverityTwo` has been removed
+- Function `EffectiveNetworkSecurityGroupListResult.MarshalJSON` has been removed
+- Function `ExpressRoutePortsLocationListResult.MarshalJSON` has been removed
+- Function `ExpressRouteGatewayList.MarshalJSON` has been removed
+- Function `WatcherListResult.MarshalJSON` has been removed
+- Function `VirtualApplianceListResult.MarshalJSON` has been removed
+- Function `BastionShareableLinkListResult.MarshalJSON` has been removed
+- Function `ConnectivityHop.MarshalJSON` has been removed
+- Function `VPNClientConnectionHealthDetailListResult.MarshalJSON` has been removed
+- Function `ExpressRouteCrossConnectionsRoutesTableSummaryListResult.MarshalJSON` has been removed
+- Function `AzureReachabilityReport.MarshalJSON` has been removed
+- Function `ListVirtualHubRouteTableV2SResult.MarshalJSON` has been removed
+- Function `AvailableDelegationsResult.MarshalJSON` has been removed
+- Function `SecurityRuleListResult.MarshalJSON` has been removed
+- Function `BastionActiveSessionListResult.MarshalJSON` has been removed
+- Function `PublicIPAddressListResult.MarshalJSON` has been removed
+- Function `ConnectivityIssue.MarshalJSON` has been removed
+- Function `ExpressRouteCircuitsArpTableListResult.MarshalJSON` has been removed
+- Function `PublicIPPrefixListResult.MarshalJSON` has been removed
+- Function `PossibleSingleQueryResultDirectionValues` has been removed
+- Function `ListVirtualWANsResult.MarshalJSON` has been removed
+- Function `EvaluatedNetworkSecurityGroup.MarshalJSON` has been removed
+- Function `ApplicationGatewayPrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ListVPNGatewayNatRulesResult.MarshalJSON` has been removed
+- Function `ServiceTagInformationListResult.MarshalJSON` has been removed
+- Function `ServiceAssociationLinksListResult.MarshalJSON` has been removed
+- Function `FirewallPolicyListResult.MarshalJSON` has been removed
+- Function `AvailableServiceAliasesResult.MarshalJSON` has been removed
+- Function `SecurityRuleAssociations.MarshalJSON` has been removed
+- Function `ExpressRouteCircuitListResult.MarshalJSON` has been removed
+- Function `AvailableProvidersListCountry.MarshalJSON` has been removed
+- Function `LoadBalancerProbeListResult.MarshalJSON` has been removed
+- Function `ServiceTagInformationPropertiesFormat.MarshalJSON` has been removed
+- Function `ListVirtualHubIPConfigurationResults.MarshalJSON` has been removed
+- Function `EffectiveNetworkSecurityRule.MarshalJSON` has been removed
+- Function `ExpressRoutePortListResult.MarshalJSON` has been removed
+- Function `RouteFilterListResult.MarshalJSON` has been removed
+- Function `ListHubVirtualNetworkConnectionsResult.MarshalJSON` has been removed
+- Function `ExpressRouteCircuitsRoutesTableListResult.MarshalJSON` has been removed
+- Function `ListVPNGatewaysResult.MarshalJSON` has been removed
+- Function `SignatureOverridesFilterValuesResponse.MarshalJSON` has been removed
+- Function `RouteFilterRuleListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServiceListResult.MarshalJSON` has been removed
+- Function `ResourceNavigationLinksListResult.MarshalJSON` has been removed
+- Function `TroubleshootingResult.MarshalJSON` has been removed
+- Function `BastionSessionDeleteResult.MarshalJSON` has been removed
+- Function `ListVPNSiteLinksResult.MarshalJSON` has been removed
+- Function `LoadBalancerFrontendIPConfigurationListResult.MarshalJSON` has been removed
+- Function `ListVPNServerConfigurationsResult.MarshalJSON` has been removed
+- Function `GatewayRouteListResult.MarshalJSON` has been removed
+- Function `ExpressRouteServiceProviderListResult.MarshalJSON` has been removed
+- Function `SingleQueryResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `SignaturesOverridesList.MarshalJSON` has been removed
+- Function `AzureWebCategoryListResult.MarshalJSON` has been removed
+- Function `VirtualApplianceSKUListResult.MarshalJSON` has been removed
+- Function `VirtualWanSecurityProviders.MarshalJSON` has been removed
+- Function `SubnetAssociation.MarshalJSON` has been removed
+- Function `IPAddressAvailabilityResult.MarshalJSON` has been removed
+- Function `WebApplicationFirewallPolicyListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkGatewayConnectionListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkGatewayListResult.MarshalJSON` has been removed
+- Function `ExpressRouteCrossConnectionPeeringList.MarshalJSON` has been removed
+- Function `BastionHostListResult.MarshalJSON` has been removed
+- Function `ListVPNSitesResult.MarshalJSON` has been removed
+- Function `ProfileListResult.MarshalJSON` has been removed
+- Function `ApplicationGatewayBackendHealth.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ListHubRouteTablesResult.MarshalJSON` has been removed
+- Function `VirtualNetworkPeeringListResult.MarshalJSON` has been removed
+- Function `EffectiveRouteListResult.MarshalJSON` has been removed
+- Function `ListVPNSiteLinkConnectionsResult.MarshalJSON` has been removed
+- Function `TroubleshootingDetails.MarshalJSON` has been removed
+- Function `PacketCaptureQueryStatusResult.MarshalJSON` has been removed
+- Function `BackendAddressInboundNatRulePortMappings.MarshalJSON` has been removed
+- Function `ListVirtualHubsResult.MarshalJSON` has been removed
+- Function `ListP2SVPNGatewaysResult.MarshalJSON` has been removed
+- Function `BgpServiceCommunityListResult.MarshalJSON` has been removed
+- Function `ServiceTagsListResult.MarshalJSON` has been removed
+- Function `AutoApprovedPrivateLinkServicesResult.MarshalJSON` has been removed
+- Function `FlowLogListResult.MarshalJSON` has been removed
+- Function `IPAllocationListResult.MarshalJSON` has been removed
+- Function `ExpressRouteCircuitsRoutesTableSummaryListResult.MarshalJSON` has been removed
+- Function `ServiceEndpointPolicyListResult.MarshalJSON` has been removed
+- Function `SecurityGroupResult.MarshalJSON` has been removed
+- Function `ListVirtualNetworkGatewayNatRulesResult.MarshalJSON` has been removed
+- Function `VirtualHubEffectiveRouteList.MarshalJSON` has been removed
+- Function `QueryResults.MarshalJSON` has been removed
+- Function `DscpConfigurationListResult.MarshalJSON` has been removed
+- Function `AvailableProvidersListState.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `EffectiveNetworkSecurityGroup.MarshalJSON` has been removed
+- Function `InterfaceIPConfigurationListResult.MarshalJSON` has been removed
+- Function `PeerRouteList.MarshalJSON` has been removed
+- Function `ApplicationGatewayListResult.MarshalJSON` has been removed
+- Function `VirtualHubEffectiveRoute.MarshalJSON` has been removed
+- Function `ListVPNConnectionsResult.MarshalJSON` has been removed
+- Function `SubnetListResult.MarshalJSON` has been removed
+- Function `InterfaceAssociation.MarshalJSON` has been removed
+- Function `VirtualNetworkListUsageResult.MarshalJSON` has been removed
+- Function `BgpPeerStatusListResult.MarshalJSON` has been removed
+- Function `OperationPropertiesFormatServiceSpecification.MarshalJSON` has been removed
+- Function `ApplicationGatewayAvailableSSLPredefinedPolicies.MarshalJSON` has been removed
+- Function `PacketCaptureListResult.MarshalJSON` has been removed
+- Function `ConnectivityInformation.MarshalJSON` has been removed
+- Function `ConnectionStateSnapshot.MarshalJSON` has been removed
+- Function `EffectiveRoute.MarshalJSON` has been removed
+- Function `ApplicationGatewayPrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ExpressRouteLinkListResult.MarshalJSON` has been removed
+- Function `TopologyResource.MarshalJSON` has been removed
+- Function `ExpressRouteCrossConnectionListResult.MarshalJSON` has been removed
+- Function `ApplicationSecurityGroupListResult.MarshalJSON` has been removed
+- Function `ConnectionMonitorListResult.MarshalJSON` has been removed
+- Function `InboundNatRuleListResult.MarshalJSON` has been removed
+- Function `ConnectionMonitorQueryResult.MarshalJSON` has been removed
+- Function `UsagesListResult.MarshalJSON` has been removed
+- Function `LoadBalancerLoadBalancingRuleListResult.MarshalJSON` has been removed
+- Function `LocalNetworkGatewayListResult.MarshalJSON` has been removed
+- Function `Topology.MarshalJSON` has been removed
+- Function `ApplicationGatewayBackendHealthPool.MarshalJSON` has been removed
+- Function `AzureFirewallFqdnTagListResult.MarshalJSON` has been removed
+- Function `LoadBalancerOutboundRuleListResult.MarshalJSON` has been removed
+- Function `AvailablePrivateEndpointTypesResult.MarshalJSON` has been removed
+- Function `AzureReachabilityReportItem.MarshalJSON` has been removed
+- Function `PossibleOrderByOrderValues` has been removed
+- Function `ApplicationGatewayAvailableWafRuleSetsResult.MarshalJSON` has been removed
+- Function `SecurityGroupViewResult.MarshalJSON` has been removed
+- Function `ExpressRouteConnectionList.MarshalJSON` has been removed
+- Function `RouteTableListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkTapListResult.MarshalJSON` has been removed
+- Function `VPNServerConfigurationsResponse.MarshalJSON` has been removed
+- Function `PossibleSingleQueryResultModeValues` has been removed
+- Function `ExpressRouteCircuitPeeringListResult.MarshalJSON` has been removed
+- Function `IPGroupListResult.MarshalJSON` has been removed
+- Function `ListVirtualHubBgpConnectionResults.MarshalJSON` has been removed
+- Function `InterfaceListResult.MarshalJSON` has been removed
+- Function `SecurityPartnerProviderListResult.MarshalJSON` has been removed
+- Function `ApplicationGatewayBackendHealthHTTPSettings.MarshalJSON` has been removed
+- Function `VirtualNetworkGatewayListConnectionsResult.MarshalJSON` has been removed
+- Function `PrivateDNSZoneGroupListResult.MarshalJSON` has been removed
+- Function `NatGatewayListResult.MarshalJSON` has been removed
+- Function `LoadBalancerBackendAddressPoolListResult.MarshalJSON` has been removed
+- Function `ConfigurationDiagnosticResponse.MarshalJSON` has been removed
+- Function `SecurityGroupListResult.MarshalJSON` has been removed
+- Function `PeerExpressRouteCircuitConnectionListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkListResult.MarshalJSON` has been removed
+- Function `AzureFirewallListResult.MarshalJSON` has been removed
+- Function `ExpressRouteCircuitConnectionListResult.MarshalJSON` has been removed
+- Function `VirtualRouterListResult.MarshalJSON` has been removed
+- Function `InterfaceLoadBalancerListResult.MarshalJSON` has been removed
+- Function `PossibleSingleQueryResultSeverityValues` has been removed
+- Function `AvailableDelegation.MarshalJSON` has been removed
+- Function `LoadBalancerListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointListResult.MarshalJSON` has been removed
+- Function `ServiceEndpointPolicyDefinitionListResult.MarshalJSON` has been removed
+- Function `FirewallPolicyRuleCollectionGroupListResult.MarshalJSON` has been removed
+- Function `DdosProtectionPlanListResult.MarshalJSON` has been removed
+- Function `VirtualRouterPeeringListResult.MarshalJSON` has been removed
+- Function `ConnectionMonitorResult.MarshalJSON` has been removed
+- Function `VirtualApplianceSiteListResult.MarshalJSON` has been removed
+- Function `Error.MarshalJSON` has been removed
+- Function `CustomIPPrefixListResult.MarshalJSON` has been removed
+- Function `ListRoutingIntentResult.MarshalJSON` has been removed
+- Function `AvailableProvidersListCity.MarshalJSON` has been removed
+- Function `AuthorizationListResult.MarshalJSON` has been removed
+- Function `HopLink.MarshalJSON` has been removed
+- Function `EndpointServicesListResult.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `AzureReachabilityReportLatencyInfo.MarshalJSON` has been removed
+- Function `RouteListResult.MarshalJSON` has been removed
+- Function `InterfaceTapConfigurationListResult.MarshalJSON` has been removed
+- Function `AvailableProvidersList.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `NetworkInterfaceAuxiliaryModeMaxConnections`
+- New const `HubRoutingPreferenceASPath`
+- New const `NetworkInterfaceAuxiliaryModeFloating`
+- New const `VPNPolicyMemberAttributeTypeAADGroupID`
+- New const `VPNPolicyMemberAttributeTypeCertificateGroupID`
+- New const `FirewallPolicyIDPSSignatureSeverityOne`
+- New const `FirewallPolicyIDPSSignatureDirectionOne`
+- New const `FirewallPolicyIDPSSignatureModeOne`
+- New const `ApplicationGatewayProtocolTCP`
+- New const `HubRoutingPreferenceExpressRoute`
+- New const `FirewallPolicyIDPSSignatureModeZero`
+- New const `FirewallPolicyIDPSSignatureDirectionZero`
+- New const `FirewallPolicyIDPSSignatureSeverityThree`
+- New const `HubRoutingPreferenceVPNGateway`
+- New const `FirewallPolicyIDPSQuerySortOrderAscending`
+- New const `FirewallPolicyIDPSSignatureSeverityTwo`
+- New const `FirewallPolicyIDPSQuerySortOrderDescending`
+- New const `LoadBalancerBackendAddressAdminStateDrain`
+- New const `LoadBalancerBackendAddressAdminStateNone`
+- New const `FirewallPolicyIDPSSignatureModeTwo`
+- New const `LoadBalancerBackendAddressAdminStateDown`
+- New const `ExpressRoutePortAuthorizationUseStatusAvailable`
+- New const `ExpressRoutePortAuthorizationUseStatusInUse`
+- New const `LoadBalancerBackendAddressAdminStateUp`
+- New const `NetworkInterfaceAuxiliaryModeNone`
+- New const `ApplicationGatewayProtocolTLS`
+- New const `VPNPolicyMemberAttributeTypeRadiusAzureGroupID`
+- New const `FirewallPolicyIDPSSignatureDirectionTwo`
+- New function `PossibleNetworkInterfaceAuxiliaryModeValues() []NetworkInterfaceAuxiliaryMode`
+- New function `PossibleHubRoutingPreferenceValues() []HubRoutingPreference`
+- New function `PossibleFirewallPolicyIDPSQuerySortOrderValues() []FirewallPolicyIDPSQuerySortOrder`
+- New function `VPNServerConfigurationPolicyGroupProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleFirewallPolicyIDPSSignatureDirectionValues() []FirewallPolicyIDPSSignatureDirection`
+- New function `ApplicationGatewayBackendSettingsPropertiesFormat.MarshalJSON() ([]byte, error)`
+- New function `PossibleFirewallPolicyIDPSSignatureSeverityValues() []FirewallPolicyIDPSSignatureSeverity`
+- New function `*FirewallPoliciesClient.UpdateTags(context.Context, string, string, TagsObject, *FirewallPoliciesClientUpdateTagsOptions) (FirewallPoliciesClientUpdateTagsResponse, error)`
+- New function `PossibleFirewallPolicyIDPSSignatureModeValues() []FirewallPolicyIDPSSignatureMode`
+- New function `PossibleVPNPolicyMemberAttributeTypeValues() []VPNPolicyMemberAttributeType`
+- New function `P2SConnectionConfigurationProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleLoadBalancerBackendAddressAdminStateValues() []LoadBalancerBackendAddressAdminState`
+- New function `PossibleExpressRoutePortAuthorizationUseStatusValues() []ExpressRoutePortAuthorizationUseStatus`
+- New struct `ApplicationGatewayBackendSettings`
+- New struct `ApplicationGatewayBackendSettingsPropertiesFormat`
+- New struct `ApplicationGatewayListener`
+- New struct `ApplicationGatewayListenerPropertiesFormat`
+- New struct `ApplicationGatewayRoutingRule`
+- New struct `ApplicationGatewayRoutingRulePropertiesFormat`
+- New struct `ConfigurationPolicyGroupsClientBeginCreateOrUpdateOptions`
+- New struct `ConfigurationPolicyGroupsClientBeginDeleteOptions`
+- New struct `ConfigurationPolicyGroupsClientCreateOrUpdateResponse`
+- New struct `ConfigurationPolicyGroupsClientDeleteResponse`
+- New struct `ConfigurationPolicyGroupsClientGetOptions`
+- New struct `ConfigurationPolicyGroupsClientGetResponse`
+- New struct `ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions`
+- New struct `ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse`
+- New struct `ExpressRoutePortAuthorization`
+- New struct `ExpressRoutePortAuthorizationListResult`
+- New struct `ExpressRoutePortAuthorizationPropertiesFormat`
+- New struct `ExpressRoutePortAuthorizationsClientBeginCreateOrUpdateOptions`
+- New struct `ExpressRoutePortAuthorizationsClientBeginDeleteOptions`
+- New struct `ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse`
+- New struct `ExpressRoutePortAuthorizationsClientDeleteResponse`
+- New struct `ExpressRoutePortAuthorizationsClientGetOptions`
+- New struct `ExpressRoutePortAuthorizationsClientGetResponse`
+- New struct `ExpressRoutePortAuthorizationsClientListOptions`
+- New struct `ExpressRoutePortAuthorizationsClientListResponse`
+- New struct `FirewallPoliciesClientUpdateTagsOptions`
+- New struct `FirewallPoliciesClientUpdateTagsResponse`
+- New struct `GatewayCustomBgpIPAddressIPConfiguration`
+- New struct `ListVPNServerConfigurationPolicyGroupsResult`
+- New struct `VPNServerConfigurationPolicyGroup`
+- New struct `VPNServerConfigurationPolicyGroupMember`
+- New struct `VPNServerConfigurationPolicyGroupProperties`
+- New field `ConfigurationPolicyGroupAssociations` in struct `P2SConnectionConfigurationProperties`
+- New field `PreviousConfigurationPolicyGroupAssociations` in struct `P2SConnectionConfigurationProperties`
+- New field `PickHostNameFromBackendSettings` in struct `ApplicationGatewayProbePropertiesFormat`
+- New field `ConfigurationPolicyGroups` in struct `VPNServerConfigurationProperties`
+- New field `HubRoutingPreference` in struct `VirtualHubProperties`
+- New field `GatewayCustomBgpIPAddresses` in struct `VirtualNetworkGatewayConnectionPropertiesFormat`
+- New field `DrainPeriodInSeconds` in struct `BackendAddressPoolPropertiesFormat`
+- New field `PrivateRanges` in struct `FirewallPolicyIntrusionDetectionConfiguration`
+- New field `AdminState` in struct `LoadBalancerBackendAddressPropertiesFormat`
+- New field `AuxiliaryMode` in struct `InterfacePropertiesFormat`
+- New field `AuthorizationKey` in struct `ExpressRouteCircuitPropertiesFormat`
+- New field `VPNGatewayCustomBgpAddresses` in struct `VPNSiteLinkConnectionProperties`
+- New field `GatewayCustomBgpIPAddresses` in struct `VirtualNetworkGatewayConnectionListEntityPropertiesFormat`
+- New field `RoutingRules` in struct `ApplicationGatewayPropertiesFormat`
+- New field `Listeners` in struct `ApplicationGatewayPropertiesFormat`
+- New field `BackendSettingsCollection` in struct `ApplicationGatewayPropertiesFormat`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

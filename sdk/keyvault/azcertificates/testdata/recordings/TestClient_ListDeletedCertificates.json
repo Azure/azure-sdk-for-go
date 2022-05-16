@@ -2380,7 +2380,7 @@
             }
           }
         ],
-        "nextLink": "https://thething.vault.azure.net:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDAhTURBd01ETXdJV05sY25ScFptbGpZWFJsTDBSRlRFTkZVbFF5TVRRNU16WXpNRE15T0NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ"
+        "nextLink": "https://fakekvurl.vault.azure.net/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiExMDAhTURBd01ETXdJV05sY25ScFptbGpZWFJsTDBSRlRFTkZVbFF5TVRRNU16WXpNRE15T0NFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ"
       }
     },
     {

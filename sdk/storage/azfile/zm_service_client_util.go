@@ -6,6 +6,8 @@
 
 package azfile
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 type ListShareOptions struct {
@@ -32,18 +34,56 @@ func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// MetricProperties defines convenience struct for Metrics,
+type MetricProperties struct {
+	// Enabled - Indicates whether metrics are enabled for the File service.
+	Enabled *bool
+
+	// Version - The version of Storage Analytics to configure.
+	// Version string, comment out version, as it's mandatory and should be 1.0
+	// IncludeAPIs - Indicates whether metrics should generate summary statistics for called API operations.
+	IncludeAPIs *bool
+
+	// RetentionPolicyEnabled - Indicates whether a retention policy is enabled for the File service.
+	RetentionPolicyEnabled *bool
+	// RetentionDays - Indicates the number of days that metrics data should be retained.
+	RetentionDays *int32
+}
+
 type ServiceSetPropertiesOptions struct {
 	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
+	Cors []*CorsRule
 
 	// A summary of request statistics grouped by API in hourly aggregates for files.
-	HourMetrics *Metrics `xml:"HourMetrics"`
+	HourMetrics *MetricProperties
 
 	// A summary of request statistics grouped by API in minute aggregates for files.
-	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
+	MinuteMetrics *MetricProperties
 
 	// Protocol settings
 	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
+}
+
+func (mp *MetricProperties) toMetrics() *Metrics {
+	if mp == nil {
+		return nil
+	}
+
+	metrics := Metrics{
+		Version: to.Ptr(StorageAnalyticsVersion),
+		//RetentionPolicy: &RetentionPolicy{},
+	}
+
+	if mp.Enabled != nil && *mp.Enabled {
+		metrics.Enabled = mp.Enabled
+		metrics.IncludeAPIs = mp.IncludeAPIs
+		metrics.RetentionPolicy = &RetentionPolicy{
+			Enabled: mp.RetentionPolicyEnabled,
+			Days:    mp.RetentionDays,
+		}
+	}
+
+	return &metrics
 }
 
 func (o *ServiceSetPropertiesOptions) format() (StorageServiceProperties, *serviceClientSetPropertiesOptions) {
@@ -53,8 +93,8 @@ func (o *ServiceSetPropertiesOptions) format() (StorageServiceProperties, *servi
 
 	return StorageServiceProperties{
 		Cors:          o.Cors,
-		HourMetrics:   o.HourMetrics,
-		MinuteMetrics: o.MinuteMetrics,
+		HourMetrics:   o.HourMetrics.toMetrics(),
+		MinuteMetrics: o.MinuteMetrics.toMetrics(),
 		Protocol:      o.Protocol,
 	}, nil
 }

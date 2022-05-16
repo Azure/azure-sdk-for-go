@@ -63,4 +63,6 @@ const (
 	//etag      = "ETag"
 
 	tokenScope = "https://storage.azure.com/.default"
+
+	StorageAnalyticsVersion = "1.0"
 )

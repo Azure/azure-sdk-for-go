@@ -156,13 +156,14 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 
 // 2. ShareClient  --------------------------------------------------------------------------------------------------------
 
-func getShareClient(shareName string, s *ServiceClient) (*ShareClient, error) {
-	return s.NewShareClient(shareName)
+func getShareClient(_require *require.Assertions, shareName string, s *ServiceClient) *ShareClient {
+	srClient, err := s.NewShareClient(shareName)
+	_require.Nil(err)
+	return srClient
 }
 
 func createNewShare(_require *require.Assertions, shareName string, serviceClient *ServiceClient) *ShareClient {
-	srClient, err := getShareClient(shareName, serviceClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, serviceClient)
 
 	cResp, err := srClient.Create(ctx, nil)
 	_require.Nil(err)

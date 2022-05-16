@@ -1616,7 +1616,7 @@ func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidCount() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient, _ := getShareClient(generateShareName(sharePrefix, testName), svcClient)
+	srClient := getShareClient(_require, generateShareName(sharePrefix, testName), svcClient)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	_, err := fClient.ClearRange(ctx, 0, 0, nil)
@@ -1767,7 +1767,7 @@ func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient, err := getShareClient(generateShareName(sharePrefix, testName), svcClient)
+	srClient := getShareClient(_require, generateShareName(sharePrefix, testName), svcClient)
 	cResp, err := srClient.Create(ctx, &ShareCreateOptions{
 		Quota: &fileShareMaxQuota,
 	})

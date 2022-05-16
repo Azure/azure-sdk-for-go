@@ -11,8 +11,6 @@ import (
 	//chk "gopkg.in/check.v1"
 	"github.com/stretchr/testify/require"
 	"os"
-	//"time"
-	//"context"
 )
 
 func (s *azfileLiveTestSuite) TestAccountNewServiceURLValidName() {
@@ -91,23 +89,17 @@ func (s *azfileLiveTestSuite) TestAccountProperties() {
 	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 
 	setPropertiesOptions := &ServiceSetPropertiesOptions{
-		HourMetrics: &Metrics{
-			Enabled:     to.Ptr(true),
-			IncludeAPIs: to.Ptr(true),
-			Version:     to.Ptr("2020-02-10"),
-			RetentionPolicy: &RetentionPolicy{
-				Enabled: to.Ptr(true),
-				Days:    to.Ptr(int32(1)),
-			},
+		HourMetrics: &MetricProperties{
+			Enabled:                to.Ptr(true),
+			IncludeAPIs:            to.Ptr(true),
+			RetentionPolicyEnabled: to.Ptr(true),
+			RetentionDays:          to.Ptr(int32(2)),
 		},
-		MinuteMetrics: &Metrics{
-			Enabled:     to.Ptr(true),
-			IncludeAPIs: to.Ptr(false),
-			Version:     to.Ptr("2020-02-10"),
-			RetentionPolicy: &RetentionPolicy{
-				Enabled: to.Ptr(true),
-				Days:    to.Ptr(int32(2)),
-			},
+		MinuteMetrics: &MetricProperties{
+			Enabled:                to.Ptr(true),
+			IncludeAPIs:            to.Ptr(false),
+			RetentionPolicyEnabled: to.Ptr(true),
+			RetentionDays:          to.Ptr(int32(2)),
 		},
 		Cors: []*CorsRule{
 			{
@@ -132,9 +124,11 @@ func (s *azfileLiveTestSuite) TestAccountProperties() {
 	_require.Equal(props.RawResponse.StatusCode, 200)
 	_require.NotEqual(props.RequestID, "")
 	_require.NotEqual(props.Version, "")
-	_require.EqualValues(props.HourMetrics, setPropertiesOptions.HourMetrics)
-	_require.EqualValues(props.MinuteMetrics, setPropertiesOptions.MinuteMetrics)
-	_require.EqualValues(props.Cors, setPropertiesOptions.Cors)
+	_require.EqualValues(props.HourMetrics.RetentionPolicy.Enabled, setPropertiesOptions.HourMetrics.RetentionPolicyEnabled)
+	_require.EqualValues(props.HourMetrics.RetentionPolicy.Days, setPropertiesOptions.HourMetrics.RetentionDays)
+	_require.EqualValues(props.MinuteMetrics.RetentionPolicy.Enabled, setPropertiesOptions.MinuteMetrics.RetentionPolicyEnabled)
+	_require.EqualValues(props.MinuteMetrics.RetentionPolicy.Days, setPropertiesOptions.MinuteMetrics.RetentionDays)
+	_require.Len(props.Cors, len(setPropertiesOptions.Cors))
 }
 
 func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
@@ -142,13 +136,11 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 
 	setPropertiesOptions := &ServiceSetPropertiesOptions{
-		HourMetrics: &Metrics{
-			Enabled:     to.Ptr(true),
-			IncludeAPIs: to.Ptr(true),
-			RetentionPolicy: &RetentionPolicy{
-				Enabled: to.Ptr(true),
-				Days:    to.Ptr(int32(5)),
-			},
+		HourMetrics: &MetricProperties{
+			Enabled:                to.Ptr(true),
+			IncludeAPIs:            to.Ptr(true),
+			RetentionPolicyEnabled: to.Ptr(true),
+			RetentionDays:          to.Ptr(int32(5)),
 		},
 	}
 	setPropertiesResponse, err := svcClient.SetProperties(ctx, setPropertiesOptions)
@@ -162,10 +154,10 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 //
 //// 	setProps := azfile.FileServiceProperties{
 //// 		HourMetrics: azfile.MetricProperties{
-//// 			MetricEnabled: false,
+//// 			Enabled: false,
 //// 		},
 //// 		MinuteMetrics: azfile.MetricProperties{
-//// 			MetricEnabled: false,
+//// 			Enabled: false,
 //// 		},
 //// 	}
 //// 	resp, err := sa.SetProperties(context.Background(), setProps)
@@ -181,8 +173,8 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 //// 	_require(props.Response().StatusCode, chk.Equals, 200)
 //// 	_require(props.RequestID(), chk.Not(chk.Equals), "")
 //// 	_require(props.Version(), chk.Not(chk.Equals), "")
-//// 	_require(props.HourMetrics, chk.DeepEquals, azfile.MetricProperties{MetricEnabled: false})
-//// 	_require(props.MinuteMetrics, chk.DeepEquals, azfile.MetricProperties{MetricEnabled: false})
+//// 	_require(props.HourMetrics, chk.DeepEquals, azfile.MetricProperties{Enabled: false})
+//// 	_require(props.MinuteMetrics, chk.DeepEquals, azfile.MetricProperties{Enabled: false})
 //// 	_require(props.Cors, chk.IsNil)
 //// }
 
@@ -280,106 +272,150 @@ func (s *azfileLiveTestSuite) TestAccountListSharesInvalidMaxResults() {
 
 }
 
-//func (s *azfileLiveTestSuite) TestAccountSAS() {
-//	fsu := getFSU()
-//	shareURL, shareName := getShareURL(c, fsu)
-//	dirURL, _ := getDirectoryURLFromShare(c, shareURL)
-//	fileURL, _ := getFileURLFromDirectory(c, dirURL)
 //
-//	credential, _ := getCredential()
-//	sasQueryParams, err := azfile.AccountSASSignatureValues{
-//		Protocol:      azfile.SASProtocolHTTPS,
-//		ExpiryTime:    time.Now().Add(48 * time.Hour),
-//		Permissions:   azfile.AccountSASPermissions{Read: true, List: true, Write: true, Delete: true, Add: true, Create: true, Update: true, Process: true}.String(),
-//		Services:      azfile.AccountSASServices{File: true, Blob: true, Queue: true}.String(),
-//		ResourceTypes: azfile.AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//func (s *azfileLiveTestSuite) TestAccountSAS() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+//
+//	shareName := generateShareName(sharePrefix, testName)
+//	srClient := createNewShare(_require, shareName, svcClient)
+//
+//	dirClient := getDirectoryClientFromShare(_require, "dir1", srClient)
+//	fClient := getFileClientFromDirectory(_require, "file1", dirClient)
+//
+//	credential, err := getGenericCredential(nil, testAccountDefault)
 //	_require.Nil(err)
 //
-//	// Reverse valiadation all parse logics work as expect.
-//	ap := &azfile.AccountSASPermissions{}
+//	sasQueryParams, err := AccountSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().Add(1 * time.Hour),
+//		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, Delete: true, Add: true, Create: true, Update: true, Process: true}.String(),
+//		Services:      AccountSASServices{File: true, Blob: true, Queue: true}.String(),
+//		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
+//	}.Sign(credential)
+//	_require.Nil(err)
+//
+//	// Reverse validation all parse logics work as expect.
+//	ap := &AccountSASPermissions{}
 //	err = ap.Parse(sasQueryParams.Permissions())
 //	_require.Nil(err)
-//	_require(*ap, chk.DeepEquals, azfile.AccountSASPermissions{Read: true, List: true, Write: true, Delete: true, Add: true, Create: true, Update: true, Process: true})
+//	_require.EqualValues(*ap, AccountSASPermissions{Read: true, List: true, Write: true, Delete: true, Add: true, Create: true, Update: true, Process: true})
 //
-//	as := &azfile.AccountSASServices{}
+//	as := &AccountSASServices{}
 //	err = as.Parse(sasQueryParams.Services())
 //	_require.Nil(err)
-//	_require(*as, chk.DeepEquals, azfile.AccountSASServices{File: true, Blob: true, Queue: true})
+//	_require.EqualValues(*as, AccountSASServices{File: true, Blob: true, Queue: true})
 //
-//	ar := &azfile.AccountSASResourceTypes{}
+//	ar := &AccountSASResourceTypes{}
 //	err = ar.Parse(sasQueryParams.ResourceTypes())
 //	_require.Nil(err)
-//	_require(*ar, chk.DeepEquals, azfile.AccountSASResourceTypes{Service: true, Container: true, Object: true})
+//	_require.EqualValues(*ar, AccountSASResourceTypes{Service: true, Container: true, Object: true})
 //
 //	// Test service URL
-//	svcParts := azfile.NewFileURLParts(fsu.URL())
+//	svcParts, err := NewFileURLParts(svcClient.URL())
 //	svcParts.SAS = sasQueryParams
 //	testSvcURL := svcParts.URL()
-//	svcURLWithSAS := azfile.NewServiceURL(testSvcURL, azfile.NewPipeline(azfile.NewAnonymousCredential(), azfile.PipelineOptions{}))
+//	svcURLWithSAS, err := NewServiceClient(testSvcURL, azcore.TokenCredential(nil), nil)
+//
 //	// List
-//	_, err = svcURLWithSAS.ListSharesSegment(ctx, azfile.Marker{}, azfile.ListSharesOptions{})
+//	pager := svcURLWithSAS.ListShares(nil)
+//	for pager.NextPage(ctx) {
+//		resp := pager.PageResponse()
+//		_ = resp
+//	}
+//	err = pager.Err()
 //	_require.Nil(err)
+//
 //	// Write
-//	_, err = svcURLWithSAS.SetProperties(ctx, azfile.FileServiceProperties{})
+//	_, err = svcURLWithSAS.SetProperties(ctx, &ServiceSetPropertiesOptions{})
 //	_require.Nil(err)
+//
 //	// Read
-//	_, err = svcURLWithSAS.GetProperties(ctx)
+//	_, err = svcURLWithSAS.GetProperties(ctx, &ServiceGetPropertiesOptions{})
 //	_require.Nil(err)
 //
 //	// Test share URL
-//	sParts := azfile.NewFileURLParts(shareURL.URL())
-//	_require(sParts.ShareName, chk.Equals, shareName)
+//	sParts, err := NewFileURLParts(srClient.URL())
+//	_require.Nil(err)
+//	_require.Equal(sParts.ShareName, shareName)
 //	sParts.SAS = sasQueryParams
 //	testShareURL := sParts.URL()
-//	shareURLWithSAS := azfile.NewShareURL(testShareURL, azfile.NewPipeline(azfile.NewAnonymousCredential(), azfile.PipelineOptions{}))
+//
+//	shareURLWithSAS, err := NewShareClient(testShareURL, azcore.TokenCredential(nil), nil)
+//	_require.Nil(err)
+//
 //	// Create
-//	_, err = shareURLWithSAS.Create(ctx, azfile.Metadata{}, 0)
+//	_, err = shareURLWithSAS.Create(ctx, &ShareCreateOptions{})
 //	_require.Nil(err)
+//
 //	// Write
-//	metadata := azfile.Metadata{"foo": "bar"}
-//	_, err = shareURLWithSAS.SetMetadata(ctx, metadata)
-//	// Read
-//	gResp, err := shareURLWithSAS.GetProperties(ctx)
+//	_, err = shareURLWithSAS.SetMetadata(ctx, basicMetadata, nil)
 //	_require.Nil(err)
-//	_require(gResp.NewMetadata(), chk.DeepEquals, metadata)
+//
+//	// Read
+//	gResp, err := shareURLWithSAS.GetProperties(ctx, nil)
+//	_require.Nil(err)
+//	_require.EqualValues(gResp.Metadata, basicMetadata)
+//
 //	// Delete
-//	defer shareURLWithSAS.Delete(ctx, azfile.DeleteSnapshotsOptionNone)
+//	defer shareURLWithSAS.Delete(ctx, nil)
 //
 //	// Test dir URL
-//	dParts := azfile.NewFileURLParts(dirURL.URL())
+//	dParts, err := NewFileURLParts(dirClient.URL())
+//	_require.Nil(err)
+//
 //	dParts.SAS = sasQueryParams
 //	testDirURL := dParts.URL()
-//	dirURLWithSAS := azfile.NewDirectoryURL(testDirURL, azfile.NewPipeline(azfile.NewAnonymousCredential(), azfile.PipelineOptions{}))
+//
+//	dirURLWithSAS, err := NewDirectoryClient(testDirURL, azcore.TokenCredential(nil), nil)
+//	_require.Nil(err)
+//
 //	// Create
-//	_, err = dirURLWithSAS.Create(ctx, azfile.Metadata{}, azfile.SMBProperties{})
+//	_, err = dirURLWithSAS.Create(ctx, nil)
 //	_require.Nil(err)
+//
 //	// Write
-//	_, err = dirURLWithSAS.SetMetadata(ctx, metadata)
+//	_, err = dirURLWithSAS.SetMetadata(ctx, basicMetadata, nil)
+//	_require.Nil(err)
+//
 //	// Read
-//	gdResp, err := dirURLWithSAS.GetProperties(ctx)
+//	gdResp, err := dirURLWithSAS.GetProperties(ctx, nil)
 //	_require.Nil(err)
-//	_require(gdResp.NewMetadata(), chk.DeepEquals, metadata)
+//
+//	_require.EqualValues(gdResp.Metadata, basicMetadata)
+//
 //	// List
-//	_, err = dirURLWithSAS.ListFilesAndDirectoriesSegment(ctx, azfile.Marker{}, azfile.ListFilesAndDirectoriesOptions{})
+//	pager2 := dirURLWithSAS.ListFilesAndDirectories(nil)
+//	for pager2.NextPage(ctx) {
+//		resp := pager2.PageResponse()
+//		_ = resp
+//	}
+//	err = pager2.Err()
 //	_require.Nil(err)
+//
 //	// Delete
-//	defer dirURLWithSAS.Delete(ctx)
+//	defer dirURLWithSAS.Delete(ctx, nil)
 //
 //	// Test file URL
-//	fParts := azfile.NewFileURLParts(fileURL.URL())
+//	fParts, err := NewFileURLParts(fClient.URL())
+//	_require.Nil(err)
+//
 //	fParts.SAS = sasQueryParams
 //	testFileURL := fParts.URL()
-//	fileURLWithSAS := azfile.NewFileURL(testFileURL, azfile.NewPipeline(azfile.NewAnonymousCredential(), azfile.PipelineOptions{}))
+//	fileURLWithSAS, err := NewFileClient(testFileURL, azcore.TokenCredential(nil), nil)
+//	_require.Nil(err)
+//
 //	// Create
-//	_, err = fileURLWithSAS.Create(ctx, 0, azfile.FileHTTPHeaders{}, azfile.Metadata{})
+//	_, err = fileURLWithSAS.Create(ctx, nil)
 //	_require.Nil(err)
+//
 //	// Write
-//	_, err = fileURLWithSAS.SetMetadata(ctx, metadata)
+//	_, err = fileURLWithSAS.SetMetadata(ctx, basicMetadata, nil)
 //	// Read
-//	gfResp, err := fileURLWithSAS.GetProperties(ctx)
+//	gfResp, err := fileURLWithSAS.GetProperties(ctx, nil)
 //	_require.Nil(err)
-//	_require(gfResp.NewMetadata(), chk.DeepEquals, metadata)
+//	_require.EqualValues(gfResp.Metadata, basicMetadata)
 //	// Delete
-//	defer fileURLWithSAS.Delete(ctx)
+//	defer fileURLWithSAS.Delete(ctx, nil)
 //}

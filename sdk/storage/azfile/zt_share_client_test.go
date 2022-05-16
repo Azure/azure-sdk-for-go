@@ -115,10 +115,9 @@ func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.Create(ctx, nil)
+	_, err := srClient.Create(ctx, nil)
 	defer delShare(_require, srClient, nil)
 	_require.Nil(err)
 
@@ -145,10 +144,9 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.Create(ctx, &ShareCreateOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, Quota: to.Ptr(int32(0))})
+	_, err := srClient.Create(ctx, &ShareCreateOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, Quota: to.Ptr(int32(0))})
 	_require.NotNil(err)
 }
 
@@ -158,10 +156,9 @@ func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.Delete(ctx, nil)
+	_, err := srClient.Delete(ctx, nil)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }
 
@@ -245,10 +242,9 @@ func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.GetProperties(ctx, nil)
+	_, err := srClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }
@@ -398,10 +394,9 @@ func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.GetPermissions(ctx, nil)
+	_, err := srClient.GetPermissions(ctx, nil)
 	_require.NotNil(err)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }
@@ -675,10 +670,9 @@ func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.GetStatistics(ctx, nil)
+	_, err := srClient.GetStatistics(ctx, nil)
 	_require.NotNil(err)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }
@@ -689,8 +683,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
 	cResp, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Ptr(int32(1024))})
 	_require.Nil(err)
@@ -829,10 +822,9 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	shareName := generateShareName(sharePrefix, testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_require.Nil(err)
+	srClient := getShareClient(_require, shareName, svcClient)
 
-	_, err = srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
+	_, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
 	_require.NotNil(err)
 	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
 }

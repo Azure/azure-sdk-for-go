@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
@@ -26,18 +24,17 @@ func ExampleSharedPrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myWebPubSubService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<shared-private-link-resource-name>",
-		"<resource-group-name>",
-		"<resource-name>",
+		"upstream",
+		"myResourceGroup",
+		"myWebPubSubService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,26 +73,26 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<shared-private-link-resource-name>",
-		"<resource-group-name>",
-		"<resource-name>",
+		"upstream",
+		"myResourceGroup",
+		"myWebPubSubService",
 		armwebpubsub.SharedPrivateLinkResource{
 			Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
-				GroupID:               to.Ptr("<group-id>"),
-				PrivateLinkResourceID: to.Ptr("<private-link-resource-id>"),
-				RequestMessage:        to.Ptr("<request-message>"),
+				GroupID:               to.Ptr("sites"),
+				PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Web/sites/myWebApp"),
+				RequestMessage:        to.Ptr("Please approve"),
 			},
 		},
-		&armwebpubsub.SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -110,19 +107,19 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armwebpubsub.NewSharedPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<shared-private-link-resource-name>",
-		"<resource-group-name>",
-		"<resource-name>",
-		&armwebpubsub.SharedPrivateLinkResourcesClientBeginDeleteOptions{ResumeToken: ""})
+		"upstream",
+		"myResourceGroup",
+		"myWebPubSubService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

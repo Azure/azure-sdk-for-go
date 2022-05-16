@@ -10,4 +10,4 @@ to a Microsoft Azure Service Bus queue.
 
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
-package amqp // import "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
+package amqp

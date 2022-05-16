@@ -1,14 +1,12 @@
 # Release History
 
-## 0.3.1 (Unreleased)
+## 1.0.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+* Export FakeCredential
 
 ### Other Changes
+* Upgrade to GA version of core lib and armresources
 
 ## 0.3.0 (2022-04-08)
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
@@ -26,7 +24,7 @@ func ExampleKubeEnvironmentsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleKubeEnvironmentsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleKubeEnvironmentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("examplerg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleKubeEnvironmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"examplerg",
+		"jlaw-demo1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,24 +95,24 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"examplerg",
+		"testkubeenv",
 		armappservice.KubeEnvironment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armappservice.KubeEnvironmentProperties{
-				StaticIP: to.Ptr("<static-ip>"),
+				StaticIP: to.Ptr("1.2.3.4"),
 			},
 		},
-		&armappservice.KubeEnvironmentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -131,18 +127,18 @@ func ExampleKubeEnvironmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<name>",
-		&armappservice.KubeEnvironmentsClientBeginDeleteOptions{ResumeToken: ""})
+		"examplerg",
+		"examplekenv",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -155,16 +151,16 @@ func ExampleKubeEnvironmentsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewKubeEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewKubeEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"examplerg",
+		"testkubeenv",
 		armappservice.KubeEnvironmentPatchResource{
 			Properties: &armappservice.KubeEnvironmentPatchResourceProperties{
-				StaticIP: to.Ptr("<static-ip>"),
+				StaticIP: to.Ptr("1.2.3.4"),
 			},
 		},
 		nil)

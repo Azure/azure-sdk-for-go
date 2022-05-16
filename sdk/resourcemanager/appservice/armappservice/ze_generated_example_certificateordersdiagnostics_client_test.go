@@ -23,18 +23,17 @@ func ExampleCertificateOrdersDiagnosticsClient_NewListAppServiceCertificateOrder
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("5700fc96-77b4-4f8d-afce-c353d8c443bd", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAppServiceCertificateOrderDetectorResponsePager("<resource-group-name>",
-		"<certificate-order-name>",
+	pager := client.NewListAppServiceCertificateOrderDetectorResponsePager("Sample-WestUSResourceGroup",
+		"SampleCertificateOrderName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleCertificateOrdersDiagnosticsClient_GetAppServiceCertificateOrderDete
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewCertificateOrdersDiagnosticsClient("5700fc96-77b4-4f8d-afce-c353d8c443bd", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAppServiceCertificateOrderDetectorResponse(ctx,
-		"<resource-group-name>",
-		"<certificate-order-name>",
-		"<detector-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleCertificateOrderName",
+		"AutoRenewStatus",
 		&armappservice.CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,

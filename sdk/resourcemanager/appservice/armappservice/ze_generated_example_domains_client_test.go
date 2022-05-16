@@ -23,13 +23,13 @@ func ExampleDomainsClient_Renew() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDomainsClient("3dddfa4f-cedf-4dc0-ba29-b6d1a69ab545", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Renew(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
+		"RG",
+		"example.com",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,13 +43,13 @@ func ExampleDomainsClient_TransferOut() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDomainsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDomainsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.TransferOut(ctx,
-		"<resource-group-name>",
-		"<domain-name>",
+		"testrg123",
+		"example.com",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -1,5 +1,161 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperation` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateInstanceMSDeployOperationResponse], error)` to `(*runtime.Poller[WebAppsClientCreateInstanceMSDeployOperationResponse], error)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], error)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse], error)` to `(*runtime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse], error)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControl` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateOrUpdateSourceControlResponse], error)` to `(*runtime.Poller[WebAppsClientCreateOrUpdateSourceControlResponse], error)`
+- Function `*WebAppsClient.BeginStartNetworkTraceSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientStartNetworkTraceSlotResponse], error)` to `(*runtime.Poller[WebAppsClientStartNetworkTraceSlotResponse], error)`
+- Function `*WebAppsClient.BeginRestore` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreResponse], error)`
+- Function `*WebAppsClient.BeginMigrateMySQL` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientMigrateMySQLResponse], error)` to `(*runtime.Poller[WebAppsClientMigrateMySQLResponse], error)`
+- Function `*EnvironmentsClient.BeginCreateOrUpdateMultiRolePool` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse], error)` to `(*runtime.Poller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse], error)`
+- Function `*WebAppsClient.BeginInstallSiteExtension` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientInstallSiteExtensionResponse], error)` to `(*runtime.Poller[WebAppsClientInstallSiteExtensionResponse], error)`
+- Function `*ContainerAppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ContainerAppsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ContainerAppsClientCreateOrUpdateResponse], error)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperation` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateMSDeployOperationResponse], error)` to `(*runtime.Poller[WebAppsClientCreateMSDeployOperationResponse], error)`
+- Function `*WebAppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WebAppsClientCreateOrUpdateResponse], error)`
+- Function `*EnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[EnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `*WebAppsClient.BeginRestoreSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreSlotResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreSlotResponse], error)`
+- Function `*EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse], error)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedApp` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreFromDeletedAppResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreFromDeletedAppResponse], error)`
+- Function `*ContainerAppsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ContainerAppsClientDeleteResponse], error)` to `(*runtime.Poller[ContainerAppsClientDeleteResponse], error)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientCreateOrUpdateStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientCreateOrUpdateStaticSiteResponse], error)`
+- Function `*WebAppsClient.BeginSwapSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientSwapSlotResponse], error)` to `(*runtime.Poller[WebAppsClientSwapSlotResponse], error)`
+- Function `*WebAppsClient.BeginSwapSlotWithProduction` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientSwapSlotWithProductionResponse], error)` to `(*runtime.Poller[WebAppsClientSwapSlotWithProductionResponse], error)`
+- Function `*KubeEnvironmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KubeEnvironmentsClientDeleteResponse], error)` to `(*runtime.Poller[KubeEnvironmentsClientDeleteResponse], error)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientDeletePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[WebAppsClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*StaticSitesClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientDeletePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[StaticSitesClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*WebAppsClient.BeginRestoreFromDeletedAppSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreFromDeletedAppSlotResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreFromDeletedAppSlotResponse], error)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], error)` to `(*runtime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], error)`
+- Function `*CertificateOrdersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CertificateOrdersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CertificateOrdersClientCreateOrUpdateResponse], error)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSourceControlSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateOrUpdateSourceControlSlotResponse], error)` to `(*runtime.Poller[WebAppsClientCreateOrUpdateSourceControlSlotResponse], error)`
+- Function `*StaticSitesClient.BeginDeleteStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientDeleteStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientDeleteStaticSiteResponse], error)`
+- Function `*WebAppsClient.BeginCreateMSDeployOperationSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateMSDeployOperationSlotResponse], error)` to `(*runtime.Poller[WebAppsClientCreateMSDeployOperationSlotResponse], error)`
+- Function `*WebAppsClient.BeginStartWebSiteNetworkTraceOperation` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationResponse], error)` to `(*runtime.Poller[WebAppsClientStartWebSiteNetworkTraceOperationResponse], error)`
+- Function `*WebAppsClient.BeginStartNetworkTrace` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientStartNetworkTraceResponse], error)` to `(*runtime.Poller[WebAppsClientStartNetworkTraceResponse], error)`
+- Function `*WebAppsClient.BeginRestoreSnapshot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreSnapshotResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreSnapshotResponse], error)`
+- Function `*WebAppsClient.BeginCreateInstanceMSDeployOperationSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateInstanceMSDeployOperationSlotResponse], error)` to `(*runtime.Poller[WebAppsClientCreateInstanceMSDeployOperationSlotResponse], error)`
+- Function `*DomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DomainsClientCreateOrUpdateResponse], error)`
+- Function `*WebAppsClient.BeginInstallSiteExtensionSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientInstallSiteExtensionSlotResponse], error)` to `(*runtime.Poller[WebAppsClientInstallSiteExtensionSlotResponse], error)`
+- Function `*StaticSitesClient.BeginCreateZipDeploymentForStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse], error)`
+- Function `*StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], error)`
+- Function `*EnvironmentsClient.BeginChangeVnet` return value(s) have been changed from `(*armruntime.Poller[*runtime.Pager[EnvironmentsClientChangeVnetResponse]], error)` to `(*runtime.Poller[*runtime.Pager[EnvironmentsClientChangeVnetResponse]], error)`
+- Function `*StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse], error)` to `(*runtime.Poller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse], error)`
+- Function `*StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse], error)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteCustomDomain` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientDeleteStaticSiteCustomDomainResponse], error)` to `(*runtime.Poller[StaticSitesClientDeleteStaticSiteCustomDomainResponse], error)`
+- Function `*KubeEnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KubeEnvironmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KubeEnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlob` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreFromBackupBlobResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreFromBackupBlobResponse], error)`
+- Function `*WebAppsClient.BeginRestoreSnapshotSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreSnapshotSlotResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreSnapshotSlotResponse], error)`
+- Function `*WebAppsClient.BeginCreateOrUpdateSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateOrUpdateSlotResponse], error)` to `(*runtime.Poller[WebAppsClientCreateOrUpdateSlotResponse], error)`
+- Function `*EnvironmentsClient.BeginCreateOrUpdateWorkerPool` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse], error)` to `(*runtime.Poller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse], error)`
+- Function `*WebAppsClient.BeginListPublishingCredentialsSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientListPublishingCredentialsSlotResponse], error)` to `(*runtime.Poller[WebAppsClientListPublishingCredentialsSlotResponse], error)`
+- Function `*WebAppsClient.BeginCreateInstanceFunctionSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateInstanceFunctionSlotResponse], error)` to `(*runtime.Poller[WebAppsClientCreateInstanceFunctionSlotResponse], error)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], error)` to `(*runtime.Poller[WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], error)`
+- Function `*EnvironmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientDeleteResponse], error)` to `(*runtime.Poller[EnvironmentsClientDeleteResponse], error)`
+- Function `*CertificateOrdersClient.BeginCreateOrUpdateCertificate` return value(s) have been changed from `(*armruntime.Poller[CertificateOrdersClientCreateOrUpdateCertificateResponse], error)` to `(*runtime.Poller[CertificateOrdersClientCreateOrUpdateCertificateResponse], error)`
+- Function `*PlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PlansClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PlansClientCreateOrUpdateResponse], error)`
+- Function `*EnvironmentsClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*WebAppsClient.BeginDeletePrivateEndpointConnectionSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientDeletePrivateEndpointConnectionSlotResponse], error)` to `(*runtime.Poller[WebAppsClientDeletePrivateEndpointConnectionSlotResponse], error)`
+- Function `*EnvironmentsClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error)` to `(*runtime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error)`
+- Function `*WebAppsClient.BeginMigrateStorage` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientMigrateStorageResponse], error)` to `(*runtime.Poller[WebAppsClientMigrateStorageResponse], error)`
+- Function `*WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], error)`
+- Function `*StaticSitesClient.BeginDetachStaticSite` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientDetachStaticSiteResponse], error)` to `(*runtime.Poller[StaticSitesClientDetachStaticSiteResponse], error)`
+- Function `*StaticSitesClient.BeginDeleteStaticSiteBuild` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientDeleteStaticSiteBuildResponse], error)` to `(*runtime.Poller[StaticSitesClientDeleteStaticSiteBuildResponse], error)`
+- Function `*WebAppsClient.BeginRestoreFromBackupBlobSlot` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientRestoreFromBackupBlobSlotResponse], error)` to `(*runtime.Poller[WebAppsClientRestoreFromBackupBlobSlotResponse], error)`
+- Function `*EnvironmentsClient.BeginSuspend` return value(s) have been changed from `(*armruntime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error)` to `(*runtime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error)`
+- Function `*WebAppsClient.BeginListPublishingCredentials` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientListPublishingCredentialsResponse], error)` to `(*runtime.Poller[WebAppsClientListPublishingCredentialsResponse], error)`
+- Function `*StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild` return value(s) have been changed from `(*armruntime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], error)` to `(*runtime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], error)`
+- Function `*WebAppsClient.BeginCreateFunction` return value(s) have been changed from `(*armruntime.Poller[WebAppsClientCreateFunctionResponse], error)` to `(*runtime.Poller[WebAppsClientCreateFunctionResponse], error)`
+- Function `RevisionCollection.MarshalJSON` has been removed
+- Function `ContainerAppCollection.MarshalJSON` has been removed
+- Function `StaticSiteUserProvidedFunctionAppsCollection.MarshalJSON` has been removed
+- Function `PlanCollection.MarshalJSON` has been removed
+- Function `PerfMonSet.MarshalJSON` has been removed
+- Function `FunctionEnvelopeCollection.MarshalJSON` has been removed
+- Function `ResourceMetricDefinitionCollection.MarshalJSON` has been removed
+- Function `HybridConnectionCollection.MarshalJSON` has been removed
+- Function `PerfMonCounterCollection.MarshalJSON` has been removed
+- Function `InboundEnvironmentEndpointCollection.MarshalJSON` has been removed
+- Function `StaticSiteCollection.MarshalJSON` has been removed
+- Function `ProcessThreadInfoCollection.MarshalJSON` has been removed
+- Function `ProcessInfoCollection.MarshalJSON` has been removed
+- Function `DomainOwnershipIdentifierCollection.MarshalJSON` has been removed
+- Function `ProcessModuleInfoCollection.MarshalJSON` has been removed
+- Function `APIKVReferenceCollection.MarshalJSON` has been removed
+- Function `GlobalCsmSKUDescription.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `GeoRegionCollection.MarshalJSON` has been removed
+- Function `SiteConfigurationSnapshotInfoCollection.MarshalJSON` has been removed
+- Function `ResourceHealthMetadataCollection.MarshalJSON` has been removed
+- Function `DiagnosticAnalysisCollection.MarshalJSON` has been removed
+- Function `DeletedWebAppCollection.MarshalJSON` has been removed
+- Function `ContinuousWebJobCollection.MarshalJSON` has been removed
+- Function `SlotDifferenceCollection.MarshalJSON` has been removed
+- Function `HostKeys.MarshalJSON` has been removed
+- Function `HostNameBindingCollection.MarshalJSON` has been removed
+- Function `AppCertificateCollection.MarshalJSON` has been removed
+- Function `CertificateCollection.MarshalJSON` has been removed
+- Function `DeploymentCollection.MarshalJSON` has been removed
+- Function `DomainCollection.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `StaticSiteBuildCollection.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionCollection.MarshalJSON` has been removed
+- Function `SKUInfos.MarshalJSON` has been removed
+- Function `DiagnosticCategoryCollection.MarshalJSON` has been removed
+- Function `StaticSiteCustomDomainOverviewCollection.MarshalJSON` has been removed
+- Function `WebAppInstanceStatusCollection.MarshalJSON` has been removed
+- Function `CsmUsageQuotaCollection.MarshalJSON` has been removed
+- Function `SiteExtensionInfoCollection.MarshalJSON` has been removed
+- Function `ResourceCollection.MarshalJSON` has been removed
+- Function `SiteConfigResourceCollection.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `InboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `SnapshotCollection.MarshalJSON` has been removed
+- Function `TriggeredWebJobCollection.MarshalJSON` has been removed
+- Function `SourceControlCollection.MarshalJSON` has been removed
+- Function `WorkerPoolCollection.MarshalJSON` has been removed
+- Function `WebAppStackCollection.MarshalJSON` has been removed
+- Function `StampCapacityCollection.MarshalJSON` has been removed
+- Function `RecommendationCollection.MarshalJSON` has been removed
+- Function `DetectorResponseCollection.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `CustomHostnameSitesCollection.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesWrapper.MarshalJSON` has been removed
+- Function `PerfMonSample.MarshalJSON` has been removed
+- Function `StaticSiteUserCollection.MarshalJSON` has been removed
+- Function `TldLegalAgreementCollection.MarshalJSON` has been removed
+- Function `PublishingCredentialsPoliciesCollection.MarshalJSON` has been removed
+- Function `BackupItemCollection.MarshalJSON` has been removed
+- Function `SecretsCollection.MarshalJSON` has been removed
+- Function `NameIdentifierCollection.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `BillingMeterCollection.MarshalJSON` has been removed
+- Function `CertificateOrderCollection.MarshalJSON` has been removed
+- Function `KubeEnvironmentCollection.MarshalJSON` has been removed
+- Function `StaticSiteFunctionOverviewCollection.MarshalJSON` has been removed
+- Function `FunctionAppStackCollection.MarshalJSON` has been removed
+- Function `DefaultErrorResponseError.MarshalJSON` has been removed
+- Function `ApplicationStackCollection.MarshalJSON` has been removed
+- Function `TriggeredJobHistoryCollection.MarshalJSON` has been removed
+- Function `CsmOperationCollection.MarshalJSON` has been removed
+- Function `DiagnosticDetectorCollection.MarshalJSON` has been removed
+- Function `PremierAddOnOfferCollection.MarshalJSON` has been removed
+- Function `CsmUsageQuota.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `TopLevelDomainCollection.MarshalJSON` has been removed
+- Function `SKUInfoCollection.MarshalJSON` has been removed
+- Function `WebAppCollection.MarshalJSON` has been removed
+- Function `EnvironmentCollection.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointCollection.MarshalJSON` has been removed
+- Function `UsageCollection.MarshalJSON` has been removed
+- Function `WebJobCollection.MarshalJSON` has been removed
+- Function `SiteCloneability.MarshalJSON` has been removed
+- Function `DeploymentLocations.MarshalJSON` has been removed
+- Function `PublicCertificateCollection.MarshalJSON` has been removed
+- Function `IdentifierCollection.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

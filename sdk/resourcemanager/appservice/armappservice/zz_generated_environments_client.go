@@ -39,7 +39,7 @@ func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,26 +55,28 @@ func NewEnvironmentsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the
 // EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection method.
-func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*armruntime.Poller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse], error) {
+func (client *EnvironmentsClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*runtime.Poller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.approveOrRejectPrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
@@ -116,19 +118,20 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreate
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// BeginChangeVnet - Description for Move an App Service Environment to a different VNET.
+// BeginChangeVnet - Move an App Service Environment to a different VNET.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // vnetInfo - Details for the new virtual network.
 // options - EnvironmentsClientBeginChangeVnetOptions contains the optional parameters for the EnvironmentsClient.BeginChangeVnet
 // method.
-func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*armruntime.Poller[*runtime.Pager[EnvironmentsClientChangeVnetResponse]], error) {
-	pager := runtime.NewPager(runtime.PageProcessor[EnvironmentsClientChangeVnetResponse]{
+func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientChangeVnetResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientChangeVnetResponse]{
 		More: func(page EnvironmentsClientChangeVnetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -152,18 +155,19 @@ func (client *EnvironmentsClient) BeginChangeVnet(ctx context.Context, resourceG
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientChangeVnetResponse]]{
 			Response: &pager,
 		})
 	}
 }
 
-// ChangeVnet - Description for Move an App Service Environment to a different VNET.
+// ChangeVnet - Move an App Service Environment to a different VNET.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *EnvironmentsClientBeginChangeVnetOptions) (*http.Response, error) {
 	req, err := client.changeVnetCreateRequest(ctx, resourceGroupName, name, vnetInfo, options)
 	if err != nil {
@@ -201,7 +205,7 @@ func (client *EnvironmentsClient) changeVnetCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, vnetInfo)
 }
 
@@ -214,27 +218,29 @@ func (client *EnvironmentsClient) changeVnetHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Description for Create or update an App Service Environment.
+// BeginCreateOrUpdate - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // hostingEnvironmentEnvelope - Configuration details of the App Service Environment.
 // options - EnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdate
 // method.
-func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[EnvironmentsClientCreateOrUpdateResponse], error) {
+func (client *EnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EnvironmentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdate - Description for Create or update an App Service Environment.
+// CreateOrUpdate - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope EnvironmentResource, options *EnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
 	if err != nil {
@@ -272,31 +278,33 @@ func (client *EnvironmentsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope)
 }
 
-// BeginCreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
+// BeginCreateOrUpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // multiRolePoolEnvelope - Properties of the multi-role pool.
 // options - EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdateMultiRolePool
 // method.
-func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*armruntime.Poller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse], error) {
+func (client *EnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*runtime.Poller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateMultiRolePool(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateMultiRolePoolResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
+// CreateOrUpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateMultiRolePoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateMultiRolePoolCreateRequest(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
 	if err != nil {
@@ -334,32 +342,34 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, multiRolePoolEnvelope)
 }
 
-// BeginCreateOrUpdateWorkerPool - Description for Create or update a worker pool.
+// BeginCreateOrUpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // workerPoolEnvelope - Properties of the worker pool.
 // options - EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdateWorkerPool
 // method.
-func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*armruntime.Poller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse], error) {
+func (client *EnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*runtime.Poller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateWorkerPool(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientCreateOrUpdateWorkerPoolResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdateWorkerPool - Description for Create or update a worker pool.
+// CreateOrUpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *EnvironmentsClientBeginCreateOrUpdateWorkerPoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateWorkerPoolCreateRequest(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
 	if err != nil {
@@ -401,30 +411,32 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workerPoolEnvelope)
 }
 
-// BeginDelete - Description for Delete an App Service Environment.
+// BeginDelete - Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientBeginDeleteOptions contains the optional parameters for the EnvironmentsClient.BeginDelete
 // method.
-func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*armruntime.Poller[EnvironmentsClientDeleteResponse], error) {
+func (client *EnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*runtime.Poller[EnvironmentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Delete - Description for Delete an App Service Environment.
+// Delete - Delete an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -465,30 +477,32 @@ func (client *EnvironmentsClient) deleteCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginDeletePrivateEndpointConnection
 // method.
-func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*armruntime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error) {
+func (client *EnvironmentsClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[EnvironmentsClientDeletePrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EnvironmentsClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EnvironmentsClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EnvironmentsClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EnvironmentsClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *EnvironmentsClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
@@ -530,12 +544,13 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Description for Get the properties of an App Service Environment.
+// Get - Get the properties of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetOptions contains the optional parameters for the EnvironmentsClient.Get method.
@@ -576,7 +591,7 @@ func (client *EnvironmentsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -589,8 +604,9 @@ func (client *EnvironmentsClient) getHandleResponse(resp *http.Response) (Enviro
 	return result, nil
 }
 
-// GetAseV3NetworkingConfiguration - Description for Get networking configuration of an App Service Environment
+// GetAseV3NetworkingConfiguration - Get networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetAseV3NetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.GetAseV3NetworkingConfiguration
@@ -632,7 +648,7 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -645,8 +661,9 @@ func (client *EnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(
 	return result, nil
 }
 
-// GetDiagnosticsItem - Description for Get a diagnostics item for an App Service Environment.
+// GetDiagnosticsItem - Get a diagnostics item for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // diagnosticsName - Name of the diagnostics item.
@@ -693,7 +710,7 @@ func (client *EnvironmentsClient) getDiagnosticsItemCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -706,15 +723,16 @@ func (client *EnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewGetInboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all inbound dependencies
-// of an App Service Environment.
+// NewGetInboundNetworkDependenciesEndpointsPager - Get the network endpoints of all inbound dependencies of an App Service
+// Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetInboundNetworkDependenciesEndpoints
 // method.
 func (client *EnvironmentsClient) NewGetInboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse]{
 		More: func(page EnvironmentsClientGetInboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -763,7 +781,7 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -776,8 +794,9 @@ func (client *EnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleRe
 	return result, nil
 }
 
-// GetMultiRolePool - Description for Get properties of a multi-role pool.
+// GetMultiRolePool - Get properties of a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetMultiRolePoolOptions contains the optional parameters for the EnvironmentsClient.GetMultiRolePool
@@ -819,7 +838,7 @@ func (client *EnvironmentsClient) getMultiRolePoolCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -832,15 +851,16 @@ func (client *EnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewGetOutboundNetworkDependenciesEndpointsPager - Description for Get the network endpoints of all outbound dependencies
-// of an App Service Environment.
+// NewGetOutboundNetworkDependenciesEndpointsPager - Get the network endpoints of all outbound dependencies of an App Service
+// Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints
 // method.
 func (client *EnvironmentsClient) NewGetOutboundNetworkDependenciesEndpointsPager(resourceGroupName string, name string, options *EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions) *runtime.Pager[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse]{
 		More: func(page EnvironmentsClientGetOutboundNetworkDependenciesEndpointsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -889,7 +909,7 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -902,8 +922,9 @@ func (client *EnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleR
 	return result, nil
 }
 
-// GetPrivateEndpointConnection - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnection - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // privateEndpointConnectionName - Name of the private endpoint connection.
@@ -950,7 +971,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -963,15 +984,15 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionHandleResponse(res
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoints associated with a hosting
-// environment
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoints associated with a hosting environment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.GetPrivateEndpointConnectionList
 // method.
 func (client *EnvironmentsClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *EnvironmentsClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[EnvironmentsClientGetPrivateEndpointConnectionListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientGetPrivateEndpointConnectionListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientGetPrivateEndpointConnectionListResponse]{
 		More: func(page EnvironmentsClientGetPrivateEndpointConnectionListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1020,7 +1041,7 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1033,8 +1054,9 @@ func (client *EnvironmentsClient) getPrivateEndpointConnectionListHandleResponse
 	return result, nil
 }
 
-// GetPrivateLinkResources - Description for Gets the private link resources
+// GetPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetPrivateLinkResourcesOptions contains the optional parameters for the EnvironmentsClient.GetPrivateLinkResources
@@ -1076,7 +1098,7 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1089,8 +1111,9 @@ func (client *EnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *ht
 	return result, nil
 }
 
-// GetVipInfo - Description for Get IP addresses assigned to an App Service Environment.
+// GetVipInfo - Get IP addresses assigned to an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientGetVipInfoOptions contains the optional parameters for the EnvironmentsClient.GetVipInfo method.
@@ -1131,7 +1154,7 @@ func (client *EnvironmentsClient) getVipInfoCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1144,8 +1167,9 @@ func (client *EnvironmentsClient) getVipInfoHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetWorkerPool - Description for Get properties of a worker pool.
+// GetWorkerPool - Get properties of a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
@@ -1192,7 +1216,7 @@ func (client *EnvironmentsClient) getWorkerPoolCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1205,11 +1229,12 @@ func (client *EnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListPager - Description for Get all App Service Environments for a subscription.
+// NewListPager - Get all App Service Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
 func (client *EnvironmentsClient) NewListPager(options *EnvironmentsClientListOptions) *runtime.Pager[EnvironmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListResponse]{
 		More: func(page EnvironmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1250,7 +1275,7 @@ func (client *EnvironmentsClient) listCreateRequest(ctx context.Context, options
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1263,14 +1288,15 @@ func (client *EnvironmentsClient) listHandleResponse(resp *http.Response) (Envir
 	return result, nil
 }
 
-// NewListAppServicePlansPager - Description for Get all App Service plans in an App Service Environment.
+// NewListAppServicePlansPager - Get all App Service plans in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.ListAppServicePlans
 // method.
 func (client *EnvironmentsClient) NewListAppServicePlansPager(resourceGroupName string, name string, options *EnvironmentsClientListAppServicePlansOptions) *runtime.Pager[EnvironmentsClientListAppServicePlansResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListAppServicePlansResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListAppServicePlansResponse]{
 		More: func(page EnvironmentsClientListAppServicePlansResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1319,7 +1345,7 @@ func (client *EnvironmentsClient) listAppServicePlansCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1332,13 +1358,14 @@ func (client *EnvironmentsClient) listAppServicePlansHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all App Service Environments in a resource group.
+// NewListByResourceGroupPager - Get all App Service Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.ListByResourceGroup
 // method.
 func (client *EnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *EnvironmentsClientListByResourceGroupOptions) *runtime.Pager[EnvironmentsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListByResourceGroupResponse]{
 		More: func(page EnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1383,7 +1410,7 @@ func (client *EnvironmentsClient) listByResourceGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1396,14 +1423,15 @@ func (client *EnvironmentsClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListCapacitiesPager - Description for Get the used, available, and total worker capacity an App Service Environment.
+// NewListCapacitiesPager - Get the used, available, and total worker capacity an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.ListCapacities
 // method.
 func (client *EnvironmentsClient) NewListCapacitiesPager(resourceGroupName string, name string, options *EnvironmentsClientListCapacitiesOptions) *runtime.Pager[EnvironmentsClientListCapacitiesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListCapacitiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListCapacitiesResponse]{
 		More: func(page EnvironmentsClientListCapacitiesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1452,7 +1480,7 @@ func (client *EnvironmentsClient) listCapacitiesCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1465,8 +1493,9 @@ func (client *EnvironmentsClient) listCapacitiesHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListDiagnostics - Description for Get diagnostic information for an App Service Environment.
+// ListDiagnostics - Get diagnostic information for an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListDiagnosticsOptions contains the optional parameters for the EnvironmentsClient.ListDiagnostics
@@ -1508,7 +1537,7 @@ func (client *EnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1521,15 +1550,15 @@ func (client *EnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListMultiRoleMetricDefinitionsPager - Description for Get metric definitions for a multi-role pool of an App Service
-// Environment.
+// NewListMultiRoleMetricDefinitionsPager - Get metric definitions for a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleMetricDefinitions
 // method.
 func (client *EnvironmentsClient) NewListMultiRoleMetricDefinitionsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRoleMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRoleMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListMultiRoleMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListMultiRoleMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1578,7 +1607,7 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1591,16 +1620,17 @@ func (client *EnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// NewListMultiRolePoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of
-// a multi-role pool of an App Service Environment.
+// NewListMultiRolePoolInstanceMetricDefinitionsPager - Get metric definitions for a specific instance of a multi-role pool
+// of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // instance - Name of the instance in the multi-role pool.
 // options - EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the
 // EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions method.
 func (client *EnvironmentsClient) NewListMultiRolePoolInstanceMetricDefinitionsPager(resourceGroupName string, name string, instance string, options *EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1653,7 +1683,7 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1666,14 +1696,15 @@ func (client *EnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHand
 	return result, nil
 }
 
-// NewListMultiRolePoolSKUsPager - Description for Get available SKUs for scaling a multi-role pool.
+// NewListMultiRolePoolSKUsPager - Get available SKUs for scaling a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolSKUs
 // method.
 func (client *EnvironmentsClient) NewListMultiRolePoolSKUsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolSKUsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolSKUsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolSKUsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListMultiRolePoolSKUsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1722,7 +1753,7 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1735,14 +1766,15 @@ func (client *EnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListMultiRolePoolsPager - Description for Get all multi-role pools.
+// NewListMultiRolePoolsPager - Get all multi-role pools.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePools
 // method.
 func (client *EnvironmentsClient) NewListMultiRolePoolsPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRolePoolsOptions) *runtime.Pager[EnvironmentsClientListMultiRolePoolsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRolePoolsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListMultiRolePoolsResponse]{
 		More: func(page EnvironmentsClientListMultiRolePoolsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1791,7 +1823,7 @@ func (client *EnvironmentsClient) listMultiRolePoolsCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1804,14 +1836,15 @@ func (client *EnvironmentsClient) listMultiRolePoolsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListMultiRoleUsagesPager - Description for Get usage metrics for a multi-role pool of an App Service Environment.
+// NewListMultiRoleUsagesPager - Get usage metrics for a multi-role pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleUsages
 // method.
 func (client *EnvironmentsClient) NewListMultiRoleUsagesPager(resourceGroupName string, name string, options *EnvironmentsClientListMultiRoleUsagesOptions) *runtime.Pager[EnvironmentsClientListMultiRoleUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListMultiRoleUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListMultiRoleUsagesResponse]{
 		More: func(page EnvironmentsClientListMultiRoleUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1860,7 +1893,7 @@ func (client *EnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1873,8 +1906,9 @@ func (client *EnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// ListOperations - Description for List all currently running operations on the App Service Environment.
+// ListOperations - List all currently running operations on the App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListOperationsOptions contains the optional parameters for the EnvironmentsClient.ListOperations
@@ -1916,7 +1950,7 @@ func (client *EnvironmentsClient) listOperationsCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1929,13 +1963,14 @@ func (client *EnvironmentsClient) listOperationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListUsagesPager - Description for Get global usage metrics of an App Service Environment.
+// NewListUsagesPager - Get global usage metrics of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.ListUsages method.
 func (client *EnvironmentsClient) NewListUsagesPager(resourceGroupName string, name string, options *EnvironmentsClientListUsagesOptions) *runtime.Pager[EnvironmentsClientListUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListUsagesResponse]{
 		More: func(page EnvironmentsClientListUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1989,7 +2024,7 @@ func (client *EnvironmentsClient) listUsagesCreateRequest(ctx context.Context, r
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2002,14 +2037,15 @@ func (client *EnvironmentsClient) listUsagesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListWebAppsPager - Description for Get all apps in an App Service Environment.
+// NewListWebAppsPager - Get all apps in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.ListWebApps
 // method.
 func (client *EnvironmentsClient) NewListWebAppsPager(resourceGroupName string, name string, options *EnvironmentsClientListWebAppsOptions) *runtime.Pager[EnvironmentsClientListWebAppsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebAppsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWebAppsResponse]{
 		More: func(page EnvironmentsClientListWebAppsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2061,7 +2097,7 @@ func (client *EnvironmentsClient) listWebAppsCreateRequest(ctx context.Context, 
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2074,15 +2110,16 @@ func (client *EnvironmentsClient) listWebAppsHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListWebWorkerMetricDefinitionsPager - Description for Get metric definitions for a worker pool of an App Service Environment.
+// NewListWebWorkerMetricDefinitionsPager - Get metric definitions for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWebWorkerMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerMetricDefinitions
 // method.
 func (client *EnvironmentsClient) NewListWebWorkerMetricDefinitionsPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWebWorkerMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebWorkerMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWebWorkerMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListWebWorkerMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2135,7 +2172,7 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2148,15 +2185,16 @@ func (client *EnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(r
 	return result, nil
 }
 
-// NewListWebWorkerUsagesPager - Description for Get usage metrics for a worker pool of an App Service Environment.
+// NewListWebWorkerUsagesPager - Get usage metrics for a worker pool of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWebWorkerUsagesOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerUsages
 // method.
 func (client *EnvironmentsClient) NewListWebWorkerUsagesPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWebWorkerUsagesOptions) *runtime.Pager[EnvironmentsClientListWebWorkerUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWebWorkerUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWebWorkerUsagesResponse]{
 		More: func(page EnvironmentsClientListWebWorkerUsagesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2209,7 +2247,7 @@ func (client *EnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2222,9 +2260,10 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListWorkerPoolInstanceMetricDefinitionsPager - Description for Get metric definitions for a specific instance of a worker
-// pool of an App Service Environment.
+// NewListWorkerPoolInstanceMetricDefinitionsPager - Get metric definitions for a specific instance of a worker pool of an
+// App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
@@ -2232,7 +2271,7 @@ func (client *EnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.R
 // options - EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions
 // method.
 func (client *EnvironmentsClient) NewListWorkerPoolInstanceMetricDefinitionsPager(resourceGroupName string, name string, workerPoolName string, instance string, options *EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2289,7 +2328,7 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2302,15 +2341,16 @@ func (client *EnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleR
 	return result, nil
 }
 
-// NewListWorkerPoolSKUsPager - Description for Get available SKUs for scaling a worker pool.
+// NewListWorkerPoolSKUsPager - Get available SKUs for scaling a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
 // options - EnvironmentsClientListWorkerPoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolSKUs
 // method.
 func (client *EnvironmentsClient) NewListWorkerPoolSKUsPager(resourceGroupName string, name string, workerPoolName string, options *EnvironmentsClientListWorkerPoolSKUsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolSKUsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolSKUsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWorkerPoolSKUsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2363,7 +2403,7 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2376,14 +2416,15 @@ func (client *EnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// NewListWorkerPoolsPager - Description for Get all worker pools of an App Service Environment.
+// NewListWorkerPoolsPager - Get all worker pools of an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPools
 // method.
 func (client *EnvironmentsClient) NewListWorkerPoolsPager(resourceGroupName string, name string, options *EnvironmentsClientListWorkerPoolsOptions) *runtime.Pager[EnvironmentsClientListWorkerPoolsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EnvironmentsClientListWorkerPoolsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EnvironmentsClientListWorkerPoolsResponse]{
 		More: func(page EnvironmentsClientListWorkerPoolsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2432,7 +2473,7 @@ func (client *EnvironmentsClient) listWorkerPoolsCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2445,8 +2486,9 @@ func (client *EnvironmentsClient) listWorkerPoolsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// Reboot - Description for Reboot all machines in an App Service Environment.
+// Reboot - Reboot all machines in an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientRebootOptions contains the optional parameters for the EnvironmentsClient.Reboot method.
@@ -2487,18 +2529,19 @@ func (client *EnvironmentsClient) rebootCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginResume - Description for Resume an App Service Environment.
+// BeginResume - Resume an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientBeginResumeOptions contains the optional parameters for the EnvironmentsClient.BeginResume
 // method.
-func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*armruntime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error) {
-	pager := runtime.NewPager(runtime.PageProcessor[EnvironmentsClientResumeResponse]{
+func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientResumeResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientResumeResponse]{
 		More: func(page EnvironmentsClientResumeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2522,18 +2565,19 @@ func (client *EnvironmentsClient) BeginResume(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientResumeResponse]]{
 			Response: &pager,
 		})
 	}
 }
 
-// Resume - Description for Resume an App Service Environment.
+// Resume - Resume an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -2571,7 +2615,7 @@ func (client *EnvironmentsClient) resumeCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2584,14 +2628,15 @@ func (client *EnvironmentsClient) resumeHandleResponse(resp *http.Response) (Env
 	return result, nil
 }
 
-// BeginSuspend - Description for Suspend an App Service Environment.
+// BeginSuspend - Suspend an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientBeginSuspendOptions contains the optional parameters for the EnvironmentsClient.BeginSuspend
 // method.
-func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*armruntime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error) {
-	pager := runtime.NewPager(runtime.PageProcessor[EnvironmentsClientSuspendResponse]{
+func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*runtime.Poller[*runtime.Pager[EnvironmentsClientSuspendResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[EnvironmentsClientSuspendResponse]{
 		More: func(page EnvironmentsClientSuspendResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2615,18 +2660,19 @@ func (client *EnvironmentsClient) BeginSuspend(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
 			Response: &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[EnvironmentsClientSuspendResponse]]{
 			Response: &pager,
 		})
 	}
 }
 
-// Suspend - Description for Suspend an App Service Environment.
+// Suspend - Suspend an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *EnvironmentsClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -2664,7 +2710,7 @@ func (client *EnvironmentsClient) suspendCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2677,8 +2723,9 @@ func (client *EnvironmentsClient) suspendHandleResponse(resp *http.Response) (En
 	return result, nil
 }
 
-// Update - Description for Create or update an App Service Environment.
+// Update - Create or update an App Service Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // hostingEnvironmentEnvelope - Configuration details of the App Service Environment.
@@ -2720,7 +2767,7 @@ func (client *EnvironmentsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope)
 }
 
@@ -2733,8 +2780,9 @@ func (client *EnvironmentsClient) updateHandleResponse(resp *http.Response) (Env
 	return result, nil
 }
 
-// UpdateAseNetworkingConfiguration - Description for Update networking configuration of an App Service Environment
+// UpdateAseNetworkingConfiguration - Update networking configuration of an App Service Environment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // options - EnvironmentsClientUpdateAseNetworkingConfigurationOptions contains the optional parameters for the EnvironmentsClient.UpdateAseNetworkingConfiguration
@@ -2776,7 +2824,7 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, aseNetworkingConfiguration)
 }
 
@@ -2789,8 +2837,9 @@ func (client *EnvironmentsClient) updateAseNetworkingConfigurationHandleResponse
 	return result, nil
 }
 
-// UpdateMultiRolePool - Description for Create or update a multi-role pool.
+// UpdateMultiRolePool - Create or update a multi-role pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // multiRolePoolEnvelope - Properties of the multi-role pool.
@@ -2833,7 +2882,7 @@ func (client *EnvironmentsClient) updateMultiRolePoolCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, multiRolePoolEnvelope)
 }
 
@@ -2846,8 +2895,9 @@ func (client *EnvironmentsClient) updateMultiRolePoolHandleResponse(resp *http.R
 	return result, nil
 }
 
-// UpdateWorkerPool - Description for Create or update a worker pool.
+// UpdateWorkerPool - Create or update a worker pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the App Service Environment.
 // workerPoolName - Name of the worker pool.
@@ -2895,7 +2945,7 @@ func (client *EnvironmentsClient) updateWorkerPoolCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workerPoolEnvelope)
 }
 

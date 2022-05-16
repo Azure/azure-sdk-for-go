@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
@@ -26,18 +24,17 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("3fb8d758-2e2c-42e9-a528-a8acdfe87237", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBasicPublishingCredentialsPoliciesPager("<resource-group-name>",
-		"<name>",
+	pager := client.NewListBasicPublishingCredentialsPoliciesPager("testrg123",
+		"testsite",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,13 +50,13 @@ func ExampleWebAppsClient_GetFtpAllowed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetFtpAllowed(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testSite",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,13 +72,13 @@ func ExampleWebAppsClient_UpdateFtpAllowed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateFtpAllowed(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testSite",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 				Allow: to.Ptr(true),
@@ -102,13 +99,13 @@ func ExampleWebAppsClient_GetScmAllowed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetScmAllowed(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testSite",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,13 +121,13 @@ func ExampleWebAppsClient_UpdateScmAllowed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateScmAllowed(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testSite",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 				Allow: to.Ptr(true),
@@ -151,18 +148,17 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetAppSettingsKeyVaultReferencesPager("<resource-group-name>",
-		"<name>",
+	pager := client.NewGetAppSettingsKeyVaultReferencesPager("testrg123",
+		"testc6282",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -178,14 +174,14 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReference() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAppSettingKeyVaultReference(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<app-setting-key>",
+		"testrg123",
+		"testc6282",
+		"setting",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -201,14 +197,14 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetInstanceInfo(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<instance-id>",
+		"testrg123",
+		"tests346",
+		"134987120",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -224,18 +220,17 @@ func ExampleWebAppsClient_NewListSiteBackupsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteBackupsPager("<resource-group-name>",
-		"<name>",
+	pager := client.NewListSiteBackupsPager("testrg123",
+		"tests346",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -251,14 +246,14 @@ func ExampleWebAppsClient_GetNetworkTraceOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTraceOperation(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -274,22 +269,21 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperation(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"testrg123",
+		"SampleApp",
 		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
-			ResumeToken:    "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -304,13 +298,13 @@ func ExampleWebAppsClient_StopWebSiteNetworkTrace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.StopWebSiteNetworkTrace(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"testrg123",
+		"SampleApp",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -324,14 +318,14 @@ func ExampleWebAppsClient_GetNetworkTraces() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTraces(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -347,14 +341,14 @@ func ExampleWebAppsClient_GetNetworkTraceOperationV2() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTraceOperationV2(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -370,14 +364,14 @@ func ExampleWebAppsClient_GetNetworkTracesV2() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTracesV2(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -393,14 +387,14 @@ func ExampleWebAppsClient_GetPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPrivateEndpointConnection(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
+		"rg",
+		"testSite",
+		"connection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -416,28 +410,28 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnection(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
+		"rg",
+		"testSite",
+		"connection",
 		armappservice.PrivateLinkConnectionApprovalRequestResource{
 			Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 				PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
-					Status:          to.Ptr("<status>"),
+					Description:     to.Ptr("Approved by admin."),
+					ActionsRequired: to.Ptr(""),
+					Status:          to.Ptr("Approved"),
 				},
 			},
 		},
-		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -452,19 +446,19 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeletePrivateEndpointConnection(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
-		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions{ResumeToken: ""})
+		"rg",
+		"testSite",
+		"connection",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -479,13 +473,13 @@ func ExampleWebAppsClient_GetPrivateLinkResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPrivateLinkResources(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testSite",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -501,19 +495,18 @@ func ExampleWebAppsClient_NewListBasicPublishingCredentialsPoliciesSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("3fb8d758-2e2c-42e9-a528-a8acdfe87237", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBasicPublishingCredentialsPoliciesSlotPager("<resource-group-name>",
-		"<name>",
-		"<slot>",
+	pager := client.NewListBasicPublishingCredentialsPoliciesSlotPager("testrg123",
+		"testsite",
+		"staging",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -529,14 +522,14 @@ func ExampleWebAppsClient_GetFtpAllowedSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetFtpAllowedSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"stage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -552,14 +545,14 @@ func ExampleWebAppsClient_UpdateFtpAllowedSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateFtpAllowedSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"stage",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 				Allow: to.Ptr(true),
@@ -580,14 +573,14 @@ func ExampleWebAppsClient_GetScmAllowedSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetScmAllowedSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"stage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -603,14 +596,14 @@ func ExampleWebAppsClient_UpdateScmAllowedSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateScmAllowedSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"stage",
 		armappservice.CsmPublishingCredentialsPoliciesEntity{
 			Properties: &armappservice.CsmPublishingCredentialsPoliciesEntityProperties{
 				Allow: to.Ptr(true),
@@ -631,19 +624,18 @@ func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetAppSettingsKeyVaultReferencesSlotPager("<resource-group-name>",
-		"<name>",
-		"<slot>",
+	pager := client.NewGetAppSettingsKeyVaultReferencesSlotPager("testrg123",
+		"testc6282",
+		"stage",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -659,15 +651,15 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAppSettingKeyVaultReferenceSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<app-setting-key>",
-		"<slot>",
+		"testrg123",
+		"testc6282",
+		"setting",
+		"stage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -683,15 +675,15 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetInstanceInfoSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<instance-id>",
-		"<slot>",
+		"testrg123",
+		"tests346",
+		"134987120",
+		"staging",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -707,19 +699,18 @@ func ExampleWebAppsClient_NewListSiteBackupsSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteBackupsSlotPager("<resource-group-name>",
-		"<name>",
-		"<slot>",
+	pager := client.NewListSiteBackupsSlotPager("testrg123",
+		"tests346",
+		"staging",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -735,15 +726,15 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTraceOperationSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -759,23 +750,22 @@ func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStartWebSiteNetworkTraceOperationSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"Production",
 		&armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
-			ResumeToken:    "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -790,14 +780,14 @@ func ExampleWebAppsClient_StopWebSiteNetworkTraceSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.StopWebSiteNetworkTraceSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -811,15 +801,15 @@ func ExampleWebAppsClient_GetNetworkTracesSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTracesSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -835,15 +825,15 @@ func ExampleWebAppsClient_GetNetworkTraceOperationSlotV2() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTraceOperationSlotV2(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -859,15 +849,15 @@ func ExampleWebAppsClient_GetNetworkTracesSlotV2() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNetworkTracesSlotV2(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<operation-id>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"c291433b-53ad-4c49-8cae-0a293eae1c6d",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -883,15 +873,15 @@ func ExampleWebAppsClient_GetPrivateEndpointConnectionSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPrivateEndpointConnectionSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"connection",
+		"stage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -907,29 +897,29 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"connection",
+		"stage",
 		armappservice.PrivateLinkConnectionApprovalRequestResource{
 			Properties: &armappservice.PrivateLinkConnectionApprovalRequest{
 				PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
-					Status:          to.Ptr("<status>"),
+					Description:     to.Ptr("Approved by admin."),
+					ActionsRequired: to.Ptr(""),
+					Status:          to.Ptr("Approved"),
 				},
 			},
 		},
-		&armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -944,20 +934,20 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeletePrivateEndpointConnectionSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<private-endpoint-connection-name>",
-		"<slot>",
-		&armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions{ResumeToken: ""})
+		"rg",
+		"testSite",
+		"connection",
+		"stage",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -972,14 +962,14 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPrivateLinkResourcesSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"rg",
+		"testSite",
+		"stage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -995,23 +985,22 @@ func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStartNetworkTraceSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"Production",
 		&armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
-			ResumeToken:    "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -1026,14 +1015,14 @@ func ExampleWebAppsClient_StopNetworkTraceSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.StopNetworkTraceSlot(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<slot>",
+		"testrg123",
+		"SampleApp",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1047,22 +1036,21 @@ func ExampleWebAppsClient_BeginStartNetworkTrace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStartNetworkTrace(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"testrg123",
+		"SampleApp",
 		&armappservice.WebAppsClientBeginStartNetworkTraceOptions{DurationInSeconds: to.Ptr[int32](60),
 			MaxFrameLength: nil,
 			SasURL:         nil,
-			ResumeToken:    "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -1077,13 +1065,13 @@ func ExampleWebAppsClient_StopNetworkTrace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.StopNetworkTrace(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"testrg123",
+		"SampleApp",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

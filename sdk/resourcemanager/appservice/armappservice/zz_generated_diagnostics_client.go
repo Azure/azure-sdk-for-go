@@ -39,7 +39,7 @@ func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,8 +55,9 @@ func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// ExecuteSiteAnalysis - Description for Execute Analysis
+// ExecuteSiteAnalysis - Execute Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Category Name
@@ -117,7 +118,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -130,8 +131,9 @@ func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ExecuteSiteAnalysisSlot - Description for Execute Analysis
+// ExecuteSiteAnalysisSlot - Execute Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Category Name
@@ -197,7 +199,7 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -210,8 +212,9 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// ExecuteSiteDetector - Description for Execute Detector
+// ExecuteSiteDetector - Execute Detector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // detectorName - Detector Resource Name
@@ -272,7 +275,7 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,8 +288,9 @@ func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// ExecuteSiteDetectorSlot - Description for Execute Detector
+// ExecuteSiteDetectorSlot - Execute Detector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // detectorName - Detector Resource Name
@@ -352,7 +356,7 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -365,8 +369,9 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetHostingEnvironmentDetectorResponse - Description for Get Hosting Environment Detector Response
+// GetHostingEnvironmentDetectorResponse - Get Hosting Environment Detector Response
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - App Service Environment Name
 // detectorName - Detector Resource Name
@@ -422,7 +427,7 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -435,8 +440,9 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResp
 	return result, nil
 }
 
-// GetSiteAnalysis - Description for Get Site Analysis
+// GetSiteAnalysis - Get Site Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -488,7 +494,7 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -501,8 +507,9 @@ func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetSiteAnalysisSlot - Description for Get Site Analysis
+// GetSiteAnalysisSlot - Get Site Analysis
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -559,7 +566,7 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -572,8 +579,9 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetSiteDetector - Description for Get Detector
+// GetSiteDetector - Get Detector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -625,7 +633,7 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -638,8 +646,9 @@ func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// GetSiteDetectorResponse - Description for Get site detector response
+// GetSiteDetectorResponse - Get site detector response
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // detectorName - Detector Resource Name
@@ -695,7 +704,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -708,8 +717,9 @@ func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetSiteDetectorResponseSlot - Description for Get site detector response
+// GetSiteDetectorResponseSlot - Get site detector response
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // detectorName - Detector Resource Name
@@ -770,7 +780,7 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -783,8 +793,9 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp 
 	return result, nil
 }
 
-// GetSiteDetectorSlot - Description for Get Detector
+// GetSiteDetectorSlot - Get Detector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -841,7 +852,7 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -854,8 +865,9 @@ func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetSiteDiagnosticCategory - Description for Get Diagnostics Category
+// GetSiteDiagnosticCategory - Get Diagnostics Category
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -902,7 +914,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -915,8 +927,9 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *h
 	return result, nil
 }
 
-// GetSiteDiagnosticCategorySlot - Description for Get Diagnostics Category
+// GetSiteDiagnosticCategorySlot - Get Diagnostics Category
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -968,7 +981,7 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -981,14 +994,15 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(res
 	return result, nil
 }
 
-// NewListHostingEnvironmentDetectorResponsesPager - Description for List Hosting Environment Detector Responses
+// NewListHostingEnvironmentDetectorResponsesPager - List Hosting Environment Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Site Name
 // options - DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
 // method.
 func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager(resourceGroupName string, name string, options *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1037,7 +1051,7 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1050,15 +1064,16 @@ func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleRe
 	return result, nil
 }
 
-// NewListSiteAnalysesPager - Description for Get Site Analyses
+// NewListSiteAnalysesPager - Get Site Analyses
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses
 // method.
 func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteAnalysesOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteAnalysesResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1111,7 +1126,7 @@ func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1124,8 +1139,9 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListSiteAnalysesSlotPager - Description for Get Site Analyses
+// NewListSiteAnalysesSlotPager - Get Site Analyses
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -1133,7 +1149,7 @@ func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Respo
 // options - DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
 // method.
 func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteAnalysesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteAnalysesSlotResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteAnalysesSlotResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteAnalysesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteAnalysesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1190,7 +1206,7 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1203,14 +1219,15 @@ func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.R
 	return result, nil
 }
 
-// NewListSiteDetectorResponsesPager - Description for List Site Detector Responses
+// NewListSiteDetectorResponsesPager - List Site Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
 // method.
 func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDetectorResponsesOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorResponsesResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1259,7 +1276,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1272,15 +1289,16 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *h
 	return result, nil
 }
 
-// NewListSiteDetectorResponsesSlotPager - Description for List Site Detector Responses
+// NewListSiteDetectorResponsesSlotPager - List Site Detector Responses
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
 // method.
 func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDetectorResponsesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorResponsesSlotResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorResponsesSlotResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorResponsesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorResponsesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1333,7 +1351,7 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1346,15 +1364,16 @@ func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(res
 	return result, nil
 }
 
-// NewListSiteDetectorsPager - Description for Get Detectors
+// NewListSiteDetectorsPager - Get Detectors
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
 // options - DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
 // method.
 func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName string, siteName string, diagnosticCategory string, options *DiagnosticsClientListSiteDetectorsOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorsResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1407,7 +1426,7 @@ func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1420,8 +1439,9 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// NewListSiteDetectorsSlotPager - Description for Get Detectors
+// NewListSiteDetectorsSlotPager - Get Detectors
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // diagnosticCategory - Diagnostic Category
@@ -1429,7 +1449,7 @@ func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Resp
 // options - DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
 // method.
 func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *DiagnosticsClientListSiteDetectorsSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDetectorsSlotResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDetectorsSlotResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDetectorsSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDetectorsSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1486,7 +1506,7 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1499,14 +1519,15 @@ func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListSiteDiagnosticCategoriesPager - Description for Get Diagnostics Categories
+// NewListSiteDiagnosticCategoriesPager - Get Diagnostics Categories
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
 // method.
 func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGroupName string, siteName string, options *DiagnosticsClientListSiteDiagnosticCategoriesOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDiagnosticCategoriesResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1555,7 +1576,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1568,15 +1589,16 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp
 	return result, nil
 }
 
-// NewListSiteDiagnosticCategoriesSlotPager - Description for Get Diagnostics Categories
+// NewListSiteDiagnosticCategoriesSlotPager - Get Diagnostics Categories
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // siteName - Site Name
 // slot - Slot Name
 // options - DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
 // method.
 func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resourceGroupName string, siteName string, slot string, options *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) *runtime.Pager[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]{
 		More: func(page DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1629,7 +1651,7 @@ func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
@@ -26,15 +24,15 @@ func ExampleClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location>",
+		"eastus",
 		armsignalr.NameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("mySignalRService"),
+			Type: to.Ptr("Microsoft.SignalRService/SignalR"),
 		},
 		nil)
 	if err != nil {
@@ -51,7 +49,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -60,7 +58,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -76,17 +73,16 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -102,13 +98,13 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"mySignalRService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,15 +120,15 @@ func ExampleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"mySignalRService",
 		armsignalr.ResourceInfo{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
@@ -152,30 +148,30 @@ func ExampleClient_BeginCreateOrUpdate() {
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsServiceMode),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("Serverless"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableConnectivityLogs),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("True"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableMessagingLogs),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("False"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableLiveTrace),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("False"),
 					}},
 				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
 					Categories: []*armsignalr.LiveTraceCategory{
 						{
-							Name:    to.Ptr("<name>"),
-							Enabled: to.Ptr("<enabled>"),
+							Name:    to.Ptr("ConnectivityLogs"),
+							Enabled: to.Ptr("true"),
 						}},
-					Enabled: to.Ptr("<enabled>"),
+					Enabled: to.Ptr("false"),
 				},
 				NetworkACLs: &armsignalr.NetworkACLs{
 					DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
@@ -183,14 +179,14 @@ func ExampleClient_BeginCreateOrUpdate() {
 						{
 							Allow: []*armsignalr.SignalRRequestType{
 								to.Ptr(armsignalr.SignalRRequestTypeServerConnection)},
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 						}},
 					PublicNetwork: &armsignalr.NetworkACL{
 						Allow: []*armsignalr.SignalRRequestType{
 							to.Ptr(armsignalr.SignalRRequestTypeClientConnection)},
 					},
 				},
-				PublicNetworkAccess: to.Ptr("<public-network-access>"),
+				PublicNetworkAccess: to.Ptr("Enabled"),
 				TLS: &armsignalr.TLSSettings{
 					ClientCertEnabled: to.Ptr(false),
 				},
@@ -200,27 +196,27 @@ func ExampleClient_BeginCreateOrUpdate() {
 							Auth: &armsignalr.UpstreamAuthSettings{
 								Type: to.Ptr(armsignalr.UpstreamAuthTypeManagedIdentity),
 								ManagedIdentity: &armsignalr.ManagedIdentitySettings{
-									Resource: to.Ptr("<resource>"),
+									Resource: to.Ptr("api://example"),
 								},
 							},
-							CategoryPattern: to.Ptr("<category-pattern>"),
-							EventPattern:    to.Ptr("<event-pattern>"),
-							HubPattern:      to.Ptr("<hub-pattern>"),
-							URLTemplate:     to.Ptr("<urltemplate>"),
+							CategoryPattern: to.Ptr("*"),
+							EventPattern:    to.Ptr("connect,disconnect"),
+							HubPattern:      to.Ptr("*"),
+							URLTemplate:     to.Ptr("https://example.com/chat/api/connect"),
 						}},
 				},
 			},
 			SKU: &armsignalr.ResourceSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("Standard_S1"),
 				Capacity: to.Ptr[int32](1),
 				Tier:     to.Ptr(armsignalr.SignalRSKUTierStandard),
 			},
 		},
-		&armsignalr.ClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -235,18 +231,18 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armsignalr.ClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"mySignalRService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -259,15 +255,15 @@ func ExampleClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"mySignalRService",
 		armsignalr.ResourceInfo{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
@@ -287,30 +283,30 @@ func ExampleClient_BeginUpdate() {
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsServiceMode),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("Serverless"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableConnectivityLogs),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("True"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableMessagingLogs),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("False"),
 					},
 					{
 						Flag:       to.Ptr(armsignalr.FeatureFlagsEnableLiveTrace),
 						Properties: map[string]*string{},
-						Value:      to.Ptr("<value>"),
+						Value:      to.Ptr("False"),
 					}},
 				LiveTraceConfiguration: &armsignalr.LiveTraceConfiguration{
 					Categories: []*armsignalr.LiveTraceCategory{
 						{
-							Name:    to.Ptr("<name>"),
-							Enabled: to.Ptr("<enabled>"),
+							Name:    to.Ptr("ConnectivityLogs"),
+							Enabled: to.Ptr("true"),
 						}},
-					Enabled: to.Ptr("<enabled>"),
+					Enabled: to.Ptr("false"),
 				},
 				NetworkACLs: &armsignalr.NetworkACLs{
 					DefaultAction: to.Ptr(armsignalr.ACLActionDeny),
@@ -318,14 +314,14 @@ func ExampleClient_BeginUpdate() {
 						{
 							Allow: []*armsignalr.SignalRRequestType{
 								to.Ptr(armsignalr.SignalRRequestTypeServerConnection)},
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 						}},
 					PublicNetwork: &armsignalr.NetworkACL{
 						Allow: []*armsignalr.SignalRRequestType{
 							to.Ptr(armsignalr.SignalRRequestTypeClientConnection)},
 					},
 				},
-				PublicNetworkAccess: to.Ptr("<public-network-access>"),
+				PublicNetworkAccess: to.Ptr("Enabled"),
 				TLS: &armsignalr.TLSSettings{
 					ClientCertEnabled: to.Ptr(false),
 				},
@@ -335,27 +331,27 @@ func ExampleClient_BeginUpdate() {
 							Auth: &armsignalr.UpstreamAuthSettings{
 								Type: to.Ptr(armsignalr.UpstreamAuthTypeManagedIdentity),
 								ManagedIdentity: &armsignalr.ManagedIdentitySettings{
-									Resource: to.Ptr("<resource>"),
+									Resource: to.Ptr("api://example"),
 								},
 							},
-							CategoryPattern: to.Ptr("<category-pattern>"),
-							EventPattern:    to.Ptr("<event-pattern>"),
-							HubPattern:      to.Ptr("<hub-pattern>"),
-							URLTemplate:     to.Ptr("<urltemplate>"),
+							CategoryPattern: to.Ptr("*"),
+							EventPattern:    to.Ptr("connect,disconnect"),
+							HubPattern:      to.Ptr("*"),
+							URLTemplate:     to.Ptr("https://example.com/chat/api/connect"),
 						}},
 				},
 			},
 			SKU: &armsignalr.ResourceSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("Standard_S1"),
 				Capacity: to.Ptr[int32](1),
 				Tier:     to.Ptr(armsignalr.SignalRSKUTierStandard),
 			},
 		},
-		&armsignalr.ClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -370,13 +366,13 @@ func ExampleClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"mySignalRService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -392,21 +388,21 @@ func ExampleClient_BeginRegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRegenerateKey(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"mySignalRService",
 		armsignalr.RegenerateKeyParameters{
 			KeyType: to.Ptr(armsignalr.KeyTypePrimary),
 		},
-		&armsignalr.ClientBeginRegenerateKeyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -419,18 +415,18 @@ func ExampleClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armsignalr.ClientBeginRestartOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"mySignalRService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

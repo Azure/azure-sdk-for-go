@@ -39,7 +39,7 @@ func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewResourceGroupsClient(subscriptionID string, credential azcore.TokenCrede
 }
 
 // CheckExistence - Checks whether a resource group exists.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group to check. The name is case insensitive.
 // options - ResourceGroupsClientCheckExistenceOptions contains the optional parameters for the ResourceGroupsClient.CheckExistence
 // method.
@@ -68,11 +69,10 @@ func (client *ResourceGroupsClient) CheckExistence(ctx context.Context, resource
 	if err != nil {
 		return ResourceGroupsClientCheckExistenceResponse{}, err
 	}
-	result := ResourceGroupsClientCheckExistenceResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent, http.StatusNotFound) {
+		return ResourceGroupsClientCheckExistenceResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return ResourceGroupsClientCheckExistenceResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkExistenceCreateRequest creates the CheckExistence request.
@@ -93,12 +93,13 @@ func (client *ResourceGroupsClient) checkExistenceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Creates or updates a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group to create or update. Can include alphanumeric, underscore, parentheses,
 // hyphen, period (except at end), and Unicode characters that match the allowed characters.
 // parameters - Parameters supplied to the create or update a resource group.
@@ -137,7 +138,7 @@ func (client *ResourceGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -153,24 +154,26 @@ func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 // BeginDelete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes
 // all of its template deployments and currently stored operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group to delete. The name is case insensitive.
 // options - ResourceGroupsClientBeginDeleteOptions contains the optional parameters for the ResourceGroupsClient.BeginDelete
 // method.
-func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (*armruntime.Poller[ResourceGroupsClientDeleteResponse], error) {
+func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (*runtime.Poller[ResourceGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ResourceGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ResourceGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ResourceGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ResourceGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all
 // of its template deployments and currently stored operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *ResourceGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
@@ -207,32 +210,34 @@ func (client *ResourceGroupsClient) deleteCreateRequest(ctx context.Context, res
 	}
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginExportTemplate - Captures the specified resource group as a template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // parameters - Parameters for exporting the template.
 // options - ResourceGroupsClientBeginExportTemplateOptions contains the optional parameters for the ResourceGroupsClient.BeginExportTemplate
 // method.
-func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (*armruntime.Poller[ResourceGroupsClientExportTemplateResponse], error) {
+func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (*runtime.Poller[ResourceGroupsClientExportTemplateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.exportTemplate(ctx, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ResourceGroupsClientExportTemplateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ResourceGroupsClientExportTemplateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ResourceGroupsClientExportTemplateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ResourceGroupsClientExportTemplateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 func (client *ResourceGroupsClient) exportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsClientBeginExportTemplateOptions) (*http.Response, error) {
 	req, err := client.exportTemplateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
@@ -266,12 +271,13 @@ func (client *ResourceGroupsClient) exportTemplateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // options - ResourceGroupsClientGetOptions contains the optional parameters for the ResourceGroupsClient.Get method.
 func (client *ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsClientGetOptions) (ResourceGroupsClientGetResponse, error) {
@@ -307,7 +313,7 @@ func (client *ResourceGroupsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -322,9 +328,10 @@ func (client *ResourceGroupsClient) getHandleResponse(resp *http.Response) (Reso
 
 // NewListPager - Gets all the resource groups for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // options - ResourceGroupsClientListOptions contains the optional parameters for the ResourceGroupsClient.List method.
 func (client *ResourceGroupsClient) NewListPager(options *ResourceGroupsClientListOptions) *runtime.Pager[ResourceGroupsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceGroupsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceGroupsClientListResponse]{
 		More: func(page ResourceGroupsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -371,7 +378,7 @@ func (client *ResourceGroupsClient) listCreateRequest(ctx context.Context, optio
 	}
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -388,6 +395,7 @@ func (client *ResourceGroupsClient) listHandleResponse(resp *http.Response) (Res
 // is the same as that for creating a resource group. If a field is unspecified, the current
 // value is retained.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceGroupName - The name of the resource group to update. The name is case insensitive.
 // parameters - Parameters supplied to update a resource group.
 // options - ResourceGroupsClientUpdateOptions contains the optional parameters for the ResourceGroupsClient.Update method.
@@ -424,7 +432,7 @@ func (client *ResourceGroupsClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

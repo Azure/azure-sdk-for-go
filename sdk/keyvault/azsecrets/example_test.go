@@ -97,7 +97,7 @@ func ExampleClient_BeginDeleteSecret() {
 	}
 }
 
-func ExampleClient_ListPropertiesOfSecrets() {
+func ExampleClient_NewListPropertiesOfSecretsPager() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleClient_ListPropertiesOfSecrets() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfSecrets(nil)
+	pager := client.NewListPropertiesOfSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

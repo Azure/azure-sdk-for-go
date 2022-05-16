@@ -5,6 +5,10 @@
 ### Features Added
 
 ### Breaking Changes
+* Renamed methods which return `Pager[T]`:
+  * `ListDeletedKeys` to `NewListDeletedKeysPager`
+  * `ListPropertiesOfKeys` to `NewListPropertiesOfKeysPager`
+  * `ListPropertiesOfKeyVersions` to `NewListPropertiesOfKeyVersionsPager`
 
 ### Bugs Fixed
 

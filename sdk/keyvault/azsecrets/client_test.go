@@ -138,7 +138,7 @@ func TestListSecretVersions(t *testing.T) {
 	defer cleanUpSecret(t, client, secret)
 
 	count := 0
-	pager := client.ListPropertiesOfSecretVersions(secret, nil)
+	pager := client.NewListPropertiesOfSecretVersionsPager(secret, nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -169,7 +169,7 @@ func TestListSecrets(t *testing.T) {
 	defer cleanUpSecret(t, client, "secret4")
 
 	count := 0
-	pager := client.ListPropertiesOfSecrets(nil)
+	pager := client.NewListPropertiesOfSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -226,7 +226,7 @@ func TestListDeletedSecrets(t *testing.T) {
 		secret2: false,
 	}
 	count := 0
-	pager := client.ListDeletedSecrets(nil)
+	pager := client.NewListDeletedSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -309,7 +309,7 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	pager := client.ListDeletedSecrets(nil)
+	pager := client.NewListDeletedSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)

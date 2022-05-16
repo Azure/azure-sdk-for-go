@@ -309,7 +309,7 @@ func main() {
 ```
 
 ### List secrets
-[ListPropertiesOfSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.ListPropertiesOfSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[NewListPropertiesOfSecretsPager](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.NewListPropertiesOfSecretsPager) creates a `Pager` that lists the properties of all of the secrets in the client's vault, not including their secret values.
 
 ```golang
 import (
@@ -333,7 +333,7 @@ func main() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfSecrets(nil)
+	pager := client.NewListPropertiesOfSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

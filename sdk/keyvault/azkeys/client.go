@@ -422,11 +422,11 @@ func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListPr
 	}
 }
 
-// ListPropertiesOfKeys retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
+// NewListPropertiesOfKeysPager retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
 // public part of a stored key. The LIST operation is applicable to all key types, however only the
 // base key identifier, attributes, and tags are provided in the response. Individual versions of a
 // key are not listed in the response. This operation requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeys(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListPropertiesOfKeysResponse] {
+func (c *Client) NewListPropertiesOfKeysPager(options *ListPropertiesOfKeysOptions) *runtime.Pager[ListPropertiesOfKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfKeysResponse]{
 		More: func(page ListPropertiesOfKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -995,11 +995,11 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 	return &generated.KeyVaultClientGetDeletedKeysOptions{}
 }
 
-// ListDeletedKeys retrieves a list of the public part of deleted keys. This operation includes deletion-specific information.
+// NewListDeletedKeysPager retrieves a list of the public part of deleted keys. This operation includes deletion-specific information.
 // The ListDeleted operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
 // an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
-func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
+func (c *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedKeysResponse]{
 		More: func(page ListDeletedKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -1076,10 +1076,10 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 	}
 }
 
-// ListPropertiesOfKeyVersions lists all versions of the specified key. The full key identifer and
+// NewListPropertiesOfKeyVersionsPager lists all versions of the specified key. The full key identifer and
 // attributes are provided in the response. No values are returned for the keys. This operation
 // requires the keys/list permission.
-func (c *Client) ListPropertiesOfKeyVersions(keyName string, options *ListPropertiesOfKeyVersionsOptions) *runtime.Pager[ListPropertiesOfKeyVersionsResponse] {
+func (c *Client) NewListPropertiesOfKeyVersionsPager(keyName string, options *ListPropertiesOfKeyVersionsOptions) *runtime.Pager[ListPropertiesOfKeyVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfKeyVersionsResponse]{
 		More: func(page ListPropertiesOfKeyVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0

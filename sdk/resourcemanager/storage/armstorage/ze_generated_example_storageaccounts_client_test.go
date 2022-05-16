@@ -26,14 +26,14 @@ func ExampleAccountsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armstorage.AccountCheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("sto3363"),
+			Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 		},
 		nil)
 	if err != nil {
@@ -50,16 +50,16 @@ func ExampleAccountsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res9101",
+		"sto4445",
 		armstorage.AccountCreateParameters{
 			Kind:     to.Ptr(armstorage.KindBlockBlobStorage),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armstorage.AccountPropertiesCreateParameters{
 				IsHnsEnabled: to.Ptr(true),
 				EnableNfsV3:  to.Ptr(true),
@@ -69,7 +69,7 @@ func ExampleAccountsClient_BeginCreate() {
 					IPRules:       []*armstorage.IPRule{},
 					VirtualNetworkRules: []*armstorage.VirtualNetworkRule{
 						{
-							VirtualNetworkResourceID: to.Ptr("<virtual-network-resource-id>"),
+							VirtualNetworkResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res9101/providers/Microsoft.Network/virtualNetworks/net123/subnets/subnet12"),
 						}},
 				},
 				EnableHTTPSTrafficOnly: to.Ptr(false),
@@ -78,11 +78,11 @@ func ExampleAccountsClient_BeginCreate() {
 				Name: to.Ptr(armstorage.SKUNamePremiumLRS),
 			},
 		},
-		&armstorage.AccountsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -97,13 +97,13 @@ func ExampleAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res4228",
+		"sto2434",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -117,13 +117,13 @@ func ExampleAccountsClient_GetProperties() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetProperties(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res9407",
+		"sto8596",
 		&armstorage.AccountsClientGetPropertiesOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -139,25 +139,25 @@ func ExampleAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res9407",
+		"sto8596",
 		armstorage.AccountUpdateParameters{
 			Properties: &armstorage.AccountPropertiesUpdateParameters{
 				AzureFilesIdentityBasedAuthentication: &armstorage.AzureFilesIdentityBasedAuthentication{
 					ActiveDirectoryProperties: &armstorage.ActiveDirectoryProperties{
 						AccountType:       to.Ptr(armstorage.ActiveDirectoryPropertiesAccountTypeUser),
-						AzureStorageSid:   to.Ptr("<azure-storage-sid>"),
-						DomainGUID:        to.Ptr("<domain-guid>"),
-						DomainName:        to.Ptr("<domain-name>"),
-						DomainSid:         to.Ptr("<domain-sid>"),
-						ForestName:        to.Ptr("<forest-name>"),
-						NetBiosDomainName: to.Ptr("<net-bios-domain-name>"),
-						SamAccountName:    to.Ptr("<sam-account-name>"),
+						AzureStorageSid:   to.Ptr("S-1-5-21-2400535526-2334094090-2402026252-0012"),
+						DomainGUID:        to.Ptr("aebfc118-9fa9-4732-a21f-d98e41a77ae1"),
+						DomainName:        to.Ptr("adtest.com"),
+						DomainSid:         to.Ptr("S-1-5-21-2400535526-2334094090-2402026252"),
+						ForestName:        to.Ptr("adtest.com"),
+						NetBiosDomainName: to.Ptr("adtest.com"),
+						SamAccountName:    to.Ptr("sam12498"),
 					},
 					DirectoryServiceOptions: to.Ptr(armstorage.DirectoryServiceOptionsAD),
 				},
@@ -178,7 +178,7 @@ func ExampleAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -187,7 +187,6 @@ func ExampleAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -203,17 +202,16 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("res6117",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -229,13 +227,13 @@ func ExampleAccountsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res418",
+		"sto2220",
 		&armstorage.AccountsClientListKeysOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -251,15 +249,15 @@ func ExampleAccountsClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKey(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res4167",
+		"sto3539",
 		armstorage.AccountRegenerateKeyParameters{
-			KeyName: to.Ptr("<key-name>"),
+			KeyName: to.Ptr("kerb1"),
 		},
 		nil)
 	if err != nil {
@@ -276,15 +274,15 @@ func ExampleAccountsClient_ListAccountSAS() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListAccountSAS(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res7985",
+		"sto8588",
 		armstorage.AccountSasParameters{
-			KeyToSign:              to.Ptr("<key-to-sign>"),
+			KeyToSign:              to.Ptr("key1"),
 			SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:42:03.1567373Z"); return t }()),
 			Permissions:            to.Ptr(armstorage.PermissionsR),
 			Protocols:              to.Ptr(armstorage.HTTPProtocolHTTPSHTTP),
@@ -307,15 +305,15 @@ func ExampleAccountsClient_ListServiceSAS() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListServiceSAS(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res7439",
+		"sto1299",
 		armstorage.ServiceSasParameters{
-			CanonicalizedResource:  to.Ptr("<canonicalized-resource>"),
+			CanonicalizedResource:  to.Ptr("/blob/sto1299/music"),
 			SharedAccessExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-24T11:32:48.8457197Z"); return t }()),
 			Permissions:            to.Ptr(armstorage.PermissionsL),
 			Resource:               to.Ptr(armstorage.SignedResourceC),
@@ -335,18 +333,18 @@ func ExampleAccountsClient_BeginFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFailover(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		&armstorage.AccountsClientBeginFailoverOptions{ResumeToken: ""})
+		"res4228",
+		"sto2434",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -359,19 +357,19 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginHierarchicalNamespaceMigration(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<request-type>",
-		&armstorage.AccountsClientBeginHierarchicalNamespaceMigrationOptions{ResumeToken: ""})
+		"res4228",
+		"sto2434",
+		"HnsOnValidationRequest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -384,18 +382,18 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAbortHierarchicalNamespaceMigration(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		&armstorage.AccountsClientBeginAbortHierarchicalNamespaceMigrationOptions{ResumeToken: ""})
+		"res4228",
+		"sto2434",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -408,30 +406,30 @@ func ExampleAccountsClient_BeginRestoreBlobRanges() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestoreBlobRanges(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res9101",
+		"sto4445",
 		armstorage.BlobRestoreParameters{
 			BlobRanges: []*armstorage.BlobRestoreRange{
 				{
-					EndRange:   to.Ptr("<end-range>"),
-					StartRange: to.Ptr("<start-range>"),
+					EndRange:   to.Ptr("container/blobpath2"),
+					StartRange: to.Ptr("container/blobpath1"),
 				},
 				{
-					EndRange:   to.Ptr("<end-range>"),
-					StartRange: to.Ptr("<start-range>"),
+					EndRange:   to.Ptr(""),
+					StartRange: to.Ptr("container2/blobpath3"),
 				}},
 			TimeToRestore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-20T15:30:00.0000000Z"); return t }()),
 		},
-		&armstorage.AccountsClientBeginRestoreBlobRangesOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -446,13 +444,13 @@ func ExampleAccountsClient_RevokeUserDelegationKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewAccountsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RevokeUserDelegationKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"res4167",
+		"sto3539",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

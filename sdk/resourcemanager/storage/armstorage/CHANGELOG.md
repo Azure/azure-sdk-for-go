@@ -1,5 +1,43 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*BlobContainersClient.BeginObjectLevelWorm` return value(s) have been changed from `(*armruntime.Poller[BlobContainersClientObjectLevelWormResponse], error)` to `(*runtime.Poller[BlobContainersClientObjectLevelWormResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `*AccountsClient.BeginRestoreBlobRanges` return value(s) have been changed from `(*armruntime.Poller[AccountsClientRestoreBlobRangesResponse], error)` to `(*runtime.Poller[AccountsClientRestoreBlobRangesResponse], error)`
+- Function `*AccountsClient.BeginHierarchicalNamespaceMigration` return value(s) have been changed from `(*armruntime.Poller[AccountsClientHierarchicalNamespaceMigrationResponse], error)` to `(*runtime.Poller[AccountsClientHierarchicalNamespaceMigrationResponse], error)`
+- Function `*AccountsClient.BeginFailover` return value(s) have been changed from `(*armruntime.Poller[AccountsClientFailoverResponse], error)` to `(*runtime.Poller[AccountsClientFailoverResponse], error)`
+- Function `*AccountsClient.BeginAbortHierarchicalNamespaceMigration` return value(s) have been changed from `(*armruntime.Poller[AccountsClientAbortHierarchicalNamespaceMigrationResponse], error)` to `(*runtime.Poller[AccountsClientAbortHierarchicalNamespaceMigrationResponse], error)`
+- Function `DeletedAccountListResult.MarshalJSON` has been removed
+- Function `FileServiceItems.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `BlobServiceItems.MarshalJSON` has been removed
+- Function `SKUListResult.MarshalJSON` has been removed
+- Function `ListTableResource.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `AccountKey.MarshalJSON` has been removed
+- Function `ListQueueServices.MarshalJSON` has been removed
+- Function `ListContainerItems.MarshalJSON` has been removed
+- Function `SKUInformation.MarshalJSON` has been removed
+- Function `LocalUsers.MarshalJSON` has been removed
+- Function `ListTableServices.MarshalJSON` has been removed
+- Function `ObjectReplicationPolicies.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ListBlobInventoryPolicy.MarshalJSON` has been removed
+- Function `Restriction.MarshalJSON` has been removed
+- Function `FileShareItems.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `UsageListResult.MarshalJSON` has been removed
+- Function `EncryptionScopeListResult.MarshalJSON` has been removed
+- Function `ListQueueResource.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `LocalUserKeys.MarshalJSON` has been removed
+- Function `AccountListKeysResult.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

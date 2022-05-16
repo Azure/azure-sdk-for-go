@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
@@ -26,12 +24,12 @@ func ExampleBlobContainersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("res9290",
+		"sto1590",
 		&armstorage.BlobContainersClientListOptions{Maxpagesize: nil,
 			Filter:  nil,
 			Include: nil,
@@ -40,7 +38,6 @@ func ExampleBlobContainersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,17 +53,17 @@ func ExampleBlobContainersClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res3376",
+		"sto328",
+		"container6185",
 		armstorage.BlobContainer{
 			ContainerProperties: &armstorage.ContainerProperties{
-				DefaultEncryptionScope:      to.Ptr("<default-encryption-scope>"),
+				DefaultEncryptionScope:      to.Ptr("encryptionscope185"),
 				DenyEncryptionScopeOverride: to.Ptr(true),
 			},
 		},
@@ -85,14 +82,14 @@ func ExampleBlobContainersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res3376",
+		"sto328",
+		"container6185",
 		armstorage.BlobContainer{
 			ContainerProperties: &armstorage.ContainerProperties{
 				Metadata: map[string]*string{
@@ -116,14 +113,14 @@ func ExampleBlobContainersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res9871",
+		"sto6217",
+		"container1634",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -139,14 +136,14 @@ func ExampleBlobContainersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res4079",
+		"sto4506",
+		"container9689",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -160,14 +157,14 @@ func ExampleBlobContainersClient_SetLegalHold() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.SetLegalHold(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res4303",
+		"sto7280",
+		"container8723",
 		armstorage.LegalHold{
 			Tags: []*string{
 				to.Ptr("tag1"),
@@ -189,14 +186,14 @@ func ExampleBlobContainersClient_ClearLegalHold() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ClearLegalHold(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res4303",
+		"sto7280",
+		"container8723",
 		armstorage.LegalHold{
 			Tags: []*string{
 				to.Ptr("tag1"),
@@ -218,14 +215,14 @@ func ExampleBlobContainersClient_CreateOrUpdateImmutabilityPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateImmutabilityPolicy(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res1782",
+		"sto7069",
+		"container6397",
 		&armstorage.BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions{IfMatch: nil,
 			Parameters: &armstorage.ImmutabilityPolicy{
 				Properties: &armstorage.ImmutabilityPolicyProperty{
@@ -248,14 +245,14 @@ func ExampleBlobContainersClient_GetImmutabilityPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetImmutabilityPolicy(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res5221",
+		"sto9177",
+		"container3489",
 		&armstorage.BlobContainersClientGetImmutabilityPolicyOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -271,15 +268,15 @@ func ExampleBlobContainersClient_DeleteImmutabilityPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteImmutabilityPolicy(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
-		"<if-match>",
+		"res1581",
+		"sto9621",
+		"container4910",
+		"\"8d59f81a7fa7be0\"",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -295,15 +292,15 @@ func ExampleBlobContainersClient_LockImmutabilityPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.LockImmutabilityPolicy(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
-		"<if-match>",
+		"res2702",
+		"sto5009",
+		"container1631",
+		"\"8d59f825b721dd3\"",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -319,15 +316,15 @@ func ExampleBlobContainersClient_ExtendImmutabilityPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExtendImmutabilityPolicy(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
-		"<if-match>",
+		"res6238",
+		"sto232",
+		"container5023",
+		"\"8d59f830d0c3bf9\"",
 		&armstorage.BlobContainersClientExtendImmutabilityPolicyOptions{Parameters: &armstorage.ImmutabilityPolicy{
 			Properties: &armstorage.ImmutabilityPolicyProperty{
 				ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](100),
@@ -348,14 +345,14 @@ func ExampleBlobContainersClient_Lease() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Lease(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
+		"res3376",
+		"sto328",
+		"container6185",
 		&armstorage.BlobContainersClientLeaseOptions{Parameters: &armstorage.LeaseContainerRequest{
 			Action:        to.Ptr(armstorage.LeaseContainerRequestActionAcquire),
 			LeaseDuration: to.Ptr[int32](-1),
@@ -375,19 +372,19 @@ func ExampleBlobContainersClient_BeginObjectLevelWorm() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewBlobContainersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewBlobContainersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginObjectLevelWorm(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<container-name>",
-		&armstorage.BlobContainersClientBeginObjectLevelWormOptions{ResumeToken: ""})
+		"res1782",
+		"sto7069",
+		"container6397",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

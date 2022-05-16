@@ -20,16 +20,16 @@ type recordingPolicy struct {
 	t       *testing.T
 }
 
-// Get the host of the test proxy.
-func (r recordingPolicy) Host() string {
+// Host of the test proxy.
+func (r *recordingPolicy) Host() string {
 	if r.options.UseHTTPS {
 		return "localhost:5001"
 	}
 	return "localhost:5000"
 }
 
-// Get the scheme of the test proxy.
-func (r recordingPolicy) Scheme() string {
+// Scheme of the test proxy.
+func (r *recordingPolicy) Scheme() string {
 	if r.options.UseHTTPS {
 		return "https"
 	}
@@ -46,21 +46,22 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 	return p
 }
 
-// When doing live request, the policy will do nothing.
+// Do with recording mode.
+// When handling live request, the policy will do nothing.
 // Otherwise, the policy will replace the URL of the request with the test proxy endpoint.
 // After request, the policy will change back to the original URL for the request to prevent wrong polling URL for LRO.
-func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(p.t) {
+func (r *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+	if recording.GetRecordMode() != "live" && !recording.IsLiveOnly(r.t) {
 		oriSchema := req.Raw().URL.Scheme
 		oriHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = p.Scheme()
-		req.Raw().URL.Host = p.Host()
-		req.Raw().Host = p.Host()
+		req.Raw().URL.Scheme = r.Scheme()
+		req.Raw().URL.Host = r.Host()
+		req.Raw().Host = r.Host()
 
 		// replace request target to use test proxy
 		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", oriSchema, oriHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(r.t))
 
 		resp, err = req.Next()
 		// for any lro operation, need to change back to the original target to prevent

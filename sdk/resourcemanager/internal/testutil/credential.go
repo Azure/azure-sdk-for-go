@@ -18,11 +18,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-type fakeCredential struct {
+// FakeCredential is an empty credential for testing.
+type FakeCredential struct {
 }
 
-func (c *fakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{Token: "FakeToken", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
+// GetToken provide a fake access token.
+func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: "FakeToken", ExpiresOn: time.Now().Add(time.Hour * 24).UTC()}, nil
 }
 
 // GetCredAndClientOptions will create a credential and a client options for test application.
@@ -51,7 +53,7 @@ func GetCredAndClientOptions(t *testing.T) (azcore.TokenCredential, *arm.ClientO
 			t.Fatalf("Failed to create credential: %v", err)
 		}
 	} else {
-		cred = &fakeCredential{}
+		cred = &FakeCredential{}
 	}
 
 	return cred, options

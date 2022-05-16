@@ -22,13 +22,13 @@ import (
 var ctx = context.Background()
 
 var (
-	basicHeaders = FileHTTPHeaders{
-		FileContentType:        to.Ptr("my_type"),
-		FileContentDisposition: to.Ptr("my_disposition"),
-		FileCacheControl:       to.Ptr("control"),
-		FileContentMD5:         nil,
-		FileContentLanguage:    to.Ptr("my_language"),
-		FileContentEncoding:    to.Ptr("my_encoding"),
+	basicHeaders = ShareFileHTTPHeaders{
+		ContentType:        to.Ptr("my_type"),
+		ContentDisposition: to.Ptr("my_disposition"),
+		CacheControl:       to.Ptr("control"),
+		ContentMD5:         nil,
+		ContentLanguage:    to.Ptr("my_language"),
+		ContentEncoding:    to.Ptr("my_encoding"),
 	}
 
 	basicMetadata = map[string]string{"foo": "bar"}
@@ -143,7 +143,7 @@ func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-func validateStorageError(_require *require.Assertions, err error, code StorageErrorCode) {
+func validateStorageError(_require *require.Assertions, err error, code ShareErrorCode) {
 	_require.NotNil(err)
 	var storageError *StorageError
 	_require.Equal(errors.As(err, &storageError), true)

@@ -37,6 +37,7 @@ func newDirectoryClient(endpoint string, pl runtime.Pipeline) *directoryClient {
 
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
@@ -71,26 +72,26 @@ func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttr
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header.Set("x-ms-meta-"+k, v)
+			req.Raw().Header["x-ms-meta-"+k] = []string{v}
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.FilePermission != nil {
-		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
+		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
 	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header.Set("x-ms-file-permission-key", *options.FilePermissionKey)
+		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
 func (client *directoryClient) createHandleResponse(resp *http.Response) (directoryClientCreateResponse, error) {
-	result := directoryClientCreateResponse{RawResponse: resp}
+	result := directoryClientCreateResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -128,25 +129,13 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientCreateResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientCreateResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientCreateResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -159,6 +148,7 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (direct
 
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - directoryClientDeleteOptions contains the optional parameters for the directoryClient.Delete method.
 func (client *directoryClient) Delete(ctx context.Context, options *directoryClientDeleteOptions) (directoryClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
@@ -187,14 +177,14 @@ func (client *directoryClient) deleteCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // deleteHandleResponse handles the Delete response.
 func (client *directoryClient) deleteHandleResponse(resp *http.Response) (directoryClientDeleteResponse, error) {
-	result := directoryClientDeleteResponse{RawResponse: resp}
+	result := directoryClientDeleteResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -213,6 +203,7 @@ func (client *directoryClient) deleteHandleResponse(resp *http.Response) (direct
 
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 // all handles.
 // options - directoryClientForceCloseHandlesOptions contains the optional parameters for the directoryClient.ForceCloseHandles
@@ -250,18 +241,18 @@ func (client *directoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-handle-id", handleID)
+	req.Raw().Header["x-ms-handle-id"] = []string{handleID}
 	if options != nil && options.Recursive != nil {
-		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
+		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // forceCloseHandlesHandleResponse handles the ForceCloseHandles response.
 func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Response) (directoryClientForceCloseHandlesResponse, error) {
-	result := directoryClientForceCloseHandlesResponse{RawResponse: resp}
+	result := directoryClientForceCloseHandlesResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -301,6 +292,7 @@ func (client *directoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // of a directory. The data returned does not include the files in the directory or any
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - directoryClientGetPropertiesOptions contains the optional parameters for the directoryClient.GetProperties method.
 func (client *directoryClient) GetProperties(ctx context.Context, options *directoryClientGetPropertiesOptions) (directoryClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
@@ -332,14 +324,14 @@ func (client *directoryClient) getPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) (directoryClientGetPropertiesResponse, error) {
-	result := directoryClientGetPropertiesResponse{RawResponse: resp}
+	result := directoryClientGetPropertiesResponse{}
 	for hh := range resp.Header {
 		if len(hh) > len("x-ms-meta-") && strings.EqualFold(hh[:len("x-ms-meta-")], "x-ms-meta-") {
 			if result.Metadata == nil {
@@ -382,25 +374,13 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientGetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientGetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientGetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -414,21 +394,38 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListFilesAndDirectoriesSegment - Returns a list of files or directories under the specified share or directory. It lists
-// the contents only for a single level of the directory hierarchy.
+// NewListFilesAndDirectoriesSegmentPager - Returns a list of files or directories under the specified share or directory.
+// It lists the contents only for a single level of the directory hierarchy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - directoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the directoryClient.ListFilesAndDirectoriesSegment
 // method.
-func (client *directoryClient) ListFilesAndDirectoriesSegment(options *directoryClientListFilesAndDirectoriesSegmentOptions) *directoryClientListFilesAndDirectoriesSegmentPager {
-	return &directoryClientListFilesAndDirectoriesSegmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
+func (client *directoryClient) NewListFilesAndDirectoriesSegmentPager(options *directoryClientListFilesAndDirectoriesSegmentOptions) *runtime.Pager[directoryClientListFilesAndDirectoriesSegmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[directoryClientListFilesAndDirectoriesSegmentResponse]{
+		More: func(page directoryClientListFilesAndDirectoriesSegmentResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
-		advancer: func(ctx context.Context, resp directoryClientListFilesAndDirectoriesSegmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListFilesAndDirectoriesSegmentResponse.NextMarker)
+		Fetcher: func(ctx context.Context, page *directoryClientListFilesAndDirectoriesSegmentResponse) (directoryClientListFilesAndDirectoriesSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listFilesAndDirectoriesSegmentCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
+			}
+			if err != nil {
+				return directoryClientListFilesAndDirectoriesSegmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return directoryClientListFilesAndDirectoriesSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return directoryClientListFilesAndDirectoriesSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listFilesAndDirectoriesSegmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listFilesAndDirectoriesSegmentCreateRequest creates the ListFilesAndDirectoriesSegment request.
@@ -459,17 +456,17 @@ func (client *directoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.IncludeExtendedInfo != nil {
-		req.Raw().Header.Set("x-ms-file-extended-info", strconv.FormatBool(*options.IncludeExtendedInfo))
+		req.Raw().Header["x-ms-file-extended-info"] = []string{strconv.FormatBool(*options.IncludeExtendedInfo)}
 	}
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // listFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
 func (client *directoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (directoryClientListFilesAndDirectoriesSegmentResponse, error) {
-	result := directoryClientListFilesAndDirectoriesSegmentResponse{RawResponse: resp}
+	result := directoryClientListFilesAndDirectoriesSegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -494,6 +491,7 @@ func (client *directoryClient) listFilesAndDirectoriesSegmentHandleResponse(resp
 
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - directoryClientListHandlesOptions contains the optional parameters for the directoryClient.ListHandles method.
 func (client *directoryClient) ListHandles(ctx context.Context, options *directoryClientListHandlesOptions) (directoryClientListHandlesResponse, error) {
 	req, err := client.listHandlesCreateRequest(ctx, options)
@@ -532,16 +530,16 @@ func (client *directoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Recursive != nil {
-		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
+		req.Raw().Header["x-ms-recursive"] = []string{strconv.FormatBool(*options.Recursive)}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // listHandlesHandleResponse handles the ListHandles response.
 func (client *directoryClient) listHandlesHandleResponse(resp *http.Response) (directoryClientListHandlesResponse, error) {
-	result := directoryClientListHandlesResponse{RawResponse: resp}
+	result := directoryClientListHandlesResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -566,6 +564,7 @@ func (client *directoryClient) listHandlesHandleResponse(resp *http.Response) (d
 
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - directoryClientSetMetadataOptions contains the optional parameters for the directoryClient.SetMetadata method.
 func (client *directoryClient) SetMetadata(ctx context.Context, options *directoryClientSetMetadataOptions) (directoryClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options)
@@ -597,17 +596,17 @@ func (client *directoryClient) setMetadataCreateRequest(ctx context.Context, opt
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Metadata != nil {
 		for k, v := range options.Metadata {
-			req.Raw().Header.Set("x-ms-meta-"+k, v)
+			req.Raw().Header["x-ms-meta-"+k] = []string{v}
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // setMetadataHandleResponse handles the SetMetadata response.
 func (client *directoryClient) setMetadataHandleResponse(resp *http.Response) (directoryClientSetMetadataResponse, error) {
-	result := directoryClientSetMetadataResponse{RawResponse: resp}
+	result := directoryClientSetMetadataResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -636,6 +635,7 @@ func (client *directoryClient) setMetadataHandleResponse(resp *http.Response) (d
 
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // fileAttributes - If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’
 // for directory. ‘None’ can also be specified as default.
 // fileCreationTime - Creation time for the file/directory. Default value: Now.
@@ -669,23 +669,23 @@ func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
 	if options != nil && options.FilePermission != nil {
-		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
+		req.Raw().Header["x-ms-file-permission"] = []string{*options.FilePermission}
 	}
 	if options != nil && options.FilePermissionKey != nil {
-		req.Raw().Header.Set("x-ms-file-permission-key", *options.FilePermissionKey)
+		req.Raw().Header["x-ms-file-permission-key"] = []string{*options.FilePermissionKey}
 	}
-	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-file-attributes"] = []string{fileAttributes}
+	req.Raw().Header["x-ms-file-creation-time"] = []string{fileCreationTime}
+	req.Raw().Header["x-ms-file-last-write-time"] = []string{fileLastWriteTime}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) (directoryClientSetPropertiesResponse, error) {
-	result := directoryClientSetPropertiesResponse{RawResponse: resp}
+	result := directoryClientSetPropertiesResponse{}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -723,25 +723,13 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientSetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientSetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return directoryClientSetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val

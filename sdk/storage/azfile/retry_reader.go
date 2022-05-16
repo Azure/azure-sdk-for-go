@@ -10,13 +10,12 @@ import (
 	"context"
 	"io"
 	"net"
-	"net/http"
 	"strings"
 	"sync"
 )
 
 // HTTPGetter is a function type that refers to a method that performs an HTTP GET operation.
-type HTTPGetter func(ctx context.Context, i HTTPGetterInfo) (*http.Response, error)
+type HTTPGetter func(ctx context.Context, i HTTPGetterInfo) (io.ReadCloser, error)
 
 // HTTPGetterInfo is passed to an HTTPGetter function passing it parameters
 // that should be used to make an HTTP GET request.
@@ -50,8 +49,8 @@ type RetryReaderOptions struct {
 	// NotifyFailedRead is called, if non-nil, after any failure to read. Expected usage is diagnostic logging.
 	NotifyFailedRead FailedReadNotifier
 
-	// TreatEarlyCloseAsError can be set to true to prevent retries after "read on closed response body". By default,
-	// retryReader has the following special behaviour: closing the response body before it is all read is treated as a
+	// TreatEarlyCloseAsError can be set to true to prevent retries after "read on closed responseBody body". By default,
+	// retryReader has the following special behaviour: closing the responseBody body before it is all read is treated as a
 	// retryable error. This is to allow callers to force a retry by closing the body from another goroutine (e.g. if the =
 	// read is too slow, caller may want to force a retry in the hope that the retry will be quicker).  If
 	// TreatEarlyCloseAsError is true, then retryReader's special behaviour is suppressed, and "read on closed body" is instead
@@ -63,10 +62,10 @@ type RetryReaderOptions struct {
 }
 
 // retryReader implements io.ReaderCloser methods.
-// retryReader tries to read from response, and if there is retriable network error
+// retryReader tries to read from responseBody, and if there is retriable network error
 // returned during reading, it will retry according to retry reader option through executing
-// user defined action with provided data to get a new response, and continue the overall reading process
-// through reading from the new response.
+// user defined action with provided data to get a new responseBody, and continue the overall reading process
+// through reading from the new responseBody.
 type retryReader struct {
 	ctx             context.Context
 	info            HTTPGetterInfo
@@ -74,13 +73,13 @@ type retryReader struct {
 	o               RetryReaderOptions
 	getter          HTTPGetter
 
-	// we support Close-ing during Reads (from other goroutines), so we protect the shared state, which is response
-	responseMu *sync.Mutex
-	response   *http.Response
+	// we support Close-ing during Reads (from other goroutines), so we protect the shared state, which is responseBody
+	responseMu   *sync.Mutex
+	responseBody io.ReadCloser
 }
 
 // NewRetryReader creates a retry reader.
-func NewRetryReader(ctx context.Context, initialResponse *http.Response,
+func NewRetryReader(ctx context.Context, responseBody io.ReadCloser,
 	info HTTPGetterInfo, o RetryReaderOptions, getter HTTPGetter) io.ReadCloser {
 	if getter == nil {
 		panic("getter must not be nil")
@@ -96,15 +95,15 @@ func NewRetryReader(ctx context.Context, initialResponse *http.Response,
 		getter:          getter,
 		info:            info,
 		countWasBounded: info.Count != CountToEnd,
-		response:        initialResponse,
+		responseBody:    responseBody,
 		responseMu:      &sync.Mutex{},
 		o:               o}
 }
 
-func (s *retryReader) setResponse(r *http.Response) {
+func (s *retryReader) setResponse(responseBody io.ReadCloser) {
 	s.responseMu.Lock()
 	defer s.responseMu.Unlock()
-	s.response = r
+	s.responseBody = responseBody
 }
 
 func (s *retryReader) Read(p []byte) (n int, err error) {
@@ -116,18 +115,18 @@ func (s *retryReader) Read(p []byte) (n int, err error) {
 		}
 
 		s.responseMu.Lock()
-		resp := s.response
+		responseBody := s.responseBody
 		s.responseMu.Unlock()
-		if resp == nil { // We don't have a response stream to read from, try to get one.
-			newResponse, err := s.getter(s.ctx, s.info)
+		if responseBody == nil { // We don't have a responseBody stream to read from, try to get one.
+			newResponseBody, err := s.getter(s.ctx, s.info)
 			if err != nil {
 				return 0, err
 			}
 			// Successful GET; this is the network stream we'll read from.
-			s.setResponse(newResponse)
-			resp = newResponse
+			s.setResponse(newResponseBody)
+			responseBody = newResponseBody
 		}
-		n, err := resp.Body.Read(p) // Read from the stream (this will return non-nil err if forceRetry is called, from another goroutine, while it is running)
+		n, err := responseBody.Read(p) // Read from the stream (this will return non-nil err if forceRetry is called, from another goroutine, while it is running)
 
 		// Injection mechanism for testing.
 		if s.o.doInjectError && try == s.o.doInjectErrorRound {
@@ -185,13 +184,13 @@ func (s *retryReader) wasRetryableEarlyClose(err error) bool {
 	return strings.HasSuffix(err.Error(), ReadOnClosedBodyMessage)
 }
 
-const ReadOnClosedBodyMessage = "read on closed response body"
+const ReadOnClosedBodyMessage = "read on closed responseBody body"
 
 func (s *retryReader) Close() error {
 	s.responseMu.Lock()
 	defer s.responseMu.Unlock()
-	if s.response != nil && s.response.Body != nil {
-		return s.response.Body.Close()
+	if s.responseBody != nil {
+		return s.responseBody.Close()
 	}
 	return nil
 }

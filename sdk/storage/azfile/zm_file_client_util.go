@@ -11,7 +11,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -51,7 +50,7 @@ func (p *FilePermissions) format(defaultFilePermissionStr *string) (filePermissi
 //----------------------------------------------------------------------------------------------------------------------
 
 // SMBProperties defines a struct that takes in optional parameters regarding SMB/NTFS properties.
-// When you pass this into another function (Either literally or via FileHTTPHeaders), the response will probably fit inside SMBPropertyAdapter.
+// When you pass this into another function (Either literally or via ShareFileHTTPHeaders), the responseBody will probably fit inside SMBPropertyAdapter.
 // Nil values of the properties are inferred to be preserved (or when creating, use defaults). Clearing a value can be done by supplying an empty item instead of nil.
 type SMBProperties struct {
 	FileAttributes *FileAttributeFlags
@@ -98,7 +97,7 @@ type FileCreateOptions struct {
 
 	Metadata map[string]string
 
-	FileHTTPHeaders *FileHTTPHeaders
+	ShareFileHTTPHeaders *ShareFileHTTPHeaders
 
 	FilePermissions *FilePermissions
 
@@ -108,7 +107,7 @@ type FileCreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *FileCreateOptions) format() (fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *fileClientCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileCreateOptions) format() (fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, createOptions *fileClientCreateOptions, fileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, err error) {
 	if o == nil {
 		return int64(0), DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString,
 			&fileClientCreateOptions{FilePermission: to.Ptr(DefaultFilePermissionString)}, nil, nil, nil
@@ -132,7 +131,7 @@ func (o *FileCreateOptions) format() (fileContentLength int64, fileAttributes st
 		Metadata:          o.Metadata,
 	}
 
-	fileHTTPHeaders = o.FileHTTPHeaders
+	fileHTTPHeaders = o.ShareFileHTTPHeaders
 	leaseAccessConditions = o.LeaseAccessConditions
 
 	return
@@ -250,20 +249,20 @@ func toFileDownloadResponse(ctx context.Context, f *FileClient, downloadResponse
 	}
 }
 
-// Body constructs a stream to read data from with a resilient reader option.
+// FileBody constructs a stream to read data from with a resilient reader option.
 // A zero-value option means to get a raw stream.
-func (dr *FileDownloadResponse) Body(o RetryReaderOptions) io.ReadCloser {
+func (dr *FileDownloadResponse) FileBody(o RetryReaderOptions) io.ReadCloser {
 	if o.MaxRetryRequests == 0 {
-		return dr.RawResponse.Body
+		return dr.Body
 	}
 
-	return NewRetryReader(dr.ctx, dr.RawResponse, dr.info, o,
-		func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+	return NewRetryReader(dr.ctx, dr.Body, dr.info, o,
+		func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 			resp, err := dr.f.Download(ctx, info.Offset, info.Count, nil)
 			if err != nil {
 				return nil, err
 			}
-			return resp.RawResponse, err
+			return resp.Body, err
 		})
 }
 
@@ -329,13 +328,13 @@ type SetFileHTTPHeadersOptions struct {
 
 	SMBProperties *SMBProperties
 
-	FileHTTPHeaders *FileHTTPHeaders
+	ShareFileHTTPHeaders *ShareFileHTTPHeaders
 
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
 func (o *SetFileHTTPHeadersOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders,
+	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *ShareFileHTTPHeaders,
 	leaseAccessConditions *LeaseAccessConditions, err error) {
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
@@ -352,7 +351,7 @@ func (o *SetFileHTTPHeadersOptions) format() (fileAttributes string, fileCreatio
 
 	if o != nil {
 		setHTTPHeadersOptions.FileContentLength = o.FileContentLength
-		fileHTTPHeaders = o.FileHTTPHeaders
+		fileHTTPHeaders = o.ShareFileHTTPHeaders
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 	return
@@ -399,7 +398,7 @@ type FileResizeOptions struct {
 }
 
 func (o *FileResizeOptions) format(contentLength int64) (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
+	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) {
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
 

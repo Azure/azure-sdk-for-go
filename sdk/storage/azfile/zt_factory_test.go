@@ -165,16 +165,16 @@ func getShareClient(_require *require.Assertions, shareName string, s *ServiceCl
 func createNewShare(_require *require.Assertions, shareName string, serviceClient *ServiceClient) *ShareClient {
 	srClient := getShareClient(_require, shareName, serviceClient)
 
-	cResp, err := srClient.Create(ctx, nil)
+	_, err := srClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return srClient
 }
 
 func delShare(_require *require.Assertions, srClient *ShareClient, options *ShareDeleteOptions) {
-	deleteShareResp, err := srClient.Delete(context.Background(), options)
+	_, err := srClient.Delete(context.Background(), options)
 	_require.Nil(err)
-	_require.Equal(deleteShareResp.RawResponse.StatusCode, 202)
+	//_require.Equal(deleteShareResp.RawResponse.StatusCode, 202)
 }
 
 // 3. DirectoryClient -----------------------------------------------------------------------------------------------------
@@ -188,16 +188,16 @@ func getDirectoryClientFromShare(_require *require.Assertions, dirName string, s
 func createNewDirectoryFromShare(_require *require.Assertions, dirName string, srClient *ShareClient) *DirectoryClient {
 	dirClient := getDirectoryClientFromShare(_require, dirName, srClient)
 
-	cResp, err := dirClient.Create(ctx, nil)
+	_, err := dirClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return dirClient
 }
 
 func delDirectory(_require *require.Assertions, dirClient *DirectoryClient) {
-	resp, err := dirClient.Delete(context.Background(), nil)
+	_, err := dirClient.Delete(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	//_require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
 // 4. FileClient -------------------------------------------------------------------------------------------------------
@@ -224,11 +224,11 @@ func createNewFileFromShare(_require *require.Assertions, fileName string, fileS
 
 	fClient := getFileClientFromDirectory(_require, fileName, dirClient)
 
-	cResp, err := fClient.Create(ctx, &FileCreateOptions{
+	_, err = fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Ptr(fileSize),
 	})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return fClient
 }
@@ -237,14 +237,14 @@ func createNewFileFromShareWithPermissions(_require *require.Assertions, fileNam
 	fileSize int64, srClient *ShareClient) *FileClient {
 	fClient := getFileClientFromShare(_require, fileName, srClient)
 
-	cResp, err := fClient.Create(ctx, &FileCreateOptions{
+	_, err := fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Ptr(fileSize),
 		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
 	})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return fClient
 }
@@ -254,18 +254,18 @@ func createNewFileFromShareWithGivenData(_require *require.Assertions, fileName 
 	fileData string, srClient *ShareClient) *FileClient {
 	fClient := getFileClientFromShare(_require, fileName, srClient)
 
-	cResp, err := fClient.Create(ctx, &FileCreateOptions{
+	_, err := fClient.Create(ctx, &FileCreateOptions{
 		FileContentLength: to.Ptr(int64(len(fileData))),
 		FilePermissions: &FilePermissions{
 			PermissionStr: &sampleSDDL,
 		},
 	})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	putResp, err := fClient.UploadRange(ctx, 0, internal.NopCloser(strings.NewReader(fileDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
 	_require.NotEqual(putResp.ETag, "")
 	_require.NotEqual(putResp.RequestID, "")
@@ -276,9 +276,9 @@ func createNewFileFromShareWithGivenData(_require *require.Assertions, fileName 
 }
 
 func delFile(_require *require.Assertions, fileClient *FileClient) {
-	resp, err := fileClient.Delete(context.Background(), nil)
+	_, err := fileClient.Delete(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	//_require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
 // 5. Data Generators --------------------------------------------------------------------------------------------------

@@ -10,8 +10,8 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 	"net/url"
 	"strings"
 	"time"
@@ -109,26 +109,39 @@ func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetProperti
 // ListShares operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s *ServiceClient) ListShares(o *ServiceListSharesOptions) *ServiceListSharesPager {
+func (s *ServiceClient) ListShares(o *ServiceListSharesOptions) *runtime.Pager[ServiceListSharesResponse] {
 	listOptions := o.format()
-	pager := s.client.ListSharesSegment(listOptions)
+	return runtime.NewPager(runtime.PagingHandler[ServiceListSharesResponse]{
+		More: func(page ServiceListSharesResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ServiceListSharesResponse) (ServiceListSharesResponse, error) {
+			if page.ListSharesResponse.NextMarker == nil || len(*page.NextMarker) == 0 {
+				return ServiceListSharesResponse{}, handleError(errors.New("unexpected missing NextMarker"))
+			}
+			req, err := s.client.listSharesSegmentCreateRequest(ctx, listOptions)
+			if err != nil {
+				return ServiceListSharesResponse{}, handleError(err)
+			}
+			queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+			if err != nil {
+				return ServiceListSharesResponse{}, handleError(err)
+			}
+			queryValues.Set("marker", *page.ListSharesResponse.NextMarker)
+			req.Raw().URL.RawQuery = queryValues.Encode()
 
-	pager.advancer = func(ctx context.Context, response serviceClientListSharesSegmentResponse) (*policy.Request, error) {
-		if response.ListSharesResponse.NextMarker == nil {
-			return nil, handleError(errors.New("unexpected missing NextMarker"))
-		}
-		req, err := s.client.listSharesSegmentCreateRequest(ctx, listOptions)
-		if err != nil {
-			return nil, handleError(err)
-		}
-		queryValues, _ := url.ParseQuery(req.Raw().URL.RawQuery)
-		queryValues.Set("marker", *response.ListSharesResponse.NextMarker)
+			resp, err := s.client.pl.Do(req)
+			if err != nil {
+				return ServiceListSharesResponse{}, handleError(err)
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceListSharesResponse{}, handleError(runtime.NewResponseError(resp))
+			}
 
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
-
-	return toServiceListSharesPager(pager)
+			generatedResp, err := s.client.listSharesSegmentHandleResponse(resp)
+			return toServiceListSharesResponse(generatedResp), handleError(err)
+		},
+	})
 }
 
 // CanGetAccountSASToken checks if shared key in ServiceClient is nil

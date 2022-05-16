@@ -123,8 +123,8 @@ func (f *FileClient) AbortCopy(ctx context.Context, copyID string, options *File
 }
 
 // Download downloads Count bytes of data from the start Offset.
-// The response includes all the file’s properties. However, passing true for rangeGetContentMD5 returns the range’s MD5 in the ContentMD5
-// response header/property if the range is <= 4 MB;
+// The responseBody includes all the file’s properties. However, passing true for rangeGetContentMD5 returns the range’s MD5 in the ContentMD5
+// responseBody header/property if the range is <= 4 MB;
 // The HTTP request fails with 400 (Bad Request) if the requested range is greater than 4 MB.
 // Note: Both offset and count must be >=0.
 // If Count is CountToEnd (0), then data is read from specified Offset to the end.

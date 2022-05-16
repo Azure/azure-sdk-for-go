@@ -37,6 +37,7 @@ func newServiceClient(endpoint string, pl runtime.Pipeline) *serviceClient {
 // GetProperties - Gets the properties of a storage account's File service, including properties for Storage Analytics metrics
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - serviceClientGetPropertiesOptions contains the optional parameters for the serviceClient.GetProperties method.
 func (client *serviceClient) GetProperties(ctx context.Context, options *serviceClientGetPropertiesOptions) (serviceClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
@@ -66,41 +67,58 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *serviceClient) getPropertiesHandleResponse(resp *http.Response) (serviceClientGetPropertiesResponse, error) {
-	result := serviceClientGetPropertiesResponse{RawResponse: resp}
+	result := serviceClientGetPropertiesResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
-	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
+	if err := runtime.UnmarshalAsXML(resp, &result.ShareServiceProperties); err != nil {
 		return serviceClientGetPropertiesResponse{}, err
 	}
 	return result, nil
 }
 
-// ListSharesSegment - The List Shares Segment operation returns a list of the shares and share snapshots under the specified
-// account.
+// NewListSharesSegmentPager - The List Shares Segment operation returns a list of the shares and share snapshots under the
+// specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-02
 // options - serviceClientListSharesSegmentOptions contains the optional parameters for the serviceClient.ListSharesSegment
 // method.
-func (client *serviceClient) ListSharesSegment(options *serviceClientListSharesSegmentOptions) *serviceClientListSharesSegmentPager {
-	return &serviceClientListSharesSegmentPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listSharesSegmentCreateRequest(ctx, options)
+func (client *serviceClient) NewListSharesSegmentPager(options *serviceClientListSharesSegmentOptions) *runtime.Pager[serviceClientListSharesSegmentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[serviceClientListSharesSegmentResponse]{
+		More: func(page serviceClientListSharesSegmentResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
-		advancer: func(ctx context.Context, resp serviceClientListSharesSegmentResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListSharesResponse.NextMarker)
+		Fetcher: func(ctx context.Context, page *serviceClientListSharesSegmentResponse) (serviceClientListSharesSegmentResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSharesSegmentCreateRequest(ctx, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
+			}
+			if err != nil {
+				return serviceClientListSharesSegmentResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return serviceClientListSharesSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return serviceClientListSharesSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSharesSegmentHandleResponse(resp)
 		},
-	}
+	})
 }
 
 // listSharesSegmentCreateRequest creates the ListSharesSegment request.
@@ -127,14 +145,14 @@ func (client *serviceClient) listSharesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
 }
 
 // listSharesSegmentHandleResponse handles the ListSharesSegment response.
 func (client *serviceClient) listSharesSegmentHandleResponse(resp *http.Response) (serviceClientListSharesSegmentResponse, error) {
-	result := serviceClientListSharesSegmentResponse{RawResponse: resp}
+	result := serviceClientListSharesSegmentResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}
@@ -150,10 +168,11 @@ func (client *serviceClient) listSharesSegmentHandleResponse(resp *http.Response
 // SetProperties - Sets properties for a storage account's File service endpoint, including properties for Storage Analytics
 // metrics and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// storageServiceProperties - The StorageService properties.
+// Generated from API version 2020-10-02
+// shareServiceProperties - The StorageService properties.
 // options - serviceClientSetPropertiesOptions contains the optional parameters for the serviceClient.SetProperties method.
-func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) (serviceClientSetPropertiesResponse, error) {
-	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
+func (client *serviceClient) SetProperties(ctx context.Context, shareServiceProperties ShareServiceProperties, options *serviceClientSetPropertiesOptions) (serviceClientSetPropertiesResponse, error) {
+	req, err := client.setPropertiesCreateRequest(ctx, shareServiceProperties, options)
 	if err != nil {
 		return serviceClientSetPropertiesResponse{}, err
 	}
@@ -168,7 +187,7 @@ func (client *serviceClient) SetProperties(ctx context.Context, storageServicePr
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *serviceClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, shareServiceProperties ShareServiceProperties, options *serviceClientSetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -180,14 +199,14 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2020-10-02")
-	req.Raw().Header.Set("Accept", "application/xml")
-	return req, runtime.MarshalAsXML(req, storageServiceProperties)
+	req.Raw().Header["x-ms-version"] = []string{"2020-10-02"}
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	return req, runtime.MarshalAsXML(req, shareServiceProperties)
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *serviceClient) setPropertiesHandleResponse(resp *http.Response) (serviceClientSetPropertiesResponse, error) {
-	result := serviceClientSetPropertiesResponse{RawResponse: resp}
+	result := serviceClientSetPropertiesResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
 	}

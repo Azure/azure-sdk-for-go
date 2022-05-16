@@ -6,7 +6,9 @@
 
 package azfile
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+)
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -34,8 +36,8 @@ func toServiceGetPropertiesResponse(resp serviceClientGetPropertiesResponse) Ser
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// MetricProperties defines convenience struct for Metrics,
-type MetricProperties struct {
+// ShareMetricProperties defines convenience struct for Metrics,
+type ShareMetricProperties struct {
 	// Enabled - Indicates whether metrics are enabled for the File service.
 	Enabled *bool
 
@@ -52,32 +54,31 @@ type MetricProperties struct {
 
 type ServiceSetPropertiesOptions struct {
 	// The set of CORS rules.
-	Cors []*CorsRule
+	Cors []*ShareCorsRule
 
 	// A summary of request statistics grouped by API in hourly aggregates for files.
-	HourMetrics *MetricProperties
+	HourMetrics *ShareMetricProperties
 
 	// A summary of request statistics grouped by API in minute aggregates for files.
-	MinuteMetrics *MetricProperties
+	MinuteMetrics *ShareMetricProperties
 
 	// Protocol settings
 	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
 }
 
-func (mp *MetricProperties) toMetrics() *Metrics {
+func (mp *ShareMetricProperties) toMetrics() *ShareMetrics {
 	if mp == nil {
 		return nil
 	}
 
-	metrics := Metrics{
+	metrics := ShareMetrics{
 		Version: to.Ptr(StorageAnalyticsVersion),
-		//RetentionPolicy: &RetentionPolicy{},
 	}
 
 	if mp.Enabled != nil && *mp.Enabled {
 		metrics.Enabled = mp.Enabled
-		metrics.IncludeAPIs = mp.IncludeAPIs
-		metrics.RetentionPolicy = &RetentionPolicy{
+		metrics.IncludeApis = mp.IncludeAPIs
+		metrics.RetentionPolicy = &ShareRetentionPolicy{
 			Enabled: mp.RetentionPolicyEnabled,
 			Days:    mp.RetentionDays,
 		}
@@ -86,12 +87,12 @@ func (mp *MetricProperties) toMetrics() *Metrics {
 	return &metrics
 }
 
-func (o *ServiceSetPropertiesOptions) format() (StorageServiceProperties, *serviceClientSetPropertiesOptions) {
+func (o *ServiceSetPropertiesOptions) format() (ShareServiceProperties, *serviceClientSetPropertiesOptions) {
 	if o == nil {
-		return StorageServiceProperties{}, nil
+		return ShareServiceProperties{}, nil
 	}
 
-	return StorageServiceProperties{
+	return ShareServiceProperties{
 		Cors:          o.Cors,
 		HourMetrics:   o.HourMetrics.toMetrics(),
 		MinuteMetrics: o.MinuteMetrics.toMetrics(),
@@ -110,10 +111,10 @@ func toServiceSetPropertiesResponse(resp serviceClientSetPropertiesResponse) Ser
 // ---------------------------------------------------------------------------------------------------------------------
 
 type ServiceListSharesOptions struct {
-	// Include this parameter to specify one or more datasets to include in the response.
+	// Include this parameter to specify one or more datasets to include in the responseBody.
 	Include []ListSharesIncludeType
 	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
-	// a marker value within the response body if the list returned was not complete.
+	// a marker value within the responseBody body if the list returned was not complete.
 	// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
 	// to the client.
 	Marker *string
@@ -136,10 +137,10 @@ func (o *ServiceListSharesOptions) format() *serviceClientListSharesSegmentOptio
 	}
 }
 
-type ServiceListSharesPager struct {
-	*serviceClientListSharesSegmentPager
+type ServiceListSharesResponse struct {
+	serviceClientListSharesSegmentResponse
 }
 
-func toServiceListSharesPager(resp *serviceClientListSharesSegmentPager) *ServiceListSharesPager {
-	return &ServiceListSharesPager{resp}
+func toServiceListSharesResponse(resp serviceClientListSharesSegmentResponse) ServiceListSharesResponse {
+	return ServiceListSharesResponse{resp}
 }

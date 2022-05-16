@@ -14,7 +14,7 @@ import (
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// SMBPropertyHolder is an interface designed for SMBPropertyAdapter, to identify valid response types for adapting.
+// SMBPropertyHolder is an interface designed for SMBPropertyAdapter, to identify valid responseBody types for adapting.
 type SMBPropertyHolder interface {
 	FileCreationTime() string
 	FileLastWriteTime() string
@@ -22,9 +22,9 @@ type SMBPropertyHolder interface {
 }
 
 // SMBPropertyAdapter is a wrapper struct that automatically converts the string outputs of FileAttributes, FileCreationTime and FileLastWrite time to time.Time.
-// It is _not_ error resistant. It is expected that the response you're inserting into this is a valid response.
+// It is _not_ error resistant. It is expected that the responseBody you're inserting into this is a valid responseBody.
 // File and directory calls that return such properties are: GetProperties, SetProperties, Create
-// File Downloads also return such properties. Insert other response types at your peril.
+// File Downloads also return such properties. Insert other responseBody types at your peril.
 type SMBPropertyAdapter struct {
 	PropertySource SMBPropertyHolder
 }
@@ -34,7 +34,7 @@ func (s *SMBPropertyAdapter) convertISO8601(input string) time.Time {
 
 	if err != nil {
 		// This should literally never happen if this struct is used correctly.
-		panic("SMBPropertyAdapter expects a successful response fitting the SMBPropertyHolder interface. Failed to parse time:\n" + err.Error())
+		panic("SMBPropertyAdapter expects a successful responseBody fitting the SMBPropertyHolder interface. Failed to parse time:\n" + err.Error())
 	}
 
 	return t
@@ -216,10 +216,10 @@ func (o *DirectoryListFilesAndDirectoriesOptions) format() *directoryClientListF
 	}
 }
 
-type DirectoryListFilesAndDirectoriesPager struct {
-	*directoryClientListFilesAndDirectoriesSegmentPager
+type DirectoryListFilesAndDirectoriesResponse struct {
+	directoryClientListFilesAndDirectoriesSegmentResponse
 }
 
-func toDirectoryListFilesAndDirectoriesPager(pager *directoryClientListFilesAndDirectoriesSegmentPager) *DirectoryListFilesAndDirectoriesPager {
-	return &DirectoryListFilesAndDirectoriesPager{pager}
+func toDirectoryListFilesAndDirectoriesResponse(resp directoryClientListFilesAndDirectoriesSegmentResponse) DirectoryListFilesAndDirectoriesResponse {
+	return DirectoryListFilesAndDirectoriesResponse{resp}
 }

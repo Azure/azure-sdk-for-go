@@ -89,19 +89,19 @@ func (s *azfileLiveTestSuite) TestAccountProperties() {
 	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 
 	setPropertiesOptions := &ServiceSetPropertiesOptions{
-		HourMetrics: &MetricProperties{
+		HourMetrics: &ShareMetricProperties{
 			Enabled:                to.Ptr(true),
 			IncludeAPIs:            to.Ptr(true),
 			RetentionPolicyEnabled: to.Ptr(true),
 			RetentionDays:          to.Ptr(int32(2)),
 		},
-		MinuteMetrics: &MetricProperties{
+		MinuteMetrics: &ShareMetricProperties{
 			Enabled:                to.Ptr(true),
 			IncludeAPIs:            to.Ptr(false),
 			RetentionPolicyEnabled: to.Ptr(true),
 			RetentionDays:          to.Ptr(int32(2)),
 		},
-		Cors: []*CorsRule{
+		Cors: []*ShareCorsRule{
 			{
 				AllowedOrigins:  to.Ptr("*"),
 				AllowedMethods:  to.Ptr("PUT"),
@@ -113,7 +113,7 @@ func (s *azfileLiveTestSuite) TestAccountProperties() {
 	}
 	setPropsResponse, err := svcClient.SetProperties(ctx, setPropertiesOptions)
 	_require.Nil(err)
-	_require.Equal(setPropsResponse.RawResponse.StatusCode, 202)
+	// _require.Equal(setPropsResponse.RawResponse.StatusCode, 202)
 	_require.NotEqual(setPropsResponse.RequestID, "")
 	_require.NotEqual(setPropsResponse.Version, "")
 
@@ -121,7 +121,7 @@ func (s *azfileLiveTestSuite) TestAccountProperties() {
 
 	props, err := svcClient.GetProperties(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(props.RawResponse.StatusCode, 200)
+	//_require.Equal(props.RawResponse.StatusCode, 200)
 	_require.NotEqual(props.RequestID, "")
 	_require.NotEqual(props.Version, "")
 	_require.EqualValues(props.HourMetrics.RetentionPolicy.Enabled, setPropertiesOptions.HourMetrics.RetentionPolicyEnabled)
@@ -136,7 +136,7 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 
 	setPropertiesOptions := &ServiceSetPropertiesOptions{
-		HourMetrics: &MetricProperties{
+		HourMetrics: &ShareMetricProperties{
 			Enabled:                to.Ptr(true),
 			IncludeAPIs:            to.Ptr(true),
 			RetentionPolicyEnabled: to.Ptr(true),
@@ -153,10 +153,10 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 //// 	sa := getFSU()
 //
 //// 	setProps := azfile.FileServiceProperties{
-//// 		HourMetrics: azfile.MetricProperties{
+//// 		HourMetrics: azfile.ShareMetricProperties{
 //// 			Enabled: false,
 //// 		},
-//// 		MinuteMetrics: azfile.MetricProperties{
+//// 		MinuteMetrics: azfile.ShareMetricProperties{
 //// 			Enabled: false,
 //// 		},
 //// 	}
@@ -173,8 +173,8 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 //// 	_require(props.Response().StatusCode, chk.Equals, 200)
 //// 	_require(props.RequestID(), chk.Not(chk.Equals), "")
 //// 	_require(props.Version(), chk.Not(chk.Equals), "")
-//// 	_require(props.HourMetrics, chk.DeepEquals, azfile.MetricProperties{Enabled: false})
-//// 	_require(props.MinuteMetrics, chk.DeepEquals, azfile.MetricProperties{Enabled: false})
+//// 	_require(props.HourMetrics, chk.DeepEquals, azfile.ShareMetricProperties{Enabled: false})
+//// 	_require(props.MinuteMetrics, chk.DeepEquals, azfile.ShareMetricProperties{Enabled: false})
 //// 	_require(props.Cors, chk.IsNil)
 //// }
 
@@ -185,17 +185,15 @@ func (s *azfileLiveTestSuite) TestAccountListSharesNonDefault() {
 
 	mySharePrefix := generateEntityName(testName)
 	pager := svcClient.ListShares(&ServiceListSharesOptions{Prefix: to.Ptr(mySharePrefix)})
-	for pager.NextPage(ctx) {
-		err := pager.Err()
-		_require.Nil(err)
-
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.NoError(err)
 		_require.NotNil(resp.Prefix)
 		_require.Equal(*resp.Prefix, mySharePrefix)
 		_require.NotNil(resp.ServiceEndpoint)
 		_require.NotNil(resp.RequestID)
 		_require.NotNil(resp.Version)
-		_require.Equal(resp.RawResponse.StatusCode, 200)
+		//_require.Equal(resp.RawResponse.StatusCode, 200)
 		_require.Len(resp.ShareItems, 0)
 	}
 
@@ -221,11 +219,9 @@ func (s *azfileLiveTestSuite) TestAccountListSharesNonDefault() {
 		MaxResults: to.Ptr(int32(2)),
 	})
 
-	for pager.NextPage(ctx) {
-		err := pager.Err()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
-
-		resp := pager.PageResponse()
 		if len(resp.ShareItems) > 0 {
 			_require.Len(resp.ShareItems, 2)
 		}
@@ -255,21 +251,18 @@ func (s *azfileLiveTestSuite) TestAccountListSharesInvalidMaxResults() {
 	defer delShare(_require, srClient, nil)
 
 	pager := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(-2))})
-	for pager.NextPage(ctx) {
-		_require.Fail("Shouldn't have reached here")
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		_require.NotNil(err)
+		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
 	}
-	err := pager.Err()
-	_require.NotNil(err)
-	_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
 
-	pager = svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(0))})
-	for pager.NextPage(ctx) {
-		_require.Fail("Shouldn't have reached here")
+	pager2 := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(0))})
+	for pager2.More() {
+		_, err := pager2.NextPage(ctx)
+		_require.NotNil(err)
+		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
 	}
-	err = pager.Err()
-	_require.NotNil(err)
-	_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
-
 }
 
 //

@@ -8,8 +8,11 @@ package azfile
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
 )
 
 // A DirectoryClient represents a URL to the Azure Storage directory allowing you to manipulate its directories and files.
@@ -152,8 +155,40 @@ func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]st
 // After getting a segment, process it, and then call ListFilesAndDirectoriesSegment again (passing the the previously-returned
 // Marker) to get the next segment. This method lists the contents only for a single level of the directory hierarchy.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
-func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndDirectoriesOptions) *DirectoryListFilesAndDirectoriesPager {
+func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndDirectoriesOptions) *runtime.Pager[DirectoryListFilesAndDirectoriesResponse] {
 	formattedOptions := options.format()
-	pager := d.client.ListFilesAndDirectoriesSegment(formattedOptions)
-	return toDirectoryListFilesAndDirectoriesPager(pager)
+	return runtime.NewPager(runtime.PagingHandler[DirectoryListFilesAndDirectoriesResponse]{
+		More: func(page DirectoryListFilesAndDirectoriesResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DirectoryListFilesAndDirectoriesResponse) (DirectoryListFilesAndDirectoriesResponse, error) {
+			if page.ListFilesAndDirectoriesSegmentResponse.NextMarker == nil || len(*page.ListFilesAndDirectoriesSegmentResponse.NextMarker) == 0 {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(errors.New("unexpected missing NextMarker"))
+			}
+
+			req, err := d.client.listFilesAndDirectoriesSegmentCreateRequest(ctx, formattedOptions)
+			if err != nil {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+			}
+			queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+			if err != nil {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+			}
+			queryValues.Set("marker", *page.ListFilesAndDirectoriesSegmentResponse.NextMarker)
+			req.Raw().URL.RawQuery = queryValues.Encode()
+			if err != nil {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+			}
+
+			resp, err := d.client.pl.Do(req)
+			if err != nil {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return DirectoryListFilesAndDirectoriesResponse{}, handleError(runtime.NewResponseError(resp))
+			}
+			generatedResp, err := d.client.listFilesAndDirectoriesSegmentHandleResponse(resp)
+			return toDirectoryListFilesAndDirectoriesResponse(generatedResp), handleError(err)
+		},
+	})
 }

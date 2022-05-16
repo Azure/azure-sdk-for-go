@@ -29,7 +29,7 @@ modelerfour:
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: false
-use: "@autorest/go@4.0.0-preview.36"
+use: "@autorest/go@4.0.0-preview.41"
 ```
 
 ### Don't include share name, directory, or file name in path - we have direct URIs.
@@ -66,28 +66,50 @@ directive:
     $.Metrics.type = "object";
 ```
 
-<<<<<<< HEAD
-### Times aren't required
-=======
+### Use strings for dates in responses. (Easy to handle the conversion in clients)
 
-### Formats aren't required
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-last-write-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-change-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $["x-ms-paths"]..responses..headers["x-ms-file-creation-time"]
+  transform: >
+    $.format = "str";
+- from: swagger-document
+  where: $.parameters.FileChangeTime
+  transform: >
+    $.format = "str";
+```
 
-> > > > > > > feature/storage/stg82base
+### Change new SMB file parameters to use default values
 
 ``` yaml
 directive:
 - from: swagger-document
   where: $.parameters.FileCreationTime
   transform: >
-    delete $.format;
+    $.format = "str";
+    $.default = "now";
 - from: swagger-document
   where: $.parameters.FileLastWriteTime
   transform: >
-    delete $.format;
+    $.format = "str";
+    $.default = "now";
 - from: swagger-document
-  where: $.parameters.FileChangeTime
+  where: $.parameters.FileAttributes
   transform: >
-    delete $.format;
+    $.default = "none";
+- from: swagger-document
+  where: $.parameters.FilePermission
+  transform: >
+    $.default = "inherit";
 ```
 
 ### ShareFileRangeList
@@ -156,13 +178,62 @@ directive:
    });
 ```
 
-### Remove conditions parameter groupings
+### ShareErrorCode
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $["x-ms-enum"].name = "ShareErrorCode";
+```
+
+### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
+
+``` yaml
+directive:
+- rename-model:
+    from: Metrics
+    to: ShareMetrics
+- rename-model:
+    from: CorsRule
+    to: ShareCorsRule
+- rename-model:
+    from: RetentionPolicy
+    to: ShareRetentionPolicy
+- rename-model:
+    from: StorageServiceProperties
+    to: ShareServiceProperties
+    
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
+    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
+    $.ShareCorsRule.xml = {"name": "CorsRule"};
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.StorageServiceProperties.name = "ShareServiceProperties";
+```
+
+### Rename ShareFileHTTPHeaders to FileHttpHeader and remove file prefix from properties
 
 ``` yaml
 directive:
 - from: swagger-document
   where: $.parameters
   transform: >
-    delete $.SourceLeaseId["x-ms-parameter-grouping"];
-    delete $.DestinationLeaseId["x-ms-parameter-grouping"];
+    $.FileCacheControl["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileCacheControl["x-ms-client-name"] = "cacheControl";
+    $.FileContentDisposition["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentDisposition["x-ms-client-name"] = "contentDisposition";
+    $.FileContentEncoding["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentEncoding["x-ms-client-name"] = "contentEncoding";
+    $.FileContentLanguage["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentLanguage["x-ms-client-name"] = "contentLanguage";
+    $.FileContentMD5["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentMD5["x-ms-client-name"] = "contentMd5";
+    $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
+    $.FileContentType["x-ms-client-name"] = "contentType";
 ```

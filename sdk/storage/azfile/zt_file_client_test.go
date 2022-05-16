@@ -16,7 +16,6 @@ import (
 	"github.com/stretchr/testify/require"
 	"io"
 	"io/ioutil"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -45,7 +44,7 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 
 	cResp, err := fClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.NotEqual(cResp.ETag, azcore.ETag(""))
 	_require.Equal(cResp.LastModified.IsZero(), false)
 	_require.NotEqual(cResp.RequestID, "")
@@ -55,7 +54,7 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 
 	delResp, err := fClient.Delete(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(delResp.RawResponse.StatusCode, 202)
+	// _require.Equal(delResp.RawResponse.StatusCode, 202)
 	_require.NotEqual(delResp.RequestID, "")
 	_require.NotEqual(delResp.Version, "")
 	_require.Equal(delResp.Date.IsZero(), false)
@@ -70,7 +69,7 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 
 	cResp, err = afClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.NotEqual(cResp.ETag, "")
 	_require.Equal(cResp.LastModified.IsZero(), false)
 	_require.NotEqual(cResp.RequestID, "")
@@ -80,7 +79,7 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 
 	delResp, err = afClient.Delete(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(delResp.RawResponse.StatusCode, 202)
+	//_require.Equal(delResp.RawResponse.StatusCode, 202)
 	_require.NotEqual(delResp.RequestID, "")
 	_require.NotEqual(delResp.Version, "")
 	_require.Equal(delResp.Date.IsZero(), false)
@@ -115,7 +114,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
-	_, err := fClient.Create(ctx, &FileCreateOptions{FileHTTPHeaders: &basicHeaders})
+	_, err := fClient.Create(ctx, &FileCreateOptions{ShareFileHTTPHeaders: &basicHeaders})
 	_require.Nil(err)
 
 	_, err = fClient.GetProperties(ctx, nil)
@@ -135,8 +134,8 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	_, err := fClient.Create(ctx, &FileCreateOptions{
-		Metadata:        map[string]string{"!@#$%^&*()": "!@#$%^&*()"},
-		FileHTTPHeaders: &FileHTTPHeaders{},
+		Metadata:             map[string]string{"!@#$%^&*()": "!@#$%^&*()"},
+		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{},
 	})
 	_require.NotNil(err)
 }
@@ -175,7 +174,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //			FileCreationTime:  &creationTime,
 //			FileLastWriteTime: &lastWriteTime,
 //		},
-//		FileHTTPHeaders: &FileHTTPHeaders{
+//		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
 //			FileContentType:        to.Ptr("text/html"),
 //			FileContentEncoding:    to.Ptr("gzip"),
 //			FileContentLanguage:    to.Ptr("tr,en"),
@@ -200,12 +199,12 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_require.Equal(setResp.LastModified.IsZero(),  false)
 //	_require.Equal(*getResp.FileType,  "File")
 //
-//	_require.EqualValues(getResp.ContentType,  options.FileHTTPHeaders.FileContentType)
-//	_require.EqualValues(getResp.ContentEncoding,  options.FileHTTPHeaders.FileContentEncoding)
-//	_require.EqualValues(getResp.ContentLanguage,  options.FileHTTPHeaders.FileContentLanguage)
-//	_require.EqualValues(getResp.ContentMD5, options.FileHTTPHeaders.FileContentMD5)
-//	_require.EqualValues(getResp.CacheControl,  options.FileHTTPHeaders.FileCacheControl)
-//	_require.EqualValues(getResp.ContentDisposition,  options.FileHTTPHeaders.FileContentDisposition)
+//	_require.EqualValues(getResp.ContentType,  options.ShareFileHTTPHeaders.FileContentType)
+//	_require.EqualValues(getResp.ContentEncoding,  options.ShareFileHTTPHeaders.FileContentEncoding)
+//	_require.EqualValues(getResp.ContentLanguage,  options.ShareFileHTTPHeaders.FileContentLanguage)
+//	_require.EqualValues(getResp.ContentMD5, options.ShareFileHTTPHeaders.FileContentMD5)
+//	_require.EqualValues(getResp.CacheControl,  options.ShareFileHTTPHeaders.FileCacheControl)
+//	_require.EqualValues(getResp.ContentDisposition,  options.ShareFileHTTPHeaders.FileContentDisposition)
 //	_require.Equal(*getResp.ContentLength,  int64(0))
 //	// We'll just ensure a permission exists, no need to test overlapping functionality.
 //	_require.NotEqual(*getResp.PermissionKey, "")
@@ -252,7 +251,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	var testMd5 []byte
 //	copy(testMd5[:], md5Str)
 //
-//	properties := FileHTTPHeaders{
+//	properties := ShareFileHTTPHeaders{
 //		FileContentType:        to.Ptr("text/html"),
 //		FileContentEncoding:        to.Ptr("gzip"),
 //		FileContentLanguage:        to.Ptr("tr,en"),
@@ -319,7 +318,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	var testMd5 []byte
 //	copy(testMd5[:], md5Str)
 //
-//	properties := FileHTTPHeaders{
+//	properties := ShareFileHTTPHeaders{
 //		FileContentType:        to.Ptr("text/html"),
 //		FileContentEncoding:        to.Ptr("gzip"),
 //		FileContentLanguage:        to.Ptr("tr,en"),
@@ -554,10 +553,10 @@ func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 	_require.Nil(err)
 
 	// Read the file data to verify the copy
-	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	data, _ := ioutil.ReadAll(resp.Body)
 	_require.Equal(*resp.ContentLength, int64(len(fileDefaultData)))
 	_require.Equal(string(data), fileDefaultData)
-	resp.RawResponse.Body.Close()
+	resp.Body.Close()
 }
 
 //func (s *azfileLiveTestSuite) TestFileStartCopyMetadata() {
@@ -654,7 +653,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
 
 	_, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
-	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
+	validateStorageError(_require, err, ShareErrorCodeResourceNotFound)
 }
 
 //func (s *azfileLiveTestSuite) TestFileStartCopyUsingSASSrc() {
@@ -776,7 +775,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	for i := range fileData {
 //		fileData[i] = byte('a' + i%26)
 //	}
-//	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
+//	_, err = fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(int64(fileSize)), ShareFileHTTPHeaders: &ShareFileHTTPHeaders{}})
 //	_require.Nil(err)
 //
 //	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(fileData[0:4*1024*1024])), nil)
@@ -827,7 +826,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 
 	copyfClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 	_, err := copyfClient.AbortCopy(ctx, "copynotstarted", nil)
-	validateStorageError(_require, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageError(_require, err, ShareErrorCodeInvalidQueryParameterValue)
 }
 
 //func (s *azfileLiveTestSuite) TestResizeFile() {
@@ -928,7 +927,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //	dirURL := NewdirClient(*du, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
 //	s := "Hello"
-//	_, err = fClient.Create(ctx, int64(len(s)), FileHTTPHeaders{}, map[string]string)
+//	_, err = fClient.Create(ctx, int64(len(s)), ShareFileHTTPHeaders{}, map[string]string)
 //	_require.Nil(err)
 //	_, err = fClient.UploadRange(ctx, 0, bytes.NewReader([]byte(s)), nil)
 //	_require.Nil(err)
@@ -985,7 +984,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //	fClient := NewfClient(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
 //	s := "Hello"
-//	_, err = fClient.Create(ctx, int64(len(s)), FileHTTPHeaders{}, map[string]string)
+//	_, err = fClient.Create(ctx, int64(len(s)), ShareFileHTTPHeaders{}, map[string]string)
 //	_require.Nil(err)
 //	_, err = fClient.UploadRange(ctx, 0, bytes.NewReader([]byte(s)), nil)
 //	_require.Nil(err)
@@ -1087,7 +1086,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //	// Set ContentMD5 for the entire file.
 //	_, err = fClient.SetHTTPHeaders(ctx,
 //		&SetFileHTTPHeadersOptions{
-//		FileHTTPHeaders: &FileHTTPHeaders{
+//		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
 //			FileContentMD5: pResp.ContentMD5,
 //			FileContentLanguage: to.Ptr("test")}})
 //	_require.Nil(err)
@@ -1169,7 +1168,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataNonExistentFile() {
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	_, err := fClient.Download(ctx, 0, CountToEnd, nil)
-	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
+	validateStorageError(_require, err, ShareErrorCodeResourceNotFound)
 }
 
 //// Don't check offset by design.
@@ -1201,7 +1200,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataOffsetOutOfRange() {
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
 	_, err := fClient.Download(ctx, int64(len(fileDefaultData)), CountToEnd, nil)
-	validateStorageError(_require, err, StorageErrorCodeInvalidRange)
+	validateStorageError(_require, err, ShareErrorCodeInvalidRange)
 }
 
 //// Don't check count by design.
@@ -1234,7 +1233,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataEntireFile() {
 	_require.Nil(err)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.EqualValues(string(data), fileDefaultData)
 }
@@ -1251,7 +1250,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountExact() {
 	resp, err := fClient.Download(ctx, 0, int64(len(fileDefaultData)), nil)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.EqualValues(string(data), fileDefaultData)
 }
@@ -1268,7 +1267,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountOutOfRange() {
 	resp, err := fClient.Download(ctx, 0, int64(len(fileDefaultData))*2, nil)
 	_require.Nil(err)
 
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.EqualValues(string(data), fileDefaultData)
 }
@@ -1329,7 +1328,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeNonExistentFile() {
 
 	rsc, _ := generateData(12)
 	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
-	validateStorageError(_require, err, StorageErrorCodeResourceNotFound)
+	validateStorageError(_require, err, ShareErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
@@ -1350,7 +1349,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	pResp, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: md5[:]})
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
-	_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
+	//_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
 	_require.NotEqual(pResp.ETag, "")
 	_require.Equal(pResp.LastModified.IsZero(), false)
 	_require.NotEqual(pResp.RequestID, "")
@@ -1362,14 +1361,14 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	pResp, err = fClient.UploadRange(ctx, 1024, internal.NopCloser(bytes.NewReader(contentD[1024:])), nil)
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
-	_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
+	//_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
 
 	resp, err := fClient.Download(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, http.StatusOK)
+	//_require.Equal(resp.RawResponse.StatusCode, http.StatusOK)
 	_require.Equal(*resp.ContentLength, int64(2048))
 
-	downloadedData, err := ioutil.ReadAll(resp.RawResponse.Body)
+	downloadedData, err := ioutil.ReadAll(resp.Body)
 	_require.Nil(err)
 	_require.EqualValues(downloadedData, contentD[:])
 }
@@ -1390,7 +1389,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 
 	// Upload range with incorrect transactional MD5
 	_, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: incorrectMD5[:]})
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageError(_require, err, ShareErrorCodeMD5Mismatch)
 }
 
 //func (s *azfileLiveTestSuite) TestUploadRangeFromURL() {
@@ -1459,7 +1458,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 
 	fileSize := int64(512 * 10)
 
-	_, err := fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(fileSize), FileHTTPHeaders: &FileHTTPHeaders{}})
+	_, err := fClient.Create(ctx, &FileCreateOptions{FileContentLength: to.Ptr(fileSize), ShareFileHTTPHeaders: &ShareFileHTTPHeaders{}})
 	_require.Nil(err)
 
 	defer delFile(_require, fClient)
@@ -1467,7 +1466,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	rsc, _ := generateData(1024)
 	putResp, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
-	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
 	_require.NotEqual(putResp.ETag, "")
 	_require.NotNil(putResp.ContentMD5)
@@ -1477,7 +1476,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, 1023, nil)
 	_require.Nil(err)
-	_require.Equal(rangeList.RawResponse.StatusCode, 200)
+	//_require.Equal(rangeList.RawResponse.StatusCode, 200)
 	_require.Equal(rangeList.LastModified.IsZero(), false)
 	_require.NotEqual(rangeList.ETag, "")
 	_require.Equal(*rangeList.FileContentLength, fileSize)
@@ -1504,9 +1503,9 @@ func (s *azfileLiveTestSuite) TestClearRangeDefault() {
 	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
 
-	clearResp, err := fClient.ClearRange(ctx, 0, 2048, nil)
+	_, err = fClient.ClearRange(ctx, 0, 2048, nil)
 	_require.Nil(err)
-	_require.Equal(clearResp.RawResponse.StatusCode, 201)
+	//_require.Equal(clearResp.RawResponse.StatusCode, 201)
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1528,9 +1527,9 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
 	_, err := fClient.UploadRange(ctx, 2048, rsc, nil)
 	_require.Nil(err)
 
-	clearResp, err := fClient.ClearRange(ctx, 2048, 2048, nil)
+	_, err = fClient.ClearRange(ctx, 2048, 2048, nil)
 	_require.Nil(err)
-	_require.Equal(clearResp.RawResponse.StatusCode, 201)
+	//_require.Equal(clearResp.RawResponse.StatusCode, 201)
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1552,9 +1551,9 @@ func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
 	_, err := fClient.UploadRange(ctx, 0, rsc, nil)
 	_require.Nil(err)
 
-	clearResp, err := fClient.ClearRange(ctx, 1024, 1024, nil)
+	_, err = fClient.ClearRange(ctx, 1024, 1024, nil)
 	_require.Nil(err)
-	_require.Equal(clearResp.RawResponse.StatusCode, 201)
+	//_require.Equal(clearResp.RawResponse.StatusCode, 201)
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1578,9 +1577,9 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 	_, err := fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(d)), nil)
 	_require.Nil(err)
 
-	clearResp, err := fClient.ClearRange(ctx, 0, 1, nil)
+	_, err = fClient.ClearRange(ctx, 0, 1, nil)
 	_require.Nil(err)
-	_require.Equal(clearResp.RawResponse.StatusCode, 201)
+	//_require.Equal(clearResp.RawResponse.StatusCode, 201)
 
 	rangeList, err := fClient.GetRangeList(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1590,7 +1589,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 	dResp, err := fClient.Download(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
 
-	_bytes, err := ioutil.ReadAll(dResp.Body(RetryReaderOptions{}))
+	_bytes, err := ioutil.ReadAll(dResp.FileBody(RetryReaderOptions{}))
 	_require.Nil(err)
 	_require.EqualValues(_bytes, []byte{0})
 }
@@ -1741,21 +1740,21 @@ func (s *azfileLiveTestSuite) TestUnexpectedEOFRecovery() {
 
 	resp, err := fClient.UploadRange(ctx, 0, contentR, nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, http.StatusCreated)
+	// _require.Equal(resp.RawResponse.StatusCode, http.StatusCreated)
 	_require.NotEqual(resp.RequestID, "")
 
 	dlResp, err := fClient.Download(ctx, 0, 2048, nil)
 	_require.Nil(err)
 
 	// Verify that we can inject errors first.
-	reader := dlResp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
+	reader := dlResp.FileBody(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
 
 	_, err = ioutil.ReadAll(reader)
 	_require.NotNil(err)
 	_require.Equal(err.Error(), "unrecoverable error")
 
 	// Then inject the retryable error.
-	reader = dlResp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
+	reader = dlResp.FileBody(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
 
 	buf, err := ioutil.ReadAll(reader)
 	_require.Nil(err)
@@ -1768,20 +1767,20 @@ func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
 	srClient := getShareClient(_require, generateShareName(sharePrefix, testName), svcClient)
-	cResp, err := srClient.Create(ctx, &ShareCreateOptions{
+	_, err := srClient.Create(ctx, &ShareCreateOptions{
 		Quota: &fileShareMaxQuota,
 	})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 	dirClient, err := srClient.NewRootDirectoryClient()
 	_require.Nil(err)
 	fClient := getFileClientFromDirectory(_require, generateFileName(testName), dirClient)
 	_, err = fClient.Create(ctx, &FileCreateOptions{
-		FileContentLength: &fileMaxAllowedSizeInBytes,
-		FileHTTPHeaders:   &FileHTTPHeaders{},
+		FileContentLength:    &fileMaxAllowedSizeInBytes,
+		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{},
 	})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 }

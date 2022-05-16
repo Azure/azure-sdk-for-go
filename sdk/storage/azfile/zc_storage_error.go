@@ -56,12 +56,12 @@ func (e *InternalError) As(target interface{}) bool {
 
 // StorageError is the internal struct that replaces the generated StorageError.
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
-// This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
+// This handles the description and details. defunkifyStorageError handles the responseBody, cause, and service code.
 type StorageError struct {
 	response    *http.Response
 	description string
 
-	ErrorCode StorageErrorCode
+	ErrorCode ShareErrorCode
 	details   map[string]string
 }
 
@@ -96,10 +96,10 @@ func responseErrorToStorageError(responseError *azcore.ResponseError) error {
 
 	storageError.response = responseError.RawResponse
 
-	storageError.ErrorCode = StorageErrorCode(responseError.RawResponse.Header.Get("x-ms-error-code"))
+	storageError.ErrorCode = ShareErrorCode(responseError.RawResponse.Header.Get("x-ms-error-code"))
 
 	if code, ok := storageError.details["Code"]; ok {
-		storageError.ErrorCode = StorageErrorCode(code)
+		storageError.ErrorCode = ShareErrorCode(code)
 		delete(storageError.details, "Code")
 	}
 
@@ -137,13 +137,13 @@ func (e StorageError) Error() string {
 				_, _ = fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
 			}
 		}
-		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
+		// req := azcore.Request{Request: e.responseBody.Request}.Copy() // Make a copy of the responseBody's request
 		// TODO: Come Here Mohit Adele
-		//writeRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
+		//writeRequestWithResponse(b, &azcore.Request{Request: e.responseBody.Request}, e.responseBody)
 	}
 
 	return b.String()
-	///azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
+	///azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.responseBody, nil)
 	// return e.ErrorNode.Error(b.String())
 }
 
@@ -155,7 +155,7 @@ func (e StorageError) Is(err error) bool {
 	return ok || ok2
 }
 
-// Response returns StorageError.response
+// Response returns StorageError.responseBody
 func (e StorageError) Response() *http.Response {
 	return e.response
 }
@@ -172,7 +172,7 @@ func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response
 	}
 }
 
-// formatHeaders appends an HTTP request's or response's header into a Buffer.
+// formatHeaders appends an HTTP request's or responseBody's header into a Buffer.
 //nolint
 func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	if len(header) == 0 {

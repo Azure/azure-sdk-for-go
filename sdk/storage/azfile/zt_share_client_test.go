@@ -135,7 +135,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidName() {
 
 	_, err = srClient.Create(ctx, nil)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidResourceName)
+	validateStorageError(_require, err, ShareErrorCodeInvalidResourceName)
 }
 
 func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
@@ -159,7 +159,7 @@ func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Delete(ctx, nil)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
@@ -175,7 +175,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 
 	sResp, err := srClient.SetProperties(ctx, &ShareSetPropertiesOptions{Quota: to.Ptr(newQuota)})
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
 	_require.NotEqual(sResp.RequestID, "")
@@ -184,7 +184,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 
 	props, err := srClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(props.RawResponse.StatusCode, 200)
+	// _require.Equal(props.RawResponse.StatusCode, 200)
 	_require.NotEqual(*props.ETag, "")
 	_require.Equal(props.LastModified.IsZero(), false)
 	_require.NotEqual(*props.RequestID, "")
@@ -204,7 +204,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 
 	sResp, err := srClient.SetProperties(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
 	_require.NotEqual(sResp.RequestID, "")
@@ -213,7 +213,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 
 	props, err := srClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(props.RawResponse.StatusCode, 200)
+	// _require.Equal(props.RawResponse.StatusCode, 200)
 	_require.NotEqual(*props.ETag, "")
 	_require.Equal(props.LastModified.IsZero(), false)
 	_require.NotEqual(*props.RequestID, "")
@@ -246,7 +246,7 @@ func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 
 	_, err := srClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
@@ -285,7 +285,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 
 	sResp, err := srClient.SetPermissions(context.Background(), permissions, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.Equal(sResp.Date.IsZero(), false)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
@@ -294,7 +294,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 
 	gResp, err := srClient.GetPermissions(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	_require.NotEqual(*gResp.ETag, "")
 	_require.Equal(gResp.LastModified.IsZero(), false)
@@ -340,7 +340,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 
 	sResp, err := srClient.SetPermissions(context.Background(), permissions, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.Equal(sResp.Date.IsZero(), false)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
@@ -349,7 +349,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 
 	gResp, err := srClient.GetPermissions(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	_require.NotEqual(*gResp.ETag, "")
 	_require.Equal(gResp.LastModified.IsZero(), false)
@@ -370,7 +370,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 
 	sResp, err := srClient.SetPermissions(context.Background(), []*SignedIdentifier{}, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.Equal(sResp.Date.IsZero(), false)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
@@ -379,7 +379,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 
 	gResp, err := srClient.GetPermissions(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	_require.NotEqual(*gResp.ETag, "")
 	_require.Equal(gResp.LastModified.IsZero(), false)
@@ -398,7 +398,7 @@ func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 
 	_, err := srClient.GetPermissions(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyACL() {
@@ -556,7 +556,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 	}
 
 	_, err := srClient.SetPermissions(ctx, permissions, nil)
-	validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageError(_require, err, ShareErrorCodeInvalidXMLDocument)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
@@ -570,7 +570,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 
 	sResp, err := srClient.SetMetadata(context.Background(), map[string]string{}, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.Equal(sResp.Date.IsZero(), false)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
@@ -579,7 +579,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 
 	gResp, err := srClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	_require.NotEqual(*gResp.ETag, "")
 	_require.Equal(gResp.LastModified.IsZero(), false)
@@ -603,7 +603,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 	}
 	sResp, err := srClient.SetMetadata(context.Background(), md, nil)
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 	_require.Equal(sResp.Date.IsZero(), false)
 	_require.NotEqual(*sResp.ETag, "")
 	_require.Equal(sResp.LastModified.IsZero(), false)
@@ -612,7 +612,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 
 	gResp, err := srClient.GetProperties(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	_require.NotEqual(*gResp.ETag, "")
 	_require.Equal(gResp.LastModified.IsZero(), false)
@@ -649,19 +649,19 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 	newQuota := int32(300)
 
 	// In order to test and get LastModified property.
-	sResp, err := srClient.SetProperties(context.Background(), &ShareSetPropertiesOptions{Quota: to.Ptr(newQuota)})
+	_, err := srClient.SetProperties(context.Background(), &ShareSetPropertiesOptions{Quota: to.Ptr(newQuota)})
 	_require.Nil(err)
-	_require.Equal(sResp.RawResponse.StatusCode, 200)
+	// _require.Equal(sResp.RawResponse.StatusCode, 200)
 
 	gResp, err := srClient.GetStatistics(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(gResp.RawResponse.StatusCode, 200)
+	// _require.Equal(gResp.RawResponse.StatusCode, 200)
 	_require.Equal(gResp.Date.IsZero(), false)
 	// _require.NotEqual(*gResp.ETag, "") // TODO: The ETag would be ""
 	// _require.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_require.Equal(*gResp.ShareUsageBytes, int64(0))
+	_require.Equal(*gResp.ShareUsageBytes, int32(0))
 }
 
 func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
@@ -674,7 +674,7 @@ func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 
 	_, err := srClient.GetStatistics(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
@@ -685,9 +685,9 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	shareName := generateShareName(sharePrefix, testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
-	cResp, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Ptr(int32(1024))})
+	_, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Ptr(int32(1024))})
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer delShare(_require, srClient, nil)
 
 	dirClient, err := srClient.NewDirectoryClient("testdir")
@@ -778,7 +778,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 //
 //	// Let's create a file in the base share.
 //	fileURL := srClient.NewRootDirectoryClient().NewFileURL("myfile")
-//	_, err = fileURL.Create(ctx, 0, FileHTTPHeaders{}, map[string]string{})
+//	_, err = fileURL.Create(ctx, 0, ShareFileHTTPHeaders{}, map[string]string{})
 //	_require.Nil(err)
 //
 //	// Create share snapshot, the snapshot contains the create file.
@@ -826,7 +826,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 
 	_, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
@@ -866,7 +866,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot(
 
 func validateShareDeleted(_require *require.Assertions, srClient *ShareClient) {
 	_, err := srClient.GetProperties(ctx, nil)
-	validateStorageError(_require, err, StorageErrorCodeShareNotFound)
+	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
@@ -920,5 +920,5 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
 	_, err := srClient.CreateSnapshot(ctx, nil)
 	_require.Nil(err)
 	_, err = srClient.Delete(ctx, nil)
-	validateStorageError(_require, err, StorageErrorCodeShareHasSnapshots)
+	validateStorageError(_require, err, ShareErrorCodeShareHasSnapshots)
 }

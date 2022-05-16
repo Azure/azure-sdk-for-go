@@ -9,7 +9,6 @@
 package azfile
 
 import (
-	"encoding/xml"
 	"io"
 	"time"
 )
@@ -24,39 +23,6 @@ type AccessPolicy struct {
 
 	// The date-time the policy is active.
 	Start *time.Time `xml:"Start"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type AccessPolicy.
-func (a AccessPolicy) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias AccessPolicy
-	aux := &struct {
-		*alias
-		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
-	}{
-		alias:  (*alias)(&a),
-		Expiry: (*timeRFC3339)(a.Expiry),
-		Start:  (*timeRFC3339)(a.Start),
-	}
-	return e.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type AccessPolicy.
-func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias AccessPolicy
-	aux := &struct {
-		*alias
-		Expiry *timeRFC3339 `xml:"Expiry"`
-		Start  *timeRFC3339 `xml:"Start"`
-	}{
-		alias: (*alias)(a),
-	}
-	if err := d.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	a.Expiry = (*time.Time)(aux.Expiry)
-	a.Start = (*time.Time)(aux.Start)
-	return nil
 }
 
 type ClearRange struct {
@@ -88,31 +54,6 @@ type CopyFileSmbInfo struct {
 	SetArchiveAttribute *bool
 }
 
-// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another
-// domain. Web browsers implement a security restriction known as same-origin policy that
-// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
-// domain) to call APIs in another domain.
-type CorsRule struct {
-	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
-	AllowedHeaders *string `xml:"AllowedHeaders"`
-
-	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
-	AllowedMethods *string `xml:"AllowedMethods"`
-
-	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
-	// is the domain from which the request originates. Note that the origin must be an exact
-	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
-	// to allow all origin domains to make requests via CORS.
-	AllowedOrigins *string `xml:"AllowedOrigins"`
-
-	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
-	// issuer.
-	ExposedHeaders *string `xml:"ExposedHeaders"`
-
-	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
-	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
-}
-
 // DirectoryItem - A listed directory item.
 type DirectoryItem struct {
 	// REQUIRED
@@ -123,22 +64,6 @@ type DirectoryItem struct {
 
 	// File properties.
 	Properties *FileProperty `xml:"Properties"`
-}
-
-// FileHTTPHeaders contains a group of parameters for the fileClient.Create method.
-type FileHTTPHeaders struct {
-	// Sets the file's cache control. The File service stores this value but does not use or modify it.
-	FileCacheControl *string
-	// Sets the file's Content-Disposition header.
-	FileContentDisposition *string
-	// Specifies which content encodings have been applied to the file.
-	FileContentEncoding *string
-	// Specifies the natural languages used by this resource.
-	FileContentLanguage *string
-	// Sets the file's MD5 hash.
-	FileContentMD5 []byte
-	// Sets the MIME content type of the file. The default type is 'application/octet-stream'.
-	FileContentType *string
 }
 
 // FileItem - A listed file item.
@@ -167,51 +92,6 @@ type FileProperty struct {
 	LastWriteTime  *time.Time `xml:"LastWriteTime"`
 }
 
-// MarshalXML implements the xml.Marshaller interface for type FileProperty.
-func (f FileProperty) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias FileProperty
-	aux := &struct {
-		*alias
-		ChangeTime     *timeRFC3339 `xml:"ChangeTime"`
-		CreationTime   *timeRFC3339 `xml:"CreationTime"`
-		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
-		LastModified   *timeRFC1123 `xml:"Last-Modified"`
-		LastWriteTime  *timeRFC3339 `xml:"LastWriteTime"`
-	}{
-		alias:          (*alias)(&f),
-		ChangeTime:     (*timeRFC3339)(f.ChangeTime),
-		CreationTime:   (*timeRFC3339)(f.CreationTime),
-		LastAccessTime: (*timeRFC3339)(f.LastAccessTime),
-		LastModified:   (*timeRFC1123)(f.LastModified),
-		LastWriteTime:  (*timeRFC3339)(f.LastWriteTime),
-	}
-	return e.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type FileProperty.
-func (f *FileProperty) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias FileProperty
-	aux := &struct {
-		*alias
-		ChangeTime     *timeRFC3339 `xml:"ChangeTime"`
-		CreationTime   *timeRFC3339 `xml:"CreationTime"`
-		LastAccessTime *timeRFC3339 `xml:"LastAccessTime"`
-		LastModified   *timeRFC1123 `xml:"Last-Modified"`
-		LastWriteTime  *timeRFC3339 `xml:"LastWriteTime"`
-	}{
-		alias: (*alias)(f),
-	}
-	if err := d.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	f.ChangeTime = (*time.Time)(aux.ChangeTime)
-	f.CreationTime = (*time.Time)(aux.CreationTime)
-	f.LastAccessTime = (*time.Time)(aux.LastAccessTime)
-	f.LastModified = (*time.Time)(aux.LastModified)
-	f.LastWriteTime = (*time.Time)(aux.LastWriteTime)
-	return nil
-}
-
 // FileRange - An Azure Storage file range.
 type FileRange struct {
 	// REQUIRED; End of the range.
@@ -228,25 +108,6 @@ type FilesAndDirectoriesListSegment struct {
 
 	// REQUIRED
 	FileItems []*FileItem `xml:"File"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type FilesAndDirectoriesListSegment.
-func (f FilesAndDirectoriesListSegment) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias FilesAndDirectoriesListSegment
-	aux := &struct {
-		*alias
-		DirectoryItems *[]*DirectoryItem `xml:"Directory"`
-		FileItems      *[]*FileItem      `xml:"File"`
-	}{
-		alias: (*alias)(&f),
-	}
-	if f.DirectoryItems != nil {
-		aux.DirectoryItems = &f.DirectoryItems
-	}
-	if f.FileItems != nil {
-		aux.FileItems = &f.FileItems
-	}
-	return e.EncodeElement(aux, start)
 }
 
 // HandleItem - A listed Azure Storage handle item.
@@ -274,39 +135,6 @@ type HandleItem struct {
 
 	// ParentId uniquely identifies the parent directory of the object.
 	ParentID *string `xml:"ParentId"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type HandleItem.
-func (h HandleItem) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias HandleItem
-	aux := &struct {
-		*alias
-		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
-	}{
-		alias:             (*alias)(&h),
-		LastReconnectTime: (*timeRFC1123)(h.LastReconnectTime),
-		OpenTime:          (*timeRFC1123)(h.OpenTime),
-	}
-	return e.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type HandleItem.
-func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias HandleItem
-	aux := &struct {
-		*alias
-		LastReconnectTime *timeRFC1123 `xml:"LastReconnectTime"`
-		OpenTime          *timeRFC1123 `xml:"OpenTime"`
-	}{
-		alias: (*alias)(h),
-	}
-	if err := d.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	h.LastReconnectTime = (*time.Time)(aux.LastReconnectTime)
-	h.OpenTime = (*time.Time)(aux.OpenTime)
-	return nil
 }
 
 // LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
@@ -347,21 +175,6 @@ type ListHandlesResponse struct {
 	HandleList []*HandleItem `xml:"Entries>Handle"`
 }
 
-// MarshalXML implements the xml.Marshaller interface for type ListHandlesResponse.
-func (l ListHandlesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias ListHandlesResponse
-	aux := &struct {
-		*alias
-		HandleList *[]*HandleItem `xml:"Entries>Handle"`
-	}{
-		alias: (*alias)(&l),
-	}
-	if l.HandleList != nil {
-		aux.HandleList = &l.HandleList
-	}
-	return e.EncodeElement(aux, start)
-}
-
 // ListSharesResponse - An enumeration of shares.
 type ListSharesResponse struct {
 	// REQUIRED
@@ -375,70 +188,51 @@ type ListSharesResponse struct {
 	ShareItems      []*ShareItemInternal `xml:"Shares>Share"`
 }
 
-// MarshalXML implements the xml.Marshaller interface for type ListSharesResponse.
-func (l ListSharesResponse) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias ListSharesResponse
-	aux := &struct {
-		*alias
-		ShareItems *[]*ShareItemInternal `xml:"Shares>Share"`
-	}{
-		alias: (*alias)(&l),
-	}
-	if l.ShareItems != nil {
-		aux.ShareItems = &l.ShareItems
-	}
-	return e.EncodeElement(aux, start)
+// ShareCorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in
+// another domain. Web browsers implement a security restriction known as same-origin policy that
+// prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin
+// domain) to call APIs in another domain.
+type ShareCorsRule struct {
+	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
+	AllowedHeaders *string `xml:"AllowedHeaders"`
+
+	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
+	AllowedMethods *string `xml:"AllowedMethods"`
+
+	// REQUIRED; The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
+	// is the domain from which the request originates. Note that the origin must be an exact
+	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*'
+	// to allow all origin domains to make requests via CORS.
+	AllowedOrigins *string `xml:"AllowedOrigins"`
+
+	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request
+	// issuer.
+	ExposedHeaders *string `xml:"ExposedHeaders"`
+
+	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
+	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
-// Metrics - Storage Analytics metrics for file service.
-type Metrics struct {
-	// REQUIRED; Indicates whether metrics are enabled for the File service.
-	Enabled *bool `xml:"Enabled"`
-
-	// REQUIRED; The version of Storage Analytics to configure.
-	Version *string `xml:"Version"`
-
-	// Indicates whether metrics should generate summary statistics for called API operations.
-	IncludeAPIs *bool `xml:"IncludeAPIs"`
-
-	// The retention policy.
-	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
-}
-
-// RetentionPolicy - The retention policy.
-type RetentionPolicy struct {
-	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
-	// the user is responsible for deleting it.
-	Enabled *bool `xml:"Enabled"`
-
-	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics
-	// data is deleted on a best-effort basis after the retention period expires.
-	Days *int32 `xml:"Days"`
+// ShareFileHTTPHeaders contains a group of parameters for the fileClient.Create method.
+type ShareFileHTTPHeaders struct {
+	// Sets the file's cache control. The File service stores this value but does not use or modify it.
+	CacheControl *string
+	// Sets the file's Content-Disposition header.
+	ContentDisposition *string
+	// Specifies which content encodings have been applied to the file.
+	ContentEncoding *string
+	// Specifies the natural languages used by this resource.
+	ContentLanguage *string
+	// Sets the file's MD5 hash.
+	ContentMD5 []byte
+	// Sets the MIME content type of the file. The default type is 'application/octet-stream'.
+	ContentType *string
 }
 
 // ShareFileRangeList - The list of file ranges
 type ShareFileRangeList struct {
 	ClearRanges []*ClearRange `xml:"ClearRange"`
 	Ranges      []*FileRange  `xml:"Range"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type ShareFileRangeList.
-func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias ShareFileRangeList
-	aux := &struct {
-		*alias
-		ClearRanges *[]*ClearRange `xml:"ClearRange"`
-		Ranges      *[]*FileRange  `xml:"Range"`
-	}{
-		alias: (*alias)(&s),
-	}
-	if s.ClearRanges != nil {
-		aux.ClearRanges = &s.ClearRanges
-	}
-	if s.Ranges != nil {
-		aux.Ranges = &s.Ranges
-	}
-	return e.EncodeElement(aux, start)
 }
 
 // ShareItemInternal - A listed Azure Storage share item.
@@ -456,20 +250,19 @@ type ShareItemInternal struct {
 	Version  *string            `xml:"Version"`
 }
 
-// UnmarshalXML implements the xml.Unmarshaller interface for type ShareItemInternal.
-func (s *ShareItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias ShareItemInternal
-	aux := &struct {
-		*alias
-		Metadata additionalProperties `xml:"Metadata"`
-	}{
-		alias: (*alias)(s),
-	}
-	if err := d.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	s.Metadata = (map[string]*string)(aux.Metadata)
-	return nil
+// ShareMetrics - Storage Analytics metrics for file service.
+type ShareMetrics struct {
+	// REQUIRED; Indicates whether metrics are enabled for the File service.
+	Enabled *bool `xml:"Enabled"`
+
+	// REQUIRED; The version of Storage Analytics to configure.
+	Version *string `xml:"Version"`
+
+	// Indicates whether metrics should generate summary statistics for called API operations.
+	IncludeApis *bool `xml:"IncludeAPIs"`
+
+	// The retention policy.
+	RetentionPolicy *ShareRetentionPolicy `xml:"RetentionPolicy"`
 }
 
 // SharePermission - A permission (a security descriptor) at the share level.
@@ -510,51 +303,36 @@ type SharePropertiesInternal struct {
 	RootSquash                    *ShareRootSquash `xml:"RootSquash"`
 }
 
-// MarshalXML implements the xml.Marshaller interface for type SharePropertiesInternal.
-func (s SharePropertiesInternal) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias SharePropertiesInternal
-	aux := &struct {
-		*alias
-		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
-		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
-	}{
-		alias:                         (*alias)(&s),
-		AccessTierChangeTime:          (*timeRFC1123)(s.AccessTierChangeTime),
-		DeletedTime:                   (*timeRFC1123)(s.DeletedTime),
-		LastModified:                  (*timeRFC1123)(s.LastModified),
-		NextAllowedQuotaDowngradeTime: (*timeRFC1123)(s.NextAllowedQuotaDowngradeTime),
-	}
-	return e.EncodeElement(aux, start)
-}
-
-// UnmarshalXML implements the xml.Unmarshaller interface for type SharePropertiesInternal.
-func (s *SharePropertiesInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
-	type alias SharePropertiesInternal
-	aux := &struct {
-		*alias
-		AccessTierChangeTime          *timeRFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                   *timeRFC1123 `xml:"DeletedTime"`
-		LastModified                  *timeRFC1123 `xml:"Last-Modified"`
-		NextAllowedQuotaDowngradeTime *timeRFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
-	}{
-		alias: (*alias)(s),
-	}
-	if err := d.DecodeElement(aux, &start); err != nil {
-		return err
-	}
-	s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
-	s.DeletedTime = (*time.Time)(aux.DeletedTime)
-	s.LastModified = (*time.Time)(aux.LastModified)
-	s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
-	return nil
-}
-
 // ShareProtocolSettings - Protocol settings
 type ShareProtocolSettings struct {
 	// Settings for SMB protocol.
 	Smb *ShareSmbSettings `xml:"SMB"`
+}
+
+// ShareRetentionPolicy - The retention policy.
+type ShareRetentionPolicy struct {
+	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
+	// the user is responsible for deleting it.
+	Enabled *bool `xml:"Enabled"`
+
+	// Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics
+	// data is deleted on a best-effort basis after the retention period expires.
+	Days *int32 `xml:"Days"`
+}
+
+// ShareServiceProperties - Storage service properties.
+type ShareServiceProperties struct {
+	// The set of CORS rules.
+	Cors []*ShareCorsRule `xml:"Cors>CorsRule"`
+
+	// A summary of request statistics grouped by API in hourly aggregates for files.
+	HourMetrics *ShareMetrics `xml:"HourMetrics"`
+
+	// A summary of request statistics grouped by API in minute aggregates for files.
+	MinuteMetrics *ShareMetrics `xml:"MinuteMetrics"`
+
+	// Protocol settings
+	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
 }
 
 // ShareSmbSettings - Settings for SMB protocol.
@@ -593,35 +371,9 @@ type SourceModifiedAccessConditions struct {
 	SourceIfNoneMatchCRC64 []byte
 }
 
-// StorageServiceProperties - Storage service properties.
-type StorageServiceProperties struct {
-	// The set of CORS rules.
-	Cors []*CorsRule `xml:"Cors>CorsRule"`
-
-	// A summary of request statistics grouped by API in hourly aggregates for files.
-	HourMetrics *Metrics `xml:"HourMetrics"`
-
-	// A summary of request statistics grouped by API in minute aggregates for files.
-	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
-
-	// Protocol settings
-	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
-}
-
-// MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
-func (s StorageServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	type alias StorageServiceProperties
-	aux := &struct {
-		*alias
-		Cors *[]*CorsRule `xml:"Cors>CorsRule"`
-	}{
-		alias: (*alias)(&s),
-	}
-	if s.Cors != nil {
-		aux.Cors = &s.Cors
-	}
-	return e.EncodeElement(aux, start)
-}
+//type StorageError struct {
+//	Message *string `json:"Message,omitempty"`
+//}
 
 // directoryClientCreateOptions contains the optional parameters for the directoryClient.Create method.
 type directoryClientCreateOptions struct {

@@ -9,19 +9,12 @@
 package azfile
 
 import (
-	"net/http"
+	"io"
 	"time"
 )
 
 // directoryClientCreateResponse contains the response from method directoryClient.Create.
 type directoryClientCreateResponse struct {
-	directoryClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientCreateResult contains the result from method directoryClient.Create.
-type directoryClientCreateResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -32,16 +25,16 @@ type directoryClientCreateResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -64,13 +57,6 @@ type directoryClientCreateResult struct {
 
 // directoryClientDeleteResponse contains the response from method directoryClient.Delete.
 type directoryClientDeleteResponse struct {
-	directoryClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientDeleteResult contains the result from method directoryClient.Delete.
-type directoryClientDeleteResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -83,13 +69,6 @@ type directoryClientDeleteResult struct {
 
 // directoryClientForceCloseHandlesResponse contains the response from method directoryClient.ForceCloseHandles.
 type directoryClientForceCloseHandlesResponse struct {
-	directoryClientForceCloseHandlesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientForceCloseHandlesResult contains the result from method directoryClient.ForceCloseHandles.
-type directoryClientForceCloseHandlesResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -111,13 +90,6 @@ type directoryClientForceCloseHandlesResult struct {
 
 // directoryClientGetPropertiesResponse contains the response from method directoryClient.GetProperties.
 type directoryClientGetPropertiesResponse struct {
-	directoryClientGetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientGetPropertiesResult contains the result from method directoryClient.GetProperties.
-type directoryClientGetPropertiesResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -128,16 +100,16 @@ type directoryClientGetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -163,13 +135,6 @@ type directoryClientGetPropertiesResult struct {
 
 // directoryClientListFilesAndDirectoriesSegmentResponse contains the response from method directoryClient.ListFilesAndDirectoriesSegment.
 type directoryClientListFilesAndDirectoriesSegmentResponse struct {
-	directoryClientListFilesAndDirectoriesSegmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientListFilesAndDirectoriesSegmentResult contains the result from method directoryClient.ListFilesAndDirectoriesSegment.
-type directoryClientListFilesAndDirectoriesSegmentResult struct {
 	ListFilesAndDirectoriesSegmentResponse
 	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string `xml:"ContentType"`
@@ -186,13 +151,6 @@ type directoryClientListFilesAndDirectoriesSegmentResult struct {
 
 // directoryClientListHandlesResponse contains the response from method directoryClient.ListHandles.
 type directoryClientListHandlesResponse struct {
-	directoryClientListHandlesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientListHandlesResult contains the result from method directoryClient.ListHandles.
-type directoryClientListHandlesResult struct {
 	ListHandlesResponse
 	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string `xml:"ContentType"`
@@ -209,13 +167,6 @@ type directoryClientListHandlesResult struct {
 
 // directoryClientSetMetadataResponse contains the response from method directoryClient.SetMetadata.
 type directoryClientSetMetadataResponse struct {
-	directoryClientSetMetadataResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientSetMetadataResult contains the result from method directoryClient.SetMetadata.
-type directoryClientSetMetadataResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -234,13 +185,6 @@ type directoryClientSetMetadataResult struct {
 
 // directoryClientSetPropertiesResponse contains the response from method directoryClient.SetProperties.
 type directoryClientSetPropertiesResponse struct {
-	directoryClientSetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// directoryClientSetPropertiesResult contains the result from method directoryClient.SetProperties.
-type directoryClientSetPropertiesResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -251,16 +195,16 @@ type directoryClientSetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -283,13 +227,6 @@ type directoryClientSetPropertiesResult struct {
 
 // fileClientAbortCopyResponse contains the response from method fileClient.AbortCopy.
 type fileClientAbortCopyResponse struct {
-	fileClientAbortCopyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientAbortCopyResult contains the result from method fileClient.AbortCopy.
-type fileClientAbortCopyResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -302,13 +239,6 @@ type fileClientAbortCopyResult struct {
 
 // fileClientAcquireLeaseResponse contains the response from method fileClient.AcquireLease.
 type fileClientAcquireLeaseResponse struct {
-	fileClientAcquireLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientAcquireLeaseResult contains the result from method fileClient.AcquireLease.
-type fileClientAcquireLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -333,13 +263,6 @@ type fileClientAcquireLeaseResult struct {
 
 // fileClientBreakLeaseResponse contains the response from method fileClient.BreakLease.
 type fileClientBreakLeaseResponse struct {
-	fileClientBreakLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientBreakLeaseResult contains the result from method fileClient.BreakLease.
-type fileClientBreakLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -364,13 +287,6 @@ type fileClientBreakLeaseResult struct {
 
 // fileClientChangeLeaseResponse contains the response from method fileClient.ChangeLease.
 type fileClientChangeLeaseResponse struct {
-	fileClientChangeLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientChangeLeaseResult contains the result from method fileClient.ChangeLease.
-type fileClientChangeLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -395,13 +311,6 @@ type fileClientChangeLeaseResult struct {
 
 // fileClientCreateResponse contains the response from method fileClient.Create.
 type fileClientCreateResponse struct {
-	fileClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientCreateResult contains the result from method fileClient.Create.
-type fileClientCreateResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -412,16 +321,16 @@ type fileClientCreateResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -444,13 +353,6 @@ type fileClientCreateResult struct {
 
 // fileClientDeleteResponse contains the response from method fileClient.Delete.
 type fileClientDeleteResponse struct {
-	fileClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientDeleteResult contains the result from method fileClient.Delete.
-type fileClientDeleteResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -463,15 +365,11 @@ type fileClientDeleteResult struct {
 
 // fileClientDownloadResponse contains the response from method fileClient.Download.
 type fileClientDownloadResponse struct {
-	fileClientDownloadResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientDownloadResult contains the result from method fileClient.Download.
-type fileClientDownloadResult struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
+
+	// Body contains the streaming response.
+	Body io.ReadCloser
 
 	// CacheControl contains the information returned from the Cache-Control header response.
 	CacheControl *string
@@ -525,19 +423,19 @@ type fileClientDownloadResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileContentMD5 contains the information returned from the x-ms-content-md5 header response.
 	FileContentMD5 []byte
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -572,13 +470,6 @@ type fileClientDownloadResult struct {
 
 // fileClientForceCloseHandlesResponse contains the response from method fileClient.ForceCloseHandles.
 type fileClientForceCloseHandlesResponse struct {
-	fileClientForceCloseHandlesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientForceCloseHandlesResult contains the result from method fileClient.ForceCloseHandles.
-type fileClientForceCloseHandlesResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -600,13 +491,6 @@ type fileClientForceCloseHandlesResult struct {
 
 // fileClientGetPropertiesResponse contains the response from method fileClient.GetProperties.
 type fileClientGetPropertiesResponse struct {
-	fileClientGetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientGetPropertiesResult contains the result from method fileClient.GetProperties.
-type fileClientGetPropertiesResult struct {
 	// CacheControl contains the information returned from the Cache-Control header response.
 	CacheControl *string
 
@@ -656,16 +540,16 @@ type fileClientGetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -703,13 +587,6 @@ type fileClientGetPropertiesResult struct {
 
 // fileClientGetRangeListResponse contains the response from method fileClient.GetRangeList.
 type fileClientGetRangeListResponse struct {
-	fileClientGetRangeListResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientGetRangeListResult contains the result from method fileClient.GetRangeList.
-type fileClientGetRangeListResult struct {
 	ShareFileRangeList
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
@@ -732,13 +609,6 @@ type fileClientGetRangeListResult struct {
 
 // fileClientListHandlesResponse contains the response from method fileClient.ListHandles.
 type fileClientListHandlesResponse struct {
-	fileClientListHandlesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientListHandlesResult contains the result from method fileClient.ListHandles.
-type fileClientListHandlesResult struct {
 	ListHandlesResponse
 	// ContentType contains the information returned from the Content-Type header response.
 	ContentType *string `xml:"ContentType"`
@@ -755,13 +625,6 @@ type fileClientListHandlesResult struct {
 
 // fileClientReleaseLeaseResponse contains the response from method fileClient.ReleaseLease.
 type fileClientReleaseLeaseResponse struct {
-	fileClientReleaseLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientReleaseLeaseResult contains the result from method fileClient.ReleaseLease.
-type fileClientReleaseLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -783,13 +646,6 @@ type fileClientReleaseLeaseResult struct {
 
 // fileClientSetHTTPHeadersResponse contains the response from method fileClient.SetHTTPHeaders.
 type fileClientSetHTTPHeadersResponse struct {
-	fileClientSetHTTPHeadersResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientSetHTTPHeadersResult contains the result from method fileClient.SetHTTPHeaders.
-type fileClientSetHTTPHeadersResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -800,16 +656,16 @@ type fileClientSetHTTPHeadersResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -832,13 +688,6 @@ type fileClientSetHTTPHeadersResult struct {
 
 // fileClientSetMetadataResponse contains the response from method fileClient.SetMetadata.
 type fileClientSetMetadataResponse struct {
-	fileClientSetMetadataResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientSetMetadataResult contains the result from method fileClient.SetMetadata.
-type fileClientSetMetadataResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -860,13 +709,6 @@ type fileClientSetMetadataResult struct {
 
 // fileClientStartCopyResponse contains the response from method fileClient.StartCopy.
 type fileClientStartCopyResponse struct {
-	fileClientStartCopyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientStartCopyResult contains the result from method fileClient.StartCopy.
-type fileClientStartCopyResult struct {
 	// CopyID contains the information returned from the x-ms-copy-id header response.
 	CopyID *string
 
@@ -891,13 +733,6 @@ type fileClientStartCopyResult struct {
 
 // fileClientUploadRangeFromURLResponse contains the response from method fileClient.UploadRangeFromURL.
 type fileClientUploadRangeFromURLResponse struct {
-	fileClientUploadRangeFromURLResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientUploadRangeFromURLResult contains the result from method fileClient.UploadRangeFromURL.
-type fileClientUploadRangeFromURLResult struct {
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 
@@ -925,13 +760,6 @@ type fileClientUploadRangeFromURLResult struct {
 
 // fileClientUploadRangeResponse contains the response from method fileClient.UploadRange.
 type fileClientUploadRangeResponse struct {
-	fileClientUploadRangeResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// fileClientUploadRangeResult contains the result from method fileClient.UploadRange.
-type fileClientUploadRangeResult struct {
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 
@@ -956,14 +784,7 @@ type fileClientUploadRangeResult struct {
 
 // serviceClientGetPropertiesResponse contains the response from method serviceClient.GetProperties.
 type serviceClientGetPropertiesResponse struct {
-	serviceClientGetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// serviceClientGetPropertiesResult contains the result from method serviceClient.GetProperties.
-type serviceClientGetPropertiesResult struct {
-	StorageServiceProperties
+	ShareServiceProperties
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
 
@@ -973,13 +794,6 @@ type serviceClientGetPropertiesResult struct {
 
 // serviceClientListSharesSegmentResponse contains the response from method serviceClient.ListSharesSegment.
 type serviceClientListSharesSegmentResponse struct {
-	serviceClientListSharesSegmentResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// serviceClientListSharesSegmentResult contains the result from method serviceClient.ListSharesSegment.
-type serviceClientListSharesSegmentResult struct {
 	ListSharesResponse
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
@@ -990,13 +804,6 @@ type serviceClientListSharesSegmentResult struct {
 
 // serviceClientSetPropertiesResponse contains the response from method serviceClient.SetProperties.
 type serviceClientSetPropertiesResponse struct {
-	serviceClientSetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// serviceClientSetPropertiesResult contains the result from method serviceClient.SetProperties.
-type serviceClientSetPropertiesResult struct {
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
 
@@ -1006,13 +813,6 @@ type serviceClientSetPropertiesResult struct {
 
 // shareClientAcquireLeaseResponse contains the response from method shareClient.AcquireLease.
 type shareClientAcquireLeaseResponse struct {
-	shareClientAcquireLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientAcquireLeaseResult contains the result from method shareClient.AcquireLease.
-type shareClientAcquireLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1037,13 +837,6 @@ type shareClientAcquireLeaseResult struct {
 
 // shareClientBreakLeaseResponse contains the response from method shareClient.BreakLease.
 type shareClientBreakLeaseResponse struct {
-	shareClientBreakLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientBreakLeaseResult contains the result from method shareClient.BreakLease.
-type shareClientBreakLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1071,13 +864,6 @@ type shareClientBreakLeaseResult struct {
 
 // shareClientChangeLeaseResponse contains the response from method shareClient.ChangeLease.
 type shareClientChangeLeaseResponse struct {
-	shareClientChangeLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientChangeLeaseResult contains the result from method shareClient.ChangeLease.
-type shareClientChangeLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1102,13 +888,6 @@ type shareClientChangeLeaseResult struct {
 
 // shareClientCreatePermissionResponse contains the response from method shareClient.CreatePermission.
 type shareClientCreatePermissionResponse struct {
-	shareClientCreatePermissionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientCreatePermissionResult contains the result from method shareClient.CreatePermission.
-type shareClientCreatePermissionResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1124,13 +903,6 @@ type shareClientCreatePermissionResult struct {
 
 // shareClientCreateResponse contains the response from method shareClient.Create.
 type shareClientCreateResponse struct {
-	shareClientCreateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientCreateResult contains the result from method shareClient.Create.
-type shareClientCreateResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1149,13 +921,6 @@ type shareClientCreateResult struct {
 
 // shareClientCreateSnapshotResponse contains the response from method shareClient.CreateSnapshot.
 type shareClientCreateSnapshotResponse struct {
-	shareClientCreateSnapshotResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientCreateSnapshotResult contains the result from method shareClient.CreateSnapshot.
-type shareClientCreateSnapshotResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1177,13 +942,6 @@ type shareClientCreateSnapshotResult struct {
 
 // shareClientDeleteResponse contains the response from method shareClient.Delete.
 type shareClientDeleteResponse struct {
-	shareClientDeleteResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientDeleteResult contains the result from method shareClient.Delete.
-type shareClientDeleteResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1196,13 +954,6 @@ type shareClientDeleteResult struct {
 
 // shareClientGetAccessPolicyResponse contains the response from method shareClient.GetAccessPolicy.
 type shareClientGetAccessPolicyResponse struct {
-	shareClientGetAccessPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientGetAccessPolicyResult contains the result from method shareClient.GetAccessPolicy.
-type shareClientGetAccessPolicyResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
 
@@ -1224,13 +975,6 @@ type shareClientGetAccessPolicyResult struct {
 
 // shareClientGetPermissionResponse contains the response from method shareClient.GetPermission.
 type shareClientGetPermissionResponse struct {
-	shareClientGetPermissionResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientGetPermissionResult contains the result from method shareClient.GetPermission.
-type shareClientGetPermissionResult struct {
 	SharePermission
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
@@ -1244,13 +988,6 @@ type shareClientGetPermissionResult struct {
 
 // shareClientGetPropertiesResponse contains the response from method shareClient.GetProperties.
 type shareClientGetPropertiesResponse struct {
-	shareClientGetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientGetPropertiesResult contains the result from method shareClient.GetProperties.
-type shareClientGetPropertiesResult struct {
 	// AccessTier contains the information returned from the x-ms-access-tier header response.
 	AccessTier *string
 
@@ -1312,13 +1049,6 @@ type shareClientGetPropertiesResult struct {
 
 // shareClientGetStatisticsResponse contains the response from method shareClient.GetStatistics.
 type shareClientGetStatisticsResponse struct {
-	shareClientGetStatisticsResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientGetStatisticsResult contains the result from method shareClient.GetStatistics.
-type shareClientGetStatisticsResult struct {
 	ShareStats
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
@@ -1338,13 +1068,6 @@ type shareClientGetStatisticsResult struct {
 
 // shareClientReleaseLeaseResponse contains the response from method shareClient.ReleaseLease.
 type shareClientReleaseLeaseResponse struct {
-	shareClientReleaseLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientReleaseLeaseResult contains the result from method shareClient.ReleaseLease.
-type shareClientReleaseLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1366,13 +1089,6 @@ type shareClientReleaseLeaseResult struct {
 
 // shareClientRenewLeaseResponse contains the response from method shareClient.RenewLease.
 type shareClientRenewLeaseResponse struct {
-	shareClientRenewLeaseResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientRenewLeaseResult contains the result from method shareClient.RenewLease.
-type shareClientRenewLeaseResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1397,13 +1113,6 @@ type shareClientRenewLeaseResult struct {
 
 // shareClientRestoreResponse contains the response from method shareClient.Restore.
 type shareClientRestoreResponse struct {
-	shareClientRestoreResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientRestoreResult contains the result from method shareClient.Restore.
-type shareClientRestoreResult struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1425,13 +1134,6 @@ type shareClientRestoreResult struct {
 
 // shareClientSetAccessPolicyResponse contains the response from method shareClient.SetAccessPolicy.
 type shareClientSetAccessPolicyResponse struct {
-	shareClientSetAccessPolicyResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientSetAccessPolicyResult contains the result from method shareClient.SetAccessPolicy.
-type shareClientSetAccessPolicyResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1450,13 +1152,6 @@ type shareClientSetAccessPolicyResult struct {
 
 // shareClientSetMetadataResponse contains the response from method shareClient.SetMetadata.
 type shareClientSetMetadataResponse struct {
-	shareClientSetMetadataResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientSetMetadataResult contains the result from method shareClient.SetMetadata.
-type shareClientSetMetadataResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1475,13 +1170,6 @@ type shareClientSetMetadataResult struct {
 
 // shareClientSetPropertiesResponse contains the response from method shareClient.SetProperties.
 type shareClientSetPropertiesResponse struct {
-	shareClientSetPropertiesResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// shareClientSetPropertiesResult contains the result from method shareClient.SetProperties.
-type shareClientSetPropertiesResult struct {
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 

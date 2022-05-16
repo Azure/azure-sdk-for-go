@@ -24,12 +24,12 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNamespacePager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListByNamespacePager("alitest",
+		"ali-ua-test-eh-system-1",
 		&armeventhub.SchemaRegistryClientListByNamespaceOptions{Skip: nil,
 			Top: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleSchemaRegistryClient_NewListByNamespacePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleSchemaRegistryClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		armeventhub.SchemaGroup{
 			Properties: &armeventhub.SchemaGroupProperties{
 				GroupProperties:     map[string]*string{},
@@ -83,14 +82,14 @@ func ExampleSchemaRegistryClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,14 +103,14 @@ func ExampleSchemaRegistryClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewSchemaRegistryClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewSchemaRegistryClient("e8baea74-64ce-459b-bee3-5aa4c47b3ae3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<schema-group-name>",
+		"alitest",
+		"ali-ua-test-eh-system-1",
+		"testSchemaGroup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

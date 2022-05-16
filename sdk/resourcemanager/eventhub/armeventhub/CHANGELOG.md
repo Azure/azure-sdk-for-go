@@ -1,5 +1,31 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientDeleteResponse], error)` to `(*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `AvailableClustersList.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `SchemaGroupListResult.MarshalJSON` has been removed
+- Function `AuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `ConsumerGroupListResult.MarshalJSON` has been removed
+- Function `ArmDisasterRecoveryListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `EHNamespaceIDListResult.MarshalJSON` has been removed
+- Function `EHNamespaceListResult.MarshalJSON` has been removed
+- Function `NetworkRuleSetListResult.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

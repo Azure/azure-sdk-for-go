@@ -1,5 +1,32 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*HubsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[HubsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[HubsClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginRegenerateKey` return value(s) have been changed from `(*armruntime.Poller[ClientRegenerateKeyResponse], error)` to `(*runtime.Poller[ClientRegenerateKeyResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*Client.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ClientRestartResponse], error)` to `(*runtime.Poller[ClientRestartResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- Function `*HubsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[HubsClientDeleteResponse], error)` to `(*runtime.Poller[HubsClientDeleteResponse], error)`
+- Function `HubList.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionList.MarshalJSON` has been removed
+- Function `ResourceInfoList.MarshalJSON` has been removed
+- Function `SKUCapacity.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `PrivateLinkResourceList.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `SharedPrivateLinkResourceList.MarshalJSON` has been removed
+- Function `SKUList.MarshalJSON` has been removed
+- Function `SignalRServiceUsageList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

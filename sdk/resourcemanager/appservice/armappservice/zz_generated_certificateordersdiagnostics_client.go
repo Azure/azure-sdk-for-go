@@ -39,7 +39,7 @@ func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,9 +55,10 @@ func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector
-// response from App Lens.
+// GetAppServiceCertificateOrderDetectorResponse - Microsoft.CertificateRegistration call to get a detector response from
+// App Lens.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - The certificate order name for which the response is needed.
 // detectorName - The detector name which needs to be run.
@@ -113,7 +114,7 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,15 +127,16 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	return result, nil
 }
 
-// NewListAppServiceCertificateOrderDetectorResponsePager - Description for Microsoft.CertificateRegistration to get the list
-// of detectors for this RP.
+// NewListAppServiceCertificateOrderDetectorResponsePager - Microsoft.CertificateRegistration to get the list of detectors
+// for this RP.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // certificateOrderName - The certificate order name for which the response is needed.
 // options - CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional
 // parameters for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
 func (client *CertificateOrdersDiagnosticsClient) NewListAppServiceCertificateOrderDetectorResponsePager(resourceGroupName string, certificateOrderName string, options *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) *runtime.Pager[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse]{
 		More: func(page CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -183,7 +185,7 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

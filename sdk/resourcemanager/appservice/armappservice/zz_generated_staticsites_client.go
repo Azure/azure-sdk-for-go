@@ -39,7 +39,7 @@ func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,28 +55,30 @@ func NewStaticSitesClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// BeginApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // privateEndpointConnectionName - Name of the private endpoint connection.
 // privateEndpointWrapper - Request body.
 // options - StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the
 // StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection method.
-func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*armruntime.Poller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse], error) {
+func (client *StaticSitesClient) BeginApproveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*runtime.Poller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.approveOrRejectPrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
+// ApproveOrRejectPrivateEndpointConnection - Approves or rejects a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
@@ -118,33 +120,34 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnectionCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
-// BeginCreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an
-// existing static site.
+// BeginCreateOrUpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to create or update.
 // staticSiteEnvelope - A JSON representation of the staticsite properties. See example.
 // options - StaticSitesClientBeginCreateOrUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSite
 // method.
-func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*armruntime.Poller[StaticSitesClientCreateOrUpdateStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginCreateOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*runtime.Poller[StaticSitesClientCreateOrUpdateStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateStaticSite(ctx, resourceGroupName, name, staticSiteEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing
-// static site.
+// CreateOrUpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteEnvelope StaticSiteARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteEnvelope, options)
 	if err != nil {
@@ -182,12 +185,13 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteEnvelope)
 }
 
-// CreateOrUpdateStaticSiteAppSettings - Description for Creates or updates the app settings of a static site.
+// CreateOrUpdateStaticSiteAppSettings - Creates or updates the app settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // appSettings - The dictionary containing the static site app settings to update.
@@ -230,7 +234,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
@@ -243,8 +247,9 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteAppSettingsHandleRespon
 	return result, nil
 }
 
-// CreateOrUpdateStaticSiteBuildAppSettings - Description for Creates or updates the app settings of a static site build.
+// CreateOrUpdateStaticSiteBuildAppSettings - Creates or updates the app settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -292,7 +297,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
@@ -305,9 +310,9 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildAppSettingsHandleR
 	return result, nil
 }
 
-// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Description for Creates or updates the function app settings of a static
-// site build.
+// CreateOrUpdateStaticSiteBuildFunctionAppSettings - Creates or updates the function app settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -355,7 +360,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
@@ -368,9 +373,10 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 	return result, nil
 }
 
-// BeginCreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
-// group and static site.
+// BeginCreateOrUpdateStaticSiteCustomDomain - Creates a new static site custom domain in an existing resource group and static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // domainName - The custom domain to create.
@@ -378,21 +384,22 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteBuildFunctionAppSetting
 // See example.
 // options - StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginCreateOrUpdateStaticSiteCustomDomain
 // method.
-func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*armruntime.Poller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse], error) {
+func (client *StaticSitesClient) BeginCreateOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*runtime.Poller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateStaticSiteCustomDomain(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdateStaticSiteCustomDomain - Description for Creates a new static site custom domain in an existing resource
-// group and static site.
+// CreateOrUpdateStaticSiteCustomDomain - Creates a new static site custom domain in an existing resource group and static
+// site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginCreateOrUpdateStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
@@ -434,13 +441,13 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomainCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteCustomDomainRequestPropertiesEnvelope)
 }
 
-// CreateOrUpdateStaticSiteFunctionAppSettings - Description for Creates or updates the function app settings of a static
-// site.
+// CreateOrUpdateStaticSiteFunctionAppSettings - Creates or updates the function app settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // appSettings - The dictionary containing the static site function app settings to update.
@@ -483,7 +490,7 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appSettings)
 }
 
@@ -496,8 +503,9 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteFunctionAppSettingsHand
 	return result, nil
 }
 
-// CreateUserRolesInvitationLink - Description for Creates an invitation link for a user with the role
+// CreateUserRolesInvitationLink - Creates an invitation link for a user with the role
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientCreateUserRolesInvitationLinkOptions contains the optional parameters for the StaticSitesClient.CreateUserRolesInvitationLink
@@ -539,7 +547,7 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteUserRolesInvitationEnvelope)
 }
 
@@ -552,27 +560,29 @@ func (client *StaticSitesClient) createUserRolesInvitationLinkHandleResponse(res
 	return result, nil
 }
 
-// BeginCreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
+// BeginCreateZipDeploymentForStaticSite - Deploys zipped content to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // staticSiteZipDeploymentEnvelope - A JSON representation of the StaticSiteZipDeployment properties. See example.
 // options - StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSite
 // method.
-func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*armruntime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*runtime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createZipDeploymentForStaticSite(ctx, resourceGroupName, name, staticSiteZipDeploymentEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateZipDeploymentForStaticSite - Description for Deploys zipped content to a static site.
+// CreateZipDeploymentForStaticSite - Deploys zipped content to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Context, resourceGroupName string, name string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteCreateRequest(ctx, resourceGroupName, name, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
@@ -610,33 +620,34 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// BeginCreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static
-// site.
+// BeginCreateZipDeploymentForStaticSiteBuild - Deploys zipped content to a specific environment of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - Name of the environment.
 // staticSiteZipDeploymentEnvelope - A JSON representation of the StaticSiteZipDeployment properties. See example.
 // options - StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginCreateZipDeploymentForStaticSiteBuild
 // method.
-func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*armruntime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse], error) {
+func (client *StaticSitesClient) BeginCreateZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*runtime.Poller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createZipDeploymentForStaticSiteBuild(ctx, resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateZipDeploymentForStaticSiteBuild - Description for Deploys zipped content to a specific environment of a static site.
+// CreateZipDeploymentForStaticSiteBuild - Deploys zipped content to a specific environment of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, staticSiteZipDeploymentEnvelope StaticSiteZipDeploymentARMResource, options *StaticSitesClientBeginCreateZipDeploymentForStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.createZipDeploymentForStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, options)
 	if err != nil {
@@ -678,31 +689,33 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuildCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteZipDeploymentEnvelope)
 }
 
-// BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// BeginDeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // privateEndpointConnectionName - Name of the private endpoint connection.
 // options - StaticSitesClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.BeginDeletePrivateEndpointConnection
 // method.
-func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*armruntime.Poller[StaticSitesClientDeletePrivateEndpointConnectionResponse], error) {
+func (client *StaticSitesClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[StaticSitesClientDeletePrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
+// DeletePrivateEndpointConnection - Deletes a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *StaticSitesClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
@@ -744,30 +757,32 @@ func (client *StaticSitesClient) deletePrivateEndpointConnectionCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteStaticSite - Description for Deletes a static site.
+// BeginDeleteStaticSite - Deletes a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to delete.
 // options - StaticSitesClientBeginDeleteStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSite
 // method.
-func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*armruntime.Poller[StaticSitesClientDeleteStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginDeleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*runtime.Poller[StaticSitesClientDeleteStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteStaticSite(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientDeleteStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DeleteStaticSite - Description for Deletes a static site.
+// DeleteStaticSite - Deletes a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDeleteStaticSiteOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -805,31 +820,33 @@ func (client *StaticSitesClient) deleteStaticSiteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteStaticSiteBuild - Description for Deletes a static site build.
+// BeginDeleteStaticSiteBuild - Deletes a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
 // options - StaticSitesClientBeginDeleteStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteBuild
 // method.
-func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*armruntime.Poller[StaticSitesClientDeleteStaticSiteBuildResponse], error) {
+func (client *StaticSitesClient) BeginDeleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*runtime.Poller[StaticSitesClientDeleteStaticSiteBuildResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteStaticSiteBuild(ctx, resourceGroupName, name, environmentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientDeleteStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteBuildResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DeleteStaticSiteBuild - Description for Deletes a static site build.
+// DeleteStaticSiteBuild - Deletes a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, options *StaticSitesClientBeginDeleteStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, options)
 	if err != nil {
@@ -871,31 +888,33 @@ func (client *StaticSitesClient) deleteStaticSiteBuildCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
+// BeginDeleteStaticSiteCustomDomain - Deletes a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // domainName - The custom domain to delete.
 // options - StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions contains the optional parameters for the StaticSitesClient.BeginDeleteStaticSiteCustomDomain
 // method.
-func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*armruntime.Poller[StaticSitesClientDeleteStaticSiteCustomDomainResponse], error) {
+func (client *StaticSitesClient) BeginDeleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*runtime.Poller[StaticSitesClientDeleteStaticSiteCustomDomainResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteStaticSiteCustomDomain(ctx, resourceGroupName, name, domainName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientDeleteStaticSiteCustomDomainResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDeleteStaticSiteCustomDomainResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDeleteStaticSiteCustomDomainResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DeleteStaticSiteCustomDomain - Description for Deletes a custom domain.
+// DeleteStaticSiteCustomDomain - Deletes a custom domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Context, resourceGroupName string, name string, domainName string, options *StaticSitesClientBeginDeleteStaticSiteCustomDomainOptions) (*http.Response, error) {
 	req, err := client.deleteStaticSiteCustomDomainCreateRequest(ctx, resourceGroupName, name, domainName, options)
 	if err != nil {
@@ -937,12 +956,13 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomainCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// DeleteStaticSiteUser - Description for Deletes the user entry from the static site.
+// DeleteStaticSiteUser - Deletes the user entry from the static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the staticsite.
 // authprovider - The auth provider for this user.
@@ -994,30 +1014,32 @@ func (client *StaticSitesClient) deleteStaticSiteUserCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginDetachStaticSite - Description for Detaches a static site.
+// BeginDetachStaticSite - Detaches a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to detach.
 // options - StaticSitesClientBeginDetachStaticSiteOptions contains the optional parameters for the StaticSitesClient.BeginDetachStaticSite
 // method.
-func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*armruntime.Poller[StaticSitesClientDetachStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginDetachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*runtime.Poller[StaticSitesClientDetachStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.detachStaticSite(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientDetachStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientDetachStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientDetachStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientDetachStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// DetachStaticSite - Description for Detaches a static site.
+// DetachStaticSite - Detaches a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceGroupName string, name string, options *StaticSitesClientBeginDetachStaticSiteOptions) (*http.Response, error) {
 	req, err := client.detachStaticSiteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -1055,12 +1077,13 @@ func (client *StaticSitesClient) detachStaticSiteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// DetachUserProvidedFunctionAppFromStaticSite - Description for Detach the user provided function app from the static site
+// DetachUserProvidedFunctionAppFromStaticSite - Detach the user provided function app from the static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // functionAppName - Name of the function app registered with the static site.
@@ -1107,13 +1130,13 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteCrea
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// DetachUserProvidedFunctionAppFromStaticSiteBuild - Description for Detach the user provided function app from the static
-// site build
+// DetachUserProvidedFunctionAppFromStaticSiteBuild - Detach the user provided function app from the static site build
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -1165,12 +1188,13 @@ func (client *StaticSitesClient) detachUserProvidedFunctionAppFromStaticSiteBuil
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// GetPrivateEndpointConnection - Description for Gets a private endpoint connection
+// GetPrivateEndpointConnection - Gets a private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // privateEndpointConnectionName - Name of the private endpoint connection.
@@ -1217,7 +1241,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1230,15 +1254,15 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionHandleResponse(resp
 	return result, nil
 }
 
-// NewGetPrivateEndpointConnectionListPager - Description for Gets the list of private endpoint connections associated with
-// a static site
+// NewGetPrivateEndpointConnectionListPager - Gets the list of private endpoint connections associated with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnectionList
 // method.
 func (client *StaticSitesClient) NewGetPrivateEndpointConnectionListPager(resourceGroupName string, name string, options *StaticSitesClientGetPrivateEndpointConnectionListOptions) *runtime.Pager[StaticSitesClientGetPrivateEndpointConnectionListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetPrivateEndpointConnectionListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientGetPrivateEndpointConnectionListResponse]{
 		More: func(page StaticSitesClientGetPrivateEndpointConnectionListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1287,7 +1311,7 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1300,8 +1324,9 @@ func (client *StaticSitesClient) getPrivateEndpointConnectionListHandleResponse(
 	return result, nil
 }
 
-// GetPrivateLinkResources - Description for Gets the private link resources
+// GetPrivateLinkResources - Gets the private link resources
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the site.
 // options - StaticSitesClientGetPrivateLinkResourcesOptions contains the optional parameters for the StaticSitesClient.GetPrivateLinkResources
@@ -1343,7 +1368,7 @@ func (client *StaticSitesClient) getPrivateLinkResourcesCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1356,8 +1381,9 @@ func (client *StaticSitesClient) getPrivateLinkResourcesHandleResponse(resp *htt
 	return result, nil
 }
 
-// GetStaticSite - Description for Gets the details of a static site.
+// GetStaticSite - Gets the details of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetStaticSite
@@ -1399,7 +1425,7 @@ func (client *StaticSitesClient) getStaticSiteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1412,8 +1438,9 @@ func (client *StaticSitesClient) getStaticSiteHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// GetStaticSiteBuild - Description for Gets the details of a static site build.
+// GetStaticSiteBuild - Gets the details of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -1460,7 +1487,7 @@ func (client *StaticSitesClient) getStaticSiteBuildCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1473,14 +1500,15 @@ func (client *StaticSitesClient) getStaticSiteBuildHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// NewGetStaticSiteBuildsPager - Description for Gets all static site builds for a particular static site.
+// NewGetStaticSiteBuildsPager - Gets all static site builds for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuilds
 // method.
 func (client *StaticSitesClient) NewGetStaticSiteBuildsPager(resourceGroupName string, name string, options *StaticSitesClientGetStaticSiteBuildsOptions) *runtime.Pager[StaticSitesClientGetStaticSiteBuildsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetStaticSiteBuildsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientGetStaticSiteBuildsResponse]{
 		More: func(page StaticSitesClientGetStaticSiteBuildsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1529,7 +1557,7 @@ func (client *StaticSitesClient) getStaticSiteBuildsCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1542,8 +1570,9 @@ func (client *StaticSitesClient) getStaticSiteBuildsHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// GetStaticSiteCustomDomain - Description for Gets an existing custom domain for a particular static site.
+// GetStaticSiteCustomDomain - Gets an existing custom domain for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site resource to search in.
 // domainName - The custom domain name.
@@ -1590,7 +1619,7 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1603,13 +1632,14 @@ func (client *StaticSitesClient) getStaticSiteCustomDomainHandleResponse(resp *h
 	return result, nil
 }
 
-// NewGetStaticSitesByResourceGroupPager - Description for Gets all static sites in the specified resource group.
+// NewGetStaticSitesByResourceGroupPager - Gets all static sites in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
 // method.
 func (client *StaticSitesClient) NewGetStaticSitesByResourceGroupPager(resourceGroupName string, options *StaticSitesClientGetStaticSitesByResourceGroupOptions) *runtime.Pager[StaticSitesClientGetStaticSitesByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetStaticSitesByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientGetStaticSitesByResourceGroupResponse]{
 		More: func(page StaticSitesClientGetStaticSitesByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1654,7 +1684,7 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1667,9 +1697,9 @@ func (client *StaticSitesClient) getStaticSitesByResourceGroupHandleResponse(res
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppForStaticSite - Description for Gets the details of the user provided function app registered
-// with a static site
+// GetUserProvidedFunctionAppForStaticSite - Gets the details of the user provided function app registered with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // functionAppName - Name of the function app registered with the static site.
@@ -1716,7 +1746,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1729,9 +1759,10 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteHandleRe
 	return result, nil
 }
 
-// GetUserProvidedFunctionAppForStaticSiteBuild - Description for Gets the details of the user provided function app registered
-// with a static site build
+// GetUserProvidedFunctionAppForStaticSiteBuild - Gets the details of the user provided function app registered with a static
+// site build
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -1783,7 +1814,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildCre
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1796,15 +1827,16 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppForStaticSiteBuildHan
 	return result, nil
 }
 
-// NewGetUserProvidedFunctionAppsForStaticSitePager - Description for Gets the details of the user provided function apps
-// registered with a static site
+// NewGetUserProvidedFunctionAppsForStaticSitePager - Gets the details of the user provided function apps registered with
+// a static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite
 // method.
 func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSitePager(resourceGroupName string, name string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse]{
 		More: func(page StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1853,7 +1885,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1866,16 +1898,17 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteHandleR
 	return result, nil
 }
 
-// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager - Description for Gets the details of the user provided function
-// apps registered with a static site build
+// NewGetUserProvidedFunctionAppsForStaticSiteBuildPager - Gets the details of the user provided function apps registered
+// with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
 // options - StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the
 // StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild method.
 func (client *StaticSitesClient) NewGetUserProvidedFunctionAppsForStaticSiteBuildPager(resourceGroupName string, name string, environmentName string, options *StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions) *runtime.Pager[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse]{
 		More: func(page StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1928,7 +1961,7 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildCr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1941,11 +1974,12 @@ func (client *StaticSitesClient) getUserProvidedFunctionAppsForStaticSiteBuildHa
 	return result, nil
 }
 
-// NewListPager - Description for Get all Static Sites for a subscription.
+// NewListPager - Get all Static Sites for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
 func (client *StaticSitesClient) NewListPager(options *StaticSitesClientListOptions) *runtime.Pager[StaticSitesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientListResponse]{
 		More: func(page StaticSitesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1986,7 +2020,7 @@ func (client *StaticSitesClient) listCreateRequest(ctx context.Context, options 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1999,8 +2033,9 @@ func (client *StaticSitesClient) listHandleResponse(resp *http.Response) (Static
 	return result, nil
 }
 
-// ListStaticSiteAppSettings - Description for Gets the application settings of a static site.
+// ListStaticSiteAppSettings - Gets the application settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteAppSettings
@@ -2042,7 +2077,7 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2055,8 +2090,9 @@ func (client *StaticSitesClient) listStaticSiteAppSettingsHandleResponse(resp *h
 	return result, nil
 }
 
-// ListStaticSiteBuildAppSettings - Description for Gets the application settings of a static site build.
+// ListStaticSiteBuildAppSettings - Gets the application settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -2103,7 +2139,7 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2116,8 +2152,9 @@ func (client *StaticSitesClient) listStaticSiteBuildAppSettingsHandleResponse(re
 	return result, nil
 }
 
-// ListStaticSiteBuildFunctionAppSettings - Description for Gets the application settings of a static site build.
+// ListStaticSiteBuildFunctionAppSettings - Gets the application settings of a static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -2164,7 +2201,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2177,15 +2214,16 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionAppSettingsHandleRes
 	return result, nil
 }
 
-// NewListStaticSiteBuildFunctionsPager - Description for Gets the functions of a particular static site build.
+// NewListStaticSiteBuildFunctionsPager - Gets the functions of a particular static site build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
 // options - StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctions
 // method.
 func (client *StaticSitesClient) NewListStaticSiteBuildFunctionsPager(resourceGroupName string, name string, environmentName string, options *StaticSitesClientListStaticSiteBuildFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteBuildFunctionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteBuildFunctionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientListStaticSiteBuildFunctionsResponse]{
 		More: func(page StaticSitesClientListStaticSiteBuildFunctionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2238,7 +2276,7 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2251,8 +2289,9 @@ func (client *StaticSitesClient) listStaticSiteBuildFunctionsHandleResponse(resp
 	return result, nil
 }
 
-// ListStaticSiteConfiguredRoles - Description for Lists the roles configured for the static site.
+// ListStaticSiteConfiguredRoles - Lists the roles configured for the static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteConfiguredRolesOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteConfiguredRoles
@@ -2294,7 +2333,7 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2307,14 +2346,15 @@ func (client *StaticSitesClient) listStaticSiteConfiguredRolesHandleResponse(res
 	return result, nil
 }
 
-// NewListStaticSiteCustomDomainsPager - Description for Gets all static site custom domains for a particular static site.
+// NewListStaticSiteCustomDomainsPager - Gets all static site custom domains for a particular static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site resource to search in.
 // options - StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteCustomDomains
 // method.
 func (client *StaticSitesClient) NewListStaticSiteCustomDomainsPager(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteCustomDomainsOptions) *runtime.Pager[StaticSitesClientListStaticSiteCustomDomainsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteCustomDomainsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientListStaticSiteCustomDomainsResponse]{
 		More: func(page StaticSitesClientListStaticSiteCustomDomainsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2363,7 +2403,7 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2376,8 +2416,9 @@ func (client *StaticSitesClient) listStaticSiteCustomDomainsHandleResponse(resp 
 	return result, nil
 }
 
-// ListStaticSiteFunctionAppSettings - Description for Gets the application settings of a static site.
+// ListStaticSiteFunctionAppSettings - Gets the application settings of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteFunctionAppSettingsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctionAppSettings
@@ -2419,7 +2460,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2432,14 +2473,15 @@ func (client *StaticSitesClient) listStaticSiteFunctionAppSettingsHandleResponse
 	return result, nil
 }
 
-// NewListStaticSiteFunctionsPager - Description for Gets the functions of a static site.
+// NewListStaticSiteFunctionsPager - Gets the functions of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctions
 // method.
 func (client *StaticSitesClient) NewListStaticSiteFunctionsPager(resourceGroupName string, name string, options *StaticSitesClientListStaticSiteFunctionsOptions) *runtime.Pager[StaticSitesClientListStaticSiteFunctionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteFunctionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientListStaticSiteFunctionsResponse]{
 		More: func(page StaticSitesClientListStaticSiteFunctionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2488,7 +2530,7 @@ func (client *StaticSitesClient) listStaticSiteFunctionsCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2501,8 +2543,9 @@ func (client *StaticSitesClient) listStaticSiteFunctionsHandleResponse(resp *htt
 	return result, nil
 }
 
-// ListStaticSiteSecrets - Description for Lists the secrets for an existing static site.
+// ListStaticSiteSecrets - Lists the secrets for an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientListStaticSiteSecretsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteSecrets
@@ -2544,7 +2587,7 @@ func (client *StaticSitesClient) listStaticSiteSecretsCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2557,15 +2600,16 @@ func (client *StaticSitesClient) listStaticSiteSecretsHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListStaticSiteUsersPager - Description for Gets the list of users of a static site.
+// NewListStaticSiteUsersPager - Gets the list of users of a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // authprovider - The auth provider for the users.
 // options - StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteUsers
 // method.
 func (client *StaticSitesClient) NewListStaticSiteUsersPager(resourceGroupName string, name string, authprovider string, options *StaticSitesClientListStaticSiteUsersOptions) *runtime.Pager[StaticSitesClientListStaticSiteUsersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StaticSitesClientListStaticSiteUsersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StaticSitesClientListStaticSiteUsersResponse]{
 		More: func(page StaticSitesClientListStaticSiteUsersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -2618,7 +2662,7 @@ func (client *StaticSitesClient) listStaticSiteUsersCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -2631,8 +2675,9 @@ func (client *StaticSitesClient) listStaticSiteUsersHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// PreviewWorkflow - Description for Generates a preview workflow file for the static site
+// PreviewWorkflow - Generates a preview workflow file for the static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // location - Location where you plan to create the static site.
 // staticSitesWorkflowPreviewRequest - A JSON representation of the StaticSitesWorkflowPreviewRequest properties. See example.
 // options - StaticSitesClientPreviewWorkflowOptions contains the optional parameters for the StaticSitesClient.PreviewWorkflow
@@ -2670,7 +2715,7 @@ func (client *StaticSitesClient) previewWorkflowCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSitesWorkflowPreviewRequest)
 }
 
@@ -2683,29 +2728,30 @@ func (client *StaticSitesClient) previewWorkflowHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginRegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static
-// site
+// BeginRegisterUserProvidedFunctionAppWithStaticSite - Register a user provided function app with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // functionAppName - Name of the function app to register with the static site.
 // staticSiteUserProvidedFunctionEnvelope - A JSON representation of the user provided function app properties. See example.
 // options - StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions contains the optional parameters for
 // the StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSite method.
-func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*armruntime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*runtime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.registerUserProvidedFunctionAppWithStaticSite(ctx, resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// RegisterUserProvidedFunctionAppWithStaticSite - Description for Register a user provided function app with a static site
+// RegisterUserProvidedFunctionAppWithStaticSite - Register a user provided function app with a static site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(ctx context.Context, resourceGroupName string, name string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteCreateRequest(ctx, resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
@@ -2750,13 +2796,13 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a
-// static site build
+// BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild - Register a user provided function app with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // environmentName - The stage site identifier.
@@ -2764,21 +2810,21 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteCr
 // staticSiteUserProvidedFunctionEnvelope - A JSON representation of the user provided function app properties. See example.
 // options - StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions contains the optional parameters
 // for the StaticSitesClient.BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild method.
-func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*armruntime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], error) {
+func (client *StaticSitesClient) BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*runtime.Poller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.registerUserProvidedFunctionAppWithStaticSiteBuild(ctx, resourceGroupName, name, environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Description for Register a user provided function app with a static
-// site build
+// RegisterUserProvidedFunctionAppWithStaticSiteBuild - Register a user provided function app with a static site build
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBuild(ctx context.Context, resourceGroupName string, name string, environmentName string, functionAppName string, staticSiteUserProvidedFunctionEnvelope StaticSiteUserProvidedFunctionAppARMResource, options *StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions) (*http.Response, error) {
 	req, err := client.registerUserProvidedFunctionAppWithStaticSiteBuildCreateRequest(ctx, resourceGroupName, name, environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, options)
 	if err != nil {
@@ -2827,12 +2873,13 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 	}
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteUserProvidedFunctionEnvelope)
 }
 
-// ResetStaticSiteAPIKey - Description for Resets the api key for an existing static site.
+// ResetStaticSiteAPIKey - Resets the api key for an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // options - StaticSitesClientResetStaticSiteAPIKeyOptions contains the optional parameters for the StaticSitesClient.ResetStaticSiteAPIKey
@@ -2874,13 +2921,13 @@ func (client *StaticSitesClient) resetStaticSiteAPIKeyCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resetPropertiesEnvelope)
 }
 
-// UpdateStaticSite - Description for Creates a new static site in an existing resource group, or updates an existing static
-// site.
+// UpdateStaticSite - Creates a new static site in an existing resource group, or updates an existing static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site to create or update.
 // staticSiteEnvelope - A JSON representation of the staticsite properties. See example.
@@ -2923,7 +2970,7 @@ func (client *StaticSitesClient) updateStaticSiteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteEnvelope)
 }
 
@@ -2936,8 +2983,9 @@ func (client *StaticSitesClient) updateStaticSiteHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// UpdateStaticSiteUser - Description for Updates a user entry with the listed roles
+// UpdateStaticSiteUser - Updates a user entry with the listed roles
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // authprovider - The auth provider for this user.
@@ -2990,7 +3038,7 @@ func (client *StaticSitesClient) updateStaticSiteUserCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteUserEnvelope)
 }
 
@@ -3003,9 +3051,9 @@ func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.R
 	return result, nil
 }
 
-// BeginValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to
-// a static site.
+// BeginValidateCustomDomainCanBeAddedToStaticSite - Validates a particular custom domain can be added to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the static site.
 // domainName - The custom domain to validate.
@@ -3013,21 +3061,21 @@ func (client *StaticSitesClient) updateStaticSiteUserHandleResponse(resp *http.R
 // See example.
 // options - StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions contains the optional parameters for
 // the StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite method.
-func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*armruntime.Poller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], error) {
+func (client *StaticSitesClient) BeginValidateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*runtime.Poller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.validateCustomDomainCanBeAddedToStaticSite(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// ValidateCustomDomainCanBeAddedToStaticSite - Description for Validates a particular custom domain can be added to a static
-// site.
+// ValidateCustomDomainCanBeAddedToStaticSite - Validates a particular custom domain can be added to a static site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx context.Context, resourceGroupName string, name string, domainName string, staticSiteCustomDomainRequestPropertiesEnvelope StaticSiteCustomDomainRequestPropertiesARMResource, options *StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions) (*http.Response, error) {
 	req, err := client.validateCustomDomainCanBeAddedToStaticSiteCreateRequest(ctx, resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, options)
 	if err != nil {
@@ -3069,6 +3117,6 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSiteCreat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, staticSiteCustomDomainRequestPropertiesEnvelope)
 }

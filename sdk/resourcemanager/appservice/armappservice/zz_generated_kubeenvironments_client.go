@@ -38,7 +38,7 @@ func NewKubeEnvironmentsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,27 +54,29 @@ func NewKubeEnvironmentsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
+// BeginCreateOrUpdate - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
 // kubeEnvironmentEnvelope - Configuration details of the Kubernetes Environment.
 // options - KubeEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the KubeEnvironmentsClient.BeginCreateOrUpdate
 // method.
-func (client *KubeEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[KubeEnvironmentsClientCreateOrUpdateResponse], error) {
+func (client *KubeEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[KubeEnvironmentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, kubeEnvironmentEnvelope, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[KubeEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KubeEnvironmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[KubeEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KubeEnvironmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// CreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
+// CreateOrUpdate - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *KubeEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, kubeEnvironmentEnvelope, options)
 	if err != nil {
@@ -112,30 +114,32 @@ func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, kubeEnvironmentEnvelope)
 }
 
-// BeginDelete - Description for Delete a Kubernetes Environment.
+// BeginDelete - Delete a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
 // options - KubeEnvironmentsClientBeginDeleteOptions contains the optional parameters for the KubeEnvironmentsClient.BeginDelete
 // method.
-func (client *KubeEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsClientBeginDeleteOptions) (*armruntime.Poller[KubeEnvironmentsClientDeleteResponse], error) {
+func (client *KubeEnvironmentsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsClientBeginDeleteOptions) (*runtime.Poller[KubeEnvironmentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[KubeEnvironmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KubeEnvironmentsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[KubeEnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KubeEnvironmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
-// Delete - Description for Delete a Kubernetes Environment.
+// Delete - Delete a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *KubeEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Description for Get the properties of a Kubernetes Environment.
+// Get - Get the properties of a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
 // options - KubeEnvironmentsClientGetOptions contains the optional parameters for the KubeEnvironmentsClient.Get method.
@@ -219,7 +224,7 @@ func (client *KubeEnvironmentsClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,13 +237,14 @@ func (client *KubeEnvironmentsClient) getHandleResponse(resp *http.Response) (Ku
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all the Kubernetes Environments in a resource group.
+// NewListByResourceGroupPager - Get all the Kubernetes Environments in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.ListByResourceGroup
 // method.
 func (client *KubeEnvironmentsClient) NewListByResourceGroupPager(resourceGroupName string, options *KubeEnvironmentsClientListByResourceGroupOptions) *runtime.Pager[KubeEnvironmentsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KubeEnvironmentsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KubeEnvironmentsClientListByResourceGroupResponse]{
 		More: func(page KubeEnvironmentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +289,7 @@ func (client *KubeEnvironmentsClient) listByResourceGroupCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -296,12 +302,13 @@ func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Description for Get all Kubernetes Environments for a subscription.
+// NewListBySubscriptionPager - Get all Kubernetes Environments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.ListBySubscription
 // method.
 func (client *KubeEnvironmentsClient) NewListBySubscriptionPager(options *KubeEnvironmentsClientListBySubscriptionOptions) *runtime.Pager[KubeEnvironmentsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[KubeEnvironmentsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[KubeEnvironmentsClientListBySubscriptionResponse]{
 		More: func(page KubeEnvironmentsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -342,7 +349,7 @@ func (client *KubeEnvironmentsClient) listBySubscriptionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -355,8 +362,9 @@ func (client *KubeEnvironmentsClient) listBySubscriptionHandleResponse(resp *htt
 	return result, nil
 }
 
-// Update - Description for Creates or updates a Kubernetes Environment.
+// Update - Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the Kubernetes Environment.
 // kubeEnvironmentEnvelope - Configuration details of the Kubernetes Environment.
@@ -398,7 +406,7 @@ func (client *KubeEnvironmentsClient) updateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, kubeEnvironmentEnvelope)
 }
 

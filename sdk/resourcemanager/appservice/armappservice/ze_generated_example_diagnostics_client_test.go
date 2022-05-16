@@ -23,18 +23,17 @@ func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListHostingEnvironmentDetectorResponsesPager("<resource-group-name>",
-		"<name>",
+	pager := client.NewListHostingEnvironmentDetectorResponsesPager("Sample-WestUSResourceGroup",
+		"SampleAppServiceEnvironment",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetHostingEnvironmentDetectorResponse(ctx,
-		"<resource-group-name>",
-		"<name>",
-		"<detector-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleAppServiceEnvironment",
+		"runtimeavailability",
 		&armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -76,18 +75,17 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDetectorResponsesPager("<resource-group-name>",
-		"<site-name>",
+	pager := client.NewListSiteDetectorResponsesPager("Sample-WestUSResourceGroup",
+		"SampleApp",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -103,14 +101,14 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDetectorResponse(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<detector-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"runtimeavailability",
 		&armappservice.DiagnosticsClientGetSiteDetectorResponseOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -129,18 +127,17 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDiagnosticCategoriesPager("<resource-group-name>",
-		"<site-name>",
+	pager := client.NewListSiteDiagnosticCategoriesPager("Sample-WestUSResourceGroup",
+		"SampleApp",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -156,14 +153,14 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDiagnosticCategory(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -179,19 +176,18 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteAnalysesPager("<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
+	pager := client.NewListSiteAnalysesPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -207,15 +203,15 @@ func ExampleDiagnosticsClient_GetSiteAnalysis() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteAnalysis(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<analysis-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"appanalysis",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -231,15 +227,15 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExecuteSiteAnalysis(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<analysis-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"apprestartanalyses",
 		&armappservice.DiagnosticsClientExecuteSiteAnalysisOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -258,19 +254,18 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDetectorsPager("<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
+	pager := client.NewListSiteDetectorsPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -286,15 +281,15 @@ func ExampleDiagnosticsClient_GetSiteDetector() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDetector(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<detector-name>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"sitecrashes",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -310,15 +305,15 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExecuteSiteDetector(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<detector-name>",
-		"<diagnostic-category>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"sitecrashes",
+		"availability",
 		&armappservice.DiagnosticsClientExecuteSiteDetectorOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -337,19 +332,18 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDetectorResponsesSlotPager("<resource-group-name>",
-		"<site-name>",
-		"<slot>",
+	pager := client.NewListSiteDetectorResponsesSlotPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"staging",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -365,15 +359,15 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDetectorResponseSlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<detector-name>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"runtimeavailability",
+		"staging",
 		&armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -392,19 +386,18 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDiagnosticCategoriesSlotPager("<resource-group-name>",
-		"<site-name>",
-		"<slot>",
+	pager := client.NewListSiteDiagnosticCategoriesSlotPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"Production",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -420,15 +413,15 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDiagnosticCategorySlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -444,20 +437,19 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteAnalysesSlotPager("<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<slot>",
+	pager := client.NewListSiteAnalysesSlotPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"Production",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -473,16 +465,16 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteAnalysisSlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<analysis-name>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"appanalysis",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -498,16 +490,16 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExecuteSiteAnalysisSlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<analysis-name>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"apprestartanalyses",
+		"Production",
 		&armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,
@@ -526,20 +518,19 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSiteDetectorsSlotPager("<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<slot>",
+	pager := client.NewListSiteDetectorsSlotPager("Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"Production",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -555,16 +546,16 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSiteDetectorSlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<diagnostic-category>",
-		"<detector-name>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"availability",
+		"sitecrashes",
+		"Production",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -580,16 +571,16 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewDiagnosticsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewDiagnosticsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ExecuteSiteDetectorSlot(ctx,
-		"<resource-group-name>",
-		"<site-name>",
-		"<detector-name>",
-		"<diagnostic-category>",
-		"<slot>",
+		"Sample-WestUSResourceGroup",
+		"SampleApp",
+		"sitecrashes",
+		"availability",
+		"Production",
 		&armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{StartTime: nil,
 			EndTime:   nil,
 			TimeGrain: nil,

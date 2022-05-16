@@ -24,7 +24,7 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebSiteManagementClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebSiteManagementClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,16 +48,16 @@ func ExampleWebSiteManagementClient_VerifyHostingEnvironmentVnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewWebSiteManagementClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewWebSiteManagementClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.VerifyHostingEnvironmentVnet(ctx,
 		armappservice.VnetParameters{
 			Properties: &armappservice.VnetParametersProperties{
-				VnetName:          to.Ptr("<vnet-name>"),
-				VnetResourceGroup: to.Ptr("<vnet-resource-group>"),
-				VnetSubnetName:    to.Ptr("<vnet-subnet-name>"),
+				VnetName:          to.Ptr("vNet123"),
+				VnetResourceGroup: to.Ptr("vNet123rg"),
+				VnetSubnetName:    to.Ptr("vNet123SubNet"),
 			},
 		},
 		nil)

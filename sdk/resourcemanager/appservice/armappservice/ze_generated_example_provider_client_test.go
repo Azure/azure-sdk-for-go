@@ -32,7 +32,6 @@ func ExampleProviderClient_NewGetFunctionAppStacksPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,13 +51,12 @@ func ExampleProviderClient_NewGetFunctionAppStacksForLocationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetFunctionAppStacksForLocationPager("<location>",
+	pager := client.NewGetFunctionAppStacksForLocationPager("westus",
 		&armappservice.ProviderClientGetFunctionAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -78,13 +76,12 @@ func ExampleProviderClient_NewGetWebAppStacksForLocationPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetWebAppStacksForLocationPager("<location>",
+	pager := client.NewGetWebAppStacksForLocationPager("westus",
 		&armappservice.ProviderClientGetWebAppStacksForLocationOptions{StackOsType: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -109,7 +106,6 @@ func ExampleProviderClient_NewListOperationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -134,7 +130,6 @@ func ExampleProviderClient_NewGetWebAppStacksPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

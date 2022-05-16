@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
@@ -26,7 +24,7 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleContainerAppsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleContainerAppsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleContainerAppsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testcontainerApp0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,16 +95,16 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg",
+		"testcontainerApp0",
 		armappservice.ContainerApp{
-			Kind:     to.Ptr("<kind>"),
-			Location: to.Ptr("<location>"),
+			Kind:     to.Ptr("containerApp"),
+			Location: to.Ptr("East US"),
 			Properties: &armappservice.ContainerAppProperties{
 				Configuration: &armappservice.Configuration{
 					Ingress: &armappservice.Ingress{
@@ -116,12 +112,12 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 						TargetPort: to.Ptr[int32](3000),
 					},
 				},
-				KubeEnvironmentID: to.Ptr("<kube-environment-id>"),
+				KubeEnvironmentID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/kubeEnvironments/demokube"),
 				Template: &armappservice.Template{
 					Containers: []*armappservice.Container{
 						{
-							Name:  to.Ptr("<name>"),
-							Image: to.Ptr("<image>"),
+							Name:  to.Ptr("testcontainerApp0"),
+							Image: to.Ptr("repo/testcontainerApp0:v1"),
 						}},
 					Dapr: &armappservice.Dapr{
 						AppPort: to.Ptr[int32](3000),
@@ -132,9 +128,9 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 						MinReplicas: to.Ptr[int32](1),
 						Rules: []*armappservice.ScaleRule{
 							{
-								Name: to.Ptr("<name>"),
+								Name: to.Ptr("httpscalingrule"),
 								Custom: &armappservice.CustomScaleRule{
-									Type: to.Ptr("<type>"),
+									Type: to.Ptr("http"),
 									Metadata: map[string]*string{
 										"concurrentRequests": to.Ptr("50"),
 									},
@@ -144,11 +140,11 @@ func ExampleContainerAppsClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armappservice.ContainerAppsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -163,18 +159,18 @@ func ExampleContainerAppsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<name>",
-		&armappservice.ContainerAppsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg",
+		"testWorkerApp0",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -187,12 +183,12 @@ func ExampleContainerAppsClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<name>",
+		"testcontainerApp0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

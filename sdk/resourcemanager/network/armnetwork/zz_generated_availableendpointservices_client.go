@@ -39,7 +39,7 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewAvailableEndpointServicesClient(subscriptionID string, credential azcore
 
 // NewListPager - List what values of endpoint services are available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // location - The location to check available endpoint services.
 // options - AvailableEndpointServicesClientListOptions contains the optional parameters for the AvailableEndpointServicesClient.List
 // method.
 func (client *AvailableEndpointServicesClient) NewListPager(location string, options *AvailableEndpointServicesClientListOptions) *runtime.Pager[AvailableEndpointServicesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailableEndpointServicesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailableEndpointServicesClientListResponse]{
 		More: func(page AvailableEndpointServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -104,9 +105,9 @@ func (client *AvailableEndpointServicesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

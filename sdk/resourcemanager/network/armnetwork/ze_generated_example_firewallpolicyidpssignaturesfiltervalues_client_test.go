@@ -17,22 +17,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/FirewallPolicyQuerySignatureOverridesFilterValues.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/FirewallPolicyQuerySignatureOverridesFilterValues.json
 func ExampleFirewallPolicyIdpsSignaturesFilterValuesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesFilterValuesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesFilterValuesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<firewall-policy-name>",
+		"rg1",
+		"firewallPolicy",
 		armnetwork.SignatureOverridesFilterValuesQuery{
-			FilterName: to.Ptr("<filter-name>"),
+			FilterName: to.Ptr("severity"),
 		},
 		nil)
 	if err != nil {

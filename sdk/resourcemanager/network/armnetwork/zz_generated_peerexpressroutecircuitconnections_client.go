@@ -39,7 +39,7 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string, credenti
 
 // Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // circuitName - The name of the express route circuit.
 // peeringName - The name of the peering.
@@ -106,9 +107,9 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -123,13 +124,14 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *
 
 // NewListPager - Gets all global reach peer connections associated with a private peering in an express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // circuitName - The name of the circuit.
 // peeringName - The name of the peering.
 // options - PeerExpressRouteCircuitConnectionsClientListOptions contains the optional parameters for the PeerExpressRouteCircuitConnectionsClient.List
 // method.
 func (client *PeerExpressRouteCircuitConnectionsClient) NewListPager(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsClientListOptions) *runtime.Pager[PeerExpressRouteCircuitConnectionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PeerExpressRouteCircuitConnectionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PeerExpressRouteCircuitConnectionsClientListResponse]{
 		More: func(page PeerExpressRouteCircuitConnectionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -180,9 +182,9 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

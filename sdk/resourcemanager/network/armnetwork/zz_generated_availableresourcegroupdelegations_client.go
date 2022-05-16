@@ -39,7 +39,7 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,12 +57,13 @@ func NewAvailableResourceGroupDelegationsClient(subscriptionID string, credentia
 
 // NewListPager - Gets all of the available subnet delegations for this resource group in this region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // location - The location of the domain name.
 // resourceGroupName - The name of the resource group.
 // options - AvailableResourceGroupDelegationsClientListOptions contains the optional parameters for the AvailableResourceGroupDelegationsClient.List
 // method.
 func (client *AvailableResourceGroupDelegationsClient) NewListPager(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions) *runtime.Pager[AvailableResourceGroupDelegationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailableResourceGroupDelegationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailableResourceGroupDelegationsClientListResponse]{
 		More: func(page AvailableResourceGroupDelegationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -109,9 +110,9 @@ func (client *AvailableResourceGroupDelegationsClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

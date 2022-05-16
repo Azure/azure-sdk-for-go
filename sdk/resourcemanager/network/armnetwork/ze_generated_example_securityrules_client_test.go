@@ -12,53 +12,51 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupRuleDelete.json
 func ExampleSecurityRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<network-security-group-name>",
-		"<security-rule-name>",
-		&armnetwork.SecurityRulesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"testnsg",
+		"rule1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupRuleGet.json
 func ExampleSecurityRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<network-security-group-name>",
-		"<security-rule-name>",
+		"rg1",
+		"testnsg",
+		"rule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,38 +65,38 @@ func ExampleSecurityRulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupRuleCreate.json
 func ExampleSecurityRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<network-security-group-name>",
-		"<security-rule-name>",
+		"rg1",
+		"testnsg",
+		"rule1",
 		armnetwork.SecurityRule{
 			Properties: &armnetwork.SecurityRulePropertiesFormat{
 				Access:                   to.Ptr(armnetwork.SecurityRuleAccessDeny),
-				DestinationAddressPrefix: to.Ptr("<destination-address-prefix>"),
-				DestinationPortRange:     to.Ptr("<destination-port-range>"),
+				DestinationAddressPrefix: to.Ptr("11.0.0.0/8"),
+				DestinationPortRange:     to.Ptr("8080"),
 				Direction:                to.Ptr(armnetwork.SecurityRuleDirectionOutbound),
 				Priority:                 to.Ptr[int32](100),
-				SourceAddressPrefix:      to.Ptr("<source-address-prefix>"),
-				SourcePortRange:          to.Ptr("<source-port-range>"),
+				SourceAddressPrefix:      to.Ptr("10.0.0.0/8"),
+				SourcePortRange:          to.Ptr("*"),
 				Protocol:                 to.Ptr(armnetwork.SecurityRuleProtocolAsterisk),
 			},
 		},
-		&armnetwork.SecurityRulesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -106,25 +104,24 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/NetworkSecurityGroupRuleList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/NetworkSecurityGroupRuleList.json
 func ExampleSecurityRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewSecurityRulesClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewSecurityRulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<network-security-group-name>",
+	pager := client.NewListPager("rg1",
+		"testnsg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

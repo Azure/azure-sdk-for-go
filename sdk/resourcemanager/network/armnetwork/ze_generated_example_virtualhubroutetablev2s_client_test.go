@@ -12,28 +12,26 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubRouteTableV2Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubRouteTableV2Get.json
 func ExampleVirtualHubRouteTableV2SClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
+		"rg1",
+		"virtualHub1",
+		"virtualHubRouteTable1a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,50 +40,50 @@ func ExampleVirtualHubRouteTableV2SClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubRouteTableV2Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubRouteTableV2Put.json
 func ExampleVirtualHubRouteTableV2SClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
+		"rg1",
+		"virtualHub1",
+		"virtualHubRouteTable1a",
 		armnetwork.VirtualHubRouteTableV2{
 			Properties: &armnetwork.VirtualHubRouteTableV2Properties{
 				AttachedConnections: []*string{
 					to.Ptr("All_Vnets")},
 				Routes: []*armnetwork.VirtualHubRouteV2{
 					{
-						DestinationType: to.Ptr("<destination-type>"),
+						DestinationType: to.Ptr("CIDR"),
 						Destinations: []*string{
 							to.Ptr("20.10.0.0/16"),
 							to.Ptr("20.20.0.0/16")},
-						NextHopType: to.Ptr("<next-hop-type>"),
+						NextHopType: to.Ptr("IPAddress"),
 						NextHops: []*string{
 							to.Ptr("10.0.0.68")},
 					},
 					{
-						DestinationType: to.Ptr("<destination-type>"),
+						DestinationType: to.Ptr("CIDR"),
 						Destinations: []*string{
 							to.Ptr("0.0.0.0/0")},
-						NextHopType: to.Ptr("<next-hop-type>"),
+						NextHopType: to.Ptr("IPAddress"),
 						NextHops: []*string{
 							to.Ptr("10.0.0.68")},
 					}},
 			},
 		},
-		&armnetwork.VirtualHubRouteTableV2SClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -93,50 +91,49 @@ func ExampleVirtualHubRouteTableV2SClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubRouteTableV2Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubRouteTableV2Delete.json
 func ExampleVirtualHubRouteTableV2SClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<virtual-hub-name>",
-		"<route-table-name>",
-		&armnetwork.VirtualHubRouteTableV2SClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"virtualHub1",
+		"virtualHubRouteTable1a",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/VirtualHubRouteTableV2List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/VirtualHubRouteTableV2List.json
 func ExampleVirtualHubRouteTableV2SClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewVirtualHubRouteTableV2SClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<virtual-hub-name>",
+	pager := client.NewListPager("rg1",
+		"virtualHub1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

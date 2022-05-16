@@ -12,53 +12,51 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDefinitionDelete.json
 func ExampleServiceEndpointPolicyDefinitionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<service-endpoint-policy-name>",
-		"<service-endpoint-policy-definition-name>",
-		&armnetwork.ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"testPolicy",
+		"testDefinition",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDefinitionGet.json
 func ExampleServiceEndpointPolicyDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-endpoint-policy-name>",
-		"<service-endpoint-policy-definition-name>",
+		"rg1",
+		"testPolicy",
+		"testDefinition",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,36 +65,36 @@ func ExampleServiceEndpointPolicyDefinitionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDefinitionCreate.json
 func ExampleServiceEndpointPolicyDefinitionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-endpoint-policy-name>",
-		"<service-endpoint-policy-definition-name>",
+		"rg1",
+		"testPolicy",
+		"testDefinition",
 		armnetwork.ServiceEndpointPolicyDefinition{
 			Properties: &armnetwork.ServiceEndpointPolicyDefinitionPropertiesFormat{
-				Description: to.Ptr("<description>"),
-				Service:     to.Ptr("<service>"),
+				Description: to.Ptr("Storage Service EndpointPolicy Definition"),
+				Service:     to.Ptr("Microsoft.Storage"),
 				ServiceResources: []*string{
 					to.Ptr("/subscriptions/subid1"),
 					to.Ptr("/subscriptions/subid1/resourceGroups/storageRg"),
 					to.Ptr("/subscriptions/subid1/resourceGroups/storageRg/providers/Microsoft.Storage/storageAccounts/stAccount")},
 			},
 		},
-		&armnetwork.ServiceEndpointPolicyDefinitionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -104,25 +102,24 @@ func ExampleServiceEndpointPolicyDefinitionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/ServiceEndpointPolicyDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ServiceEndpointPolicyDefinitionList.json
 func ExampleServiceEndpointPolicyDefinitionsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewServiceEndpointPolicyDefinitionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
-		"<service-endpoint-policy-name>",
+	pager := client.NewListByResourceGroupPager("rg1",
+		"testPolicy",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/createKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/createKey.json
 func ExampleKeysClient_CreateIfNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewKeysClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateIfNotExist(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<key-name>",
+		"sample-group",
+		"sample-vault-name",
+		"sample-key-name",
 		armkeyvault.KeyCreateParameters{
 			Properties: &armkeyvault.KeyProperties{
 				Kty: to.Ptr(armkeyvault.JSONWebKeyTypeRSA),
@@ -45,21 +45,21 @@ func ExampleKeysClient_CreateIfNotExist() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/getKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getKey.json
 func ExampleKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewKeysClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<key-name>",
+		"sample-group",
+		"sample-vault-name",
+		"sample-key-name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,25 +68,24 @@ func ExampleKeysClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listKeys.json
 func ExampleKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewKeysClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<vault-name>",
+	pager := client.NewListPager("sample-group",
+		"sample-vault-name",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -95,22 +94,22 @@ func ExampleKeysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/getKeyVersion.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getKeyVersion.json
 func ExampleKeysClient_GetVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewKeysClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetVersion(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<key-name>",
-		"<key-version>",
+		"sample-group",
+		"sample-vault-name",
+		"sample-key-name",
+		"fd618d9519b74f9aae94ade66b876acc",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,26 +118,25 @@ func ExampleKeysClient_GetVersion() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listKeyVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listKeyVersions.json
 func ExampleKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewKeysClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewKeysClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVersionsPager("<resource-group-name>",
-		"<vault-name>",
-		"<key-name>",
+	pager := client.NewListVersionsPager("sample-group",
+		"sample-vault-name",
+		"sample-key-name",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

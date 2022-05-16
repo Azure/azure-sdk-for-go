@@ -10,7 +10,7 @@ package armkeyvault
 
 const (
 	moduleName    = "armkeyvault"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 type AccessPolicyUpdateKind string
@@ -174,7 +174,6 @@ const (
 	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
 	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
 	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
-	JSONWebKeyOperationRelease   JSONWebKeyOperation = "release"
 	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
 	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
 	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
@@ -187,7 +186,6 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 		JSONWebKeyOperationDecrypt,
 		JSONWebKeyOperationEncrypt,
 		JSONWebKeyOperationImport,
-		JSONWebKeyOperationRelease,
 		JSONWebKeyOperationSign,
 		JSONWebKeyOperationUnwrapKey,
 		JSONWebKeyOperationVerify,
@@ -218,27 +216,23 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 type KeyPermissions string
 
 const (
-	KeyPermissionsAll               KeyPermissions = "all"
-	KeyPermissionsBackup            KeyPermissions = "backup"
-	KeyPermissionsCreate            KeyPermissions = "create"
-	KeyPermissionsDecrypt           KeyPermissions = "decrypt"
-	KeyPermissionsDelete            KeyPermissions = "delete"
-	KeyPermissionsEncrypt           KeyPermissions = "encrypt"
-	KeyPermissionsGet               KeyPermissions = "get"
-	KeyPermissionsGetrotationpolicy KeyPermissions = "getrotationpolicy"
-	KeyPermissionsImport            KeyPermissions = "import"
-	KeyPermissionsList              KeyPermissions = "list"
-	KeyPermissionsPurge             KeyPermissions = "purge"
-	KeyPermissionsRecover           KeyPermissions = "recover"
-	KeyPermissionsRelease           KeyPermissions = "release"
-	KeyPermissionsRestore           KeyPermissions = "restore"
-	KeyPermissionsRotate            KeyPermissions = "rotate"
-	KeyPermissionsSetrotationpolicy KeyPermissions = "setrotationpolicy"
-	KeyPermissionsSign              KeyPermissions = "sign"
-	KeyPermissionsUnwrapKey         KeyPermissions = "unwrapKey"
-	KeyPermissionsUpdate            KeyPermissions = "update"
-	KeyPermissionsVerify            KeyPermissions = "verify"
-	KeyPermissionsWrapKey           KeyPermissions = "wrapKey"
+	KeyPermissionsAll       KeyPermissions = "all"
+	KeyPermissionsBackup    KeyPermissions = "backup"
+	KeyPermissionsCreate    KeyPermissions = "create"
+	KeyPermissionsDecrypt   KeyPermissions = "decrypt"
+	KeyPermissionsDelete    KeyPermissions = "delete"
+	KeyPermissionsEncrypt   KeyPermissions = "encrypt"
+	KeyPermissionsGet       KeyPermissions = "get"
+	KeyPermissionsImport    KeyPermissions = "import"
+	KeyPermissionsList      KeyPermissions = "list"
+	KeyPermissionsPurge     KeyPermissions = "purge"
+	KeyPermissionsRecover   KeyPermissions = "recover"
+	KeyPermissionsRestore   KeyPermissions = "restore"
+	KeyPermissionsSign      KeyPermissions = "sign"
+	KeyPermissionsUnwrapKey KeyPermissions = "unwrapKey"
+	KeyPermissionsUpdate    KeyPermissions = "update"
+	KeyPermissionsVerify    KeyPermissions = "verify"
+	KeyPermissionsWrapKey   KeyPermissions = "wrapKey"
 )
 
 // PossibleKeyPermissionsValues returns the possible values for the KeyPermissions const type.
@@ -251,36 +245,16 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 		KeyPermissionsDelete,
 		KeyPermissionsEncrypt,
 		KeyPermissionsGet,
-		KeyPermissionsGetrotationpolicy,
 		KeyPermissionsImport,
 		KeyPermissionsList,
 		KeyPermissionsPurge,
 		KeyPermissionsRecover,
-		KeyPermissionsRelease,
 		KeyPermissionsRestore,
-		KeyPermissionsRotate,
-		KeyPermissionsSetrotationpolicy,
 		KeyPermissionsSign,
 		KeyPermissionsUnwrapKey,
 		KeyPermissionsUpdate,
 		KeyPermissionsVerify,
 		KeyPermissionsWrapKey,
-	}
-}
-
-// KeyRotationPolicyActionType - The type of action.
-type KeyRotationPolicyActionType string
-
-const (
-	KeyRotationPolicyActionTypeRotate KeyRotationPolicyActionType = "rotate"
-	KeyRotationPolicyActionTypeNotify KeyRotationPolicyActionType = "notify"
-)
-
-// PossibleKeyRotationPolicyActionTypeValues returns the possible values for the KeyRotationPolicyActionType const type.
-func PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType {
-	return []KeyRotationPolicyActionType{
-		KeyRotationPolicyActionTypeRotate,
-		KeyRotationPolicyActionTypeNotify,
 	}
 }
 

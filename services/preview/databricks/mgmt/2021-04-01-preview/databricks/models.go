@@ -80,6 +80,26 @@ type EncryptionV2KeyVaultProperties struct {
 	KeyVersion *string `json:"keyVersion,omitempty"`
 }
 
+// EndpointDependency a domain name or IP address the Workspace is reaching at.
+type EndpointDependency struct {
+	// DomainName - The domain name of the dependency.
+	DomainName *string `json:"domainName,omitempty"`
+	// EndpointDetails - The Ports used when connecting to domainName.
+	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
+}
+
+// EndpointDetail connect information from the Workspace to a single endpoint.
+type EndpointDetail struct {
+	// IPAddress - An IP Address that Domain Name currently resolves to.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Port - The port an endpoint is connected to.
+	Port *int32 `json:"port,omitempty"`
+	// Latency - The time in milliseconds it takes for the connection to be created from the Workspace to this IpAddress at this Port.
+	Latency *float64 `json:"latency,omitempty"`
+	// IsAccessible - Whether it is possible to create a connection from the Workspace to this IpAddress at this Port.
+	IsAccessible *bool `json:"isAccessible,omitempty"`
+}
+
 // ErrorDetail ...
 type ErrorDetail struct {
 	// Code - The error's code.
@@ -138,6 +158,12 @@ type GroupIDInformationProperties struct {
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
 	// RequiredZoneNames - The required DNS zones for a specific group id
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// ListOutboundEnvironmentEndpoint ...
+type ListOutboundEnvironmentEndpoint struct {
+	autorest.Response `json:"-"`
+	Value             *[]OutboundEnvironmentEndpoint `json:"value,omitempty"`
 }
 
 // ManagedIdentityConfiguration the Managed Identity details for storage account.
@@ -332,6 +358,14 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 		fn:  getNextPage,
 		olr: cur,
 	}
+}
+
+// OutboundEnvironmentEndpoint egress endpoints which Workspace connects to for common purposes.
+type OutboundEnvironmentEndpoint struct {
+	// Category - The category of endpoints accessed by the Workspace, e.g. azure-storage, azure-mysql, etc.
+	Category *string `json:"category,omitempty"`
+	// Endpoints - The endpoints that Workspace connect to
+	Endpoints *[]EndpointDependency `json:"endpoints,omitempty"`
 }
 
 // PrivateEndpoint the private endpoint property of a private endpoint connection

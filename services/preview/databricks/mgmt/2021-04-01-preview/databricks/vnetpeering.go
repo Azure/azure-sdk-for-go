@@ -87,7 +87,7 @@ func (client VNetPeeringClient) CreateOrUpdatePreparer(ctx context.Context, virt
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -184,7 +184,7 @@ func (client VNetPeeringClient) DeletePreparer(ctx context.Context, resourceGrou
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -282,7 +282,7 @@ func (client VNetPeeringClient) GetPreparer(ctx context.Context, resourceGroupNa
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -374,7 +374,7 @@ func (client VNetPeeringClient) ListByWorkspacePreparer(ctx context.Context, res
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
-	const APIVersion = "2018-04-01"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

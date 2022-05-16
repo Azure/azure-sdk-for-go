@@ -53,6 +53,13 @@ type PrivateEndpointConnectionsClientAPI interface {
 
 var _ PrivateEndpointConnectionsClientAPI = (*databricks.PrivateEndpointConnectionsClient)(nil)
 
+// OutboundNetworkDependenciesEndpointsClientAPI contains the set of methods on the OutboundNetworkDependenciesEndpointsClient type.
+type OutboundNetworkDependenciesEndpointsClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result databricks.ListOutboundEnvironmentEndpoint, err error)
+}
+
+var _ OutboundNetworkDependenciesEndpointsClientAPI = (*databricks.OutboundNetworkDependenciesEndpointsClient)(nil)
+
 // VNetPeeringClientAPI contains the set of methods on the VNetPeeringClient type.
 type VNetPeeringClientAPI interface {
 	CreateOrUpdate(ctx context.Context, virtualNetworkPeeringParameters databricks.VirtualNetworkPeering, resourceGroupName string, workspaceName string, peeringName string) (result databricks.VNetPeeringCreateOrUpdateFuture, err error)

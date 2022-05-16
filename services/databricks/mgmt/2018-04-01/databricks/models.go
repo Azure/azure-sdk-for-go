@@ -853,12 +853,79 @@ type WorkspaceCustomParameters struct {
 	CustomPrivateSubnetName *WorkspaceCustomStringParameter `json:"customPrivateSubnetName,omitempty"`
 	// EnableNoPublicIP - Should the Public IP be Disabled?
 	EnableNoPublicIP *WorkspaceCustomBooleanParameter `json:"enableNoPublicIp,omitempty"`
+	// LoadBalancerBackendPoolName - Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).
+	LoadBalancerBackendPoolName *WorkspaceCustomStringParameter `json:"loadBalancerBackendPoolName,omitempty"`
+	// LoadBalancerID - Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.
+	LoadBalancerID *WorkspaceCustomStringParameter `json:"loadBalancerId,omitempty"`
+	// NatGatewayName - Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.
+	NatGatewayName *WorkspaceCustomStringParameter `json:"natGatewayName,omitempty"`
+	// PublicIPName - Name of the Public IP for No Public IP workspace with managed vNet.
+	PublicIPName *WorkspaceCustomStringParameter `json:"publicIpName,omitempty"`
 	// PrepareEncryption - Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.
 	PrepareEncryption *WorkspaceCustomBooleanParameter `json:"prepareEncryption,omitempty"`
 	// Encryption - Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
 	Encryption *WorkspaceEncryptionParameter `json:"encryption,omitempty"`
 	// RequireInfrastructureEncryption - A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform managed keys for data at rest.
 	RequireInfrastructureEncryption *WorkspaceCustomBooleanParameter `json:"requireInfrastructureEncryption,omitempty"`
+	// StorageAccountName - Default DBFS storage account name.
+	StorageAccountName *WorkspaceCustomStringParameter `json:"storageAccountName,omitempty"`
+	// StorageAccountSkuName - Storage account SKU name, ex: Standard_GRS, Standard_LRS. Refer https://aka.ms/storageskus for valid inputs.
+	StorageAccountSkuName *WorkspaceCustomStringParameter `json:"storageAccountSkuName,omitempty"`
+	// VnetAddressPrefix - Address prefix for Managed virtual network. Default value for this input is 10.139.
+	VnetAddressPrefix *WorkspaceCustomStringParameter `json:"vnetAddressPrefix,omitempty"`
+	// ResourceTags - READ-ONLY; Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace level.
+	ResourceTags *WorkspaceCustomObjectParameter `json:"resourceTags,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceCustomParameters.
+func (wcp WorkspaceCustomParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wcp.AmlWorkspaceID != nil {
+		objectMap["amlWorkspaceId"] = wcp.AmlWorkspaceID
+	}
+	if wcp.CustomVirtualNetworkID != nil {
+		objectMap["customVirtualNetworkId"] = wcp.CustomVirtualNetworkID
+	}
+	if wcp.CustomPublicSubnetName != nil {
+		objectMap["customPublicSubnetName"] = wcp.CustomPublicSubnetName
+	}
+	if wcp.CustomPrivateSubnetName != nil {
+		objectMap["customPrivateSubnetName"] = wcp.CustomPrivateSubnetName
+	}
+	if wcp.EnableNoPublicIP != nil {
+		objectMap["enableNoPublicIp"] = wcp.EnableNoPublicIP
+	}
+	if wcp.LoadBalancerBackendPoolName != nil {
+		objectMap["loadBalancerBackendPoolName"] = wcp.LoadBalancerBackendPoolName
+	}
+	if wcp.LoadBalancerID != nil {
+		objectMap["loadBalancerId"] = wcp.LoadBalancerID
+	}
+	if wcp.NatGatewayName != nil {
+		objectMap["natGatewayName"] = wcp.NatGatewayName
+	}
+	if wcp.PublicIPName != nil {
+		objectMap["publicIpName"] = wcp.PublicIPName
+	}
+	if wcp.PrepareEncryption != nil {
+		objectMap["prepareEncryption"] = wcp.PrepareEncryption
+	}
+	if wcp.Encryption != nil {
+		objectMap["encryption"] = wcp.Encryption
+	}
+	if wcp.RequireInfrastructureEncryption != nil {
+		objectMap["requireInfrastructureEncryption"] = wcp.RequireInfrastructureEncryption
+	}
+	if wcp.StorageAccountName != nil {
+		objectMap["storageAccountName"] = wcp.StorageAccountName
+	}
+	if wcp.StorageAccountSkuName != nil {
+		objectMap["storageAccountSkuName"] = wcp.StorageAccountSkuName
+	}
+	if wcp.VnetAddressPrefix != nil {
+		objectMap["vnetAddressPrefix"] = wcp.VnetAddressPrefix
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceCustomStringParameter the Value.

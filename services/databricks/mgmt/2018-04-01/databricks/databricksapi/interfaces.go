@@ -25,6 +25,14 @@ type WorkspacesClientAPI interface {
 
 var _ WorkspacesClientAPI = (*databricks.WorkspacesClient)(nil)
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result databricks.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result databricks.OperationListResultIterator, err error)
+}
+
+var _ OperationsClientAPI = (*databricks.OperationsClient)(nil)
+
 // VNetPeeringClientAPI contains the set of methods on the VNetPeeringClient type.
 type VNetPeeringClientAPI interface {
 	CreateOrUpdate(ctx context.Context, virtualNetworkPeeringParameters databricks.VirtualNetworkPeering, resourceGroupName string, workspaceName string, peeringName string) (result databricks.VNetPeeringCreateOrUpdateFuture, err error)
@@ -35,11 +43,3 @@ type VNetPeeringClientAPI interface {
 }
 
 var _ VNetPeeringClientAPI = (*databricks.VNetPeeringClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result databricks.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result databricks.OperationListResultIterator, err error)
-}
-
-var _ OperationsClientAPI = (*databricks.OperationsClient)(nil)

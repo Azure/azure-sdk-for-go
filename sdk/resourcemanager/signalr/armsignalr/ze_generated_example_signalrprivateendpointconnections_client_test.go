@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
@@ -26,18 +24,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"mySignalRService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<private-endpoint-connection-name>",
-		"<resource-group-name>",
-		"<resource-name>",
+		"mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+		"myResourceGroup",
+		"mySignalRService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,21 +73,21 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<private-endpoint-connection-name>",
-		"<resource-group-name>",
-		"<resource-name>",
+		"mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+		"myResourceGroup",
+		"mySignalRService",
 		armsignalr.PrivateEndpointConnection{
 			Properties: &armsignalr.PrivateEndpointConnectionProperties{
 				PrivateEndpoint: &armsignalr.PrivateEndpoint{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
 				},
 				PrivateLinkServiceConnectionState: &armsignalr.PrivateLinkServiceConnectionState{
-					ActionsRequired: to.Ptr("<actions-required>"),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armsignalr.PrivateLinkServiceConnectionStatusApproved),
 				},
 			},
@@ -110,19 +107,19 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsignalr.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armsignalr.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<private-endpoint-connection-name>",
-		"<resource-group-name>",
-		"<resource-name>",
-		&armsignalr.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"mysignalrservice.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+		"myResourceGroup",
+		"mySignalRService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

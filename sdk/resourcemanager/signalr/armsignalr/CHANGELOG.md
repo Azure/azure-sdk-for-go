@@ -1,5 +1,34 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginRegenerateKey` return value(s) have been changed from `(*armruntime.Poller[ClientRegenerateKeyResponse], error)` to `(*runtime.Poller[ClientRegenerateKeyResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*CustomCertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ClientRestartResponse], error)` to `(*runtime.Poller[ClientRestartResponse], error)`
+- Function `CustomCertificateList.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionList.MarshalJSON` has been removed
+- Function `CustomDomainList.MarshalJSON` has been removed
+- Function `UsageList.MarshalJSON` has been removed
+- Function `SharedPrivateLinkResourceList.MarshalJSON` has been removed
+- Function `SKUCapacity.MarshalJSON` has been removed
+- Function `PrivateLinkResourceList.MarshalJSON` has been removed
+- Function `ResourceInfoList.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `SKUList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

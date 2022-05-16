@@ -23,14 +23,14 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchanges.NewClient("<subscription-id>", cred, nil)
+	client, err := armchanges.NewClient("subscriptionId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListPager("resourceGroup1",
+		"resourceProvider1",
+		"resourceType1",
+		"resourceName1",
 		&armchanges.ClientListOptions{Top: nil,
 			SkipToken: nil,
 		})
@@ -53,16 +53,16 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchanges.NewClient("<subscription-id>", cred, nil)
+	client, err := armchanges.NewClient("subscriptionId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<resource-type>",
-		"<resource-name>",
-		"<change-resource-id>",
+		"resourceGroup1",
+		"resourceProvider1",
+		"resourceType1",
+		"resourceName1",
+		"1d58d72f-0719-4a48-9228-b7ea682885bf",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

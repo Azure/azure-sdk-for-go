@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `LocationListResult.MarshalJSON` has been removed
+- Function `TenantListResult.MarshalJSON` has been removed
+- Function `CheckZonePeersResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `Subscription.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `SubscriptionListResult.MarshalJSON` has been removed
+- Function `TenantIDDescription.MarshalJSON` has been removed
+- Function `AvailabilityZonePeers.MarshalJSON` has been removed
+- Function `LocationMetadata.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

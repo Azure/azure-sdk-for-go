@@ -58,7 +58,7 @@ func (testsuite *KeysClientTestSuite) TestKeysCRUD() {
 	// create vault
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	vaultName := "go-test-vault3"
+	vaultName := "go-test-vault-3"
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,

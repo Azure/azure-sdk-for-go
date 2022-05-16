@@ -1,5 +1,54 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ManagedHsmsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ManagedHsmsClientUpdateResponse], error)` to `(*runtime.Poller[ManagedHsmsClientUpdateResponse], error)`
+- Function `*ManagedHsmsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ManagedHsmsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ManagedHsmsClientCreateOrUpdateResponse], error)`
+- Function `*MHSMPrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MHSMPrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[MHSMPrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*VaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VaultsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VaultsClientCreateOrUpdateResponse], error)`
+- Function `*VaultsClient.BeginPurgeDeleted` return value(s) have been changed from `(*armruntime.Poller[VaultsClientPurgeDeletedResponse], error)` to `(*runtime.Poller[VaultsClientPurgeDeletedResponse], error)`
+- Function `*ManagedHsmsClient.BeginPurgeDeleted` return value(s) have been changed from `(*armruntime.Poller[ManagedHsmsClientPurgeDeletedResponse], error)` to `(*runtime.Poller[ManagedHsmsClientPurgeDeletedResponse], error)`
+- Function `*ManagedHsmsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ManagedHsmsClientDeleteResponse], error)` to `(*runtime.Poller[ManagedHsmsClientDeleteResponse], error)`
+- Const `JSONWebKeyOperationRelease` has been removed
+- Const `KeyPermissionsRotate` has been removed
+- Const `KeyPermissionsRelease` has been removed
+- Const `KeyRotationPolicyActionTypeRotate` has been removed
+- Const `KeyPermissionsGetrotationpolicy` has been removed
+- Const `KeyPermissionsSetrotationpolicy` has been removed
+- Const `KeyRotationPolicyActionTypeNotify` has been removed
+- Function `DeletedManagedHsmProperties.MarshalJSON` has been removed
+- Function `RotationPolicy.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `MHSMPrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `MHSMPrivateEndpointConnectionsListResult.MarshalJSON` has been removed
+- Function `ResourceListResult.MarshalJSON` has been removed
+- Function `DeletedVaultListResult.MarshalJSON` has been removed
+- Function `SecretListResult.MarshalJSON` has been removed
+- Function `PossibleKeyRotationPolicyActionTypeValues` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `KeyReleasePolicy.MarshalJSON` has been removed
+- Function `KeyListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `VaultListResult.MarshalJSON` has been removed
+- Function `DeletedVaultProperties.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ManagedHsmListResult.MarshalJSON` has been removed
+- Function `DeletedManagedHsmListResult.MarshalJSON` has been removed
+- Function `Vault.MarshalJSON` has been removed
+- Function `*KeyReleasePolicy.UnmarshalJSON` has been removed
+- Struct `Action` has been removed
+- Struct `KeyReleasePolicy` has been removed
+- Struct `KeyRotationPolicyAttributes` has been removed
+- Struct `LifetimeAction` has been removed
+- Struct `RotationPolicy` has been removed
+- Struct `Trigger` has been removed
+- Field `ReleasePolicy` of struct `KeyProperties` has been removed
+- Field `RotationPolicy` of struct `KeyProperties` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

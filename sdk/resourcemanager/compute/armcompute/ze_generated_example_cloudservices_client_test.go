@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,63 +24,62 @@ func ExampleCloudServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginCreateOrUpdateOptions{Parameters: &armcompute.CloudService{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armcompute.CloudServiceProperties{
-				Configuration: to.Ptr("<configuration>"),
+				Configuration: to.Ptr("{ServiceConfiguration}"),
 				NetworkProfile: &armcompute.CloudServiceNetworkProfile{
 					LoadBalancerConfigurations: []*armcompute.LoadBalancerConfiguration{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("contosolb"),
 							Properties: &armcompute.LoadBalancerConfigurationProperties{
 								FrontendIPConfigurations: []*armcompute.LoadBalancerFrontendIPConfiguration{
 									{
-										Name: to.Ptr("<name>"),
+										Name: to.Ptr("contosofe"),
 										Properties: &armcompute.LoadBalancerFrontendIPConfigurationProperties{
 											PublicIPAddress: &armcompute.SubResource{
-												ID: to.Ptr("<id>"),
+												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/ConstosoRG/providers/Microsoft.Network/publicIPAddresses/contosopublicip"),
 											},
 										},
 									}},
 							},
 						}},
 				},
-				PackageURL: to.Ptr("<package-url>"),
+				PackageURL: to.Ptr("{PackageUrl}"),
 				RoleProfile: &armcompute.CloudServiceRoleProfile{
 					Roles: []*armcompute.CloudServiceRoleProfileProperties{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("ContosoFrontend"),
 							SKU: &armcompute.CloudServiceRoleSKU{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("Standard_D1_v2"),
 								Capacity: to.Ptr[int64](1),
-								Tier:     to.Ptr("<tier>"),
+								Tier:     to.Ptr("Standard"),
 							},
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("ContosoBackend"),
 							SKU: &armcompute.CloudServiceRoleSKU{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("Standard_D1_v2"),
 								Capacity: to.Ptr[int64](1),
-								Tier:     to.Ptr("<tier>"),
+								Tier:     to.Ptr("Standard"),
 							},
 						}},
 				},
 				UpgradeMode: to.Ptr(armcompute.CloudServiceUpgradeModeAuto),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -97,24 +94,23 @@ func ExampleCloudServicesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginUpdateOptions{Parameters: &armcompute.CloudServiceUpdate{
 			Tags: map[string]*string{
 				"Documentation": to.Ptr("RestAPI"),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,18 +125,18 @@ func ExampleCloudServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
-		&armcompute.CloudServicesClientBeginDeleteOptions{ResumeToken: ""})
+		"ConstosoRG",
+		"{cs-name}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -153,13 +149,13 @@ func ExampleCloudServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -175,13 +171,13 @@ func ExampleCloudServicesClient_GetInstanceView() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetInstanceView(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -197,7 +193,7 @@ func ExampleCloudServicesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -206,7 +202,6 @@ func ExampleCloudServicesClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -222,17 +217,16 @@ func ExampleCloudServicesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("ConstosoRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -248,18 +242,18 @@ func ExampleCloudServicesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
-		&armcompute.CloudServicesClientBeginStartOptions{ResumeToken: ""})
+		"ConstosoRG",
+		"{cs-name}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -272,18 +266,18 @@ func ExampleCloudServicesClient_BeginPowerOff() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPowerOff(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
-		&armcompute.CloudServicesClientBeginPowerOffOptions{ResumeToken: ""})
+		"ConstosoRG",
+		"{cs-name}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -296,24 +290,23 @@ func ExampleCloudServicesClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginRestartOptions{Parameters: &armcompute.RoleInstances{
 			RoleInstances: []*string{
 				to.Ptr("ContosoFrontend_IN_0"),
 				to.Ptr("ContosoBackend_IN_1")},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -326,24 +319,23 @@ func ExampleCloudServicesClient_BeginReimage() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReimage(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginReimageOptions{Parameters: &armcompute.RoleInstances{
 			RoleInstances: []*string{
 				to.Ptr("ContosoFrontend_IN_0"),
 				to.Ptr("ContosoBackend_IN_1")},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -356,24 +348,23 @@ func ExampleCloudServicesClient_BeginRebuild() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRebuild(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginRebuildOptions{Parameters: &armcompute.RoleInstances{
 			RoleInstances: []*string{
 				to.Ptr("ContosoFrontend_IN_0"),
 				to.Ptr("ContosoBackend_IN_1")},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -386,24 +377,23 @@ func ExampleCloudServicesClient_BeginDeleteInstances() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCloudServicesClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCloudServicesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteInstances(ctx,
-		"<resource-group-name>",
-		"<cloud-service-name>",
+		"ConstosoRG",
+		"{cs-name}",
 		&armcompute.CloudServicesClientBeginDeleteInstancesOptions{Parameters: &armcompute.RoleInstances{
 			RoleInstances: []*string{
 				to.Ptr("ContosoFrontend_IN_0"),
 				to.Ptr("ContosoBackend_IN_1")},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

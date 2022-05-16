@@ -19,64 +19,64 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineExtensionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<vm-extension-name>",
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaa",
 		armcompute.VirtualMachineExtension{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"key9183": to.Ptr("aa"),
 			},
 			Properties: &armcompute.VirtualMachineExtensionProperties{
-				Type:                    to.Ptr("<type>"),
+				Type:                    to.Ptr("extType"),
 				AutoUpgradeMinorVersion: to.Ptr(true),
 				EnableAutomaticUpgrade:  to.Ptr(true),
-				ForceUpdateTag:          to.Ptr("<force-update-tag>"),
+				ForceUpdateTag:          to.Ptr("a"),
 				InstanceView: &armcompute.VirtualMachineExtensionInstanceView{
-					Name: to.Ptr("<name>"),
-					Type: to.Ptr("<type>"),
+					Name: to.Ptr("aaaaaaaaaaaaaaaaa"),
+					Type: to.Ptr("aaaaaaaaa"),
 					Statuses: []*armcompute.InstanceViewStatus{
 						{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						}},
 					Substatuses: []*armcompute.InstanceViewStatus{
 						{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						}},
-					TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+					TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
 				},
 				ProtectedSettings:  map[string]interface{}{},
-				Publisher:          to.Ptr("<publisher>"),
+				Publisher:          to.Ptr("extPublisher"),
 				Settings:           map[string]interface{}{},
 				SuppressFailures:   to.Ptr(true),
-				TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+				TypeHandlerVersion: to.Ptr("1.2"),
 			},
 		},
-		&armcompute.VirtualMachineExtensionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -84,24 +84,24 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/UpdateVMExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_Update.json
 func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineExtensionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<vm-extension-name>",
+		"myResourceGroup",
+		"myVM",
+		"myVMExtension",
 		armcompute.VirtualMachineExtensionUpdate{
 			Properties: &armcompute.VirtualMachineExtensionUpdateProperties{
-				Type:                    to.Ptr("<type>"),
+				Type:                    to.Ptr("extType"),
 				AutoUpgradeMinorVersion: to.Ptr(true),
 				ProtectedSettingsFromKeyVault: map[string]interface{}{
 					"secretUrl": "https://kvName.vault.azure.net/secrets/secretName/79b88b3a6f5440ffb2e73e44a0db712e",
@@ -109,19 +109,19 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 						"id": "/subscriptions/a53f7094-a16c-47af-abe4-b05c05d0d79a/resourceGroups/myResourceGroup/providers/Microsoft.KeyVault/vaults/kvName",
 					},
 				},
-				Publisher: to.Ptr("<publisher>"),
+				Publisher: to.Ptr("extPublisher"),
 				Settings: map[string]interface{}{
 					"UserName": "xyz@microsoft.com",
 				},
 				SuppressFailures:   to.Ptr(true),
-				TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+				TypeHandlerVersion: to.Ptr("1.2"),
 			},
 		},
-		&armcompute.VirtualMachineExtensionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,47 +129,47 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineExtensionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<vm-extension-name>",
-		&armcompute.VirtualMachineExtensionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineExtensionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		"<vm-extension-name>",
-		&armcompute.VirtualMachineExtensionsClientGetOptions{Expand: to.Ptr("<expand>")})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaa",
+		&armcompute.VirtualMachineExtensionsClientGetOptions{Expand: to.Ptr("aaaaaa")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -177,21 +177,21 @@ func ExampleVirtualMachineExtensionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineExtensions_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineExamples/VirtualMachineExtensions_List_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineExtensionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<vm-name>",
-		&armcompute.VirtualMachineExtensionsClientListOptions{Expand: to.Ptr("<expand>")})
+		"rgcompute",
+		"aaaaaaaaaaaaa",
+		&armcompute.VirtualMachineExtensionsClientListOptions{Expand: to.Ptr("aaaaaaaaaaaaaaaaa")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

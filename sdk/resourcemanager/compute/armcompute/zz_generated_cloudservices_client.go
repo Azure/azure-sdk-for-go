@@ -39,7 +39,7 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,24 +58,26 @@ func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCreden
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service
 // creation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesClient.BeginCreateOrUpdate
 // method.
-func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CloudServicesClientCreateOrUpdateResponse], error) {
+func (client *CloudServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudServicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -113,7 +115,7 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -122,24 +124,26 @@ func (client *CloudServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Deletes a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginDeleteOptions contains the optional parameters for the CloudServicesClient.BeginDelete
 // method.
-func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*armruntime.Poller[CloudServicesClientDeleteResponse], error) {
+func (client *CloudServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*runtime.Poller[CloudServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -177,30 +181,32 @@ func (client *CloudServicesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginDeleteInstancesOptions contains the optional parameters for the CloudServicesClient.BeginDeleteInstances
 // method.
-func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*armruntime.Poller[CloudServicesClientDeleteInstancesResponse], error) {
+func (client *CloudServicesClient) BeginDeleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*runtime.Poller[CloudServicesClientDeleteInstancesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteInstances(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientDeleteInstancesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientDeleteInstancesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientDeleteInstancesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientDeleteInstancesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteInstances - Deletes role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) deleteInstances(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginDeleteInstancesOptions) (*http.Response, error) {
 	req, err := client.deleteInstancesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -238,7 +244,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -247,6 +253,7 @@ func (client *CloudServicesClient) deleteInstancesCreateRequest(ctx context.Cont
 
 // Get - Display information about a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientGetOptions contains the optional parameters for the CloudServicesClient.Get method.
@@ -287,7 +294,7 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,6 +309,7 @@ func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (Cloud
 
 // GetInstanceView - Gets the status of a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientGetInstanceViewOptions contains the optional parameters for the CloudServicesClient.GetInstanceView
@@ -343,7 +351,7 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -359,10 +367,11 @@ func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Resp
 // NewListPager - Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the
 // next page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // options - CloudServicesClientListOptions contains the optional parameters for the CloudServicesClient.List method.
 func (client *CloudServicesClient) NewListPager(resourceGroupName string, options *CloudServicesClientListOptions) *runtime.Pager[CloudServicesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudServicesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudServicesClientListResponse]{
 		More: func(page CloudServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -407,7 +416,7 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -424,9 +433,10 @@ func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (Clou
 // nextLink property in the response to get the next page of Cloud Services. Do this till nextLink
 // is null to fetch all the Cloud Services.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - CloudServicesClientListAllOptions contains the optional parameters for the CloudServicesClient.ListAll method.
 func (client *CloudServicesClient) NewListAllPager(options *CloudServicesClientListAllOptions) *runtime.Pager[CloudServicesClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudServicesClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudServicesClientListAllResponse]{
 		More: func(page CloudServicesClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -467,7 +477,7 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -483,24 +493,26 @@ func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (C
 // BeginPowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the
 // resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginPowerOffOptions contains the optional parameters for the CloudServicesClient.BeginPowerOff
 // method.
-func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*armruntime.Poller[CloudServicesClientPowerOffResponse], error) {
+func (client *CloudServicesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*runtime.Poller[CloudServicesClientPowerOffResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.powerOff(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientPowerOffResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientPowerOffResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientPowerOffResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientPowerOffResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // PowerOff - Power off the cloud service. Note that resources are still attached and you are getting charged for the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) powerOff(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginPowerOffOptions) (*http.Response, error) {
 	req, err := client.powerOffCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -538,7 +550,7 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -546,19 +558,20 @@ func (client *CloudServicesClient) powerOffCreateRequest(ctx context.Context, re
 // the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginRebuildOptions contains the optional parameters for the CloudServicesClient.BeginRebuild
 // method.
-func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*armruntime.Poller[CloudServicesClientRebuildResponse], error) {
+func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*runtime.Poller[CloudServicesClientRebuildResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.rebuild(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientRebuildResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientRebuildResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientRebuildResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientRebuildResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -566,6 +579,7 @@ func (client *CloudServicesClient) BeginRebuild(ctx context.Context, resourceGro
 // the storage resources that are used by them. If you do not want to initialize storage
 // resources, you can use Reimage Role Instances.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) rebuild(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRebuildOptions) (*http.Response, error) {
 	req, err := client.rebuildCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -603,7 +617,7 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -612,24 +626,26 @@ func (client *CloudServicesClient) rebuildCreateRequest(ctx context.Context, res
 
 // BeginReimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginReimageOptions contains the optional parameters for the CloudServicesClient.BeginReimage
 // method.
-func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*armruntime.Poller[CloudServicesClientReimageResponse], error) {
+func (client *CloudServicesClient) BeginReimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*runtime.Poller[CloudServicesClientReimageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reimage(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientReimageResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientReimageResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientReimageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientReimageResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Reimage - Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) reimage(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -667,7 +683,7 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -676,24 +692,26 @@ func (client *CloudServicesClient) reimageCreateRequest(ctx context.Context, res
 
 // BeginRestart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginRestartOptions contains the optional parameters for the CloudServicesClient.BeginRestart
 // method.
-func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*armruntime.Poller[CloudServicesClientRestartResponse], error) {
+func (client *CloudServicesClient) BeginRestart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*runtime.Poller[CloudServicesClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientRestartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientRestartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Restart - Restarts one or more role instances in a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) restart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -731,7 +749,7 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -740,24 +758,26 @@ func (client *CloudServicesClient) restartCreateRequest(ctx context.Context, res
 
 // BeginStart - Starts the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginStartOptions contains the optional parameters for the CloudServicesClient.BeginStart
 // method.
-func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*armruntime.Poller[CloudServicesClientStartResponse], error) {
+func (client *CloudServicesClient) BeginStart(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*runtime.Poller[CloudServicesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts the cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) start(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -795,30 +815,32 @@ func (client *CloudServicesClient) startCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group.
 // cloudServiceName - Name of the cloud service.
 // options - CloudServicesClientBeginUpdateOptions contains the optional parameters for the CloudServicesClient.BeginUpdate
 // method.
-func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*armruntime.Poller[CloudServicesClientUpdateResponse], error) {
+func (client *CloudServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*runtime.Poller[CloudServicesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, cloudServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CloudServicesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CloudServicesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update a cloud service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 func (client *CloudServicesClient) update(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 	if err != nil {
@@ -856,7 +878,7 @@ func (client *CloudServicesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

@@ -1,5 +1,14 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `FeatureOperationsListResult.MarshalJSON` has been removed
+- Function `SubscriptionFeatureRegistrationList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

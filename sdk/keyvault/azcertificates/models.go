@@ -160,6 +160,7 @@ type CertificateWithPolicy struct {
 	SecretID *string `json:"sid,omitempty" azure:"ro"`
 }
 
+// UnmarshalJSON implements the json.Unmarshaler interface for the CertificateWithPolicy type.
 func (c *CertificateWithPolicy) UnmarshalJSON(data []byte) error {
 	var g generated.CertificateBundle
 	err := json.Unmarshal(data, &g)

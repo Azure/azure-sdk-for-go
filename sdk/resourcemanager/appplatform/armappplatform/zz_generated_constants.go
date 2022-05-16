@@ -10,7 +10,7 @@ package armappplatform
 
 const (
 	moduleName    = "armappplatform"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // APIPortalProvisioningState - State of the API portal.
@@ -205,6 +205,28 @@ func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisi
 	}
 }
 
+// CertificateResourceProvisioningState - Provisioning state of the Certificate
+type CertificateResourceProvisioningState string
+
+const (
+	CertificateResourceProvisioningStateCreating  CertificateResourceProvisioningState = "Creating"
+	CertificateResourceProvisioningStateDeleting  CertificateResourceProvisioningState = "Deleting"
+	CertificateResourceProvisioningStateFailed    CertificateResourceProvisioningState = "Failed"
+	CertificateResourceProvisioningStateSucceeded CertificateResourceProvisioningState = "Succeeded"
+	CertificateResourceProvisioningStateUpdating  CertificateResourceProvisioningState = "Updating"
+)
+
+// PossibleCertificateResourceProvisioningStateValues returns the possible values for the CertificateResourceProvisioningState const type.
+func PossibleCertificateResourceProvisioningStateValues() []CertificateResourceProvisioningState {
+	return []CertificateResourceProvisioningState{
+		CertificateResourceProvisioningStateCreating,
+		CertificateResourceProvisioningStateDeleting,
+		CertificateResourceProvisioningStateFailed,
+		CertificateResourceProvisioningStateSucceeded,
+		CertificateResourceProvisioningStateUpdating,
+	}
+}
+
 // ConfigServerState - State of the config server.
 type ConfigServerState string
 
@@ -269,6 +291,28 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// CustomDomainResourceProvisioningState - Provisioning state of the Domain
+type CustomDomainResourceProvisioningState string
+
+const (
+	CustomDomainResourceProvisioningStateCreating  CustomDomainResourceProvisioningState = "Creating"
+	CustomDomainResourceProvisioningStateDeleting  CustomDomainResourceProvisioningState = "Deleting"
+	CustomDomainResourceProvisioningStateFailed    CustomDomainResourceProvisioningState = "Failed"
+	CustomDomainResourceProvisioningStateSucceeded CustomDomainResourceProvisioningState = "Succeeded"
+	CustomDomainResourceProvisioningStateUpdating  CustomDomainResourceProvisioningState = "Updating"
+)
+
+// PossibleCustomDomainResourceProvisioningStateValues returns the possible values for the CustomDomainResourceProvisioningState const type.
+func PossibleCustomDomainResourceProvisioningStateValues() []CustomDomainResourceProvisioningState {
+	return []CustomDomainResourceProvisioningState{
+		CustomDomainResourceProvisioningStateCreating,
+		CustomDomainResourceProvisioningStateDeleting,
+		CustomDomainResourceProvisioningStateFailed,
+		CustomDomainResourceProvisioningStateSucceeded,
+		CustomDomainResourceProvisioningStateUpdating,
+	}
+}
+
 // DeploymentResourceProvisioningState - Provisioning state of the Deployment
 type DeploymentResourceProvisioningState string
 
@@ -324,6 +368,25 @@ func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
 		GatewayProvisioningStateFailed,
 		GatewayProvisioningStateSucceeded,
 		GatewayProvisioningStateUpdating,
+	}
+}
+
+// HTTPSchemeType - Scheme to use for connecting to the host. Defaults to HTTP.
+// Possible enum values:
+// * "HTTP" means that the scheme used will be http://
+// * "HTTPS" means that the scheme used will be https://
+type HTTPSchemeType string
+
+const (
+	HTTPSchemeTypeHTTP  HTTPSchemeType = "HTTP"
+	HTTPSchemeTypeHTTPS HTTPSchemeType = "HTTPS"
+)
+
+// PossibleHTTPSchemeTypeValues returns the possible values for the HTTPSchemeType const type.
+func PossibleHTTPSchemeTypeValues() []HTTPSchemeType {
+	return []HTTPSchemeType{
+		HTTPSchemeTypeHTTP,
+		HTTPSchemeTypeHTTPS,
 	}
 }
 
@@ -420,6 +483,24 @@ func PossiblePowerStateValues() []PowerState {
 	return []PowerState{
 		PowerStateRunning,
 		PowerStateStopped,
+	}
+}
+
+// ProbeActionType - The type of the action to take to perform the health check.
+type ProbeActionType string
+
+const (
+	ProbeActionTypeExecAction      ProbeActionType = "ExecAction"
+	ProbeActionTypeHTTPGetAction   ProbeActionType = "HTTPGetAction"
+	ProbeActionTypeTCPSocketAction ProbeActionType = "TCPSocketAction"
+)
+
+// PossibleProbeActionTypeValues returns the possible values for the ProbeActionType const type.
+func PossibleProbeActionTypeValues() []ProbeActionType {
+	return []ProbeActionType{
+		ProbeActionTypeExecAction,
+		ProbeActionTypeHTTPGetAction,
+		ProbeActionTypeTCPSocketAction,
 	}
 }
 

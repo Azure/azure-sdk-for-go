@@ -1,5 +1,159 @@
 # Release History
 
+## 0.6.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*BuildpackBindingClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BuildpackBindingClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BuildpackBindingClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*APIPortalCustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[APIPortalCustomDomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[APIPortalCustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigServersClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientUpdatePutResponse], error)` to `(*runtime.Poller[ConfigServersClientUpdatePutResponse], error)`
+- Function `*GatewayCustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GatewayCustomDomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GatewayCustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateThreadDump` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientGenerateThreadDumpResponse], error)` to `(*runtime.Poller[DeploymentsClientGenerateThreadDumpResponse], error)`
+- Function `*DeploymentsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStartResponse], error)` to `(*runtime.Poller[DeploymentsClientStartResponse], error)`
+- Function `*CustomDomainsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientUpdateResponse], error)` to `(*runtime.Poller[CustomDomainsClientUpdateResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*BuildServiceBuilderClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BuildServiceBuilderClientDeleteResponse], error)` to `(*runtime.Poller[BuildServiceBuilderClientDeleteResponse], error)`
+- Function `*GatewaysClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GatewaysClientDeleteResponse], error)` to `(*runtime.Poller[GatewaysClientDeleteResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientUpdateResponse], error)` to `(*runtime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[MonitoringSettingsClientUpdatePutResponse], error)` to `(*runtime.Poller[MonitoringSettingsClientUpdatePutResponse], error)`
+- Function `*StoragesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StoragesClientDeleteResponse], error)` to `(*runtime.Poller[StoragesClientDeleteResponse], error)`
+- Function `*ConfigServersClient.BeginUpdatePatch` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientUpdatePatchResponse], error)` to `(*runtime.Poller[ConfigServersClientUpdatePatchResponse], error)`
+- Function `*StoragesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[StoragesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[StoragesClientCreateOrUpdateResponse], error)`
+- Function `*GatewaysClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GatewaysClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GatewaysClientCreateOrUpdateResponse], error)`
+- Function `*BindingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BindingsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BindingsClientCreateOrUpdateResponse], error)`
+- Function `*GatewayCustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GatewayCustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[GatewayCustomDomainsClientDeleteResponse], error)`
+- Function `*APIPortalsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[APIPortalsClientDeleteResponse], error)` to `(*runtime.Poller[APIPortalsClientDeleteResponse], error)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientUpdateResponse], error)` to `(*runtime.Poller[AppsClientUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientDeleteResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientDeleteResponse], error)`
+- Function `*ServiceRegistriesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceRegistriesClientDeleteResponse], error)` to `(*runtime.Poller[ServiceRegistriesClientDeleteResponse], error)`
+- Function `*ServicesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ServicesClientStartResponse], error)` to `(*runtime.Poller[ServicesClientStartResponse], error)`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AppsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStopResponse], error)` to `(*runtime.Poller[DeploymentsClientStopResponse], error)`
+- Function `*DeploymentsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `*GatewayRouteConfigsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GatewayRouteConfigsClientDeleteResponse], error)` to `(*runtime.Poller[GatewayRouteConfigsClientDeleteResponse], error)`
+- Function `*AppsClient.BeginSetActiveDeployments` return value(s) have been changed from `(*armruntime.Poller[AppsClientSetActiveDeploymentsResponse], error)` to `(*runtime.Poller[AppsClientSetActiveDeploymentsResponse], error)`
+- Function `*ServiceRegistriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error)`
+- Function `*CertificatesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CertificatesClientDeleteResponse], error)` to `(*runtime.Poller[CertificatesClientDeleteResponse], error)`
+- Function `*APIPortalCustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[APIPortalCustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[APIPortalCustomDomainsClientDeleteResponse], error)`
+- Function `*BuildServiceBuilderClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error)`
+- Function `*BuildServiceAgentPoolClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error)` to `(*runtime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error)`
+- Function `*BuildpackBindingClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BuildpackBindingClientDeleteResponse], error)` to `(*runtime.Poller[BuildpackBindingClientDeleteResponse], error)`
+- Function `*ConfigServersClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientValidateResponse], error)` to `(*runtime.Poller[ConfigServersClientValidateResponse], error)`
+- Function `*DeploymentsClient.BeginStartJFR` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStartJFRResponse], error)` to `(*runtime.Poller[DeploymentsClientStartJFRResponse], error)`
+- Function `*BindingsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[BindingsClientUpdateResponse], error)` to `(*runtime.Poller[BindingsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateHeapDump` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientGenerateHeapDumpResponse], error)` to `(*runtime.Poller[DeploymentsClientGenerateHeapDumpResponse], error)`
+- Function `*ConfigurationServicesClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientValidateResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientValidateResponse], error)`
+- Function `*GatewayRouteConfigsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GatewayRouteConfigsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GatewayRouteConfigsClientCreateOrUpdateResponse], error)`
+- Function `*APIPortalsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[APIPortalsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[APIPortalsClientCreateOrUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*BindingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BindingsClientDeleteResponse], error)` to `(*runtime.Poller[BindingsClientDeleteResponse], error)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CertificatesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CertificatesClientCreateOrUpdateResponse], error)`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AppsClientDeleteResponse], error)` to `(*runtime.Poller[AppsClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientRestartResponse], error)` to `(*runtime.Poller[DeploymentsClientRestartResponse], error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePatch` return value(s) have been changed from `(*armruntime.Poller[MonitoringSettingsClientUpdatePatchResponse], error)` to `(*runtime.Poller[MonitoringSettingsClientUpdatePatchResponse], error)`
+- Function `*ServicesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ServicesClientStopResponse], error)` to `(*runtime.Poller[ServicesClientStopResponse], error)`
+- Function `GatewayCustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `CertificateResourceCollection.MarshalJSON` has been removed
+- Function `StorageResourceCollection.MarshalJSON` has been removed
+- Function `CustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `SupportedStacksCollection.MarshalJSON` has been removed
+- Function `ConfigurationServiceResourceCollection.MarshalJSON` has been removed
+- Function `ConfigServerSettingsErrorRecord.MarshalJSON` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+- Function `BindingResourceCollection.MarshalJSON` has been removed
+- Function `ResourceSKUZoneDetails.MarshalJSON` has been removed
+- Function `AppResourceCollection.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ServiceResourceList.MarshalJSON` has been removed
+- Function `BuildCollection.MarshalJSON` has been removed
+- Function `ServiceRegistryResourceCollection.MarshalJSON` has been removed
+- Function `BuildpackBindingResourceCollection.MarshalJSON` has been removed
+- Function `ResourceSKU.MarshalJSON` has been removed
+- Function `APIPortalResourceCollection.MarshalJSON` has been removed
+- Function `ConfigServerSettingsValidateResult.MarshalJSON` has been removed
+- Function `ResourceSKURestrictionInfo.MarshalJSON` has been removed
+- Function `BuilderResourceCollection.MarshalJSON` has been removed
+- Function `ResourceSKUCollection.MarshalJSON` has been removed
+- Function `BuildResultCollection.MarshalJSON` has been removed
+- Function `AvailableRuntimeVersions.MarshalJSON` has been removed
+- Function `ConfigurationServiceGitPropertyValidateResult.MarshalJSON` has been removed
+- Function `AvailableOperations.MarshalJSON` has been removed
+- Function `APIPortalCustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `GatewayResourceCollection.MarshalJSON` has been removed
+- Function `SupportedBuildpacksCollection.MarshalJSON` has been removed
+- Function `ValidationMessages.MarshalJSON` has been removed
+- Function `BuildServiceCollection.MarshalJSON` has been removed
+- Function `DeploymentResourceCollection.MarshalJSON` has been removed
+- Function `GatewayRouteConfigResourceCollection.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ResourceSKURestrictions.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `BuildServiceAgentPoolResourceCollection.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `CustomDomainResourceProvisioningStateDeleting`
+- New const `CustomDomainResourceProvisioningStateFailed`
+- New const `CertificateResourceProvisioningStateSucceeded`
+- New const `ProbeActionTypeHTTPGetAction`
+- New const `CertificateResourceProvisioningStateDeleting`
+- New const `CertificateResourceProvisioningStateUpdating`
+- New const `CustomDomainResourceProvisioningStateCreating`
+- New const `ProbeActionTypeExecAction`
+- New const `CustomDomainResourceProvisioningStateUpdating`
+- New const `CertificateResourceProvisioningStateFailed`
+- New const `CustomDomainResourceProvisioningStateSucceeded`
+- New const `HTTPSchemeTypeHTTPS`
+- New const `CertificateResourceProvisioningStateCreating`
+- New const `ProbeActionTypeTCPSocketAction`
+- New const `HTTPSchemeTypeHTTP`
+- New function `*ProbeAction.GetProbeAction() *ProbeAction`
+- New function `*ExecAction.UnmarshalJSON([]byte) error`
+- New function `*HTTPGetAction.UnmarshalJSON([]byte) error`
+- New function `*ExecAction.GetProbeAction() *ProbeAction`
+- New function `*Probe.UnmarshalJSON([]byte) error`
+- New function `PossibleCustomDomainResourceProvisioningStateValues() []CustomDomainResourceProvisioningState`
+- New function `PossibleProbeActionTypeValues() []ProbeActionType`
+- New function `PossibleHTTPSchemeTypeValues() []HTTPSchemeType`
+- New function `TCPSocketAction.MarshalJSON() ([]byte, error)`
+- New function `*TCPSocketAction.GetProbeAction() *ProbeAction`
+- New function `*HTTPGetAction.GetProbeAction() *ProbeAction`
+- New function `Probe.MarshalJSON() ([]byte, error)`
+- New function `*TCPSocketAction.UnmarshalJSON([]byte) error`
+- New function `ExecAction.MarshalJSON() ([]byte, error)`
+- New function `HTTPGetAction.MarshalJSON() ([]byte, error)`
+- New function `PossibleCertificateResourceProvisioningStateValues() []CertificateResourceProvisioningState`
+- New struct `AppVNetAddons`
+- New struct `BuildResourceRequests`
+- New struct `ExecAction`
+- New struct `GatewayRouteConfigOpenAPIProperties`
+- New struct `HTTPGetAction`
+- New struct `IngressConfig`
+- New struct `MarketplaceResource`
+- New struct `Probe`
+- New struct `ProbeAction`
+- New struct `ServiceVNetAddons`
+- New struct `TCPSocketAction`
+- New field `StartupProbe` in struct `DeploymentSettings`
+- New field `TerminationGracePeriodSeconds` in struct `DeploymentSettings`
+- New field `LivenessProbe` in struct `DeploymentSettings`
+- New field `ReadinessProbe` in struct `DeploymentSettings`
+- New field `ResourceRequests` in struct `BuildProperties`
+- New field `ProvisioningState` in struct `ContentCertificateProperties`
+- New field `ProvisioningState` in struct `CustomDomainProperties`
+- New field `ProvisioningState` in struct `CertificateProperties`
+- New field `VnetAddons` in struct `ClusterResourceProperties`
+- New field `MarketplaceResource` in struct `ClusterResourceProperties`
+- New field `IngressConfig` in struct `NetworkProfile`
+- New field `OpenAPI` in struct `GatewayRouteConfigProperties`
+- New field `VnetAddons` in struct `AppResourceProperties`
+- New field `ProvisioningState` in struct `KeyVaultCertificateProperties`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

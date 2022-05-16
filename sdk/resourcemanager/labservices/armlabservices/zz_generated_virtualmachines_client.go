@@ -38,7 +38,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Returns the properties for a lab virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
@@ -102,7 +103,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListByLabPager - Returns a list of all virtual machines for a lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // options - VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab
 // method.
 func (client *VirtualMachinesClient) NewListByLabPager(resourceGroupName string, labName string, options *VirtualMachinesClientListByLabOptions) *runtime.Pager[VirtualMachinesClientListByLabResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByLabResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListByLabResponse]{
 		More: func(page VirtualMachinesClientListByLabResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -174,7 +176,7 @@ func (client *VirtualMachinesClient) listByLabCreateRequest(ctx context.Context,
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,28 +191,30 @@ func (client *VirtualMachinesClient) listByLabHandleResponse(resp *http.Response
 
 // BeginRedeploy - Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
 // URIs.
 // options - VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
 // method.
-func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*armruntime.Poller[VirtualMachinesClientRedeployResponse], error) {
+func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*runtime.Poller[VirtualMachinesClientRedeployResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.redeploy(ctx, resourceGroupName, labName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientRedeployResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientRedeployResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRedeployResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientRedeployResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Redeploy - Action to redeploy a lab virtual machine to a different compute node. For troubleshooting connectivity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginRedeployOptions) (*http.Response, error) {
 	req, err := client.redeployCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
@@ -252,36 +256,38 @@ func (client *VirtualMachinesClient) redeployCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginReimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
 // snapshot of the reference environment of the lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
 // URIs.
 // options - VirtualMachinesClientBeginReimageOptions contains the optional parameters for the VirtualMachinesClient.BeginReimage
 // method.
-func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*armruntime.Poller[VirtualMachinesClientReimageResponse], error) {
+func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*runtime.Poller[VirtualMachinesClientReimageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reimage(ctx, resourceGroupName, labName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientReimageResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientReimageResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientReimageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientReimageResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Reimage - Re-image a lab virtual machine. The virtual machine will be deleted and recreated using the latest published
 // snapshot of the reference environment of the lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginReimageOptions) (*http.Response, error) {
 	req, err := client.reimageCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
@@ -323,12 +329,13 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginResetPassword - Resets a lab virtual machine password.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
@@ -336,22 +343,23 @@ func (client *VirtualMachinesClient) reimageCreateRequest(ctx context.Context, r
 // body - The request body.
 // options - VirtualMachinesClientBeginResetPasswordOptions contains the optional parameters for the VirtualMachinesClient.BeginResetPassword
 // method.
-func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*armruntime.Poller[VirtualMachinesClientResetPasswordResponse], error) {
+func (client *VirtualMachinesClient) BeginResetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*runtime.Poller[VirtualMachinesClientResetPasswordResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.resetPassword(ctx, resourceGroupName, labName, virtualMachineName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientResetPasswordResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientResetPasswordResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientResetPasswordResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientResetPasswordResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ResetPassword - Resets a lab virtual machine password.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *VirtualMachinesClient) resetPassword(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, body ResetPasswordBody, options *VirtualMachinesClientBeginResetPasswordOptions) (*http.Response, error) {
 	req, err := client.resetPasswordCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, body, options)
 	if err != nil {
@@ -393,34 +401,36 @@ func (client *VirtualMachinesClient) resetPasswordCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginStart - Action to start a lab virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
 // URIs.
 // options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
 // method.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*armruntime.Poller[VirtualMachinesClientStartResponse], error) {
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*runtime.Poller[VirtualMachinesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, labName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientStartResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientStartResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Action to start a lab virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
@@ -462,34 +472,36 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Action to stop a lab virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // labName - The name of the lab that uniquely identifies it within containing lab account. Used in resource URIs.
 // virtualMachineName - The ID of the virtual machine that uniquely identifies it within the containing lab. Used in resource
 // URIs.
 // options - VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop
 // method.
-func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*armruntime.Poller[VirtualMachinesClientStopResponse], error) {
+func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*runtime.Poller[VirtualMachinesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, labName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientStopResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientStopResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Action to stop a lab virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-15-preview
 func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, options)
 	if err != nil {
@@ -531,6 +543,6 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

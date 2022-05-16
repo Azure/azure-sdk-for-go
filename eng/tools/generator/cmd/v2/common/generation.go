@@ -149,15 +149,12 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		currentAPIVersion, err := GetCurrentAPIVersion(packagePath)
+		isCurrentPreview, err := ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}
-		if strings.Contains(currentAPIVersion, "preview") {
-			isCurrentPreview = true
-		}
 
-		previousVersionTag := GetPreviousVersionTag(currentAPIVersion, tags)
+		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
 		oriExports, err = GetExportsFromTag(*ctx.SDKRepo, packagePath, previousVersionTag)
 		if err != nil {

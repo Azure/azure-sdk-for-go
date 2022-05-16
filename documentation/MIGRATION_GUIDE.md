@@ -23,7 +23,7 @@ This document is intended for users that are familiar with the previous version 
 
 ## General Changes
 
-The latest Azure SDK For Go for management modules is using the [Go Modules](https://github.com/golang/go/wiki/Modules) to manage the dependencies. We ship every RP as an individual module to create a more flexible user experience.
+The latest Azure SDK For Go for management modules is using the [Go Modules](https://github.com/golang/go/wiki/Modules) to manage the dependencies. We ship every RP as an individual module to create a more flexible user experience. Unlike previous version, the latest SDK only provides one API version in one module for each RP. The SDK stable version will always use the service's stable API version. You can search in [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go) to find the preview version and specify version num when using `go get` to retrive it (e.g., `go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault@v1.1.0-beta.1`).
 
 ## Breaking Changes
 

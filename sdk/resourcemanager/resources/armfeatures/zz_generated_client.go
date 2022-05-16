@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // Get - Gets the preview feature with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceProviderNamespace - The resource provider namespace for the feature.
 // featureName - The name of the feature to get.
 // options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -96,7 +97,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceProviderName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -111,10 +112,11 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceProviderNamespace - The namespace of the resource provider for getting features.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(resourceProviderNamespace string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *Client) listCreateRequest(ctx context.Context, resourceProviderNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -174,9 +176,10 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListAllPager - Gets all the preview features that are available through AFEC for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // options - ClientListAllOptions contains the optional parameters for the Client.ListAll method.
 func (client *Client) NewListAllPager(options *ClientListAllOptions) *runtime.Pager[ClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListAllResponse]{
 		More: func(page ClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -217,7 +220,7 @@ func (client *Client) listAllCreateRequest(ctx context.Context, options *ClientL
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -232,6 +235,7 @@ func (client *Client) listAllHandleResponse(resp *http.Response) (ClientListAllR
 
 // Register - Registers the preview feature for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceProviderNamespace - The namespace of the resource provider.
 // featureName - The name of the feature to register.
 // options - ClientRegisterOptions contains the optional parameters for the Client.Register method.
@@ -272,7 +276,7 @@ func (client *Client) registerCreateRequest(ctx context.Context, resourceProvide
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -287,6 +291,7 @@ func (client *Client) registerHandleResponse(resp *http.Response) (ClientRegiste
 
 // Unregister - Unregisters the preview feature for the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceProviderNamespace - The namespace of the resource provider.
 // featureName - The name of the feature to unregister.
 // options - ClientUnregisterOptions contains the optional parameters for the Client.Unregister method.
@@ -327,7 +332,7 @@ func (client *Client) unregisterCreateRequest(ctx context.Context, resourceProvi
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 

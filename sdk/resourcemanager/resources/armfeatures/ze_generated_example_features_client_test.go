@@ -23,7 +23,7 @@ func ExampleClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfeatures.NewClient("<subscription-id>", cred, nil)
+	client, err := armfeatures.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,17 +47,16 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfeatures.NewClient("<subscription-id>", cred, nil)
+	client, err := armfeatures.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-provider-namespace>",
+	pager := client.NewListPager("Resource Provider Namespace",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -74,13 +72,13 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfeatures.NewClient("<subscription-id>", cred, nil)
+	client, err := armfeatures.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-provider-namespace>",
-		"<feature-name>",
+		"Resource Provider Namespace",
+		"feature",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,13 +94,13 @@ func ExampleClient_Register() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfeatures.NewClient("<subscription-id>", cred, nil)
+	client, err := armfeatures.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Register(ctx,
-		"<resource-provider-namespace>",
-		"<feature-name>",
+		"Resource Provider Namespace",
+		"feature",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,13 +116,13 @@ func ExampleClient_Unregister() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfeatures.NewClient("<subscription-id>", cred, nil)
+	client, err := armfeatures.NewClient("ff23096b-f5a2-46ea-bd62-59c3e93fef9a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Unregister(ctx,
-		"<resource-provider-namespace>",
-		"<feature-name>",
+		"Resource Provider Namespace",
+		"feature",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

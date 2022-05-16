@@ -22,12 +22,12 @@ type Entity struct {
 
 // EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for user defined entity properties
 type EDMEntity struct {
-	Metadata string `json:"odata.metadata"`
-	Id       string `json:"odata.id"`
-	EditLink string `json:"odata.editLink"`
-	Type     string `json:"odata.type"`
-	Etag     string `json:"odata.etag"`
 	Entity
+	Metadata   string                 `json:"odata.metadata"`
+	ID         string                 `json:"odata.id"`
+	EditLink   string                 `json:"odata.editLink"`
+	Type       string                 `json:"odata.type"`
+	ETag       string                 `json:"odata.etag"`
 	Properties map[string]interface{} // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
 }
 
@@ -73,13 +73,13 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 		case "odata.metadata":
 			err = json.Unmarshal(propRawValue, &e.Metadata)
 		case "odata.id":
-			err = json.Unmarshal(propRawValue, &e.Id)
+			err = json.Unmarshal(propRawValue, &e.ID)
 		case "odata.editLink":
 			err = json.Unmarshal(propRawValue, &e.EditLink)
 		case "odata.type":
 			err = json.Unmarshal(propRawValue, &e.Type)
 		case "odata.etag":
-			err = json.Unmarshal(propRawValue, &e.Etag)
+			err = json.Unmarshal(propRawValue, &e.ETag)
 		case "PartitionKey":
 			err = json.Unmarshal(propRawValue, &e.PartitionKey)
 		case "RowKey":

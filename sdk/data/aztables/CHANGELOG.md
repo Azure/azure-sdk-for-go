@@ -1,14 +1,9 @@
 # Release History
 
-## 0.8.2 (Unreleased)
-
-### Features Added
+## 1.0.0 (2022-05-16)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* For type `EDMEntity` renamed field `Id` to `ID`, `Etag` to `ETag`
 
 ## 0.8.1 (2022-05-12)
 

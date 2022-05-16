@@ -20,13 +20,13 @@ import (
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
-// Client is the struct for interacting with a KeyVault Secrets instance
+// Client interacts with Key Vault secrets.
 type Client struct {
 	kvClient *internal.KeyVaultClient
 	vaultUrl string
 }
 
-// ClientOptions are the configurable options on a Client.
+// ClientOptions are the configurable options for a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
 }
@@ -46,8 +46,8 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	}
 }
 
-// NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+// NewClient constructs a Client that accesses a Key Vault's secrets.
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -61,18 +61,19 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	return &Client{
 		kvClient: internal.NewKeyVaultClient(conOptions),
-		vaultUrl: vaultUrl,
+		vaultUrl: vaultURL,
 	}, nil
 }
 
-// VaultURL returns the vault URL string for the client
+// VaultURL returns the URL for the client's Key Vault.
 func (c *Client) VaultURL() string {
 	return c.vaultUrl
 }
 
-// GetSecretOptions holds the optional parameters for the Client.GetSecret function
+// GetSecretOptions contains optional parameters for GetSecret.
 type GetSecretOptions struct {
-	// Version specifies the version of a secret. If unspecified, the most recent version will be returned
+	// Version specifies which version of the secret the client should get.
+	// If unspecified, the client will get the most recent version.
 	Version string
 }
 
@@ -84,7 +85,7 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 	return &internal.KeyVaultClientGetSecretOptions{}
 }
 
-// GetSecretResponse is the response object for the Client.GetSecret operation
+// GetSecretResponse is returned by GetSecret.
 type GetSecretResponse struct {
 	Secret
 }
@@ -116,8 +117,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 	}
 }
 
-// GetSecret gets a specified secret from a given key vault. The GET operation is applicable to any secret
-// stored in Azure Key Vault. This operation requires the secrets/get permission
+// GetSecret gets a secret value from the vault.
 func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretOptions) (GetSecretResponse, error) {
 	if options == nil {
 		options = &GetSecretOptions{}
@@ -129,7 +129,7 @@ func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretO
 	return getSecretResponseFromGenerated(resp), nil
 }
 
-// SetSecretOptions contains the optional parameters for a Client.SetSecret operation
+// SetSecretOptions contains optional parameters for SetSecret.
 type SetSecretOptions struct {
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
@@ -149,7 +149,7 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 	return &internal.KeyVaultClientSetSecretOptions{}
 }
 
-// SetSecretResponse is the response struct for the Client.SetSecret operation.
+// SetSecretResponse is returned by SetSecret.
 type SetSecretResponse struct {
 	Secret
 }
@@ -182,8 +182,7 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 	}
 }
 
-// SetSecret sets a secret in a specifed key vault. The set operation adds a secret to the Azure Key Vault, if the named secret
-// already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.
+// SetSecret sets the value of a secret. If the secret already exists, this will create a new version of the secret.
 func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
 	if options == nil {
 		options = &SetSecretOptions{}
@@ -204,7 +203,7 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 	return setSecretResponseFromGenerated(resp), nil
 }
 
-// DeleteSecretResponse contains the response for a Client.DeleteSecret operation.
+// DeleteSecretResponse is returned by DeleteSecret.
 type DeleteSecretResponse struct {
 	DeletedSecret
 }
@@ -238,7 +237,7 @@ func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResp
 	}
 }
 
-// BeginDeleteSecretOptions contains the optional parameters for the Client.BeginDeleteSecret method.
+// BeginDeleteSecretOptions contains optional parameters for BeginDeleteSecret.
 type BeginDeleteSecretOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
 	ResumeToken *string
@@ -249,7 +248,7 @@ func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteS
 	return &internal.KeyVaultClientDeleteSecretOptions{}
 }
 
-// DeleteSecretPoller is the poller returned by the Client.StartDeleteSecret operation
+// DeleteSecretPoller is returned by BeginDeleteSecret.
 type DeleteSecretPoller struct {
 	secretName     string // This is the secret to Poll for in GetDeletedSecret
 	vaultUrl       string
@@ -268,9 +267,7 @@ func (s *DeleteSecretPoller) Done() bool {
 	return s.rawResponse.StatusCode == http.StatusOK
 }
 
-// Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
-// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
+// Poll fetches the latest state of the delete operation.
 func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	var rawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
@@ -289,13 +286,12 @@ func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return rawResp, err
 }
 
-// FinalResponse returns the final response after the operations has finished
+// FinalResponse returns the final response after the secret is deleted.
 func (s *DeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
 	return deleteSecretResponseFromGenerated(s.deleteResponse), nil
 }
 
-// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
-// Poll is a wait determined by the t parameter.
+// PollUntilDone polls Key Vault until the secret is deleted. The t parameter determines the wait between polls.
 func (s *DeleteSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
@@ -316,9 +312,8 @@ func (s *DeleteSecretPoller) ResumeToken() (string, error) {
 	return s.resumeToken, nil
 }
 
-// BeginDeleteSecret deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
-// requires the secrets/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
-// response PollUntilDone function can be used to poll until completion.
+// BeginDeleteSecret deletes all versions of a secret. It returns a Poller that enables waiting for Key Vault to finish
+// deleting the secret.
 func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (*DeleteSecretPoller, error) {
 	if options == nil {
 		options = &BeginDeleteSecretOptions{}
@@ -363,7 +358,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 	}, nil
 }
 
-// GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
+// GetDeletedSecretOptions contains optional parameters for GetDeletedSecret.
 type GetDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
@@ -372,7 +367,7 @@ func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDelet
 	return &internal.KeyVaultClientGetDeletedSecretOptions{}
 }
 
-// GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
+// GetDeletedSecretResponse is returned by GetDeletedSecret.
 type GetDeletedSecretResponse struct {
 	DeletedSecret
 }
@@ -407,8 +402,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 	}
 }
 
-// GetDeletedSecret gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
-// This operation requires the secrets/get permission.
+// GetDeletedSecret gets a deleted secret.
 func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {
 		options = &GetDeletedSecretOptions{}
@@ -420,12 +414,12 @@ func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *Get
 	return getDeletedSecretResponseFromGenerated(resp), nil
 }
 
-// UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
+// UpdateSecretPropertiesOptions contains optional parameters for UpdateSecretProperties.
 type UpdateSecretPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
+// UpdateSecretPropertiesResponse is returned by UpdateSecretProperties.
 type UpdateSecretPropertiesResponse struct {
 	Secret
 }
@@ -457,9 +451,8 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 	}
 }
 
-// UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
-// operation changes specified attributes of an existing stored secret, attributes that are not specified in the
-// request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
+// UpdateSecretProperties updates a secret's properties, such as whether it's enabled. See the Properties type for a complete list.
+// nil fields will keep their current values. This method can't change the secret's value; use SetSecret to do that.
 func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	name, version := "", ""
 	if secret.Properties != nil && secret.Properties.Name != nil {
@@ -484,7 +477,7 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, opti
 	return updateSecretPropertiesResponseFromGenerated(resp), err
 }
 
-// BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
+// BackupSecretOptions contains optional parameters for BackupSecret.
 type BackupSecretOptions struct {
 	// placeholder for future optional parameters
 }
@@ -493,7 +486,7 @@ func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecret
 	return &internal.KeyVaultClientBackupSecretOptions{}
 }
 
-// BackupSecretResponse contains the response object for the Client.BackupSecret method.
+// BackupSecretResponse is returned by BackupSecret.
 type BackupSecretResponse struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
 	Value []byte `json:"value,omitempty" azure:"ro"`
@@ -506,8 +499,7 @@ func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResp
 	}
 }
 
-// BackupSecrets backs up the specified secret. Requests that a backup of the specified secret be downloaded to the client.
-// All versions of the secret will be downloaded. This operation requires the secrets/backup permission.
+// BackupSecret requests an encrypted backup of all versions of a secret, readable only by Key Vault. Call RestoreSecret to restore a backup.
 func (c *Client) BackupSecret(ctx context.Context, name string, options *BackupSecretOptions) (BackupSecretResponse, error) {
 	if options == nil {
 		options = &BackupSecretOptions{}
@@ -521,7 +513,7 @@ func (c *Client) BackupSecret(ctx context.Context, name string, options *BackupS
 	return backupSecretResponseFromGenerated(resp), nil
 }
 
-// RestoreSecretBackupOptions contains the optional parameters for the Client.RestoreSecret method.
+// RestoreSecretBackupOptions contains optional parameters for RestoreSecret.
 type RestoreSecretBackupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -530,7 +522,7 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 	return &internal.KeyVaultClientRestoreSecretOptions{}
 }
 
-// RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
+// RestoreSecretBackupResponse is returned by RestoreSecretBackup.
 type RestoreSecretBackupResponse struct {
 	Secret
 }
@@ -563,8 +555,8 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 	}
 }
 
-// RestoreSecretBackup restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
-// The backup parameter is a blob of the secret to restore, this can be received from the Client.BackupSecret function.
+// RestoreSecretBackup restores a secret backup, as returned by BackupSecret, to the vault. This will restore all versions of
+// the secret in the backup.
 func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
 	if options == nil {
 		options = &RestoreSecretBackupOptions{}
@@ -578,7 +570,7 @@ func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options
 	return restoreSecretBackupResponseFromGenerated(resp), nil
 }
 
-// PurgeDeletedSecretOptions is the struct for any future options for Client.PurgeDeletedSecret.
+// PurgeDeletedSecretOptions contains options for Client.PurgeDeletedSecret.
 type PurgeDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
@@ -597,8 +589,7 @@ func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDelet
 	return PurgeDeletedSecretResponse{}
 }
 
-// PurgeDeletedSecret deletes the specified secret. The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
-// This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
+// PurgeDeletedSecret permanently deletes a deleted secret.
 func (c *Client) PurgeDeletedSecret(ctx context.Context, name string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedSecretOptions{}
@@ -607,7 +598,7 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, name string, options *P
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
-// RecoverDeletedSecretPoller is the poller returned by Client.BeginRecoverDeletedSecret
+// RecoverDeletedSecretPoller is returned by BeginRecoverDeletedSecret.
 type RecoverDeletedSecretPoller struct {
 	secretName      string
 	vaultUrl        string
@@ -626,9 +617,7 @@ func (b *RecoverDeletedSecretPoller) Done() bool {
 	return b.rawResponse.StatusCode == http.StatusOK
 }
 
-// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+// Poll fetches the latest state of the recover operation.
 func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	var rawResp *http.Response
 	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
@@ -650,13 +639,12 @@ func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, 
 	return rawResp, err
 }
 
-// FinalResponse returns the final response after the operations has finished
+// FinalResponse returns the final response after the recover operation is complete.
 func (b *RecoverDeletedSecretPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
 
-// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
-// Poll is a wait determined by the t parameter.
+// PollUntilDone polls Key Vault until the recover operation is complete. The t parameter determines the wait between polls.
 func (b *RecoverDeletedSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
@@ -677,7 +665,7 @@ func (s *RecoverDeletedSecretPoller) ResumeToken() (string, error) {
 	return s.resumeToken, nil
 }
 
-// BeginRecoverDeletedSecretOptions contains the optional parameters for the Client.BeginRecoverDeletedSecret operation
+// BeginRecoverDeletedSecretOptions contains optional parameters for BeginRecoverDeletedSecret.
 type BeginRecoverDeletedSecretOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
 	ResumeToken *string
@@ -688,7 +676,7 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 	return &internal.KeyVaultClientRecoverDeletedSecretOptions{}
 }
 
-// RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
+// RecoverDeletedSecretResponse is returned by RecoverDeletedSecret.
 type RecoverDeletedSecretResponse struct {
 	SecretItem
 }
@@ -721,8 +709,8 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	}
 }
 
-// BeginRecoverDeletedSecret recovers the deleted secret in the specified vault to the latest version.
-// This operation can only be performed on a soft-delete enabled vault. This operation requires the secrets/recover permission.
+// BeginRecoverDeletedSecret recovers a deleted secret to its latest version. Recovery may take several seconds. This method
+// therefore returns a poller that enables waiting until recovery is complete.
 func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, options *BeginRecoverDeletedSecretOptions) (*RecoverDeletedSecretPoller, error) {
 	if options == nil {
 		options = &BeginRecoverDeletedSecretOptions{}
@@ -767,12 +755,12 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, opt
 	}, nil
 }
 
-// ListDeletedSecretsResponse holds the data for a single page.
+// ListDeletedSecretsResponse contains a page of deleted secrets.
 type ListDeletedSecretsResponse struct {
-	// READ-ONLY; The URL to get the next set of deleted secrets.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
+	// DeletedSecrets is the page's content.
 	DeletedSecrets []DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -792,13 +780,12 @@ func listDeletedSecretsPageFromGenerated(g internal.KeyVaultClientGetDeletedSecr
 	}
 }
 
-// ListDeletedSecretsOptions contains the optional parameters for the Client.ListDeletedSecrets operation.
+// ListDeletedSecretsOptions contains optional parameters for ListDeletedSecrets.
 type ListDeletedSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NewListDeletedSecretsPager lists all versions of the specified secret. The full secret identifier and attributes are provided
-// in the response. No values are returned for the secrets. This operation requires the secrets/list permission.
+// NewListDeletedSecretsPager creates a pager that lists all versions of a deleted secret, including their identifiers and other properties but no secret values.
 func (c *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) *runtime.Pager[ListDeletedSecretsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretsResponse]{
 		More: func(page ListDeletedSecretsResponse) bool {
@@ -831,17 +818,17 @@ func (c *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) 
 	})
 }
 
-// ListPropertiesOfSecretVersionsOptions contains the options for the ListSecretVersions operations
+// ListPropertiesOfSecretVersionsOptions contains options for NewListPropertiesOfSecretVersionsPager.
 type ListPropertiesOfSecretVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListPropertiesOfSecretVersionsResponse contains response field for ListSecretVersionsPager.NextPage
+// ListPropertiesOfSecretVersionsResponse contains a page of secret versions.
 type ListPropertiesOfSecretVersionsResponse struct {
-	// READ-ONLY; The URL to get the next set of secrets.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
+	// Secrets is the page's content.
 	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -857,9 +844,7 @@ func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersi
 	}
 }
 
-// NewListPropertiesOfSecretVersionsPager lists all versions of the specified secret. The full secret identifer and
-// attributes are provided in the response. No values are returned for the secrets. This operation
-// requires the secrets/list permission.
+// NewListPropertiesOfSecretVersionsPager creates a pager that lists the properties of all versions of a secret, not including their secret values.
 func (c *Client) NewListPropertiesOfSecretVersionsPager(name string, options *ListPropertiesOfSecretVersionsOptions) *runtime.Pager[ListPropertiesOfSecretVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfSecretVersionsResponse]{
 		More: func(page ListPropertiesOfSecretVersionsResponse) bool {
@@ -892,17 +877,17 @@ func (c *Client) NewListPropertiesOfSecretVersionsPager(name string, options *Li
 	})
 }
 
-// ListPropertiesOfSecretsOptions contains the options for the ListSecretVersions operations
+// ListPropertiesOfSecretsOptions contains options for NewListPropertiesOfSecretsPager.
 type ListPropertiesOfSecretsOptions struct {
 	// placeholder for future optional parameters.
 }
 
-// ListPropertiesOfSecretsResponse contains the current page of results for the Client.ListSecrets operation.
+// ListPropertiesOfSecretsResponse contains a page of secret properties.
 type ListPropertiesOfSecretsResponse struct {
-	// READ-ONLY; The URL to get the next set of secrets.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
+	// Secrets is the page's content.
 	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -918,9 +903,7 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 	}
 }
 
-// NewListPropertiesOfSecretsPager list all secrets in a specified key vault. The NewListPropertiesOfSecretsPager operation is applicable to the entire vault,
-// however, only the base secret identifier and its attributes are provided in the response. Individual
-// secret versions are not listed in the response. This operation requires the secrets/list permission.
+// NewListPropertiesOfSecretsPager constructs a pager that lists the properties of all secrets in the Key Vault, not including their secret values.
 func (c *Client) NewListPropertiesOfSecretsPager(options *ListPropertiesOfSecretsOptions) *runtime.Pager[ListPropertiesOfSecretsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfSecretsResponse]{
 		More: func(page ListPropertiesOfSecretsResponse) bool {

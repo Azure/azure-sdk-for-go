@@ -18,9 +18,19 @@ type ClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ClientGetBuiltInResponse contains the response from method Client.GetBuiltIn.
+type ClientGetBuiltInResponse struct {
+	TemplateSpec
+}
+
 // ClientGetResponse contains the response from method Client.Get.
 type ClientGetResponse struct {
 	TemplateSpec
+}
+
+// ClientListBuiltInsResponse contains the response from method Client.ListBuiltIns.
+type ClientListBuiltInsResponse struct {
+	ListResult
 }
 
 // ClientListByResourceGroupResponse contains the response from method Client.ListByResourceGroup.
@@ -48,9 +58,19 @@ type TemplateSpecVersionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// TemplateSpecVersionsClientGetBuiltInResponse contains the response from method TemplateSpecVersionsClient.GetBuiltIn.
+type TemplateSpecVersionsClientGetBuiltInResponse struct {
+	TemplateSpecVersion
+}
+
 // TemplateSpecVersionsClientGetResponse contains the response from method TemplateSpecVersionsClient.Get.
 type TemplateSpecVersionsClientGetResponse struct {
 	TemplateSpecVersion
+}
+
+// TemplateSpecVersionsClientListBuiltInsResponse contains the response from method TemplateSpecVersionsClient.ListBuiltIns.
+type TemplateSpecVersionsClientListBuiltInsResponse struct {
+	TemplateSpecVersionsListResult
 }
 
 // TemplateSpecVersionsClientListResponse contains the response from method TemplateSpecVersionsClient.List.

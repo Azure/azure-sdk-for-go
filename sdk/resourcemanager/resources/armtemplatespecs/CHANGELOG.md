@@ -1,5 +1,28 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `TemplateSpecVersionsListResult.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+
+### Features Added
+
+- New function `*TemplateSpecVersionsClient.NewListBuiltInsPager(string, *TemplateSpecVersionsClientListBuiltInsOptions) *runtime.Pager[TemplateSpecVersionsClientListBuiltInsResponse]`
+- New function `*Client.NewListBuiltInsPager(*ClientListBuiltInsOptions) *runtime.Pager[ClientListBuiltInsResponse]`
+- New function `*Client.GetBuiltIn(context.Context, string, *ClientGetBuiltInOptions) (ClientGetBuiltInResponse, error)`
+- New function `*TemplateSpecVersionsClient.GetBuiltIn(context.Context, string, string, *TemplateSpecVersionsClientGetBuiltInOptions) (TemplateSpecVersionsClientGetBuiltInResponse, error)`
+- New struct `ClientGetBuiltInOptions`
+- New struct `ClientGetBuiltInResponse`
+- New struct `ClientListBuiltInsOptions`
+- New struct `ClientListBuiltInsResponse`
+- New struct `TemplateSpecVersionsClientGetBuiltInOptions`
+- New struct `TemplateSpecVersionsClientGetBuiltInResponse`
+- New struct `TemplateSpecVersionsClientListBuiltInsOptions`
+- New struct `TemplateSpecVersionsClientListBuiltInsResponse`
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

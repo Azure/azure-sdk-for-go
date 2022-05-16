@@ -35,8 +35,20 @@ type ClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClientGetBuiltInOptions contains the optional parameters for the Client.GetBuiltIn method.
+type ClientGetBuiltInOptions struct {
+	// Allows for expansion of additional Template Spec details in the response. Optional.
+	Expand *TemplateSpecExpandKind
+}
+
 // ClientGetOptions contains the optional parameters for the Client.Get method.
 type ClientGetOptions struct {
+	// Allows for expansion of additional Template Spec details in the response. Optional.
+	Expand *TemplateSpecExpandKind
+}
+
+// ClientListBuiltInsOptions contains the optional parameters for the Client.ListBuiltIns method.
+type ClientListBuiltInsOptions struct {
 	// Allows for expansion of additional Template Spec details in the response. Optional.
 	Expand *TemplateSpecExpandKind
 }
@@ -276,8 +288,20 @@ type TemplateSpecVersionsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// TemplateSpecVersionsClientGetBuiltInOptions contains the optional parameters for the TemplateSpecVersionsClient.GetBuiltIn
+// method.
+type TemplateSpecVersionsClientGetBuiltInOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TemplateSpecVersionsClientGetOptions contains the optional parameters for the TemplateSpecVersionsClient.Get method.
 type TemplateSpecVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TemplateSpecVersionsClientListBuiltInsOptions contains the optional parameters for the TemplateSpecVersionsClient.ListBuiltIns
+// method.
+type TemplateSpecVersionsClientListBuiltInsOptions struct {
 	// placeholder for future optional parameters
 }
 

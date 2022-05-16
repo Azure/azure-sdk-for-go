@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.0 (2022-05-16)
 
 ### Features Added
 * Export FakeCredential

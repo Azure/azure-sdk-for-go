@@ -1,5 +1,4 @@
-// Copyright (C) 2017 Kale Blankenship
-// Portions Copyright (c) Microsoft Corporation
+// Copyright (c) Microsoft Corporation
 package amqp
 
 import (

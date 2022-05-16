@@ -40,7 +40,7 @@ func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -110,7 +111,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -125,6 +126,7 @@ func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a consumer group from the specified Event Hub and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -175,12 +177,13 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a description for the specified consumer group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -231,7 +234,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,13 +250,14 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 // NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
 // in the Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
 // options - ConsumerGroupsClientListByEventHubOptions contains the optional parameters for the ConsumerGroupsClient.ListByEventHub
 // method.
 func (client *ConsumerGroupsClient) NewListByEventHubPager(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) *runtime.Pager[ConsumerGroupsClientListByEventHubResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConsumerGroupsClientListByEventHubResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConsumerGroupsClientListByEventHubResponse]{
 		More: func(page ConsumerGroupsClientListByEventHubResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -312,7 +316,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

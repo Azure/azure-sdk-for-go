@@ -24,18 +24,18 @@ func ExampleConsumerGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		armeventhub.ConsumerGroup{
 			Properties: &armeventhub.ConsumerGroupProperties{
-				UserMetadata: to.Ptr("<user-metadata>"),
+				UserMetadata: to.Ptr("New consumergroup"),
 			},
 		},
 		nil)
@@ -53,15 +53,15 @@ func ExampleConsumerGroupsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,15 +75,15 @@ func ExampleConsumerGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
-		"<consumer-group-name>",
+		"ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
+		"sdk-ConsumerGroup-5563",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,13 +99,13 @@ func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventhub.NewConsumerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armeventhub.NewConsumerGroupsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEventHubPager("<resource-group-name>",
-		"<namespace-name>",
-		"<event-hub-name>",
+	pager := client.NewListByEventHubPager("ArunMonocle",
+		"sdk-Namespace-2661",
+		"sdk-EventHub-6681",
 		&armeventhub.ConsumerGroupsClientListByEventHubOptions{Skip: nil,
 			Top: nil,
 		})
@@ -113,7 +113,6 @@ func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

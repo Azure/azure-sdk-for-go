@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*ApplicationsClient.BeginCreateOrUpdateByID` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientCreateOrUpdateByIDResponse], error)` to `(*runtime.Poller[ApplicationsClientCreateOrUpdateByIDResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginCreateOrUpdateByID` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientCreateOrUpdateByIDResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginDeleteByID` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientDeleteByIDResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientDeleteByIDResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginDeleteByID` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientDeleteByIDResponse], error)` to `(*runtime.Poller[ApplicationsClientDeleteByIDResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationsClientCreateOrUpdateResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ApplicationListResult.MarshalJSON` has been removed
+- Function `ApplicationDefinitionListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

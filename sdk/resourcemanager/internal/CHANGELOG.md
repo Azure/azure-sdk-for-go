@@ -6,7 +6,7 @@
 * Export FakeCredential
 
 ### Other Changes
-* Upgrade to GA version of core lib and armresources
+* Upgrade dependencies of azcore, azidentity and armresources to the stable version
 
 ## 0.3.0 (2022-04-08)
 

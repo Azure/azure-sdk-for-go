@@ -1,5 +1,49 @@
 # Release History
 
+## 1.0.0 (2022-05-16)
+### Breaking Changes
+
+- Function `*ManagedClustersClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientUpdateTagsResponse], error)` to `(*runtime.Poller[ManagedClustersClientUpdateTagsResponse], error)`
+- Function `*AgentPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientDeleteResponse], error)` to `(*runtime.Poller[AgentPoolsClientDeleteResponse], error)`
+- Function `*ManagedClustersClient.BeginResetServicePrincipalProfile` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientResetServicePrincipalProfileResponse], error)` to `(*runtime.Poller[ManagedClustersClientResetServicePrincipalProfileResponse], error)`
+- Function `*ManagedClustersClient.BeginRotateClusterCertificates` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientRotateClusterCertificatesResponse], error)` to `(*runtime.Poller[ManagedClustersClientRotateClusterCertificatesResponse], error)`
+- Function `*ManagedClustersClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientStartResponse], error)` to `(*runtime.Poller[ManagedClustersClientStartResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*AgentPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AgentPoolsClientCreateOrUpdateResponse], error)`
+- Function `*ManagedClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientDeleteResponse], error)` to `(*runtime.Poller[ManagedClustersClientDeleteResponse], error)`
+- Function `*ManagedClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ManagedClustersClientCreateOrUpdateResponse], error)`
+- Function `*ManagedClustersClient.BeginResetAADProfile` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientResetAADProfileResponse], error)` to `(*runtime.Poller[ManagedClustersClientResetAADProfileResponse], error)`
+- Function `*ManagedClustersClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientStopResponse], error)` to `(*runtime.Poller[ManagedClustersClientStopResponse], error)`
+- Function `*AgentPoolsClient.BeginUpgradeNodeImageVersion` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientUpgradeNodeImageVersionResponse], error)` to `(*runtime.Poller[AgentPoolsClientUpgradeNodeImageVersionResponse], error)`
+- Function `*ManagedClustersClient.BeginRunCommand` return value(s) have been changed from `(*armruntime.Poller[ManagedClustersClientRunCommandResponse], error)` to `(*runtime.Poller[ManagedClustersClientRunCommandResponse], error)`
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `ManagedClusterPoolUpgradeProfile.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointCollection.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `CredentialResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesListResult.MarshalJSON` has been removed
+- Function `AgentPoolAvailableVersionsProperties.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OSOptionPropertyList.MarshalJSON` has been removed
+- Function `SnapshotListResult.MarshalJSON` has been removed
+- Function `ManagedClusterListResult.MarshalJSON` has been removed
+- Function `AgentPoolListResult.MarshalJSON` has been removed
+- Function `AgentPoolUpgradeProfileProperties.MarshalJSON` has been removed
+- Function `MaintenanceConfigurationListResult.MarshalJSON` has been removed
+- Function `ManagedClusterUpgradeProfileProperties.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `CommandResultProperties.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `CredentialResults.MarshalJSON` has been removed
+
+### Features Added
+
+- New field `CurrentOrchestratorVersion` in struct `ManagedClusterAgentPoolProfileProperties`
+- New field `CurrentKubernetesVersion` in struct `ManagedClusterProperties`
+- New field `StorageProfile` in struct `ManagedClusterProperties`
+- New field `CurrentOrchestratorVersion` in struct `ManagedClusterAgentPoolProfile`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

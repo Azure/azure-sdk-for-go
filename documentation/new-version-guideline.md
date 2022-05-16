@@ -5,7 +5,7 @@ Azure Go management SDK follows the [new Azure SDK guidelines](https://azure.git
 
 You can find the full list of management modules [here](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk).
 
-In this guideline, we will give some instructions about the API usage pattern as well as trouble shooting method. For those are new to management Go SDK, please refer to [quickstart](./new-version-quickstart.md). For those migrate from older versions of management Go SDK, please refer to [migration guide](https://aka.ms/azsdk/go/mgmt/migration).
+In this guideline, we will give some instructions about the API usage pattern as well as trouble shooting method. For those are new to management Go SDK, please refer to [quickstart](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/new-version-quickstart.md). For those migrate from older versions of management Go SDK, please refer to [migration guide](https://aka.ms/azsdk/go/mgmt/migration).
 
 ## Pageable Operations
 
@@ -268,7 +268,7 @@ log.Printf("Status code: %d", rawResponse.StatusCode)
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide](../CONTRIBUTING.md).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, please visit https://cla.microsoft.com.
 

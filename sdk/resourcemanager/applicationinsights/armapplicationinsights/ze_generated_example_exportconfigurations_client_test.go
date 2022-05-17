@@ -24,13 +24,13 @@ func ExampleExportConfigurationsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewExportConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,23 +46,23 @@ func ExampleExportConfigurationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewExportConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.ComponentExportRequest{
-			DestinationAccountID:             to.Ptr("<destination-account-id>"),
-			DestinationAddress:               to.Ptr("<destination-address>"),
-			DestinationStorageLocationID:     to.Ptr("<destination-storage-location-id>"),
-			DestinationStorageSubscriptionID: to.Ptr("<destination-storage-subscription-id>"),
-			DestinationType:                  to.Ptr("<destination-type>"),
-			IsEnabled:                        to.Ptr("<is-enabled>"),
-			NotificationQueueEnabled:         to.Ptr("<notification-queue-enabled>"),
-			NotificationQueueURI:             to.Ptr("<notification-queue-uri>"),
-			RecordTypes:                      to.Ptr("<record-types>"),
+			DestinationAccountID:             to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.ClassicStorage/storageAccounts/mystorageblob"),
+			DestinationAddress:               to.Ptr("https://mystorageblob.blob.core.windows.net/testexport?sv=2015-04-05&sr=c&sig=token"),
+			DestinationStorageLocationID:     to.Ptr("eastus"),
+			DestinationStorageSubscriptionID: to.Ptr("subid"),
+			DestinationType:                  to.Ptr("Blob"),
+			IsEnabled:                        to.Ptr("true"),
+			NotificationQueueEnabled:         to.Ptr("false"),
+			NotificationQueueURI:             to.Ptr(""),
+			RecordTypes:                      to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 		},
 		nil)
 	if err != nil {
@@ -79,14 +79,14 @@ func ExampleExportConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewExportConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<export-id>",
+		"my-resource-group",
+		"my-component",
+		"uGOoki0jQsyEs3IdQ83Q4QsNr4=",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,14 +102,14 @@ func ExampleExportConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewExportConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<export-id>",
+		"my-resource-group",
+		"my-component",
+		"uGOoki0jQsyEs3IdQ83Q4QsNr4=",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -125,24 +125,24 @@ func ExampleExportConfigurationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewExportConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewExportConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<export-id>",
+		"my-resource-group",
+		"my-component",
+		"uGOoki0jQsyEs3IdQ83Q4QsNr4=",
 		armapplicationinsights.ComponentExportRequest{
-			DestinationAccountID:             to.Ptr("<destination-account-id>"),
-			DestinationAddress:               to.Ptr("<destination-address>"),
-			DestinationStorageLocationID:     to.Ptr("<destination-storage-location-id>"),
-			DestinationStorageSubscriptionID: to.Ptr("<destination-storage-subscription-id>"),
-			DestinationType:                  to.Ptr("<destination-type>"),
-			IsEnabled:                        to.Ptr("<is-enabled>"),
-			NotificationQueueEnabled:         to.Ptr("<notification-queue-enabled>"),
-			NotificationQueueURI:             to.Ptr("<notification-queue-uri>"),
-			RecordTypes:                      to.Ptr("<record-types>"),
+			DestinationAccountID:             to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.ClassicStorage/storageAccounts/mystorageblob"),
+			DestinationAddress:               to.Ptr("https://mystorageblob.blob.core.windows.net/fchentest?sv=2015-04-05&sr=c&sig=token"),
+			DestinationStorageLocationID:     to.Ptr("eastus"),
+			DestinationStorageSubscriptionID: to.Ptr("subid"),
+			DestinationType:                  to.Ptr("Blob"),
+			IsEnabled:                        to.Ptr("true"),
+			NotificationQueueEnabled:         to.Ptr("false"),
+			NotificationQueueURI:             to.Ptr(""),
+			RecordTypes:                      to.Ptr("Requests, Event, Exceptions, Metrics, PageViews, PageViewPerformance, Rdd, PerformanceCounters, Availability"),
 		},
 		nil)
 	if err != nil {

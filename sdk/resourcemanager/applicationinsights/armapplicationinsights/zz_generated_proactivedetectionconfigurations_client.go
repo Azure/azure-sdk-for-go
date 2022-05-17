@@ -38,7 +38,7 @@ func NewProactiveDetectionConfigurationsClient(subscriptionID string, credential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewProactiveDetectionConfigurationsClient(subscriptionID string, credential
 
 // Get - Get the ProactiveDetection configuration for this configuration id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // configurationID - The ProactiveDetection configuration ID. This is unique within a Application Insights component.
@@ -102,7 +103,7 @@ func (client *ProactiveDetectionConfigurationsClient) getCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *ProactiveDetectionConfigurationsClient) getHandleResponse(resp *ht
 
 // List - Gets a list of ProactiveDetection configurations of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - ProactiveDetectionConfigurationsClientListOptions contains the optional parameters for the ProactiveDetectionConfigurationsClient.List
@@ -158,7 +160,7 @@ func (client *ProactiveDetectionConfigurationsClient) listCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -173,6 +175,7 @@ func (client *ProactiveDetectionConfigurationsClient) listHandleResponse(resp *h
 
 // Update - Update the ProactiveDetection configuration for this configuration id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // configurationID - The ProactiveDetection configuration ID. This is unique within a Application Insights component.
@@ -220,7 +223,7 @@ func (client *ProactiveDetectionConfigurationsClient) updateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, proactiveDetectionProperties)
 }
 

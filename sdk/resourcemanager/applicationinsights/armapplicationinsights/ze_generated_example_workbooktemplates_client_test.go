@@ -24,17 +24,16 @@ func ExampleWorkbookTemplatesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbookTemplatesClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("my-resource-group",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,13 +49,13 @@ func ExampleWorkbookTemplatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbookTemplatesClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-resource-name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,13 +71,13 @@ func ExampleWorkbookTemplatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbookTemplatesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-template-resource",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -92,24 +91,24 @@ func ExampleWorkbookTemplatesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbookTemplatesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"testtemplate2",
 		armapplicationinsights.WorkbookTemplate{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("west us"),
 			Properties: &armapplicationinsights.WorkbookTemplateProperties{
-				Author: to.Ptr("<author>"),
+				Author: to.Ptr("Contoso"),
 				Galleries: []*armapplicationinsights.WorkbookTemplateGallery{
 					{
-						Name:         to.Ptr("<name>"),
-						Type:         to.Ptr("<type>"),
-						Category:     to.Ptr("<category>"),
+						Name:         to.Ptr("Simple Template"),
+						Type:         to.Ptr("tsg"),
+						Category:     to.Ptr("Failures"),
 						Order:        to.Ptr[int32](100),
-						ResourceType: to.Ptr("<resource-type>"),
+						ResourceType: to.Ptr("microsoft.insights/components"),
 					}},
 				Priority: to.Ptr[int32](1),
 				TemplateData: map[string]interface{}{
@@ -155,13 +154,13 @@ func ExampleWorkbookTemplatesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbookTemplatesClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbookTemplatesClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-template-resource",
 		&armapplicationinsights.WorkbookTemplatesClientUpdateOptions{WorkbookTemplateUpdateParameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

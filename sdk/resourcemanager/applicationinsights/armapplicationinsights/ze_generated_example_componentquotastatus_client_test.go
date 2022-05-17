@@ -23,13 +23,13 @@ func ExampleComponentQuotaStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentQuotaStatusClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentQuotaStatusClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

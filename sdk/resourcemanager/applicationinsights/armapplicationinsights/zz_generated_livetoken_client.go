@@ -34,7 +34,7 @@ func NewLiveTokenClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,6 +51,7 @@ func NewLiveTokenClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // Get - Gets an access token for live metrics stream data.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-14
 // resourceURI - The identifier of the resource.
 // options - LiveTokenClientGetOptions contains the optional parameters for the LiveTokenClient.Get method.
 func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, options *LiveTokenClientGetOptions) (LiveTokenClientGetResponse, error) {
@@ -79,7 +80,7 @@ func (client *LiveTokenClient) getCreateRequest(ctx context.Context, resourceURI
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-14")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

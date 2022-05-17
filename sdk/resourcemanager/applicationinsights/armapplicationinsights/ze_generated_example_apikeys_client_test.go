@@ -24,18 +24,17 @@ func ExampleAPIKeysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAPIKeysClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAPIKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("my-resource-group",
+		"my-component",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,15 +50,15 @@ func ExampleAPIKeysClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAPIKeysClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAPIKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.APIKeyRequest{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("test2"),
 			LinkedReadProperties: []*string{
 				to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component/api"),
 				to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.Insights/components/my-component/agentconfig")},
@@ -81,14 +80,14 @@ func ExampleAPIKeysClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAPIKeysClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAPIKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<key-id>",
+		"my-resource-group",
+		"my-component",
+		"bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,14 +103,14 @@ func ExampleAPIKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAPIKeysClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAPIKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<key-id>",
+		"my-resource-group",
+		"my-component",
+		"bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

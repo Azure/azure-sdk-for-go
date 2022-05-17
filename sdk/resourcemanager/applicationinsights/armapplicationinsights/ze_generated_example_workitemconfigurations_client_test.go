@@ -24,18 +24,17 @@ func ExampleWorkItemConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("my-resource-group",
+		"my-component",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,16 +50,16 @@ func ExampleWorkItemConfigurationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.WorkItemCreateConfiguration{
-			ConnectorDataConfiguration: to.Ptr("<connector-data-configuration>"),
-			ConnectorID:                to.Ptr("<connector-id>"),
+			ConnectorDataConfiguration: to.Ptr("{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}"),
+			ConnectorID:                to.Ptr("d334e2a4-6733-488e-8645-a9fdc1694f41"),
 			ValidateOnly:               to.Ptr(true),
 			WorkItemProperties: map[string]*string{
 				"0": to.Ptr("[object Object]"),
@@ -82,13 +81,13 @@ func ExampleWorkItemConfigurationsClient_GetDefault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDefault(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,14 +103,14 @@ func ExampleWorkItemConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<work-item-config-id>",
+		"my-resource-group",
+		"my-component",
+		"Visual Studio Team Services",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -125,14 +124,14 @@ func ExampleWorkItemConfigurationsClient_GetItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetItem(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<work-item-config-id>",
+		"my-resource-group",
+		"my-component",
+		"Visual Studio Team Services",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -148,17 +147,17 @@ func ExampleWorkItemConfigurationsClient_UpdateItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkItemConfigurationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateItem(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<work-item-config-id>",
+		"my-resource-group",
+		"my-component",
+		"Visual Studio Team Services",
 		armapplicationinsights.WorkItemCreateConfiguration{
-			ConnectorDataConfiguration: to.Ptr("<connector-data-configuration>"),
-			ConnectorID:                to.Ptr("<connector-id>"),
+			ConnectorDataConfiguration: to.Ptr("{\"VSOAccountBaseUrl\":\"https://testtodelete.visualstudio.com\",\"ProjectCollection\":\"DefaultCollection\",\"Project\":\"todeletefirst\",\"ResourceId\":\"d0662b05-439a-4a1b-840b-33a7f8b42ebf\",\"Custom\":\"{\\\"/fields/System.WorkItemType\\\":\\\"Bug\\\",\\\"/fields/System.AreaPath\\\":\\\"todeletefirst\\\",\\\"/fields/System.AssignedTo\\\":\\\"\\\"}\"}"),
+			ConnectorID:                to.Ptr("d334e2a4-6733-488e-8645-a9fdc1694f41"),
 			ValidateOnly:               to.Ptr(true),
 			WorkItemProperties: map[string]*string{
 				"0": to.Ptr("[object Object]"),

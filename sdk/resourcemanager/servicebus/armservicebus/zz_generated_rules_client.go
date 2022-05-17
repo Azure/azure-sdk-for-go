@@ -40,7 +40,7 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateOrUpdate - Creates a new rule and updates an existing rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -114,7 +115,7 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -129,6 +130,7 @@ func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (Ru
 
 // Delete - Deletes an existing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -184,12 +186,13 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves the description for the specified rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -245,7 +248,7 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -260,6 +263,7 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 
 // NewListBySubscriptionsPager - List all the rules within given topic-subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -267,7 +271,7 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 // options - RulesClientListBySubscriptionsOptions contains the optional parameters for the RulesClient.ListBySubscriptions
 // method.
 func (client *RulesClient) NewListBySubscriptionsPager(resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) *runtime.Pager[RulesClientListBySubscriptionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RulesClientListBySubscriptionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RulesClientListBySubscriptionsResponse]{
 		More: func(page RulesClientListBySubscriptionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -330,7 +334,7 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

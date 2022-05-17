@@ -24,14 +24,14 @@ func ExampleRulesClient_NewListBySubscriptionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionsPager("<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
+	pager := client.NewListBySubscriptionsPager("ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
 		&armservicebus.RulesClientListBySubscriptionsOptions{Skip: nil,
 			Top: nil,
 		})
@@ -39,7 +39,6 @@ func ExampleRulesClient_NewListBySubscriptionsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,16 +54,16 @@ func ExampleRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"resourceGroupName",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		armservicebus.Rule{
 			Properties: &armservicebus.Ruleproperties{
 				CorrelationFilter: &armservicebus.CorrelationFilter{
@@ -90,16 +89,16 @@ func ExampleRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -113,16 +112,16 @@ func ExampleRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewRulesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewRulesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<topic-name>",
-		"<subscription-name>",
-		"<rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-1319",
+		"sdk-Topics-2081",
+		"sdk-Subscriptions-8691",
+		"sdk-Rules-6571",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

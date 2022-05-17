@@ -24,19 +24,18 @@ func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
+	pager := client.NewListAuthorizationRulesPager("ArunMonocle",
+		"sdk-Namespace-7982",
+		"sdk-Queues-2317",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,15 +51,15 @@ func ExampleQueuesClient_CreateOrUpdateAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
-		"<authorization-rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-7982",
+		"sdk-Queues-2317",
+		"sdk-AuthRules-5800",
 		armservicebus.SBAuthorizationRule{
 			Properties: &armservicebus.SBAuthorizationRuleProperties{
 				Rights: []*armservicebus.AccessRights{
@@ -83,15 +82,15 @@ func ExampleQueuesClient_DeleteAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
-		"<authorization-rule-name>",
+		"ArunMonocle",
+		"sdk-namespace-7982",
+		"sdk-Queues-2317",
+		"sdk-AuthRules-5800",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,15 +104,15 @@ func ExampleQueuesClient_GetAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
-		"<authorization-rule-name>",
+		"ArunMonocle",
+		"sdk-Namespace-7982",
+		"sdk-Queues-2317",
+		"sdk-AuthRules-5800",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,15 +128,15 @@ func ExampleQueuesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
-		"<authorization-rule-name>",
+		"ArunMonocle",
+		"sdk-namespace-7982",
+		"sdk-Queues-2317",
+		"sdk-AuthRules-5800",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -153,15 +152,15 @@ func ExampleQueuesClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
-		"<authorization-rule-name>",
+		"ArunMonocle",
+		"sdk-namespace-7982",
+		"sdk-Queues-2317",
+		"sdk-AuthRules-5800",
 		armservicebus.RegenerateAccessKeyParameters{
 			KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 		},
@@ -180,12 +179,12 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNamespacePager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListByNamespacePager("ArunMonocle",
+		"sdk-Namespace-3174",
 		&armservicebus.QueuesClientListByNamespaceOptions{Skip: nil,
 			Top: nil,
 		})
@@ -193,7 +192,6 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -209,14 +207,14 @@ func ExampleQueuesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
+		"ArunMonocle",
+		"sdk-Namespace-3174",
+		"sdk-Queues-5647",
 		armservicebus.SBQueue{
 			Properties: &armservicebus.SBQueueProperties{
 				EnablePartitioning: to.Ptr(true),
@@ -237,14 +235,14 @@ func ExampleQueuesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
+		"ArunMonocle",
+		"sdk-Namespace-183",
+		"sdk-Queues-8708",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -258,14 +256,14 @@ func ExampleQueuesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewQueuesClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewQueuesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<queue-name>",
+		"ArunMonocle",
+		"sdk-Namespace-3174",
+		"sdk-Queues-5647",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

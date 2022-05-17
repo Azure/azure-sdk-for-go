@@ -24,18 +24,17 @@ func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListPager("ardsouzatestRG",
+		"sdk-Namespace-8860",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,18 +50,18 @@ func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+		"ardsouzatestRG",
+		"sdk-Namespace-8860",
+		"sdk-Namespace-8860",
 		armservicebus.ArmDisasterRecovery{
 			Properties: &armservicebus.ArmDisasterRecoveryProperties{
-				AlternateName:    to.Ptr("<alternate-name>"),
-				PartnerNamespace: to.Ptr("<partner-namespace>"),
+				AlternateName:    to.Ptr("alternameforAlias-Namespace-8860"),
+				PartnerNamespace: to.Ptr("sdk-Namespace-37"),
 			},
 		},
 		nil)
@@ -80,14 +79,14 @@ func ExampleDisasterRecoveryConfigsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+		"SouthCentralUS",
+		"sdk-Namespace-8860",
+		"sdk-DisasterRecovery-3814",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,14 +100,14 @@ func ExampleDisasterRecoveryConfigsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+		"ardsouzatestRG",
+		"sdk-Namespace-8860",
+		"sdk-DisasterRecovery-3814",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,14 +123,14 @@ func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.BreakPairing(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+		"ardsouzatestRG",
+		"sdk-Namespace-8860",
+		"sdk-DisasterRecovery-3814",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -145,14 +144,14 @@ func ExampleDisasterRecoveryConfigsClient_FailOver() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.FailOver(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+		"ardsouzatestRG",
+		"sdk-Namespace-8860",
+		"sdk-DisasterRecovery-3814",
 		&armservicebus.DisasterRecoveryConfigsClientFailOverOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -166,19 +165,18 @@ func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("exampleSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
+	pager := client.NewListAuthorizationRulesPager("exampleResourceGroup",
+		"sdk-Namespace-9080",
+		"sdk-DisasterRecovery-4047",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -194,15 +192,15 @@ func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("exampleSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
-		"<authorization-rule-name>",
+		"exampleResourceGroup",
+		"sdk-Namespace-9080",
+		"sdk-DisasterRecovery-4879",
+		"sdk-Authrules-4879",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -218,15 +216,15 @@ func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("exampleSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<alias>",
-		"<authorization-rule-name>",
+		"exampleResourceGroup",
+		"sdk-Namespace-2702",
+		"sdk-DisasterRecovery-4047",
+		"sdk-Authrules-1746",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -242,15 +240,15 @@ func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewDisasterRecoveryConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewDisasterRecoveryConfigsClient("exampleSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"exampleResourceGroup",
+		"sdk-Namespace-9080",
 		armservicebus.CheckNameAvailability{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sdk-DisasterRecovery-9474"),
 		},
 		nil)
 	if err != nil {

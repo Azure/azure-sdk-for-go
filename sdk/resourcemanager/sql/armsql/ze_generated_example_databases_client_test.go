@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,20 +24,19 @@ func ExampleDatabasesClient_NewListMetricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<filter>",
+	pager := client.NewListMetricsPager("sqlcrudtest-6730",
+		"sqlcrudtest-9007",
+		"3481",
+		"name/value eq 'cpu_percent' and timeGrain eq '00:10:00' and startTime eq '2017-06-02T18:35:00Z' and endTime eq '2017-06-02T18:55:00Z'",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,19 +52,18 @@ func ExampleDatabasesClient_NewListMetricDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricDefinitionsPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListMetricDefinitionsPager("sqlcrudtest-6730",
+		"sqlcrudtest-9007",
+		"3481",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,18 +79,17 @@ func ExampleDatabasesClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("Default-SQL-SouthEastAsia",
+		"testsvr",
 		&armsql.DatabasesClientListByServerOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -110,14 +105,14 @@ func ExampleDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -133,27 +128,27 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.Database{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("southeastasia"),
 			SKU: &armsql.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("BC"),
 				Capacity: to.Ptr[int32](2),
-				Family:   to.Ptr("<family>"),
+				Family:   to.Ptr("Gen4"),
 			},
 		},
-		&armsql.DatabasesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -168,19 +163,19 @@ func ExampleDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.DatabasesClientBeginDeleteOptions{ResumeToken: ""})
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -193,27 +188,27 @@ func ExampleDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.DatabaseUpdate{
 			Properties: &armsql.DatabaseUpdateProperties{
-				MaintenanceConfigurationID: to.Ptr("<maintenance-configuration-id>"),
+				MaintenanceConfigurationID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_SouthEastAsia_1"),
 			},
 			SKU: &armsql.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("BC_Gen5_4"),
 			},
 		},
-		&armsql.DatabasesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -228,31 +223,31 @@ func ExampleDatabasesClient_BeginExport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExport(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.ExportDatabaseDefinition{
-			AdministratorLogin:         to.Ptr("<administrator-login>"),
-			AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
-			AuthenticationType:         to.Ptr("<authentication-type>"),
+			AdministratorLogin:         to.Ptr("login"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AuthenticationType:         to.Ptr("Sql"),
 			NetworkIsolation: &armsql.NetworkIsolationSettings{
-				SQLServerResourceID:      to.Ptr("<sqlserver-resource-id>"),
-				StorageAccountResourceID: to.Ptr("<storage-account-resource-id>"),
+				SQLServerResourceID:      to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr"),
+				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink"),
 			},
-			StorageKey:     to.Ptr("<storage-key>"),
+			StorageKey:     to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="),
 			StorageKeyType: to.Ptr(armsql.StorageKeyTypeStorageAccessKey),
-			StorageURI:     to.Ptr("<storage-uri>"),
+			StorageURI:     to.Ptr("https://test.blob.core.windows.net/test.bacpac"),
 		},
-		&armsql.DatabasesClientBeginExportOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -267,21 +262,19 @@ func ExampleDatabasesClient_BeginFailover() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFailover(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.DatabasesClientBeginFailoverOptions{ReplicaType: to.Ptr(armsql.ReplicaTypePrimary),
-			ResumeToken: "",
-		})
+		"group1",
+		"testServer",
+		"testDatabase",
+		&armsql.DatabasesClientBeginFailoverOptions{ReplicaType: to.Ptr(armsql.ReplicaTypePrimary)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -294,31 +287,31 @@ func ExampleDatabasesClient_BeginImport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginImport(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.ImportExistingDatabaseDefinition{
-			AdministratorLogin:         to.Ptr("<administrator-login>"),
-			AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
-			AuthenticationType:         to.Ptr("<authentication-type>"),
+			AdministratorLogin:         to.Ptr("login"),
+			AdministratorLoginPassword: to.Ptr("password"),
+			AuthenticationType:         to.Ptr("Sql"),
 			NetworkIsolation: &armsql.NetworkIsolationSettings{
-				SQLServerResourceID:      to.Ptr("<sqlserver-resource-id>"),
-				StorageAccountResourceID: to.Ptr("<storage-account-resource-id>"),
+				SQLServerResourceID:      to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr"),
+				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Storage/storageAccounts/test-privatelink"),
 			},
-			StorageKey:     to.Ptr("<storage-key>"),
+			StorageKey:     to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="),
 			StorageKeyType: to.Ptr(armsql.StorageKeyTypeStorageAccessKey),
-			StorageURI:     to.Ptr("<storage-uri>"),
+			StorageURI:     to.Ptr("https://test.blob.core.windows.net/test.bacpac"),
 		},
-		&armsql.DatabasesClientBeginImportOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -333,16 +326,16 @@ func ExampleDatabasesClient_Rename() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Rename(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.ResourceMoveDefinition{
-			ID: to.Ptr("<id>"),
+			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/servers/testsvr/databases/newtestdb"),
 		},
 		nil)
 	if err != nil {
@@ -357,19 +350,19 @@ func ExampleDatabasesClient_BeginPause() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPause(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.DatabasesClientBeginPauseOptions{ResumeToken: ""})
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdwdb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -384,19 +377,19 @@ func ExampleDatabasesClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResume(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.DatabasesClientBeginResumeOptions{ResumeToken: ""})
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdwdb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -411,19 +404,19 @@ func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpgradeDataWarehouse(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.DatabasesClientBeginUpgradeDataWarehouseOptions{ResumeToken: ""})
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdwdb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -436,19 +429,18 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByElasticPoolPager("<resource-group-name>",
-		"<server-name>",
-		"<elastic-pool-name>",
+	pager := client.NewListByElasticPoolPager("Default-SQL-SouthEastAsia",
+		"testsvr",
+		"pool1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -464,18 +456,17 @@ func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListInaccessibleByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListInaccessibleByServerPager("Default-SQL-SouthEastAsia",
+		"testsvr",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

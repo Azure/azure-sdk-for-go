@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,18 +24,17 @@ func ExampleManagedDatabasesClient_NewListByInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByInstancePager("Test1",
+		"managedInstance",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleManagedDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"Test1",
+		"managedInstance",
+		"managedDatabase",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,30 +73,30 @@ func ExampleManagedDatabasesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
+		"managedDatabase",
 		armsql.ManagedDatabase{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("southeastasia"),
 			Properties: &armsql.ManagedDatabaseProperties{
 				AutoCompleteRestore:      to.Ptr(true),
-				Collation:                to.Ptr("<collation>"),
+				Collation:                to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
 				CreateMode:               to.Ptr(armsql.ManagedDatabaseCreateModeRestoreExternalBackup),
-				LastBackupName:           to.Ptr("<last-backup-name>"),
-				StorageContainerSasToken: to.Ptr("<storage-container-sas-token>"),
-				StorageContainerURI:      to.Ptr("<storage-container-uri>"),
+				LastBackupName:           to.Ptr("last_backup_name"),
+				StorageContainerSasToken: to.Ptr("sv=2015-12-11&sr=c&sp=rl&sig=1234"),
+				StorageContainerURI:      to.Ptr("https://myaccountname.blob.core.windows.net/backups"),
 			},
 		},
-		&armsql.ManagedDatabasesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -114,19 +111,19 @@ func ExampleManagedDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
-		&armsql.ManagedDatabasesClientBeginDeleteOptions{ResumeToken: ""})
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
+		"testdb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -139,24 +136,24 @@ func ExampleManagedDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
+		"testdb",
 		armsql.ManagedDatabaseUpdate{
 			Tags: map[string]*string{
 				"tagKey1": to.Ptr("TagValue1"),
 			},
 		},
-		&armsql.ManagedDatabasesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -171,22 +168,22 @@ func ExampleManagedDatabasesClient_BeginCompleteRestore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCompleteRestore(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"myRG",
+		"myManagedInstanceName",
+		"myDatabase",
 		armsql.CompleteDatabaseRestoreDefinition{
-			LastBackupName: to.Ptr("<last-backup-name>"),
+			LastBackupName: to.Ptr("testdb1_log4"),
 		},
-		&armsql.ManagedDatabasesClientBeginCompleteRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -199,18 +196,17 @@ func ExampleManagedDatabasesClient_NewListInaccessibleByInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabasesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListInaccessibleByInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListInaccessibleByInstancePager("testrg",
+		"testcl",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

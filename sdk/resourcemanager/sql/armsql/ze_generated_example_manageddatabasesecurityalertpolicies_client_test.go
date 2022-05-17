@@ -24,14 +24,14 @@ func ExampleManagedDatabaseSecurityAlertPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"securityalert-6852",
+		"securityalert-2080",
+		"testdb",
 		armsql.SecurityAlertPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -48,14 +48,14 @@ func ExampleManagedDatabaseSecurityAlertPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+		"securityalert-4799",
+		"securityalert-6440",
+		"testdb",
 		armsql.SecurityAlertPolicyNameDefault,
 		armsql.ManagedDatabaseSecurityAlertPolicy{
 			Properties: &armsql.SecurityAlertPolicyProperties{
@@ -68,8 +68,8 @@ func ExampleManagedDatabaseSecurityAlertPoliciesClient_CreateOrUpdate() {
 					to.Ptr("user@contoso.com")},
 				RetentionDays:           to.Ptr[int32](6),
 				State:                   to.Ptr(armsql.SecurityAlertPolicyStateEnabled),
-				StorageAccountAccessKey: to.Ptr("<storage-account-access-key>"),
-				StorageEndpoint:         to.Ptr("<storage-endpoint>"),
+				StorageAccountAccessKey: to.Ptr("sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+				StorageEndpoint:         to.Ptr("https://mystorage.blob.core.windows.net"),
 			},
 		},
 		nil)
@@ -87,19 +87,18 @@ func ExampleManagedDatabaseSecurityAlertPoliciesClient_NewListByDatabasePager() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedDatabaseSecurityAlertPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<managed-instance-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("securityalert-6852",
+		"securityalert-2080",
+		"testdb",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

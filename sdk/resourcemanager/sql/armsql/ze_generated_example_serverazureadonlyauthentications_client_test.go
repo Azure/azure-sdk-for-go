@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,13 +24,13 @@ func ExampleServerAzureADOnlyAuthenticationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AuthenticationNameDefault,
 		nil)
 	if err != nil {
@@ -49,24 +47,24 @@ func ExampleServerAzureADOnlyAuthenticationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AuthenticationNameDefault,
 		armsql.ServerAzureADOnlyAuthentication{
 			Properties: &armsql.AzureADOnlyAuthProperties{
 				AzureADOnlyAuthentication: to.Ptr(false),
 			},
 		},
-		&armsql.ServerAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -81,19 +79,19 @@ func ExampleServerAzureADOnlyAuthenticationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		armsql.AuthenticationNameDefault,
-		&armsql.ServerAzureADOnlyAuthenticationsClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -106,18 +104,17 @@ func ExampleServerAzureADOnlyAuthenticationsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAzureADOnlyAuthenticationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("sqlcrudtest-4799",
+		"sqlcrudtest-6440",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

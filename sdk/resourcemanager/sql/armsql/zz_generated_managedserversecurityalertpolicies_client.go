@@ -38,7 +38,7 @@ func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credenti
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -63,20 +64,21 @@ func NewManagedServerSecurityAlertPoliciesClient(subscriptionID string, credenti
 // parameters - The managed server security alert policy.
 // options - ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.BeginCreateOrUpdate
 // method.
-func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error) {
+func (client *ManagedServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedServerSecurityAlertPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ManagedServerSecurityAlertPolicy, options *ManagedServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, securityAlertPolicyName, parameters, options)
 	if err != nil {
@@ -118,12 +120,13 @@ func (client *ManagedServerSecurityAlertPoliciesClient) createOrUpdateCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Get a managed server's threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -171,7 +174,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,13 +189,14 @@ func (client *ManagedServerSecurityAlertPoliciesClient) getHandleResponse(resp *
 
 // NewListByInstancePager - Get the managed server's threat detection policies.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedServerSecurityAlertPoliciesClientListByInstanceOptions contains the optional parameters for the ManagedServerSecurityAlertPoliciesClient.ListByInstance
 // method.
 func (client *ManagedServerSecurityAlertPoliciesClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedServerSecurityAlertPoliciesClientListByInstanceOptions) *runtime.Pager[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedServerSecurityAlertPoliciesClientListByInstanceResponse]{
 		More: func(page ManagedServerSecurityAlertPoliciesClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -241,7 +245,7 @@ func (client *ManagedServerSecurityAlertPoliciesClient) listByInstanceCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

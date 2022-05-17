@@ -38,7 +38,7 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CancelSync - Cancels a sync group synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -112,6 +113,7 @@ func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, res
 
 // BeginCreateOrUpdate - Creates or updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -120,20 +122,21 @@ func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, res
 // parameters - The requested sync group resource state.
 // options - SyncGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SyncGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SyncGroupsClientCreateOrUpdateResponse], error) {
+func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SyncGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
@@ -179,32 +182,34 @@ func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // databaseName - The name of the database on which the sync group is hosted.
 // syncGroupName - The name of the sync group.
 // options - SyncGroupsClientBeginDeleteOptions contains the optional parameters for the SyncGroupsClient.BeginDelete method.
-func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*armruntime.Poller[SyncGroupsClientDeleteResponse], error) {
+func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*runtime.Poller[SyncGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
@@ -255,6 +260,7 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Gets a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -306,7 +312,7 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -321,6 +327,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 
 // NewListByDatabasePager - Lists sync groups under a hub database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -328,7 +335,7 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 // options - SyncGroupsClientListByDatabaseOptions contains the optional parameters for the SyncGroupsClient.ListByDatabase
 // method.
 func (client *SyncGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *SyncGroupsClientListByDatabaseOptions) *runtime.Pager[SyncGroupsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListByDatabaseResponse]{
 		More: func(page SyncGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -381,7 +388,7 @@ func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -396,6 +403,7 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 
 // NewListHubSchemasPager - Gets a collection of hub database schemas.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -404,7 +412,7 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 // options - SyncGroupsClientListHubSchemasOptions contains the optional parameters for the SyncGroupsClient.ListHubSchemas
 // method.
 func (client *SyncGroupsClient) NewListHubSchemasPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientListHubSchemasOptions) *runtime.Pager[SyncGroupsClientListHubSchemasResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListHubSchemasResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListHubSchemasResponse]{
 		More: func(page SyncGroupsClientListHubSchemasResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -461,7 +469,7 @@ func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -476,6 +484,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 
 // NewListLogsPager - Gets a collection of sync group logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -486,7 +495,7 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 // typeParam - The types of logs to retrieve.
 // options - SyncGroupsClientListLogsOptions contains the optional parameters for the SyncGroupsClient.ListLogs method.
 func (client *SyncGroupsClient) NewListLogsPager(resourceGroupName string, serverName string, databaseName string, syncGroupName string, startTime string, endTime string, typeParam SyncGroupsType, options *SyncGroupsClientListLogsOptions) *runtime.Pager[SyncGroupsClientListLogsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListLogsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListLogsResponse]{
 		More: func(page SyncGroupsClientListLogsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -549,7 +558,7 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -564,11 +573,12 @@ func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (Syn
 
 // NewListSyncDatabaseIDsPager - Gets a collection of sync database ids.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // locationName - The name of the region where the resource is located.
 // options - SyncGroupsClientListSyncDatabaseIDsOptions contains the optional parameters for the SyncGroupsClient.ListSyncDatabaseIDs
 // method.
 func (client *SyncGroupsClient) NewListSyncDatabaseIDsPager(locationName string, options *SyncGroupsClientListSyncDatabaseIDsOptions) *runtime.Pager[SyncGroupsClientListSyncDatabaseIDsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SyncGroupsClientListSyncDatabaseIDsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SyncGroupsClientListSyncDatabaseIDsResponse]{
 		More: func(page SyncGroupsClientListSyncDatabaseIDsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -613,7 +623,7 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -628,6 +638,7 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Res
 
 // BeginRefreshHubSchema - Refreshes a hub database schema.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -635,20 +646,21 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Res
 // syncGroupName - The name of the sync group.
 // options - SyncGroupsClientBeginRefreshHubSchemaOptions contains the optional parameters for the SyncGroupsClient.BeginRefreshHubSchema
 // method.
-func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*armruntime.Poller[SyncGroupsClientRefreshHubSchemaResponse], error) {
+func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*runtime.Poller[SyncGroupsClientRefreshHubSchemaResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refreshHubSchema(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncGroupsClientRefreshHubSchemaResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncGroupsClientRefreshHubSchemaResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncGroupsClientRefreshHubSchemaResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientRefreshHubSchemaResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RefreshHubSchema - Refreshes a hub database schema.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*http.Response, error) {
 	req, err := client.refreshHubSchemaCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, options)
 	if err != nil {
@@ -699,6 +711,7 @@ func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Contex
 
 // TriggerSync - Triggers a sync group synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -755,6 +768,7 @@ func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, re
 
 // BeginUpdate - Updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -762,20 +776,21 @@ func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, re
 // syncGroupName - The name of the sync group.
 // parameters - The requested sync group resource state.
 // options - SyncGroupsClientBeginUpdateOptions contains the optional parameters for the SyncGroupsClient.BeginUpdate method.
-func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*armruntime.Poller[SyncGroupsClientUpdateResponse], error) {
+func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*runtime.Poller[SyncGroupsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SyncGroupsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SyncGroupsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SyncGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SyncGroupsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, databaseName, syncGroupName, parameters, options)
 	if err != nil {
@@ -821,6 +836,6 @@ func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

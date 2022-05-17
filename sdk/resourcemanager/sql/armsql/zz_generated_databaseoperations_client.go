@@ -38,7 +38,7 @@ func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenC
 
 // Cancel - Cancels the asynchronous operation on the database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -110,6 +111,7 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 
 // NewListByDatabasePager - Gets a list of operations performed on the database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -117,7 +119,7 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 // options - DatabaseOperationsClientListByDatabaseOptions contains the optional parameters for the DatabaseOperationsClient.ListByDatabase
 // method.
 func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseOperationsClientListByDatabaseOptions) *runtime.Pager[DatabaseOperationsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseOperationsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseOperationsClientListByDatabaseResponse]{
 		More: func(page DatabaseOperationsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,7 +172,7 @@ func (client *DatabaseOperationsClient) listByDatabaseCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

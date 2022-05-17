@@ -24,15 +24,15 @@ func ExampleDatabaseRecommendedActionsClient_ListByDatabaseAdvisor() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabaseRecommendedActionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabaseRecommendedActionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByDatabaseAdvisor(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<advisor-name>",
+		"workloadinsight-demos",
+		"misosisvr",
+		"IndexAdvisor_test_3",
+		"CreateIndex",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,16 +48,16 @@ func ExampleDatabaseRecommendedActionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabaseRecommendedActionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabaseRecommendedActionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<advisor-name>",
-		"<recommended-action-name>",
+		"workloadinsight-demos",
+		"misosisvr",
+		"IndexAdvisor_test_3",
+		"CreateIndex",
+		"IR_[CRM]_[DataPoints]_4821CD2F9510D98184BB",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,16 +73,16 @@ func ExampleDatabaseRecommendedActionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabaseRecommendedActionsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabaseRecommendedActionsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<advisor-name>",
-		"<recommended-action-name>",
+		"workloadinsight-demos",
+		"misosisvr",
+		"IndexAdvisor_test_3",
+		"CreateIndex",
+		"IR_[CRM]_[DataPoints]_4821CD2F9510D98184BB",
 		armsql.RecommendedAction{
 			Properties: &armsql.RecommendedActionProperties{
 				State: &armsql.RecommendedActionStateInfo{

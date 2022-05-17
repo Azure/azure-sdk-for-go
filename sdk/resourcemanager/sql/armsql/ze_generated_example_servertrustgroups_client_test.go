@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,14 +24,14 @@ func ExampleServerTrustGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerTrustGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerTrustGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<server-trust-group-name>",
+		"Default",
+		"Japan East",
+		"server-trust-group-test",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,33 +47,33 @@ func ExampleServerTrustGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerTrustGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerTrustGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<server-trust-group-name>",
+		"Default",
+		"Japan East",
+		"server-trust-group-test",
 		armsql.ServerTrustGroup{
 			Properties: &armsql.ServerTrustGroupProperties{
 				GroupMembers: []*armsql.ServerInfo{
 					{
-						ServerID: to.Ptr("<server-id>"),
+						ServerID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/managedInstance-1"),
 					},
 					{
-						ServerID: to.Ptr("<server-id>"),
+						ServerID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/managedInstances/managedInstance-2"),
 					}},
 				TrustScopes: []*armsql.ServerTrustGroupPropertiesTrustScopesItem{
 					to.Ptr(armsql.ServerTrustGroupPropertiesTrustScopesItemGlobalTransactions),
 					to.Ptr(armsql.ServerTrustGroupPropertiesTrustScopesItemServiceBroker)},
 			},
 		},
-		&armsql.ServerTrustGroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -90,19 +88,19 @@ func ExampleServerTrustGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerTrustGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerTrustGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<location-name>",
-		"<server-trust-group-name>",
-		&armsql.ServerTrustGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"Default",
+		"Japan East",
+		"server-trust-group-test",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,18 +113,17 @@ func ExampleServerTrustGroupsClient_NewListByLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerTrustGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerTrustGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("<resource-group-name>",
-		"<location-name>",
+	pager := client.NewListByLocationPager("Default",
+		"Japan East",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -142,18 +139,17 @@ func ExampleServerTrustGroupsClient_NewListByInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerTrustGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerTrustGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByInstancePager("Default-SQL-SouthEastAsia",
+		"managedInstance-1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

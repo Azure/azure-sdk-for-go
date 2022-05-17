@@ -38,7 +38,7 @@ func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azco
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azco
 
 // Get - Gets the user activities of a data warehouse which includes running and suspended queries
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -108,7 +109,7 @@ func (client *DataWarehouseUserActivitiesClient) getCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -123,6 +124,7 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 
 // NewListByDatabasePager - List the user activities of a data warehouse which includes running and suspended queries
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -130,7 +132,7 @@ func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Re
 // options - DataWarehouseUserActivitiesClientListByDatabaseOptions contains the optional parameters for the DataWarehouseUserActivitiesClient.ListByDatabase
 // method.
 func (client *DataWarehouseUserActivitiesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DataWarehouseUserActivitiesClientListByDatabaseOptions) *runtime.Pager[DataWarehouseUserActivitiesClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataWarehouseUserActivitiesClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataWarehouseUserActivitiesClientListByDatabaseResponse]{
 		More: func(page DataWarehouseUserActivitiesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -183,7 +185,7 @@ func (client *DataWarehouseUserActivitiesClient) listByDatabaseCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

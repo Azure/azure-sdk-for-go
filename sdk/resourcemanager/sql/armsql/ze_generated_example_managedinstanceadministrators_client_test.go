@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,18 +24,17 @@ func ExampleManagedInstanceAdministratorsClient_NewListByInstancePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInstancePager("<resource-group-name>",
-		"<managed-instance-name>",
+	pager := client.NewListByInstancePager("Default-SQL-SouthEastAsia",
+		"managedInstance",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,13 +50,13 @@ func ExampleManagedInstanceAdministratorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
 		armsql.AdministratorNameActiveDirectory,
 		nil)
 	if err != nil {
@@ -76,27 +73,27 @@ func ExampleManagedInstanceAdministratorsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
 		armsql.AdministratorNameActiveDirectory,
 		armsql.ManagedInstanceAdministrator{
 			Properties: &armsql.ManagedInstanceAdministratorProperties{
 				AdministratorType: to.Ptr(armsql.ManagedInstanceAdministratorTypeActiveDirectory),
-				Login:             to.Ptr("<login>"),
-				Sid:               to.Ptr("<sid>"),
-				TenantID:          to.Ptr("<tenant-id>"),
+				Login:             to.Ptr("bob@contoso.com"),
+				Sid:               to.Ptr("44444444-3333-2222-1111-000000000000"),
+				TenantID:          to.Ptr("55555555-4444-3333-2222-111111111111"),
 			},
 		},
-		&armsql.ManagedInstanceAdministratorsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,19 +108,19 @@ func ExampleManagedInstanceAdministratorsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewManagedInstanceAdministratorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewManagedInstanceAdministratorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<managed-instance-name>",
+		"Default-SQL-SouthEastAsia",
+		"managedInstance",
 		armsql.AdministratorNameActiveDirectory,
-		&armsql.ManagedInstanceAdministratorsClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

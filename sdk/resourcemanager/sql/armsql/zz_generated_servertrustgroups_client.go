@@ -38,7 +38,7 @@ func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Creates or updates a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
@@ -63,20 +64,21 @@ func NewServerTrustGroupsClient(subscriptionID string, credential azcore.TokenCr
 // parameters - The server trust group parameters.
 // options - ServerTrustGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerTrustGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerTrustGroupsClientCreateOrUpdateResponse], error) {
+func (client *ServerTrustGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerTrustGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerTrustGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerTrustGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerTrustGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerTrustGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ServerTrustGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, parameters ServerTrustGroup, options *ServerTrustGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *ServerTrustGroupsClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // serverTrustGroupName - The name of the server trust group.
 // options - ServerTrustGroupsClientBeginDeleteOptions contains the optional parameters for the ServerTrustGroupsClient.BeginDelete
 // method.
-func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*armruntime.Poller[ServerTrustGroupsClientDeleteResponse], error) {
+func (client *ServerTrustGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*runtime.Poller[ServerTrustGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerTrustGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerTrustGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerTrustGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerTrustGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ServerTrustGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, locationName string, serverTrustGroupName string, options *ServerTrustGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, locationName, serverTrustGroupName, options)
 	if err != nil {
@@ -190,6 +194,7 @@ func (client *ServerTrustGroupsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Gets a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
@@ -236,7 +241,7 @@ func (client *ServerTrustGroupsClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -251,13 +256,14 @@ func (client *ServerTrustGroupsClient) getHandleResponse(resp *http.Response) (S
 
 // NewListByInstancePager - Gets a server trust groups by instance name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ServerTrustGroupsClientListByInstanceOptions contains the optional parameters for the ServerTrustGroupsClient.ListByInstance
 // method.
 func (client *ServerTrustGroupsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ServerTrustGroupsClientListByInstanceOptions) *runtime.Pager[ServerTrustGroupsClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerTrustGroupsClientListByInstanceResponse]{
 		More: func(page ServerTrustGroupsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +312,7 @@ func (client *ServerTrustGroupsClient) listByInstanceCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -321,13 +327,14 @@ func (client *ServerTrustGroupsClient) listByInstanceHandleResponse(resp *http.R
 
 // NewListByLocationPager - Lists a server trust group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // locationName - The name of the region where the resource is located.
 // options - ServerTrustGroupsClientListByLocationOptions contains the optional parameters for the ServerTrustGroupsClient.ListByLocation
 // method.
 func (client *ServerTrustGroupsClient) NewListByLocationPager(resourceGroupName string, locationName string, options *ServerTrustGroupsClientListByLocationOptions) *runtime.Pager[ServerTrustGroupsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerTrustGroupsClientListByLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerTrustGroupsClientListByLocationResponse]{
 		More: func(page ServerTrustGroupsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -376,7 +383,7 @@ func (client *ServerTrustGroupsClient) listByLocationCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

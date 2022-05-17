@@ -38,7 +38,7 @@ func NewConfigurationProfileAssignmentsClient(subscriptionID string, credential 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewConfigurationProfileAssignmentsClient(subscriptionID string, credential 
 
 // CreateOrUpdate - Creates an association between a VM and Automanage configuration profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // configurationProfileAssignmentName - Name of the configuration profile assignment. Only default is supported.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // vmName - The name of the virtual machine.
@@ -103,7 +104,7 @@ func (client *ConfigurationProfileAssignmentsClient) createOrUpdateCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *ConfigurationProfileAssignmentsClient) createOrUpdateHandleRespons
 
 // Delete - Delete a configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - Name of the configuration profile assignment
 // vmName - The name of the virtual machine.
@@ -164,12 +166,13 @@ func (client *ConfigurationProfileAssignmentsClient) deleteCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about a configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - The configuration profile assignment name.
 // vmName - The name of the virtual machine.
@@ -216,7 +219,7 @@ func (client *ConfigurationProfileAssignmentsClient) getCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,11 +234,12 @@ func (client *ConfigurationProfileAssignmentsClient) getHandleResponse(resp *htt
 
 // NewListPager - Get list of configuration profile assignments
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
 // method.
 func (client *ConfigurationProfileAssignmentsClient) NewListPager(resourceGroupName string, options *ConfigurationProfileAssignmentsClientListOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfileAssignmentsClientListResponse]{
 		More: func(page ConfigurationProfileAssignmentsClientListResponse) bool {
 			return false
 		},
@@ -274,7 +278,7 @@ func (client *ConfigurationProfileAssignmentsClient) listCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -287,12 +291,141 @@ func (client *ConfigurationProfileAssignmentsClient) listHandleResponse(resp *ht
 	return result, nil
 }
 
+// NewListByClusterNamePager - Get list of configuration profile assignments
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// clusterName - The name of the Arc machine.
+// options - ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByClusterName
+// method.
+func (client *ConfigurationProfileAssignmentsClient) NewListByClusterNamePager(resourceGroupName string, clusterName string, options *ConfigurationProfileAssignmentsClientListByClusterNameOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByClusterNameResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfileAssignmentsClientListByClusterNameResponse]{
+		More: func(page ConfigurationProfileAssignmentsClientListByClusterNameResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationProfileAssignmentsClientListByClusterNameResponse) (ConfigurationProfileAssignmentsClientListByClusterNameResponse, error) {
+			req, err := client.listByClusterNameCreateRequest(ctx, resourceGroupName, clusterName, options)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByClusterNameResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByClusterNameResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationProfileAssignmentsClientListByClusterNameResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByClusterNameHandleResponse(resp)
+		},
+	})
+}
+
+// listByClusterNameCreateRequest creates the ListByClusterName request.
+func (client *ConfigurationProfileAssignmentsClient) listByClusterNameCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ConfigurationProfileAssignmentsClientListByClusterNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHci/clusters/{clusterName}/providers/Microsoft.Automanage/configurationProfileAssignments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-04-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByClusterNameHandleResponse handles the ListByClusterName response.
+func (client *ConfigurationProfileAssignmentsClient) listByClusterNameHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientListByClusterNameResponse, error) {
+	result := ConfigurationProfileAssignmentsClientListByClusterNameResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
+		return ConfigurationProfileAssignmentsClientListByClusterNameResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByMachineNamePager - Get list of configuration profile assignments
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the Arc machine.
+// options - ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByMachineName
+// method.
+func (client *ConfigurationProfileAssignmentsClient) NewListByMachineNamePager(resourceGroupName string, machineName string, options *ConfigurationProfileAssignmentsClientListByMachineNameOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByMachineNameResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfileAssignmentsClientListByMachineNameResponse]{
+		More: func(page ConfigurationProfileAssignmentsClientListByMachineNameResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationProfileAssignmentsClientListByMachineNameResponse) (ConfigurationProfileAssignmentsClientListByMachineNameResponse, error) {
+			req, err := client.listByMachineNameCreateRequest(ctx, resourceGroupName, machineName, options)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByMachineNameResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByMachineNameResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationProfileAssignmentsClientListByMachineNameResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByMachineNameHandleResponse(resp)
+		},
+	})
+}
+
+// listByMachineNameCreateRequest creates the ListByMachineName request.
+func (client *ConfigurationProfileAssignmentsClient) listByMachineNameCreateRequest(ctx context.Context, resourceGroupName string, machineName string, options *ConfigurationProfileAssignmentsClientListByMachineNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.Automanage/configurationProfileAssignments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if machineName == "" {
+		return nil, errors.New("parameter machineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-04-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByMachineNameHandleResponse handles the ListByMachineName response.
+func (client *ConfigurationProfileAssignmentsClient) listByMachineNameHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientListByMachineNameResponse, error) {
+	result := ConfigurationProfileAssignmentsClientListByMachineNameResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
+		return ConfigurationProfileAssignmentsClientListByMachineNameResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListBySubscriptionPager - Get list of configuration profile assignments under a given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // options - ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
 // method.
 func (client *ConfigurationProfileAssignmentsClient) NewListBySubscriptionPager(options *ConfigurationProfileAssignmentsClientListBySubscriptionOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationProfileAssignmentsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfileAssignmentsClientListBySubscriptionResponse]{
 		More: func(page ConfigurationProfileAssignmentsClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -327,7 +460,7 @@ func (client *ConfigurationProfileAssignmentsClient) listBySubscriptionCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -336,6 +469,70 @@ func (client *ConfigurationProfileAssignmentsClient) listBySubscriptionHandleRes
 	result := ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
 		return ConfigurationProfileAssignmentsClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByVirtualMachinesPager - Get list of configuration profile assignments
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// vmName - The name of the virtual machine.
+// options - ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByVirtualMachines
+// method.
+func (client *ConfigurationProfileAssignmentsClient) NewListByVirtualMachinesPager(resourceGroupName string, vmName string, options *ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse]{
+		More: func(page ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse) (ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse, error) {
+			req, err := client.listByVirtualMachinesCreateRequest(ctx, resourceGroupName, vmName, options)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listByVirtualMachinesHandleResponse(resp)
+		},
+	})
+}
+
+// listByVirtualMachinesCreateRequest creates the ListByVirtualMachines request.
+func (client *ConfigurationProfileAssignmentsClient) listByVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-04-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listByVirtualMachinesHandleResponse handles the ListByVirtualMachines response.
+func (client *ConfigurationProfileAssignmentsClient) listByVirtualMachinesHandleResponse(resp *http.Response) (ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse, error) {
+	result := ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationProfileAssignmentList); err != nil {
+		return ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse{}, err
 	}
 	return result, nil
 }

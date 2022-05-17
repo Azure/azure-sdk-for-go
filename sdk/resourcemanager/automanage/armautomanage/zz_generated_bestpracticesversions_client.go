@@ -36,7 +36,7 @@ func NewBestPracticesVersionsClient(credential azcore.TokenCredential, options *
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewBestPracticesVersionsClient(credential azcore.TokenCredential, options *
 
 // Get - Get information about a Automanage best practice version
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // bestPracticeName - The Automanage best practice name.
 // versionName - The Automanage best practice version name.
 // options - BestPracticesVersionsClientGetOptions contains the optional parameters for the BestPracticesVersionsClient.Get
@@ -90,7 +91,7 @@ func (client *BestPracticesVersionsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -105,11 +106,12 @@ func (client *BestPracticesVersionsClient) getHandleResponse(resp *http.Response
 
 // NewListByTenantPager - Retrieve a list of Automanage best practices versions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // bestPracticeName - The Automanage best practice name.
 // options - BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.ListByTenant
 // method.
 func (client *BestPracticesVersionsClient) NewListByTenantPager(bestPracticeName string, options *BestPracticesVersionsClientListByTenantOptions) *runtime.Pager[BestPracticesVersionsClientListByTenantResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BestPracticesVersionsClientListByTenantResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BestPracticesVersionsClientListByTenantResponse]{
 		More: func(page BestPracticesVersionsClientListByTenantResponse) bool {
 			return false
 		},
@@ -144,7 +146,7 @@ func (client *BestPracticesVersionsClient) listByTenantCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

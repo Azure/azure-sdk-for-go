@@ -25,6 +25,9 @@ type Action struct {
 	ActionType *ActionType `json:"actionType,omitempty"`
 }
 
+// GetAction implements the ActionClassification interface for type Action.
+func (a *Action) GetAction() *Action { return a }
+
 // ActionStatus - Action status
 type ActionStatus struct {
 	// Value indicating whether alert is suppressed.
@@ -38,6 +41,13 @@ type AddActionGroups struct {
 
 	// REQUIRED; Action that should be applied.
 	ActionType *ActionType `json:"actionType,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type AddActionGroups.
+func (a *AddActionGroups) GetAction() *Action {
+	return &Action{
+		ActionType: a.ActionType,
+	}
 }
 
 // Alert - An alert created in alert management service.
@@ -325,6 +335,9 @@ type AlertsMetaDataProperties struct {
 	MetadataIdentifier *MetadataIdentifier `json:"metadataIdentifier,omitempty"`
 }
 
+// GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type AlertsMetaDataProperties.
+func (a *AlertsMetaDataProperties) GetAlertsMetaDataProperties() *AlertsMetaDataProperties { return a }
+
 // AlertsSummary - Summary of alerts based on the input filters and 'groupby' parameters.
 type AlertsSummary struct {
 	// Group the result set.
@@ -392,6 +405,15 @@ type DailyRecurrence struct {
 
 	// Start time for recurrence.
 	StartTime *string `json:"startTime,omitempty"`
+}
+
+// GetRecurrence implements the RecurrenceClassification interface for type DailyRecurrence.
+func (d *DailyRecurrence) GetRecurrence() *Recurrence {
+	return &Recurrence{
+		RecurrenceType: d.RecurrenceType,
+		StartTime:      d.StartTime,
+		EndTime:        d.EndTime,
+	}
 }
 
 // ErrorResponse - An error response from the service.
@@ -558,6 +580,13 @@ type MonitorServiceList struct {
 	MetadataIdentifier *MetadataIdentifier `json:"metadataIdentifier,omitempty"`
 }
 
+// GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type MonitorServiceList.
+func (m *MonitorServiceList) GetAlertsMetaDataProperties() *AlertsMetaDataProperties {
+	return &AlertsMetaDataProperties{
+		MetadataIdentifier: m.MetadataIdentifier,
+	}
+}
+
 // MonthlyRecurrence - Monthly recurrence object.
 type MonthlyRecurrence struct {
 	// REQUIRED; Specifies the values for monthly recurrence pattern.
@@ -571,6 +600,15 @@ type MonthlyRecurrence struct {
 
 	// Start time for recurrence.
 	StartTime *string `json:"startTime,omitempty"`
+}
+
+// GetRecurrence implements the RecurrenceClassification interface for type MonthlyRecurrence.
+func (m *MonthlyRecurrence) GetRecurrence() *Recurrence {
+	return &Recurrence{
+		RecurrenceType: m.RecurrenceType,
+		StartTime:      m.StartTime,
+		EndTime:        m.EndTime,
+	}
 }
 
 // Operation provided by provider
@@ -647,10 +685,20 @@ type Recurrence struct {
 	StartTime *string `json:"startTime,omitempty"`
 }
 
+// GetRecurrence implements the RecurrenceClassification interface for type Recurrence.
+func (r *Recurrence) GetRecurrence() *Recurrence { return r }
+
 // RemoveAllActionGroups - Indicates if all action groups should be removed.
 type RemoveAllActionGroups struct {
 	// REQUIRED; Action that should be applied.
 	ActionType *ActionType `json:"actionType,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type RemoveAllActionGroups.
+func (r *RemoveAllActionGroups) GetAction() *Action {
+	return &Action{
+		ActionType: r.ActionType,
+	}
 }
 
 // Resource - An azure resource object
@@ -885,4 +933,13 @@ type WeeklyRecurrence struct {
 
 	// Start time for recurrence.
 	StartTime *string `json:"startTime,omitempty"`
+}
+
+// GetRecurrence implements the RecurrenceClassification interface for type WeeklyRecurrence.
+func (w *WeeklyRecurrence) GetRecurrence() *Recurrence {
+	return &Recurrence{
+		RecurrenceType: w.RecurrenceType,
+		StartTime:      w.StartTime,
+		EndTime:        w.EndTime,
+	}
 }

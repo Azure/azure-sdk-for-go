@@ -10,19 +10,10 @@ package armalertsmanagement
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// GetAction implements the ActionClassification interface for type Action.
-func (a *Action) GetAction() *Action { return a }
-
-// GetAction implements the ActionClassification interface for type AddActionGroups.
-func (a *AddActionGroups) GetAction() *Action {
-	return &Action{
-		ActionType: a.ActionType,
-	}
-}
 
 // MarshalJSON implements the json.Marshaller interface for type AddActionGroups.
 func (a AddActionGroups) MarshalJSON() ([]byte, error) {
@@ -36,20 +27,20 @@ func (a AddActionGroups) MarshalJSON() ([]byte, error) {
 func (a *AddActionGroups) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "actionGroupIds":
-			err = unpopulate(val, &a.ActionGroupIDs)
+			err = unpopulate(val, "ActionGroupIDs", &a.ActionGroupIDs)
 			delete(rawMsg, key)
 		case "actionType":
-			err = unpopulate(val, &a.ActionType)
+			err = unpopulate(val, "ActionType", &a.ActionType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -92,7 +83,7 @@ func (a AlertProcessingRuleProperties) MarshalJSON() ([]byte, error) {
 func (a *AlertProcessingRuleProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -101,56 +92,33 @@ func (a *AlertProcessingRuleProperties) UnmarshalJSON(data []byte) error {
 			a.Actions, err = unmarshalActionClassificationArray(val)
 			delete(rawMsg, key)
 		case "conditions":
-			err = unpopulate(val, &a.Conditions)
+			err = unpopulate(val, "Conditions", &a.Conditions)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &a.Description)
+			err = unpopulate(val, "Description", &a.Description)
 			delete(rawMsg, key)
 		case "enabled":
-			err = unpopulate(val, &a.Enabled)
+			err = unpopulate(val, "Enabled", &a.Enabled)
 			delete(rawMsg, key)
 		case "schedule":
-			err = unpopulate(val, &a.Schedule)
+			err = unpopulate(val, "Schedule", &a.Schedule)
 			delete(rawMsg, key)
 		case "scopes":
-			err = unpopulate(val, &a.Scopes)
+			err = unpopulate(val, "Scopes", &a.Scopes)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertProcessingRulesList.
-func (a AlertProcessingRulesList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertsList.
-func (a AlertsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AlertsMetaData.
-func (a AlertsMetaData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AlertsMetaData.
 func (a *AlertsMetaData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -160,14 +128,11 @@ func (a *AlertsMetaData) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
 }
-
-// GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type AlertsMetaDataProperties.
-func (a *AlertsMetaDataProperties) GetAlertsMetaDataProperties() *AlertsMetaDataProperties { return a }
 
 // MarshalJSON implements the json.Marshaller interface for type AlertsSummaryGroup.
 func (a AlertsSummaryGroup) MarshalJSON() ([]byte, error) {
@@ -198,15 +163,6 @@ func (c Condition) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetRecurrence implements the RecurrenceClassification interface for type DailyRecurrence.
-func (d *DailyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		RecurrenceType: d.RecurrenceType,
-		StartTime:      d.StartTime,
-		EndTime:        d.EndTime,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type DailyRecurrence.
 func (d DailyRecurrence) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -220,56 +176,26 @@ func (d DailyRecurrence) MarshalJSON() ([]byte, error) {
 func (d *DailyRecurrence) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulate(val, &d.EndTime)
+			err = unpopulate(val, "EndTime", &d.EndTime)
 			delete(rawMsg, key)
 		case "recurrenceType":
-			err = unpopulate(val, &d.RecurrenceType)
+			err = unpopulate(val, "RecurrenceType", &d.RecurrenceType)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulate(val, &d.StartTime)
+			err = unpopulate(val, "StartTime", &d.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBody.
-func (e ErrorResponseBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBodyAutoGenerated.
-func (e ErrorResponseBodyAutoGenerated) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorResponseBodyAutoGenerated2.
-func (e ErrorResponseBodyAutoGenerated2) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Essentials.
@@ -301,71 +227,71 @@ func (e Essentials) MarshalJSON() ([]byte, error) {
 func (e *Essentials) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "actionStatus":
-			err = unpopulate(val, &e.ActionStatus)
+			err = unpopulate(val, "ActionStatus", &e.ActionStatus)
 			delete(rawMsg, key)
 		case "alertRule":
-			err = unpopulate(val, &e.AlertRule)
+			err = unpopulate(val, "AlertRule", &e.AlertRule)
 			delete(rawMsg, key)
 		case "alertState":
-			err = unpopulate(val, &e.AlertState)
+			err = unpopulate(val, "AlertState", &e.AlertState)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &e.Description)
+			err = unpopulate(val, "Description", &e.Description)
 			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-			err = unpopulateTimeRFC3339(val, &e.LastModifiedDateTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedDateTime", &e.LastModifiedDateTime)
 			delete(rawMsg, key)
 		case "lastModifiedUserName":
-			err = unpopulate(val, &e.LastModifiedUserName)
+			err = unpopulate(val, "LastModifiedUserName", &e.LastModifiedUserName)
 			delete(rawMsg, key)
 		case "monitorCondition":
-			err = unpopulate(val, &e.MonitorCondition)
+			err = unpopulate(val, "MonitorCondition", &e.MonitorCondition)
 			delete(rawMsg, key)
 		case "monitorConditionResolvedDateTime":
-			err = unpopulateTimeRFC3339(val, &e.MonitorConditionResolvedDateTime)
+			err = unpopulateTimeRFC3339(val, "MonitorConditionResolvedDateTime", &e.MonitorConditionResolvedDateTime)
 			delete(rawMsg, key)
 		case "monitorService":
-			err = unpopulate(val, &e.MonitorService)
+			err = unpopulate(val, "MonitorService", &e.MonitorService)
 			delete(rawMsg, key)
 		case "severity":
-			err = unpopulate(val, &e.Severity)
+			err = unpopulate(val, "Severity", &e.Severity)
 			delete(rawMsg, key)
 		case "signalType":
-			err = unpopulate(val, &e.SignalType)
+			err = unpopulate(val, "SignalType", &e.SignalType)
 			delete(rawMsg, key)
 		case "smartGroupId":
-			err = unpopulate(val, &e.SmartGroupID)
+			err = unpopulate(val, "SmartGroupID", &e.SmartGroupID)
 			delete(rawMsg, key)
 		case "smartGroupingReason":
-			err = unpopulate(val, &e.SmartGroupingReason)
+			err = unpopulate(val, "SmartGroupingReason", &e.SmartGroupingReason)
 			delete(rawMsg, key)
 		case "sourceCreatedId":
-			err = unpopulate(val, &e.SourceCreatedID)
+			err = unpopulate(val, "SourceCreatedID", &e.SourceCreatedID)
 			delete(rawMsg, key)
 		case "startDateTime":
-			err = unpopulateTimeRFC3339(val, &e.StartDateTime)
+			err = unpopulateTimeRFC3339(val, "StartDateTime", &e.StartDateTime)
 			delete(rawMsg, key)
 		case "targetResource":
-			err = unpopulate(val, &e.TargetResource)
+			err = unpopulate(val, "TargetResource", &e.TargetResource)
 			delete(rawMsg, key)
 		case "targetResourceGroup":
-			err = unpopulate(val, &e.TargetResourceGroup)
+			err = unpopulate(val, "TargetResourceGroup", &e.TargetResourceGroup)
 			delete(rawMsg, key)
 		case "targetResourceName":
-			err = unpopulate(val, &e.TargetResourceName)
+			err = unpopulate(val, "TargetResourceName", &e.TargetResourceName)
 			delete(rawMsg, key)
 		case "targetResourceType":
-			err = unpopulate(val, &e.TargetResourceType)
+			err = unpopulate(val, "TargetResourceType", &e.TargetResourceType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
 		}
 	}
 	return nil
@@ -382,51 +308,27 @@ func (m ManagedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type MonitorServiceList.
-func (m *MonitorServiceList) GetAlertsMetaDataProperties() *AlertsMetaDataProperties {
-	return &AlertsMetaDataProperties{
-		MetadataIdentifier: m.MetadataIdentifier,
-	}
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MonitorServiceList.
-func (m MonitorServiceList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "data", m.Data)
-	objectMap["metadataIdentifier"] = MetadataIdentifierMonitorServiceList
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type MonitorServiceList.
 func (m *MonitorServiceList) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "data":
-			err = unpopulate(val, &m.Data)
+			err = unpopulate(val, "Data", &m.Data)
 			delete(rawMsg, key)
 		case "metadataIdentifier":
-			err = unpopulate(val, &m.MetadataIdentifier)
+			err = unpopulate(val, "MetadataIdentifier", &m.MetadataIdentifier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type MonthlyRecurrence.
-func (m *MonthlyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		RecurrenceType: m.RecurrenceType,
-		StartTime:      m.StartTime,
-		EndTime:        m.EndTime,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MonthlyRecurrence.
@@ -443,37 +345,29 @@ func (m MonthlyRecurrence) MarshalJSON() ([]byte, error) {
 func (m *MonthlyRecurrence) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "daysOfMonth":
-			err = unpopulate(val, &m.DaysOfMonth)
+			err = unpopulate(val, "DaysOfMonth", &m.DaysOfMonth)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulate(val, &m.EndTime)
+			err = unpopulate(val, "EndTime", &m.EndTime)
 			delete(rawMsg, key)
 		case "recurrenceType":
-			err = unpopulate(val, &m.RecurrenceType)
+			err = unpopulate(val, "RecurrenceType", &m.RecurrenceType)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulate(val, &m.StartTime)
+			err = unpopulate(val, "StartTime", &m.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationsList.
-func (o OperationsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PatchObject.
@@ -482,16 +376,6 @@ func (p PatchObject) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "tags", p.Tags)
 	return json.Marshal(objectMap)
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type Recurrence.
-func (r *Recurrence) GetRecurrence() *Recurrence { return r }
-
-// GetAction implements the ActionClassification interface for type RemoveAllActionGroups.
-func (r *RemoveAllActionGroups) GetAction() *Action {
-	return &Action{
-		ActionType: r.ActionType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveAllActionGroups.
@@ -505,17 +389,17 @@ func (r RemoveAllActionGroups) MarshalJSON() ([]byte, error) {
 func (r *RemoveAllActionGroups) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "actionType":
-			err = unpopulate(val, &r.ActionType)
+			err = unpopulate(val, "ActionType", &r.ActionType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
 		}
 	}
 	return nil
@@ -535,26 +419,26 @@ func (s Schedule) MarshalJSON() ([]byte, error) {
 func (s *Schedule) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "effectiveFrom":
-			err = unpopulate(val, &s.EffectiveFrom)
+			err = unpopulate(val, "EffectiveFrom", &s.EffectiveFrom)
 			delete(rawMsg, key)
 		case "effectiveUntil":
-			err = unpopulate(val, &s.EffectiveUntil)
+			err = unpopulate(val, "EffectiveUntil", &s.EffectiveUntil)
 			delete(rawMsg, key)
 		case "recurrences":
 			s.Recurrences, err = unmarshalRecurrenceClassificationArray(val)
 			delete(rawMsg, key)
 		case "timeZone":
-			err = unpopulate(val, &s.TimeZone)
+			err = unpopulate(val, "TimeZone", &s.TimeZone)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -593,67 +477,59 @@ func (s SmartGroupProperties) MarshalJSON() ([]byte, error) {
 func (s *SmartGroupProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "alertSeverities":
-			err = unpopulate(val, &s.AlertSeverities)
+			err = unpopulate(val, "AlertSeverities", &s.AlertSeverities)
 			delete(rawMsg, key)
 		case "alertStates":
-			err = unpopulate(val, &s.AlertStates)
+			err = unpopulate(val, "AlertStates", &s.AlertStates)
 			delete(rawMsg, key)
 		case "alertsCount":
-			err = unpopulate(val, &s.AlertsCount)
+			err = unpopulate(val, "AlertsCount", &s.AlertsCount)
 			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedDateTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedDateTime", &s.LastModifiedDateTime)
 			delete(rawMsg, key)
 		case "lastModifiedUserName":
-			err = unpopulate(val, &s.LastModifiedUserName)
+			err = unpopulate(val, "LastModifiedUserName", &s.LastModifiedUserName)
 			delete(rawMsg, key)
 		case "monitorConditions":
-			err = unpopulate(val, &s.MonitorConditions)
+			err = unpopulate(val, "MonitorConditions", &s.MonitorConditions)
 			delete(rawMsg, key)
 		case "monitorServices":
-			err = unpopulate(val, &s.MonitorServices)
+			err = unpopulate(val, "MonitorServices", &s.MonitorServices)
 			delete(rawMsg, key)
 		case "nextLink":
-			err = unpopulate(val, &s.NextLink)
+			err = unpopulate(val, "NextLink", &s.NextLink)
 			delete(rawMsg, key)
 		case "resourceGroups":
-			err = unpopulate(val, &s.ResourceGroups)
+			err = unpopulate(val, "ResourceGroups", &s.ResourceGroups)
 			delete(rawMsg, key)
 		case "resourceTypes":
-			err = unpopulate(val, &s.ResourceTypes)
+			err = unpopulate(val, "ResourceTypes", &s.ResourceTypes)
 			delete(rawMsg, key)
 		case "resources":
-			err = unpopulate(val, &s.Resources)
+			err = unpopulate(val, "Resources", &s.Resources)
 			delete(rawMsg, key)
 		case "severity":
-			err = unpopulate(val, &s.Severity)
+			err = unpopulate(val, "Severity", &s.Severity)
 			delete(rawMsg, key)
 		case "smartGroupState":
-			err = unpopulate(val, &s.SmartGroupState)
+			err = unpopulate(val, "SmartGroupState", &s.SmartGroupState)
 			delete(rawMsg, key)
 		case "startDateTime":
-			err = unpopulateTimeRFC3339(val, &s.StartDateTime)
+			err = unpopulateTimeRFC3339(val, "StartDateTime", &s.StartDateTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SmartGroupsList.
-func (s SmartGroupsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
@@ -672,44 +548,35 @@ func (s SystemData) MarshalJSON() ([]byte, error) {
 func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
 			delete(rawMsg, key)
 		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
+			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
+			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
 			delete(rawMsg, key)
 		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
+			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type WeeklyRecurrence.
-func (w *WeeklyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		RecurrenceType: w.RecurrenceType,
-		StartTime:      w.StartTime,
-		EndTime:        w.EndTime,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WeeklyRecurrence.
@@ -726,26 +593,26 @@ func (w WeeklyRecurrence) MarshalJSON() ([]byte, error) {
 func (w *WeeklyRecurrence) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", w, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "daysOfWeek":
-			err = unpopulate(val, &w.DaysOfWeek)
+			err = unpopulate(val, "DaysOfWeek", &w.DaysOfWeek)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulate(val, &w.EndTime)
+			err = unpopulate(val, "EndTime", &w.EndTime)
 			delete(rawMsg, key)
 		case "recurrenceType":
-			err = unpopulate(val, &w.RecurrenceType)
+			err = unpopulate(val, "RecurrenceType", &w.RecurrenceType)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulate(val, &w.StartTime)
+			err = unpopulate(val, "StartTime", &w.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", w, err)
 		}
 	}
 	return nil
@@ -761,9 +628,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

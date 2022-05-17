@@ -10,7 +10,7 @@ package armserialconsole
 
 const (
 	moduleName    = "armserialconsole"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )
 
 // SerialPortState - Specifies whether the port is enabled for a serial console connection.

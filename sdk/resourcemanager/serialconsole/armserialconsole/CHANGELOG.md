@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `Operations.MarshalJSON` has been removed
+- Function `SerialPortListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

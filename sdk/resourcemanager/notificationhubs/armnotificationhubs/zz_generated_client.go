@@ -39,7 +39,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckNotificationHubAvailability - Checks the availability of the given notificationHub in a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // parameters - The notificationHub name.
@@ -99,7 +100,7 @@ func (client *Client) checkNotificationHubAvailabilityCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -114,6 +115,7 @@ func (client *Client) checkNotificationHubAvailabilityHandleResponse(resp *http.
 
 // CreateOrUpdate - Creates/Update a NotificationHub in a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -160,7 +162,7 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -175,6 +177,7 @@ func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientC
 
 // CreateOrUpdateAuthorizationRule - Creates/Updates an authorization rule for a NotificationHub
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -227,7 +230,7 @@ func (client *Client) createOrUpdateAuthorizationRuleCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -242,6 +245,7 @@ func (client *Client) createOrUpdateAuthorizationRuleHandleResponse(resp *http.R
 
 // DebugSend - test send a push notification
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -287,7 +291,7 @@ func (client *Client) debugSendCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, options.Parameters)
 	}
@@ -305,6 +309,7 @@ func (client *Client) debugSendHandleResponse(resp *http.Response) (ClientDebugS
 
 // Delete - Deletes a notification hub associated with a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -355,6 +360,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 
 // DeleteAuthorizationRule - Deletes a notificationHub authorization rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -411,6 +417,7 @@ func (client *Client) deleteAuthorizationRuleCreateRequest(ctx context.Context, 
 
 // Get - Lists the notification hubs associated with a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -456,7 +463,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -471,6 +478,7 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // GetAuthorizationRule - Gets an authorization rule for a NotificationHub by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name
 // notificationHubName - The notification hub name.
@@ -521,7 +529,7 @@ func (client *Client) getAuthorizationRuleCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -536,6 +544,7 @@ func (client *Client) getAuthorizationRuleHandleResponse(resp *http.Response) (C
 
 // GetPnsCredentials - Lists the PNS Credentials associated with a notification hub .
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -581,7 +590,7 @@ func (client *Client) getPnsCredentialsCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -596,11 +605,12 @@ func (client *Client) getPnsCredentialsHandleResponse(resp *http.Response) (Clie
 
 // NewListPager - Lists the notification hubs associated with a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(resourceGroupName string, namespaceName string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -649,7 +659,7 @@ func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -664,12 +674,13 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for a NotificationHub.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name
 // notificationHubName - The notification hub name.
 // options - ClientListAuthorizationRulesOptions contains the optional parameters for the Client.ListAuthorizationRules method.
 func (client *Client) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, notificationHubName string, options *ClientListAuthorizationRulesOptions) *runtime.Pager[ClientListAuthorizationRulesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListAuthorizationRulesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListAuthorizationRulesResponse]{
 		More: func(page ClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -722,7 +733,7 @@ func (client *Client) listAuthorizationRulesCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -737,6 +748,7 @@ func (client *Client) listAuthorizationRulesHandleResponse(resp *http.Response) 
 
 // ListKeys - Gets the Primary and Secondary ConnectionStrings to the NotificationHub
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -787,7 +799,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -802,6 +814,7 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 
 // Patch - Patch a NotificationHub in a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -847,7 +860,7 @@ func (client *Client) patchCreateRequest(ctx context.Context, resourceGroupName 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -865,6 +878,7 @@ func (client *Client) patchHandleResponse(resp *http.Response) (ClientPatchRespo
 
 // RegenerateKeys - Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-04-01
 // resourceGroupName - The name of the resource group.
 // namespaceName - The namespace name.
 // notificationHubName - The notification hub name.
@@ -916,7 +930,7 @@ func (client *Client) regenerateKeysCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

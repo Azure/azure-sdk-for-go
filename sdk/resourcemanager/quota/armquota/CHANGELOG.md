@@ -1,5 +1,22 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `UsagesLimits.MarshalJSON` has been removed
+- Function `RequestOneResourceProperties.MarshalJSON` has been removed
+- Function `LimitsResponse.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `Limits.MarshalJSON` has been removed
+- Function `SubRequest.MarshalJSON` has been removed
+- Function `RequestDetailsList.MarshalJSON` has been removed
+- Function `RequestProperties.MarshalJSON` has been removed
+- Function `CreateGenericQuotaRequestParameters.MarshalJSON` has been removed
+- Function `ServiceError.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

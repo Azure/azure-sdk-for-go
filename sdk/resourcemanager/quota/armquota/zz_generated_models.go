@@ -101,6 +101,9 @@ type LimitJSONObject struct {
 	LimitObjectType *LimitType `json:"limitObjectType,omitempty"`
 }
 
+// GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitJSONObject.
+func (l *LimitJSONObject) GetLimitJSONObject() *LimitJSONObject { return l }
+
 // LimitObject - The resource quota limit value.
 type LimitObject struct {
 	// REQUIRED; The limit object type.
@@ -111,6 +114,13 @@ type LimitObject struct {
 
 	// The quota or usages limit types.
 	LimitType *QuotaLimitTypes `json:"limitType,omitempty"`
+}
+
+// GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitObject.
+func (l *LimitObject) GetLimitJSONObject() *LimitJSONObject {
+	return &LimitJSONObject{
+		LimitObjectType: l.LimitObjectType,
+	}
 }
 
 // Limits - Quota limits.

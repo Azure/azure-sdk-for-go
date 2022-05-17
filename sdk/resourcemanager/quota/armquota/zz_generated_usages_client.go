@@ -36,7 +36,7 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // Get - Get the current usage of a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-15-preview
 // resourceName - Resource name for a given resource provider. For example:
 // * SKU name for Microsoft.Compute
 // * SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices For Microsoft.Network PublicIPAddresses.
@@ -91,7 +92,7 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -109,13 +110,14 @@ func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClient
 
 // NewListPager - Get a list of current usage for all resources for the scope specified.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-15-preview
 // scope - The target Azure resource URI. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/.
 // This is the target Azure
 // resource URI for the List GET operation. If a {resourceName} is added after /quotas, then it's the target Azure resource
 // URI in the GET operation for the specific resource.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
 func (client *UsagesClient) NewListPager(scope string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -153,7 +155,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

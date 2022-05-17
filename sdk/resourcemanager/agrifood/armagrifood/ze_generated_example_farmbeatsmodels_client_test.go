@@ -24,13 +24,13 @@ func ExampleFarmBeatsModelsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<farm-beats-resource-name>",
+		"examples-rg",
+		"examples-farmBeatsResourceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,15 +46,15 @@ func ExampleFarmBeatsModelsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<farm-beats-resource-name>",
-		"<resource-group-name>",
+		"examples-farmbeatsResourceName",
+		"examples-rg",
 		armagrifood.FarmBeats{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 				"key2": to.Ptr("value2"),
@@ -75,13 +75,13 @@ func ExampleFarmBeatsModelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<farm-beats-resource-name>",
-		"<resource-group-name>",
+		"examples-farmBeatsResourceName",
+		"examples-rg",
 		armagrifood.FarmBeatsUpdateRequestModel{
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
@@ -103,13 +103,13 @@ func ExampleFarmBeatsModelsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<farm-beats-resource-name>",
+		"examples-rg",
+		"examples-farmBeatsResourceName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -123,7 +123,7 @@ func ExampleFarmBeatsModelsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -134,7 +134,6 @@ func ExampleFarmBeatsModelsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -150,11 +149,11 @@ func ExampleFarmBeatsModelsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armagrifood.NewFarmBeatsModelsClient("<subscription-id>", cred, nil)
+	client, err := armagrifood.NewFarmBeatsModelsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("examples-rg",
 		&armagrifood.FarmBeatsModelsClientListByResourceGroupOptions{MaxPageSize: nil,
 			SkipToken: nil,
 		})
@@ -162,7 +161,6 @@ func ExampleFarmBeatsModelsClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

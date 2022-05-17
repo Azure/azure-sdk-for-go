@@ -39,7 +39,7 @@ func NewFarmBeatsModelsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewFarmBeatsModelsClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Create or update FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // farmBeatsResourceName - FarmBeats resource name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // body - FarmBeats resource create or update request object.
@@ -99,7 +100,7 @@ func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -114,6 +115,7 @@ func (client *FarmBeatsModelsClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // farmBeatsResourceName - FarmBeats resource name.
 // options - FarmBeatsModelsClientDeleteOptions contains the optional parameters for the FarmBeatsModelsClient.Delete method.
@@ -154,12 +156,13 @@ func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // farmBeatsResourceName - FarmBeats resource name.
 // options - FarmBeatsModelsClientGetOptions contains the optional parameters for the FarmBeatsModelsClient.Get method.
@@ -200,7 +203,7 @@ func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +218,12 @@ func (client *FarmBeatsModelsClient) getHandleResponse(resp *http.Response) (Far
 
 // NewListByResourceGroupPager - Lists the FarmBeats instances for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
 // method.
 func (client *FarmBeatsModelsClient) NewListByResourceGroupPager(resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) *runtime.Pager[FarmBeatsModelsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FarmBeatsModelsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FarmBeatsModelsClientListByResourceGroupResponse]{
 		More: func(page FarmBeatsModelsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -270,7 +274,7 @@ func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,10 +289,11 @@ func (client *FarmBeatsModelsClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - Lists the FarmBeats instances for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // options - FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
 // method.
 func (client *FarmBeatsModelsClient) NewListBySubscriptionPager(options *FarmBeatsModelsClientListBySubscriptionOptions) *runtime.Pager[FarmBeatsModelsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FarmBeatsModelsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FarmBeatsModelsClientListBySubscriptionResponse]{
 		More: func(page FarmBeatsModelsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -335,7 +340,7 @@ func (client *FarmBeatsModelsClient) listBySubscriptionCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -350,6 +355,7 @@ func (client *FarmBeatsModelsClient) listBySubscriptionHandleResponse(resp *http
 
 // Update - Update a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // farmBeatsResourceName - FarmBeats resource name.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // body - Request object.
@@ -391,7 +397,7 @@ func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, fa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

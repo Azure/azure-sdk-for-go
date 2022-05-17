@@ -38,7 +38,7 @@ func NewServerAdministratorsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewServerAdministratorsClient(subscriptionID string, credential azcore.Toke
 // BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
 // the existing administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // properties - The required parameters for creating or updating an AAD server administrator.
 // options - ServerAdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAdministratorsClient.BeginCreateOrUpdate
 // method.
-func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServerAdministratorsClientCreateOrUpdateResponse], error) {
+func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServerAdministratorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerAdministratorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerAdministratorsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerAdministratorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerAdministratorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite
 // the existing administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 func (client *ServerAdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource, options *ServerAdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, properties, options)
 	if err != nil {
@@ -114,30 +116,32 @@ func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // BeginDelete - Deletes server active directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerAdministratorsClientBeginDeleteOptions contains the optional parameters for the ServerAdministratorsClient.BeginDelete
 // method.
-func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*armruntime.Poller[ServerAdministratorsClientDeleteResponse], error) {
+func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*runtime.Poller[ServerAdministratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServerAdministratorsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServerAdministratorsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerAdministratorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerAdministratorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes server active directory administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 func (client *ServerAdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServerAdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
@@ -175,12 +179,13 @@ func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about a AAD server administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerAdministratorsClientGetOptions contains the optional parameters for the ServerAdministratorsClient.Get
@@ -222,7 +227,7 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,12 +242,13 @@ func (client *ServerAdministratorsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Returns a list of server Administrators.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServerAdministratorsClientListOptions contains the optional parameters for the ServerAdministratorsClient.List
 // method.
 func (client *ServerAdministratorsClient) NewListPager(resourceGroupName string, serverName string, options *ServerAdministratorsClientListOptions) *runtime.Pager[ServerAdministratorsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerAdministratorsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerAdministratorsClientListResponse]{
 		More: func(page ServerAdministratorsClientListResponse) bool {
 			return false
 		},
@@ -285,7 +291,7 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

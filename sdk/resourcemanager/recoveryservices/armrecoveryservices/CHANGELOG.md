@@ -1,5 +1,36 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*VaultsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VaultsClientUpdateResponse], error)` to `(*runtime.Poller[VaultsClientUpdateResponse], error)`
+- Function `*VaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VaultsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VaultsClientCreateOrUpdateResponse], error)`
+- Function `ResourceCertificateDetails.MarshalJSON` has been removed
+- Function `OperationResource.MarshalJSON` has been removed
+- Function `Error.MarshalJSON` has been removed
+- Function `VaultUsageList.MarshalJSON` has been removed
+- Function `VaultUsage.MarshalJSON` has been removed
+- Function `VaultList.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `VaultCertificateResponse.MarshalJSON` has been removed
+- Function `ResourceCertificateAndAADDetails.MarshalJSON` has been removed
+- Function `ClientDiscoveryForServiceSpecification.MarshalJSON` has been removed
+- Function `ResourceCertificateAndAcsDetails.MarshalJSON` has been removed
+- Function `ClientDiscoveryResponse.MarshalJSON` has been removed
+- Function `ReplicationUsageList.MarshalJSON` has been removed
+- Function `PrivateLinkResources.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `AlertsStateDisabled`
+- New const `AlertsStateEnabled`
+- New function `PossibleAlertsStateValues() []AlertsState`
+- New struct `AzureMonitorAlertSettings`
+- New struct `ClassicAlertSettings`
+- New struct `MonitoringSettings`
+- New field `MonitoringSettings` in struct `VaultProperties`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

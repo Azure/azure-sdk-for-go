@@ -1,5 +1,19 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*CommunicationsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[CommunicationsClientCreateResponse], error)` to `(*runtime.Poller[CommunicationsClientCreateResponse], error)`
+- Function `*TicketsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TicketsClientCreateResponse], error)` to `(*runtime.Poller[TicketsClientCreateResponse], error)`
+- Function `ProblemClassificationsListResult.MarshalJSON` has been removed
+- Function `ServiceError.MarshalJSON` has been removed
+- Function `ServiceProperties.MarshalJSON` has been removed
+- Function `TicketsListResult.MarshalJSON` has been removed
+- Function `CommunicationsListResult.MarshalJSON` has been removed
+- Function `ServicesListResult.MarshalJSON` has been removed
+- Function `OperationsListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

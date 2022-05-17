@@ -1,5 +1,14 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `ChangeList.MarshalJSON` has been removed
+- Function `ChangeProperties.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

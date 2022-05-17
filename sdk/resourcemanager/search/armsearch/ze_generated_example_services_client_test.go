@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
@@ -26,15 +24,15 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		armsearch.Service{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"app-name": to.Ptr("My e-commerce app"),
 			},
@@ -48,11 +46,11 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 			},
 		},
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
-		&armsearch.ServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -67,13 +65,13 @@ func ExampleServicesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		armsearch.ServiceUpdate{
 			Properties: &armsearch.ServiceProperties{
 				ReplicaCount: to.Ptr[int32](2),
@@ -99,13 +97,13 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -122,13 +120,13 @@ func ExampleServicesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -143,18 +141,17 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg1",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -170,7 +167,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -180,7 +177,6 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -196,14 +192,14 @@ func ExampleServicesClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armsearch.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("mysearchservice"),
+			Type: to.Ptr("searchServices"),
 		},
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)

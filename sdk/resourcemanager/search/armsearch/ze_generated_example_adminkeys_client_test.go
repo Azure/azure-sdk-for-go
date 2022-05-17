@@ -23,13 +23,13 @@ func ExampleAdminKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewAdminKeysClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewAdminKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)
 	if err != nil {
@@ -46,13 +46,13 @@ func ExampleAdminKeysClient_Regenerate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsearch.NewAdminKeysClient("<subscription-id>", cred, nil)
+	client, err := armsearch.NewAdminKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Regenerate(ctx,
-		"<resource-group-name>",
-		"<search-service-name>",
+		"rg1",
+		"mysearchservice",
 		armsearch.AdminKeyKindPrimary,
 		&armsearch.SearchManagementRequestOptions{ClientRequestID: nil},
 		nil)

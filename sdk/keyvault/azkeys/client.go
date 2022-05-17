@@ -161,8 +161,8 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 // CreateECKeyOptions contains optional parameters for CreateECKey
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
-	CurveName *CurveName `json:"crv,omitempty"`
+	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
+	Curve *CurveName `json:"crv,omitempty"`
 
 	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`

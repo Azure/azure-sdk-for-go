@@ -1,5 +1,58 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ExperimentsClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[ExperimentsClientCancelResponse], error)` to `(*runtime.Poller[ExperimentsClientCancelResponse], error)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExperimentsClientCreateOrUpdateResponse], error)`
+- Function `ExperimentStatusProperties.MarshalJSON` has been removed
+- Function `CapabilityListResult.MarshalJSON` has been removed
+- Function `TargetListResult.MarshalJSON` has been removed
+- Function `CapabilityTypeListResult.MarshalJSON` has been removed
+- Function `ExperimentListResult.MarshalJSON` has been removed
+- Function `StepStatus.MarshalJSON` has been removed
+- Function `ActionStatus.MarshalJSON` has been removed
+- Function `TargetTypeListResult.MarshalJSON` has been removed
+- Function `BranchStatus.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `ExperimentExecutionActionTargetDetailsProperties.MarshalJSON` has been removed
+- Function `ExperimentExecutionDetailsListResult.MarshalJSON` has been removed
+- Function `ExperimentExecutionDetailsProperties.MarshalJSON` has been removed
+- Function `ExperimentStatusListResult.MarshalJSON` has been removed
+- Function `ExperimentExecutionDetailsPropertiesRunInformation.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Field `ID` of struct `StepStatus` has been removed
+- Field `Name` of struct `StepStatus` has been removed
+- Field `Name` of struct `BranchStatus` has been removed
+- Field `ID` of struct `BranchStatus` has been removed
+- Field `StartDateUTC` of struct `ExperimentExecutionDetailsProperties` has been removed
+- Field `StopDateUTC` of struct `ExperimentExecutionDetailsProperties` has been removed
+- Field `CreatedDateUTC` of struct `ExperimentExecutionDetailsProperties` has been removed
+- Field `LastActionDateUTC` of struct `ExperimentExecutionDetailsProperties` has been removed
+- Field `Name` of struct `ActionStatus` has been removed
+- Field `ID` of struct `ActionStatus` has been removed
+- Field `CompletedDateUTC` of struct `ExperimentExecutionActionTargetDetailsProperties` has been removed
+- Field `FailedDateUTC` of struct `ExperimentExecutionActionTargetDetailsProperties` has been removed
+
+### Features Added
+
+- New function `*ActionStatus.UnmarshalJSON([]byte) error`
+- New field `TargetCompletedTime` in struct `ExperimentExecutionActionTargetDetailsProperties`
+- New field `TargetFailedTime` in struct `ExperimentExecutionActionTargetDetailsProperties`
+- New field `ActionID` in struct `ActionStatus`
+- New field `ActionName` in struct `ActionStatus`
+- New field `EndTime` in struct `ActionStatus`
+- New field `StartTime` in struct `ActionStatus`
+- New field `BranchID` in struct `BranchStatus`
+- New field `BranchName` in struct `BranchStatus`
+- New field `StopDateTime` in struct `ExperimentExecutionDetailsProperties`
+- New field `CreatedDateTime` in struct `ExperimentExecutionDetailsProperties`
+- New field `LastActionDateTime` in struct `ExperimentExecutionDetailsProperties`
+- New field `StartDateTime` in struct `ExperimentExecutionDetailsProperties`
+- New field `StepName` in struct `StepStatus`
+- New field `StepID` in struct `StepStatus`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

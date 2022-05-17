@@ -12,7 +12,6 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos"
 )
@@ -24,17 +23,16 @@ func ExampleTargetTypesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewTargetTypesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewTargetTypesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location-name>",
-		&armchaos.TargetTypesClientListOptions{ContinuationToken: to.Ptr("<continuation-token>")})
+	pager := client.NewListPager("westus2",
+		&armchaos.TargetTypesClientListOptions{ContinuationToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,13 +48,13 @@ func ExampleTargetTypesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armchaos.NewTargetTypesClient("<subscription-id>", cred, nil)
+	client, err := armchaos.NewTargetTypesClient("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<target-type-name>",
+		"westus2",
+		"Microsoft-Agent",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

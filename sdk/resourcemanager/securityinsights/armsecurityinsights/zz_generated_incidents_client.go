@@ -39,7 +39,7 @@ func NewIncidentsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,8 +55,9 @@ func NewIncidentsClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates the incident.
+// CreateOrUpdate - Creates or updates an incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -102,9 +103,9 @@ func (client *IncidentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, incident)
 }
 
@@ -117,69 +118,9 @@ func (client *IncidentsClient) createOrUpdateHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// CreateTeam - Creates a Microsoft team to investigate the incident by sharing information and insights between participants.
+// Delete - Deletes a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// teamProperties - Team properties
-// options - IncidentsClientCreateTeamOptions contains the optional parameters for the IncidentsClient.CreateTeam method.
-func (client *IncidentsClient) CreateTeam(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, teamProperties TeamProperties, options *IncidentsClientCreateTeamOptions) (IncidentsClientCreateTeamResponse, error) {
-	req, err := client.createTeamCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, teamProperties, options)
-	if err != nil {
-		return IncidentsClientCreateTeamResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return IncidentsClientCreateTeamResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return IncidentsClientCreateTeamResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.createTeamHandleResponse(resp)
-}
-
-// createTeamCreateRequest creates the CreateTeam request.
-func (client *IncidentsClient) createTeamCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, teamProperties TeamProperties, options *IncidentsClientCreateTeamOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentId}/createTeam"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentID == "" {
-		return nil, errors.New("parameter incidentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, teamProperties)
-}
-
-// createTeamHandleResponse handles the CreateTeam response.
-func (client *IncidentsClient) createTeamHandleResponse(resp *http.Response) (IncidentsClientCreateTeamResponse, error) {
-	result := IncidentsClientCreateTeamResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TeamInformation); err != nil {
-		return IncidentsClientCreateTeamResponse{}, err
-	}
-	return result, nil
-}
-
-// Delete - Delete the incident.
-// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -223,14 +164,15 @@ func (client *IncidentsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets an incident.
+// Get - Gets a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -274,9 +216,9 @@ func (client *IncidentsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -291,11 +233,12 @@ func (client *IncidentsClient) getHandleResponse(resp *http.Response) (Incidents
 
 // NewListPager - Gets all incidents.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - IncidentsClientListOptions contains the optional parameters for the IncidentsClient.List method.
 func (client *IncidentsClient) NewListPager(resourceGroupName string, workspaceName string, options *IncidentsClientListOptions) *runtime.Pager[IncidentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IncidentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IncidentsClientListResponse]{
 		More: func(page IncidentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -342,7 +285,7 @@ func (client *IncidentsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -356,7 +299,7 @@ func (client *IncidentsClient) listCreateRequest(ctx context.Context, resourceGr
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -369,8 +312,9 @@ func (client *IncidentsClient) listHandleResponse(resp *http.Response) (Incident
 	return result, nil
 }
 
-// ListAlerts - Gets all incident alerts.
+// ListAlerts - Gets all alerts for an incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -414,9 +358,9 @@ func (client *IncidentsClient) listAlertsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -429,8 +373,9 @@ func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response) (In
 	return result, nil
 }
 
-// ListBookmarks - Gets all incident bookmarks.
+// ListBookmarks - Gets all bookmarks for an incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -474,9 +419,9 @@ func (client *IncidentsClient) listBookmarksCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -489,8 +434,9 @@ func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// ListEntities - Gets all incident related entities.
+// ListEntities - Gets all entities for an incident.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // incidentID - Incident ID
@@ -534,9 +480,9 @@ func (client *IncidentsClient) listEntitiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -545,68 +491,6 @@ func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response) (
 	result := IncidentsClientListEntitiesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentEntitiesResponse); err != nil {
 		return IncidentsClientListEntitiesResponse{}, err
-	}
-	return result, nil
-}
-
-// RunPlaybook - Triggers playbook on a specific incident
-// If the operation fails it returns an *azcore.ResponseError type.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - IncidentsClientRunPlaybookOptions contains the optional parameters for the IncidentsClient.RunPlaybook method.
-func (client *IncidentsClient) RunPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *IncidentsClientRunPlaybookOptions) (IncidentsClientRunPlaybookResponse, error) {
-	req, err := client.runPlaybookCreateRequest(ctx, resourceGroupName, workspaceName, incidentIdentifier, options)
-	if err != nil {
-		return IncidentsClientRunPlaybookResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return IncidentsClientRunPlaybookResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
-		return IncidentsClientRunPlaybookResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.runPlaybookHandleResponse(resp)
-}
-
-// runPlaybookCreateRequest creates the RunPlaybook request.
-func (client *IncidentsClient) runPlaybookCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *IncidentsClientRunPlaybookOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents/{incidentIdentifier}/runPlaybook"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if incidentIdentifier == "" {
-		return nil, errors.New("parameter incidentIdentifier cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{incidentIdentifier}", url.PathEscape(incidentIdentifier))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
-	if options != nil && options.RequestBody != nil {
-		return req, runtime.MarshalAsJSON(req, *options.RequestBody)
-	}
-	return req, nil
-}
-
-// runPlaybookHandleResponse handles the RunPlaybook response.
-func (client *IncidentsClient) runPlaybookHandleResponse(resp *http.Response) (IncidentsClientRunPlaybookResponse, error) {
-	result := IncidentsClientRunPlaybookResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
-		return IncidentsClientRunPlaybookResponse{}, err
 	}
 	return result, nil
 }

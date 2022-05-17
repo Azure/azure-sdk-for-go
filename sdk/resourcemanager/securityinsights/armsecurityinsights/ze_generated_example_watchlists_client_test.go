@@ -17,25 +17,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/GetWatchlists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlists.json
 func ExampleWatchlistsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListPager("myRg",
+		"myWorkspace",
 		&armsecurityinsights.WatchlistsClientListOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,21 +43,21 @@ func ExampleWatchlistsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/GetWatchlistByAlias.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlistByAlias.json
 func ExampleWatchlistsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,54 +66,53 @@ func ExampleWatchlistsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/DeleteWatchlist.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/DeleteWatchlist.json
 func ExampleWatchlistsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/CreateWatchlistAndWatchlistItems.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/CreateWatchlistAndWatchlistItems.json
 func ExampleWatchlistsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
 		armsecurityinsights.Watchlist{
-			Etag: to.Ptr("<etag>"),
+			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 			Properties: &armsecurityinsights.WatchlistProperties{
-				Description:         to.Ptr("<description>"),
-				ContentType:         to.Ptr("<content-type>"),
-				DisplayName:         to.Ptr("<display-name>"),
-				ItemsSearchKey:      to.Ptr("<items-search-key>"),
+				Description:         to.Ptr("Watchlist from CSV content"),
+				ContentType:         to.Ptr("text/csv"),
+				DisplayName:         to.Ptr("High Value Assets Watchlist"),
+				ItemsSearchKey:      to.Ptr("header1"),
 				NumberOfLinesToSkip: to.Ptr[int32](1),
-				Provider:            to.Ptr("<provider>"),
-				RawContent:          to.Ptr("<raw-content>"),
-				Source:              to.Ptr("<source>"),
-				SourceType:          to.Ptr(armsecurityinsights.SourceTypeLocalFile),
+				Provider:            to.Ptr("Microsoft"),
+				RawContent:          to.Ptr("This line will be skipped\nheader1,header2\nvalue1,value2"),
+				Source:              to.Ptr(armsecurityinsights.SourceLocalFile),
 			},
 		},
 		nil)

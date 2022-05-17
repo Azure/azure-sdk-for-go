@@ -17,26 +17,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/GetWatchlistItems.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlistItems.json
 func ExampleWatchlistItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistItemsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistItemsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
+	pager := client.NewListPager("myRg",
+		"myWorkspace",
+		"highValueAsset",
 		&armsecurityinsights.WatchlistItemsClientListOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -45,22 +44,22 @@ func ExampleWatchlistItemsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/GetWatchlistItemById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/GetWatchlistItemById.json
 func ExampleWatchlistItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistItemsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistItemsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
-		"<watchlist-item-id>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
+		"3f8901fe-63d9-4875-9ad5-9fb3b8105797",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,46 +68,46 @@ func ExampleWatchlistItemsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/DeleteWatchlistItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/DeleteWatchlistItem.json
 func ExampleWatchlistItemsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistItemsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistItemsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
-		"<watchlist-item-id>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
+		"4008512e-1d30-48b2-9ee2-d3612ed9d3ea",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/watchlists/CreateWatchlistItem.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/watchlists/CreateWatchlistItem.json
 func ExampleWatchlistItemsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewWatchlistItemsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewWatchlistItemsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<watchlist-alias>",
-		"<watchlist-item-id>",
+		"myRg",
+		"myWorkspace",
+		"highValueAsset",
+		"82ba292c-dc97-4dfc-969d-d4dd9e666842",
 		armsecurityinsights.WatchlistItem{
-			Etag: to.Ptr("<etag>"),
+			Etag: to.Ptr("0300bf09-0000-0000-0000-5c37296e0000"),
 			Properties: &armsecurityinsights.WatchlistItemProperties{
 				ItemsKeyValue: map[string]interface{}{
 					"Business tier":  "10.0.2.0/24",

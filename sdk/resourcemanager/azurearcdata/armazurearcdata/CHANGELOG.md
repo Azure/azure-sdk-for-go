@@ -1,5 +1,35 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*DataControllersClient.BeginDeleteDataController` return value(s) have been changed from `(*armruntime.Poller[DataControllersClientDeleteDataControllerResponse], error)` to `(*runtime.Poller[DataControllersClientDeleteDataControllerResponse], error)`
+- Function `*PostgresInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PostgresInstancesClientDeleteResponse], error)` to `(*runtime.Poller[PostgresInstancesClientDeleteResponse], error)`
+- Function `*SQLServerInstancesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SQLServerInstancesClientCreateResponse], error)` to `(*runtime.Poller[SQLServerInstancesClientCreateResponse], error)`
+- Function `*SQLManagedInstancesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SQLManagedInstancesClientCreateResponse], error)` to `(*runtime.Poller[SQLManagedInstancesClientCreateResponse], error)`
+- Function `*DataControllersClient.BeginPutDataController` return value(s) have been changed from `(*armruntime.Poller[DataControllersClientPutDataControllerResponse], error)` to `(*runtime.Poller[DataControllersClientPutDataControllerResponse], error)`
+- Function `*ActiveDirectoryConnectorsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ActiveDirectoryConnectorsClientCreateResponse], error)` to `(*runtime.Poller[ActiveDirectoryConnectorsClientCreateResponse], error)`
+- Function `*ActiveDirectoryConnectorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ActiveDirectoryConnectorsClientDeleteResponse], error)` to `(*runtime.Poller[ActiveDirectoryConnectorsClientDeleteResponse], error)`
+- Function `*SQLServerInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLServerInstancesClientDeleteResponse], error)` to `(*runtime.Poller[SQLServerInstancesClientDeleteResponse], error)`
+- Function `*SQLManagedInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLManagedInstancesClientDeleteResponse], error)` to `(*runtime.Poller[SQLManagedInstancesClientDeleteResponse], error)`
+- Function `*PostgresInstancesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PostgresInstancesClientCreateResponse], error)` to `(*runtime.Poller[PostgresInstancesClientCreateResponse], error)`
+- Function `ActiveDirectoryConnectorListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PageOfDataControllerResource.MarshalJSON` has been removed
+- Function `SQLManagedInstanceListResult.MarshalJSON` has been removed
+- Function `*DataControllersClient.PatchDataController` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `SQLServerInstanceListResult.MarshalJSON` has been removed
+- Function `ErrorResponseBody.MarshalJSON` has been removed
+- Function `PostgresInstanceListResult.MarshalJSON` has been removed
+- Struct `DataControllersClientPatchDataControllerOptions` has been removed
+
+### Features Added
+
+- New function `*DataControllersClient.BeginPatchDataController(context.Context, string, string, DataControllerUpdate, *DataControllersClientBeginPatchDataControllerOptions) (*runtime.Poller[DataControllersClientPatchDataControllerResponse], error)`
+- New struct `DataControllersClientBeginPatchDataControllerOptions`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

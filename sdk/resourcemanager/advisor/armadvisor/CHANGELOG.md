@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `OperationEntityListResult.MarshalJSON` has been removed
+- Function `ConfigurationListResult.MarshalJSON` has been removed
+- Function `ResourceRecommendationBaseListResult.MarshalJSON` has been removed
+- Function `MetadataEntityListResult.MarshalJSON` has been removed
+- Function `SuppressionContractListResult.MarshalJSON` has been removed
+- Function `MetadataEntityProperties.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckNameAvailability - To check whether a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // nameAvailabilityRequest - Name availability request payload.
 // options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, nameAvailabilityRequest CheckNameAvailabilityRequest, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
@@ -87,7 +88,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, na
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, nameAvailabilityRequest)
 }
 

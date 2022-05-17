@@ -38,7 +38,7 @@ func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreate - Creates a Confidential Ledger with the specified ledger parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger Create Request Body
 // options - LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
-func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*armruntime.Poller[LedgerClientCreateResponse], error) {
+func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*runtime.Poller[LedgerClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LedgerClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LedgerClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[LedgerClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LedgerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a Confidential Ledger with the specified ledger parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 func (client *LedgerClient) create(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 	if err != nil {
@@ -113,29 +115,31 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, confidentialLedger)
 }
 
 // BeginDelete - Deletes an existing Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // options - LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
-func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*armruntime.Poller[LedgerClientDeleteResponse], error) {
+func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*runtime.Poller[LedgerClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, ledgerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LedgerClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LedgerClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LedgerClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LedgerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ledgerName, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves the properties of a Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // options - LedgerClientGetOptions contains the optional parameters for the LedgerClient.Get method.
@@ -219,7 +224,7 @@ func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,11 +239,12 @@ func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClient
 
 // NewListByResourceGroupPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // resourceGroupName - The name of the resource group.
 // options - LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.ListByResourceGroup
 // method.
 func (client *LedgerClient) NewListByResourceGroupPager(resourceGroupName string, options *LedgerClientListByResourceGroupOptions) *runtime.Pager[LedgerClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LedgerClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LedgerClientListByResourceGroupResponse]{
 		More: func(page LedgerClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +292,7 @@ func (client *LedgerClient) listByResourceGroupCreateRequest(ctx context.Context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,10 +307,11 @@ func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // options - LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.ListBySubscription
 // method.
 func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LedgerClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LedgerClientListBySubscriptionResponse]{
 		More: func(page LedgerClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -348,7 +355,7 @@ func (client *LedgerClient) listBySubscriptionCreateRequest(ctx context.Context,
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,24 +370,26 @@ func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // BeginUpdate - Updates properties of Confidential Ledger
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger request body for Updating Ledger
 // options - LedgerClientBeginUpdateOptions contains the optional parameters for the LedgerClient.BeginUpdate method.
-func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*armruntime.Poller[LedgerClientUpdateResponse], error) {
+func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*runtime.Poller[LedgerClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LedgerClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LedgerClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LedgerClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LedgerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates properties of Confidential Ledger
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-13-preview
 func (client *LedgerClient) update(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 	if err != nil {
@@ -418,6 +427,6 @@ func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, confidentialLedger)
 }

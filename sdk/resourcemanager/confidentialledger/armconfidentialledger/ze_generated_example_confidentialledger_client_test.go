@@ -24,14 +24,14 @@ func ExampleClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armconfidentialledger.NewClient("<subscription-id>", cred, nil)
+	client, err := armconfidentialledger.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armconfidentialledger.CheckNameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("sample-name"),
+			Type: to.Ptr("Microsoft.ConfidentialLedger/ledgers"),
 		},
 		nil)
 	if err != nil {

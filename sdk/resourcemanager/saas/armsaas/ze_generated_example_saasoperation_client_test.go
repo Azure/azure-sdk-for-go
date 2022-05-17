@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
 )
@@ -30,12 +28,12 @@ func ExampleOperationClient_BeginGet() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginGet(ctx,
-		"<operation-id>",
-		&armsaas.OperationClientBeginGetOptions{ResumeToken: ""})
+		"5f35cb4c-8065-45b3-9116-5ba335462e95",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

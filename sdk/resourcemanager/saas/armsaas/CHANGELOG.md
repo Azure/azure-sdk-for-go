@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*SubscriptionLevelClient.BeginMoveResources` return value(s) have been changed from `(*armruntime.Poller[SubscriptionLevelClientMoveResourcesResponse], error)` to `(*runtime.Poller[SubscriptionLevelClientMoveResourcesResponse], error)`
+- Function `*SubscriptionLevelClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SubscriptionLevelClientDeleteResponse], error)` to `(*runtime.Poller[SubscriptionLevelClientDeleteResponse], error)`
+- Function `*SubscriptionLevelClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SubscriptionLevelClientUpdateResponse], error)` to `(*runtime.Poller[SubscriptionLevelClientUpdateResponse], error)`
+- Function `*Client.BeginCreateResource` return value(s) have been changed from `(*armruntime.Poller[ClientCreateResourceResponse], error)` to `(*runtime.Poller[ClientCreateResourceResponse], error)`
+- Function `*Client.BeginUpdateResource` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResourceResponse], error)` to `(*runtime.Poller[ClientUpdateResourceResponse], error)`
+- Function `*OperationClient.BeginGet` return value(s) have been changed from `(*armruntime.Poller[OperationClientGetResponse], error)` to `(*runtime.Poller[OperationClientGetResponse], error)`
+- Function `*SubscriptionLevelClient.BeginUpdateToUnsubscribed` return value(s) have been changed from `(*armruntime.Poller[SubscriptionLevelClientUpdateToUnsubscribedResponse], error)` to `(*runtime.Poller[SubscriptionLevelClientUpdateToUnsubscribedResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*SubscriptionLevelClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SubscriptionLevelClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SubscriptionLevelClientCreateOrUpdateResponse], error)`
+- Function `AppResponseWithContinuation.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `App.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `ResourceResponseWithContinuation.MarshalJSON` has been removed
+- Function `AppOperationsResponseWithContinuation.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

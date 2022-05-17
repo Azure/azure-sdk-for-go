@@ -24,18 +24,17 @@ func ExamplePatchSchedulesClient_NewListByRedisResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPatchSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewPatchSchedulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRedisResourcePager("<resource-group-name>",
-		"<cache-name>",
+	pager := client.NewListByRedisResourcePager("rg1",
+		"cache1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,20 +50,20 @@ func ExamplePatchSchedulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPatchSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewPatchSchedulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg1",
+		"cache1",
 		armredis.DefaultNameDefault,
 		armredis.PatchSchedule{
 			Properties: &armredis.ScheduleEntries{
 				ScheduleEntries: []*armredis.ScheduleEntry{
 					{
 						DayOfWeek:         to.Ptr(armredis.DayOfWeekMonday),
-						MaintenanceWindow: to.Ptr("<maintenance-window>"),
+						MaintenanceWindow: to.Ptr("PT5H"),
 						StartHourUTC:      to.Ptr[int32](12),
 					},
 					{
@@ -88,13 +87,13 @@ func ExamplePatchSchedulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPatchSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewPatchSchedulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg1",
+		"cache1",
 		armredis.DefaultNameDefault,
 		nil)
 	if err != nil {
@@ -109,13 +108,13 @@ func ExamplePatchSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPatchSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewPatchSchedulesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"rg1",
+		"cache1",
 		armredis.DefaultNameDefault,
 		nil)
 	if err != nil {

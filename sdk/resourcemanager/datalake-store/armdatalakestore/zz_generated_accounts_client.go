@@ -40,7 +40,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckNameAvailability - Checks whether the specified account name is available or taken.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // location - The resource location without whitespace.
 // parameters - Parameters supplied to check the Data Lake Store account name availability.
 // options - AccountsClientCheckNameAvailabilityOptions contains the optional parameters for the AccountsClient.CheckNameAvailability
@@ -95,7 +96,7 @@ func (client *AccountsClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -110,24 +111,26 @@ func (client *AccountsClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // BeginCreate - Creates the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // parameters - Parameters supplied to create the Data Lake Store account.
 // options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
-func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeStoreAccountParameters, options *AccountsClientBeginCreateOptions) (*armruntime.Poller[AccountsClientCreateResponse], error) {
+func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeStoreAccountParameters, options *AccountsClientBeginCreateOptions) (*runtime.Poller[AccountsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AccountsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AccountsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters CreateDataLakeStoreAccountParameters, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
@@ -165,29 +168,31 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
-func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*armruntime.Poller[AccountsClientDeleteResponse], error) {
+func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*runtime.Poller[AccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AccountsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AccountsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
@@ -230,6 +235,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // EnableKeyVault - Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - AccountsClientEnableKeyVaultOptions contains the optional parameters for the AccountsClient.EnableKeyVault method.
@@ -275,6 +281,7 @@ func (client *AccountsClient) enableKeyVaultCreateRequest(ctx context.Context, r
 
 // Get - Gets the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -315,7 +322,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -331,9 +338,10 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 // NewListPager - Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page
 // of results, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -392,7 +400,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 	}
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -408,11 +416,12 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 // NewListByResourceGroupPager - Lists the Data Lake Store accounts within a specific resource group. The response includes
 // a link to the next page of results, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
 func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -475,7 +484,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -490,24 +499,26 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // BeginUpdate - Updates the specified Data Lake Store account information.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // parameters - Parameters supplied to update the Data Lake Store account.
 // options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters UpdateDataLakeStoreAccountParameters, options *AccountsClientBeginUpdateOptions) (*armruntime.Poller[AccountsClientUpdateResponse], error) {
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters UpdateDataLakeStoreAccountParameters, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AccountsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AccountsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the specified Data Lake Store account information.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, parameters UpdateDataLakeStoreAccountParameters, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
@@ -545,6 +556,6 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

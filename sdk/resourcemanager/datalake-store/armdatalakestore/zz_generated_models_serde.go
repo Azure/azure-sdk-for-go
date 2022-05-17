@@ -10,180 +10,112 @@ package armdatalakestore
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountBasic.
-func (a AccountBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
-func (a AccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
-func (a AccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "currentTier", a.CurrentTier)
-	populate(objectMap, "defaultGroup", a.DefaultGroup)
-	populate(objectMap, "encryptionConfig", a.EncryptionConfig)
-	populate(objectMap, "encryptionProvisioningState", a.EncryptionProvisioningState)
-	populate(objectMap, "encryptionState", a.EncryptionState)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populate(objectMap, "firewallAllowAzureIps", a.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", a.FirewallRules)
-	populate(objectMap, "firewallState", a.FirewallState)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "newTier", a.NewTier)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "trustedIdProviderState", a.TrustedIDProviderState)
-	populate(objectMap, "trustedIdProviders", a.TrustedIDProviders)
-	populate(objectMap, "virtualNetworkRules", a.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
 func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accountId":
-			err = unpopulate(val, &a.AccountID)
+			err = unpopulate(val, "AccountID", &a.AccountID)
 			delete(rawMsg, key)
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "currentTier":
-			err = unpopulate(val, &a.CurrentTier)
+			err = unpopulate(val, "CurrentTier", &a.CurrentTier)
 			delete(rawMsg, key)
 		case "defaultGroup":
-			err = unpopulate(val, &a.DefaultGroup)
+			err = unpopulate(val, "DefaultGroup", &a.DefaultGroup)
 			delete(rawMsg, key)
 		case "encryptionConfig":
-			err = unpopulate(val, &a.EncryptionConfig)
+			err = unpopulate(val, "EncryptionConfig", &a.EncryptionConfig)
 			delete(rawMsg, key)
 		case "encryptionProvisioningState":
-			err = unpopulate(val, &a.EncryptionProvisioningState)
+			err = unpopulate(val, "EncryptionProvisioningState", &a.EncryptionProvisioningState)
 			delete(rawMsg, key)
 		case "encryptionState":
-			err = unpopulate(val, &a.EncryptionState)
+			err = unpopulate(val, "EncryptionState", &a.EncryptionState)
 			delete(rawMsg, key)
 		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
+			err = unpopulate(val, "Endpoint", &a.Endpoint)
 			delete(rawMsg, key)
 		case "firewallAllowAzureIps":
-			err = unpopulate(val, &a.FirewallAllowAzureIPs)
+			err = unpopulate(val, "FirewallAllowAzureIPs", &a.FirewallAllowAzureIPs)
 			delete(rawMsg, key)
 		case "firewallRules":
-			err = unpopulate(val, &a.FirewallRules)
+			err = unpopulate(val, "FirewallRules", &a.FirewallRules)
 			delete(rawMsg, key)
 		case "firewallState":
-			err = unpopulate(val, &a.FirewallState)
+			err = unpopulate(val, "FirewallState", &a.FirewallState)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
 			delete(rawMsg, key)
 		case "newTier":
-			err = unpopulate(val, &a.NewTier)
+			err = unpopulate(val, "NewTier", &a.NewTier)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &a.State)
+			err = unpopulate(val, "State", &a.State)
 			delete(rawMsg, key)
 		case "trustedIdProviderState":
-			err = unpopulate(val, &a.TrustedIDProviderState)
+			err = unpopulate(val, "TrustedIDProviderState", &a.TrustedIDProviderState)
 			delete(rawMsg, key)
 		case "trustedIdProviders":
-			err = unpopulate(val, &a.TrustedIDProviders)
+			err = unpopulate(val, "TrustedIDProviders", &a.TrustedIDProviders)
 			delete(rawMsg, key)
 		case "virtualNetworkRules":
-			err = unpopulate(val, &a.VirtualNetworkRules)
+			err = unpopulate(val, "VirtualNetworkRules", &a.VirtualNetworkRules)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountPropertiesBasic.
-func (a AccountPropertiesBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "state", a.State)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccountPropertiesBasic.
 func (a *AccountPropertiesBasic) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accountId":
-			err = unpopulate(val, &a.AccountID)
+			err = unpopulate(val, "AccountID", &a.AccountID)
 			delete(rawMsg, key)
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
+			err = unpopulate(val, "Endpoint", &a.Endpoint)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &a.State)
+			err = unpopulate(val, "State", &a.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -212,41 +144,6 @@ func (c CreateDataLakeStoreAccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "trustedIdProviderState", c.TrustedIDProviderState)
 	populate(objectMap, "trustedIdProviders", c.TrustedIDProviders)
 	populate(objectMap, "virtualNetworkRules", c.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FirewallRuleListResult.
-func (f FirewallRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TrustedIDProviderListResult.
-func (t TrustedIDProviderListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -294,21 +191,6 @@ func (u UpdateVirtualNetworkRuleParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UsageListResult.
-func (u UsageListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", u.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkRuleListResult.
-func (v VirtualNetworkRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 func populate(m map[string]interface{}, k string, v interface{}) {
 	if v == nil {
 		return
@@ -319,9 +201,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

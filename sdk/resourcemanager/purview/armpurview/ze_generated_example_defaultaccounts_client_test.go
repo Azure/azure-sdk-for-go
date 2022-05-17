@@ -29,9 +29,9 @@ func ExampleDefaultAccountsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope-tenant-id>",
+		"11733A4E-BA84-46FF-91D1-AFF1A3215A90",
 		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsClientGetOptions{Scope: to.Ptr("<scope>")})
+		&armpurview.DefaultAccountsClientGetOptions{Scope: to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -52,12 +52,12 @@ func ExampleDefaultAccountsClient_Set() {
 	}
 	res, err := client.Set(ctx,
 		armpurview.DefaultAccountPayload{
-			AccountName:       to.Ptr("<account-name>"),
-			ResourceGroupName: to.Ptr("<resource-group-name>"),
-			Scope:             to.Ptr("<scope>"),
-			ScopeTenantID:     to.Ptr("<scope-tenant-id>"),
+			AccountName:       to.Ptr("myDefaultAccount"),
+			ResourceGroupName: to.Ptr("rg-1"),
+			Scope:             to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90"),
+			ScopeTenantID:     to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90"),
 			ScopeType:         to.Ptr(armpurview.ScopeTypeTenant),
-			SubscriptionID:    to.Ptr("<subscription-id>"),
+			SubscriptionID:    to.Ptr("12345678-1234-1234-12345678aaa"),
 		},
 		nil)
 	if err != nil {
@@ -79,9 +79,9 @@ func ExampleDefaultAccountsClient_Remove() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Remove(ctx,
-		"<scope-tenant-id>",
+		"11733A4E-BA84-46FF-91D1-AFF1A3215A90",
 		armpurview.ScopeTypeTenant,
-		&armpurview.DefaultAccountsClientRemoveOptions{Scope: to.Ptr("<scope>")})
+		&armpurview.DefaultAccountsClientRemoveOptions{Scope: to.Ptr("11733A4E-BA84-46FF-91D1-AFF1A3215A90")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

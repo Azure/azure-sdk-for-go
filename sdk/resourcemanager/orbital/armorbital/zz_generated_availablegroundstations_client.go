@@ -38,7 +38,7 @@ func NewAvailableGroundStationsClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAvailableGroundStationsClient(subscriptionID string, credential azcore.T
 
 // Get - Gets the specified available ground station
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // groundStationName - Ground Station name
 // options - AvailableGroundStationsClientGetOptions contains the optional parameters for the AvailableGroundStationsClient.Get
 // method.
@@ -90,9 +91,9 @@ func (client *AvailableGroundStationsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,11 +108,12 @@ func (client *AvailableGroundStationsClient) getHandleResponse(resp *http.Respon
 
 // NewListByCapabilityPager - Returns list of available ground stations
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // capability - Ground Station Capability
 // options - AvailableGroundStationsClientListByCapabilityOptions contains the optional parameters for the AvailableGroundStationsClient.ListByCapability
 // method.
-func (client *AvailableGroundStationsClient) NewListByCapabilityPager(capability CapabilityType, options *AvailableGroundStationsClientListByCapabilityOptions) *runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailableGroundStationsClientListByCapabilityResponse]{
+func (client *AvailableGroundStationsClient) NewListByCapabilityPager(capability CapabilityParameter, options *AvailableGroundStationsClientListByCapabilityOptions) *runtime.Pager[AvailableGroundStationsClientListByCapabilityResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AvailableGroundStationsClientListByCapabilityResponse]{
 		More: func(page AvailableGroundStationsClientListByCapabilityResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -139,7 +141,7 @@ func (client *AvailableGroundStationsClient) NewListByCapabilityPager(capability
 }
 
 // listByCapabilityCreateRequest creates the ListByCapability request.
-func (client *AvailableGroundStationsClient) listByCapabilityCreateRequest(ctx context.Context, capability CapabilityType, options *AvailableGroundStationsClientListByCapabilityOptions) (*policy.Request, error) {
+func (client *AvailableGroundStationsClient) listByCapabilityCreateRequest(ctx context.Context, capability CapabilityParameter, options *AvailableGroundStationsClientListByCapabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/availableGroundStations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,10 +152,10 @@ func (client *AvailableGroundStationsClient) listByCapabilityCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-04-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	reqQP.Set("capability", string(capability))
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

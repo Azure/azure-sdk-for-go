@@ -11,12 +11,13 @@ package generated
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
@@ -323,7 +324,7 @@ func (client *KeyVaultClient) encryptHandleResponse(resp *http.Response) (KeyVau
 // keyName - The name of the key.
 // options - KeyVaultClientGetDeletedKeyOptions contains the optional parameters for the KeyVaultClient.GetDeletedKey method.
 func (client *KeyVaultClient) GetDeletedKey(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetDeletedKeyOptions) (KeyVaultClientGetDeletedKeyResponse, error) {
-	req, err := client.getDeletedKeyCreateRequest(ctx, vaultBaseURL, keyName, options)
+	req, err := client.GetDeletedKeyCreateRequest(ctx, vaultBaseURL, keyName, options)
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
@@ -338,7 +339,7 @@ func (client *KeyVaultClient) GetDeletedKey(ctx context.Context, vaultBaseURL st
 }
 
 // getDeletedKeyCreateRequest creates the GetDeletedKey request.
-func (client *KeyVaultClient) getDeletedKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetDeletedKeyOptions) (*policy.Request, error) {
+func (client *KeyVaultClient) GetDeletedKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetDeletedKeyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/deletedkeys/{key-name}"
@@ -439,7 +440,7 @@ func (client *KeyVaultClient) GetDeletedKeysHandleResponse(resp *http.Response) 
 // specified, the latest version of the key is returned.
 // options - KeyVaultClientGetKeyOptions contains the optional parameters for the KeyVaultClient.GetKey method.
 func (client *KeyVaultClient) GetKey(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, options *KeyVaultClientGetKeyOptions) (KeyVaultClientGetKeyResponse, error) {
-	req, err := client.getKeyCreateRequest(ctx, vaultBaseURL, keyName, keyVersion, options)
+	req, err := client.GetKeyCreateRequest(ctx, vaultBaseURL, keyName, keyVersion, options)
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
@@ -454,7 +455,7 @@ func (client *KeyVaultClient) GetKey(ctx context.Context, vaultBaseURL string, k
 }
 
 // getKeyCreateRequest creates the GetKey request.
-func (client *KeyVaultClient) getKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, options *KeyVaultClientGetKeyOptions) (*policy.Request, error) {
+func (client *KeyVaultClient) GetKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, options *KeyVaultClientGetKeyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys/{key-name}/{key-version}"

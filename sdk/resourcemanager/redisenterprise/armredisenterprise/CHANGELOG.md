@@ -1,5 +1,27 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginPut` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientPutResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientPutResponse], error)`
+- Function `*DatabasesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientCreateResponse], error)` to `(*runtime.Poller[DatabasesClientCreateResponse], error)`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientDeleteResponse], error)` to `(*runtime.Poller[DatabasesClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginImport` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientImportResponse], error)` to `(*runtime.Poller[DatabasesClientImportResponse], error)`
+- Function `*DatabasesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientUpdateResponse], error)` to `(*runtime.Poller[DatabasesClientUpdateResponse], error)`
+- Function `*DatabasesClient.BeginRegenerateKey` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientRegenerateKeyResponse], error)` to `(*runtime.Poller[DatabasesClientRegenerateKeyResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*DatabasesClient.BeginForceUnlink` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientForceUnlinkResponse], error)` to `(*runtime.Poller[DatabasesClientForceUnlinkResponse], error)`
+- Function `*Client.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateResponse], error)` to `(*runtime.Poller[ClientCreateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginExport` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientExportResponse], error)` to `(*runtime.Poller[DatabasesClientExportResponse], error)`
+- Function `ClusterList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `DatabaseList.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

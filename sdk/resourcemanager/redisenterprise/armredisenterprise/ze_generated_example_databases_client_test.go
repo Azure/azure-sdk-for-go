@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
@@ -26,18 +24,17 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("rg1",
+		"cache1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleDatabasesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.Database{
 			Properties: &armredisenterprise.DatabaseProperties{
 				ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
@@ -68,15 +65,15 @@ func ExampleDatabasesClient_BeginCreate() {
 				EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
 				Modules: []*armredisenterprise.Module{
 					{
-						Name: to.Ptr("<name>"),
-						Args: to.Ptr("<args>"),
+						Name: to.Ptr("RedisBloom"),
+						Args: to.Ptr("ERROR_RATE 0.00 INITIAL_SIZE 400"),
 					},
 					{
-						Name: to.Ptr("<name>"),
-						Args: to.Ptr("<args>"),
+						Name: to.Ptr("RedisTimeSeries"),
+						Args: to.Ptr("RETENTION_POLICY 20"),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("RediSearch"),
 					}},
 				Persistence: &armredisenterprise.Persistence{
 					AofEnabled:   to.Ptr(true),
@@ -85,11 +82,11 @@ func ExampleDatabasesClient_BeginCreate() {
 				Port: to.Ptr[int32](10000),
 			},
 		},
-		&armredisenterprise.DatabasesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -104,14 +101,14 @@ func ExampleDatabasesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.DatabaseUpdate{
 			Properties: &armredisenterprise.DatabaseProperties{
 				ClientProtocol: to.Ptr(armredisenterprise.ProtocolEncrypted),
@@ -122,11 +119,11 @@ func ExampleDatabasesClient_BeginUpdate() {
 				},
 			},
 		},
-		&armredisenterprise.DatabasesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,14 +138,14 @@ func ExampleDatabasesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -164,19 +161,19 @@ func ExampleDatabasesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		&armredisenterprise.DatabasesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"cache1",
+		"db1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -189,14 +186,14 @@ func ExampleDatabasesClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -212,22 +209,22 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRegenerateKey(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.RegenerateKeyParameters{
 			KeyType: to.Ptr(armredisenterprise.AccessKeyTypePrimary),
 		},
-		&armredisenterprise.DatabasesClientBeginRegenerateKeyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -242,24 +239,24 @@ func ExampleDatabasesClient_BeginImport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginImport(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.ImportClusterParameters{
 			SasUris: []*string{
 				to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile1?sasKeyParameters"),
 				to.Ptr("https://contosostorage.blob.core.window.net/urltoBlobFile2?sasKeyParameters")},
 		},
-		&armredisenterprise.DatabasesClientBeginImportOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -272,22 +269,22 @@ func ExampleDatabasesClient_BeginExport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExport(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.ExportClusterParameters{
-			SasURI: to.Ptr("<sas-uri>"),
+			SasURI: to.Ptr("https://contosostorage.blob.core.window.net/urlToBlobContainer?sasKeyParameters"),
 		},
-		&armredisenterprise.DatabasesClientBeginExportOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -300,23 +297,23 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredisenterprise.NewDatabasesClient("<subscription-id>", cred, nil)
+	client, err := armredisenterprise.NewDatabasesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginForceUnlink(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"rg1",
+		"cache1",
+		"default",
 		armredisenterprise.ForceUnlinkParameters{
 			IDs: []*string{
 				to.Ptr("/subscriptions/subid2/resourceGroups/rg2/providers/Microsoft.Cache/redisEnterprise/cache2/databases/default")},
 		},
-		&armredisenterprise.DatabasesClientBeginForceUnlinkOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

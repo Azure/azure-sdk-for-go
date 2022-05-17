@@ -39,7 +39,7 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Creates an association between a VM and guest configuration
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // guestConfigurationAssignmentName - Name of the guest configuration assignment.
 // resourceGroupName - The resource group name.
 // vmName - The name of the virtual machine.
@@ -102,9 +103,9 @@ func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // guestConfigurationAssignmentName - Name of the guest configuration assignment
 // vmName - The name of the virtual machine.
@@ -162,14 +164,15 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about a guest configuration assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // guestConfigurationAssignmentName - The guest configuration assignment name.
 // vmName - The name of the virtual machine.
@@ -213,9 +216,9 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,11 +233,12 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 
 // NewListPager - List all guest configuration assignments for a virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // vmName - The name of the virtual machine.
 // options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.List method.
 func (client *AssignmentsClient) NewListPager(resourceGroupName string, vmName string, options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
 		More: func(page AssignmentsClientListResponse) bool {
 			return false
 		},
@@ -275,9 +279,9 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,10 +296,11 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 
 // NewRGListPager - List all guest configuration assignments for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // options - AssignmentsClientRGListOptions contains the optional parameters for the AssignmentsClient.RGList method.
 func (client *AssignmentsClient) NewRGListPager(resourceGroupName string, options *AssignmentsClientRGListOptions) *runtime.Pager[AssignmentsClientRGListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientRGListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientRGListResponse]{
 		More: func(page AssignmentsClientRGListResponse) bool {
 			return false
 		},
@@ -332,9 +337,9 @@ func (client *AssignmentsClient) rgListCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -349,10 +354,11 @@ func (client *AssignmentsClient) rgListHandleResponse(resp *http.Response) (Assi
 
 // NewSubscriptionListPager - List all guest configuration assignments for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // options - AssignmentsClientSubscriptionListOptions contains the optional parameters for the AssignmentsClient.SubscriptionList
 // method.
 func (client *AssignmentsClient) NewSubscriptionListPager(options *AssignmentsClientSubscriptionListOptions) *runtime.Pager[AssignmentsClientSubscriptionListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssignmentsClientSubscriptionListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientSubscriptionListResponse]{
 		More: func(page AssignmentsClientSubscriptionListResponse) bool {
 			return false
 		},
@@ -385,9 +391,9 @@ func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

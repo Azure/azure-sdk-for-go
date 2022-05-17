@@ -1,5 +1,38 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `OperationList.MarshalJSON` has been removed
+- Function `AssignmentReportDetails.MarshalJSON` has been removed
+- Function `AssignmentReportList.MarshalJSON` has been removed
+- Function `AssignmentReportProperties.MarshalJSON` has been removed
+- Function `AssignmentList.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeUser`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeManagedIdentity`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New struct `AssignmentReportsVMSSClientGetOptions`
+- New struct `AssignmentReportsVMSSClientGetResponse`
+- New struct `AssignmentReportsVMSSClientListOptions`
+- New struct `AssignmentReportsVMSSClientListResponse`
+- New struct `AssignmentsVMSSClientDeleteOptions`
+- New struct `AssignmentsVMSSClientDeleteResponse`
+- New struct `AssignmentsVMSSClientGetOptions`
+- New struct `AssignmentsVMSSClientGetResponse`
+- New struct `AssignmentsVMSSClientListOptions`
+- New struct `AssignmentsVMSSClientListResponse`
+- New struct `SystemData`
+- New field `SystemData` in struct `Assignment`
+- New field `AssignmentSource` in struct `Navigation`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

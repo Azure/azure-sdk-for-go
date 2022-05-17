@@ -39,7 +39,7 @@ func NewHCRPAssignmentReportsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewHCRPAssignmentReportsClient(subscriptionID string, credential azcore.Tok
 
 // Get - Get a report for the guest configuration assignment, by reportId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // guestConfigurationAssignmentName - The guest configuration assignment name.
 // reportID - The GUID for the guest configuration assignment report.
@@ -106,9 +107,9 @@ func (client *HCRPAssignmentReportsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -123,6 +124,7 @@ func (client *HCRPAssignmentReportsClient) getHandleResponse(resp *http.Response
 
 // List - List all reports for the guest configuration assignment, latest report first.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-25
 // resourceGroupName - The resource group name.
 // guestConfigurationAssignmentName - The guest configuration assignment name.
 // machineName - The name of the ARC machine.
@@ -167,9 +169,9 @@ func (client *HCRPAssignmentReportsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-25")
+	reqQP.Set("api-version", "2022-01-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

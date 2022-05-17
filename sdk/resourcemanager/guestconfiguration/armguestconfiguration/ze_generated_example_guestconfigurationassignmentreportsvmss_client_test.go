@@ -16,45 +16,49 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listAllGuestConfigurationHCRPAssignmentReports.json
-func ExampleHCRPAssignmentReportsClient_List() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listAllVMSSGuestConfigurationAssignmentReports.json
+func ExampleAssignmentReportsVMSSClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewHCRPAssignmentReportsClient("mySubscriptionid", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentReportsVMSSClient("mySubscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx,
-		"myResourceGroupName",
+	pager := client.NewListPager("myResourceGroupName",
+		"myVMSSName",
 		"AuditSecureProtocol",
-		"myMachineName",
 		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	// TODO: use response item
-	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getGuestConfigurationHCRPAssignmentReportById.json
-func ExampleHCRPAssignmentReportsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getVMSSGuestConfigurationAssignmentReportById.json
+func ExampleAssignmentReportsVMSSClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewHCRPAssignmentReportsClient("mySubscriptionid", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentReportsVMSSClient("mySubscriptionid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"myResourceGroupName",
+		"myvmss",
 		"AuditSecureProtocol",
 		"7367cbb8-ae99-47d0-a33b-a283564d2cb1",
-		"myMachineName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

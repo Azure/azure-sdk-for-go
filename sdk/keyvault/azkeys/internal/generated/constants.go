@@ -10,7 +10,7 @@ package generated
 
 const (
 	ModuleName    = "azkeys"
-	ModuleVersion = "v0.5.2"
+	ModuleVersion = "v0.6.0"
 )
 
 // ActionType - The type of the action.

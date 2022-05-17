@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn"
@@ -26,19 +24,18 @@ func ExampleOriginsClient_NewListByEndpointPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByEndpointPager("<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
+	pager := client.NewListByEndpointPager("RG",
+		"profile1",
+		"endpoint1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleOriginsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"www-someDomain-net",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,34 +75,34 @@ func ExampleOriginsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"www-someDomain-net",
 		armcdn.Origin{
 			Properties: &armcdn.OriginProperties{
 				Enabled:                    to.Ptr(true),
-				HostName:                   to.Ptr("<host-name>"),
+				HostName:                   to.Ptr("www.someDomain.net"),
 				HTTPPort:                   to.Ptr[int32](80),
 				HTTPSPort:                  to.Ptr[int32](443),
-				OriginHostHeader:           to.Ptr("<origin-host-header>"),
+				OriginHostHeader:           to.Ptr("www.someDomain.net"),
 				Priority:                   to.Ptr[int32](1),
-				PrivateLinkApprovalMessage: to.Ptr("<private-link-approval-message>"),
-				PrivateLinkLocation:        to.Ptr("<private-link-location>"),
-				PrivateLinkResourceID:      to.Ptr("<private-link-resource-id>"),
+				PrivateLinkApprovalMessage: to.Ptr("Please approve the connection request for this Private Link"),
+				PrivateLinkLocation:        to.Ptr("eastus"),
+				PrivateLinkResourceID:      to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/privateLinkServices/pls1"),
 				Weight:                     to.Ptr[int32](50),
 			},
 		},
-		&armcdn.OriginsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -120,31 +117,31 @@ func ExampleOriginsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-name>",
+		"RG",
+		"profile1",
+		"endpoint1",
+		"www-someDomain-net",
 		armcdn.OriginUpdateParameters{
 			Properties: &armcdn.OriginUpdatePropertiesParameters{
 				Enabled:          to.Ptr(true),
 				HTTPPort:         to.Ptr[int32](42),
 				HTTPSPort:        to.Ptr[int32](43),
-				OriginHostHeader: to.Ptr("<origin-host-header>"),
+				OriginHostHeader: to.Ptr("www.someDomain2.net"),
 				Priority:         to.Ptr[int32](1),
-				PrivateLinkAlias: to.Ptr("<private-link-alias>"),
+				PrivateLinkAlias: to.Ptr("APPSERVER.d84e61f0-0870-4d24-9746-7438fa0019d1.westus2.azure.privatelinkservice"),
 				Weight:           to.Ptr[int32](50),
 			},
 		},
-		&armcdn.OriginsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -159,20 +156,20 @@ func ExampleOriginsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewOriginsClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewOriginsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<endpoint-name>",
-		"<origin-name>",
-		&armcdn.OriginsClientBeginDeleteOptions{ResumeToken: ""})
+		"RG",
+		"profile1",
+		"endpoint1",
+		"origin1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

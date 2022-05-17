@@ -38,7 +38,7 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // endpoint - Endpoint properties
 // options - EndpointsClientBeginCreateOptions contains the optional parameters for the EndpointsClient.BeginCreate method.
-func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*armruntime.Poller[EndpointsClientCreateResponse], error) {
+func (client *EndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*runtime.Poller[EndpointsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group and
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint, options *EndpointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *EndpointsClient) createCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpoint)
 }
 
 // BeginDelete - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - EndpointsClientBeginDeleteOptions contains the optional parameters for the EndpointsClient.BeginDelete method.
-func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*armruntime.Poller[EndpointsClientDeleteResponse], error) {
+func (client *EndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*runtime.Poller[EndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group
 // and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
@@ -185,13 +189,14 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing CDN endpoint with the specified endpoint name under the specified subscription, resource group and
 // profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
@@ -237,7 +242,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,11 +257,12 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response) (Endpoints
 
 // NewListByProfilePager - Lists existing CDN endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // options - EndpointsClientListByProfileOptions contains the optional parameters for the EndpointsClient.ListByProfile method.
 func (client *EndpointsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *EndpointsClientListByProfileOptions) *runtime.Pager[EndpointsClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListByProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EndpointsClientListByProfileResponse]{
 		More: func(page EndpointsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -305,7 +311,7 @@ func (client *EndpointsClient) listByProfileCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -320,13 +326,14 @@ func (client *EndpointsClient) listByProfileHandleResponse(resp *http.Response) 
 
 // NewListResourceUsagePager - Checks the quota and usage of geo filters and custom domains under the given endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - EndpointsClientListResourceUsageOptions contains the optional parameters for the EndpointsClient.ListResourceUsage
 // method.
 func (client *EndpointsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, endpointName string, options *EndpointsClientListResourceUsageOptions) *runtime.Pager[EndpointsClientListResourceUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EndpointsClientListResourceUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EndpointsClientListResourceUsageResponse]{
 		More: func(page EndpointsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -379,7 +386,7 @@ func (client *EndpointsClient) listResourceUsageCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -394,6 +401,7 @@ func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Respon
 
 // BeginLoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
@@ -401,20 +409,21 @@ func (client *EndpointsClient) listResourceUsageHandleResponse(resp *http.Respon
 // a single file
 // options - EndpointsClientBeginLoadContentOptions contains the optional parameters for the EndpointsClient.BeginLoadContent
 // method.
-func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*armruntime.Poller[EndpointsClientLoadContentResponse], error) {
+func (client *EndpointsClient) BeginLoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*runtime.Poller[EndpointsClientLoadContentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.loadContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientLoadContentResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientLoadContentResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientLoadContentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientLoadContentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // LoadContent - Pre-loads a content to CDN. Available for Verizon Profiles.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) loadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters, options *EndpointsClientBeginLoadContentOptions) (*http.Response, error) {
 	req, err := client.loadContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 	if err != nil {
@@ -456,12 +465,13 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, contentFilePaths)
 }
 
 // BeginPurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
@@ -470,20 +480,21 @@ func (client *EndpointsClient) loadContentCreateRequest(ctx context.Context, res
 // files in the directory.
 // options - EndpointsClientBeginPurgeContentOptions contains the optional parameters for the EndpointsClient.BeginPurgeContent
 // method.
-func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*armruntime.Poller[EndpointsClientPurgeContentResponse], error) {
+func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*runtime.Poller[EndpointsClientPurgeContentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientPurgeContentResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientPurgeContentResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // PurgeContent - Removes a content from CDN.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contentFilePaths, options)
 	if err != nil {
@@ -525,30 +536,32 @@ func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, contentFilePaths)
 }
 
 // BeginStart - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - EndpointsClientBeginStartOptions contains the optional parameters for the EndpointsClient.BeginStart method.
-func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*armruntime.Poller[EndpointsClientStartResponse], error) {
+func (client *EndpointsClient) BeginStart(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*runtime.Poller[EndpointsClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, profileName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts an existing CDN endpoint that is on a stopped state.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) start(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
@@ -590,30 +603,32 @@ func (client *EndpointsClient) startCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - EndpointsClientBeginStopOptions contains the optional parameters for the EndpointsClient.BeginStop method.
-func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*armruntime.Poller[EndpointsClientStopResponse], error) {
+func (client *EndpointsClient) BeginStop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*runtime.Poller[EndpointsClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, profileName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stops an existing running CDN endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *EndpointsClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
@@ -655,7 +670,7 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -664,20 +679,21 @@ func (client *EndpointsClient) stopCreateRequest(ctx context.Context, resourceGr
 // use the Update Origin operation. To update origin groups, use the Update Origin group operation. To update custom domains,
 // use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // endpointUpdateProperties - Endpoint update properties
 // options - EndpointsClientBeginUpdateOptions contains the optional parameters for the EndpointsClient.BeginUpdate method.
-func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*armruntime.Poller[EndpointsClientUpdateResponse], error) {
+func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*runtime.Poller[EndpointsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -686,6 +702,7 @@ func (client *EndpointsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // use the Update Origin operation. To update origin groups, use the Update Origin group operation. To update custom domains,
 // use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *EndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters, options *EndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 	if err != nil {
@@ -727,12 +744,13 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpointUpdateProperties)
 }
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
@@ -780,7 +798,7 @@ func (client *EndpointsClient) validateCustomDomainCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customDomainProperties)
 }
 

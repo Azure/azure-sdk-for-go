@@ -38,7 +38,7 @@ func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Creates a new security policy within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -63,22 +64,23 @@ func NewSecurityPoliciesClient(subscriptionID string, credential azcore.TokenCre
 // securityPolicy - The security policy properties.
 // options - SecurityPoliciesClientBeginCreateOptions contains the optional parameters for the SecurityPoliciesClient.BeginCreate
 // method.
-func (client *SecurityPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesClientBeginCreateOptions) (*armruntime.Poller[SecurityPoliciesClientCreateResponse], error) {
+func (client *SecurityPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesClientBeginCreateOptions) (*runtime.Poller[SecurityPoliciesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicy, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SecurityPoliciesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SecurityPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new security policy within the specified profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SecurityPoliciesClient) create(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicy, options)
 	if err != nil {
@@ -120,34 +122,36 @@ func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityPolicy)
 }
 
 // BeginDelete - Deletes an existing security policy within profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // securityPolicyName - Name of the security policy under the profile.
 // options - SecurityPoliciesClientBeginDeleteOptions contains the optional parameters for the SecurityPoliciesClient.BeginDelete
 // method.
-func (client *SecurityPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesClientBeginDeleteOptions) (*armruntime.Poller[SecurityPoliciesClientDeleteResponse], error) {
+func (client *SecurityPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesClientBeginDeleteOptions) (*runtime.Poller[SecurityPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, securityPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SecurityPoliciesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SecurityPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing security policy within profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SecurityPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, options)
 	if err != nil {
@@ -189,12 +193,13 @@ func (client *SecurityPoliciesClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing security policy within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -241,7 +246,7 @@ func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -256,13 +261,14 @@ func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (Se
 
 // NewListByProfilePager - Lists security policies associated with the profile
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - SecurityPoliciesClientListByProfileOptions contains the optional parameters for the SecurityPoliciesClient.ListByProfile
 // method.
 func (client *SecurityPoliciesClient) NewListByProfilePager(resourceGroupName string, profileName string, options *SecurityPoliciesClientListByProfileOptions) *runtime.Pager[SecurityPoliciesClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecurityPoliciesClientListByProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecurityPoliciesClientListByProfileResponse]{
 		More: func(page SecurityPoliciesClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -311,7 +317,7 @@ func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -326,6 +332,7 @@ func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Res
 
 // BeginPatch - Updates an existing security policy within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -333,22 +340,23 @@ func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Res
 // securityPolicyUpdateProperties - Security policy update properties
 // options - SecurityPoliciesClientBeginPatchOptions contains the optional parameters for the SecurityPoliciesClient.BeginPatch
 // method.
-func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyUpdateProperties SecurityPolicyUpdateParameters, options *SecurityPoliciesClientBeginPatchOptions) (*armruntime.Poller[SecurityPoliciesClientPatchResponse], error) {
+func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyUpdateProperties SecurityPolicyUpdateParameters, options *SecurityPoliciesClientBeginPatchOptions) (*runtime.Poller[SecurityPoliciesClientPatchResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.patch(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SecurityPoliciesClientPatchResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SecurityPoliciesClientPatchResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SecurityPoliciesClientPatchResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SecurityPoliciesClientPatchResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Patch - Updates an existing security policy within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SecurityPoliciesClient) patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyUpdateProperties SecurityPolicyUpdateParameters, options *SecurityPoliciesClientBeginPatchOptions) (*http.Response, error) {
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyUpdateProperties, options)
 	if err != nil {
@@ -390,6 +398,6 @@ func (client *SecurityPoliciesClient) patchCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securityPolicyUpdateProperties)
 }

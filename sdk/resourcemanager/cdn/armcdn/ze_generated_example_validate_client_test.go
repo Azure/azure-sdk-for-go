@@ -24,14 +24,14 @@ func ExampleValidateClient_Secret() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcdn.NewValidateClient("<subscription-id>", cred, nil)
+	client, err := armcdn.NewValidateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Secret(ctx,
 		armcdn.ValidateSecretInput{
 			SecretSource: &armcdn.ResourceReference{
-				ID: to.Ptr("<id>"),
+				ID: to.Ptr("/subscriptions/subid/resourcegroups/RG/providers/Microsoft.KeyVault/vault/kvName/certificate/certName"),
 			},
 			SecretType: to.Ptr(armcdn.SecretTypeCustomerCertificate),
 		},

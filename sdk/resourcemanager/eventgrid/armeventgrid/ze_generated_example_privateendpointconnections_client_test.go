@@ -12,29 +12,27 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		armeventgrid.ParentTypeTopics,
-		"<parent-name>",
-		"<private-endpoint-connection-name>",
+		"examplerg",
+		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		"exampletopic1",
+		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,36 +41,36 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Update.json
 func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		armeventgrid.ParentTypeTopics,
-		"<parent-name>",
-		"<private-endpoint-connection-name>",
+		"examplerg",
+		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		"exampletopic1",
+		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
 		armeventgrid.PrivateEndpointConnection{
 			Properties: &armeventgrid.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armeventgrid.ConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
+					Description:     to.Ptr("approving connection"),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armeventgrid.PersistedConnectionStatusApproved),
 				},
 			},
 		},
-		&armeventgrid.PrivateEndpointConnectionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -80,46 +78,46 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Delete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		armeventgrid.ParentTypeTopics,
-		"<parent-name>",
-		"<private-endpoint-connection-name>",
-		&armeventgrid.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"examplerg",
+		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		"exampletopic1",
+		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_ListByResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_ListByResource.json
 func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewPrivateEndpointConnectionsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourcePager("<resource-group-name>",
-		armeventgrid.ParentTypeTopics,
-		"<parent-name>",
+	pager := client.NewListByResourcePager("examplerg",
+		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		"exampletopic1",
 		&armeventgrid.PrivateEndpointConnectionsClientListByResourceOptions{Filter: nil,
 			Top: nil,
 		})
@@ -127,7 +125,6 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

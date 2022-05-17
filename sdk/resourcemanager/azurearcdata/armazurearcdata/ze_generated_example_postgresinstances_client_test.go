@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
@@ -26,7 +24,7 @@ func ExamplePostgresInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExamplePostgresInstancesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExamplePostgresInstancesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExamplePostgresInstancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<postgres-instance-name>",
+		"testrg",
+		"testpostgresInstances",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,26 +95,26 @@ func ExamplePostgresInstancesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<postgres-instance-name>",
+		"testrg",
+		"testpostgresInstance",
 		armazurearcdata.PostgresInstance{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			ExtendedLocation: &armazurearcdata.ExtendedLocation{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation"),
 				Type: to.Ptr(armazurearcdata.ExtendedLocationTypesCustomLocation),
 			},
 			Properties: &armazurearcdata.PostgresInstanceProperties{
-				Admin: to.Ptr("<admin>"),
+				Admin: to.Ptr("admin"),
 				BasicLoginInformation: &armazurearcdata.BasicLoginInformation{
-					Password: to.Ptr("<password>"),
-					Username: to.Ptr("<username>"),
+					Password: to.Ptr("********"),
+					Username: to.Ptr("username"),
 				},
-				DataControllerID: to.Ptr("<data-controller-id>"),
+				DataControllerID: to.Ptr("dataControllerId"),
 				K8SRaw: map[string]interface{}{
 					"apiVersion": "apiVersion",
 					"kind":       "postgresql-12",
@@ -193,16 +189,16 @@ func ExamplePostgresInstancesClient_BeginCreate() {
 				},
 			},
 			SKU: &armazurearcdata.PostgresInstanceSKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("default"),
 				Dev:  to.Ptr(true),
-				Tier: to.Ptr("<tier>"),
+				Tier: to.Ptr("Hyperscale"),
 			},
 		},
-		&armazurearcdata.PostgresInstancesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -217,18 +213,18 @@ func ExamplePostgresInstancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<postgres-instance-name>",
-		&armazurearcdata.PostgresInstancesClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg",
+		"testpostgresInstance",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -241,13 +237,13 @@ func ExamplePostgresInstancesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurearcdata.NewPostgresInstancesClient("<subscription-id>", cred, nil)
+	client, err := armazurearcdata.NewPostgresInstancesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<postgres-instance-name>",
+		"testrg",
+		"testpostgresInstance",
 		armazurearcdata.PostgresInstanceUpdate{
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),

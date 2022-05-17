@@ -38,7 +38,7 @@ func NewActiveDirectoryConnectorsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewActiveDirectoryConnectorsClient(subscriptionID string, credential azcore
 
 // BeginCreate - Creates or replaces an Active Directory connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // dataControllerName - The name of the data controller
 // activeDirectoryConnectorName - The name of the Active Directory connector instance
 // activeDirectoryConnectorResource - desc
 // options - ActiveDirectoryConnectorsClientBeginCreateOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.BeginCreate
 // method.
-func (client *ActiveDirectoryConnectorsClient) BeginCreate(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, options *ActiveDirectoryConnectorsClientBeginCreateOptions) (*armruntime.Poller[ActiveDirectoryConnectorsClientCreateResponse], error) {
+func (client *ActiveDirectoryConnectorsClient) BeginCreate(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, options *ActiveDirectoryConnectorsClientBeginCreateOptions) (*runtime.Poller[ActiveDirectoryConnectorsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, dataControllerName, activeDirectoryConnectorName, activeDirectoryConnectorResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ActiveDirectoryConnectorsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ActiveDirectoryConnectorsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ActiveDirectoryConnectorsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ActiveDirectoryConnectorsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or replaces an Active Directory connector resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *ActiveDirectoryConnectorsClient) create(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, activeDirectoryConnectorResource ActiveDirectoryConnectorResource, options *ActiveDirectoryConnectorsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, dataControllerName, activeDirectoryConnectorName, activeDirectoryConnectorResource, options)
 	if err != nil {
@@ -119,31 +121,33 @@ func (client *ActiveDirectoryConnectorsClient) createCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, activeDirectoryConnectorResource)
 }
 
 // BeginDelete - Deletes an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // dataControllerName - The name of the data controller
 // activeDirectoryConnectorName - The name of the Active Directory connector instance
 // options - ActiveDirectoryConnectorsClientBeginDeleteOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.BeginDelete
 // method.
-func (client *ActiveDirectoryConnectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*armruntime.Poller[ActiveDirectoryConnectorsClientDeleteResponse], error) {
+func (client *ActiveDirectoryConnectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*runtime.Poller[ActiveDirectoryConnectorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dataControllerName, activeDirectoryConnectorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ActiveDirectoryConnectorsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ActiveDirectoryConnectorsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ActiveDirectoryConnectorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ActiveDirectoryConnectorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *ActiveDirectoryConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, dataControllerName string, activeDirectoryConnectorName string, options *ActiveDirectoryConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dataControllerName, activeDirectoryConnectorName, options)
 	if err != nil {
@@ -185,12 +189,13 @@ func (client *ActiveDirectoryConnectorsClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves an Active Directory connector resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // dataControllerName - The name of the data controller
 // activeDirectoryConnectorName - The name of the Active Directory connector instance
@@ -237,7 +242,7 @@ func (client *ActiveDirectoryConnectorsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,12 +257,13 @@ func (client *ActiveDirectoryConnectorsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - List the active directory connectors associated with the given data controller.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // dataControllerName - The name of the data controller
 // options - ActiveDirectoryConnectorsClientListOptions contains the optional parameters for the ActiveDirectoryConnectorsClient.List
 // method.
 func (client *ActiveDirectoryConnectorsClient) NewListPager(resourceGroupName string, dataControllerName string, options *ActiveDirectoryConnectorsClientListOptions) *runtime.Pager[ActiveDirectoryConnectorsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ActiveDirectoryConnectorsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ActiveDirectoryConnectorsClientListResponse]{
 		More: func(page ActiveDirectoryConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +312,7 @@ func (client *ActiveDirectoryConnectorsClient) listCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

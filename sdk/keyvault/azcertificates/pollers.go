@@ -78,7 +78,7 @@ func (b *beginDeleteCertificateOperation) Poll(ctx context.Context) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound, http.StatusForbidden) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	b.resp = resp
@@ -115,7 +115,7 @@ func (b *beginRecoverDeletedCertificate) Poll(ctx context.Context) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound, http.StatusForbidden) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotFound) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	b.resp = resp

@@ -1,5 +1,17 @@
 # Release History
 
+## 0.6.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*SolutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SolutionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SolutionsClientCreateOrUpdateResponse], error)`
+- Function `*SolutionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SolutionsClientDeleteResponse], error)` to `(*runtime.Poller[SolutionsClientDeleteResponse], error)`
+- Function `*SolutionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SolutionsClientUpdateResponse], error)` to `(*runtime.Poller[SolutionsClientUpdateResponse], error)`
+- Function `SolutionPropertiesList.MarshalJSON` has been removed
+- Function `ManagementAssociationPropertiesList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ManagementConfigurationPropertiesList.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

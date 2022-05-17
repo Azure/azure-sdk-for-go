@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AliasClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AliasClientCreateResponse], error)` to `(*runtime.Poller[AliasClientCreateResponse], error)`
+- Function `*Client.BeginAcceptOwnership` return value(s) have been changed from `(*armruntime.Poller[ClientAcceptOwnershipResponse], error)` to `(*runtime.Poller[ClientAcceptOwnershipResponse], error)`
+- Function `AliasResponseProperties.MarshalJSON` has been removed
+- Function `TenantListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `BillingAccountPoliciesResponseProperties.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `TenantPolicy.MarshalJSON` has been removed
+- Function `LocationListResult.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `AliasListResult.MarshalJSON` has been removed
+- Function `GetTenantPolicyListResponse.MarshalJSON` has been removed
+- Function `AcceptOwnershipStatusResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

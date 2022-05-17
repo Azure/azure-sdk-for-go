@@ -28,14 +28,13 @@ func ExampleTenantActivityLogsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armmonitor.TenantActivityLogsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armmonitor.TenantActivityLogsClientListOptions{Filter: to.Ptr("eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'"),
 		Select: nil,
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

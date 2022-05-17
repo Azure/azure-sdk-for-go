@@ -24,17 +24,16 @@ func ExampleDataCollectionRulesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,7 +49,7 @@ func ExampleDataCollectionRulesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -59,7 +58,6 @@ func ExampleDataCollectionRulesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleDataCollectionRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,15 +95,15 @@ func ExampleDataCollectionRulesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		&armmonitor.DataCollectionRulesClientCreateOptions{Body: &armmonitor.DataCollectionRuleResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmonitor.DataCollectionRuleResourceProperties{
 				DataFlows: []*armmonitor.DataFlow{
 					{
@@ -119,7 +117,7 @@ func ExampleDataCollectionRulesClient_Create() {
 				DataSources: &armmonitor.DataCollectionRuleDataSources{
 					PerformanceCounters: []*armmonitor.PerfCounterDataSource{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("cloudTeamCoreCounters"),
 							CounterSpecifiers: []*string{
 								to.Ptr("\\Processor(_Total)\\% Processor Time"),
 								to.Ptr("\\Memory\\Committed Bytes"),
@@ -130,7 +128,7 @@ func ExampleDataCollectionRulesClient_Create() {
 								to.Ptr(armmonitor.KnownPerfCounterDataSourceStreamsMicrosoftPerf)},
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("appTeamExtraCounters"),
 							CounterSpecifiers: []*string{
 								to.Ptr("\\Process(_Total)\\Thread Count")},
 							SamplingFrequencyInSeconds: to.Ptr[int32](30),
@@ -139,7 +137,7 @@ func ExampleDataCollectionRulesClient_Create() {
 						}},
 					Syslog: []*armmonitor.SyslogDataSource{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("cronSyslog"),
 							FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
 								to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesCron)},
 							LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
@@ -150,7 +148,7 @@ func ExampleDataCollectionRulesClient_Create() {
 								to.Ptr(armmonitor.KnownSyslogDataSourceStreamsMicrosoftSyslog)},
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("syslogBase"),
 							FacilityNames: []*armmonitor.KnownSyslogDataSourceFacilityNames{
 								to.Ptr(armmonitor.KnownSyslogDataSourceFacilityNamesSyslog)},
 							LogLevels: []*armmonitor.KnownSyslogDataSourceLogLevels{
@@ -162,14 +160,14 @@ func ExampleDataCollectionRulesClient_Create() {
 						}},
 					WindowsEventLogs: []*armmonitor.WindowsEventLogDataSource{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("cloudSecurityTeamEvents"),
 							Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
 								to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
 							XPathQueries: []*string{
 								to.Ptr("Security!")},
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("appTeam1AppEvents"),
 							Streams: []*armmonitor.KnownWindowsEventLogDataSourceStreams{
 								to.Ptr(armmonitor.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent)},
 							XPathQueries: []*string{
@@ -180,8 +178,8 @@ func ExampleDataCollectionRulesClient_Create() {
 				Destinations: &armmonitor.DataCollectionRuleDestinations{
 					LogAnalytics: []*armmonitor.LogAnalyticsDestination{
 						{
-							Name:                to.Ptr("<name>"),
-							WorkspaceResourceID: to.Ptr("<workspace-resource-id>"),
+							Name:                to.Ptr("centralWorkspace"),
+							WorkspaceResourceID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/centralTeamWorkspace"),
 						}},
 				},
 			},
@@ -201,13 +199,13 @@ func ExampleDataCollectionRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		&armmonitor.DataCollectionRulesClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("A"),
@@ -230,13 +228,13 @@ func ExampleDataCollectionRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRulesClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<data-collection-rule-name>",
+		"myResourceGroup",
+		"myCollectionRule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

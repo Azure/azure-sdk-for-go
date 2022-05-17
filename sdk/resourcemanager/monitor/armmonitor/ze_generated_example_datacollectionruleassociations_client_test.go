@@ -28,13 +28,12 @@ func ExampleDataCollectionRuleAssociationsClient_NewListByResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourcePager("<resource-uri>",
+	pager := client.NewListByResourcePager("subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,18 +49,17 @@ func ExampleDataCollectionRuleAssociationsClient_NewListByRulePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRuleAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRuleAssociationsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRulePager("<resource-group-name>",
-		"<data-collection-rule-name>",
+	pager := client.NewListByRulePager("myResourceGroup",
+		"myCollectionRule",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,18 +75,17 @@ func ExampleDataCollectionRuleAssociationsClient_NewListByDataCollectionEndpoint
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewDataCollectionRuleAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewDataCollectionRuleAssociationsClient("703362b3-f278-4e4b-9179-c76eaf41ffc2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataCollectionEndpointPager("<resource-group-name>",
-		"<data-collection-endpoint-name>",
+	pager := client.NewListByDataCollectionEndpointPager("myResourceGroup",
+		"myDataCollectionEndpointName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -109,8 +106,8 @@ func ExampleDataCollectionRuleAssociationsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<association-name>",
+		"subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+		"myAssociation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -131,11 +128,11 @@ func ExampleDataCollectionRuleAssociationsClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-uri>",
-		"<association-name>",
+		"subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+		"myAssociation",
 		&armmonitor.DataCollectionRuleAssociationsClientCreateOptions{Body: &armmonitor.DataCollectionRuleAssociationProxyOnlyResource{
 			Properties: &armmonitor.DataCollectionRuleAssociationProxyOnlyResourceProperties{
-				DataCollectionRuleID: to.Ptr("<data-collection-rule-id>"),
+				DataCollectionRuleID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/myCollectionRule"),
 			},
 		},
 		})
@@ -158,8 +155,8 @@ func ExampleDataCollectionRuleAssociationsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-uri>",
-		"<association-name>",
+		"subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVm",
+		"myAssociation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

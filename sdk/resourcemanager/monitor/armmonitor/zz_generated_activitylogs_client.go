@@ -38,7 +38,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListPager - Provides the list of records from the activity logs.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // filter - Reduces the set of data collected.
 // This argument is required and it also requires at least the start date/time.
 // The $filter argument is very restricted and allows only the following patterns.
@@ -72,7 +73,7 @@ func NewActivityLogsClient(subscriptionID string, credential azcore.TokenCredent
 // NOTE: No other syntax is allowed.
 // options - ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.List method.
 func (client *ActivityLogsClient) NewListPager(filter string, options *ActivityLogsClientListOptions) *runtime.Pager[ActivityLogsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ActivityLogsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ActivityLogsClientListResponse]{
 		More: func(page ActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -117,7 +118,7 @@ func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter 
 		reqQP.Set("$select", *options.Select)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

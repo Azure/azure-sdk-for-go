@@ -38,7 +38,7 @@ func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenC
 
 // List - Retrieve an alert rule status.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - MetricAlertsStatusClientListOptions contains the optional parameters for the MetricAlertsStatusClient.List method.
@@ -96,7 +97,7 @@ func (client *MetricAlertsStatusClient) listCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,6 +112,7 @@ func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response) 
 
 // ListByName - Retrieve an alert rule status.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // statusName - The name of the status.
@@ -157,7 +159,7 @@ func (client *MetricAlertsStatusClient) listByNameCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,12 +24,12 @@ func ExampleLogProfilesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewLogProfilesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<log-profile-name>",
+		"Rac46PostSwapRG",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,12 +43,12 @@ func ExampleLogProfilesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewLogProfilesClient("df602c9c-7aa0-407d-a6fb-eb20c8bd1192", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<log-profile-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -64,14 +64,14 @@ func ExampleLogProfilesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewLogProfilesClient("df602c9c-7aa0-407d-a6fb-eb20c8bd1192", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<log-profile-name>",
+		"Rac46PostSwapRG",
 		armmonitor.LogProfileResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr(""),
 			Tags:     map[string]*string{},
 			Properties: &armmonitor.LogProfileProperties{
 				Categories: []*string{
@@ -84,8 +84,8 @@ func ExampleLogProfilesClient_CreateOrUpdate() {
 					Days:    to.Ptr[int32](3),
 					Enabled: to.Ptr(true),
 				},
-				ServiceBusRuleID: to.Ptr("<service-bus-rule-id>"),
-				StorageAccountID: to.Ptr("<storage-account-id>"),
+				ServiceBusRuleID: to.Ptr(""),
+				StorageAccountID: to.Ptr("/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/JohnKemTest/providers/Microsoft.Storage/storageAccounts/johnkemtest8162"),
 			},
 		},
 		nil)
@@ -103,12 +103,12 @@ func ExampleLogProfilesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewLogProfilesClient("df602c9c-7aa0-407d-a6fb-eb20c8bd1192", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<log-profile-name>",
+		"Rac46PostSwapRG",
 		armmonitor.LogProfileResourcePatch{
 			Properties: &armmonitor.LogProfileProperties{
 				Categories: []*string{
@@ -121,8 +121,8 @@ func ExampleLogProfilesClient_Update() {
 					Days:    to.Ptr[int32](3),
 					Enabled: to.Ptr(true),
 				},
-				ServiceBusRuleID: to.Ptr("<service-bus-rule-id>"),
-				StorageAccountID: to.Ptr("<storage-account-id>"),
+				ServiceBusRuleID: to.Ptr(""),
+				StorageAccountID: to.Ptr("/subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/JohnKemTest/providers/Microsoft.Storage/storageAccounts/johnkemtest8162"),
 			},
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
@@ -143,7 +143,7 @@ func ExampleLogProfilesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewLogProfilesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewLogProfilesClient("df602c9c-7aa0-407d-a6fb-eb20c8bd1192", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -152,7 +152,6 @@ func ExampleLogProfilesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

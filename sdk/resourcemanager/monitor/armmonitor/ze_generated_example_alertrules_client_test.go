@@ -24,31 +24,31 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		armmonitor.AlertRuleResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags:     map[string]*string{},
 			Properties: &armmonitor.AlertRule{
-				Name:        to.Ptr("<name>"),
-				Description: to.Ptr("<description>"),
+				Name:        to.Ptr("chiricutin"),
+				Description: to.Ptr("Pura Vida"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
 					DataSource: &armmonitor.RuleMetricDataSource{
-						ODataType:   to.Ptr("<odata-type>"),
-						ResourceURI: to.Ptr("<resource-uri>"),
-						MetricName:  to.Ptr("<metric-name>"),
+						ODataType:   to.Ptr("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"),
+						ResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest"),
+						MetricName:  to.Ptr("Requests"),
 					},
-					ODataType:       to.Ptr("<odata-type>"),
+					ODataType:       to.Ptr("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"),
 					Operator:        to.Ptr(armmonitor.ConditionOperatorGreaterThan),
 					Threshold:       to.Ptr[float64](3),
 					TimeAggregation: to.Ptr(armmonitor.TimeAggregationOperatorTotal),
-					WindowSize:      to.Ptr("<window-size>"),
+					WindowSize:      to.Ptr("PT5M"),
 				},
 				IsEnabled: to.Ptr(true),
 			},
@@ -68,13 +68,13 @@ func ExampleAlertRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -88,13 +88,13 @@ func ExampleAlertRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,29 +110,29 @@ func ExampleAlertRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"Rac46PostSwapRG",
+		"chiricutin",
 		armmonitor.AlertRuleResourcePatch{
 			Properties: &armmonitor.AlertRule{
-				Name:        to.Ptr("<name>"),
-				Description: to.Ptr("<description>"),
+				Name:        to.Ptr("chiricutin"),
+				Description: to.Ptr("Pura Vida"),
 				Actions:     []armmonitor.RuleActionClassification{},
 				Condition: &armmonitor.ThresholdRuleCondition{
 					DataSource: &armmonitor.RuleMetricDataSource{
-						ODataType:   to.Ptr("<odata-type>"),
-						ResourceURI: to.Ptr("<resource-uri>"),
-						MetricName:  to.Ptr("<metric-name>"),
+						ODataType:   to.Ptr("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource"),
+						ResourceURI: to.Ptr("/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest"),
+						MetricName:  to.Ptr("Requests"),
 					},
-					ODataType:       to.Ptr("<odata-type>"),
+					ODataType:       to.Ptr("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition"),
 					Operator:        to.Ptr(armmonitor.ConditionOperatorGreaterThan),
 					Threshold:       to.Ptr[float64](3),
 					TimeAggregation: to.Ptr(armmonitor.TimeAggregationOperatorTotal),
-					WindowSize:      to.Ptr("<window-size>"),
+					WindowSize:      to.Ptr("PT5M"),
 				},
 				IsEnabled: to.Ptr(true),
 			},
@@ -155,17 +155,16 @@ func ExampleAlertRulesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("Rac46PostSwapRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -181,7 +180,7 @@ func ExampleAlertRulesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRulesClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRulesClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -190,7 +189,6 @@ func ExampleAlertRulesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

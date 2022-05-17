@@ -38,7 +38,7 @@ func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Create or update an metric alert definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to create or update.
@@ -98,7 +99,7 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -113,6 +114,7 @@ func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Delete an alert rule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - MetricAlertsClientDeleteOptions contains the optional parameters for the MetricAlertsClient.Delete method.
@@ -153,12 +155,13 @@ func (client *MetricAlertsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve an alert rule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // options - MetricAlertsClientGetOptions contains the optional parameters for the MetricAlertsClient.Get method.
@@ -199,7 +202,7 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,11 +217,12 @@ func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (Metric
 
 // NewListByResourceGroupPager - Retrieve alert rule definitions in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.ListByResourceGroup
 // method.
 func (client *MetricAlertsClient) NewListByResourceGroupPager(resourceGroupName string, options *MetricAlertsClientListByResourceGroupOptions) *runtime.Pager[MetricAlertsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MetricAlertsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MetricAlertsClientListByResourceGroupResponse]{
 		More: func(page MetricAlertsClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -257,7 +261,7 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,10 +276,11 @@ func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - Retrieve alert rule definitions in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // options - MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.ListBySubscription
 // method.
 func (client *MetricAlertsClient) NewListBySubscriptionPager(options *MetricAlertsClientListBySubscriptionOptions) *runtime.Pager[MetricAlertsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MetricAlertsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MetricAlertsClientListBySubscriptionResponse]{
 		More: func(page MetricAlertsClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -310,7 +315,7 @@ func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -325,6 +330,7 @@ func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // Update - Update an metric alert definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // ruleName - The name of the rule.
 // parameters - The parameters of the rule to update.
@@ -366,7 +372,7 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

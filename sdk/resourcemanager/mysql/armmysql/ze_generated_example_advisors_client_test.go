@@ -23,14 +23,14 @@ func ExampleAdvisorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewAdvisorsClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewAdvisorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<advisor-name>",
+		"testResourceGroupName",
+		"testServerName",
+		"Index",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,18 +46,17 @@ func ExampleAdvisorsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewAdvisorsClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewAdvisorsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("testResourceGroupName",
+		"testServerName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

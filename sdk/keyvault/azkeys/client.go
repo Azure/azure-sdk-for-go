@@ -1010,7 +1010,7 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 
 // GetRandomBytesResponse is returned by GetRandomBytes.
 type GetRandomBytesResponse struct {
-	// Value is the bytes, URL-safe base64 encoded. TODO: is that so?
+	// Value is the random bytes.
 	Value []byte `json:"value,omitempty"`
 }
 

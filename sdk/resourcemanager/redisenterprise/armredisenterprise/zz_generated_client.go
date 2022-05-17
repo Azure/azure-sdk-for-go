@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // BeginCreate - Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // parameters - Parameters supplied to the Create RedisEnterprise operation.
 // options - ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
-func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClientBeginCreateOptions) (*armruntime.Poller[ClientCreateResponse], error) {
+func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClientBeginCreateOptions) (*runtime.Poller[ClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, clusterName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaOriginalURI,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *Client) create(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster, options *ClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
@@ -113,31 +115,33 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a RedisEnterprise cache cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClientBeginDeleteOptions) (*armruntime.Poller[ClientDeleteResponse], error) {
+func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a RedisEnterprise cache cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
@@ -175,12 +179,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about a RedisEnterprise cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -221,7 +226,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -236,9 +241,10 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Gets all RedisEnterprise clusters in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // options - ClientListOptions contains the optional parameters for the Client.List method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
 		More: func(page ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -279,7 +285,7 @@ func (client *Client) listCreateRequest(ctx context.Context, options *ClientList
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,10 +300,11 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // NewListByResourceGroupPager - Lists all RedisEnterprise clusters in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
 func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -342,7 +349,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -357,26 +364,28 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 
 // BeginUpdate - Updates an existing RedisEnterprise cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the RedisEnterprise cluster.
 // parameters - Parameters supplied to the Update RedisEnterprise operation.
 // options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClientBeginUpdateOptions) (*armruntime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing RedisEnterprise cluster
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterUpdate, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
@@ -414,6 +423,6 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

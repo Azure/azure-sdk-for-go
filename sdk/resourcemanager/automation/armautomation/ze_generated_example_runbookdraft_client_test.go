@@ -23,14 +23,14 @@ func ExampleRunbookDraftClient_GetContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookDraftClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookDraftClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,14 +44,14 @@ func ExampleRunbookDraftClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookDraftClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookDraftClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,14 +67,14 @@ func ExampleRunbookDraftClient_UndoEdit() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewRunbookDraftClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewRunbookDraftClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UndoEdit(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"rg",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

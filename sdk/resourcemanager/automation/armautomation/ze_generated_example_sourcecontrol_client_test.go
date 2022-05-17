@@ -24,24 +24,24 @@ func ExampleSourceControlClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleSourceControl",
 		armautomation.SourceControlCreateOrUpdateParameters{
 			Properties: &armautomation.SourceControlCreateOrUpdateProperties{
-				Description:    to.Ptr("<description>"),
+				Description:    to.Ptr("my description"),
 				AutoSync:       to.Ptr(true),
-				Branch:         to.Ptr("<branch>"),
-				FolderPath:     to.Ptr("<folder-path>"),
+				Branch:         to.Ptr("master"),
+				FolderPath:     to.Ptr("/folderOne/folderTwo"),
 				PublishRunbook: to.Ptr(true),
-				RepoURL:        to.Ptr("<repo-url>"),
+				RepoURL:        to.Ptr("https://sampleUser.visualstudio.com/myProject/_git/myRepository"),
 				SecurityToken: &armautomation.SourceControlSecurityTokenProperties{
-					AccessToken: to.Ptr("<access-token>"),
+					AccessToken: to.Ptr("3a326f7a0dcd343ea58fee21f2fd5fb4c1234567"),
 					TokenType:   to.Ptr(armautomation.TokenTypePersonalAccessToken),
 				},
 				SourceType: to.Ptr(armautomation.SourceTypeVsoGit),
@@ -62,23 +62,23 @@ func ExampleSourceControlClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleSourceControl",
 		armautomation.SourceControlUpdateParameters{
 			Properties: &armautomation.SourceControlUpdateProperties{
-				Description:    to.Ptr("<description>"),
+				Description:    to.Ptr("my description"),
 				AutoSync:       to.Ptr(true),
-				Branch:         to.Ptr("<branch>"),
-				FolderPath:     to.Ptr("<folder-path>"),
+				Branch:         to.Ptr("master"),
+				FolderPath:     to.Ptr("/folderOne/folderTwo"),
 				PublishRunbook: to.Ptr(true),
 				SecurityToken: &armautomation.SourceControlSecurityTokenProperties{
-					AccessToken: to.Ptr("<access-token>"),
+					AccessToken: to.Ptr("3a326f7a0dcd343ea58fee21f2fd5fb4c1234567"),
 					TokenType:   to.Ptr(armautomation.TokenTypePersonalAccessToken),
 				},
 			},
@@ -98,14 +98,14 @@ func ExampleSourceControlClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleSourceControl",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,14 +119,14 @@ func ExampleSourceControlClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<source-control-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleSourceControl",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -142,18 +142,17 @@ func ExampleSourceControlClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewSourceControlClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewSourceControlClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"sampleAccount9",
 		&armautomation.SourceControlClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

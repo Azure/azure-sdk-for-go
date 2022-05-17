@@ -24,20 +24,20 @@ func ExampleTestJobClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewTestJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewTestJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		armautomation.TestJobCreateParameters{
 			Parameters: map[string]*string{
 				"key01": to.Ptr("value01"),
 				"key02": to.Ptr("value02"),
 			},
-			RunOn: to.Ptr("<run-on>"),
+			RunOn: to.Ptr(""),
 		},
 		nil)
 	if err != nil {
@@ -52,14 +52,14 @@ func ExampleTestJobClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewTestJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewTestJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +75,14 @@ func ExampleTestJobClient_Resume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewTestJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewTestJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Resume(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,14 +96,14 @@ func ExampleTestJobClient_Stop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewTestJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewTestJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Stop(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -117,14 +117,14 @@ func ExampleTestJobClient_Suspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewTestJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewTestJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Suspend(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<runbook-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"Get-AzureVMTutorial",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

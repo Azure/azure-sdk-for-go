@@ -24,14 +24,14 @@ func ExampleConnectionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-name>",
+		"rg",
+		"myAutomationAccount28",
+		"myConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleConnectionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-name>",
+		"rg",
+		"myAutomationAccount28",
+		"myConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,20 +68,20 @@ func ExampleConnectionClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-name>",
+		"rg",
+		"myAutomationAccount28",
+		"mysConnection",
 		armautomation.ConnectionCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("mysConnection"),
 			Properties: &armautomation.ConnectionCreateOrUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description goes here"),
 				ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("Azure"),
 				},
 				FieldDefinitionValues: map[string]*string{
 					"AutomationCertificateName": to.Ptr("mysCertificateName"),
@@ -104,18 +104,18 @@ func ExampleConnectionClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<connection-name>",
+		"rg",
+		"myAutomationAccount28",
+		"myConnection",
 		armautomation.ConnectionUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("myConnection"),
 			Properties: &armautomation.ConnectionUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description goes here"),
 				FieldDefinitionValues: map[string]*string{
 					"AutomationCertificateName": to.Ptr("myCertificateName"),
 					"SubscriptionID":            to.Ptr("b5e4748c-f69a-467c-8749-e2f9c8cd3009"),
@@ -137,18 +137,17 @@ func ExampleConnectionClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewConnectionClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewConnectionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount28",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

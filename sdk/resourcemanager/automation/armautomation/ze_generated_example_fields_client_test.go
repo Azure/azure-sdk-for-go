@@ -23,20 +23,19 @@ func ExampleFieldsClient_NewListByTypePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewFieldsClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewFieldsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTypePager("<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
-		"<type-name>",
+	pager := client.NewListByTypePager("rg",
+		"MyAutomationAccount",
+		"MyModule",
+		"MyCustomType",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

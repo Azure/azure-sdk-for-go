@@ -24,15 +24,15 @@ func ExampleClient_ConvertGraphRunbookContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ConvertGraphRunbookContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"MyAutomationAccount",
 		armautomation.GraphicalRunbookContent{
-			GraphRunbookJSON: to.Ptr("<graph-runbook-json>"),
+			GraphRunbookJSON: to.Ptr("<GraphRunbookJSON>"),
 		},
 		nil)
 	if err != nil {

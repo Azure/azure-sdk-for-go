@@ -9,7 +9,7 @@ package azsecrets
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -49,7 +49,7 @@ type Secret struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (s Secret) toGeneratedProperties() internal.SecretUpdateParameters {
+func (s Secret) toGeneratedProperties() generated.SecretUpdateParameters {
 	var contentType *string
 	if s.Properties != nil && s.Properties.ContentType != nil {
 		contentType = s.Properties.ContentType
@@ -58,7 +58,7 @@ func (s Secret) toGeneratedProperties() internal.SecretUpdateParameters {
 	if s.Properties != nil && s.Properties.Tags != nil {
 		tags = convertToGeneratedMap(s.Properties.Tags)
 	}
-	return internal.SecretUpdateParameters{
+	return generated.SecretUpdateParameters{
 		ContentType:      contentType,
 		SecretAttributes: s.Properties.toGenerated(),
 		Tags:             tags,
@@ -114,13 +114,13 @@ type Properties struct {
 	Name *string
 }
 
-func (s *Properties) toGenerated() *internal.SecretAttributes {
+func (s *Properties) toGenerated() *generated.SecretAttributes {
 	if s == nil {
 		return nil
 	}
-	return &internal.SecretAttributes{
+	return &generated.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   (*internal.DeletionRecoveryLevel)(s.RecoveryLevel),
+		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(s.RecoveryLevel),
 		Enabled:         s.Enabled,
 		Expires:         s.ExpiresOn,
 		NotBefore:       s.NotBefore,
@@ -129,8 +129,8 @@ func (s *Properties) toGenerated() *internal.SecretAttributes {
 	}
 }
 
-// create a SecretAttributes object from an internal.SecretAttributes object
-func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
+// create a SecretAttributes object from an generated.SecretAttributes object
+func secretPropertiesFromGenerated(i *generated.SecretAttributes) *Properties {
 	if i == nil {
 		return nil
 	}
@@ -170,8 +170,8 @@ type SecretItem struct {
 	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
+// create a SecretItem from the generated.SecretItem model
+func secretItemFromGenerated(i *generated.SecretItem) SecretItem {
 	if i == nil {
 		return SecretItem{}
 	}
@@ -218,7 +218,7 @@ type DeletedSecretItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecretItem {
+func deletedSecretItemFromGenerated(i *generated.DeletedSecretItem) DeletedSecretItem {
 	if i == nil {
 		return DeletedSecretItem{}
 	}

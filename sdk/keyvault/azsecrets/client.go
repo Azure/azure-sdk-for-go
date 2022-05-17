@@ -16,13 +16,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Client interacts with Key Vault secrets.
 type Client struct {
-	kvClient *internal.KeyVaultClient
+	kvClient *generated.KeyVaultClient
 	vaultUrl string
 }
 
@@ -31,36 +31,17 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
-	if c == nil {
-		return nil
-	}
-
-	return &policy.ClientOptions{
-		Logging:          c.Logging,
-		Retry:            c.Retry,
-		Telemetry:        c.Telemetry,
-		Transport:        c.Transport,
-		PerCallPolicies:  c.PerCallPolicies,
-		PerRetryPolicies: c.PerRetryPolicies,
-	}
-}
-
 // NewClient constructs a Client that accesses a Key Vault's secrets.
 func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-
-	conOptions := options.toConnectionOptions()
-
-	conOptions.PerRetryPolicies = append(
-		conOptions.PerRetryPolicies,
-		shared.NewKeyVaultChallengePolicy(credential),
-	)
-
+	plOpts := runtime.PipelineOptions{
+		PerRetry: []policy.Policy{shared.NewKeyVaultChallengePolicy(credential)},
+	}
+	pl := runtime.NewPipeline(moduleName, version, plOpts, &options.ClientOptions)
 	return &Client{
-		kvClient: internal.NewKeyVaultClient(conOptions),
+		kvClient: generated.NewKeyVaultClient(pl),
 		vaultUrl: vaultURL,
 	}, nil
 }
@@ -78,11 +59,11 @@ type GetSecretOptions struct {
 }
 
 // convert the exposed options struct to the internal one.
-func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOptions {
+func (g *GetSecretOptions) toGenerated() *generated.KeyVaultClientGetSecretOptions {
 	if g == nil {
-		return &internal.KeyVaultClientGetSecretOptions{}
+		return &generated.KeyVaultClientGetSecretOptions{}
 	}
-	return &internal.KeyVaultClientGetSecretOptions{}
+	return &generated.KeyVaultClientGetSecretOptions{}
 }
 
 // GetSecretResponse is returned by GetSecret.
@@ -90,7 +71,7 @@ type GetSecretResponse struct {
 	Secret
 }
 
-func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
+func getSecretResponseFromGenerated(i generated.KeyVaultClientGetSecretResponse) GetSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return GetSecretResponse{
 		Secret: Secret{
@@ -142,11 +123,11 @@ type SetSecretOptions struct {
 }
 
 // Convert the exposed struct to the generated code version
-func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOptions {
+func (s *SetSecretOptions) toGenerated() *generated.KeyVaultClientSetSecretOptions {
 	if s == nil {
 		return nil
 	}
-	return &internal.KeyVaultClientSetSecretOptions{}
+	return &generated.KeyVaultClientSetSecretOptions{}
 }
 
 // SetSecretResponse is returned by SetSecret.
@@ -155,7 +136,7 @@ type SetSecretResponse struct {
 }
 
 // convert generated response to publicly exposed response.
-func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
+func setSecretResponseFromGenerated(i generated.KeyVaultClientSetSecretResponse) SetSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return SetSecretResponse{
 		Secret: Secret{
@@ -187,11 +168,11 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 	if options == nil {
 		options = &SetSecretOptions{}
 	}
-	var secretAttribs internal.SecretAttributes
+	var secretAttribs generated.SecretAttributes
 	if options.Properties != nil {
 		secretAttribs = *options.Properties.toGenerated()
 	}
-	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, internal.SecretSetParameters{
+	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, generated.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: &secretAttribs,
@@ -208,7 +189,7 @@ type DeleteSecretResponse struct {
 	DeletedSecret
 }
 
-func deleteSecretResponseFromGenerated(i internal.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
+func deleteSecretResponseFromGenerated(i generated.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
@@ -244,17 +225,17 @@ type BeginDeleteSecretOptions struct {
 }
 
 // convert public options to generated options struct
-func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteSecretOptions {
-	return &internal.KeyVaultClientDeleteSecretOptions{}
+func (b *BeginDeleteSecretOptions) toGenerated() *generated.KeyVaultClientDeleteSecretOptions {
+	return &generated.KeyVaultClientDeleteSecretOptions{}
 }
 
 // DeleteSecretPoller is returned by BeginDeleteSecret.
 type DeleteSecretPoller struct {
 	secretName     string // This is the secret to Poll for in GetDeletedSecret
 	vaultUrl       string
-	client         *internal.KeyVaultClient
-	deleteResponse internal.KeyVaultClientDeleteSecretResponse
-	lastResponse   internal.KeyVaultClientGetDeletedSecretResponse
+	client         *generated.KeyVaultClient
+	deleteResponse generated.KeyVaultClientDeleteSecretResponse
+	lastResponse   generated.KeyVaultClientGetDeletedSecretResponse
 	rawResponse    *http.Response
 	resumeToken    string
 }
@@ -363,8 +344,8 @@ type GetDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretOptions {
-	return &internal.KeyVaultClientGetDeletedSecretOptions{}
+func (g *GetDeletedSecretOptions) toGenerated() *generated.KeyVaultClientGetDeletedSecretOptions {
+	return &generated.KeyVaultClientGetDeletedSecretOptions{}
 }
 
 // GetDeletedSecretResponse is returned by GetDeletedSecret.
@@ -373,7 +354,7 @@ type GetDeletedSecretResponse struct {
 }
 
 // Convert the generated response to the publicly exposed version
-func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
+func getDeletedSecretResponseFromGenerated(i generated.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return GetDeletedSecretResponse{
 		DeletedSecret: DeletedSecret{
@@ -424,7 +405,7 @@ type UpdateSecretPropertiesResponse struct {
 	Secret
 }
 
-func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
+func updateSecretPropertiesResponseFromGenerated(i generated.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return UpdateSecretPropertiesResponse{
 		Secret: Secret{
@@ -468,7 +449,7 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, opti
 		name,
 		version,
 		secret.toGeneratedProperties(),
-		&internal.KeyVaultClientUpdateSecretOptions{},
+		&generated.KeyVaultClientUpdateSecretOptions{},
 	)
 	if err != nil {
 		return UpdateSecretPropertiesResponse{}, err
@@ -482,8 +463,8 @@ type BackupSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecretOptions {
-	return &internal.KeyVaultClientBackupSecretOptions{}
+func (b *BackupSecretOptions) toGenerated() *generated.KeyVaultClientBackupSecretOptions {
+	return &generated.KeyVaultClientBackupSecretOptions{}
 }
 
 // BackupSecretResponse is returned by BackupSecret.
@@ -493,7 +474,7 @@ type BackupSecretResponse struct {
 }
 
 // convert generated response to the publicly exposed version.
-func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
+func backupSecretResponseFromGenerated(i generated.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
 	return BackupSecretResponse{
 		Value: i.Value,
 	}
@@ -518,8 +499,8 @@ type RestoreSecretBackupOptions struct {
 	// placeholder for future optional parameters
 }
 
-func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestoreSecretOptions {
-	return &internal.KeyVaultClientRestoreSecretOptions{}
+func (r RestoreSecretBackupOptions) toGenerated() *generated.KeyVaultClientRestoreSecretOptions {
+	return &generated.KeyVaultClientRestoreSecretOptions{}
 }
 
 // RestoreSecretBackupResponse is returned by RestoreSecretBackup.
@@ -528,7 +509,7 @@ type RestoreSecretBackupResponse struct {
 }
 
 // converts the generated response to the publicly exposed version.
-func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
+func restoreSecretBackupResponseFromGenerated(i generated.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
 	vaultURL, name, version := shared.ParseID(i.ID)
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
@@ -562,7 +543,7 @@ func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options
 		options = &RestoreSecretBackupOptions{}
 	}
 
-	resp, err := c.kvClient.RestoreSecret(ctx, c.vaultUrl, internal.SecretRestoreParameters{SecretBundleBackup: backup}, options.toGenerated())
+	resp, err := c.kvClient.RestoreSecret(ctx, c.vaultUrl, generated.SecretRestoreParameters{SecretBundleBackup: backup}, options.toGenerated())
 	if err != nil {
 		return RestoreSecretBackupResponse{}, err
 	}
@@ -575,8 +556,8 @@ type PurgeDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-func (p *PurgeDeletedSecretOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedSecretOptions {
-	return &internal.KeyVaultClientPurgeDeletedSecretOptions{}
+func (p *PurgeDeletedSecretOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedSecretOptions {
+	return &generated.KeyVaultClientPurgeDeletedSecretOptions{}
 }
 
 // PurgeDeletedSecretResponse contains the response from method Client.PurgeDeletedSecret.
@@ -585,7 +566,7 @@ type PurgeDeletedSecretResponse struct {
 }
 
 // Converts the generated response to the publicly exposed version.
-func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedSecretResponse) PurgeDeletedSecretResponse {
+func purgeDeletedSecretResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedSecretResponse) PurgeDeletedSecretResponse {
 	return PurgeDeletedSecretResponse{}
 }
 
@@ -602,9 +583,9 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, name string, options *P
 type RecoverDeletedSecretPoller struct {
 	secretName      string
 	vaultUrl        string
-	client          *internal.KeyVaultClient
-	recoverResponse internal.KeyVaultClientRecoverDeletedSecretResponse
-	lastResponse    internal.KeyVaultClientGetSecretResponse
+	client          *generated.KeyVaultClient
+	recoverResponse generated.KeyVaultClientRecoverDeletedSecretResponse
+	lastResponse    generated.KeyVaultClientGetSecretResponse
 	rawResponse     *http.Response
 	resumeToken     string
 }
@@ -668,12 +649,12 @@ func (s *RecoverDeletedSecretPoller) ResumeToken() (string, error) {
 // BeginRecoverDeletedSecretOptions contains optional parameters for BeginRecoverDeletedSecret.
 type BeginRecoverDeletedSecretOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
-	ResumeToken *string
+	ResumeToken string
 }
 
 // Convert the publicly exposed options object to the generated version
-func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedSecretOptions {
-	return &internal.KeyVaultClientRecoverDeletedSecretOptions{}
+func (b BeginRecoverDeletedSecretOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedSecretOptions {
+	return &generated.KeyVaultClientRecoverDeletedSecretOptions{}
 }
 
 // RecoverDeletedSecretResponse is returned by RecoverDeletedSecret.
@@ -682,7 +663,7 @@ type RecoverDeletedSecretResponse struct {
 }
 
 // change recover deleted secret reponse to the generated version.
-func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
+func recoverDeletedSecretResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
 	var a *Properties
 	if i.Attributes != nil {
 		a = &Properties{
@@ -764,7 +745,7 @@ type ListDeletedSecretsResponse struct {
 	DeletedSecrets []DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
-func listDeletedSecretsPageFromGenerated(g internal.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
+func listDeletedSecretsPageFromGenerated(g generated.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
 	var items []DeletedSecretItem
 
 	if len(g.DeletedSecretListResult.Value) > 0 {
@@ -795,7 +776,7 @@ func (c *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) 
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetDeletedSecretsCreateRequest(ctx, c.vaultUrl, &internal.KeyVaultClientGetDeletedSecretsOptions{})
+				req, err = c.kvClient.GetDeletedSecretsCreateRequest(ctx, c.vaultUrl, &generated.KeyVaultClientGetDeletedSecretsOptions{})
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -833,7 +814,7 @@ type ListPropertiesOfSecretVersionsResponse struct {
 }
 
 // create ListSecretsPage from generated pager
-func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
+func listSecretVersionsPageFromGenerated(i generated.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
 	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
@@ -854,7 +835,7 @@ func (c *Client) NewListPropertiesOfSecretVersionsPager(name string, options *Li
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetSecretVersionsCreateRequest(ctx, c.vaultUrl, name, &internal.KeyVaultClientGetSecretVersionsOptions{})
+				req, err = c.kvClient.GetSecretVersionsCreateRequest(ctx, c.vaultUrl, name, &generated.KeyVaultClientGetSecretVersionsOptions{})
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
@@ -892,7 +873,7 @@ type ListPropertiesOfSecretsResponse struct {
 }
 
 // create a ListSecretsPage from a generated code response
-func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
+func listSecretsPageFromGenerated(i generated.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
 	var secrets []SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
@@ -913,7 +894,7 @@ func (c *Client) NewListPropertiesOfSecretsPager(options *ListPropertiesOfSecret
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = c.kvClient.GetSecretsCreateRequest(ctx, c.vaultUrl, &internal.KeyVaultClientGetSecretsOptions{})
+				req, err = c.kvClient.GetSecretsCreateRequest(ctx, c.vaultUrl, &generated.KeyVaultClientGetSecretsOptions{})
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}

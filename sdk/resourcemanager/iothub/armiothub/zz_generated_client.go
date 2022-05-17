@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // BeginManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // iotHubName - Name of the IoT hub to failover
 // resourceGroupName - Name of the resource group containing the IoT hub resource
 // failoverInput - Region to failover to. Must be the Azure paired region. Get the value from the secondary location in the
 // locations property. To learn more, see https://aka.ms/manualfailover/region
 // options - ClientBeginManualFailoverOptions contains the optional parameters for the Client.BeginManualFailover method.
-func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*armruntime.Poller[ClientManualFailoverResponse], error) {
+func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*runtime.Poller[ClientManualFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.manualFailover(ctx, iotHubName, resourceGroupName, failoverInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClientManualFailoverResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientManualFailoverResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClientManualFailoverResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientManualFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 func (client *Client) manualFailover(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, options *ClientBeginManualFailoverOptions) (*http.Response, error) {
 	req, err := client.manualFailoverCreateRequest(ctx, iotHubName, resourceGroupName, failoverInput, options)
 	if err != nil {
@@ -112,6 +114,6 @@ func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, failoverInput)
 }

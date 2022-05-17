@@ -1,5 +1,53 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestartHosts` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRestartHostsResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRestartHostsResponse], error)`
+- Function `*ExtensionsClient.BeginDisableAzureMonitor` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientDisableAzureMonitorResponse], error)` to `(*runtime.Poller[ExtensionsClientDisableAzureMonitorResponse], error)`
+- Function `*ExtensionsClient.BeginEnableAzureMonitor` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientEnableAzureMonitorResponse], error)` to `(*runtime.Poller[ExtensionsClientEnableAzureMonitorResponse], error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginResize` return value(s) have been changed from `(*armruntime.Poller[ClustersClientResizeResponse], error)` to `(*runtime.Poller[ClustersClientResizeResponse], error)`
+- Function `*ClustersClient.BeginUpdateGatewaySettings` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateGatewaySettingsResponse], error)` to `(*runtime.Poller[ClustersClientUpdateGatewaySettingsResponse], error)`
+- Function `*ClustersClient.BeginUpdateIdentityCertificate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateIdentityCertificateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateIdentityCertificateResponse], error)`
+- Function `*ExtensionsClient.BeginDisableMonitoring` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientDisableMonitoringResponse], error)` to `(*runtime.Poller[ExtensionsClientDisableMonitoringResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateResponse], error)` to `(*runtime.Poller[ClustersClientCreateResponse], error)`
+- Function `*ClustersClient.BeginUpdateAutoScaleConfiguration` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateAutoScaleConfigurationResponse], error)` to `(*runtime.Poller[ClustersClientUpdateAutoScaleConfigurationResponse], error)`
+- Function `*ExtensionsClient.BeginEnableMonitoring` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientEnableMonitoringResponse], error)` to `(*runtime.Poller[ExtensionsClientEnableMonitoringResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginRotateDiskEncryptionKey` return value(s) have been changed from `(*armruntime.Poller[ClustersClientRotateDiskEncryptionKeyResponse], error)` to `(*runtime.Poller[ClustersClientRotateDiskEncryptionKeyResponse], error)`
+- Function `*ExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[ExtensionsClientDeleteResponse], error)`
+- Function `*ExtensionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientCreateResponse], error)` to `(*runtime.Poller[ExtensionsClientCreateResponse], error)`
+- Function `*ApplicationsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientCreateResponse], error)` to `(*runtime.Poller[ApplicationsClientCreateResponse], error)`
+- Function `*ConfigurationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationsClientUpdateResponse], error)` to `(*runtime.Poller[ConfigurationsClientUpdateResponse], error)`
+- Function `*ClustersClient.BeginExecuteScriptActions` return value(s) have been changed from `(*armruntime.Poller[ClustersClientExecuteScriptActionsResponse], error)` to `(*runtime.Poller[ClustersClientExecuteScriptActionsResponse], error)`
+- Function `RegionsCapability.MarshalJSON` has been removed
+- Function `ApplicationListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `VersionsCapability.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ScriptActionPersistedGetResponseSpec.MarshalJSON` has been removed
+- Function `BillingResponseListResult.MarshalJSON` has been removed
+- Function `CapabilitiesResult.MarshalJSON` has been removed
+- Function `ClusterCreateValidationResult.MarshalJSON` has been removed
+- Function `ValidationErrorInfo.MarshalJSON` has been removed
+- Function `VMSizeCompatibilityFilterV2.MarshalJSON` has been removed
+- Function `BillingResources.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `ScriptActionExecutionHistoryList.MarshalJSON` has been removed
+- Function `QuotaCapability.MarshalJSON` has been removed
+- Function `ScriptActionsList.MarshalJSON` has been removed
+- Function `ClusterListPersistedScriptActionsResult.MarshalJSON` has been removed
+- Function `VersionSpec.MarshalJSON` has been removed
+- Function `ClusterConfigurations.MarshalJSON` has been removed
+- Function `UsagesListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `MetricSpecifications.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

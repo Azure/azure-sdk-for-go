@@ -1,5 +1,20 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*OperationResultsClient.BeginGet` return value(s) have been changed from `(*armruntime.Poller[OperationResultsClientGetResponse], error)` to `(*runtime.Poller[OperationResultsClientGetResponse], error)`
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ChannelResponseList.MarshalJSON` has been removed
+- Function `ServiceProviderResponseList.MarshalJSON` has been removed
+- Function `OperationEntityListResult.MarshalJSON` has been removed
+- Function `BotResponseList.MarshalJSON` has been removed
+- Function `ServiceProviderProperties.MarshalJSON` has been removed
+- Function `OperationResultsDescription.MarshalJSON` has been removed
+- Function `ConnectionSettingResponseList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

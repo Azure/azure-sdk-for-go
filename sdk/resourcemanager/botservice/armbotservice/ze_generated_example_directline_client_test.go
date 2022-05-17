@@ -24,17 +24,17 @@ func ExampleDirectLineClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewDirectLineClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewDirectLineClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.RegenerateKeysChannelNameDirectLineChannel,
 		armbotservice.SiteInfo{
 			Key:      to.Ptr(armbotservice.KeyKey1),
-			SiteName: to.Ptr("<site-name>"),
+			SiteName: to.Ptr("testSiteName"),
 		},
 		nil)
 	if err != nil {

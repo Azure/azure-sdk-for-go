@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore"
@@ -26,22 +24,21 @@ func ExampleAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armdatalakestore.AccountsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armdatalakestore.AccountsClientListOptions{Filter: to.Ptr("test_filter"),
 		Top:     to.Ptr[int32](1),
 		Skip:    to.Ptr[int32](1),
-		Select:  to.Ptr("<select>"),
-		Orderby: to.Ptr("<orderby>"),
+		Select:  to.Ptr("test_select"),
+		Orderby: to.Ptr("test_orderby"),
 		Count:   to.Ptr(false),
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,23 +54,22 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
-		&armdatalakestore.AccountsClientListByResourceGroupOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListByResourceGroupPager("contosorg",
+		&armdatalakestore.AccountsClientListByResourceGroupOptions{Filter: to.Ptr("test_filter"),
 			Top:     to.Ptr[int32](1),
 			Skip:    to.Ptr[int32](1),
-			Select:  to.Ptr("<select>"),
-			Orderby: to.Ptr("<orderby>"),
+			Select:  to.Ptr("test_select"),
+			Orderby: to.Ptr("test_orderby"),
 			Count:   to.Ptr(false),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -89,36 +85,36 @@ func ExampleAccountsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contosorg",
+		"contosoadla",
 		armdatalakestore.CreateDataLakeStoreAccountParameters{
 			Identity: &armdatalakestore.EncryptionIdentity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("SystemAssigned"),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2"),
 			Properties: &armdatalakestore.CreateDataLakeStoreAccountProperties{
-				DefaultGroup: to.Ptr("<default-group>"),
+				DefaultGroup: to.Ptr("test_default_group"),
 				EncryptionConfig: &armdatalakestore.EncryptionConfig{
 					Type: to.Ptr(armdatalakestore.EncryptionConfigTypeUserManaged),
 					KeyVaultMetaInfo: &armdatalakestore.KeyVaultMetaInfo{
-						EncryptionKeyName:    to.Ptr("<encryption-key-name>"),
-						EncryptionKeyVersion: to.Ptr("<encryption-key-version>"),
-						KeyVaultResourceID:   to.Ptr("<key-vault-resource-id>"),
+						EncryptionKeyName:    to.Ptr("test_encryption_key_name"),
+						EncryptionKeyVersion: to.Ptr("encryption_key_version"),
+						KeyVaultResourceID:   to.Ptr("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345"),
 					},
 				},
 				EncryptionState:       to.Ptr(armdatalakestore.EncryptionStateEnabled),
 				FirewallAllowAzureIPs: to.Ptr(armdatalakestore.FirewallAllowAzureIPsStateEnabled),
 				FirewallRules: []*armdatalakestore.CreateFirewallRuleWithAccountParameters{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("test_rule"),
 						Properties: &armdatalakestore.CreateOrUpdateFirewallRuleProperties{
-							EndIPAddress:   to.Ptr("<end-ipaddress>"),
-							StartIPAddress: to.Ptr("<start-ipaddress>"),
+							EndIPAddress:   to.Ptr("2.2.2.2"),
+							StartIPAddress: to.Ptr("1.1.1.1"),
 						},
 					}},
 				FirewallState:          to.Ptr(armdatalakestore.FirewallStateEnabled),
@@ -126,9 +122,9 @@ func ExampleAccountsClient_BeginCreate() {
 				TrustedIDProviderState: to.Ptr(armdatalakestore.TrustedIDProviderStateEnabled),
 				TrustedIDProviders: []*armdatalakestore.CreateTrustedIDProviderWithAccountParameters{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("test_trusted_id_provider_name"),
 						Properties: &armdatalakestore.CreateOrUpdateTrustedIDProviderProperties{
-							IDProvider: to.Ptr("<idprovider>"),
+							IDProvider: to.Ptr("https://sts.windows.net/ea9ec534-a3e3-4e45-ad36-3afc5bb291c1"),
 						},
 					}},
 			},
@@ -136,11 +132,11 @@ func ExampleAccountsClient_BeginCreate() {
 				"test_key": to.Ptr("test_value"),
 			},
 		},
-		&armdatalakestore.AccountsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -155,13 +151,13 @@ func ExampleAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contosorg",
+		"contosoadla",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -177,19 +173,19 @@ func ExampleAccountsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contosorg",
+		"contosoadla",
 		armdatalakestore.UpdateDataLakeStoreAccountParameters{
 			Properties: &armdatalakestore.UpdateDataLakeStoreAccountProperties{
-				DefaultGroup: to.Ptr("<default-group>"),
+				DefaultGroup: to.Ptr("test_default_group"),
 				EncryptionConfig: &armdatalakestore.UpdateEncryptionConfig{
 					KeyVaultMetaInfo: &armdatalakestore.UpdateKeyVaultMetaInfo{
-						EncryptionKeyVersion: to.Ptr("<encryption-key-version>"),
+						EncryptionKeyVersion: to.Ptr("encryption_key_version"),
 					},
 				},
 				FirewallAllowAzureIPs:  to.Ptr(armdatalakestore.FirewallAllowAzureIPsStateEnabled),
@@ -201,11 +197,11 @@ func ExampleAccountsClient_BeginUpdate() {
 				"test_key": to.Ptr("test_value"),
 			},
 		},
-		&armdatalakestore.AccountsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -220,18 +216,18 @@ func ExampleAccountsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		&armdatalakestore.AccountsClientBeginDeleteOptions{ResumeToken: ""})
+		"contosorg",
+		"contosoadla",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -244,13 +240,13 @@ func ExampleAccountsClient_EnableKeyVault() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.EnableKeyVault(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contosorg",
+		"contosoadla",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -264,14 +260,14 @@ func ExampleAccountsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location>",
+		"EastUS2",
 		armdatalakestore.CheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("contosoadla"),
 			Type: to.Ptr(armdatalakestore.CheckNameAvailabilityParametersTypeMicrosoftDataLakeStoreAccounts),
 		},
 		nil)

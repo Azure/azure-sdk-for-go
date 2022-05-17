@@ -39,7 +39,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // GetCapability - Gets subscription-level properties and limits for Data Lake Store specified by resource location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // location - The resource location without whitespace.
 // options - LocationsClientGetCapabilityOptions contains the optional parameters for the LocationsClient.GetCapability method.
 func (client *LocationsClient) GetCapability(ctx context.Context, location string, options *LocationsClientGetCapabilityOptions) (LocationsClientGetCapabilityResponse, error) {
@@ -92,7 +93,7 @@ func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, l
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,10 +108,11 @@ func (client *LocationsClient) getCapabilityHandleResponse(resp *http.Response) 
 
 // NewGetUsagePager - Gets the current usage count and the limit for the resources of the location under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // location - The resource location without whitespace.
 // options - LocationsClientGetUsageOptions contains the optional parameters for the LocationsClient.GetUsage method.
 func (client *LocationsClient) NewGetUsagePager(location string, options *LocationsClientGetUsageOptions) *runtime.Pager[LocationsClientGetUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationsClientGetUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationsClientGetUsageResponse]{
 		More: func(page LocationsClientGetUsageResponse) bool {
 			return false
 		},
@@ -149,7 +151,7 @@ func (client *LocationsClient) getUsageCreateRequest(ctx context.Context, locati
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

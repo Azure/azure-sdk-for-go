@@ -1,5 +1,24 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkRuleListResult.MarshalJSON` has been removed
+- Function `AccountProperties.MarshalJSON` has been removed
+- Function `TrustedIDProviderListResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `AccountPropertiesBasic.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `AccountBasic.MarshalJSON` has been removed
+- Function `Account.MarshalJSON` has been removed
+- Function `FirewallRuleListResult.MarshalJSON` has been removed
+- Function `UsageListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

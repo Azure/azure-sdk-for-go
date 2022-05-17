@@ -33,7 +33,7 @@ func NewGeographicHierarchiesClient(credential azcore.TokenCredential, options *
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewGeographicHierarchiesClient(credential azcore.TokenCredential, options *
 
 // GetDefault - Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-08-01
 // options - GeographicHierarchiesClientGetDefaultOptions contains the optional parameters for the GeographicHierarchiesClient.GetDefault
 // method.
 func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, options *GeographicHierarchiesClientGetDefaultOptions) (GeographicHierarchiesClientGetDefaultResponse, error) {
@@ -77,7 +78,7 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

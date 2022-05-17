@@ -23,14 +23,14 @@ func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient("075423e9-7d33-4166-8bdf-3920b04e3735", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
-		"<aggregated-recommendation-name>",
+		"IoTEdgeResources",
+		"default",
+		"OpenPortsOnDevice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,18 +46,17 @@ func ExampleIotSecuritySolutionsAnalyticsRecommendationClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsRecommendationClient("075423e9-7d33-4166-8bdf-3920b04e3735", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<solution-name>",
+	pager := client.NewListPager("IoTEdgeResources",
+		"default",
 		&armsecurity.IotSecuritySolutionsAnalyticsRecommendationClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

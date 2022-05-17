@@ -23,7 +23,7 @@ func ExampleExternalSecuritySolutionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewExternalSecuritySolutionsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewExternalSecuritySolutionsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleExternalSecuritySolutionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,17 +47,16 @@ func ExampleExternalSecuritySolutionsClient_NewListByHomeRegionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewExternalSecuritySolutionsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewExternalSecuritySolutionsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHomeRegionPager("<asc-location>",
+	pager := client.NewListByHomeRegionPager("centralus",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -74,14 +72,14 @@ func ExampleExternalSecuritySolutionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewExternalSecuritySolutionsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewExternalSecuritySolutionsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<external-security-solutions-name>",
+		"defaultresourcegroup-eus",
+		"centralus",
+		"aad_defaultworkspace-20ff7fc3-e762-44dd-bd96-b71116dcdc23-eus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

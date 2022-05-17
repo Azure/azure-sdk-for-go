@@ -46,13 +46,13 @@ func populateDateType(m map[string]interface{}, k string, t *time.Time) {
 	m[k] = (*dateType)(t)
 }
 
-func unpopulateDateType(data json.RawMessage, t **time.Time) error {
+func unpopulateDateType(data json.RawMessage, fn string, t **time.Time) error {
 	if data == nil || strings.EqualFold(string(data), "null") {
 		return nil
 	}
 	var aux dateType
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
+		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	*t = (*time.Time)(&aux)
 	return nil

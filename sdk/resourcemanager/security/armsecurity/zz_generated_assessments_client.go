@@ -36,7 +36,7 @@ func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.Client
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewAssessmentsClient(credential azcore.TokenCredential, options *arm.Client
 // CreateOrUpdate - Create a security assessment on your resource. An assessment metadata that describes this assessment must
 // be predefined with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceID - The identifier of the resource.
 // assessmentName - The Assessment Key - Unique key for the assessment type
 // assessment - Calculated assessment on a pre-defined assessment metadata
@@ -89,7 +90,7 @@ func (client *AssessmentsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, assessment)
 }
 
@@ -105,6 +106,7 @@ func (client *AssessmentsClient) createOrUpdateHandleResponse(resp *http.Respons
 // Delete - Delete a security assessment on your resource. An assessment metadata that describes this assessment must be predefined
 // with the same name before inserting the assessment result
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceID - The identifier of the resource.
 // assessmentName - The Assessment Key - Unique key for the assessment type
 // options - AssessmentsClientDeleteOptions contains the optional parameters for the AssessmentsClient.Delete method.
@@ -138,12 +140,13 @@ func (client *AssessmentsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a security assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceID - The identifier of the resource.
 // assessmentName - The Assessment Key - Unique key for the assessment type
 // options - AssessmentsClientGetOptions contains the optional parameters for the AssessmentsClient.Get method.
@@ -180,7 +183,7 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, resourceI
 		reqQP.Set("$expand", string(*options.Expand))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -195,11 +198,12 @@ func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (Assessm
 
 // NewListPager - Get security assessments on all your scanned resources inside a scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - AssessmentsClientListOptions contains the optional parameters for the AssessmentsClient.List method.
 func (client *AssessmentsClient) NewListPager(scope string, options *AssessmentsClientListOptions) *runtime.Pager[AssessmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssessmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssessmentsClientListResponse]{
 		More: func(page AssessmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -237,7 +241,7 @@ func (client *AssessmentsClient) listCreateRequest(ctx context.Context, scope st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

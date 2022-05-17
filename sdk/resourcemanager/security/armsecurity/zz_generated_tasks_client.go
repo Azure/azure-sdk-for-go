@@ -38,7 +38,7 @@ func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // GetResourceGroupLevelTask - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // taskName - Name of the task object, will be a GUID
@@ -102,7 +103,7 @@ func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *TasksClient) getResourceGroupLevelTaskHandleResponse(resp *http.Re
 
 // GetSubscriptionLevelTask - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // taskName - Name of the task object, will be a GUID
 // options - TasksClientGetSubscriptionLevelTaskOptions contains the optional parameters for the TasksClient.GetSubscriptionLevelTask
@@ -158,7 +160,7 @@ func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -173,9 +175,10 @@ func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *http.Res
 
 // NewListPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // options - TasksClientListOptions contains the optional parameters for the TasksClient.List method.
 func (client *TasksClient) NewListPager(options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TasksClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TasksClientListResponse]{
 		More: func(page TasksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -219,7 +222,7 @@ func (client *TasksClient) listCreateRequest(ctx context.Context, options *Tasks
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,10 +237,11 @@ func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientL
 
 // NewListByHomeRegionPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TasksClientListByHomeRegionOptions contains the optional parameters for the TasksClient.ListByHomeRegion method.
 func (client *TasksClient) NewListByHomeRegionPager(ascLocation string, options *TasksClientListByHomeRegionOptions) *runtime.Pager[TasksClientListByHomeRegionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TasksClientListByHomeRegionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TasksClientListByHomeRegionResponse]{
 		More: func(page TasksClientListByHomeRegionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -285,7 +289,7 @@ func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, as
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -300,12 +304,13 @@ func (client *TasksClient) listByHomeRegionHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // options - TasksClientListByResourceGroupOptions contains the optional parameters for the TasksClient.ListByResourceGroup
 // method.
 func (client *TasksClient) NewListByResourceGroupPager(resourceGroupName string, ascLocation string, options *TasksClientListByResourceGroupOptions) *runtime.Pager[TasksClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TasksClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TasksClientListByResourceGroupResponse]{
 		More: func(page TasksClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -357,7 +362,7 @@ func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context,
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -372,6 +377,7 @@ func (client *TasksClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // UpdateResourceGroupLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // taskName - Name of the task object, will be a GUID
@@ -423,12 +429,13 @@ func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // UpdateSubscriptionLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-06-01-preview
 // ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
 // taskName - Name of the task object, will be a GUID
 // taskUpdateActionType - Type of the action to do on the task
@@ -475,6 +482,6 @@ func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

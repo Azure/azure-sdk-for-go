@@ -96,6 +96,41 @@ type ActiveConnectionsNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ActiveConnectionsNotInAllowedRange.
+func (a *ActiveConnectionsNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type ActiveConnectionsNotInAllowedRange.
+func (a *ActiveConnectionsNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: a.MinThreshold,
+		MaxThreshold: a.MaxThreshold,
+		DisplayName:  a.DisplayName,
+		Description:  a.Description,
+		IsEnabled:    a.IsEnabled,
+		RuleType:     a.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type ActiveConnectionsNotInAllowedRange.
+func (a *ActiveConnectionsNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: a.TimeWindowSize,
+		MinThreshold:   a.MinThreshold,
+		MaxThreshold:   a.MaxThreshold,
+		DisplayName:    a.DisplayName,
+		Description:    a.Description,
+		IsEnabled:      a.IsEnabled,
+		RuleType:       a.RuleType,
+	}
+}
+
 type AdaptiveApplicationControlGroup struct {
 	// REQUIRED; Represents a machines group and set of rules to be allowed running on a machine
 	Properties *AdaptiveApplicationControlGroupData `json:"properties,omitempty"`
@@ -257,6 +292,9 @@ type AdditionalData struct {
 	// REQUIRED; Sub-assessment resource type
 	AssessedResourceType *AssessedResourceType `json:"assessedResourceType,omitempty"`
 }
+
+// GetAdditionalData implements the AdditionalDataClassification interface for type AdditionalData.
+func (a *AdditionalData) GetAdditionalData() *AdditionalData { return a }
 
 // AdditionalWorkspacesProperties - Properties of the additional workspaces.
 type AdditionalWorkspacesProperties struct {
@@ -423,6 +461,14 @@ type AlertSimulatorBundlesRequestProperties struct {
 	Bundles []*BundleType `json:"bundles,omitempty"`
 }
 
+// GetAlertSimulatorRequestProperties implements the AlertSimulatorRequestPropertiesClassification interface for type AlertSimulatorBundlesRequestProperties.
+func (a *AlertSimulatorBundlesRequestProperties) GetAlertSimulatorRequestProperties() *AlertSimulatorRequestProperties {
+	return &AlertSimulatorRequestProperties{
+		Kind:                 a.Kind,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AlertSimulatorRequestBody - Alert Simulator request body.
 type AlertSimulatorRequestBody struct {
 	// Alert Simulator request body data.
@@ -447,6 +493,11 @@ type AlertSimulatorRequestProperties struct {
 	AdditionalProperties map[string]interface{}
 }
 
+// GetAlertSimulatorRequestProperties implements the AlertSimulatorRequestPropertiesClassification interface for type AlertSimulatorRequestProperties.
+func (a *AlertSimulatorRequestProperties) GetAlertSimulatorRequestProperties() *AlertSimulatorRequestProperties {
+	return a
+}
+
 // AlertSyncSettingProperties - The alert sync setting properties
 type AlertSyncSettingProperties struct {
 	// REQUIRED; Is the alert sync setting enabled
@@ -469,6 +520,16 @@ type AlertSyncSettings struct {
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetSetting implements the SettingClassification interface for type AlertSyncSettings.
+func (a *AlertSyncSettings) GetSetting() *Setting {
+	return &Setting{
+		Kind: a.Kind,
+		ID:   a.ID,
+		Name: a.Name,
+		Type: a.Type,
+	}
 }
 
 // AlertsClientGetResourceGroupLevelOptions contains the optional parameters for the AlertsClient.GetResourceGroupLevel method.
@@ -699,6 +760,30 @@ type AllowlistCustomAlertRule struct {
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
 }
 
+// GetAllowlistCustomAlertRule implements the AllowlistCustomAlertRuleClassification interface for type AllowlistCustomAlertRule.
+func (a *AllowlistCustomAlertRule) GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule { return a }
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type AllowlistCustomAlertRule.
+func (a *AllowlistCustomAlertRule) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type AllowlistCustomAlertRule.
+func (a *AllowlistCustomAlertRule) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   a.ValueType,
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
 // AmqpC2DMessagesNotInAllowedRange - Number of cloud to device messages (AMQP protocol) is not in allowed range.
 type AmqpC2DMessagesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -721,6 +806,41 @@ type AmqpC2DMessagesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type AmqpC2DMessagesNotInAllowedRange.
+func (a *AmqpC2DMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type AmqpC2DMessagesNotInAllowedRange.
+func (a *AmqpC2DMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: a.MinThreshold,
+		MaxThreshold: a.MaxThreshold,
+		DisplayName:  a.DisplayName,
+		Description:  a.Description,
+		IsEnabled:    a.IsEnabled,
+		RuleType:     a.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type AmqpC2DMessagesNotInAllowedRange.
+func (a *AmqpC2DMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: a.TimeWindowSize,
+		MinThreshold:   a.MinThreshold,
+		MaxThreshold:   a.MaxThreshold,
+		DisplayName:    a.DisplayName,
+		Description:    a.Description,
+		IsEnabled:      a.IsEnabled,
+		RuleType:       a.RuleType,
+	}
 }
 
 // AmqpC2DRejectedMessagesNotInAllowedRange - Number of rejected cloud to device messages (AMQP protocol) is not in allowed
@@ -748,6 +868,41 @@ type AmqpC2DRejectedMessagesNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type AmqpC2DRejectedMessagesNotInAllowedRange.
+func (a *AmqpC2DRejectedMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type AmqpC2DRejectedMessagesNotInAllowedRange.
+func (a *AmqpC2DRejectedMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: a.MinThreshold,
+		MaxThreshold: a.MaxThreshold,
+		DisplayName:  a.DisplayName,
+		Description:  a.Description,
+		IsEnabled:    a.IsEnabled,
+		RuleType:     a.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type AmqpC2DRejectedMessagesNotInAllowedRange.
+func (a *AmqpC2DRejectedMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: a.TimeWindowSize,
+		MinThreshold:   a.MinThreshold,
+		MaxThreshold:   a.MaxThreshold,
+		DisplayName:    a.DisplayName,
+		Description:    a.Description,
+		IsEnabled:      a.IsEnabled,
+		RuleType:       a.RuleType,
+	}
+}
+
 // AmqpD2CMessagesNotInAllowedRange - Number of device to cloud messages (AMQP protocol) is not in allowed range.
 type AmqpD2CMessagesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -770,6 +925,41 @@ type AmqpD2CMessagesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type AmqpD2CMessagesNotInAllowedRange.
+func (a *AmqpD2CMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: a.DisplayName,
+		Description: a.Description,
+		IsEnabled:   a.IsEnabled,
+		RuleType:    a.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type AmqpD2CMessagesNotInAllowedRange.
+func (a *AmqpD2CMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: a.MinThreshold,
+		MaxThreshold: a.MaxThreshold,
+		DisplayName:  a.DisplayName,
+		Description:  a.Description,
+		IsEnabled:    a.IsEnabled,
+		RuleType:     a.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type AmqpD2CMessagesNotInAllowedRange.
+func (a *AmqpD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: a.TimeWindowSize,
+		MinThreshold:   a.MinThreshold,
+		MaxThreshold:   a.MaxThreshold,
+		DisplayName:    a.DisplayName,
+		Description:    a.Description,
+		IsEnabled:      a.IsEnabled,
+		RuleType:       a.RuleType,
+	}
 }
 
 // AscLocation - The ASC location of the subscription is in the "name" field
@@ -1193,6 +1383,11 @@ type AuthenticationDetailsProperties struct {
 	GrantedPermissions []*PermissionProperty `json:"grantedPermissions,omitempty" azure:"ro"`
 }
 
+// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AuthenticationDetailsProperties.
+func (a *AuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
+	return a
+}
+
 // AutoProvisioningSetting - Auto provisioning setting
 type AutoProvisioningSetting struct {
 	// Auto provisioning setting data
@@ -1282,6 +1477,9 @@ type AutomationAction struct {
 	ActionType *ActionType `json:"actionType,omitempty"`
 }
 
+// GetAutomationAction implements the AutomationActionClassification interface for type AutomationAction.
+func (a *AutomationAction) GetAutomationAction() *AutomationAction { return a }
+
 // AutomationActionEventHub - The target Event Hub to which event data will be exported. To learn more about Microsoft Defender
 // for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore
 type AutomationActionEventHub struct {
@@ -1298,6 +1496,13 @@ type AutomationActionEventHub struct {
 	SasPolicyName *string `json:"sasPolicyName,omitempty" azure:"ro"`
 }
 
+// GetAutomationAction implements the AutomationActionClassification interface for type AutomationActionEventHub.
+func (a *AutomationActionEventHub) GetAutomationAction() *AutomationAction {
+	return &AutomationAction{
+		ActionType: a.ActionType,
+	}
+}
+
 // AutomationActionLogicApp - The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's
 // Workflow Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore
 type AutomationActionLogicApp struct {
@@ -1312,6 +1517,13 @@ type AutomationActionLogicApp struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// GetAutomationAction implements the AutomationActionClassification interface for type AutomationActionLogicApp.
+func (a *AutomationActionLogicApp) GetAutomationAction() *AutomationAction {
+	return &AutomationAction{
+		ActionType: a.ActionType,
+	}
+}
+
 // AutomationActionWorkspace - The Log Analytics Workspace to which event data will be exported. Security alerts data will
 // reside in the 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation'
 // table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the
@@ -1323,6 +1535,13 @@ type AutomationActionWorkspace struct {
 
 	// The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+}
+
+// GetAutomationAction implements the AutomationActionClassification interface for type AutomationActionWorkspace.
+func (a *AutomationActionWorkspace) GetAutomationAction() *AutomationAction {
+	return &AutomationAction{
+		ActionType: a.ActionType,
+	}
 }
 
 // AutomationList - List of security automations response.
@@ -1465,6 +1684,15 @@ type AwAssumeRoleAuthenticationDetailsProperties struct {
 	GrantedPermissions []*PermissionProperty `json:"grantedPermissions,omitempty" azure:"ro"`
 }
 
+// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AwAssumeRoleAuthenticationDetailsProperties.
+func (a *AwAssumeRoleAuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
+	return &AuthenticationDetailsProperties{
+		AuthenticationProvisioningState: a.AuthenticationProvisioningState,
+		GrantedPermissions:              a.GrantedPermissions,
+		AuthenticationType:              a.AuthenticationType,
+	}
+}
+
 // AwsCredsAuthenticationDetailsProperties - AWS cloud account connector based credentials, the credentials is composed of
 // access key ID and secret key, for more details, refer to Creating an IAM User in Your AWS Account (write only)
 // [https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html]
@@ -1489,6 +1717,15 @@ type AwsCredsAuthenticationDetailsProperties struct {
 	GrantedPermissions []*PermissionProperty `json:"grantedPermissions,omitempty" azure:"ro"`
 }
 
+// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type AwsCredsAuthenticationDetailsProperties.
+func (a *AwsCredsAuthenticationDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
+	return &AuthenticationDetailsProperties{
+		AuthenticationProvisioningState: a.AuthenticationProvisioningState,
+		GrantedPermissions:              a.GrantedPermissions,
+		AuthenticationType:              a.AuthenticationType,
+	}
+}
+
 // AzureResourceDetails - Details of the Azure resource that was assessed
 type AzureResourceDetails struct {
 	// REQUIRED; The platform where the assessed resource resides
@@ -1498,6 +1735,13 @@ type AzureResourceDetails struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// GetResourceDetails implements the ResourceDetailsClassification interface for type AzureResourceDetails.
+func (a *AzureResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
+		Source: a.Source,
+	}
+}
+
 // AzureResourceIdentifier - Azure resource identifier.
 type AzureResourceIdentifier struct {
 	// REQUIRED; There can be multiple identifiers of different type per alert, this field specify the identifier type.
@@ -1505,6 +1749,13 @@ type AzureResourceIdentifier struct {
 
 	// READ-ONLY; ARM resource identifier for the cloud resource being alerted on
 	AzureResourceID *string `json:"azureResourceId,omitempty" azure:"ro"`
+}
+
+// GetResourceIdentifier implements the ResourceIdentifierClassification interface for type AzureResourceIdentifier.
+func (a *AzureResourceIdentifier) GetResourceIdentifier() *ResourceIdentifier {
+	return &ResourceIdentifier{
+		Type: a.Type,
+	}
 }
 
 // AzureResourceLink - Describes an Azure resource with kind
@@ -1644,6 +1895,9 @@ type CloudOffering struct {
 	// READ-ONLY; The offering description.
 	Description *string `json:"description,omitempty" azure:"ro"`
 }
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type CloudOffering.
+func (c *CloudOffering) GetCloudOffering() *CloudOffering { return c }
 
 // Compliance of a scope
 type Compliance struct {
@@ -1795,6 +2049,39 @@ type ConnectionFromIPNotAllowed struct {
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
 }
 
+// GetAllowlistCustomAlertRule implements the AllowlistCustomAlertRuleClassification interface for type ConnectionFromIPNotAllowed.
+func (c *ConnectionFromIPNotAllowed) GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule {
+	return &AllowlistCustomAlertRule{
+		AllowlistValues: c.AllowlistValues,
+		ValueType:       c.ValueType,
+		DisplayName:     c.DisplayName,
+		Description:     c.Description,
+		IsEnabled:       c.IsEnabled,
+		RuleType:        c.RuleType,
+	}
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ConnectionFromIPNotAllowed.
+func (c *ConnectionFromIPNotAllowed) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: c.DisplayName,
+		Description: c.Description,
+		IsEnabled:   c.IsEnabled,
+		RuleType:    c.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type ConnectionFromIPNotAllowed.
+func (c *ConnectionFromIPNotAllowed) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   c.ValueType,
+		DisplayName: c.DisplayName,
+		Description: c.Description,
+		IsEnabled:   c.IsEnabled,
+		RuleType:    c.RuleType,
+	}
+}
+
 // ConnectionStrings - Connection string for ingesting security data and logs
 type ConnectionStrings struct {
 	// REQUIRED; Connection strings
@@ -1821,6 +2108,39 @@ type ConnectionToIPNotAllowed struct {
 
 	// READ-ONLY; The value type of the items in the list.
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
+}
+
+// GetAllowlistCustomAlertRule implements the AllowlistCustomAlertRuleClassification interface for type ConnectionToIPNotAllowed.
+func (c *ConnectionToIPNotAllowed) GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule {
+	return &AllowlistCustomAlertRule{
+		AllowlistValues: c.AllowlistValues,
+		ValueType:       c.ValueType,
+		DisplayName:     c.DisplayName,
+		Description:     c.Description,
+		IsEnabled:       c.IsEnabled,
+		RuleType:        c.RuleType,
+	}
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ConnectionToIPNotAllowed.
+func (c *ConnectionToIPNotAllowed) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: c.DisplayName,
+		Description: c.Description,
+		IsEnabled:   c.IsEnabled,
+		RuleType:    c.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type ConnectionToIPNotAllowed.
+func (c *ConnectionToIPNotAllowed) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   c.ValueType,
+		DisplayName: c.DisplayName,
+		Description: c.Description,
+		IsEnabled:   c.IsEnabled,
+		RuleType:    c.RuleType,
+	}
 }
 
 // Connector - The security connector resource.
@@ -2050,6 +2370,13 @@ type ContainerRegistryVulnerabilityProperties struct {
 	VendorReferences []*VendorReference `json:"vendorReferences,omitempty" azure:"ro"`
 }
 
+// GetAdditionalData implements the AdditionalDataClassification interface for type ContainerRegistryVulnerabilityProperties.
+func (c *ContainerRegistryVulnerabilityProperties) GetAdditionalData() *AdditionalData {
+	return &AdditionalData{
+		AssessedResourceType: c.AssessedResourceType,
+	}
+}
+
 // CspmMonitorAwsOffering - The CSPM monitoring for AWS offering configurations
 type CspmMonitorAwsOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -2060,6 +2387,14 @@ type CspmMonitorAwsOffering struct {
 
 	// READ-ONLY; The offering description.
 	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type CspmMonitorAwsOffering.
+func (c *CspmMonitorAwsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: c.OfferingType,
+		Description:  c.Description,
+	}
 }
 
 // CspmMonitorAwsOfferingNativeCloudConnection - The native cloud connection configuration
@@ -2097,6 +2432,9 @@ type CustomAlertRule struct {
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type CustomAlertRule.
+func (c *CustomAlertRule) GetCustomAlertRule() *CustomAlertRule { return c }
 
 // CustomAssessmentAutomation - Custom Assessment Automation
 type CustomAssessmentAutomation struct {
@@ -2317,6 +2655,16 @@ type DataExportSettings struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetSetting implements the SettingClassification interface for type DataExportSettings.
+func (d *DataExportSettings) GetSetting() *Setting {
+	return &Setting{
+		Kind: d.Kind,
+		ID:   d.ID,
+		Name: d.Name,
+		Type: d.Type,
+	}
+}
+
 // DefenderForContainersAwsOffering - The Defender for Containers AWS offering configurations
 type DefenderForContainersAwsOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -2336,6 +2684,14 @@ type DefenderForContainersAwsOffering struct {
 
 	// READ-ONLY; The offering description.
 	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForContainersAwsOffering.
+func (d *DefenderForContainersAwsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: d.OfferingType,
+		Description:  d.Description,
+	}
 }
 
 // DefenderForContainersAwsOfferingCloudWatchToKinesis - The cloudwatch to kinesis connection configuration
@@ -2375,6 +2731,14 @@ type DefenderForServersAwsOffering struct {
 
 	// READ-ONLY; The offering description.
 	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForServersAwsOffering.
+func (d *DefenderForServersAwsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: d.OfferingType,
+		Description:  d.Description,
+	}
 }
 
 // DefenderForServersAwsOfferingArcAutoProvisioning - The ARC autoprovisioning configuration
@@ -2424,6 +2788,27 @@ type DenylistCustomAlertRule struct {
 
 	// READ-ONLY; The value type of the items in the list.
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type DenylistCustomAlertRule.
+func (d *DenylistCustomAlertRule) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: d.DisplayName,
+		Description: d.Description,
+		IsEnabled:   d.IsEnabled,
+		RuleType:    d.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type DenylistCustomAlertRule.
+func (d *DenylistCustomAlertRule) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   d.ValueType,
+		DisplayName: d.DisplayName,
+		Description: d.Description,
+		IsEnabled:   d.IsEnabled,
+		RuleType:    d.RuleType,
+	}
 }
 
 // DeviceSecurityGroup - The device security group resource
@@ -2508,6 +2893,41 @@ type DirectMethodInvokesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type DirectMethodInvokesNotInAllowedRange.
+func (d *DirectMethodInvokesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: d.DisplayName,
+		Description: d.Description,
+		IsEnabled:   d.IsEnabled,
+		RuleType:    d.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type DirectMethodInvokesNotInAllowedRange.
+func (d *DirectMethodInvokesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: d.MinThreshold,
+		MaxThreshold: d.MaxThreshold,
+		DisplayName:  d.DisplayName,
+		Description:  d.Description,
+		IsEnabled:    d.IsEnabled,
+		RuleType:     d.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type DirectMethodInvokesNotInAllowedRange.
+func (d *DirectMethodInvokesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: d.TimeWindowSize,
+		MinThreshold:   d.MinThreshold,
+		MaxThreshold:   d.MaxThreshold,
+		DisplayName:    d.DisplayName,
+		Description:    d.Description,
+		IsEnabled:      d.IsEnabled,
+		RuleType:       d.RuleType,
+	}
 }
 
 type DiscoveredSecuritySolution struct {
@@ -2675,6 +3095,41 @@ type FailedLocalLoginsNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type FailedLocalLoginsNotInAllowedRange.
+func (f *FailedLocalLoginsNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: f.DisplayName,
+		Description: f.Description,
+		IsEnabled:   f.IsEnabled,
+		RuleType:    f.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type FailedLocalLoginsNotInAllowedRange.
+func (f *FailedLocalLoginsNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: f.MinThreshold,
+		MaxThreshold: f.MaxThreshold,
+		DisplayName:  f.DisplayName,
+		Description:  f.Description,
+		IsEnabled:    f.IsEnabled,
+		RuleType:     f.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type FailedLocalLoginsNotInAllowedRange.
+func (f *FailedLocalLoginsNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: f.TimeWindowSize,
+		MinThreshold:   f.MinThreshold,
+		MaxThreshold:   f.MaxThreshold,
+		DisplayName:    f.DisplayName,
+		Description:    f.Description,
+		IsEnabled:      f.IsEnabled,
+		RuleType:       f.RuleType,
+	}
+}
+
 // FileUploadsNotInAllowedRange - Number of file uploads is not in allowed range.
 type FileUploadsNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -2697,6 +3152,41 @@ type FileUploadsNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type FileUploadsNotInAllowedRange.
+func (f *FileUploadsNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: f.DisplayName,
+		Description: f.Description,
+		IsEnabled:   f.IsEnabled,
+		RuleType:    f.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type FileUploadsNotInAllowedRange.
+func (f *FileUploadsNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: f.MinThreshold,
+		MaxThreshold: f.MaxThreshold,
+		DisplayName:  f.DisplayName,
+		Description:  f.Description,
+		IsEnabled:    f.IsEnabled,
+		RuleType:     f.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type FileUploadsNotInAllowedRange.
+func (f *FileUploadsNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: f.TimeWindowSize,
+		MinThreshold:   f.MinThreshold,
+		MaxThreshold:   f.MaxThreshold,
+		DisplayName:    f.DisplayName,
+		Description:    f.Description,
+		IsEnabled:      f.IsEnabled,
+		RuleType:       f.RuleType,
+	}
 }
 
 // GcpCredentialsDetailsProperties - GCP cloud account connector based service to service credentials, the credentials are
@@ -2746,6 +3236,15 @@ type GcpCredentialsDetailsProperties struct {
 	GrantedPermissions []*PermissionProperty `json:"grantedPermissions,omitempty" azure:"ro"`
 }
 
+// GetAuthenticationDetailsProperties implements the AuthenticationDetailsPropertiesClassification interface for type GcpCredentialsDetailsProperties.
+func (g *GcpCredentialsDetailsProperties) GetAuthenticationDetailsProperties() *AuthenticationDetailsProperties {
+	return &AuthenticationDetailsProperties{
+		AuthenticationProvisioningState: g.AuthenticationProvisioningState,
+		GrantedPermissions:              g.GrantedPermissions,
+		AuthenticationType:              g.AuthenticationType,
+	}
+}
+
 // HTTPC2DMessagesNotInAllowedRange - Number of cloud to device messages (HTTP protocol) is not in allowed range.
 type HTTPC2DMessagesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -2768,6 +3267,41 @@ type HTTPC2DMessagesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type HTTPC2DMessagesNotInAllowedRange.
+func (h *HTTPC2DMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: h.DisplayName,
+		Description: h.Description,
+		IsEnabled:   h.IsEnabled,
+		RuleType:    h.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type HTTPC2DMessagesNotInAllowedRange.
+func (h *HTTPC2DMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: h.MinThreshold,
+		MaxThreshold: h.MaxThreshold,
+		DisplayName:  h.DisplayName,
+		Description:  h.Description,
+		IsEnabled:    h.IsEnabled,
+		RuleType:     h.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type HTTPC2DMessagesNotInAllowedRange.
+func (h *HTTPC2DMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: h.TimeWindowSize,
+		MinThreshold:   h.MinThreshold,
+		MaxThreshold:   h.MaxThreshold,
+		DisplayName:    h.DisplayName,
+		Description:    h.Description,
+		IsEnabled:      h.IsEnabled,
+		RuleType:       h.RuleType,
+	}
 }
 
 // HTTPC2DRejectedMessagesNotInAllowedRange - Number of rejected cloud to device messages (HTTP protocol) is not in allowed
@@ -2795,6 +3329,41 @@ type HTTPC2DRejectedMessagesNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type HTTPC2DRejectedMessagesNotInAllowedRange.
+func (h *HTTPC2DRejectedMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: h.DisplayName,
+		Description: h.Description,
+		IsEnabled:   h.IsEnabled,
+		RuleType:    h.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type HTTPC2DRejectedMessagesNotInAllowedRange.
+func (h *HTTPC2DRejectedMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: h.MinThreshold,
+		MaxThreshold: h.MaxThreshold,
+		DisplayName:  h.DisplayName,
+		Description:  h.Description,
+		IsEnabled:    h.IsEnabled,
+		RuleType:     h.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type HTTPC2DRejectedMessagesNotInAllowedRange.
+func (h *HTTPC2DRejectedMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: h.TimeWindowSize,
+		MinThreshold:   h.MinThreshold,
+		MaxThreshold:   h.MaxThreshold,
+		DisplayName:    h.DisplayName,
+		Description:    h.Description,
+		IsEnabled:      h.IsEnabled,
+		RuleType:       h.RuleType,
+	}
+}
+
 // HTTPD2CMessagesNotInAllowedRange - Number of device to cloud messages (HTTP protocol) is not in allowed range.
 type HTTPD2CMessagesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -2817,6 +3386,41 @@ type HTTPD2CMessagesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type HTTPD2CMessagesNotInAllowedRange.
+func (h *HTTPD2CMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: h.DisplayName,
+		Description: h.Description,
+		IsEnabled:   h.IsEnabled,
+		RuleType:    h.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type HTTPD2CMessagesNotInAllowedRange.
+func (h *HTTPD2CMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: h.MinThreshold,
+		MaxThreshold: h.MaxThreshold,
+		DisplayName:  h.DisplayName,
+		Description:  h.Description,
+		IsEnabled:    h.IsEnabled,
+		RuleType:     h.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type HTTPD2CMessagesNotInAllowedRange.
+func (h *HTTPD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: h.TimeWindowSize,
+		MinThreshold:   h.MinThreshold,
+		MaxThreshold:   h.MaxThreshold,
+		DisplayName:    h.DisplayName,
+		Description:    h.Description,
+		IsEnabled:      h.IsEnabled,
+		RuleType:       h.RuleType,
+	}
 }
 
 // HybridComputeSettingsProperties - Settings for hybrid compute management
@@ -2851,6 +3455,14 @@ type InformationProtectionAwsOffering struct {
 
 	// READ-ONLY; The offering description.
 	Description *string `json:"description,omitempty" azure:"ro"`
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type InformationProtectionAwsOffering.
+func (i *InformationProtectionAwsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: i.OfferingType,
+		Description:  i.Description,
+	}
 }
 
 // InformationProtectionAwsOfferingInformationProtection - The native cloud connection configuration
@@ -3632,6 +4244,19 @@ type ListCustomAlertRule struct {
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ListCustomAlertRule.
+func (l *ListCustomAlertRule) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: l.DisplayName,
+		Description: l.Description,
+		IsEnabled:   l.IsEnabled,
+		RuleType:    l.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type ListCustomAlertRule.
+func (l *ListCustomAlertRule) GetListCustomAlertRule() *ListCustomAlertRule { return l }
+
 // LocalUserNotAllowed - Login by a local user that isn't allowed. Allow list consists of login names to allow.
 type LocalUserNotAllowed struct {
 	// REQUIRED; The values to allow. The format of the values depends on the rule type.
@@ -3651,6 +4276,39 @@ type LocalUserNotAllowed struct {
 
 	// READ-ONLY; The value type of the items in the list.
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
+}
+
+// GetAllowlistCustomAlertRule implements the AllowlistCustomAlertRuleClassification interface for type LocalUserNotAllowed.
+func (l *LocalUserNotAllowed) GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule {
+	return &AllowlistCustomAlertRule{
+		AllowlistValues: l.AllowlistValues,
+		ValueType:       l.ValueType,
+		DisplayName:     l.DisplayName,
+		Description:     l.Description,
+		IsEnabled:       l.IsEnabled,
+		RuleType:        l.RuleType,
+	}
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type LocalUserNotAllowed.
+func (l *LocalUserNotAllowed) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: l.DisplayName,
+		Description: l.Description,
+		IsEnabled:   l.IsEnabled,
+		RuleType:    l.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type LocalUserNotAllowed.
+func (l *LocalUserNotAllowed) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   l.ValueType,
+		DisplayName: l.DisplayName,
+		Description: l.Description,
+		IsEnabled:   l.IsEnabled,
+		RuleType:    l.RuleType,
+	}
 }
 
 // Location - Describes an Azure resource with location
@@ -3685,6 +4343,13 @@ type LogAnalyticsIdentifier struct {
 
 	// READ-ONLY; The azure subscription id for the LogAnalytics workspace storing this alert.
 	WorkspaceSubscriptionID *string `json:"workspaceSubscriptionId,omitempty" azure:"ro"`
+}
+
+// GetResourceIdentifier implements the ResourceIdentifierClassification interface for type LogAnalyticsIdentifier.
+func (l *LogAnalyticsIdentifier) GetResourceIdentifier() *ResourceIdentifier {
+	return &ResourceIdentifier{
+		Type: l.Type,
+	}
 }
 
 // MdeOnboardingData - The resource of the configuration or data needed to onboard the machine to MDE
@@ -3753,6 +4418,41 @@ type MqttC2DMessagesNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type MqttC2DMessagesNotInAllowedRange.
+func (m *MqttC2DMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: m.DisplayName,
+		Description: m.Description,
+		IsEnabled:   m.IsEnabled,
+		RuleType:    m.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type MqttC2DMessagesNotInAllowedRange.
+func (m *MqttC2DMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: m.MinThreshold,
+		MaxThreshold: m.MaxThreshold,
+		DisplayName:  m.DisplayName,
+		Description:  m.Description,
+		IsEnabled:    m.IsEnabled,
+		RuleType:     m.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type MqttC2DMessagesNotInAllowedRange.
+func (m *MqttC2DMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: m.TimeWindowSize,
+		MinThreshold:   m.MinThreshold,
+		MaxThreshold:   m.MaxThreshold,
+		DisplayName:    m.DisplayName,
+		Description:    m.Description,
+		IsEnabled:      m.IsEnabled,
+		RuleType:       m.RuleType,
+	}
+}
+
 // MqttC2DRejectedMessagesNotInAllowedRange - Number of rejected cloud to device messages (MQTT protocol) is not in allowed
 // range.
 type MqttC2DRejectedMessagesNotInAllowedRange struct {
@@ -3778,6 +4478,41 @@ type MqttC2DRejectedMessagesNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type MqttC2DRejectedMessagesNotInAllowedRange.
+func (m *MqttC2DRejectedMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: m.DisplayName,
+		Description: m.Description,
+		IsEnabled:   m.IsEnabled,
+		RuleType:    m.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type MqttC2DRejectedMessagesNotInAllowedRange.
+func (m *MqttC2DRejectedMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: m.MinThreshold,
+		MaxThreshold: m.MaxThreshold,
+		DisplayName:  m.DisplayName,
+		Description:  m.Description,
+		IsEnabled:    m.IsEnabled,
+		RuleType:     m.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type MqttC2DRejectedMessagesNotInAllowedRange.
+func (m *MqttC2DRejectedMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: m.TimeWindowSize,
+		MinThreshold:   m.MinThreshold,
+		MaxThreshold:   m.MaxThreshold,
+		DisplayName:    m.DisplayName,
+		Description:    m.Description,
+		IsEnabled:      m.IsEnabled,
+		RuleType:       m.RuleType,
+	}
+}
+
 // MqttD2CMessagesNotInAllowedRange - Number of device to cloud messages (MQTT protocol) is not in allowed range.
 type MqttD2CMessagesNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -3800,6 +4535,41 @@ type MqttD2CMessagesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type MqttD2CMessagesNotInAllowedRange.
+func (m *MqttD2CMessagesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: m.DisplayName,
+		Description: m.Description,
+		IsEnabled:   m.IsEnabled,
+		RuleType:    m.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type MqttD2CMessagesNotInAllowedRange.
+func (m *MqttD2CMessagesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: m.MinThreshold,
+		MaxThreshold: m.MaxThreshold,
+		DisplayName:  m.DisplayName,
+		Description:  m.Description,
+		IsEnabled:    m.IsEnabled,
+		RuleType:     m.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type MqttD2CMessagesNotInAllowedRange.
+func (m *MqttD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: m.TimeWindowSize,
+		MinThreshold:   m.MinThreshold,
+		MaxThreshold:   m.MaxThreshold,
+		DisplayName:    m.DisplayName,
+		Description:    m.Description,
+		IsEnabled:      m.IsEnabled,
+		RuleType:       m.RuleType,
+	}
 }
 
 // OnPremiseResourceDetailsClassification provides polymorphic access to related types.
@@ -3830,6 +4600,16 @@ type OnPremiseResourceDetails struct {
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
+// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
+
+// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseResourceDetails.
+func (o *OnPremiseResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
+		Source: o.Source,
+	}
+}
+
 // OnPremiseSQLResourceDetails - Details of the On Premise Sql resource that was assessed
 type OnPremiseSQLResourceDetails struct {
 	// REQUIRED; The Sql database name installed on the machine
@@ -3852,6 +4632,24 @@ type OnPremiseSQLResourceDetails struct {
 
 	// REQUIRED; Azure resource Id of the workspace the machine is attached to
 	WorkspaceID *string `json:"workspaceId,omitempty"`
+}
+
+// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
+func (o *OnPremiseSQLResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails {
+	return &OnPremiseResourceDetails{
+		WorkspaceID:      o.WorkspaceID,
+		Vmuuid:           o.Vmuuid,
+		SourceComputerID: o.SourceComputerID,
+		MachineName:      o.MachineName,
+		Source:           o.Source,
+	}
+}
+
+// GetResourceDetails implements the ResourceDetailsClassification interface for type OnPremiseSQLResourceDetails.
+func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
+	return &ResourceDetails{
+		Source: o.Source,
+	}
 }
 
 // Operation - Possible operation in the REST API of Microsoft.Security
@@ -3995,6 +4793,39 @@ type ProcessNotAllowed struct {
 	ValueType *ValueType `json:"valueType,omitempty" azure:"ro"`
 }
 
+// GetAllowlistCustomAlertRule implements the AllowlistCustomAlertRuleClassification interface for type ProcessNotAllowed.
+func (p *ProcessNotAllowed) GetAllowlistCustomAlertRule() *AllowlistCustomAlertRule {
+	return &AllowlistCustomAlertRule{
+		AllowlistValues: p.AllowlistValues,
+		ValueType:       p.ValueType,
+		DisplayName:     p.DisplayName,
+		Description:     p.Description,
+		IsEnabled:       p.IsEnabled,
+		RuleType:        p.RuleType,
+	}
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ProcessNotAllowed.
+func (p *ProcessNotAllowed) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: p.DisplayName,
+		Description: p.Description,
+		IsEnabled:   p.IsEnabled,
+		RuleType:    p.RuleType,
+	}
+}
+
+// GetListCustomAlertRule implements the ListCustomAlertRuleClassification interface for type ProcessNotAllowed.
+func (p *ProcessNotAllowed) GetListCustomAlertRule() *ListCustomAlertRule {
+	return &ListCustomAlertRule{
+		ValueType:   p.ValueType,
+		DisplayName: p.DisplayName,
+		Description: p.Description,
+		IsEnabled:   p.IsEnabled,
+		RuleType:    p.RuleType,
+	}
+}
+
 // ProtectionMode - The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used
 // for Linux.
 type ProtectionMode struct {
@@ -4071,6 +4902,41 @@ type QueuePurgesNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type QueuePurgesNotInAllowedRange.
+func (q *QueuePurgesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: q.DisplayName,
+		Description: q.Description,
+		IsEnabled:   q.IsEnabled,
+		RuleType:    q.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type QueuePurgesNotInAllowedRange.
+func (q *QueuePurgesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: q.MinThreshold,
+		MaxThreshold: q.MaxThreshold,
+		DisplayName:  q.DisplayName,
+		Description:  q.Description,
+		IsEnabled:    q.IsEnabled,
+		RuleType:     q.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type QueuePurgesNotInAllowedRange.
+func (q *QueuePurgesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: q.TimeWindowSize,
+		MinThreshold:   q.MinThreshold,
+		MaxThreshold:   q.MaxThreshold,
+		DisplayName:    q.DisplayName,
+		Description:    q.Description,
+		IsEnabled:      q.IsEnabled,
+		RuleType:       q.RuleType,
+	}
 }
 
 // RecommendationConfigurationProperties - The type of IoT Security recommendation.
@@ -4301,6 +5167,9 @@ type ResourceDetails struct {
 	Source *Source `json:"source,omitempty"`
 }
 
+// GetResourceDetails implements the ResourceDetailsClassification interface for type ResourceDetails.
+func (r *ResourceDetails) GetResourceDetails() *ResourceDetails { return r }
+
 // ResourceIdentifierClassification provides polymorphic access to related types.
 // Call the interface's GetResourceIdentifier() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -4316,6 +5185,9 @@ type ResourceIdentifier struct {
 	// REQUIRED; There can be multiple identifiers of different type per alert, this field specify the identifier type.
 	Type *ResourceIdentifierType `json:"type,omitempty"`
 }
+
+// GetResourceIdentifier implements the ResourceIdentifierClassification interface for type ResourceIdentifier.
+func (r *ResourceIdentifier) GetResourceIdentifier() *ResourceIdentifier { return r }
 
 // Rule - Describes remote addresses that is recommended to communicate with the Azure resource on some (Protocol, Port, Direction).
 // All other remote addresses are recommended to be blocked
@@ -4391,6 +5263,13 @@ type SQLServerVulnerabilityProperties struct {
 
 	// READ-ONLY; The resource type the sub assessment refers to in its resource details
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetAdditionalData implements the AdditionalDataClassification interface for type SQLServerVulnerabilityProperties.
+func (s *SQLServerVulnerabilityProperties) GetAdditionalData() *AdditionalData {
+	return &AdditionalData{
+		AssessedResourceType: s.AssessedResourceType,
+	}
 }
 
 // SQLVulnerabilityAssessmentBaselineRulesClientAddOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRulesClient.Add
@@ -4858,6 +5737,13 @@ type ServerVulnerabilityProperties struct {
 	VendorReferences []*VendorReference `json:"vendorReferences,omitempty" azure:"ro"`
 }
 
+// GetAdditionalData implements the AdditionalDataClassification interface for type ServerVulnerabilityProperties.
+func (s *ServerVulnerabilityProperties) GetAdditionalData() *AdditionalData {
+	return &AdditionalData{
+		AssessedResourceType: s.AssessedResourceType,
+	}
+}
+
 // ServicePrincipalProperties - Details of the service principal.
 type ServicePrincipalProperties struct {
 	// Application ID of service principal.
@@ -4891,6 +5777,9 @@ type Setting struct {
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetSetting implements the SettingClassification interface for type Setting.
+func (s *Setting) GetSetting() *Setting { return s }
 
 // SettingsClientGetOptions contains the optional parameters for the SettingsClient.Get method.
 type SettingsClientGetOptions struct {
@@ -5342,6 +6231,19 @@ type ThresholdCustomAlertRule struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type ThresholdCustomAlertRule.
+func (t *ThresholdCustomAlertRule) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: t.DisplayName,
+		Description: t.Description,
+		IsEnabled:   t.IsEnabled,
+		RuleType:    t.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type ThresholdCustomAlertRule.
+func (t *ThresholdCustomAlertRule) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule { return t }
+
 // TimeWindowCustomAlertRuleClassification provides polymorphic access to related types.
 // Call the interface's GetTimeWindowCustomAlertRule() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5379,6 +6281,33 @@ type TimeWindowCustomAlertRule struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type TimeWindowCustomAlertRule.
+func (t *TimeWindowCustomAlertRule) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: t.DisplayName,
+		Description: t.Description,
+		IsEnabled:   t.IsEnabled,
+		RuleType:    t.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type TimeWindowCustomAlertRule.
+func (t *TimeWindowCustomAlertRule) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: t.MinThreshold,
+		MaxThreshold: t.MaxThreshold,
+		DisplayName:  t.DisplayName,
+		Description:  t.Description,
+		IsEnabled:    t.IsEnabled,
+		RuleType:     t.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type TimeWindowCustomAlertRule.
+func (t *TimeWindowCustomAlertRule) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return t
 }
 
 // TopologyClientGetOptions contains the optional parameters for the TopologyClient.Get method.
@@ -5513,6 +6442,41 @@ type TwinUpdatesNotInAllowedRange struct {
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 }
 
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type TwinUpdatesNotInAllowedRange.
+func (t *TwinUpdatesNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: t.DisplayName,
+		Description: t.Description,
+		IsEnabled:   t.IsEnabled,
+		RuleType:    t.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type TwinUpdatesNotInAllowedRange.
+func (t *TwinUpdatesNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: t.MinThreshold,
+		MaxThreshold: t.MaxThreshold,
+		DisplayName:  t.DisplayName,
+		Description:  t.Description,
+		IsEnabled:    t.IsEnabled,
+		RuleType:     t.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type TwinUpdatesNotInAllowedRange.
+func (t *TwinUpdatesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: t.TimeWindowSize,
+		MinThreshold:   t.MinThreshold,
+		MaxThreshold:   t.MaxThreshold,
+		DisplayName:    t.DisplayName,
+		Description:    t.Description,
+		IsEnabled:      t.IsEnabled,
+		RuleType:       t.RuleType,
+	}
+}
+
 // UnauthorizedOperationsNotInAllowedRange - Number of unauthorized operations is not in allowed range.
 type UnauthorizedOperationsNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -5535,6 +6499,41 @@ type UnauthorizedOperationsNotInAllowedRange struct {
 
 	// READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+}
+
+// GetCustomAlertRule implements the CustomAlertRuleClassification interface for type UnauthorizedOperationsNotInAllowedRange.
+func (u *UnauthorizedOperationsNotInAllowedRange) GetCustomAlertRule() *CustomAlertRule {
+	return &CustomAlertRule{
+		DisplayName: u.DisplayName,
+		Description: u.Description,
+		IsEnabled:   u.IsEnabled,
+		RuleType:    u.RuleType,
+	}
+}
+
+// GetThresholdCustomAlertRule implements the ThresholdCustomAlertRuleClassification interface for type UnauthorizedOperationsNotInAllowedRange.
+func (u *UnauthorizedOperationsNotInAllowedRange) GetThresholdCustomAlertRule() *ThresholdCustomAlertRule {
+	return &ThresholdCustomAlertRule{
+		MinThreshold: u.MinThreshold,
+		MaxThreshold: u.MaxThreshold,
+		DisplayName:  u.DisplayName,
+		Description:  u.Description,
+		IsEnabled:    u.IsEnabled,
+		RuleType:     u.RuleType,
+	}
+}
+
+// GetTimeWindowCustomAlertRule implements the TimeWindowCustomAlertRuleClassification interface for type UnauthorizedOperationsNotInAllowedRange.
+func (u *UnauthorizedOperationsNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeWindowCustomAlertRule {
+	return &TimeWindowCustomAlertRule{
+		TimeWindowSize: u.TimeWindowSize,
+		MinThreshold:   u.MinThreshold,
+		MaxThreshold:   u.MaxThreshold,
+		DisplayName:    u.DisplayName,
+		Description:    u.Description,
+		IsEnabled:      u.IsEnabled,
+		RuleType:       u.RuleType,
+	}
 }
 
 // UpdateIoTSecuritySolutionProperties - Update Security Solution setting data

@@ -38,7 +38,7 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC Default
 // initiative, use 'ascScore'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
 // options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
 func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (SecureScoresClientGetResponse, error) {
@@ -92,7 +93,7 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,9 +108,10 @@ func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (Secure
 
 // NewListPager - List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01
 // options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.List method.
 func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecureScoresClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecureScoresClientListResponse]{
 		More: func(page SecureScoresClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -150,7 +152,7 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

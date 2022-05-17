@@ -23,18 +23,17 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<solution-name>",
+	pager := client.NewListPager("MyGroup",
+		"default",
 		&armsecurity.IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
-		"<aggregated-alert-name>",
+		"MyGroup",
+		"default",
+		"IoT_Bruteforce_Fail/2019-02-02",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,14 +72,14 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Dismiss() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Dismiss(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
-		"<aggregated-alert-name>",
+		"IoTEdgeResources",
+		"default",
+		"IoT_Bruteforce_Fail/2019-02-02/dismiss",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

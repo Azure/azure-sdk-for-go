@@ -24,7 +24,7 @@ func ExamplePricingsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewPricingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewPricingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,12 +44,12 @@ func ExamplePricingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewPricingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewPricingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<pricing-name>",
+		"VirtualMachines",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,16 +65,16 @@ func ExamplePricingsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewPricingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewPricingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<pricing-name>",
+		"VirtualMachines",
 		armsecurity.Pricing{
 			Properties: &armsecurity.PricingProperties{
 				PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-				SubPlan:     to.Ptr("<sub-plan>"),
+				SubPlan:     to.Ptr("P2"),
 			},
 		},
 		nil)

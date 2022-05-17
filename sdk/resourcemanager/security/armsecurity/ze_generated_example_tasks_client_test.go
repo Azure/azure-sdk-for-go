@@ -23,7 +23,7 @@ func ExampleTasksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleTasksClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,17 +47,16 @@ func ExampleTasksClient_NewListByHomeRegionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByHomeRegionPager("<asc-location>",
+	pager := client.NewListByHomeRegionPager("westeurope",
 		&armsecurity.TasksClientListByHomeRegionOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -74,13 +72,13 @@ func ExampleTasksClient_GetSubscriptionLevelTask() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSubscriptionLevelTask(ctx,
-		"<asc-location>",
-		"<task-name>",
+		"westeurope",
+		"62609ee7-d0a5-8616-9fe4-1df5cca7758d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,13 +94,13 @@ func ExampleTasksClient_UpdateSubscriptionLevelTaskState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateSubscriptionLevelTaskState(ctx,
-		"<asc-location>",
-		"<task-name>",
+		"westeurope",
+		"62609ee7-d0a5-8616-9fe4-1df5cca7758d",
 		armsecurity.TaskUpdateActionTypeDismiss,
 		nil)
 	if err != nil {
@@ -117,18 +115,17 @@ func ExampleTasksClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
-		"<asc-location>",
+	pager := client.NewListByResourceGroupPager("myRg",
+		"westeurope",
 		&armsecurity.TasksClientListByResourceGroupOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -144,14 +141,14 @@ func ExampleTasksClient_GetResourceGroupLevelTask() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetResourceGroupLevelTask(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<task-name>",
+		"myRg",
+		"westeurope",
+		"d55b4dc0-779c-c66c-33e5-d7bce24c4222",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -167,14 +164,14 @@ func ExampleTasksClient_UpdateResourceGroupLevelTaskState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewTasksClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateResourceGroupLevelTaskState(ctx,
-		"<resource-group-name>",
-		"<asc-location>",
-		"<task-name>",
+		"myRg",
+		"westeurope",
+		"d55b4dc0-779c-c66c-33e5-d7bce24c4222",
 		armsecurity.TaskUpdateActionTypeDismiss,
 		nil)
 	if err != nil {

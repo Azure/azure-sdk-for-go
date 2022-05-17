@@ -38,7 +38,7 @@ func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewAccountConnectorsClient(subscriptionID string, credential azcore.TokenCr
 // either account credentials or role-based authentication. For GCP, use account organization
 // credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01-preview
 // connectorName - Name of the cloud account connector
 // connectorSetting - Settings for the cloud account connector
 // options - AccountConnectorsClientCreateOrUpdateOptions contains the optional parameters for the AccountConnectorsClient.CreateOrUpdate
@@ -95,7 +96,7 @@ func (client *AccountConnectorsClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, connectorSetting)
 }
 
@@ -110,6 +111,7 @@ func (client *AccountConnectorsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete a cloud account connector from a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01-preview
 // connectorName - Name of the cloud account connector
 // options - AccountConnectorsClientDeleteOptions contains the optional parameters for the AccountConnectorsClient.Delete
 // method.
@@ -146,12 +148,13 @@ func (client *AccountConnectorsClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Details of a specific cloud account connector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01-preview
 // connectorName - Name of the cloud account connector
 // options - AccountConnectorsClientGetOptions contains the optional parameters for the AccountConnectorsClient.Get method.
 func (client *AccountConnectorsClient) Get(ctx context.Context, connectorName string, options *AccountConnectorsClientGetOptions) (AccountConnectorsClientGetResponse, error) {
@@ -187,7 +190,7 @@ func (client *AccountConnectorsClient) getCreateRequest(ctx context.Context, con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -202,9 +205,10 @@ func (client *AccountConnectorsClient) getHandleResponse(resp *http.Response) (A
 
 // NewListPager - Cloud accounts connectors of a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-01-preview
 // options - AccountConnectorsClientListOptions contains the optional parameters for the AccountConnectorsClient.List method.
 func (client *AccountConnectorsClient) NewListPager(options *AccountConnectorsClientListOptions) *runtime.Pager[AccountConnectorsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountConnectorsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountConnectorsClientListResponse]{
 		More: func(page AccountConnectorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -245,7 +249,7 @@ func (client *AccountConnectorsClient) listCreateRequest(ctx context.Context, op
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

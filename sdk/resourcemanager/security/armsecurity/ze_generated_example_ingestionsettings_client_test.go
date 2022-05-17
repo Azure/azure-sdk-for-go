@@ -23,7 +23,7 @@ func ExampleIngestionSettingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleIngestionSettingsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,12 +47,12 @@ func ExampleIngestionSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<ingestion-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,12 +68,12 @@ func ExampleIngestionSettingsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<ingestion-setting-name>",
+		"default",
 		armsecurity.IngestionSetting{},
 		nil)
 	if err != nil {
@@ -91,12 +90,12 @@ func ExampleIngestionSettingsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<ingestion-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,12 +109,12 @@ func ExampleIngestionSettingsClient_ListTokens() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListTokens(ctx,
-		"<ingestion-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -131,12 +130,12 @@ func ExampleIngestionSettingsClient_ListConnectionStrings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIngestionSettingsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIngestionSettingsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListConnectionStrings(ctx,
-		"<ingestion-setting-name>",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

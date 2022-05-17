@@ -38,7 +38,7 @@ func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // ingestionSettingName - Name of the ingestion setting
 // ingestionSetting - Ingestion setting object
 // options - IngestionSettingsClientCreateOptions contains the optional parameters for the IngestionSettingsClient.Create
@@ -93,7 +94,7 @@ func (client *IngestionSettingsClient) createCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, ingestionSetting)
 }
 
@@ -108,6 +109,7 @@ func (client *IngestionSettingsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes the ingestion settings for this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // ingestionSettingName - Name of the ingestion setting
 // options - IngestionSettingsClientDeleteOptions contains the optional parameters for the IngestionSettingsClient.Delete
 // method.
@@ -144,12 +146,13 @@ func (client *IngestionSettingsClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // ingestionSettingName - Name of the ingestion setting
 // options - IngestionSettingsClientGetOptions contains the optional parameters for the IngestionSettingsClient.Get method.
 func (client *IngestionSettingsClient) Get(ctx context.Context, ingestionSettingName string, options *IngestionSettingsClientGetOptions) (IngestionSettingsClientGetResponse, error) {
@@ -185,7 +188,7 @@ func (client *IngestionSettingsClient) getCreateRequest(ctx context.Context, ing
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -200,9 +203,10 @@ func (client *IngestionSettingsClient) getHandleResponse(resp *http.Response) (I
 
 // NewListPager - Settings for ingesting security data and logs to correlate with resources associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // options - IngestionSettingsClientListOptions contains the optional parameters for the IngestionSettingsClient.List method.
 func (client *IngestionSettingsClient) NewListPager(options *IngestionSettingsClientListOptions) *runtime.Pager[IngestionSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IngestionSettingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IngestionSettingsClientListResponse]{
 		More: func(page IngestionSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -243,7 +247,7 @@ func (client *IngestionSettingsClient) listCreateRequest(ctx context.Context, op
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -258,6 +262,7 @@ func (client *IngestionSettingsClient) listHandleResponse(resp *http.Response) (
 
 // ListConnectionStrings - Connection strings for ingesting security scan logs and data.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // ingestionSettingName - Name of the ingestion setting
 // options - IngestionSettingsClientListConnectionStringsOptions contains the optional parameters for the IngestionSettingsClient.ListConnectionStrings
 // method.
@@ -294,7 +299,7 @@ func (client *IngestionSettingsClient) listConnectionStringsCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -309,6 +314,7 @@ func (client *IngestionSettingsClient) listConnectionStringsHandleResponse(resp 
 
 // ListTokens - Returns the token that is used for correlating ingested telemetry with the resources in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-15-preview
 // ingestionSettingName - Name of the ingestion setting
 // options - IngestionSettingsClientListTokensOptions contains the optional parameters for the IngestionSettingsClient.ListTokens
 // method.
@@ -345,7 +351,7 @@ func (client *IngestionSettingsClient) listTokensCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

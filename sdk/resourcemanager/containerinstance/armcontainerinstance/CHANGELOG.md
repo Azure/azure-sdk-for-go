@@ -1,5 +1,20 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ContainerGroupsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ContainerGroupsClientStartResponse], error)` to `(*runtime.Poller[ContainerGroupsClientStartResponse], error)`
+- Function `*ContainerGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ContainerGroupsClientDeleteResponse], error)` to `(*runtime.Poller[ContainerGroupsClientDeleteResponse], error)`
+- Function `*ContainerGroupsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ContainerGroupsClientRestartResponse], error)` to `(*runtime.Poller[ContainerGroupsClientRestartResponse], error)`
+- Function `*ContainerGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ContainerGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ContainerGroupsClientCreateOrUpdateResponse], error)`
+- Function `CapabilitiesListResult.MarshalJSON` has been removed
+- Function `CachedImagesListResult.MarshalJSON` has been removed
+- Function `UsageListResult.MarshalJSON` has been removed
+- Function `ContainerGroupListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

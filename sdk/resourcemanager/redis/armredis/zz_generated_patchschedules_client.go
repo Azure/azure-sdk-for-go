@@ -39,7 +39,7 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the Redis cache.
 // defaultParam - Default string modeled as parameter for auto generation to work correctly.
@@ -104,7 +105,7 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // defaultParam - Default string modeled as parameter for auto generation to work correctly.
@@ -164,12 +166,13 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // name - The name of the redis cache.
 // defaultParam - Default string modeled as parameter for auto generation to work correctly.
@@ -215,7 +218,7 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 
 // NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // cacheName - The name of the Redis cache.
 // options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
 // method.
 func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupName string, cacheName string, options *PatchSchedulesClientListByRedisResourceOptions) *runtime.Pager[PatchSchedulesClientListByRedisResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PatchSchedulesClientListByRedisResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PatchSchedulesClientListByRedisResourceResponse]{
 		More: func(page PatchSchedulesClientListByRedisResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

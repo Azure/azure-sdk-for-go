@@ -23,18 +23,17 @@ func ExamplePrivateLinkResourcesClient_NewListByRedisCachePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armredis.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armredis.NewPrivateLinkResourcesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRedisCachePager("<resource-group-name>",
-		"<cache-name>",
+	pager := client.NewListByRedisCachePager("rgtest01",
+		"cacheTest01",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

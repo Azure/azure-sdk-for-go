@@ -8,10 +8,7 @@ package azsecrets
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"net/http"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -221,7 +218,7 @@ func deleteSecretResponseFromGenerated(i generated.KeyVaultClientDeleteSecretRes
 // BeginDeleteSecretOptions contains optional parameters for BeginDeleteSecret.
 type BeginDeleteSecretOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
-	ResumeToken *string
+	ResumeToken string
 }
 
 // convert public options to generated options struct
@@ -229,114 +226,36 @@ func (b *BeginDeleteSecretOptions) toGenerated() *generated.KeyVaultClientDelete
 	return &generated.KeyVaultClientDeleteSecretOptions{}
 }
 
-// DeleteSecretPoller is returned by BeginDeleteSecret.
-type DeleteSecretPoller struct {
-	secretName     string // This is the secret to Poll for in GetDeletedSecret
-	vaultUrl       string
-	client         *generated.KeyVaultClient
-	deleteResponse generated.KeyVaultClientDeleteSecretResponse
-	lastResponse   generated.KeyVaultClientGetDeletedSecretResponse
-	rawResponse    *http.Response
-	resumeToken    string
-}
-
-// Done returns true if the LRO has reached a terminal state
-func (s *DeleteSecretPoller) Done() bool {
-	if s.rawResponse == nil {
-		return false
-	}
-	return s.rawResponse.StatusCode == http.StatusOK
-}
-
-// Poll fetches the latest state of the delete operation.
-func (s *DeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
-	var rawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
-	resp, err := s.client.GetDeletedSecret(ctx, s.vaultUrl, s.secretName, nil)
-	if err == nil {
-		// Service recognizes DeletedSecret, operation is done
-		s.lastResponse = resp
-		s.rawResponse = rawResp
-		return rawResp, nil
-	}
-	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
-		// This is the expected result
-		s.rawResponse = rawResp
-		return rawResp, nil
-	}
-	return rawResp, err
-}
-
-// FinalResponse returns the final response after the secret is deleted.
-func (s *DeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
-	return deleteSecretResponseFromGenerated(s.deleteResponse), nil
-}
-
-// PollUntilDone polls Key Vault until the secret is deleted. The t parameter determines the wait between polls.
-func (s *DeleteSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
-	for {
-		resp, err := s.Poll(ctx)
-		if err != nil {
-			return DeleteSecretResponse{}, err
-		}
-		s.rawResponse = resp
-		if s.Done() {
-			break
-		}
-		time.Sleep(t)
-	}
-	return deleteSecretResponseFromGenerated(s.deleteResponse), nil
-}
-
-// ResumeToken returns a token for resuming polling at a later time
-func (s *DeleteSecretPoller) ResumeToken() (string, error) {
-	return s.resumeToken, nil
-}
-
 // BeginDeleteSecret deletes all versions of a secret. It returns a Poller that enables waiting for Key Vault to finish
 // deleting the secret.
-func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (*DeleteSecretPoller, error) {
+func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (*runtime.Poller[DeleteSecretResponse], error) {
 	if options == nil {
 		options = &BeginDeleteSecretOptions{}
 	}
-	var resumeToken string
-	var delResp internal.KeyVaultClientDeleteSecretResponse
-	var err error
-	if options.ResumeToken == nil {
-		delResp, err = c.kvClient.DeleteSecret(ctx, c.vaultUrl, name, options.toGenerated())
-		if err != nil {
-			return nil, err
-		}
 
-		marshalled, err := json.Marshal(delResp)
-		if err != nil {
-			return nil, err
-		}
-		resumeToken = string(marshalled)
-	} else {
-		resumeToken = *options.ResumeToken
-		err = json.Unmarshal([]byte(resumeToken), &delResp)
-		if err != nil {
-			return nil, err
-		}
+	handler := beginDeleteSecretOperation{
+		poll: func(ctx context.Context) (*http.Response, error) {
+			req, err := c.kvClient.GetDeletedSecretCreateRequest(ctx, c.vaultUrl, name, nil)
+			if err != nil {
+				return nil, err
+			}
+			return c.kvClient.Pipeline().Do(req)
+		},
 	}
 
-	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, nil)
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		if httpErr.StatusCode != http.StatusNotFound {
-			return nil, err
-		}
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(
+			options.ResumeToken, c.kvClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeleteSecretResponse]{Handler: &handler},
+		)
 	}
 
-	return &DeleteSecretPoller{
-		vaultUrl:       c.vaultUrl,
-		secretName:     name,
-		client:         c.kvClient,
-		deleteResponse: delResp,
-		lastResponse:   getResp,
-		resumeToken:    resumeToken,
-	}, nil
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
+	if _, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, name, options.toGenerated()); err != nil {
+		return nil, err
+	}
+
+	return runtime.NewPoller(rawResp, c.kvClient.Pipeline(), &runtime.NewPollerOptions[DeleteSecretResponse]{Handler: &handler})
 }
 
 // GetDeletedSecretOptions contains optional parameters for GetDeletedSecret.
@@ -579,73 +498,6 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, name string, options *P
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
-// RecoverDeletedSecretPoller is returned by BeginRecoverDeletedSecret.
-type RecoverDeletedSecretPoller struct {
-	secretName      string
-	vaultUrl        string
-	client          *generated.KeyVaultClient
-	recoverResponse generated.KeyVaultClientRecoverDeletedSecretResponse
-	lastResponse    generated.KeyVaultClientGetSecretResponse
-	rawResponse     *http.Response
-	resumeToken     string
-}
-
-// Done returns true when the polling operation is completed
-func (b *RecoverDeletedSecretPoller) Done() bool {
-	if b.rawResponse == nil {
-		return false
-	}
-	return b.rawResponse.StatusCode == http.StatusOK
-}
-
-// Poll fetches the latest state of the recover operation.
-func (b *RecoverDeletedSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
-	var rawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
-	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
-	if err == nil {
-		// secret has been recovered, finish
-		b.lastResponse = resp
-		b.rawResponse = rawResp
-		return b.rawResponse, nil
-	}
-
-	if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
-		// this is the expected response
-		b.lastResponse = resp
-		b.rawResponse = rawResp
-		return b.rawResponse, nil
-	}
-
-	return rawResp, err
-}
-
-// FinalResponse returns the final response after the recover operation is complete.
-func (b *RecoverDeletedSecretPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
-	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
-}
-
-// PollUntilDone polls Key Vault until the recover operation is complete. The t parameter determines the wait between polls.
-func (b *RecoverDeletedSecretPoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
-	for {
-		resp, err := b.Poll(ctx)
-		if err != nil {
-			b.rawResponse = resp
-		}
-		if b.Done() {
-			break
-		}
-		b.rawResponse = resp
-		time.Sleep(t)
-	}
-	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
-}
-
-// ResumeToken returns a token for resuming polling at a later time
-func (s *RecoverDeletedSecretPoller) ResumeToken() (string, error) {
-	return s.resumeToken, nil
-}
-
 // BeginRecoverDeletedSecretOptions contains optional parameters for BeginRecoverDeletedSecret.
 type BeginRecoverDeletedSecretOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
@@ -692,48 +544,36 @@ func recoverDeletedSecretResponseFromGenerated(i generated.KeyVaultClientRecover
 
 // BeginRecoverDeletedSecret recovers a deleted secret to its latest version. Recovery may take several seconds. This method
 // therefore returns a poller that enables waiting until recovery is complete.
-func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, options *BeginRecoverDeletedSecretOptions) (*RecoverDeletedSecretPoller, error) {
+func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, options *BeginRecoverDeletedSecretOptions) (*runtime.Poller[RecoverDeletedSecretResponse], error) {
 	if options == nil {
 		options = &BeginRecoverDeletedSecretOptions{}
 	}
-	var resumeToken string
-	var recoverResp internal.KeyVaultClientRecoverDeletedSecretResponse
-	var err error
-	if options.ResumeToken == nil {
-		recoverResp, err = c.kvClient.RecoverDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
-		if err != nil {
-			return nil, err
-		}
 
-		marshalled, err := json.Marshal(recoverResp)
-		if err != nil {
-			return nil, err
-		}
-		resumeToken = string(marshalled)
-	} else {
-		resumeToken = *options.ResumeToken
-		err = json.Unmarshal([]byte(resumeToken), &recoverResp)
-		if err != nil {
-			return nil, err
-		}
+	handler := beginRecoverDeletedSecretOperation{
+		poll: func(ctx context.Context) (*http.Response, error) {
+			req, err := c.kvClient.GetSecretCreateRequest(ctx, c.vaultUrl, name, "", nil)
+			if err != nil {
+				return nil, err
+			}
+			return c.kvClient.Pipeline().Do(req)
+		},
 	}
 
-	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, name, "", nil)
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		if httpErr.StatusCode != http.StatusNotFound {
-			return nil, err
-		}
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(
+			options.ResumeToken, c.kvClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoverDeletedSecretResponse]{Handler: &handler},
+		)
 	}
 
-	return &RecoverDeletedSecretPoller{
-		lastResponse:    getResp,
-		secretName:      name,
-		client:          c.kvClient,
-		vaultUrl:        c.vaultUrl,
-		recoverResponse: recoverResp,
-		resumeToken:     resumeToken,
-	}, nil
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
+	if _, err := c.kvClient.RecoverDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated()); err != nil {
+		return nil, err
+	}
+
+	return runtime.NewPoller(
+		rawResp, c.kvClient.Pipeline(), &runtime.NewPollerOptions[RecoverDeletedSecretResponse]{Handler: &handler},
+	)
 }
 
 // ListDeletedSecretsResponse contains a page of deleted secrets.
@@ -783,7 +623,7 @@ func (c *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) 
 			if err != nil {
 				return ListDeletedSecretsResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListDeletedSecretsResponse{}, err
 			}
@@ -842,7 +682,7 @@ func (c *Client) NewListPropertiesOfSecretVersionsPager(name string, options *Li
 			if err != nil {
 				return ListPropertiesOfSecretVersionsResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListPropertiesOfSecretVersionsResponse{}, err
 			}
@@ -901,7 +741,7 @@ func (c *Client) NewListPropertiesOfSecretsPager(options *ListPropertiesOfSecret
 			if err != nil {
 				return ListPropertiesOfSecretsResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListPropertiesOfSecretsResponse{}, err
 			}

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
@@ -26,15 +24,15 @@ func ExampleZonesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
+		"rg1",
+		"zone1",
 		armdns.Zone{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Global"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
@@ -56,20 +54,18 @@ func ExampleZonesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		&armdns.ZonesClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"rg1",
+		"zone1",
+		&armdns.ZonesClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -82,13 +78,13 @@ func ExampleZonesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
+		"rg1",
+		"zone1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,13 +100,13 @@ func ExampleZonesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
+		"rg1",
+		"zone1",
 		armdns.ZoneUpdate{
 			Tags: map[string]*string{
 				"key2": to.Ptr("value2"),
@@ -131,17 +127,16 @@ func ExampleZonesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("rg1",
 		&armdns.ZonesClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -157,7 +152,7 @@ func ExampleZonesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewZonesClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewZonesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -166,7 +161,6 @@ func ExampleZonesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

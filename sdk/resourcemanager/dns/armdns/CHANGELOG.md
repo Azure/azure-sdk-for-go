@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ZonesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ZonesClientDeleteResponse], error)` to `(*runtime.Poller[ZonesClientDeleteResponse], error)`
+- Function `RecordSetListResult.MarshalJSON` has been removed
+- Function `ResourceReference.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ResourceReferenceResultProperties.MarshalJSON` has been removed
+- Function `ZoneListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

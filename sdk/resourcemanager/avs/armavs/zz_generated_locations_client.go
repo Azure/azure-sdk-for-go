@@ -38,7 +38,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CheckQuotaAvailability - Return quota for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // location - Azure region
 // options - LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
 // method.
@@ -92,7 +93,7 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.R
 
 // CheckTrialAvailability - Return trial status for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // location - Azure region
 // options - LocationsClientCheckTrialAvailabilityOptions contains the optional parameters for the LocationsClient.CheckTrialAvailability
 // method.
@@ -143,7 +145,7 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

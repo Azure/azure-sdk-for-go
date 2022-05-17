@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
@@ -26,18 +24,17 @@ func ExampleScriptExecutionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-cloud-name>",
+	pager := client.NewListPager("group1",
+		"{privateCloudName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleScriptExecutionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<script-execution-name>",
+		"group1",
+		"cloud1",
+		"addSsoServer",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,43 +73,43 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<script-execution-name>",
+		"group1",
+		"cloud1",
+		"addSsoServer",
 		armavs.ScriptExecution{
 			Properties: &armavs.ScriptExecutionProperties{
 				HiddenParameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptSecureStringExecutionParameter{
-						Name:        to.Ptr("<name>"),
+						Name:        to.Ptr("Password"),
 						Type:        to.Ptr(armavs.ScriptExecutionParameterTypeSecureValue),
-						SecureValue: to.Ptr("<secure-value>"),
+						SecureValue: to.Ptr("PlaceholderPassword"),
 					}},
 				Parameters: []armavs.ScriptExecutionParameterClassification{
 					&armavs.ScriptStringExecutionParameter{
-						Name:  to.Ptr("<name>"),
+						Name:  to.Ptr("DomainName"),
 						Type:  to.Ptr(armavs.ScriptExecutionParameterTypeValue),
-						Value: to.Ptr("<value>"),
+						Value: to.Ptr("placeholderDomain.local"),
 					},
 					&armavs.ScriptStringExecutionParameter{
-						Name:  to.Ptr("<name>"),
+						Name:  to.Ptr("BaseUserDN"),
 						Type:  to.Ptr(armavs.ScriptExecutionParameterTypeValue),
-						Value: to.Ptr("<value>"),
+						Value: to.Ptr("DC=placeholder, DC=placeholder"),
 					}},
-				Retention:      to.Ptr("<retention>"),
-				ScriptCmdletID: to.Ptr("<script-cmdlet-id>"),
-				Timeout:        to.Ptr("<timeout>"),
+				Retention:      to.Ptr("P0Y0M60DT0H60M60S"),
+				ScriptCmdletID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/AVS.PowerCommands@1.0.0/scriptCmdlets/New-SsoExternalIdentitySource"),
+				Timeout:        to.Ptr("P0Y0M0DT0H60M60S"),
 			},
 		},
-		&armavs.ScriptExecutionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -127,19 +124,19 @@ func ExampleScriptExecutionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<script-execution-name>",
-		&armavs.ScriptExecutionsClientBeginDeleteOptions{ResumeToken: ""})
+		"group1",
+		"cloud1",
+		"{scriptExecutionName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -152,14 +149,14 @@ func ExampleScriptExecutionsClient_GetExecutionLogs() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewScriptExecutionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewScriptExecutionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetExecutionLogs(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<script-execution-name>",
+		"group1",
+		"cloud1",
+		"addSsoServer",
 		&armavs.ScriptExecutionsClientGetExecutionLogsOptions{ScriptOutputStreamType: []*armavs.ScriptOutputStreamType{
 			to.Ptr(armavs.ScriptOutputStreamTypeInformation),
 			to.Ptr(armavs.ScriptOutputStreamType("Warnings")),

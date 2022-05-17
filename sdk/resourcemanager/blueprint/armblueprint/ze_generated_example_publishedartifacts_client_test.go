@@ -28,10 +28,10 @@ func ExamplePublishedArtifactsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
-		"<version-id>",
-		"<artifact-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"V2",
+		"storageTemplate",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,15 +51,14 @@ func ExamplePublishedArtifactsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
-		"<blueprint-name>",
-		"<version-id>",
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
+		"V2",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

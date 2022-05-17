@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `AssignmentList.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `AssignmentOperationList.MarshalJSON` has been removed
+- Function `PublishedBlueprintList.MarshalJSON` has been removed
+- Function `ArtifactList.MarshalJSON` has been removed
+- Function `List.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

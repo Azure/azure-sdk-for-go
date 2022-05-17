@@ -29,16 +29,16 @@ func ExampleAssignmentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-scope>",
-		"<assignment-name>",
+		"managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
 		armblueprint.Assignment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Identity: &armblueprint.ManagedServiceIdentity{
 				Type: to.Ptr(armblueprint.ManagedServiceIdentityTypeSystemAssigned),
 			},
 			Properties: &armblueprint.AssignmentProperties{
-				Description: to.Ptr("<description>"),
-				BlueprintID: to.Ptr("<blueprint-id>"),
+				Description: to.Ptr("enforce pre-defined simpleBlueprint to this XXXXXXXX subscription."),
+				BlueprintID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoOnlineGroup/providers/Microsoft.Blueprint/blueprints/simpleBlueprint"),
 				Parameters: map[string]*armblueprint.ParameterValue{
 					"costCenter": {
 						Value: "Contoso/Online/Shopping/Production",
@@ -55,11 +55,11 @@ func ExampleAssignmentsClient_CreateOrUpdate() {
 				},
 				ResourceGroups: map[string]*armblueprint.ResourceGroupValue{
 					"storageRG": {
-						Name:     to.Ptr("<name>"),
-						Location: to.Ptr("<location>"),
+						Name:     to.Ptr("defaultRG"),
+						Location: to.Ptr("eastus"),
 					},
 				},
-				Scope: to.Ptr("<scope>"),
+				Scope: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 			},
 		},
 		nil)
@@ -80,8 +80,8 @@ func ExampleAssignmentsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<assignment-name>",
+		"managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,8 +102,8 @@ func ExampleAssignmentsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-scope>",
-		"<assignment-name>",
+		"managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
 		&armblueprint.AssignmentsClientDeleteOptions{DeleteBehavior: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -122,8 +122,8 @@ func ExampleAssignmentsClient_WhoIsBlueprint() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.WhoIsBlueprint(ctx,
-		"<resource-scope>",
-		"<assignment-name>",
+		"managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -143,13 +143,12 @@ func ExampleAssignmentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
+	pager := client.NewListPager("managementGroups/ContosoOnlineGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

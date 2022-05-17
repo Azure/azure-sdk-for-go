@@ -29,36 +29,36 @@ func ExampleBlueprintsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		armblueprint.Blueprint{
 			Properties: &armblueprint.Properties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("blueprint contains all artifact kinds {'template', 'rbac', 'policy'}"),
 				Parameters: map[string]*armblueprint.ParameterDefinition{
 					"costCenter": {
 						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.Ptr("<display-name>"),
+							DisplayName: to.Ptr("force cost center tag for all resources under given subscription."),
 						},
 					},
 					"owners": {
 						Type: to.Ptr(armblueprint.TemplateParameterTypeArray),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.Ptr("<display-name>"),
+							DisplayName: to.Ptr("assign owners to subscription along with blueprint assignment."),
 						},
 					},
 					"storageAccountType": {
 						Type: to.Ptr(armblueprint.TemplateParameterTypeString),
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							DisplayName: to.Ptr("<display-name>"),
+							DisplayName: to.Ptr("storage account type."),
 						},
 					},
 				},
 				ResourceGroups: map[string]*armblueprint.ResourceGroupDefinition{
 					"storageRG": {
 						Metadata: &armblueprint.ParameterDefinitionMetadata{
-							Description: to.Ptr("<description>"),
-							DisplayName: to.Ptr("<display-name>"),
+							Description: to.Ptr("Contains storageAccounts that collect all shoebox logs."),
+							DisplayName: to.Ptr("storage resource group"),
 						},
 					},
 				},
@@ -83,8 +83,8 @@ func ExampleBlueprintsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,8 +105,8 @@ func ExampleBlueprintsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-scope>",
-		"<blueprint-name>",
+		"providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
+		"simpleBlueprint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -126,13 +126,12 @@ func ExampleBlueprintsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
+	pager := client.NewListPager("providers/Microsoft.Management/managementGroups/ContosoOnlineGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

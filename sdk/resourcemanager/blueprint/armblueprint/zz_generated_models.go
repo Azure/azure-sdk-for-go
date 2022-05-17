@@ -34,6 +34,9 @@ type Artifact struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetArtifact implements the ArtifactClassification interface for type Artifact.
+func (a *Artifact) GetArtifact() *Artifact { return a }
+
 // ArtifactList - List of blueprint artifacts.
 type ArtifactList struct {
 	// List of blueprint artifacts.
@@ -464,6 +467,16 @@ type PolicyAssignmentArtifact struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetArtifact implements the ArtifactClassification interface for type PolicyAssignmentArtifact.
+func (p *PolicyAssignmentArtifact) GetArtifact() *Artifact {
+	return &Artifact{
+		Kind: p.Kind,
+		ID:   p.ID,
+		Type: p.Type,
+		Name: p.Name,
+	}
+}
+
 // PolicyAssignmentArtifactProperties - Properties of a Policy assignment blueprint artifact.
 type PolicyAssignmentArtifactProperties struct {
 	// REQUIRED; Parameter values for the policy definition.
@@ -687,6 +700,16 @@ type RoleAssignmentArtifact struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetArtifact implements the ArtifactClassification interface for type RoleAssignmentArtifact.
+func (r *RoleAssignmentArtifact) GetArtifact() *Artifact {
+	return &Artifact{
+		Kind: r.Kind,
+		ID:   r.ID,
+		Type: r.Type,
+		Name: r.Name,
+	}
+}
+
 // RoleAssignmentArtifactProperties - Properties of a Role assignment blueprint artifact.
 type RoleAssignmentArtifactProperties struct {
 	// REQUIRED; Array of user or group identities in Azure Active Directory. The roleDefinition will apply to each identity.
@@ -766,6 +789,16 @@ type TemplateArtifact struct {
 
 	// READ-ONLY; Type of this resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetArtifact implements the ArtifactClassification interface for type TemplateArtifact.
+func (t *TemplateArtifact) GetArtifact() *Artifact {
+	return &Artifact{
+		Kind: t.Kind,
+		ID:   t.ID,
+		Type: t.Type,
+		Name: t.Name,
+	}
 }
 
 // TemplateArtifactProperties - Properties of a Resource Manager template blueprint artifact.

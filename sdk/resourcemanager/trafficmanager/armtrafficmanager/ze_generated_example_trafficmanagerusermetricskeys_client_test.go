@@ -23,7 +23,7 @@ func ExampleUserMetricsKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewUserMetricsKeysClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,7 +43,7 @@ func ExampleUserMetricsKeysClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewUserMetricsKeysClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleUserMetricsKeysClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewUserMetricsKeysClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewUserMetricsKeysClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

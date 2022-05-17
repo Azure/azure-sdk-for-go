@@ -24,21 +24,21 @@ func ExampleEndpointsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewEndpointsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1421",
+		"azsmnet6386",
 		armtrafficmanager.EndpointTypeExternalEndpoints,
-		"<endpoint-name>",
+		"azsmnet7187",
 		armtrafficmanager.Endpoint{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("azsmnet7187"),
+			Type: to.Ptr("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
+			ID:   to.Ptr("/subscriptions/{subscription-id}/resourceGroups/azuresdkfornetautoresttrafficmanager1421/providers/Microsoft.Network/trafficManagerProfiles/azsmnet6386/externalEndpoints/azsmnet7187"),
 			Properties: &armtrafficmanager.EndpointProperties{
-				Target: to.Ptr("<target>"),
+				Target: to.Ptr("another.foobar.contoso.com"),
 			},
 		},
 		nil)
@@ -56,15 +56,15 @@ func ExampleEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewEndpointsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager2191",
+		"azuresdkfornetautoresttrafficmanager8224",
 		armtrafficmanager.EndpointTypeExternalEndpoints,
-		"<endpoint-name>",
+		"My%20external%20endpoint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,31 +80,31 @@ func ExampleEndpointsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewEndpointsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1421",
+		"azsmnet6386",
 		armtrafficmanager.EndpointTypeExternalEndpoints,
-		"<endpoint-name>",
+		"azsmnet7187",
 		armtrafficmanager.Endpoint{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("azsmnet7187"),
+			Type: to.Ptr("Microsoft.network/TrafficManagerProfiles/ExternalEndpoints"),
 			Properties: &armtrafficmanager.EndpointProperties{
 				CustomHeaders: []*armtrafficmanager.EndpointPropertiesCustomHeadersItem{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("header-1"),
+						Value: to.Ptr("value-1"),
 					},
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("header-2"),
+						Value: to.Ptr("value-2"),
 					}},
-				EndpointLocation: to.Ptr("<endpoint-location>"),
+				EndpointLocation: to.Ptr("North Europe"),
 				EndpointStatus:   to.Ptr(armtrafficmanager.EndpointStatusEnabled),
-				Target:           to.Ptr("<target>"),
+				Target:           to.Ptr("foobar.contoso.com"),
 			},
 		},
 		nil)
@@ -122,15 +122,15 @@ func ExampleEndpointsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtrafficmanager.NewEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armtrafficmanager.NewEndpointsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
+		"azuresdkfornetautoresttrafficmanager1421",
+		"azsmnet6386",
 		armtrafficmanager.EndpointTypeExternalEndpoints,
-		"<endpoint-name>",
+		"azsmnet7187",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

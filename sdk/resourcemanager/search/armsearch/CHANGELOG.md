@@ -1,5 +1,20 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*SharedPrivateLinkResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*SharedPrivateLinkResourcesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)` to `(*runtime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error)`
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ListQueryKeysResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesResult.MarshalJSON` has been removed
+- Function `SharedPrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ServiceListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

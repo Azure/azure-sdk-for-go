@@ -649,7 +649,7 @@ func TestMergeCertificate(t *testing.T) {
 	resp, err := poller.Poll(ctx)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
-	if retryAfter := resp.Header.Get("Retry-After"); retryAfter != "" {
+	if retryAfter := resp.Header.Get("Retry-After"); retryAfter != "" && recording.GetRecordMode() != recording.PlaybackMode {
 		// sleep before moving on
 		asInt, err := strconv.Atoi(retryAfter)
 		require.NoError(t, err)

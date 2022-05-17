@@ -39,7 +39,7 @@ func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewTransactionNodesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Create or update the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - TransactionNodesClientBeginCreateOptions contains the optional parameters for the TransactionNodesClient.BeginCreate
 // method.
-func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*armruntime.Poller[TransactionNodesClientCreateResponse], error) {
+func (client *TransactionNodesClient) BeginCreate(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*runtime.Poller[TransactionNodesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TransactionNodesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TransactionNodesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TransactionNodesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TransactionNodesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create or update the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 func (client *TransactionNodesClient) create(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
@@ -118,7 +120,7 @@ func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, b
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.TransactionNode != nil {
 		return req, runtime.MarshalAsJSON(req, *options.TransactionNode)
 	}
@@ -127,26 +129,28 @@ func (client *TransactionNodesClient) createCreateRequest(ctx context.Context, b
 
 // BeginDelete - Delete the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - TransactionNodesClientBeginDeleteOptions contains the optional parameters for the TransactionNodesClient.BeginDelete
 // method.
-func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*armruntime.Poller[TransactionNodesClientDeleteResponse], error) {
+func (client *TransactionNodesClient) BeginDelete(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*runtime.Poller[TransactionNodesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TransactionNodesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TransactionNodesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TransactionNodesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TransactionNodesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 func (client *TransactionNodesClient) deleteOperation(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, options *TransactionNodesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, blockchainMemberName, transactionNodeName, resourceGroupName, options)
 	if err != nil {
@@ -193,6 +197,7 @@ func (client *TransactionNodesClient) deleteCreateRequest(ctx context.Context, b
 
 // Get - Get the details of the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
@@ -239,7 +244,7 @@ func (client *TransactionNodesClient) getCreateRequest(ctx context.Context, bloc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,12 +259,13 @@ func (client *TransactionNodesClient) getHandleResponse(resp *http.Response) (Tr
 
 // NewListPager - Lists the transaction nodes for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - TransactionNodesClientListOptions contains the optional parameters for the TransactionNodesClient.List method.
 func (client *TransactionNodesClient) NewListPager(blockchainMemberName string, resourceGroupName string, options *TransactionNodesClientListOptions) *runtime.Pager[TransactionNodesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TransactionNodesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TransactionNodesClientListResponse]{
 		More: func(page TransactionNodesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *TransactionNodesClient) listCreateRequest(ctx context.Context, blo
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -323,6 +329,7 @@ func (client *TransactionNodesClient) listHandleResponse(resp *http.Response) (T
 
 // ListAPIKeys - List the API keys for the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
@@ -370,7 +377,7 @@ func (client *TransactionNodesClient) listAPIKeysCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -385,6 +392,7 @@ func (client *TransactionNodesClient) listAPIKeysHandleResponse(resp *http.Respo
 
 // ListRegenerateAPIKeys - Regenerate the API keys for the blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
@@ -432,7 +440,7 @@ func (client *TransactionNodesClient) listRegenerateAPIKeysCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.APIKey != nil {
 		return req, runtime.MarshalAsJSON(req, *options.APIKey)
 	}
@@ -450,6 +458,7 @@ func (client *TransactionNodesClient) listRegenerateAPIKeysHandleResponse(resp *
 
 // Update - Update the transaction node.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // transactionNodeName - Transaction node name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
@@ -496,7 +505,7 @@ func (client *TransactionNodesClient) updateCreateRequest(ctx context.Context, b
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.TransactionNode != nil {
 		return req, runtime.MarshalAsJSON(req, *options.TransactionNode)
 	}

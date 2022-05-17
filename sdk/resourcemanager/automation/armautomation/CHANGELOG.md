@@ -1,5 +1,76 @@
 # Release History
 
+## 0.6.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*DscCompilationJobClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[DscCompilationJobClientCreateResponse], error)` to `(*runtime.Poller[DscCompilationJobClientCreateResponse], error)`
+- Function `*RunbookClient.BeginPublish` return value(s) have been changed from `(*armruntime.Poller[RunbookClientPublishResponse], error)` to `(*runtime.Poller[RunbookClientPublishResponse], error)`
+- Function `*RunbookDraftClient.BeginReplaceContent` return value(s) have been changed from `(*armruntime.Poller[RunbookDraftClientReplaceContentResponse], error)` to `(*runtime.Poller[RunbookDraftClientReplaceContentResponse], error)`
+- Function `*DscNodeConfigurationClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DscNodeConfigurationClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DscNodeConfigurationClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `DscNodeReportListResult.MarshalJSON` has been removed
+- Function `CertificateListResult.MarshalJSON` has been removed
+- Function `ActivityListResult.MarshalJSON` has been removed
+- Function `ConnectionTypeListResult.MarshalJSON` has been removed
+- Function `Statistics.MarshalJSON` has been removed
+- Function `WebhookListResult.MarshalJSON` has been removed
+- Function `DscNodeConfigurationListResult.MarshalJSON` has been removed
+- Function `HybridRunbookWorkerLegacy.MarshalJSON` has been removed
+- Function `JobListResultV2.MarshalJSON` has been removed
+- Function `SourceControlSyncJobListResult.MarshalJSON` has been removed
+- Function `ScheduleListResult.MarshalJSON` has been removed
+- Function `ConnectionListResult.MarshalJSON` has been removed
+- Function `NodeCounts.MarshalJSON` has been removed
+- Function `TypeFieldListResult.MarshalJSON` has been removed
+- Function `SoftwareUpdateConfigurationMachineRunListResult.MarshalJSON` has been removed
+- Function `RunbookListResult.MarshalJSON` has been removed
+- Function `JobStreamProperties.MarshalJSON` has been removed
+- Function `WatcherListResult.MarshalJSON` has been removed
+- Function `DscNodeReport.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `SourceControlSyncJobStreamByIDProperties.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ActivityParameterSet.MarshalJSON` has been removed
+- Function `JobScheduleProperties.MarshalJSON` has been removed
+- Function `KeyListResult.MarshalJSON` has been removed
+- Function `StatisticsListResult.MarshalJSON` has been removed
+- Function `SourceControlSyncJobProperties.MarshalJSON` has been removed
+- Function `ModuleListResult.MarshalJSON` has been removed
+- Function `SoftwareUpdateConfigurationCollectionItemProperties.MarshalJSON` has been removed
+- Function `TestJob.MarshalJSON` has been removed
+- Function `HybridRunbookWorkerGroup.MarshalJSON` has been removed
+- Function `SourceControlSyncJobByIDProperties.MarshalJSON` has been removed
+- Function `UsageListResult.MarshalJSON` has been removed
+- Function `CredentialListResult.MarshalJSON` has been removed
+- Function `VariableListResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `HybridRunbookWorkerGroupsListResult.MarshalJSON` has been removed
+- Function `DscNodeListResult.MarshalJSON` has been removed
+- Function `HybridRunbookWorkersListResult.MarshalJSON` has been removed
+- Function `DscConfigurationListResult.MarshalJSON` has been removed
+- Function `SourceControlListResult.MarshalJSON` has been removed
+- Function `UpdateConfigurationMachineRunProperties.MarshalJSON` has been removed
+- Function `ActivityParameter.MarshalJSON` has been removed
+- Function `ActivityProperties.MarshalJSON` has been removed
+- Function `ConnectionTypeProperties.MarshalJSON` has been removed
+- Function `JobStreamListResult.MarshalJSON` has been removed
+- Function `DscReportResource.MarshalJSON` has been removed
+- Function `SourceControlSyncJobStreamsListBySyncJob.MarshalJSON` has been removed
+- Function `JobScheduleListResult.MarshalJSON` has been removed
+- Function `SoftwareUpdateConfigurationRunProperties.MarshalJSON` has been removed
+- Function `SoftwareUpdateConfigurationRunListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `DscCompilationJobListResult.MarshalJSON` has been removed
+- Function `SourceControlSyncJobStreamProperties.MarshalJSON` has been removed
+- Function `SoftwareUpdateConfigurationListResult.MarshalJSON` has been removed
+
+### Features Added
+
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

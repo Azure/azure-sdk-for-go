@@ -39,7 +39,7 @@ func NewModuleClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewModuleClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Create or Update the module identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
@@ -103,7 +104,7 @@ func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response) (M
 
 // Delete - Delete the module by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The module name.
@@ -163,12 +165,13 @@ func (client *ModuleClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve the module identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The module name.
@@ -214,7 +217,7 @@ func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,12 +232,13 @@ func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClient
 
 // NewListByAutomationAccountPager - Retrieve a list of modules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - ModuleClientListByAutomationAccountOptions contains the optional parameters for the ModuleClient.ListByAutomationAccount
 // method.
 func (client *ModuleClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ModuleClientListByAutomationAccountOptions) *runtime.Pager[ModuleClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ModuleClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ModuleClientListByAutomationAccountResponse]{
 		More: func(page ModuleClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +287,7 @@ func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -298,6 +302,7 @@ func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Res
 
 // Update - Update the module identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
@@ -344,7 +349,7 @@ func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

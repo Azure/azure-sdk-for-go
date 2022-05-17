@@ -39,7 +39,7 @@ func NewSourceControlSyncJobStreamsClient(subscriptionID string, credential azco
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSourceControlSyncJobStreamsClient(subscriptionID string, credential azco
 
 // Get - Retrieve a sync job stream identified by stream id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // sourceControlName - The source control name.
@@ -110,7 +111,7 @@ func (client *SourceControlSyncJobStreamsClient) getCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -125,6 +126,7 @@ func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Re
 
 // NewListBySyncJobPager - Retrieve a list of sync job streams identified by sync job id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // sourceControlName - The source control name.
@@ -132,7 +134,7 @@ func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Re
 // options - SourceControlSyncJobStreamsClientListBySyncJobOptions contains the optional parameters for the SourceControlSyncJobStreamsClient.ListBySyncJob
 // method.
 func (client *SourceControlSyncJobStreamsClient) NewListBySyncJobPager(resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobStreamsClientListBySyncJobOptions) *runtime.Pager[SourceControlSyncJobStreamsClientListBySyncJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SourceControlSyncJobStreamsClientListBySyncJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SourceControlSyncJobStreamsClientListBySyncJobResponse]{
 		More: func(page SourceControlSyncJobStreamsClientListBySyncJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -189,7 +191,7 @@ func (client *SourceControlSyncJobStreamsClient) listBySyncJobCreateRequest(ctx 
 	}
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

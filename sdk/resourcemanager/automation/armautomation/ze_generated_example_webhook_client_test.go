@@ -26,14 +26,14 @@ func ExampleWebhookClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWebhookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWebhookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<webhook-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TestWebhook",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleWebhookClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWebhookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWebhookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<webhook-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TestWebhook",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,21 +70,21 @@ func ExampleWebhookClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWebhookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWebhookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<webhook-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TestWebhook",
 		armautomation.WebhookCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("TestWebhook"),
 			Properties: &armautomation.WebhookCreateOrUpdateProperties{
 				ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-29T22:18:13.7002872Z"); return t }()),
 				IsEnabled:  to.Ptr(true),
 				Runbook: &armautomation.RunbookAssociationProperty{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("TestRunbook"),
 				},
 				URI: to.Ptr("<uri>"),
 			},
@@ -104,18 +104,18 @@ func ExampleWebhookClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWebhookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWebhookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<webhook-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TestWebhook",
 		armautomation.WebhookUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("TestWebhook"),
 			Properties: &armautomation.WebhookUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("updated webhook"),
 				IsEnabled:   to.Ptr(false),
 			},
 		},
@@ -134,18 +134,17 @@ func ExampleWebhookClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWebhookClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWebhookClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount33",
 		&armautomation.WebhookClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

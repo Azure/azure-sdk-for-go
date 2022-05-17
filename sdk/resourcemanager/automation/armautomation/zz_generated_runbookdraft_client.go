@@ -40,7 +40,7 @@ func NewRunbookDraftClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewRunbookDraftClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Retrieve the runbook draft identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
@@ -103,7 +104,7 @@ func (client *RunbookDraftClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,6 +119,7 @@ func (client *RunbookDraftClient) getHandleResponse(resp *http.Response) (Runboo
 
 // GetContent - Retrieve the content of runbook draft identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
@@ -163,32 +165,34 @@ func (client *RunbookDraftClient) getContentCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "text/powershell")
+	req.Raw().Header["Accept"] = []string{"text/powershell"}
 	return req, nil
 }
 
 // BeginReplaceContent - Replaces the runbook draft content.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
 // runbookContent - The runbook draft content.
 // options - RunbookDraftClientBeginReplaceContentOptions contains the optional parameters for the RunbookDraftClient.BeginReplaceContent
 // method.
-func (client *RunbookDraftClient) BeginReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent io.ReadSeekCloser, options *RunbookDraftClientBeginReplaceContentOptions) (*armruntime.Poller[RunbookDraftClientReplaceContentResponse], error) {
+func (client *RunbookDraftClient) BeginReplaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent io.ReadSeekCloser, options *RunbookDraftClientBeginReplaceContentOptions) (*runtime.Poller[RunbookDraftClientReplaceContentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.replaceContent(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RunbookDraftClientReplaceContentResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RunbookDraftClientReplaceContentResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RunbookDraftClientReplaceContentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RunbookDraftClientReplaceContentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ReplaceContent - Replaces the runbook draft content.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent io.ReadSeekCloser, options *RunbookDraftClientBeginReplaceContentOptions) (*http.Response, error) {
 	req, err := client.replaceContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
 	if err != nil {
@@ -231,12 +235,13 @@ func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, req.SetBody(runbookContent, "text/powershell")
 }
 
 // UndoEdit - Undo draft edit to last known published state identified by runbook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-30
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // runbookName - The runbook name.
@@ -282,7 +287,7 @@ func (client *RunbookDraftClient) undoEditCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

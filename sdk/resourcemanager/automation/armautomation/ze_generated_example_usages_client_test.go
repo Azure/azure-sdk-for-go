@@ -23,18 +23,17 @@ func ExampleUsagesClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewUsagesClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewUsagesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount11",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

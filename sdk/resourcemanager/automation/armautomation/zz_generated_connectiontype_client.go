@@ -39,7 +39,7 @@ func NewConnectionTypeClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewConnectionTypeClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create a connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // connectionTypeName - The parameters supplied to the create or update connection type operation.
@@ -104,7 +105,7 @@ func (client *ConnectionTypeClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *ConnectionTypeClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete the connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // connectionTypeName - The name of connection type.
@@ -164,12 +166,13 @@ func (client *ConnectionTypeClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve the connection type identified by connection type name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // connectionTypeName - The name of connection type.
@@ -215,7 +218,7 @@ func (client *ConnectionTypeClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *ConnectionTypeClient) getHandleResponse(resp *http.Response) (Conn
 
 // NewListByAutomationAccountPager - Retrieve a list of connection types.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - ConnectionTypeClientListByAutomationAccountOptions contains the optional parameters for the ConnectionTypeClient.ListByAutomationAccount
 // method.
 func (client *ConnectionTypeClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ConnectionTypeClientListByAutomationAccountOptions) *runtime.Pager[ConnectionTypeClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConnectionTypeClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConnectionTypeClientListByAutomationAccountResponse]{
 		More: func(page ConnectionTypeClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *ConnectionTypeClient) listByAutomationAccountCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

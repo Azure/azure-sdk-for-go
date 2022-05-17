@@ -24,20 +24,20 @@ func ExampleVariableClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewVariableClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewVariableClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<variable-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleVariable",
 		armautomation.VariableCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleVariable"),
 			Properties: &armautomation.VariableCreateOrUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description"),
 				IsEncrypted: to.Ptr(false),
-				Value:       to.Ptr("<value>"),
+				Value:       to.Ptr("\"ComputerName.domain.com\""),
 			},
 		},
 		nil)
@@ -55,18 +55,18 @@ func ExampleVariableClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewVariableClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewVariableClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<variable-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleVariable",
 		armautomation.VariableUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleVariable"),
 			Properties: &armautomation.VariableUpdateProperties{
-				Value: to.Ptr("<value>"),
+				Value: to.Ptr("\"ComputerName3.domain.com\""),
 			},
 		},
 		nil)
@@ -84,14 +84,14 @@ func ExampleVariableClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewVariableClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewVariableClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<variable-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleVariable",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,14 +105,14 @@ func ExampleVariableClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewVariableClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewVariableClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<variable-name>",
+		"rg",
+		"sampleAccount9",
+		"sampleVariable",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -128,18 +128,17 @@ func ExampleVariableClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewVariableClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewVariableClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"sampleAccount9",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

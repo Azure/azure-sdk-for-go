@@ -24,20 +24,20 @@ func ExampleWatcherClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		armautomation.Watcher{
 			Properties: &armautomation.WatcherProperties{
-				Description:                 to.Ptr("<description>"),
+				Description:                 to.Ptr("This is a test watcher."),
 				ExecutionFrequencyInSeconds: to.Ptr[int64](60),
-				ScriptName:                  to.Ptr("<script-name>"),
-				ScriptRunOn:                 to.Ptr("<script-run-on>"),
+				ScriptName:                  to.Ptr("MyTestWatcherRunbook"),
+				ScriptRunOn:                 to.Ptr("MyTestHybridWorkerGroup"),
 			},
 			Tags: map[string]*string{},
 		},
@@ -56,14 +56,14 @@ func ExampleWatcherClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,16 +79,16 @@ func ExampleWatcherClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		armautomation.WatcherUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("MyTestWatcher"),
 			Properties: &armautomation.WatcherUpdateProperties{
 				ExecutionFrequencyInSeconds: to.Ptr[int64](600),
 			},
@@ -108,14 +108,14 @@ func ExampleWatcherClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,14 +129,14 @@ func ExampleWatcherClient_Start() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Start(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,14 +150,14 @@ func ExampleWatcherClient_Stop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Stop(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<watcher-name>",
+		"rg",
+		"MyTestAutomationAccount",
+		"MyTestWatcher",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -171,18 +171,17 @@ func ExampleWatcherClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewWatcherClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewWatcherClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"MyTestAutomationAccount",
 		&armautomation.WatcherClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

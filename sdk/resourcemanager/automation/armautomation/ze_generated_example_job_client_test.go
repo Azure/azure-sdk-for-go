@@ -24,14 +24,14 @@ func ExampleJobClient_GetOutput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetOutput(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientGetOutputOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleJobClient_GetRunbookContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetRunbookContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientGetRunbookContentOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,14 +70,14 @@ func ExampleJobClient_Suspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Suspend(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientSuspendOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -91,14 +91,14 @@ func ExampleJobClient_Stop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Stop(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientStopOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -112,14 +112,14 @@ func ExampleJobClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientGetOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -135,23 +135,23 @@ func ExampleJobClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		armautomation.JobCreateParameters{
 			Properties: &armautomation.JobCreateProperties{
 				Parameters: map[string]*string{
 					"key01": to.Ptr("value01"),
 					"key02": to.Ptr("value02"),
 				},
-				RunOn: to.Ptr("<run-on>"),
+				RunOn: to.Ptr(""),
 				Runbook: &armautomation.RunbookAssociationProperty{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("TestRunbook"),
 				},
 			},
 		},
@@ -168,12 +168,12 @@ func ExampleJobClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("mygroup",
+		"ContoseAutomationAccount",
 		&armautomation.JobClientListByAutomationAccountOptions{Filter: nil,
 			ClientRequestID: nil,
 		})
@@ -181,7 +181,6 @@ func ExampleJobClient_NewListByAutomationAccountPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -197,14 +196,14 @@ func ExampleJobClient_Resume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewJobClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewJobClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Resume(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<job-name>",
+		"mygroup",
+		"ContoseAutomationAccount",
+		"foo",
 		&armautomation.JobClientResumeOptions{ClientRequestID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -24,14 +24,14 @@ func ExampleHybridRunbookWorkerGroupClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkerGroupClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkerGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
+		"rg",
+		"myAutomationAccount20",
+		"myGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleHybridRunbookWorkerGroupClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkerGroupClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkerGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,17 +68,17 @@ func ExampleHybridRunbookWorkerGroupClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkerGroupClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkerGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
 		armautomation.HybridRunbookWorkerGroupCreateOrUpdateParameters{
 			Credential: &armautomation.RunAsCredentialAssociationProperty{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("myRunAsCredentialName"),
 			},
 		},
 		nil)
@@ -96,17 +96,17 @@ func ExampleHybridRunbookWorkerGroupClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkerGroupClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkerGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<hybrid-runbook-worker-group-name>",
+		"rg",
+		"testaccount",
+		"TestHybridGroup",
 		armautomation.HybridRunbookWorkerGroupCreateOrUpdateParameters{
 			Credential: &armautomation.RunAsCredentialAssociationProperty{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("myRunAsCredentialName"),
 			},
 		},
 		nil)
@@ -124,18 +124,17 @@ func ExampleHybridRunbookWorkerGroupClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewHybridRunbookWorkerGroupClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewHybridRunbookWorkerGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"testaccount",
 		&armautomation.HybridRunbookWorkerGroupClientListByAutomationAccountOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

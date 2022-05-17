@@ -39,7 +39,7 @@ func NewWebhookClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWebhookClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrUpdate - Create the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // webhookName - The webhook name.
@@ -103,7 +104,7 @@ func (client *WebhookClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *WebhookClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete the webhook by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // webhookName - The webhook name.
@@ -163,12 +165,13 @@ func (client *WebhookClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GenerateURI - Generates a Uri for use in creating a webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - WebhookClientGenerateURIOptions contains the optional parameters for the WebhookClient.GenerateURI method.
@@ -209,7 +212,7 @@ func (client *WebhookClient) generateURICreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -224,6 +227,7 @@ func (client *WebhookClient) generateURIHandleResponse(resp *http.Response) (Web
 
 // Get - Retrieve the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // webhookName - The webhook name.
@@ -269,7 +273,7 @@ func (client *WebhookClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -284,12 +288,13 @@ func (client *WebhookClient) getHandleResponse(resp *http.Response) (WebhookClie
 
 // NewListByAutomationAccountPager - Retrieve a list of webhooks.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
 // method.
 func (client *WebhookClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *WebhookClientListByAutomationAccountOptions) *runtime.Pager[WebhookClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebhookClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebhookClientListByAutomationAccountResponse]{
 		More: func(page WebhookClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -341,7 +346,7 @@ func (client *WebhookClient) listByAutomationAccountCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -356,6 +361,7 @@ func (client *WebhookClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // Update - Update the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-10-31
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // webhookName - The webhook name.
@@ -402,7 +408,7 @@ func (client *WebhookClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-10-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -39,7 +39,7 @@ func NewJobClient(subscriptionID string, credential azcore.TokenCredential, opti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewJobClient(subscriptionID string, credential azcore.TokenCredential, opti
 
 // Create - Create a job of the runbook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -104,9 +105,9 @@ func (client *JobClient) createCreateRequest(ctx context.Context, resourceGroupN
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -121,6 +122,7 @@ func (client *JobClient) createHandleResponse(resp *http.Response) (JobClientCre
 
 // Get - Retrieve the job identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -167,9 +169,9 @@ func (client *JobClient) getCreateRequest(ctx context.Context, resourceGroupName
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -184,6 +186,7 @@ func (client *JobClient) getHandleResponse(resp *http.Response) (JobClientGetRes
 
 // GetOutput - Retrieve the job output identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The name of the job to be created.
@@ -230,9 +233,9 @@ func (client *JobClient) getOutputCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "text/plain")
+	req.Raw().Header["Accept"] = []string{"text/plain"}
 	return req, nil
 }
 
@@ -250,6 +253,7 @@ func (client *JobClient) getOutputHandleResponse(resp *http.Response) (JobClient
 
 // GetRunbookContent - Retrieve the runbook content of the job identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -296,9 +300,9 @@ func (client *JobClient) getRunbookContentCreateRequest(ctx context.Context, res
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "text/powershell")
+	req.Raw().Header["Accept"] = []string{"text/powershell"}
 	return req, nil
 }
 
@@ -316,12 +320,13 @@ func (client *JobClient) getRunbookContentHandleResponse(resp *http.Response) (J
 
 // NewListByAutomationAccountPager - Retrieve a list of jobs.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - JobClientListByAutomationAccountOptions contains the optional parameters for the JobClient.ListByAutomationAccount
 // method.
 func (client *JobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *JobClientListByAutomationAccountOptions) *runtime.Pager[JobClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobClientListByAutomationAccountResponse]{
 		More: func(page JobClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -374,9 +379,9 @@ func (client *JobClient) listByAutomationAccountCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -391,6 +396,7 @@ func (client *JobClient) listByAutomationAccountHandleResponse(resp *http.Respon
 
 // Resume - Resume the job identified by jobName.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -437,14 +443,15 @@ func (client *JobClient) resumeCreateRequest(ctx context.Context, resourceGroupN
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Stop - Stop the job identified by jobName.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -491,14 +498,15 @@ func (client *JobClient) stopCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Suspend - Suspend the job identified by job name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // jobName - The job name.
@@ -545,8 +553,8 @@ func (client *JobClient) suspendCreateRequest(ctx context.Context, resourceGroup
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

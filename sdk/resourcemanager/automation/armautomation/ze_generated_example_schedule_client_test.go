@@ -26,18 +26,18 @@ func ExampleScheduleClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewScheduleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewScheduleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<schedule-name>",
+		"rg",
+		"myAutomationAccount33",
+		"mySchedule",
 		armautomation.ScheduleCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("mySchedule"),
 			Properties: &armautomation.ScheduleCreateOrUpdateProperties{
-				Description:      to.Ptr("<description>"),
+				Description:      to.Ptr("my description of schedule goes here"),
 				AdvancedSchedule: &armautomation.AdvancedSchedule{},
 				ExpiryTime:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-01T17:28:57.2494819Z"); return t }()),
 				Frequency:        to.Ptr(armautomation.ScheduleFrequencyHour),
@@ -60,18 +60,18 @@ func ExampleScheduleClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewScheduleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewScheduleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<schedule-name>",
+		"rg",
+		"myAutomationAccount33",
+		"mySchedule",
 		armautomation.ScheduleUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("mySchedule"),
 			Properties: &armautomation.ScheduleUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my updated description of schedule goes here"),
 				IsEnabled:   to.Ptr(false),
 			},
 		},
@@ -90,14 +90,14 @@ func ExampleScheduleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewScheduleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewScheduleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<schedule-name>",
+		"rg",
+		"myAutomationAccount33",
+		"mySchedule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -113,14 +113,14 @@ func ExampleScheduleClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewScheduleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewScheduleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<schedule-name>",
+		"rg",
+		"myAutomationAccount33",
+		"mySchedule",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,18 +134,17 @@ func ExampleScheduleClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewScheduleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewScheduleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount33",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

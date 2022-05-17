@@ -564,9 +564,8 @@ func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeleted
 	return PurgeDeletedKeyResponse{}
 }
 
-// PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
-// This operation can only be enabled on a soft-delete enabled vault. This operation requires the key/purge permission.
-// Pass nil for options to accept default values.
+// PurgeDeletedKey permanently deletes a deleted key. Key Vault may require several seconds to finish purging the key after this
+// method returns. Pass nil for options to accept default values.
 func (c *Client) PurgeDeletedKey(ctx context.Context, name string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedKeyOptions{}

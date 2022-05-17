@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `ResourceModelWithAllowedPropertySet.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ODataError.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `SQLServerListResult.MarshalJSON` has been removed
+- Function `SQLServerRegistrationListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

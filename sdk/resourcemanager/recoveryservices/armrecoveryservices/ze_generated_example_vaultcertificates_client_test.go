@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/PUTVaultCred.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-03-01/examples/PUTVaultCred.json
 func ExampleVaultCertificatesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewVaultCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservices.NewVaultCertificatesClient("77777777-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<certificate-name>",
+		"BCDRIbzRG",
+		"BCDRIbzVault",
+		"BCDRIbzVault77777777-d41f-4550-9f70-7708a3a2283b-12-18-2017-vaultcredentials",
 		armrecoveryservices.CertificateRequest{
 			Properties: &armrecoveryservices.RawCertificateData{
 				AuthType:    to.Ptr(armrecoveryservices.AuthTypeAAD),

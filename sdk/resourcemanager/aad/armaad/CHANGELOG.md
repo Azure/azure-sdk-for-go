@@ -1,5 +1,18 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateLinkForAzureAdClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkForAzureAdClientCreateResponse], error)` to `(*runtime.Poller[PrivateLinkForAzureAdClientCreateResponse], error)`
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `PrivateLinkPolicyListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

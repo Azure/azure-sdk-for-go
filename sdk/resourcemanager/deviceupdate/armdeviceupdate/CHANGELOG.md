@@ -1,5 +1,40 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*InstancesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[InstancesClientCreateResponse], error)` to `(*runtime.Poller[InstancesClientCreateResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionProxiesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionProxiesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionProxiesClientDeleteResponse], error)`
+- Function `*InstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[InstancesClientDeleteResponse], error)` to `(*runtime.Poller[InstancesClientDeleteResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionProxyListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `InstanceList.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `AccountList.MarshalJSON` has been removed
+- Field `IoTHubConnectionString` of struct `IotHubSettings` has been removed
+- Field `EventHubConnectionString` of struct `IotHubSettings` has been removed
+
+### Features Added
+
+- New const `RoleFailover`
+- New const `RolePrimary`
+- New const `SKUFree`
+- New const `SKUStandard`
+- New function `PossibleSKUValues() []SKU`
+- New function `PossibleRoleValues() []Role`
+- New struct `Location`
+- New field `SKU` in struct `AccountProperties`
+- New field `Locations` in struct `AccountProperties`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

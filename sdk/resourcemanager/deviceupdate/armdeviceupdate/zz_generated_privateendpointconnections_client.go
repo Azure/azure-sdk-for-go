@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginCreateOrUpdate - Update the state of specified private endpoint connection associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // privateEndpointConnection - The parameters for creating a private endpoint connection.
 // options - PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, privateEndpointConnectionName, privateEndpointConnection, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Update the state of specified private endpoint connection associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
@@ -117,35 +119,37 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
 }
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -185,14 +189,15 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the specified private endpoint connection associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -237,9 +242,9 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,12 +259,13 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListByAccountPager - List all private endpoint connections in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAccount
 // method.
 func (client *PrivateEndpointConnectionsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByAccountOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsClientListByAccountResponse]{
 		More: func(page PrivateEndpointConnectionsClientListByAccountResponse) bool {
 			return false
 		},
@@ -300,9 +306,9 @@ func (client *PrivateEndpointConnectionsClient) listByAccountCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

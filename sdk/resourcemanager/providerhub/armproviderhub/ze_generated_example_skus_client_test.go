@@ -24,14 +24,14 @@ func ExampleSKUsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,30 +47,30 @@ func ExampleSKUsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"testSku",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
 				SKUSettings: []*armproviderhub.SKUSetting{
 					{
-						Name: to.Ptr("<name>"),
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Name: to.Ptr("freeSku"),
+						Kind: to.Ptr("Standard"),
+						Tier: to.Ptr("Tier1"),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("premiumSku"),
 						Costs: []*armproviderhub.SKUCost{
 							{
-								MeterID: to.Ptr("<meter-id>"),
+								MeterID: to.Ptr("xxx"),
 							}},
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Kind: to.Ptr("Premium"),
+						Tier: to.Ptr("Tier2"),
 					}},
 			},
 		},
@@ -89,14 +89,14 @@ func ExampleSKUsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,15 +110,15 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNestedResourceTypeFirst(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,31 +134,31 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeFirst(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"testSku",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
 				SKUSettings: []*armproviderhub.SKUSetting{
 					{
-						Name: to.Ptr("<name>"),
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Name: to.Ptr("freeSku"),
+						Kind: to.Ptr("Standard"),
+						Tier: to.Ptr("Tier1"),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("premiumSku"),
 						Costs: []*armproviderhub.SKUCost{
 							{
-								MeterID: to.Ptr("<meter-id>"),
+								MeterID: to.Ptr("xxx"),
 							}},
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Kind: to.Ptr("Premium"),
+						Tier: to.Ptr("Tier2"),
 					}},
 			},
 		},
@@ -177,15 +177,15 @@ func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteNestedResourceTypeFirst(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -199,16 +199,16 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNestedResourceTypeSecond(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -224,32 +224,32 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeSecond(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"testSku",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
 				SKUSettings: []*armproviderhub.SKUSetting{
 					{
-						Name: to.Ptr("<name>"),
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Name: to.Ptr("freeSku"),
+						Kind: to.Ptr("Standard"),
+						Tier: to.Ptr("Tier1"),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("premiumSku"),
 						Costs: []*armproviderhub.SKUCost{
 							{
-								MeterID: to.Ptr("<meter-id>"),
+								MeterID: to.Ptr("xxx"),
 							}},
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Kind: to.Ptr("Premium"),
+						Tier: to.Ptr("Tier2"),
 					}},
 			},
 		},
@@ -268,16 +268,16 @@ func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteNestedResourceTypeSecond(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -291,17 +291,17 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetNestedResourceTypeThird(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<nested-resource-type-third>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"nestedResourceTypeThird",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -317,33 +317,33 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateNestedResourceTypeThird(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<nested-resource-type-third>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"nestedResourceTypeThird",
+		"testSku",
 		armproviderhub.SKUResource{
 			Properties: &armproviderhub.SKUResourceProperties{
 				SKUSettings: []*armproviderhub.SKUSetting{
 					{
-						Name: to.Ptr("<name>"),
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Name: to.Ptr("freeSku"),
+						Kind: to.Ptr("Standard"),
+						Tier: to.Ptr("Tier1"),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("premiumSku"),
 						Costs: []*armproviderhub.SKUCost{
 							{
-								MeterID: to.Ptr("<meter-id>"),
+								MeterID: to.Ptr("xxx"),
 							}},
-						Kind: to.Ptr("<kind>"),
-						Tier: to.Ptr("<tier>"),
+						Kind: to.Ptr("Premium"),
+						Tier: to.Ptr("Tier2"),
 					}},
 			},
 		},
@@ -362,17 +362,17 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteNestedResourceTypeThird(ctx,
-		"<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<nested-resource-type-third>",
-		"<sku>",
+		"Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"nestedResourceTypeThird",
+		"testSku",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -386,18 +386,17 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceTypeRegistrationsPager("<provider-namespace>",
-		"<resource-type>",
+	pager := client.NewListByResourceTypeRegistrationsPager("Microsoft.Contoso",
+		"testResourceType",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -413,19 +412,18 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirst
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager("<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager("Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -441,20 +439,19 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecon
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager("<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager("Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -470,21 +467,20 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThird
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewSKUsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewSKUsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager("<provider-namespace>",
-		"<resource-type>",
-		"<nested-resource-type-first>",
-		"<nested-resource-type-second>",
-		"<nested-resource-type-third>",
+	pager := client.NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager("Microsoft.Contoso",
+		"testResourceType",
+		"nestedResourceTypeFirst",
+		"nestedResourceTypeSecond",
+		"nestedResourceTypeThird",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CheckinManifest - Checkin the manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // checkinManifestParams - The required body parameters supplied to the checkin manifest operation.
 // options - ClientCheckinManifestOptions contains the optional parameters for the Client.CheckinManifest method.
@@ -92,7 +93,7 @@ func (client *Client) checkinManifestCreateRequest(ctx context.Context, provider
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, checkinManifestParams)
 }
 
@@ -107,6 +108,7 @@ func (client *Client) checkinManifestHandleResponse(resp *http.Response) (Client
 
 // GenerateManifest - Generates the manifest for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - ClientGenerateManifestOptions contains the optional parameters for the Client.GenerateManifest method.
 func (client *Client) GenerateManifest(ctx context.Context, providerNamespace string, options *ClientGenerateManifestOptions) (ClientGenerateManifestResponse, error) {
@@ -142,7 +144,7 @@ func (client *Client) generateManifestCreateRequest(ctx context.Context, provide
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -33,7 +33,6 @@ func ExampleOperationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,12 +48,12 @@ func ExampleOperationsClient_ListByProviderRegistration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewOperationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByProviderRegistration(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,21 +69,21 @@ func ExampleOperationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewOperationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		armproviderhub.OperationsPutContent{
 			Contents: []*armproviderhub.OperationsDefinition{
 				{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
 					Display: &armproviderhub.OperationsDefinitionDisplay{
-						Description: to.Ptr("<description>"),
-						Operation:   to.Ptr("<operation>"),
-						Provider:    to.Ptr("<provider>"),
-						Resource:    to.Ptr("<resource>"),
+						Description: to.Ptr("Read employees"),
+						Operation:   to.Ptr("Gets/List employee resources"),
+						Provider:    to.Ptr("Microsoft.Contoso"),
+						Resource:    to.Ptr("Employees"),
 					},
 				}},
 		},
@@ -103,12 +102,12 @@ func ExampleOperationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewOperationsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<provider-namespace>",
+		"Microsoft.Contoso",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

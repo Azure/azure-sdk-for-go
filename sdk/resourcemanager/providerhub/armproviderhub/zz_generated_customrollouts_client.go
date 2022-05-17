@@ -38,7 +38,7 @@ func NewCustomRolloutsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCustomRolloutsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // properties - The custom rollout properties supplied to the CreateOrUpdate operation.
@@ -98,7 +99,7 @@ func (client *CustomRolloutsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
@@ -113,6 +114,7 @@ func (client *CustomRolloutsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Get - Gets the custom rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // rolloutName - The rollout name.
 // options - CustomRolloutsClientGetOptions contains the optional parameters for the CustomRolloutsClient.Get method.
@@ -153,7 +155,7 @@ func (client *CustomRolloutsClient) getCreateRequest(ctx context.Context, provid
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -168,11 +170,12 @@ func (client *CustomRolloutsClient) getHandleResponse(resp *http.Response) (Cust
 
 // NewListByProviderRegistrationPager - Gets the list of the custom rollouts for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // providerNamespace - The name of the resource provider hosted within ProviderHub.
 // options - CustomRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the CustomRolloutsClient.ListByProviderRegistration
 // method.
 func (client *CustomRolloutsClient) NewListByProviderRegistrationPager(providerNamespace string, options *CustomRolloutsClientListByProviderRegistrationOptions) *runtime.Pager[CustomRolloutsClientListByProviderRegistrationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomRolloutsClientListByProviderRegistrationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomRolloutsClientListByProviderRegistrationResponse]{
 		More: func(page CustomRolloutsClientListByProviderRegistrationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -217,7 +220,7 @@ func (client *CustomRolloutsClient) listByProviderRegistrationCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,13 +24,13 @@ func ExampleCustomRolloutsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewCustomRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewCustomRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"canaryTesting99",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,13 +46,13 @@ func ExampleCustomRolloutsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewCustomRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewCustomRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<provider-namespace>",
-		"<rollout-name>",
+		"Microsoft.Contoso",
+		"brazilUsShoeBoxTesting",
 		armproviderhub.CustomRollout{
 			Properties: &armproviderhub.CustomRolloutProperties{
 				Specification: &armproviderhub.CustomRolloutPropertiesSpecification{
@@ -78,17 +78,16 @@ func ExampleCustomRolloutsClient_NewListByProviderRegistrationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armproviderhub.NewCustomRolloutsClient("<subscription-id>", cred, nil)
+	client, err := armproviderhub.NewCustomRolloutsClient("ab7a8701-f7ef-471a-a2f4-d0ebbf494f77", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProviderRegistrationPager("<provider-namespace>",
+	pager := client.NewListByProviderRegistrationPager("Microsoft.Contoso",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

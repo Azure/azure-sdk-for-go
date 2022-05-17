@@ -1,5 +1,19 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*MonitorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientDeleteResponse], error)` to `(*runtime.Poller[MonitorsClientDeleteResponse], error)`
+- Function `*TagRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TagRulesClientDeleteResponse], error)` to `(*runtime.Poller[TagRulesClientDeleteResponse], error)`
+- Function `*MonitorsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientCreateResponse], error)` to `(*runtime.Poller[MonitorsClientCreateResponse], error)`
+- Function `MonitoringTagRulesListResponse.MarshalJSON` has been removed
+- Function `ErrorResponseBody.MarshalJSON` has been removed
+- Function `MonitoredResourceListResponse.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `VMHostListResponse.MarshalJSON` has been removed
+- Function `MonitorResourceListResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

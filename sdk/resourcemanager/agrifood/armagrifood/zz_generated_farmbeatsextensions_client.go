@@ -37,7 +37,7 @@ func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewFarmBeatsExtensionsClient(credential azcore.TokenCredential, options *ar
 
 // Get - Get farmBeats extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // farmBeatsExtensionID - farmBeatsExtensionId to be queried.
 // options - FarmBeatsExtensionsClientGetOptions contains the optional parameters for the FarmBeatsExtensionsClient.Get method.
 func (client *FarmBeatsExtensionsClient) Get(ctx context.Context, farmBeatsExtensionID string, options *FarmBeatsExtensionsClientGetOptions) (FarmBeatsExtensionsClientGetResponse, error) {
@@ -85,7 +86,7 @@ func (client *FarmBeatsExtensionsClient) getCreateRequest(ctx context.Context, f
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -100,10 +101,11 @@ func (client *FarmBeatsExtensionsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Get list of farmBeats extension.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-12-preview
 // options - FarmBeatsExtensionsClientListOptions contains the optional parameters for the FarmBeatsExtensionsClient.List
 // method.
 func (client *FarmBeatsExtensionsClient) NewListPager(options *FarmBeatsExtensionsClientListOptions) *runtime.Pager[FarmBeatsExtensionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FarmBeatsExtensionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FarmBeatsExtensionsClientListResponse]{
 		More: func(page FarmBeatsExtensionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -163,7 +165,7 @@ func (client *FarmBeatsExtensionsClient) listCreateRequest(ctx context.Context, 
 	}
 	reqQP.Set("api-version", "2020-05-12-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

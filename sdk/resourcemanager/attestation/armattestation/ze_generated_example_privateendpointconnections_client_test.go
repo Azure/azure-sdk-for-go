@@ -24,18 +24,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewPrivateEndpointConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<provider-name>",
+	pager := client.NewListPager("res6977",
+		"sto2527",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewPrivateEndpointConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<private-endpoint-connection-name>",
+		"res6977",
+		"sto2527",
+		"{privateEndpointConnectionName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,18 +73,18 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewPrivateEndpointConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<private-endpoint-connection-name>",
+		"res7687",
+		"sto9699",
+		"{privateEndpointConnectionName}",
 		armattestation.PrivateEndpointConnection{
 			Properties: &armattestation.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armattestation.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("<description>"),
+					Description: to.Ptr("Auto-Approved"),
 					Status:      to.Ptr(armattestation.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},
@@ -105,14 +104,14 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armattestation.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armattestation.NewPrivateEndpointConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<private-endpoint-connection-name>",
+		"res6977",
+		"sto2527",
+		"{privateEndpointConnectionName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

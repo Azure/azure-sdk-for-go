@@ -242,7 +242,7 @@ type CreateOctKeyOptions struct {
 	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
-	// Size is the key size in bits.
+	// Size is the key size in bits. For example: 128, 192 or 256.
 	Size *int32 `json:"key_size,omitempty"`
 
 	// Properties is the key's management properties.

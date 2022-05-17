@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -22,7 +23,49 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azsecrets/testdata"
+const (
+	fakeVaultURL  = "https://fakekvurl.vault.azure.net"
+	pathToPackage = "sdk/keyvault/azsecrets/testdata"
+)
+
+var liveVaultURL string
+
+func TestMain(m *testing.M) {
+	liveVaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
+	if liveVaultURL == "" && recording.GetRecordMode() != recording.PlaybackMode {
+		panic("no value for AZURE_KEYVAULT_URL")
+	}
+	err := recording.ResetProxy(nil)
+	if err != nil {
+		panic(err)
+	}
+	if recording.GetRecordMode() == recording.RecordingMode {
+		err := recording.AddURISanitizer(fakeVaultURL, liveVaultURL, nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddBodyRegexSanitizer(fakeVaultURL, liveVaultURL, nil)
+		if err != nil {
+			panic(err)
+		}
+		defer func() {
+			err := recording.ResetProxy(nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+	}
+	os.Exit(m.Run())
+}
+
+func startTest(t *testing.T) func() {
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	return func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	}
+}
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
@@ -39,7 +82,10 @@ func lookupEnvVar(s string) string {
 }
 
 func createClient(t *testing.T) (*Client, error) {
-	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+	vaultURL := liveVaultURL
+	if vaultURL == "" {
+		vaultURL = fakeVaultURL
+	}
 
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
@@ -58,10 +104,10 @@ func createClient(t *testing.T) (*Client, error) {
 		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {
-		cred = NewFakeCredential("fake", "fake")
+		cred = NewFakeCredential()
 	}
 
-	return NewClient(vaultUrl, cred, options)
+	return NewClient(vaultURL, cred, options)
 }
 
 func getPollingOptions() *runtime.PollUntilDoneOptions {
@@ -83,21 +129,12 @@ func cleanUpSecret(t *testing.T, client *Client, secret string) {
 	require.NoError(t, err)
 }
 
-type FakeCredential struct {
-	accountName string
-	accountKey  string
-}
+type FakeCredential struct{}
 
-func NewFakeCredential(accountName, accountKey string) *FakeCredential {
-	return &FakeCredential{
-		accountName: accountName,
-		accountKey:  accountKey,
-	}
+func NewFakeCredential() *FakeCredential {
+	return &FakeCredential{}
 }
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{
-		Token:     "faketoken",
-		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
-	}, nil
+	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 }

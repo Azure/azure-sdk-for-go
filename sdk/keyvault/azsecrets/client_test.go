@@ -16,47 +16,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
-
-func TestMain(m *testing.M) {
-	// Initialize
-	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	// Run
-	exitVal := m.Run()
-
-	// cleanup
-
-	os.Exit(exitVal)
-}
-
-func startTest(t *testing.T) func() {
-	err := recording.Start(t, pathToPackage, nil)
-	require.NoError(t, err)
-	return func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
-	}
-}
-
-func getPollingOptions() *runtime.PollUntilDoneOptions {
-	freq := time.Second
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		freq = time.Minute
-	}
-	return &runtime.PollUntilDoneOptions{Frequency: freq}
-}
 
 func TestSetGetSecret(t *testing.T) {
 	stop := startTest(t)

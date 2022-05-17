@@ -37,7 +37,7 @@ func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.Cl
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,12 +55,13 @@ func NewResourceChangesClient(credential azcore.TokenCredential, options *arm.Cl
 // NewListPager - List the changes of a resource within the specified time range. Customer data will be masked if the user
 // doesn't have access.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // resourceID - The identifier of the resource.
 // startTime - Specifies the start time of the changes request.
 // endTime - Specifies the end time of the changes request.
 // options - ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.List method.
 func (client *ResourceChangesClient) NewListPager(resourceID string, startTime time.Time, endTime time.Time, options *ResourceChangesClientListOptions) *runtime.Pager[ResourceChangesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceChangesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceChangesClientListResponse]{
 		More: func(page ResourceChangesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -106,7 +107,7 @@ func (client *ResourceChangesClient) listCreateRequest(ctx context.Context, reso
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

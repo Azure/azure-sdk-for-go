@@ -1,5 +1,16 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*LedgerClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[LedgerClientCreateResponse], error)` to `(*runtime.Poller[LedgerClientCreateResponse], error)`
+- Function `*LedgerClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LedgerClientUpdateResponse], error)` to `(*runtime.Poller[LedgerClientUpdateResponse], error)`
+- Function `*LedgerClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LedgerClientDeleteResponse], error)` to `(*runtime.Poller[LedgerClientDeleteResponse], error)`
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `List.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection, split by partition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -66,7 +67,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 // options - CollectionPartitionClientListMetricsOptions contains the optional parameters for the CollectionPartitionClient.ListMetrics
 // method.
 func (client *CollectionPartitionClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionClientListMetricsOptions) *runtime.Pager[CollectionPartitionClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionPartitionClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionPartitionClientListMetricsResponse]{
 		More: func(page CollectionPartitionClientListMetricsResponse) bool {
 			return false
 		},
@@ -115,10 +116,10 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -133,6 +134,7 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 
 // NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection, split by partition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -140,7 +142,7 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 // options - CollectionPartitionClientListUsagesOptions contains the optional parameters for the CollectionPartitionClient.ListUsages
 // method.
 func (client *CollectionPartitionClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionPartitionClientListUsagesOptions) *runtime.Pager[CollectionPartitionClientListUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionPartitionClientListUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionPartitionClientListUsagesResponse]{
 		More: func(page CollectionPartitionClientListUsagesResponse) bool {
 			return false
 		},
@@ -189,12 +191,12 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

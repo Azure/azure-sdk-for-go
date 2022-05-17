@@ -38,7 +38,7 @@ func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id and region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -68,7 +69,7 @@ func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore
 // options - PartitionKeyRangeIDRegionClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDRegionClient.ListMetrics
 // method.
 func (client *PartitionKeyRangeIDRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDRegionClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDRegionClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartitionKeyRangeIDRegionClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartitionKeyRangeIDRegionClientListMetricsResponse]{
 		More: func(page PartitionKeyRangeIDRegionClientListMetricsResponse) bool {
 			return false
 		},
@@ -125,10 +126,10 @@ func (client *PartitionKeyRangeIDRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

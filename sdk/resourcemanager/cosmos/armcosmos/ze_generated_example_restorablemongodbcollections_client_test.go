@@ -17,28 +17,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBRestorableMongodbCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBRestorableMongodbCollectionList.json
 func ExampleRestorableMongodbCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableMongodbCollectionsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewRestorableMongodbCollectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<location>",
-		"<instance-id>",
-		&armcosmos.RestorableMongodbCollectionsClientListOptions{RestorableMongodbDatabaseRid: to.Ptr("<restorable-mongodb-database-rid>"),
-			StartTime: nil,
-			EndTime:   nil,
-		})
+	pager := client.NewListPager("WestUS",
+		"98a570f2-63db-4117-91f0-366327b7b353",
+		&armcosmos.RestorableMongodbCollectionsClientListOptions{RestorableMongodbDatabaseRid: to.Ptr("PD5DALigDgw=")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

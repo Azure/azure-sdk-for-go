@@ -17,28 +17,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCollectionPartitionGetMetrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCollectionPartitionGetMetrics.json
 func ExampleCollectionPartitionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCollectionPartitionClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCollectionPartitionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("<resource-group-name>",
-		"<account-name>",
-		"<database-rid>",
-		"<collection-rid>",
-		"<filter>",
+	pager := client.NewListMetricsPager("rg1",
+		"ddb1",
+		"databaseRid",
+		"collectionRid",
+		"$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -47,27 +46,26 @@ func ExampleCollectionPartitionClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBCollectionPartitionGetUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBCollectionPartitionGetUsages.json
 func ExampleCollectionPartitionClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCollectionPartitionClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewCollectionPartitionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagesPager("<resource-group-name>",
-		"<account-name>",
-		"<database-rid>",
-		"<collection-rid>",
-		&armcosmos.CollectionPartitionClientListUsagesOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListUsagesPager("rg1",
+		"ddb1",
+		"databaseRid",
+		"collectionRid",
+		&armcosmos.CollectionPartitionClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Partition Storage'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

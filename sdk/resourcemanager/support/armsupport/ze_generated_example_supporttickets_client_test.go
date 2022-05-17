@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
@@ -26,13 +24,13 @@ func ExampleTicketsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewTicketsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armsupport.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleName"),
 			Type: to.Ptr(armsupport.TypeMicrosoftSupportSupportTickets),
 		},
 		nil)
@@ -50,18 +48,17 @@ func ExampleTicketsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewTicketsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListPager(&armsupport.TicketsClientListOptions{Top: nil,
-		Filter: to.Ptr("<filter>"),
+		Filter: to.Ptr("createdDate ge 2020-03-10T22:08:51Z and status eq 'Open'"),
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,12 +74,12 @@ func ExampleTicketsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewTicketsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<support-ticket-name>",
+		"testticket",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,25 +95,25 @@ func ExampleTicketsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewTicketsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<support-ticket-name>",
+		"testticket",
 		armsupport.UpdateSupportTicket{
 			ContactDetails: &armsupport.UpdateContactProfile{
 				AdditionalEmailAddresses: []*string{
 					to.Ptr("tname@contoso.com"),
 					to.Ptr("teamtest@contoso.com")},
-				Country:                  to.Ptr("<country>"),
-				FirstName:                to.Ptr("<first-name>"),
-				LastName:                 to.Ptr("<last-name>"),
-				PhoneNumber:              to.Ptr("<phone-number>"),
+				Country:                  to.Ptr("USA"),
+				FirstName:                to.Ptr("first name"),
+				LastName:                 to.Ptr("last name"),
+				PhoneNumber:              to.Ptr("123-456-7890"),
 				PreferredContactMethod:   to.Ptr(armsupport.PreferredContactMethodEmail),
-				PreferredSupportLanguage: to.Ptr("<preferred-support-language>"),
-				PreferredTimeZone:        to.Ptr("<preferred-time-zone>"),
-				PrimaryEmailAddress:      to.Ptr("<primary-email-address>"),
+				PreferredSupportLanguage: to.Ptr("en-US"),
+				PreferredTimeZone:        to.Ptr("Pacific Standard Time"),
+				PrimaryEmailAddress:      to.Ptr("test.name@contoso.com"),
 			},
 		},
 		nil)
@@ -134,35 +131,35 @@ func ExampleTicketsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewTicketsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewTicketsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<support-ticket-name>",
+		"testticket",
 		armsupport.TicketDetails{
 			Properties: &armsupport.TicketDetailsProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description"),
 				ContactDetails: &armsupport.ContactProfile{
-					Country:                  to.Ptr("<country>"),
-					FirstName:                to.Ptr("<first-name>"),
-					LastName:                 to.Ptr("<last-name>"),
+					Country:                  to.Ptr("usa"),
+					FirstName:                to.Ptr("abc"),
+					LastName:                 to.Ptr("xyz"),
 					PreferredContactMethod:   to.Ptr(armsupport.PreferredContactMethodEmail),
-					PreferredSupportLanguage: to.Ptr("<preferred-support-language>"),
-					PreferredTimeZone:        to.Ptr("<preferred-time-zone>"),
-					PrimaryEmailAddress:      to.Ptr("<primary-email-address>"),
+					PreferredSupportLanguage: to.Ptr("en-US"),
+					PreferredTimeZone:        to.Ptr("Pacific Standard Time"),
+					PrimaryEmailAddress:      to.Ptr("abc@contoso.com"),
 				},
-				ProblemClassificationID: to.Ptr("<problem-classification-id>"),
-				ServiceID:               to.Ptr("<service-id>"),
+				ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/billing_service_guid/problemClassifications/billing_problemClassification_guid"),
+				ServiceID:               to.Ptr("/providers/Microsoft.Support/services/billing_service_guid"),
 				Severity:                to.Ptr(armsupport.SeverityLevelModerate),
-				Title:                   to.Ptr("<title>"),
+				Title:                   to.Ptr("my title"),
 			},
 		},
-		&armsupport.TicketsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

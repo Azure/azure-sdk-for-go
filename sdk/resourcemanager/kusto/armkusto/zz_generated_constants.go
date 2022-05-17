@@ -10,7 +10,7 @@ package armkusto
 
 const (
 	moduleName    = "armkusto"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AzureSKUName - SKU name.

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
@@ -26,19 +24,18 @@ func ExampleDataConnectionsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,38 +51,38 @@ func ExampleDataConnectionsClient_BeginDataConnectionValidation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDataConnectionValidation(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		armkusto.DataConnectionValidation{
-			DataConnectionName: to.Ptr("<data-connection-name>"),
+			DataConnectionName: to.Ptr("dataConnectionTest"),
 			Properties: &armkusto.EventGridDataConnection{
 				Kind: to.Ptr(armkusto.DataConnectionKindEventGrid),
 				Properties: &armkusto.EventGridConnectionProperties{
 					BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-					ConsumerGroup:             to.Ptr("<consumer-group>"),
+					ConsumerGroup:             to.Ptr("$Default"),
 					DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
 					DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
-					EventGridResourceID:       to.Ptr("<event-grid-resource-id>"),
-					EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
+					EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+					EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
 					IgnoreFirstRecord:         to.Ptr(false),
-					ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
-					MappingRuleName:           to.Ptr("<mapping-rule-name>"),
-					StorageAccountResourceID:  to.Ptr("<storage-account-resource-id>"),
-					TableName:                 to.Ptr("<table-name>"),
+					ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+					MappingRuleName:           to.Ptr("TestMapping"),
+					StorageAccountResourceID:  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+					TableName:                 to.Ptr("TestTable"),
 				},
 			},
 		},
-		&armkusto.DataConnectionsClientBeginDataConnectionValidationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -100,17 +97,17 @@ func ExampleDataConnectionsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
 		armkusto.DataConnectionCheckNameRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("DataConnections8"),
+			Type: to.Ptr("Microsoft.Kusto/clusters/databases/dataConnections"),
 		},
 		nil)
 	if err != nil {
@@ -127,15 +124,15 @@ func ExampleDataConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		"<data-connection-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		"dataConnectionTest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -151,29 +148,29 @@ func ExampleDataConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		"<data-connection-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		"dataConnectionTest",
 		&armkusto.EventHubDataConnection{
 			Kind:     to.Ptr(armkusto.DataConnectionKindEventHub),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armkusto.EventHubConnectionProperties{
-				ConsumerGroup:             to.Ptr("<consumer-group>"),
-				EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
-				ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
+				ConsumerGroup:             to.Ptr("testConsumerGroup1"),
+				EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1"),
+				ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
 			},
 		},
-		&armkusto.DataConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -188,37 +185,37 @@ func ExampleDataConnectionsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		"<data-connection-name>",
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		"dataConnectionTest",
 		&armkusto.EventGridDataConnection{
 			Kind:     to.Ptr(armkusto.DataConnectionKindEventGrid),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armkusto.EventGridConnectionProperties{
 				BlobStorageEventType:      to.Ptr(armkusto.BlobStorageEventTypeMicrosoftStorageBlobCreated),
-				ConsumerGroup:             to.Ptr("<consumer-group>"),
+				ConsumerGroup:             to.Ptr("$Default"),
 				DataFormat:                to.Ptr(armkusto.EventGridDataFormatJSON),
 				DatabaseRouting:           to.Ptr(armkusto.DatabaseRoutingSingle),
-				EventGridResourceID:       to.Ptr("<event-grid-resource-id>"),
-				EventHubResourceID:        to.Ptr("<event-hub-resource-id>"),
+				EventGridResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount/providers/Microsoft.EventGrid/eventSubscriptions/eventSubscriptionTest"),
+				EventHubResourceID:        to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest2"),
 				IgnoreFirstRecord:         to.Ptr(false),
-				ManagedIdentityResourceID: to.Ptr("<managed-identity-resource-id>"),
-				MappingRuleName:           to.Ptr("<mapping-rule-name>"),
-				StorageAccountResourceID:  to.Ptr("<storage-account-resource-id>"),
-				TableName:                 to.Ptr("<table-name>"),
+				ManagedIdentityResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
+				MappingRuleName:           to.Ptr("TestMapping"),
+				StorageAccountResourceID:  to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount"),
+				TableName:                 to.Ptr("TestTable"),
 			},
 		},
-		&armkusto.DataConnectionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -233,20 +230,20 @@ func ExampleDataConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewDataConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewDataConnectionsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<database-name>",
-		"<data-connection-name>",
-		&armkusto.DataConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"kustorptest",
+		"kustoCluster",
+		"KustoDatabase8",
+		"dataConnectionTest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

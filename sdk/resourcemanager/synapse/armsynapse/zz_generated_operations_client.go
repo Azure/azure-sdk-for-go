@@ -38,7 +38,7 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckNameAvailability - Check whether a workspace name is available
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // request - The check request
 // options - OperationsClientCheckNameAvailabilityOptions contains the optional parameters for the OperationsClient.CheckNameAvailability
 // method.
@@ -88,7 +89,7 @@ func (client *OperationsClient) checkNameAvailabilityCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
@@ -103,6 +104,7 @@ func (client *OperationsClient) checkNameAvailabilityHandleResponse(resp *http.R
 
 // GetAzureAsyncHeaderResult - Get the status of an operation
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // operationID - Operation ID
@@ -149,7 +151,7 @@ func (client *OperationsClient) getAzureAsyncHeaderResultCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -164,6 +166,7 @@ func (client *OperationsClient) getAzureAsyncHeaderResultHandleResponse(resp *ht
 
 // GetLocationHeaderResult - Get the result of an operation
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // operationID - Operation ID
@@ -210,12 +213,13 @@ func (client *OperationsClient) getLocationHeaderResultCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // List - Get all available operations
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 func (client *OperationsClient) List(ctx context.Context, options *OperationsClientListOptions) (OperationsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
@@ -239,7 +243,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

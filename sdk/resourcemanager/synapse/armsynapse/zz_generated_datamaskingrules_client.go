@@ -38,7 +38,7 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataMaskingRulesClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or updates a Sql pool data masking rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -109,7 +110,7 @@ func (client *DataMaskingRulesClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -124,6 +125,7 @@ func (client *DataMaskingRulesClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Get - Gets the specific Sql pool data masking rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -175,7 +177,7 @@ func (client *DataMaskingRulesClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -190,13 +192,14 @@ func (client *DataMaskingRulesClient) getHandleResponse(resp *http.Response) (Da
 
 // NewListBySQLPoolPager - Gets a list of Sql pool data masking rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - DataMaskingRulesClientListBySQLPoolOptions contains the optional parameters for the DataMaskingRulesClient.ListBySQLPool
 // method.
 func (client *DataMaskingRulesClient) NewListBySQLPoolPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *DataMaskingRulesClientListBySQLPoolOptions) *runtime.Pager[DataMaskingRulesClientListBySQLPoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataMaskingRulesClientListBySQLPoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataMaskingRulesClientListBySQLPoolResponse]{
 		More: func(page DataMaskingRulesClientListBySQLPoolResponse) bool {
 			return false
 		},
@@ -244,7 +247,7 @@ func (client *DataMaskingRulesClient) listBySQLPoolCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewSQLPoolWorkloadGroupClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolWorkloadGroupClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreateOrUpdate - Create Or Update a Sql pool's workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -63,20 +64,21 @@ func NewSQLPoolWorkloadGroupClient(subscriptionID string, credential azcore.Toke
 // parameters - The requested workload group state.
 // options - SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions contains the optional parameters for the SQLPoolWorkloadGroupClient.BeginCreateOrUpdate
 // method.
-func (client *SQLPoolWorkloadGroupClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, parameters WorkloadGroup, options *SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse], error) {
+func (client *SQLPoolWorkloadGroupClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, parameters WorkloadGroup, options *SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions) (*runtime.Poller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create Or Update a Sql pool's workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SQLPoolWorkloadGroupClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, parameters WorkloadGroup, options *SQLPoolWorkloadGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, options)
 	if err != nil {
@@ -122,32 +124,34 @@ func (client *SQLPoolWorkloadGroupClient) createOrUpdateCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Remove Sql pool's workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // workloadGroupName - The name of the workload group.
 // options - SQLPoolWorkloadGroupClientBeginDeleteOptions contains the optional parameters for the SQLPoolWorkloadGroupClient.BeginDelete
 // method.
-func (client *SQLPoolWorkloadGroupClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadGroupClientBeginDeleteOptions) (*armruntime.Poller[SQLPoolWorkloadGroupClientDeleteResponse], error) {
+func (client *SQLPoolWorkloadGroupClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadGroupClientBeginDeleteOptions) (*runtime.Poller[SQLPoolWorkloadGroupClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SQLPoolWorkloadGroupClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadGroupClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Remove Sql pool's workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SQLPoolWorkloadGroupClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, workloadGroupName string, options *SQLPoolWorkloadGroupClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, options)
 	if err != nil {
@@ -198,6 +202,7 @@ func (client *SQLPoolWorkloadGroupClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Get a Sql pool's workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -249,7 +254,7 @@ func (client *SQLPoolWorkloadGroupClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -264,13 +269,14 @@ func (client *SQLPoolWorkloadGroupClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Get list of Sql pool's workload groups.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolWorkloadGroupClientListOptions contains the optional parameters for the SQLPoolWorkloadGroupClient.List
 // method.
 func (client *SQLPoolWorkloadGroupClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolWorkloadGroupClientListOptions) *runtime.Pager[SQLPoolWorkloadGroupClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolWorkloadGroupClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolWorkloadGroupClientListResponse]{
 		More: func(page SQLPoolWorkloadGroupClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -323,7 +329,7 @@ func (client *SQLPoolWorkloadGroupClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

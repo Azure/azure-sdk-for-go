@@ -38,7 +38,7 @@ func NewSQLPoolRestorePointsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewSQLPoolRestorePointsClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreate - Creates a restore point for a data warehouse.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // parameters - The definition for creating the restore point of this Sql pool.
 // options - SQLPoolRestorePointsClientBeginCreateOptions contains the optional parameters for the SQLPoolRestorePointsClient.BeginCreate
 // method.
-func (client *SQLPoolRestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (*armruntime.Poller[SQLPoolRestorePointsClientCreateResponse], error) {
+func (client *SQLPoolRestorePointsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (*runtime.Poller[SQLPoolRestorePointsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SQLPoolRestorePointsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SQLPoolRestorePointsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SQLPoolRestorePointsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolRestorePointsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a restore point for a data warehouse.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *SQLPoolRestorePointsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, sqlPoolName string, parameters CreateSQLPoolRestorePointDefinition, options *SQLPoolRestorePointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, sqlPoolName, parameters, options)
 	if err != nil {
@@ -119,12 +121,13 @@ func (client *SQLPoolRestorePointsClient) createCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Deletes a restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -181,6 +184,7 @@ func (client *SQLPoolRestorePointsClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Gets a restore point.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -232,7 +236,7 @@ func (client *SQLPoolRestorePointsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,13 +251,14 @@ func (client *SQLPoolRestorePointsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Get SQL pool backup information
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - SQLPoolRestorePointsClientListOptions contains the optional parameters for the SQLPoolRestorePointsClient.List
 // method.
 func (client *SQLPoolRestorePointsClient) NewListPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *SQLPoolRestorePointsClientListOptions) *runtime.Pager[SQLPoolRestorePointsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolRestorePointsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolRestorePointsClientListResponse]{
 		More: func(page SQLPoolRestorePointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -306,7 +311,7 @@ func (client *SQLPoolRestorePointsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

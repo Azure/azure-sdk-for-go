@@ -38,7 +38,7 @@ func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(subscriptionID strin
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewWorkspaceManagedSQLServerBlobAuditingPoliciesClient(subscriptionID strin
 
 // BeginCreateOrUpdate - Create or Update a workspace managed sql server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // blobAuditingPolicyName - The name of the blob auditing policy.
 // parameters - Properties of extended blob auditing policy.
 // options - WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters
 // for the WorkspaceManagedSQLServerBlobAuditingPoliciesClient.BeginCreateOrUpdate method.
-func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ServerBlobAuditingPolicy, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error) {
+func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ServerBlobAuditingPolicy, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or Update a workspace managed sql server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, blobAuditingPolicyName BlobAuditingPolicyName, parameters ServerBlobAuditingPolicy, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, blobAuditingPolicyName, parameters, options)
 	if err != nil {
@@ -117,12 +119,13 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) createOrUpdat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Get a workspace managed sql server's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // blobAuditingPolicyName - The name of the blob auditing policy.
@@ -169,7 +172,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) getCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -184,12 +187,13 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) getHandleResp
 
 // NewListByWorkspacePager - List workspace managed sql server's blob auditing policies.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions contains the optional parameters for
 // the WorkspaceManagedSQLServerBlobAuditingPoliciesClient.ListByWorkspace method.
 func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceOptions) *runtime.Pager[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse]{
 		More: func(page WorkspaceManagedSQLServerBlobAuditingPoliciesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -238,7 +242,7 @@ func (client *WorkspaceManagedSQLServerBlobAuditingPoliciesClient) listByWorkspa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

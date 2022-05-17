@@ -38,7 +38,7 @@ func NewSQLPoolTableColumnsClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolTableColumnsClient(subscriptionID string, credential azcore.Token
 
 // NewListByTableNamePager - Gets columns in a given table in a SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -64,7 +65,7 @@ func NewSQLPoolTableColumnsClient(subscriptionID string, credential azcore.Token
 // options - SQLPoolTableColumnsClientListByTableNameOptions contains the optional parameters for the SQLPoolTableColumnsClient.ListByTableName
 // method.
 func (client *SQLPoolTableColumnsClient) NewListByTableNamePager(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, tableName string, options *SQLPoolTableColumnsClientListByTableNameOptions) *runtime.Pager[SQLPoolTableColumnsClientListByTableNameResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolTableColumnsClientListByTableNameResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolTableColumnsClientListByTableNameResponse]{
 		More: func(page SQLPoolTableColumnsClientListByTableNameResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -128,7 +129,7 @@ func (client *SQLPoolTableColumnsClient) listByTableNameCreateRequest(ctx contex
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewExtendedSQLPoolBlobAuditingPoliciesClient(subscriptionID string, credent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewExtendedSQLPoolBlobAuditingPoliciesClient(subscriptionID string, credent
 
 // CreateOrUpdate - Creates or updates an extended Sql pool's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -104,7 +105,7 @@ func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) createOrUpdateCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) createOrUpdateHandleRes
 
 // Get - Gets an extended Sql pool's blob auditing policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -166,7 +168,7 @@ func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) getCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -181,13 +183,14 @@ func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) getHandleResponse(resp 
 
 // NewListBySQLPoolPager - Lists extended auditing settings of a Sql pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
 // options - ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions contains the optional parameters for the ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool
 // method.
 func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) NewListBySQLPoolPager(resourceGroupName string, workspaceName string, sqlPoolName string, options *ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolOptions) *runtime.Pager[ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse]{
 		More: func(page ExtendedSQLPoolBlobAuditingPoliciesClientListBySQLPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -240,7 +243,7 @@ func (client *ExtendedSQLPoolBlobAuditingPoliciesClient) listBySQLPoolCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreate - Create an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // integrationRuntime - Integration runtime resource definition.
 // options - IntegrationRuntimesClientBeginCreateOptions contains the optional parameters for the IntegrationRuntimesClient.BeginCreate
 // method.
-func (client *IntegrationRuntimesClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientBeginCreateOptions) (*armruntime.Poller[IntegrationRuntimesClientCreateResponse], error) {
+func (client *IntegrationRuntimesClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientBeginCreateOptions) (*runtime.Poller[IntegrationRuntimesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntime, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) create(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime IntegrationRuntimeResource, options *IntegrationRuntimesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, integrationRuntime, options)
 	if err != nil {
@@ -118,33 +120,35 @@ func (client *IntegrationRuntimesClient) createCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationRuntime)
 }
 
 // BeginDelete - Delete an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // options - IntegrationRuntimesClientBeginDeleteOptions contains the optional parameters for the IntegrationRuntimesClient.BeginDelete
 // method.
-func (client *IntegrationRuntimesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDeleteOptions) (*armruntime.Poller[IntegrationRuntimesClientDeleteResponse], error) {
+func (client *IntegrationRuntimesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDeleteOptions) (*runtime.Poller[IntegrationRuntimesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
@@ -186,31 +190,33 @@ func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDisableInteractiveQuery - Disable interactive query in integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // options - IntegrationRuntimesClientBeginDisableInteractiveQueryOptions contains the optional parameters for the IntegrationRuntimesClient.BeginDisableInteractiveQuery
 // method.
-func (client *IntegrationRuntimesClient) BeginDisableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDisableInteractiveQueryOptions) (*armruntime.Poller[IntegrationRuntimesClientDisableInteractiveQueryResponse], error) {
+func (client *IntegrationRuntimesClient) BeginDisableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDisableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimesClientDisableInteractiveQueryResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.disableInteractiveQuery(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientDisableInteractiveQueryResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientDisableInteractiveQueryResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientDisableInteractiveQueryResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientDisableInteractiveQueryResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DisableInteractiveQuery - Disable interactive query in integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) disableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginDisableInteractiveQueryOptions) (*http.Response, error) {
 	req, err := client.disableInteractiveQueryCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
@@ -252,31 +258,33 @@ func (client *IntegrationRuntimesClient) disableInteractiveQueryCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginEnableInteractiveQuery - Enable interactive query in integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // options - IntegrationRuntimesClientBeginEnableInteractiveQueryOptions contains the optional parameters for the IntegrationRuntimesClient.BeginEnableInteractiveQuery
 // method.
-func (client *IntegrationRuntimesClient) BeginEnableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginEnableInteractiveQueryOptions) (*armruntime.Poller[IntegrationRuntimesClientEnableInteractiveQueryResponse], error) {
+func (client *IntegrationRuntimesClient) BeginEnableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginEnableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimesClientEnableInteractiveQueryResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.enableInteractiveQuery(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientEnableInteractiveQueryResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientEnableInteractiveQueryResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientEnableInteractiveQueryResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientEnableInteractiveQueryResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // EnableInteractiveQuery - Enable interactive query in integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) enableInteractiveQuery(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginEnableInteractiveQueryOptions) (*http.Response, error) {
 	req, err := client.enableInteractiveQueryCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
@@ -318,12 +326,13 @@ func (client *IntegrationRuntimesClient) enableInteractiveQueryCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
@@ -370,9 +379,9 @@ func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -387,12 +396,13 @@ func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByWorkspacePager - List all integration runtimes
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - IntegrationRuntimesClientListByWorkspaceOptions contains the optional parameters for the IntegrationRuntimesClient.ListByWorkspace
 // method.
 func (client *IntegrationRuntimesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *IntegrationRuntimesClientListByWorkspaceOptions) *runtime.Pager[IntegrationRuntimesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationRuntimesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationRuntimesClientListByWorkspaceResponse]{
 		More: func(page IntegrationRuntimesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -441,7 +451,7 @@ func (client *IntegrationRuntimesClient) listByWorkspaceCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -457,6 +467,7 @@ func (client *IntegrationRuntimesClient) listByWorkspaceHandleResponse(resp *htt
 // ListOutboundNetworkDependenciesEndpoints - Gets the list of outbound network dependencies for a given Azure-SSIS integration
 // runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
@@ -503,7 +514,7 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -518,25 +529,27 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 
 // BeginStart - Start an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // options - IntegrationRuntimesClientBeginStartOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStart
 // method.
-func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*armruntime.Poller[IntegrationRuntimesClientStartResponse], error) {
+func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*runtime.Poller[IntegrationRuntimesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Start an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
@@ -578,31 +591,33 @@ func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stop an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
 // options - IntegrationRuntimesClientBeginStopOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStop
 // method.
-func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*armruntime.Poller[IntegrationRuntimesClientStopResponse], error) {
+func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*runtime.Poller[IntegrationRuntimesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stop an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, workspaceName, integrationRuntimeName, options)
 	if err != nil {
@@ -644,12 +659,13 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Update an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
@@ -697,7 +713,7 @@ func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateIntegrationRuntimeRequest)
 }
 
@@ -712,6 +728,7 @@ func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Respons
 
 // Upgrade - Upgrade an integration runtime
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // integrationRuntimeName - Integration runtime name
@@ -758,6 +775,6 @@ func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

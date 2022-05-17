@@ -38,7 +38,7 @@ func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string, 
 
 // BeginCreateOrUpdate - Create or update Managed Identity Sql Control Settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // managedIdentitySQLControlSettings - Managed Identity Sql Control Settings
 // options - WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate method.
-func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse], error) {
+func (client *WorkspaceManagedIdentitySQLControlSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update Managed Identity Sql Control Settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel, options *WorkspaceManagedIdentitySQLControlSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings, options)
 	if err != nil {
@@ -114,12 +116,13 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) createOrUpdateCr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, managedIdentitySQLControlSettings)
 }
 
 // Get - Get Managed Identity Sql Control Settings
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedIdentitySQLControlSettingsClientGetOptions contains the optional parameters for the WorkspaceManagedIdentitySQLControlSettingsClient.Get
@@ -161,7 +164,7 @@ func (client *WorkspaceManagedIdentitySQLControlSettingsClient) getCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

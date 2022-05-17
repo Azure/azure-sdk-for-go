@@ -10,30 +10,8 @@ package armappplatform
 
 const (
 	moduleName    = "armappplatform"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
-
-// APIPortalProvisioningState - State of the API portal.
-type APIPortalProvisioningState string
-
-const (
-	APIPortalProvisioningStateCreating  APIPortalProvisioningState = "Creating"
-	APIPortalProvisioningStateDeleting  APIPortalProvisioningState = "Deleting"
-	APIPortalProvisioningStateFailed    APIPortalProvisioningState = "Failed"
-	APIPortalProvisioningStateSucceeded APIPortalProvisioningState = "Succeeded"
-	APIPortalProvisioningStateUpdating  APIPortalProvisioningState = "Updating"
-)
-
-// PossibleAPIPortalProvisioningStateValues returns the possible values for the APIPortalProvisioningState const type.
-func PossibleAPIPortalProvisioningStateValues() []APIPortalProvisioningState {
-	return []APIPortalProvisioningState{
-		APIPortalProvisioningStateCreating,
-		APIPortalProvisioningStateDeleting,
-		APIPortalProvisioningStateFailed,
-		APIPortalProvisioningStateSucceeded,
-		APIPortalProvisioningStateUpdating,
-	}
-}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -305,28 +283,6 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	}
 }
 
-// GatewayProvisioningState - State of the Spring Cloud Gateway.
-type GatewayProvisioningState string
-
-const (
-	GatewayProvisioningStateCreating  GatewayProvisioningState = "Creating"
-	GatewayProvisioningStateDeleting  GatewayProvisioningState = "Deleting"
-	GatewayProvisioningStateFailed    GatewayProvisioningState = "Failed"
-	GatewayProvisioningStateSucceeded GatewayProvisioningState = "Succeeded"
-	GatewayProvisioningStateUpdating  GatewayProvisioningState = "Updating"
-)
-
-// PossibleGatewayProvisioningStateValues returns the possible values for the GatewayProvisioningState const type.
-func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
-	return []GatewayProvisioningState{
-		GatewayProvisioningStateCreating,
-		GatewayProvisioningStateDeleting,
-		GatewayProvisioningStateFailed,
-		GatewayProvisioningStateSucceeded,
-		GatewayProvisioningStateUpdating,
-	}
-}
-
 // KPackBuildStageProvisioningState - The provisioning state of this build stage resource.
 type KPackBuildStageProvisioningState string
 
@@ -404,22 +360,6 @@ func PossibleMonitoringSettingStateValues() []MonitoringSettingState {
 		MonitoringSettingStateNotAvailable,
 		MonitoringSettingStateSucceeded,
 		MonitoringSettingStateUpdating,
-	}
-}
-
-// PowerState - Power state of the Service
-type PowerState string
-
-const (
-	PowerStateRunning PowerState = "Running"
-	PowerStateStopped PowerState = "Stopped"
-)
-
-// PossiblePowerStateValues returns the possible values for the PowerState const type.
-func PossiblePowerStateValues() []PowerState {
-	return []PowerState{
-		PowerStateRunning,
-		PowerStateStopped,
 	}
 }
 
@@ -529,20 +469,6 @@ func PossibleServiceRegistryProvisioningStateValues() []ServiceRegistryProvision
 	}
 }
 
-// StorageType - The type of the storage.
-type StorageType string
-
-const (
-	StorageTypeStorageAccount StorageType = "StorageAccount"
-)
-
-// PossibleStorageTypeValues returns the possible values for the StorageType const type.
-func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{
-		StorageTypeStorageAccount,
-	}
-}
-
 // SupportedRuntimePlatform - The platform of this runtime version (possible values: "Java" or ".NET").
 type SupportedRuntimePlatform string
 
@@ -608,19 +534,5 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 	return []TrafficDirection{
 		TrafficDirectionInbound,
 		TrafficDirectionOutbound,
-	}
-}
-
-// Type - The type of the underlying resource to mount as a persistent disk.
-type Type string
-
-const (
-	TypeAzureFileVolume Type = "AzureFileVolume"
-)
-
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeAzureFileVolume,
 	}
 }

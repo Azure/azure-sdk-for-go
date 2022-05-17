@@ -12,28 +12,26 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Get.json
 func ExampleAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
+		"myResourceGroup",
+		"myservice",
+		"myapp",
 		&armappplatform.AppsClientGetOptions{SyncStatus: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,30 +40,26 @@ func ExampleAppsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_CreateOrUpdate.json
 func ExampleAppsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
+		"myResourceGroup",
+		"myservice",
+		"myapp",
 		armappplatform.AppResource{
 			Identity: &armappplatform.ManagedIdentityProperties{
-				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
-				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
-				},
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssigned),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armappplatform.AppResourceProperties{
 				AddonConfigs: map[string]map[string]interface{}{
 					"ApplicationConfigurationService": {
@@ -75,48 +69,34 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 						"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry",
 					},
 				},
-				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
-					{
-						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
-							Type: to.Ptr(armappplatform.TypeAzureFileVolume),
-							MountOptions: []*string{
-								to.Ptr("uid=0"),
-								to.Ptr("gid=0"),
-								to.Ptr("dir_mode=0777"),
-								to.Ptr("file_mode=0777")},
-							MountPath: to.Ptr("<mount-path>"),
-							ShareName: to.Ptr("<share-name>"),
-						},
-						StorageID: to.Ptr("<storage-id>"),
-					}},
 				EnableEndToEndTLS: to.Ptr(false),
-				Fqdn:              to.Ptr("<fqdn>"),
+				Fqdn:              to.Ptr("myapp.mydomain.com"),
 				HTTPSOnly:         to.Ptr(false),
 				LoadedCertificates: []*armappplatform.LoadedCertificate{
 					{
 						LoadTrustStore: to.Ptr(false),
-						ResourceID:     to.Ptr("<resource-id>"),
+						ResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert1"),
 					},
 					{
 						LoadTrustStore: to.Ptr(true),
-						ResourceID:     to.Ptr("<resource-id>"),
+						ResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/certificates/mycert2"),
 					}},
 				PersistentDisk: &armappplatform.PersistentDisk{
-					MountPath: to.Ptr("<mount-path>"),
+					MountPath: to.Ptr("/mypersistentdisk"),
 					SizeInGB:  to.Ptr[int32](2),
 				},
 				Public: to.Ptr(true),
 				TemporaryDisk: &armappplatform.TemporaryDisk{
-					MountPath: to.Ptr("<mount-path>"),
+					MountPath: to.Ptr("/mytemporarydisk"),
 					SizeInGB:  to.Ptr[int32](2),
 				},
 			},
 		},
-		&armappplatform.AppsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -124,85 +104,71 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Delete.json
 func ExampleAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
-		&armappplatform.AppsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myservice",
+		"myapp",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Update.json
 func ExampleAppsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
+		"myResourceGroup",
+		"myservice",
+		"myapp",
 		armappplatform.AppResource{
 			Identity: &armappplatform.ManagedIdentityProperties{
-				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
-				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
-					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
-				},
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssigned),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armappplatform.AppResourceProperties{
-				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
-					{
-						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
-							Type:         to.Ptr(armappplatform.TypeAzureFileVolume),
-							MountOptions: []*string{},
-							MountPath:    to.Ptr("<mount-path>"),
-							ShareName:    to.Ptr("<share-name>"),
-						},
-						StorageID: to.Ptr("<storage-id>"),
-					}},
 				EnableEndToEndTLS: to.Ptr(false),
-				Fqdn:              to.Ptr("<fqdn>"),
+				Fqdn:              to.Ptr("myapp.mydomain.com"),
 				HTTPSOnly:         to.Ptr(false),
 				PersistentDisk: &armappplatform.PersistentDisk{
-					MountPath: to.Ptr("<mount-path>"),
+					MountPath: to.Ptr("/mypersistentdisk"),
 					SizeInGB:  to.Ptr[int32](2),
 				},
 				Public: to.Ptr(true),
 				TemporaryDisk: &armappplatform.TemporaryDisk{
-					MountPath: to.Ptr("<mount-path>"),
+					MountPath: to.Ptr("/mytemporarydisk"),
 					SizeInGB:  to.Ptr[int32](2),
 				},
 			},
 		},
-		&armappplatform.AppsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -210,25 +176,24 @@ func ExampleAppsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_List.json
 func ExampleAppsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myservice",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -237,30 +202,30 @@ func ExampleAppsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_SetActiveDeployments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_SetActiveDeployments.json
 func ExampleAppsClient_BeginSetActiveDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSetActiveDeployments(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
+		"myResourceGroup",
+		"myservice",
+		"myapp",
 		armappplatform.ActiveDeploymentCollection{
 			ActiveDeploymentNames: []*string{
 				to.Ptr("default")},
 		},
-		&armappplatform.AppsClientBeginSetActiveDeploymentsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -268,23 +233,23 @@ func ExampleAppsClient_BeginSetActiveDeployments() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/Apps_ValidateDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_ValidateDomain.json
 func ExampleAppsClient_ValidateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAppsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAppsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateDomain(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<app-name>",
+		"myResourceGroup",
+		"myservice",
+		"myapp",
 		armappplatform.CustomDomainValidatePayload{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("mydomain.io"),
 		},
 		nil)
 	if err != nil {

@@ -12,27 +12,25 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ConfigServers_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_Get.json
 func ExampleConfigServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewConfigServersClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewConfigServersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,37 +39,37 @@ func ExampleConfigServersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ConfigServers_UpdatePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_UpdatePut.json
 func ExampleConfigServersClient_BeginUpdatePut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewConfigServersClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewConfigServersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdatePut(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		armappplatform.ConfigServerResource{
 			Properties: &armappplatform.ConfigServerProperties{
 				ConfigServer: &armappplatform.ConfigServerSettings{
 					GitProperty: &armappplatform.ConfigServerGitProperty{
-						Label: to.Ptr("<label>"),
+						Label: to.Ptr("master"),
 						SearchPaths: []*string{
 							to.Ptr("/")},
-						URI: to.Ptr("<uri>"),
+						URI: to.Ptr("https://github.com/fake-user/fake-repository.git"),
 					},
 				},
 			},
 		},
-		&armappplatform.ConfigServersClientBeginUpdatePutOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -79,37 +77,37 @@ func ExampleConfigServersClient_BeginUpdatePut() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ConfigServers_UpdatePatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_UpdatePatch.json
 func ExampleConfigServersClient_BeginUpdatePatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewConfigServersClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewConfigServersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdatePatch(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		armappplatform.ConfigServerResource{
 			Properties: &armappplatform.ConfigServerProperties{
 				ConfigServer: &armappplatform.ConfigServerSettings{
 					GitProperty: &armappplatform.ConfigServerGitProperty{
-						Label: to.Ptr("<label>"),
+						Label: to.Ptr("master"),
 						SearchPaths: []*string{
 							to.Ptr("/")},
-						URI: to.Ptr("<uri>"),
+						URI: to.Ptr("https://github.com/fake-user/fake-repository.git"),
 					},
 				},
 			},
 		},
-		&armappplatform.ConfigServersClientBeginUpdatePatchOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,33 +115,33 @@ func ExampleConfigServersClient_BeginUpdatePatch() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ConfigServers_Validate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_Validate.json
 func ExampleConfigServersClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewConfigServersClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewConfigServersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginValidate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		armappplatform.ConfigServerSettings{
 			GitProperty: &armappplatform.ConfigServerGitProperty{
-				Label: to.Ptr("<label>"),
+				Label: to.Ptr("master"),
 				SearchPaths: []*string{
 					to.Ptr("/")},
-				URI: to.Ptr("<uri>"),
+				URI: to.Ptr("https://github.com/fake-user/fake-repository.git"),
 			},
 		},
-		&armappplatform.ConfigServersClientBeginValidateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

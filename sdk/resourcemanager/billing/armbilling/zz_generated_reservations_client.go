@@ -36,7 +36,7 @@ func NewReservationsClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,11 +54,12 @@ func NewReservationsClient(credential azcore.TokenCredential, options *arm.Clien
 // NewListByBillingAccountPager - Lists the reservations for a billing account and the roll up counts of reservations group
 // by provisioning states.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ReservationsClientListByBillingAccountOptions contains the optional parameters for the ReservationsClient.ListByBillingAccount
 // method.
 func (client *ReservationsClient) NewListByBillingAccountPager(billingAccountName string, options *ReservationsClientListByBillingAccountOptions) *runtime.Pager[ReservationsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsClientListByBillingAccountResponse]{
 		More: func(page ReservationsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -111,7 +112,7 @@ func (client *ReservationsClient) listByBillingAccountCreateRequest(ctx context.
 		reqQP.Set("selectedState", *options.SelectedState)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -127,12 +128,13 @@ func (client *ReservationsClient) listByBillingAccountHandleResponse(resp *http.
 // NewListByBillingProfilePager - Lists the reservations for a billing profile and the roll up counts of reservations group
 // by provisioning state.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - ReservationsClientListByBillingProfileOptions contains the optional parameters for the ReservationsClient.ListByBillingProfile
 // method.
 func (client *ReservationsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *ReservationsClientListByBillingProfileOptions) *runtime.Pager[ReservationsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReservationsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReservationsClientListByBillingProfileResponse]{
 		More: func(page ReservationsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -189,7 +191,7 @@ func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.
 		reqQP.Set("selectedState", *options.SelectedState)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

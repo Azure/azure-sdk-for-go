@@ -39,7 +39,7 @@ func NewPeriodsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewPeriodsClient(subscriptionID string, credential azcore.TokenCredential, 
 // which were not purchased directly through the Azure web portal are not supported
 // through this preview API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-preview
 // billingPeriodName - The name of a BillingPeriod resource.
 // options - PeriodsClientGetOptions contains the optional parameters for the PeriodsClient.Get method.
 func (client *PeriodsClient) Get(ctx context.Context, billingPeriodName string, options *PeriodsClientGetOptions) (PeriodsClientGetResponse, error) {
@@ -94,7 +95,7 @@ func (client *PeriodsClient) getCreateRequest(ctx context.Context, billingPeriod
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,9 +112,10 @@ func (client *PeriodsClient) getHandleResponse(resp *http.Response) (PeriodsClie
 // for Azure Web-Direct subscriptions. Other subscription types which were not purchased
 // directly through the Azure web portal are not supported through this preview API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-preview
 // options - PeriodsClientListOptions contains the optional parameters for the PeriodsClient.List method.
 func (client *PeriodsClient) NewListPager(options *PeriodsClientListOptions) *runtime.Pager[PeriodsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PeriodsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PeriodsClientListResponse]{
 		More: func(page PeriodsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -163,7 +165,7 @@ func (client *PeriodsClient) listCreateRequest(ctx context.Context, options *Per
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

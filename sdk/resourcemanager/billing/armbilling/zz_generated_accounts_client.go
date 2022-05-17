@@ -36,7 +36,7 @@ func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewAccountsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // Get - Gets a billing account by its ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 func (client *AccountsClient) Get(ctx context.Context, billingAccountName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
@@ -87,7 +88,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccou
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -102,9 +103,10 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 
 // NewListPager - Lists the billing accounts that a user has access to.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // options - AccountsClientListOptions contains the optional parameters for the AccountsClient.List method.
 func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListResponse]{
 		More: func(page AccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -144,7 +146,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -161,11 +163,12 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 // to create Azure subscriptions. The operation is supported only for billing accounts with agreement type Microsoft Customer
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions contains the optional parameters for the
 // AccountsClient.ListInvoiceSectionsByCreateSubscriptionPermission method.
 func (client *AccountsClient) NewListInvoiceSectionsByCreateSubscriptionPermissionPager(billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) *runtime.Pager[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse]{
 		More: func(page AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -206,7 +209,7 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,26 +225,28 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionH
 // BeginUpdate - Updates the properties of a billing account. Currently, displayName and address can be updated. The operation
 // is supported only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the update billing account operation.
 // options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*armruntime.Poller[AccountsClientUpdateResponse], error) {
+func (client *AccountsClient) BeginUpdate(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, billingAccountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the properties of a billing account. Currently, displayName and address can be updated. The operation
 // is supported only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *AccountsClient) update(ctx context.Context, billingAccountName string, parameters AccountUpdateRequest, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, billingAccountName, parameters, options)
 	if err != nil {
@@ -271,6 +276,6 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

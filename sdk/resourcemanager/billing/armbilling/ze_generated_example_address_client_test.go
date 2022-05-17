@@ -30,11 +30,11 @@ func ExampleAddressClient_Validate() {
 	}
 	res, err := client.Validate(ctx,
 		armbilling.AddressDetails{
-			AddressLine1: to.Ptr("<address-line1>"),
-			City:         to.Ptr("<city>"),
-			Country:      to.Ptr("<country>"),
-			PostalCode:   to.Ptr("<postal-code>"),
-			Region:       to.Ptr("<region>"),
+			AddressLine1: to.Ptr("1 Test"),
+			City:         to.Ptr("bellevue"),
+			Country:      to.Ptr("us"),
+			PostalCode:   to.Ptr("12345"),
+			Region:       to.Ptr("wa"),
 		},
 		nil)
 	if err != nil {

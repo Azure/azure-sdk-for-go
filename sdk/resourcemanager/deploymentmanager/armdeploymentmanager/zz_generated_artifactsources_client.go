@@ -39,7 +39,7 @@ func NewArtifactSourcesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewArtifactSourcesClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Synchronously creates a new artifact source or updates an existing artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // artifactSourceName - The name of the artifact source.
 // options - ArtifactSourcesClientCreateOrUpdateOptions contains the optional parameters for the ArtifactSourcesClient.CreateOrUpdate
@@ -98,7 +99,7 @@ func (client *ArtifactSourcesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ArtifactSourceInfo != nil {
 		return req, runtime.MarshalAsJSON(req, *options.ArtifactSourceInfo)
 	}
@@ -116,6 +117,7 @@ func (client *ArtifactSourcesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Deletes an artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // artifactSourceName - The name of the artifact source.
 // options - ArtifactSourcesClientDeleteOptions contains the optional parameters for the ArtifactSourcesClient.Delete method.
@@ -156,12 +158,13 @@ func (client *ArtifactSourcesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // artifactSourceName - The name of the artifact source.
 // options - ArtifactSourcesClientGetOptions contains the optional parameters for the ArtifactSourcesClient.Get method.
@@ -202,7 +205,7 @@ func (client *ArtifactSourcesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,6 +220,7 @@ func (client *ArtifactSourcesClient) getHandleResponse(resp *http.Response) (Art
 
 // List - Lists the artifact sources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ArtifactSourcesClientListOptions contains the optional parameters for the ArtifactSourcesClient.List method.
 func (client *ArtifactSourcesClient) List(ctx context.Context, resourceGroupName string, options *ArtifactSourcesClientListOptions) (ArtifactSourcesClientListResponse, error) {
@@ -252,7 +256,7 @@ func (client *ArtifactSourcesClient) listCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Synchronously creates a new service or updates an existing service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -103,7 +104,7 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, serviceInfo)
 }
 
@@ -118,6 +119,7 @@ func (client *ServicesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -163,12 +165,13 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // serviceName - The name of the service resource.
@@ -214,7 +217,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,6 +232,7 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // List - Lists the services in the service topology.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serviceTopologyName - The name of the service topology .
 // options - ServicesClientListOptions contains the optional parameters for the ServicesClient.List method.
@@ -269,7 +273,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

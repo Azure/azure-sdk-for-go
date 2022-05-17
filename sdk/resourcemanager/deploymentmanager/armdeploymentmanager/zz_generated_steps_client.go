@@ -39,7 +39,7 @@ func NewStepsClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewStepsClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateOrUpdate - Synchronously creates a new step or updates an existing step.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // stepName - The name of the deployment step.
 // options - StepsClientCreateOrUpdateOptions contains the optional parameters for the StepsClient.CreateOrUpdate method.
@@ -97,7 +98,7 @@ func (client *StepsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.StepInfo != nil {
 		return req, runtime.MarshalAsJSON(req, *options.StepInfo)
 	}
@@ -115,6 +116,7 @@ func (client *StepsClient) createOrUpdateHandleResponse(resp *http.Response) (St
 
 // Delete - Deletes the step.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // stepName - The name of the deployment step.
 // options - StepsClientDeleteOptions contains the optional parameters for the StepsClient.Delete method.
@@ -155,12 +157,13 @@ func (client *StepsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the step.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // stepName - The name of the deployment step.
 // options - StepsClientGetOptions contains the optional parameters for the StepsClient.Get method.
@@ -201,7 +204,7 @@ func (client *StepsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,6 +219,7 @@ func (client *StepsClient) getHandleResponse(resp *http.Response) (StepsClientGe
 
 // List - Lists the steps in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - StepsClientListOptions contains the optional parameters for the StepsClient.List method.
 func (client *StepsClient) List(ctx context.Context, resourceGroupName string, options *StepsClientListOptions) (StepsClientListResponse, error) {
@@ -251,7 +255,7 @@ func (client *StepsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

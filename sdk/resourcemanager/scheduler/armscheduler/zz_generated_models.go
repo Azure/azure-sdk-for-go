@@ -21,6 +21,13 @@ type BasicAuthentication struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type BasicAuthentication.
+func (b *BasicAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: b.Type,
+	}
+}
+
 type ClientCertAuthentication struct {
 	// REQUIRED; Gets or sets the HTTP authentication type.
 	Type *HTTPAuthenticationType `json:"type,omitempty"`
@@ -41,6 +48,13 @@ type ClientCertAuthentication struct {
 	Pfx *string `json:"pfx,omitempty"`
 }
 
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type ClientCertAuthentication.
+func (c *ClientCertAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: c.Type,
+	}
+}
+
 // HTTPAuthenticationClassification provides polymorphic access to related types.
 // Call the interface's GetHTTPAuthentication() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -54,6 +68,9 @@ type HTTPAuthentication struct {
 	// REQUIRED; Gets or sets the HTTP authentication type.
 	Type *HTTPAuthenticationType `json:"type,omitempty"`
 }
+
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type HTTPAuthentication.
+func (h *HTTPAuthentication) GetHTTPAuthentication() *HTTPAuthentication { return h }
 
 type HTTPRequest struct {
 	// Gets or sets the authentication method of the request.
@@ -434,6 +451,13 @@ type OAuthAuthentication struct {
 
 	// Gets or sets the tenant.
 	Tenant *string `json:"tenant,omitempty"`
+}
+
+// GetHTTPAuthentication implements the HTTPAuthenticationClassification interface for type OAuthAuthentication.
+func (o *OAuthAuthentication) GetHTTPAuthentication() *HTTPAuthentication {
+	return &HTTPAuthentication{
+		Type: o.Type,
+	}
 }
 
 type RetryPolicy struct {

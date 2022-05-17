@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*JobCollectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[JobCollectionsClientDeleteResponse], error)` to `(*runtime.Poller[JobCollectionsClientDeleteResponse], error)`
+- Function `*JobCollectionsClient.BeginDisable` return value(s) have been changed from `(*armruntime.Poller[JobCollectionsClientDisableResponse], error)` to `(*runtime.Poller[JobCollectionsClientDisableResponse], error)`
+- Function `*JobCollectionsClient.BeginEnable` return value(s) have been changed from `(*armruntime.Poller[JobCollectionsClientEnableResponse], error)` to `(*runtime.Poller[JobCollectionsClientEnableResponse], error)`
+- Function `JobHistoryDefinitionProperties.MarshalJSON` has been removed
+- Function `JobListResult.MarshalJSON` has been removed
+- Function `JobHistoryListResult.MarshalJSON` has been removed
+- Function `JobCollectionListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

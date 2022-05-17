@@ -39,7 +39,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CreateOrUpdate - Provisions a new job or updates an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
@@ -103,7 +104,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, job)
 }
 
@@ -118,6 +119,7 @@ func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (Job
 
 // Delete - Deletes a job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
@@ -168,6 +170,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Gets a job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
@@ -213,7 +216,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -228,11 +231,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Lists all jobs under the specified job collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
 func (client *JobsClient) NewListPager(resourceGroupName string, jobCollectionName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -290,7 +294,7 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -305,12 +309,13 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 
 // NewListJobHistoryPager - Lists job history.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
 // options - JobsClientListJobHistoryOptions contains the optional parameters for the JobsClient.ListJobHistory method.
 func (client *JobsClient) NewListJobHistoryPager(resourceGroupName string, jobCollectionName string, jobName string, options *JobsClientListJobHistoryOptions) *runtime.Pager[JobsClientListJobHistoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListJobHistoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListJobHistoryResponse]{
 		More: func(page JobsClientListJobHistoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -372,7 +377,7 @@ func (client *JobsClient) listJobHistoryCreateRequest(ctx context.Context, resou
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, nil
 }
 
@@ -387,6 +392,7 @@ func (client *JobsClient) listJobHistoryHandleResponse(resp *http.Response) (Job
 
 // Patch - Patches an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.
@@ -433,7 +439,7 @@ func (client *JobsClient) patchCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json, text/json")
+	req.Raw().Header["Accept"] = []string{"application/json, text/json"}
 	return req, runtime.MarshalAsJSON(req, job)
 }
 
@@ -448,6 +454,7 @@ func (client *JobsClient) patchHandleResponse(resp *http.Response) (JobsClientPa
 
 // Run - Runs a job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-01
 // resourceGroupName - The resource group name.
 // jobCollectionName - The job collection name.
 // jobName - The job name.

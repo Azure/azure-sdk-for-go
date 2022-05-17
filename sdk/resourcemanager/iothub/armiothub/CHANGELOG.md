@@ -1,5 +1,34 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ResourceClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ResourceClientDeleteResponse], error)` to `(*runtime.Poller[ResourceClientDeleteResponse], error)`
+- Function `*ResourceClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ResourceClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ResourceClientCreateOrUpdateResponse], error)`
+- Function `*ResourceClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ResourceClientUpdateResponse], error)` to `(*runtime.Poller[ResourceClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error)`
+- Function `*Client.BeginManualFailover` return value(s) have been changed from `(*armruntime.Poller[ClientManualFailoverResponse], error)` to `(*runtime.Poller[ClientManualFailoverResponse], error)`
+- Function `JobResponse.MarshalJSON` has been removed
+- Function `SKUDescriptionListResult.MarshalJSON` has been removed
+- Function `CertificateListDescription.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `TestRouteResultDetails.MarshalJSON` has been removed
+- Function `CertificatePropertiesWithNonce.MarshalJSON` has been removed
+- Function `TestAllRoutesResult.MarshalJSON` has been removed
+- Function `DescriptionListResult.MarshalJSON` has been removed
+- Function `UserSubscriptionQuotaListResult.MarshalJSON` has been removed
+- Function `EventHubConsumerGroupInfo.MarshalJSON` has been removed
+- Function `SharedAccessSignatureAuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `JobResponseListResult.MarshalJSON` has been removed
+- Function `EndpointHealthData.MarshalJSON` has been removed
+- Function `EventHubConsumerGroupsListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResources.MarshalJSON` has been removed
+- Function `QuotaMetricInfoListResult.MarshalJSON` has been removed
+- Function `GroupIDInformationProperties.MarshalJSON` has been removed
+- Function `EndpointHealthDataListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

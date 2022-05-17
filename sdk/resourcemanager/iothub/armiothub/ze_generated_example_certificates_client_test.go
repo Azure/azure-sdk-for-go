@@ -24,13 +24,13 @@ func ExampleCertificatesClient_ListByIotHub() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByIotHub(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"myResourceGroup",
+		"testhub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,14 +46,14 @@ func ExampleCertificatesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
+		"myResourceGroup",
+		"testhub",
+		"cert",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,17 +69,17 @@ func ExampleCertificatesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
+		"myResourceGroup",
+		"iothub",
+		"cert",
 		armiothub.CertificateDescription{
 			Properties: &armiothub.CertificateProperties{
-				Certificate: to.Ptr("<certificate>"),
+				Certificate: to.Ptr("############################################"),
 			},
 		},
 		&armiothub.CertificatesClientCreateOrUpdateOptions{IfMatch: nil})
@@ -97,15 +97,15 @@ func ExampleCertificatesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
-		"<if-match>",
+		"myResourceGroup",
+		"myhub",
+		"cert",
+		"AAAAAAAADGk=",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,15 +119,15 @@ func ExampleCertificatesClient_GenerateVerificationCode() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateVerificationCode(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
-		"<if-match>",
+		"myResourceGroup",
+		"testHub",
+		"cert",
+		"AAAAAAAADGk=",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -143,17 +143,17 @@ func ExampleCertificatesClient_Verify() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiothub.NewCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armiothub.NewCertificatesClient("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Verify(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<certificate-name>",
-		"<if-match>",
+		"myResourceGroup",
+		"myFirstProvisioningService",
+		"cert",
+		"AAAAAAAADGk=",
 		armiothub.CertificateVerificationDescription{
-			Certificate: to.Ptr("<certificate>"),
+			Certificate: to.Ptr("#####################################"),
 		},
 		nil)
 	if err != nil {

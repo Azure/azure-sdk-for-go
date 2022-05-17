@@ -1,5 +1,130 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AFDEndpointsClient.BeginPurgeContent` return value(s) have been changed from `(*armruntime.Poller[AFDEndpointsClientPurgeContentResponse], error)` to `(*runtime.Poller[AFDEndpointsClientPurgeContentResponse], error)`
+- Function `*AFDEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AFDEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[AFDEndpointsClientUpdateResponse], error)`
+- Function `*EndpointsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientStartResponse], error)` to `(*runtime.Poller[EndpointsClientStartResponse], error)`
+- Function `*OriginsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[OriginsClientCreateResponse], error)` to `(*runtime.Poller[OriginsClientCreateResponse], error)`
+- Function `*OriginsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OriginsClientDeleteResponse], error)` to `(*runtime.Poller[OriginsClientDeleteResponse], error)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error)`
+- Function `*EndpointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientCreateResponse], error)` to `(*runtime.Poller[EndpointsClientCreateResponse], error)`
+- Function `*ProfilesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ProfilesClientUpdateResponse], error)` to `(*runtime.Poller[ProfilesClientUpdateResponse], error)`
+- Function `*AFDOriginsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AFDOriginsClientDeleteResponse], error)` to `(*runtime.Poller[AFDOriginsClientDeleteResponse], error)`
+- Function `*RulesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[RulesClientUpdateResponse], error)` to `(*runtime.Poller[RulesClientUpdateResponse], error)`
+- Function `*AFDOriginGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AFDOriginGroupsClientDeleteResponse], error)` to `(*runtime.Poller[AFDOriginGroupsClientDeleteResponse], error)`
+- Function `*RulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RulesClientDeleteResponse], error)` to `(*runtime.Poller[RulesClientDeleteResponse], error)`
+- Function `*OriginGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OriginGroupsClientDeleteResponse], error)` to `(*runtime.Poller[OriginGroupsClientDeleteResponse], error)`
+- Function `*RoutesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RoutesClientCreateResponse], error)` to `(*runtime.Poller[RoutesClientCreateResponse], error)`
+- Function `*EndpointsClient.BeginLoadContent` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientLoadContentResponse], error)` to `(*runtime.Poller[EndpointsClientLoadContentResponse], error)`
+- Function `*AFDCustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AFDCustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[AFDCustomDomainsClientDeleteResponse], error)`
+- Function `*OriginGroupsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[OriginGroupsClientCreateResponse], error)` to `(*runtime.Poller[OriginGroupsClientCreateResponse], error)`
+- Function `*RoutesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[RoutesClientUpdateResponse], error)` to `(*runtime.Poller[RoutesClientUpdateResponse], error)`
+- Function `*AFDCustomDomainsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AFDCustomDomainsClientCreateResponse], error)` to `(*runtime.Poller[AFDCustomDomainsClientCreateResponse], error)`
+- Function `*EndpointsClient.BeginPurgeContent` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientPurgeContentResponse], error)` to `(*runtime.Poller[EndpointsClientPurgeContentResponse], error)`
+- Function `*RoutesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RoutesClientDeleteResponse], error)` to `(*runtime.Poller[RoutesClientDeleteResponse], error)`
+- Function `*AFDOriginGroupsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AFDOriginGroupsClientCreateResponse], error)` to `(*runtime.Poller[AFDOriginGroupsClientCreateResponse], error)`
+- Function `*SecurityPoliciesClient.BeginPatch` return value(s) have been changed from `(*armruntime.Poller[SecurityPoliciesClientPatchResponse], error)` to `(*runtime.Poller[SecurityPoliciesClientPatchResponse], error)`
+- Function `*OriginGroupsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[OriginGroupsClientUpdateResponse], error)` to `(*runtime.Poller[OriginGroupsClientUpdateResponse], error)`
+- Function `*AFDCustomDomainsClient.BeginRefreshValidationToken` return value(s) have been changed from `(*armruntime.Poller[AFDCustomDomainsClientRefreshValidationTokenResponse], error)` to `(*runtime.Poller[AFDCustomDomainsClientRefreshValidationTokenResponse], error)`
+- Function `*ProfilesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ProfilesClientDeleteResponse], error)` to `(*runtime.Poller[ProfilesClientDeleteResponse], error)`
+- Function `*AFDCustomDomainsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AFDCustomDomainsClientUpdateResponse], error)` to `(*runtime.Poller[AFDCustomDomainsClientUpdateResponse], error)`
+- Function `*AFDOriginsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AFDOriginsClientUpdateResponse], error)` to `(*runtime.Poller[AFDOriginsClientUpdateResponse], error)`
+- Function `*RuleSetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RuleSetsClientDeleteResponse], error)` to `(*runtime.Poller[RuleSetsClientDeleteResponse], error)`
+- Function `*AFDEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AFDEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[AFDEndpointsClientDeleteResponse], error)`
+- Function `*PoliciesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PoliciesClientUpdateResponse], error)` to `(*runtime.Poller[PoliciesClientUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `*SecretsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SecretsClientCreateResponse], error)` to `(*runtime.Poller[SecretsClientCreateResponse], error)`
+- Function `*AFDOriginsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AFDOriginsClientCreateResponse], error)` to `(*runtime.Poller[AFDOriginsClientCreateResponse], error)`
+- Function `*ProfilesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ProfilesClientCreateResponse], error)` to `(*runtime.Poller[ProfilesClientCreateResponse], error)`
+- Function `*AFDEndpointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AFDEndpointsClientCreateResponse], error)` to `(*runtime.Poller[AFDEndpointsClientCreateResponse], error)`
+- Function `*EndpointsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientStopResponse], error)` to `(*runtime.Poller[EndpointsClientStopResponse], error)`
+- Function `*SecretsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SecretsClientDeleteResponse], error)` to `(*runtime.Poller[SecretsClientDeleteResponse], error)`
+- Function `*EndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientUpdateResponse], error)` to `(*runtime.Poller[EndpointsClientUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientCreateResponse], error)` to `(*runtime.Poller[CustomDomainsClientCreateResponse], error)`
+- Function `*RulesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RulesClientCreateResponse], error)` to `(*runtime.Poller[RulesClientCreateResponse], error)`
+- Function `*SecurityPoliciesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SecurityPoliciesClientCreateResponse], error)` to `(*runtime.Poller[SecurityPoliciesClientCreateResponse], error)`
+- Function `*OriginsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[OriginsClientUpdateResponse], error)` to `(*runtime.Poller[OriginsClientUpdateResponse], error)`
+- Function `*EndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientDeleteResponse], error)` to `(*runtime.Poller[EndpointsClientDeleteResponse], error)`
+- Function `*AFDOriginGroupsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AFDOriginGroupsClientUpdateResponse], error)` to `(*runtime.Poller[AFDOriginGroupsClientUpdateResponse], error)`
+- Function `*SecurityPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SecurityPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[SecurityPoliciesClientDeleteResponse], error)`
+- Type of `OriginProperties.ProvisioningState` has been changed from `*string` to `*OriginProvisioningState`
+- Type of `ProfileProperties.ProvisioningState` has been changed from `*string` to `*ProfileProvisioningState`
+- Type of `CustomDomainProperties.ProvisioningState` has been changed from `*string` to `*CustomHTTPSProvisioningState`
+- Type of `EndpointProperties.ProvisioningState` has been changed from `*string` to `*EndpointProvisioningState`
+- Type of `ResourceUsage.Unit` has been changed from `*string` to `*ResourceUsageUnit`
+- Type of `OriginGroupProperties.ProvisioningState` has been changed from `*string` to `*OriginGroupProvisioningState`
+- Function `RankingsResponseTablesPropertiesItemsItem.MarshalJSON` has been removed
+- Function `AFDEndpointListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `OriginGroupListResult.MarshalJSON` has been removed
+- Function `WafMetricsResponseSeriesItem.MarshalJSON` has been removed
+- Function `RouteListResult.MarshalJSON` has been removed
+- Function `ResourcesResponseEndpointsItem.MarshalJSON` has been removed
+- Function `MetricsResponse.MarshalJSON` has been removed
+- Function `WafRankingsResponse.MarshalJSON` has been removed
+- Function `RuleListResult.MarshalJSON` has been removed
+- Function `SupportedOptimizationTypesListResult.MarshalJSON` has been removed
+- Function `RankingsResponse.MarshalJSON` has been removed
+- Function `ProfileListResult.MarshalJSON` has been removed
+- Function `ContinentsResponse.MarshalJSON` has been removed
+- Function `WafMetricsResponse.MarshalJSON` has been removed
+- Function `SecurityPolicyListResult.MarshalJSON` has been removed
+- Function `MetricsResponseSeriesItem.MarshalJSON` has been removed
+- Function `ResourcesResponse.MarshalJSON` has been removed
+- Function `AFDDomainListResult.MarshalJSON` has been removed
+- Function `Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems.MarshalJSON` has been removed
+- Function `RuleSetListResult.MarshalJSON` has been removed
+- Function `ResourceUsageListResult.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `EndpointListResult.MarshalJSON` has been removed
+- Function `OriginListResult.MarshalJSON` has been removed
+- Function `UsagesListResult.MarshalJSON` has been removed
+- Function `ManagedRuleSetDefinitionList.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `EdgenodeResult.MarshalJSON` has been removed
+- Function `WebApplicationFirewallPolicyList.MarshalJSON` has been removed
+- Function `Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems.MarshalJSON` has been removed
+- Function `WafRankingsResponseDataItem.MarshalJSON` has been removed
+- Function `AFDOriginGroupListResult.MarshalJSON` has been removed
+- Function `AFDOriginListResult.MarshalJSON` has been removed
+- Function `OperationsListResult.MarshalJSON` has been removed
+- Function `RankingsResponseTablesItem.MarshalJSON` has been removed
+- Function `SecretListResult.MarshalJSON` has been removed
+- Function `CustomerCertificate.MarshalJSON` has been removed
+- Function `CustomDomainListResult.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `EndpointProvisioningStateUpdating`
+- New const `EndpointProvisioningStateFailed`
+- New const `ProfileProvisioningStateUpdating`
+- New const `EndpointProvisioningStateSucceeded`
+- New const `OriginProvisioningStateSucceeded`
+- New const `OriginGroupProvisioningStateCreating`
+- New const `OriginProvisioningStateFailed`
+- New const `OriginProvisioningStateCreating`
+- New const `EndpointProvisioningStateDeleting`
+- New const `ProfileProvisioningStateFailed`
+- New const `ProfileProvisioningStateCreating`
+- New const `OriginProvisioningStateUpdating`
+- New const `OriginGroupProvisioningStateUpdating`
+- New const `OriginGroupProvisioningStateSucceeded`
+- New const `OriginProvisioningStateDeleting`
+- New const `OriginGroupProvisioningStateDeleting`
+- New const `OriginGroupProvisioningStateFailed`
+- New const `EndpointProvisioningStateCreating`
+- New const `ResourceUsageUnitCount`
+- New const `ProfileProvisioningStateDeleting`
+- New const `ProfileProvisioningStateSucceeded`
+- New function `PossibleEndpointProvisioningStateValues() []EndpointProvisioningState`
+- New function `PossibleOriginProvisioningStateValues() []OriginProvisioningState`
+- New function `PossibleResourceUsageUnitValues() []ResourceUsageUnit`
+- New function `PossibleProfileProvisioningStateValues() []ProfileProvisioningState`
+- New function `PossibleOriginGroupProvisioningStateValues() []OriginGroupProvisioningState`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreate - Creates a new delivery rule within the specified rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -63,22 +64,23 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 // ruleName - Name of the delivery rule which is unique within the endpoint.
 // rule - The delivery rule properties.
 // options - RulesClientBeginCreateOptions contains the optional parameters for the RulesClient.BeginCreate method.
-func (client *RulesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, rule Rule, options *RulesClientBeginCreateOptions) (*armruntime.Poller[RulesClientCreateResponse], error) {
+func (client *RulesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, rule Rule, options *RulesClientBeginCreateOptions) (*runtime.Poller[RulesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, ruleSetName, ruleName, rule, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RulesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RulesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RulesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RulesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new delivery rule within the specified rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RulesClient) create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, rule Rule, options *RulesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, ruleName, rule, options)
 	if err != nil {
@@ -124,34 +126,36 @@ func (client *RulesClient) createCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, rule)
 }
 
 // BeginDelete - Deletes an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // ruleSetName - Name of the rule set under the profile.
 // ruleName - Name of the delivery rule which is unique within the endpoint.
 // options - RulesClientBeginDeleteOptions contains the optional parameters for the RulesClient.BeginDelete method.
-func (client *RulesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *RulesClientBeginDeleteOptions) (*armruntime.Poller[RulesClientDeleteResponse], error) {
+func (client *RulesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *RulesClientBeginDeleteOptions) (*runtime.Poller[RulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, ruleSetName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RulesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RulesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RulesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *RulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, ruleName, options)
 	if err != nil {
@@ -197,12 +201,13 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -254,7 +259,7 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -269,13 +274,14 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 
 // NewListByRuleSetPager - Lists all of the existing delivery rules within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // ruleSetName - Name of the rule set under the profile.
 // options - RulesClientListByRuleSetOptions contains the optional parameters for the RulesClient.ListByRuleSet method.
 func (client *RulesClient) NewListByRuleSetPager(resourceGroupName string, profileName string, ruleSetName string, options *RulesClientListByRuleSetOptions) *runtime.Pager[RulesClientListByRuleSetResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RulesClientListByRuleSetResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RulesClientListByRuleSetResponse]{
 		More: func(page RulesClientListByRuleSetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -328,7 +334,7 @@ func (client *RulesClient) listByRuleSetCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -343,6 +349,7 @@ func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response) (Rul
 
 // BeginUpdate - Updates an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -350,22 +357,23 @@ func (client *RulesClient) listByRuleSetHandleResponse(resp *http.Response) (Rul
 // ruleName - Name of the delivery rule which is unique within the endpoint.
 // ruleUpdateProperties - Delivery rule properties
 // options - RulesClientBeginUpdateOptions contains the optional parameters for the RulesClient.BeginUpdate method.
-func (client *RulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties RuleUpdateParameters, options *RulesClientBeginUpdateOptions) (*armruntime.Poller[RulesClientUpdateResponse], error) {
+func (client *RulesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties RuleUpdateParameters, options *RulesClientBeginUpdateOptions) (*runtime.Poller[RulesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RulesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RulesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RulesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RulesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing delivery rule within a rule set.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RulesClient) update(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties RuleUpdateParameters, options *RulesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, ruleName, ruleUpdateProperties, options)
 	if err != nil {
@@ -411,6 +419,6 @@ func (client *RulesClient) updateCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, ruleUpdateProperties)
 }

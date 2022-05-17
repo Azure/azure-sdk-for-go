@@ -24,13 +24,13 @@ func ExampleSignUpSettingsClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,13 +44,13 @@ func ExampleSignUpSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -66,21 +66,21 @@ func ExampleSignUpSettingsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"*",
 		armapimanagement.PortalSignupSettings{
 			Properties: &armapimanagement.PortalSignupSettingsProperties{
 				Enabled: to.Ptr(true),
 				TermsOfService: &armapimanagement.TermsOfServiceProperties{
 					ConsentRequired: to.Ptr(true),
 					Enabled:         to.Ptr(true),
-					Text:            to.Ptr("<text>"),
+					Text:            to.Ptr("Terms of service text."),
 				},
 			},
 		},
@@ -97,24 +97,24 @@ func ExampleSignUpSettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewSignUpSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewSignUpSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.PortalSignupSettings{
 			Properties: &armapimanagement.PortalSignupSettingsProperties{
 				Enabled: to.Ptr(true),
 				TermsOfService: &armapimanagement.TermsOfServiceProperties{
 					ConsentRequired: to.Ptr(true),
 					Enabled:         to.Ptr(true),
-					Text:            to.Ptr("<text>"),
+					Text:            to.Ptr("Terms of service text."),
 				},
 			},
 		},
-		&armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("<if-match>")})
+		&armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

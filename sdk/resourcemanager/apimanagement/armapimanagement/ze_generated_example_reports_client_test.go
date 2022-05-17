@@ -23,13 +23,13 @@ func ExampleReportsClient_NewListByUserPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByUserPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListByUserPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListByUserOptions{Top: nil,
 			Skip:    nil,
 			Orderby: nil,
@@ -38,7 +38,6 @@ func ExampleReportsClient_NewListByUserPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,13 +53,13 @@ func ExampleReportsClient_NewListByOperationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByOperationPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListByOperationPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListByOperationOptions{Top: nil,
 			Skip:    nil,
 			Orderby: nil,
@@ -69,7 +68,6 @@ func ExampleReportsClient_NewListByOperationPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -85,13 +83,13 @@ func ExampleReportsClient_NewListByProductPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProductPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListByProductPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListByProductOptions{Top: nil,
 			Skip:    nil,
 			Orderby: nil,
@@ -100,7 +98,6 @@ func ExampleReportsClient_NewListByProductPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -116,13 +113,13 @@ func ExampleReportsClient_NewListByGeoPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByGeoPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListByGeoPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListByGeoOptions{Top: nil,
 			Skip: nil,
 		})
@@ -130,7 +127,6 @@ func ExampleReportsClient_NewListByGeoPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -146,13 +142,13 @@ func ExampleReportsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListBySubscriptionPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListBySubscriptionOptions{Top: nil,
 			Skip:    nil,
 			Orderby: nil,
@@ -161,7 +157,6 @@ func ExampleReportsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -177,14 +172,14 @@ func ExampleReportsClient_NewListByTimePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTimePager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
-		"<interval>",
+	pager := client.NewListByTimePager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
+		"PT15M",
 		&armapimanagement.ReportsClientListByTimeOptions{Top: nil,
 			Skip:    nil,
 			Orderby: nil,
@@ -193,7 +188,6 @@ func ExampleReportsClient_NewListByTimePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -209,13 +203,13 @@ func ExampleReportsClient_NewListByRequestPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRequestPager("<resource-group-name>",
-		"<service-name>",
-		"<filter>",
+	pager := client.NewListByRequestPager("rg1",
+		"apimService1",
+		"timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'",
 		&armapimanagement.ReportsClientListByRequestOptions{Top: nil,
 			Skip: nil,
 		})
@@ -223,7 +217,6 @@ func ExampleReportsClient_NewListByRequestPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

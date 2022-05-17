@@ -40,7 +40,7 @@ func NewAPITagDescriptionClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewAPITagDescriptionClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create/Update tag description in scope of the Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -113,9 +114,9 @@ func (client *APITagDescriptionClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -133,6 +134,7 @@ func (client *APITagDescriptionClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete tag description for the Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -188,13 +190,14 @@ func (client *APITagDescriptionClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get Tag description in scope of API
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -247,7 +250,7 @@ func (client *APITagDescriptionClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -264,6 +267,7 @@ func (client *APITagDescriptionClient) getHandleResponse(resp *http.Response) (A
 }
 
 // GetEntityTag - Gets the entity state version of the tag specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -280,6 +284,9 @@ func (client *APITagDescriptionClient) GetEntityTag(ctx context.Context, resourc
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APITagDescriptionClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return APITagDescriptionClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -314,7 +321,7 @@ func (client *APITagDescriptionClient) getEntityTagCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -324,15 +331,14 @@ func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Res
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined
 // on API level but tag may be assigned to the Operations
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -340,7 +346,7 @@ func (client *APITagDescriptionClient) getEntityTagHandleResponse(resp *http.Res
 // options - APITagDescriptionClientListByServiceOptions contains the optional parameters for the APITagDescriptionClient.ListByService
 // method.
 func (client *APITagDescriptionClient) NewListByServicePager(resourceGroupName string, serviceName string, apiID string, options *APITagDescriptionClientListByServiceOptions) *runtime.Pager[APITagDescriptionClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APITagDescriptionClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APITagDescriptionClientListByServiceResponse]{
 		More: func(page APITagDescriptionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -402,7 +408,7 @@ func (client *APITagDescriptionClient) listByServiceCreateRequest(ctx context.Co
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

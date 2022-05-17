@@ -40,7 +40,7 @@ func NewNotificationClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewNotificationClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Create or Update API Management publisher notification.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -105,9 +106,9 @@ func (client *NotificationClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,6 +123,7 @@ func (client *NotificationClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Get - Gets the details of the Notification specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -167,7 +169,7 @@ func (client *NotificationClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -182,12 +184,13 @@ func (client *NotificationClient) getHandleResponse(resp *http.Response) (Notifi
 
 // NewListByServicePager - Lists a collection of properties defined within a service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - NotificationClientListByServiceOptions contains the optional parameters for the NotificationClient.ListByService
 // method.
 func (client *NotificationClient) NewListByServicePager(resourceGroupName string, serviceName string, options *NotificationClientListByServiceOptions) *runtime.Pager[NotificationClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NotificationClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NotificationClientListByServiceResponse]{
 		More: func(page NotificationClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -242,7 +245,7 @@ func (client *NotificationClient) listByServiceCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -40,7 +40,7 @@ func NewEmailTemplateClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewEmailTemplateClient(subscriptionID string, credential azcore.TokenCreden
 
 // CreateOrUpdate - Updates an Email Template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // templateName - Email Template Name Identifier.
@@ -106,9 +107,9 @@ func (client *EmailTemplateClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -123,6 +124,7 @@ func (client *EmailTemplateClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Reset the Email Template to default template provided by the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // templateName - Email Template Name Identifier.
@@ -170,13 +172,14 @@ func (client *EmailTemplateClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the details of the email template specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // templateName - Email Template Name Identifier.
@@ -222,7 +225,7 @@ func (client *EmailTemplateClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,6 +242,7 @@ func (client *EmailTemplateClient) getHandleResponse(resp *http.Response) (Email
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the email template specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // templateName - Email Template Name Identifier.
@@ -252,6 +256,9 @@ func (client *EmailTemplateClient) GetEntityTag(ctx context.Context, resourceGro
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return EmailTemplateClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return EmailTemplateClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -282,7 +289,7 @@ func (client *EmailTemplateClient) getEntityTagCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,20 +299,19 @@ func (client *EmailTemplateClient) getEntityTagHandleResponse(resp *http.Respons
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Gets all email templates
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - EmailTemplateClientListByServiceOptions contains the optional parameters for the EmailTemplateClient.ListByService
 // method.
 func (client *EmailTemplateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *EmailTemplateClientListByServiceOptions) *runtime.Pager[EmailTemplateClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EmailTemplateClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EmailTemplateClientListByServiceResponse]{
 		More: func(page EmailTemplateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -363,7 +369,7 @@ func (client *EmailTemplateClient) listByServiceCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -378,6 +384,7 @@ func (client *EmailTemplateClient) listByServiceHandleResponse(resp *http.Respon
 
 // Update - Updates API Management email template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // templateName - Email Template Name Identifier.
@@ -426,8 +433,8 @@ func (client *EmailTemplateClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

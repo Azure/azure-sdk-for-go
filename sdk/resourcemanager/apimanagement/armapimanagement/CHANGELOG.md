@@ -1,5 +1,101 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*APIClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[APIClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[APIClientCreateOrUpdateResponse], error)`
+- Function `*ServiceClient.BeginBackup` return value(s) have been changed from `(*armruntime.Poller[ServiceClientBackupResponse], error)` to `(*runtime.Poller[ServiceClientBackupResponse], error)`
+- Function `*ServiceClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceClientUpdateResponse], error)` to `(*runtime.Poller[ServiceClientUpdateResponse], error)`
+- Function `*PortalRevisionClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PortalRevisionClientUpdateResponse], error)` to `(*runtime.Poller[PortalRevisionClientUpdateResponse], error)`
+- Function `*TenantConfigurationClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[TenantConfigurationClientValidateResponse], error)` to `(*runtime.Poller[TenantConfigurationClientValidateResponse], error)`
+- Function `*NamedValueClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NamedValueClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NamedValueClientCreateOrUpdateResponse], error)`
+- Function `*APISchemaClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[APISchemaClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[APISchemaClientCreateOrUpdateResponse], error)`
+- Function `*PortalRevisionClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PortalRevisionClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PortalRevisionClientCreateOrUpdateResponse], error)`
+- Function `*ServiceClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceClientDeleteResponse], error)` to `(*runtime.Poller[ServiceClientDeleteResponse], error)`
+- Function `*NamedValueClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[NamedValueClientUpdateResponse], error)` to `(*runtime.Poller[NamedValueClientUpdateResponse], error)`
+- Function `*GlobalSchemaClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GlobalSchemaClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GlobalSchemaClientCreateOrUpdateResponse], error)`
+- Function `*TenantConfigurationClient.BeginDeploy` return value(s) have been changed from `(*armruntime.Poller[TenantConfigurationClientDeployResponse], error)` to `(*runtime.Poller[TenantConfigurationClientDeployResponse], error)`
+- Function `*PrivateEndpointConnectionClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionClientCreateOrUpdateResponse], error)`
+- Function `*TenantConfigurationClient.BeginSave` return value(s) have been changed from `(*armruntime.Poller[TenantConfigurationClientSaveResponse], error)` to `(*runtime.Poller[TenantConfigurationClientSaveResponse], error)`
+- Function `*PrivateEndpointConnectionClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionClientDeleteResponse], error)`
+- Function `*Client.BeginPerformConnectivityCheckAsync` return value(s) have been changed from `(*armruntime.Poller[ClientPerformConnectivityCheckAsyncResponse], error)` to `(*runtime.Poller[ClientPerformConnectivityCheckAsyncResponse], error)`
+- Function `*NamedValueClient.BeginRefreshSecret` return value(s) have been changed from `(*armruntime.Poller[NamedValueClientRefreshSecretResponse], error)` to `(*runtime.Poller[NamedValueClientRefreshSecretResponse], error)`
+- Function `*ServiceClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceClientCreateOrUpdateResponse], error)`
+- Function `*DeletedServicesClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[DeletedServicesClientPurgeResponse], error)` to `(*runtime.Poller[DeletedServicesClientPurgeResponse], error)`
+- Function `*ServiceClient.BeginRestore` return value(s) have been changed from `(*armruntime.Poller[ServiceClientRestoreResponse], error)` to `(*runtime.Poller[ServiceClientRestoreResponse], error)`
+- Function `*ServiceClient.BeginApplyNetworkConfigurationUpdates` return value(s) have been changed from `(*armruntime.Poller[ServiceClientApplyNetworkConfigurationUpdatesResponse], error)` to `(*runtime.Poller[ServiceClientApplyNetworkConfigurationUpdatesResponse], error)`
+- Function `TagCollection.MarshalJSON` has been removed
+- Function `NetworkStatusContract.MarshalJSON` has been removed
+- Function `CacheCollection.MarshalJSON` has been removed
+- Function `RequestReportCollection.MarshalJSON` has been removed
+- Function `APICollection.MarshalJSON` has been removed
+- Function `NamedValueCollection.MarshalJSON` has been removed
+- Function `APIRevisionContract.MarshalJSON` has been removed
+- Function `PortalRevisionCollection.MarshalJSON` has been removed
+- Function `ConnectivityIssue.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `TenantSettingsCollection.MarshalJSON` has been removed
+- Function `CertificateCollection.MarshalJSON` has been removed
+- Function `RegionListResult.MarshalJSON` has been removed
+- Function `GatewayHostnameConfigurationCollection.MarshalJSON` has been removed
+- Function `GlobalSchemaCollection.MarshalJSON` has been removed
+- Function `ConnectivityHop.MarshalJSON` has been removed
+- Function `BackendCollection.MarshalJSON` has been removed
+- Function `SKULocationInfo.MarshalJSON` has been removed
+- Function `PolicyCollection.MarshalJSON` has been removed
+- Function `SchemaCollection.MarshalJSON` has been removed
+- Function `GatewayCertificateAuthorityCollection.MarshalJSON` has been removed
+- Function `GatewayCollection.MarshalJSON` has been removed
+- Function `SKUsResult.MarshalJSON` has been removed
+- Function `GroupCollection.MarshalJSON` has been removed
+- Function `SKURestrictionInfo.MarshalJSON` has been removed
+- Function `APIReleaseCollection.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `OperationCollection.MarshalJSON` has been removed
+- Function `TagDescriptionCollection.MarshalJSON` has been removed
+- Function `PolicyDescriptionCollection.MarshalJSON` has been removed
+- Function `AccessInformationCollection.MarshalJSON` has been removed
+- Function `IssueCommentCollection.MarshalJSON` has been removed
+- Function `TagResourceCollection.MarshalJSON` has been removed
+- Function `ConnectivityStatusContract.MarshalJSON` has been removed
+- Function `ContentTypeCollection.MarshalJSON` has been removed
+- Function `RecipientEmailCollection.MarshalJSON` has been removed
+- Function `APIRevisionCollection.MarshalJSON` has been removed
+- Function `SKURestrictions.MarshalJSON` has been removed
+- Function `QuotaCounterContract.MarshalJSON` has been removed
+- Function `SKUZoneDetails.MarshalJSON` has been removed
+- Function `OpenIDConnectProviderCollection.MarshalJSON` has been removed
+- Function `SKU.MarshalJSON` has been removed
+- Function `ContentItemCollection.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `EmailTemplateCollection.MarshalJSON` has been removed
+- Function `PortalSettingsCollection.MarshalJSON` has been removed
+- Function `QuotaCounterCollection.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointList.MarshalJSON` has been removed
+- Function `LoggerCollection.MarshalJSON` has been removed
+- Function `ResourceSKUResults.MarshalJSON` has been removed
+- Function `ReportRecordContract.MarshalJSON` has been removed
+- Function `NotificationCollection.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `UserCollection.MarshalJSON` has been removed
+- Function `ConnectivityCheckResponse.MarshalJSON` has been removed
+- Function `APIVersionSetCollection.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `ProductCollection.MarshalJSON` has been removed
+- Function `ReportCollection.MarshalJSON` has been removed
+- Function `RecipientUserCollection.MarshalJSON` has been removed
+- Function `ServiceListResult.MarshalJSON` has been removed
+- Function `DeletedServicesCollection.MarshalJSON` has been removed
+- Function `AuthorizationServerCollection.MarshalJSON` has been removed
+- Function `IssueCollection.MarshalJSON` has been removed
+- Function `RequestReportRecordContract.MarshalJSON` has been removed
+- Function `IdentityProviderList.MarshalJSON` has been removed
+- Function `UserIdentityCollection.MarshalJSON` has been removed
+- Function `SubscriptionCollection.MarshalJSON` has been removed
+- Function `DiagnosticCollection.MarshalJSON` has been removed
+- Function `IssueAttachmentCollection.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

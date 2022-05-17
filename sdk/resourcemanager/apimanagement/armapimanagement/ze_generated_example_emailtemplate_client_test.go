@@ -24,12 +24,12 @@ func ExampleEmailTemplateClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.EmailTemplateClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleEmailTemplateClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,13 +53,13 @@ func ExampleEmailTemplateClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.TemplateNameNewIssueNotificationMessage,
 		nil)
 	if err != nil {
@@ -75,13 +74,13 @@ func ExampleEmailTemplateClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.TemplateNameNewIssueNotificationMessage,
 		nil)
 	if err != nil {
@@ -98,17 +97,17 @@ func ExampleEmailTemplateClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.TemplateNameNewIssueNotificationMessage,
 		armapimanagement.EmailTemplateUpdateParameters{
 			Properties: &armapimanagement.EmailTemplateUpdateParameterProperties{
-				Subject: to.Ptr("<subject>"),
+				Subject: to.Ptr("Your request for $IssueName was successfully received."),
 			},
 		},
 		&armapimanagement.EmailTemplateClientCreateOrUpdateOptions{IfMatch: nil})
@@ -126,19 +125,19 @@ func ExampleEmailTemplateClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.TemplateNameNewIssueNotificationMessage,
-		"<if-match>",
+		"*",
 		armapimanagement.EmailTemplateUpdateParameters{
 			Properties: &armapimanagement.EmailTemplateUpdateParameterProperties{
-				Body:    to.Ptr("<body>"),
-				Subject: to.Ptr("<subject>"),
+				Body:    to.Ptr("<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We are happy to let you know that your request to publish the $AppName application in the gallery has been approved. Your application has been published and can be viewed <a href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>"),
+				Subject: to.Ptr("Your request $IssueName was received"),
 			},
 		},
 		nil)
@@ -156,15 +155,15 @@ func ExampleEmailTemplateClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewEmailTemplateClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewEmailTemplateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.TemplateNameNewIssueNotificationMessage,
-		"<if-match>",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

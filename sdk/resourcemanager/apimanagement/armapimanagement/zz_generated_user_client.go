@@ -40,7 +40,7 @@ func NewUserClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewUserClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CreateOrUpdate - Creates or Updates a user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -108,9 +109,9 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -128,6 +129,7 @@ func (client *UserClient) createOrUpdateHandleResponse(resp *http.Response) (Use
 
 // Delete - Deletes specific user.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -184,14 +186,15 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		reqQP.Set("appType", string(*options.AppType))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GenerateSsoURL - Retrieves a redirection URL containing an authentication token for signing a given user into the developer
 // portal.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -237,7 +240,7 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,6 +255,7 @@ func (client *UserClient) generateSsoURLHandleResponse(resp *http.Response) (Use
 
 // Get - Gets the details of the user specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -297,7 +301,7 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -314,6 +318,7 @@ func (client *UserClient) getHandleResponse(resp *http.Response) (UserClientGetR
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the user specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -326,6 +331,9 @@ func (client *UserClient) GetEntityTag(ctx context.Context, resourceGroupName st
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return UserClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -356,7 +364,7 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -366,14 +374,13 @@ func (client *UserClient) getEntityTagHandleResponse(resp *http.Response) (UserC
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // GetSharedAccessToken - Gets the Shared Access Authorization Token for the User.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -421,7 +428,7 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -436,11 +443,12 @@ func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response
 
 // NewListByServicePager - Lists a collection of registered users in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - UserClientListByServiceOptions contains the optional parameters for the UserClient.ListByService method.
 func (client *UserClient) NewListByServicePager(resourceGroupName string, serviceName string, options *UserClientListByServiceOptions) *runtime.Pager[UserClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UserClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UserClientListByServiceResponse]{
 		More: func(page UserClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -501,7 +509,7 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -516,6 +524,7 @@ func (client *UserClient) listByServiceHandleResponse(resp *http.Response) (User
 
 // Update - Updates the details of the user specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
@@ -564,8 +573,8 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -24,13 +24,13 @@ func ExamplePolicyDescriptionClient_ListByService() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewPolicyDescriptionClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewPolicyDescriptionClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByService(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		&armapimanagement.PolicyDescriptionClientListByServiceOptions{Scope: to.Ptr(armapimanagement.PolicyScopeContractAPI)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

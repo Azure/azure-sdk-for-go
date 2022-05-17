@@ -24,12 +24,12 @@ func ExampleAPIVersionSetClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.APIVersionSetClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleAPIVersionSetClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleAPIVersionSetClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<version-set-id>",
+		"rg1",
+		"apimService1",
+		"vs1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleAPIVersionSetClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<version-set-id>",
+		"rg1",
+		"apimService1",
+		"vs1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,18 +97,18 @@ func ExampleAPIVersionSetClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<version-set-id>",
+		"rg1",
+		"apimService1",
+		"api1",
 		armapimanagement.APIVersionSetContract{
 			Properties: &armapimanagement.APIVersionSetContractProperties{
-				Description:      to.Ptr("<description>"),
-				DisplayName:      to.Ptr("<display-name>"),
+				Description:      to.Ptr("Version configuration"),
+				DisplayName:      to.Ptr("api set 1"),
 				VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
 			},
 		},
@@ -128,19 +127,19 @@ func ExampleAPIVersionSetClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<version-set-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"vs1",
+		"*",
 		armapimanagement.APIVersionSetUpdateParameters{
 			Properties: &armapimanagement.APIVersionSetUpdateParametersProperties{
-				Description:      to.Ptr("<description>"),
-				DisplayName:      to.Ptr("<display-name>"),
+				Description:      to.Ptr("Version configuration"),
+				DisplayName:      to.Ptr("api set 1"),
 				VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
 			},
 		},
@@ -159,15 +158,15 @@ func ExampleAPIVersionSetClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIVersionSetClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIVersionSetClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<version-set-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"a1",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

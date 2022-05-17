@@ -24,14 +24,14 @@ func ExampleAPIIssueAttachmentClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueAttachmentClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueAttachmentClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
 		&armapimanagement.APIIssueAttachmentClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -40,7 +40,6 @@ func ExampleAPIIssueAttachmentClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,16 +55,16 @@ func ExampleAPIIssueAttachmentClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueAttachmentClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueAttachmentClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<attachment-id>",
+		"rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
+		"57d2ef278aa04f0ad01d6cdc",
+		"57d2ef278aa04f0888cba3f3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,16 +78,16 @@ func ExampleAPIIssueAttachmentClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueAttachmentClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueAttachmentClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<attachment-id>",
+		"rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
+		"57d2ef278aa04f0ad01d6cdc",
+		"57d2ef278aa04f0888cba3f3",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,21 +103,21 @@ func ExampleAPIIssueAttachmentClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueAttachmentClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueAttachmentClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<attachment-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
+		"57d2ef278aa04f0888cba3f3",
 		armapimanagement.IssueAttachmentContract{
 			Properties: &armapimanagement.IssueAttachmentContractProperties{
-				Content:       to.Ptr("<content>"),
-				ContentFormat: to.Ptr("<content-format>"),
-				Title:         to.Ptr("<title>"),
+				Content:       to.Ptr("IEJhc2U2NA=="),
+				ContentFormat: to.Ptr("image/jpeg"),
+				Title:         to.Ptr("Issue attachment."),
 			},
 		},
 		&armapimanagement.APIIssueAttachmentClientCreateOrUpdateOptions{IfMatch: nil})
@@ -136,17 +135,17 @@ func ExampleAPIIssueAttachmentClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIIssueAttachmentClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIIssueAttachmentClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<issue-id>",
-		"<attachment-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
+		"57d2ef278aa04f0ad01d6cdc",
+		"57d2ef278aa04f0888cba3f3",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -40,7 +40,7 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewAPIProductClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListByApisPager - Lists all Products, which the API is part of.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API identifier. Must be unique in the current API Management service instance.
 // options - APIProductClientListByApisOptions contains the optional parameters for the APIProductClient.ListByApis method.
 func (client *APIProductClient) NewListByApisPager(resourceGroupName string, serviceName string, apiID string, options *APIProductClientListByApisOptions) *runtime.Pager[APIProductClientListByApisResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APIProductClientListByApisResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APIProductClientListByApisResponse]{
 		More: func(page APIProductClientListByApisResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -125,7 +126,7 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

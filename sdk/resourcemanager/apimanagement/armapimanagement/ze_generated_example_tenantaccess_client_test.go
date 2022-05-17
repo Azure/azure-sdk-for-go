@@ -24,18 +24,17 @@ func ExampleTenantAccessClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.TenantAccessClientListByServiceOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,13 +50,13 @@ func ExampleTenantAccessClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {
@@ -72,13 +71,13 @@ func ExampleTenantAccessClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {
@@ -95,15 +94,15 @@ func ExampleTenantAccessClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
-		"<if-match>",
+		"*",
 		armapimanagement.AccessInformationCreateParameters{
 			Properties: &armapimanagement.AccessInformationCreateParameterProperties{
 				Enabled: to.Ptr(true),
@@ -124,15 +123,15 @@ func ExampleTenantAccessClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
-		"<if-match>",
+		"*",
 		armapimanagement.AccessInformationUpdateParameters{
 			Properties: &armapimanagement.AccessInformationUpdateParameterProperties{
 				Enabled: to.Ptr(true),
@@ -153,13 +152,13 @@ func ExampleTenantAccessClient_RegeneratePrimaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegeneratePrimaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {
@@ -174,13 +173,13 @@ func ExampleTenantAccessClient_RegenerateSecondaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegenerateSecondaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {
@@ -195,13 +194,13 @@ func ExampleTenantAccessClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,12 +24,12 @@ func ExampleAPIClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.APIClientListByServiceOptions{Filter: nil,
 			Top:                 nil,
 			Skip:                nil,
@@ -42,7 +40,6 @@ func ExampleAPIClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,14 +55,14 @@ func ExampleAPIClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,14 +76,14 @@ func ExampleAPIClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,42 +99,40 @@ func ExampleAPIClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"tempgroup",
 		armapimanagement.APICreateOrUpdateParameter{
 			Properties: &armapimanagement.APICreateOrUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("apidescription5200"),
 				AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 					OAuth2: &armapimanagement.OAuth2AuthenticationSettingsContract{
-						AuthorizationServerID: to.Ptr("<authorization-server-id>"),
-						Scope:                 to.Ptr("<scope>"),
+						AuthorizationServerID: to.Ptr("authorizationServerId2283"),
+						Scope:                 to.Ptr("oauth2scope2580"),
 					},
 				},
 				SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-					Header: to.Ptr("<header>"),
-					Query:  to.Ptr("<query>"),
+					Header: to.Ptr("header4520"),
+					Query:  to.Ptr("query3037"),
 				},
-				Path:        to.Ptr("<path>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Path:        to.Ptr("newapiPath"),
+				DisplayName: to.Ptr("apiname1463"),
 				Protocols: []*armapimanagement.Protocol{
 					to.Ptr(armapimanagement.ProtocolHTTPS),
 					to.Ptr(armapimanagement.ProtocolHTTP)},
-				ServiceURL: to.Ptr("<service-url>"),
+				ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
 			},
 		},
-		&armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -152,20 +147,20 @@ func ExampleAPIClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"echo-api",
+		"*",
 		armapimanagement.APIUpdateContract{
 			Properties: &armapimanagement.APIContractUpdateProperties{
-				Path:        to.Ptr("<path>"),
-				DisplayName: to.Ptr("<display-name>"),
-				ServiceURL:  to.Ptr("<service-url>"),
+				Path:        to.Ptr("newecho"),
+				DisplayName: to.Ptr("Echo API New"),
+				ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api2"),
 			},
 		},
 		nil)
@@ -183,15 +178,15 @@ func ExampleAPIClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"echo-api",
+		"*",
 		&armapimanagement.APIClientDeleteOptions{DeleteRevisions: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -205,12 +200,12 @@ func ExampleAPIClient_NewListByTagsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTagsPager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByTagsPager("rg1",
+		"apimService1",
 		&armapimanagement.APIClientListByTagsOptions{Filter: nil,
 			Top:                  nil,
 			Skip:                 nil,
@@ -220,7 +215,6 @@ func ExampleAPIClient_NewListByTagsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

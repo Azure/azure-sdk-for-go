@@ -23,14 +23,14 @@ func ExampleUserConfirmationPasswordClient_Send() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewUserConfirmationPasswordClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewUserConfirmationPasswordClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Send(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<user-id>",
+		"rg1",
+		"apimService1",
+		"57127d485157a511ace86ae7",
 		&armapimanagement.UserConfirmationPasswordClientSendOptions{AppType: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

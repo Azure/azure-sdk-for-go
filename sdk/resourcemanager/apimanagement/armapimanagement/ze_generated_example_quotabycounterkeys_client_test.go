@@ -24,14 +24,14 @@ func ExampleQuotaByCounterKeysClient_ListByService() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewQuotaByCounterKeysClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewQuotaByCounterKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByService(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<quota-counter-key>",
+		"rg1",
+		"apimService1",
+		"ba",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleQuotaByCounterKeysClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewQuotaByCounterKeysClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewQuotaByCounterKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<quota-counter-key>",
+		"rg1",
+		"apimService1",
+		"ba",
 		armapimanagement.QuotaCounterValueUpdateContract{
 			Properties: &armapimanagement.QuotaCounterValueContractProperties{
 				CallsCount:    to.Ptr[int32](0),

@@ -23,12 +23,12 @@ func ExampleNotificationClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.NotificationClientListByServiceOptions{Top: nil,
 			Skip: nil,
 		})
@@ -36,7 +36,6 @@ func ExampleNotificationClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,13 +51,13 @@ func ExampleNotificationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
 		nil)
 	if err != nil {
@@ -75,13 +74,13 @@ func ExampleNotificationClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewNotificationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewNotificationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.NotificationNameRequestPublisherNotificationMessage,
 		&armapimanagement.NotificationClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

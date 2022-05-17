@@ -24,15 +24,15 @@ func ExampleQuotaByPeriodKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewQuotaByPeriodKeysClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewQuotaByPeriodKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<quota-counter-key>",
-		"<quota-period-key>",
+		"rg1",
+		"apimService1",
+		"ba",
+		"0_P3Y6M4DT12H30M5S",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,15 +48,15 @@ func ExampleQuotaByPeriodKeysClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewQuotaByPeriodKeysClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewQuotaByPeriodKeysClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<quota-counter-key>",
-		"<quota-period-key>",
+		"rg1",
+		"apimService1",
+		"ba",
+		"0_P3Y6M4DT12H30M5S",
 		armapimanagement.QuotaCounterValueUpdateContract{
 			Properties: &armapimanagement.QuotaCounterValueContractProperties{
 				CallsCount:    to.Ptr[int32](0),

@@ -4,9 +4,10 @@
 
 ``` yaml
 azure-arm: true
+tag: package-2021-12
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/eventgrid/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/cc26f1d28c939bbcde00a29aa8958b3eebb10cea/specification/eventgrid/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/eventgrid/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/eventgrid/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.5.0
+module-version: 1.0.0
 ```

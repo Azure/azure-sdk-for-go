@@ -40,7 +40,7 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,25 +58,27 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // topicInfo - Topic information.
 // options - TopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicsClient.BeginCreateOrUpdate
 // method.
-func (client *TopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[TopicsClientCreateOrUpdateResponse], error) {
+func (client *TopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsClientBeginCreateOrUpdateOptions) (*runtime.Poller[TopicsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, topicName, topicInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TopicsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TopicsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TopicsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TopicsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *TopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, topicName, topicInfo, options)
 	if err != nil {
@@ -112,31 +114,33 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, topicInfo)
 }
 
 // BeginDelete - Delete existing topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientBeginDeleteOptions contains the optional parameters for the TopicsClient.BeginDelete method.
-func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*armruntime.Poller[TopicsClientDeleteResponse], error) {
+func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*runtime.Poller[TopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, topicName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TopicsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TopicsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TopicsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TopicsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete existing topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *TopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, topicName, options)
 	if err != nil {
@@ -172,13 +176,14 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientGetOptions contains the optional parameters for the TopicsClient.Get method.
@@ -217,9 +222,9 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,11 +239,12 @@ func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClient
 
 // NewListByResourceGroupPager - List all the topics under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - TopicsClientListByResourceGroupOptions contains the optional parameters for the TopicsClient.ListByResourceGroup
 // method.
 func (client *TopicsClient) NewListByResourceGroupPager(resourceGroupName string, options *TopicsClientListByResourceGroupOptions) *runtime.Pager[TopicsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopicsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopicsClientListByResourceGroupResponse]{
 		More: func(page TopicsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,7 +287,7 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -289,7 +295,7 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -304,10 +310,11 @@ func (client *TopicsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - List all the topics under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - TopicsClientListBySubscriptionOptions contains the optional parameters for the TopicsClient.ListBySubscription
 // method.
 func (client *TopicsClient) NewListBySubscriptionPager(options *TopicsClientListBySubscriptionOptions) *runtime.Pager[TopicsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopicsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopicsClientListBySubscriptionResponse]{
 		More: func(page TopicsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -346,7 +353,7 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -354,7 +361,7 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -369,13 +376,14 @@ func (client *TopicsClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // NewListEventTypesPager - List event types for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // providerNamespace - Namespace of the provider of the topic.
 // resourceTypeName - Name of the topic type.
 // resourceName - Name of the topic.
 // options - TopicsClientListEventTypesOptions contains the optional parameters for the TopicsClient.ListEventTypes method.
 func (client *TopicsClient) NewListEventTypesPager(resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *TopicsClientListEventTypesOptions) *runtime.Pager[TopicsClientListEventTypesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopicsClientListEventTypesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopicsClientListEventTypesResponse]{
 		More: func(page TopicsClientListEventTypesResponse) bool {
 			return false
 		},
@@ -424,9 +432,9 @@ func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -441,6 +449,7 @@ func (client *TopicsClient) listEventTypesHandleResponse(resp *http.Response) (T
 
 // ListSharedAccessKeys - List the two keys used to publish to a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientListSharedAccessKeysOptions contains the optional parameters for the TopicsClient.ListSharedAccessKeys
@@ -480,9 +489,9 @@ func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -497,25 +506,27 @@ func (client *TopicsClient) listSharedAccessKeysHandleResponse(resp *http.Respon
 
 // BeginRegenerateKey - Regenerate a shared access key for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // regenerateKeyRequest - Request body to regenerate key.
 // options - TopicsClientBeginRegenerateKeyOptions contains the optional parameters for the TopicsClient.BeginRegenerateKey
 // method.
-func (client *TopicsClient) BeginRegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsClientBeginRegenerateKeyOptions) (*armruntime.Poller[TopicsClientRegenerateKeyResponse], error) {
+func (client *TopicsClient) BeginRegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsClientBeginRegenerateKeyOptions) (*runtime.Poller[TopicsClientRegenerateKeyResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.regenerateKey(ctx, resourceGroupName, topicName, regenerateKeyRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TopicsClientRegenerateKeyResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TopicsClientRegenerateKeyResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TopicsClientRegenerateKeyResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TopicsClientRegenerateKeyResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RegenerateKey - Regenerate a shared access key for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, topicName, regenerateKeyRequest, options)
 	if err != nil {
@@ -525,7 +536,7 @@ func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -551,32 +562,34 @@ func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
 }
 
 // BeginUpdate - Asynchronously updates a topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // topicUpdateParameters - Topic update information.
 // options - TopicsClientBeginUpdateOptions contains the optional parameters for the TopicsClient.BeginUpdate method.
-func (client *TopicsClient) BeginUpdate(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsClientBeginUpdateOptions) (*armruntime.Poller[TopicsClientUpdateResponse], error) {
+func (client *TopicsClient) BeginUpdate(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsClientBeginUpdateOptions) (*runtime.Poller[TopicsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, topicName, topicUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TopicsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TopicsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TopicsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TopicsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Asynchronously updates a topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *TopicsClient) update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, topicName, topicUpdateParameters, options)
 	if err != nil {
@@ -612,8 +625,8 @@ func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, topicUpdateParameters)
 }

@@ -1,5 +1,30 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ConfigurationStoresClient.BeginPurgeDeleted` return value(s) have been changed from `(*armruntime.Poller[ConfigurationStoresClientPurgeDeletedResponse], error)` to `(*runtime.Poller[ConfigurationStoresClientPurgeDeletedResponse], error)`
+- Function `*ConfigurationStoresClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationStoresClientCreateResponse], error)` to `(*runtime.Poller[ConfigurationStoresClientCreateResponse], error)`
+- Function `*ConfigurationStoresClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationStoresClientUpdateResponse], error)` to `(*runtime.Poller[ConfigurationStoresClientUpdateResponse], error)`
+- Function `*ConfigurationStoresClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConfigurationStoresClientDeleteResponse], error)` to `(*runtime.Poller[ConfigurationStoresClientDeleteResponse], error)`
+- Function `*KeyValuesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KeyValuesClientDeleteResponse], error)` to `(*runtime.Poller[KeyValuesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `APIKey.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ConfigurationStoreListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `DeletedConfigurationStoreProperties.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `APIKeyListResult.MarshalJSON` has been removed
+- Function `DeletedConfigurationStoreListResult.MarshalJSON` has been removed
+- Function `OperationDefinitionListResult.MarshalJSON` has been removed
+- Function `KeyValueListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ErrorDetails.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

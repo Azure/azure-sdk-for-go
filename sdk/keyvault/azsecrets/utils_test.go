@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -63,18 +64,19 @@ func createClient(t *testing.T) (*Client, error) {
 	return NewClient(vaultUrl, cred, options)
 }
 
-func delay() time.Duration {
-	if recording.GetRecordMode() == "playback" {
-		return 1 * time.Microsecond
+func getPollingOptions() *runtime.PollUntilDoneOptions {
+	freq := time.Second
+	if recording.GetRecordMode() == recording.RecordingMode {
+		freq = time.Minute
 	}
-	return 250 * time.Millisecond
+	return &runtime.PollUntilDoneOptions{Frequency: freq}
 }
 
 func cleanUpSecret(t *testing.T, client *Client, secret string) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), delay())
+	_, err = resp.PollUntilDone(context.Background(), getPollingOptions())
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)

@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -91,7 +92,7 @@ func ExampleClient_BeginDeleteSecret() {
 		panic(err)
 	}
 	// This is optional if you don't care when the secret is deleted
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
@@ -181,7 +182,7 @@ func ExampleClient_PurgeDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
@@ -208,7 +209,7 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}

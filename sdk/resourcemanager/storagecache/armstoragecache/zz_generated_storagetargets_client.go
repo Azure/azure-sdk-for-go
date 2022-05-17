@@ -39,7 +39,7 @@ func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,20 +59,21 @@ func NewStorageTargetsClient(subscriptionID string, credential azcore.TokenCrede
 // or unhealthy, the actual creation/modification of the Storage Target may be delayed until the Cache
 // is healthy again.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageTargetsClient.BeginCreateOrUpdate
 // method.
-func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[StorageTargetsClientCreateOrUpdateResponse], error) {
+func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[StorageTargetsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StorageTargetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StorageTargetsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -80,6 +81,7 @@ func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, res
 // unhealthy, the actual creation/modification of the Storage Target may be delayed until the Cache
 // is healthy again.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -121,7 +123,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Storagetarget != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Storagetarget)
 	}
@@ -130,27 +132,29 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginDNSRefreshOptions contains the optional parameters for the StorageTargetsClient.BeginDNSRefresh
 // method.
-func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*armruntime.Poller[StorageTargetsClientDNSRefreshResponse], error) {
+func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*runtime.Poller[StorageTargetsClientDNSRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetsClientDNSRefreshResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetsClientDNSRefreshResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetsClientDNSRefreshResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetsClientDNSRefreshResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	req, err := client.dnsRefreshCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -192,7 +196,7 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -201,20 +205,21 @@ func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context,
 // again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target
 // will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetsClientBeginDeleteOptions contains the optional parameters for the StorageTargetsClient.BeginDelete
 // method.
-func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*armruntime.Poller[StorageTargetsClientDeleteResponse], error) {
+func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*runtime.Poller[StorageTargetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StorageTargetsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StorageTargetsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -223,6 +228,7 @@ func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGro
 // again. Note that if the Cache has data to flush to the Storage Target, the data will be flushed before the Storage Target
 // will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -267,12 +273,13 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 		reqQP.Set("force", *options.Force)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns a Storage Target from a Cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
@@ -318,7 +325,7 @@ func (client *StorageTargetsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -333,12 +340,13 @@ func (client *StorageTargetsClient) getHandleResponse(resp *http.Response) (Stor
 
 // NewListByCachePager - Returns a list of Storage Targets for the specified Cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // options - StorageTargetsClientListByCacheOptions contains the optional parameters for the StorageTargetsClient.ListByCache
 // method.
 func (client *StorageTargetsClient) NewListByCachePager(resourceGroupName string, cacheName string, options *StorageTargetsClientListByCacheOptions) *runtime.Pager[StorageTargetsClientListByCacheResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageTargetsClientListByCacheResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageTargetsClientListByCacheResponse]{
 		More: func(page StorageTargetsClientListByCacheResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -387,7 +395,7 @@ func (client *StorageTargetsClient) listByCacheCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

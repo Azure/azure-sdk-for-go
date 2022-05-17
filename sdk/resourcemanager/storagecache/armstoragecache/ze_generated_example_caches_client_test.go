@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
@@ -26,7 +24,7 @@ func ExampleCachesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleCachesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("scgroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,18 +73,18 @@ func ExampleCachesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginDeleteOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -101,13 +97,13 @@ func ExampleCachesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
+		"scgroup",
+		"sc1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -123,13 +119,13 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
+		"scgroup",
+		"sc1",
 		&armstoragecache.CachesClientBeginCreateOrUpdateOptions{Cache: &armstoragecache.Cache{
 			Identity: &armstoragecache.CacheIdentity{
 				Type: to.Ptr(armstoragecache.CacheIdentityTypeUserAssigned),
@@ -137,44 +133,44 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1": {},
 				},
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armstoragecache.CacheProperties{
 				CacheSizeGB: to.Ptr[int32](3072),
 				DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 					ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-						CacheNetBiosName: to.Ptr("<cache-net-bios-name>"),
+						CacheNetBiosName: to.Ptr("contosoSmb"),
 						Credentials: &armstoragecache.CacheActiveDirectorySettingsCredentials{
 							Password: to.Ptr("<password>"),
-							Username: to.Ptr("<username>"),
+							Username: to.Ptr("consotoAdmin"),
 						},
-						DomainName:            to.Ptr("<domain-name>"),
-						DomainNetBiosName:     to.Ptr("<domain-net-bios-name>"),
-						PrimaryDNSIPAddress:   to.Ptr("<primary-dnsipaddress>"),
-						SecondaryDNSIPAddress: to.Ptr("<secondary-dnsipaddress>"),
+						DomainName:            to.Ptr("contosoAd.contoso.local"),
+						DomainNetBiosName:     to.Ptr("contosoAd"),
+						PrimaryDNSIPAddress:   to.Ptr("192.0.2.10"),
+						SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
 					},
 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 						Credentials: &armstoragecache.CacheUsernameDownloadSettingsCredentials{
-							BindDn:       to.Ptr("<bind-dn>"),
-							BindPassword: to.Ptr("<bind-password>"),
+							BindDn:       to.Ptr("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local"),
+							BindPassword: to.Ptr("<bindPassword>"),
 						},
 						ExtendedGroups: to.Ptr(true),
-						LdapBaseDN:     to.Ptr("<ldap-base-dn>"),
-						LdapServer:     to.Ptr("<ldap-server>"),
+						LdapBaseDN:     to.Ptr("dc=contosoad,dc=contoso,dc=local"),
+						LdapServer:     to.Ptr("192.0.2.12"),
 						UsernameSource: to.Ptr(armstoragecache.UsernameSourceLDAP),
 					},
 				},
 				EncryptionSettings: &armstoragecache.CacheEncryptionSettings{
 					KeyEncryptionKey: &armstoragecache.KeyVaultKeyReference{
-						KeyURL: to.Ptr("<key-url>"),
+						KeyURL: to.Ptr("https://keyvault-cmk.vault.azure.net/keys/key2047/test"),
 						SourceVault: &armstoragecache.KeyVaultKeyReferenceSourceVault{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"),
 						},
 					},
 				},
 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("default"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
 									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
@@ -185,21 +181,20 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 								}},
 						}},
 				},
-				Subnet: to.Ptr("<subnet>"),
+				Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			},
 			SKU: &armstoragecache.CacheSKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("Standard_2G"),
 			},
 			Tags: map[string]*string{
 				"Dept": to.Ptr("Contoso"),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -214,24 +209,24 @@ func ExampleCachesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
+		"scgroup",
+		"sc1",
 		&armstoragecache.CachesClientUpdateOptions{Cache: &armstoragecache.Cache{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armstoragecache.CacheProperties{
 				CacheSizeGB: to.Ptr[int32](3072),
 				DirectoryServicesSettings: &armstoragecache.CacheDirectorySettings{
 					ActiveDirectory: &armstoragecache.CacheActiveDirectorySettings{
-						CacheNetBiosName:      to.Ptr("<cache-net-bios-name>"),
-						DomainName:            to.Ptr("<domain-name>"),
-						DomainNetBiosName:     to.Ptr("<domain-net-bios-name>"),
-						PrimaryDNSIPAddress:   to.Ptr("<primary-dnsipaddress>"),
-						SecondaryDNSIPAddress: to.Ptr("<secondary-dnsipaddress>"),
+						CacheNetBiosName:      to.Ptr("contosoSmb"),
+						DomainName:            to.Ptr("contosoAd.contoso.local"),
+						DomainNetBiosName:     to.Ptr("contosoAd"),
+						PrimaryDNSIPAddress:   to.Ptr("192.0.2.10"),
+						SecondaryDNSIPAddress: to.Ptr("192.0.2.11"),
 					},
 					UsernameDownload: &armstoragecache.CacheUsernameDownloadSettings{
 						ExtendedGroups: to.Ptr(true),
@@ -239,17 +234,17 @@ func ExampleCachesClient_Update() {
 					},
 				},
 				NetworkSettings: &armstoragecache.CacheNetworkSettings{
-					DNSSearchDomain: to.Ptr("<dnssearch-domain>"),
+					DNSSearchDomain: to.Ptr("contoso.com"),
 					DNSServers: []*string{
 						to.Ptr("10.1.22.33"),
 						to.Ptr("10.1.12.33")},
 					Mtu:       to.Ptr[int32](1500),
-					NtpServer: to.Ptr("<ntp-server>"),
+					NtpServer: to.Ptr("time.contoso.com"),
 				},
 				SecuritySettings: &armstoragecache.CacheSecuritySettings{
 					AccessPolicies: []*armstoragecache.NfsAccessPolicy{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("default"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
 									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
@@ -260,11 +255,11 @@ func ExampleCachesClient_Update() {
 								}},
 						},
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("restrictive"),
 							AccessRules: []*armstoragecache.NfsAccessRule{
 								{
 									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-									Filter:         to.Ptr("<filter>"),
+									Filter:         to.Ptr("10.99.3.145"),
 									RootSquash:     to.Ptr(false),
 									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeHost),
 									SubmountAccess: to.Ptr(true),
@@ -272,7 +267,7 @@ func ExampleCachesClient_Update() {
 								},
 								{
 									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessRw),
-									Filter:         to.Ptr("<filter>"),
+									Filter:         to.Ptr("10.99.1.0/24"),
 									RootSquash:     to.Ptr(false),
 									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeNetwork),
 									SubmountAccess: to.Ptr(true),
@@ -280,8 +275,8 @@ func ExampleCachesClient_Update() {
 								},
 								{
 									Access:         to.Ptr(armstoragecache.NfsAccessRuleAccessNo),
-									AnonymousGID:   to.Ptr("<anonymous-gid>"),
-									AnonymousUID:   to.Ptr("<anonymous-uid>"),
+									AnonymousGID:   to.Ptr("65534"),
+									AnonymousUID:   to.Ptr("65534"),
 									RootSquash:     to.Ptr(true),
 									Scope:          to.Ptr(armstoragecache.NfsAccessRuleScopeDefault),
 									SubmountAccess: to.Ptr(true),
@@ -289,10 +284,10 @@ func ExampleCachesClient_Update() {
 								}},
 						}},
 				},
-				Subnet: to.Ptr("<subnet>"),
+				Subnet: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1"),
 			},
 			SKU: &armstoragecache.CacheSKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("Standard_2G"),
 			},
 			Tags: map[string]*string{
 				"Dept": to.Ptr("Contoso"),
@@ -313,18 +308,18 @@ func ExampleCachesClient_BeginDebugInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDebugInfo(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginDebugInfoOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -337,18 +332,18 @@ func ExampleCachesClient_BeginFlush() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFlush(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginFlushOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -361,18 +356,18 @@ func ExampleCachesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginStartOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -385,18 +380,18 @@ func ExampleCachesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginStopOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -409,18 +404,18 @@ func ExampleCachesClient_BeginUpgradeFirmware() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpgradeFirmware(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		&armstoragecache.CachesClientBeginUpgradeFirmwareOptions{ResumeToken: ""})
+		"scgroup",
+		"sc1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

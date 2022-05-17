@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
 )
@@ -25,19 +23,19 @@ func ExampleStorageTargetClient_BeginFlush() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginFlush(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		&armstoragecache.StorageTargetClientBeginFlushOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		"st1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -50,19 +48,19 @@ func ExampleStorageTargetClient_BeginSuspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSuspend(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		&armstoragecache.StorageTargetClientBeginSuspendOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		"st1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -75,19 +73,19 @@ func ExampleStorageTargetClient_BeginResume() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResume(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		&armstoragecache.StorageTargetClientBeginResumeOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		"st1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -100,19 +98,19 @@ func ExampleStorageTargetClient_BeginInvalidate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginInvalidate(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		&armstoragecache.StorageTargetClientBeginInvalidateOptions{ResumeToken: ""})
+		"scgroup",
+		"sc",
+		"st1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

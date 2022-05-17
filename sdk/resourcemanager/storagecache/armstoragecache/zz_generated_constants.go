@@ -10,7 +10,7 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CacheIdentityType - The type of identity used for the cache

@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*TransactionNodesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TransactionNodesClientDeleteResponse], error)` to `(*runtime.Poller[TransactionNodesClientDeleteResponse], error)`
+- Function `*MembersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MembersClientCreateResponse], error)` to `(*runtime.Poller[MembersClientCreateResponse], error)`
+- Function `*TransactionNodesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TransactionNodesClientCreateResponse], error)` to `(*runtime.Poller[TransactionNodesClientCreateResponse], error)`
+- Function `*MembersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MembersClientDeleteResponse], error)` to `(*runtime.Poller[MembersClientDeleteResponse], error)`
+- Function `ResourceProviderOperationCollection.MarshalJSON` has been removed
+- Function `OperationResult.MarshalJSON` has been removed
+- Function `MemberCollection.MarshalJSON` has been removed
+- Function `ConsortiumMember.MarshalJSON` has been removed
+- Function `ResourceTypeSKUCollection.MarshalJSON` has been removed
+- Function `ConsortiumMemberCollection.MarshalJSON` has been removed
+- Function `ResourceTypeSKU.MarshalJSON` has been removed
+- Function `APIKeyCollection.MarshalJSON` has been removed
+- Function `ConsortiumCollection.MarshalJSON` has been removed
+- Function `TransactionNodeCollection.MarshalJSON` has been removed
+- Function `SKUSetting.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

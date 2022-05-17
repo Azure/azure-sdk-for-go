@@ -33,7 +33,7 @@ func NewAddressClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewAddressClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // Validate - Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // options - AddressClientValidateOptions contains the optional parameters for the AddressClient.Validate method.
 func (client *AddressClient) Validate(ctx context.Context, address AddressDetails, options *AddressClientValidateOptions) (AddressClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, address, options)
@@ -76,7 +77,7 @@ func (client *AddressClient) validateCreateRequest(ctx context.Context, address 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, address)
 }
 

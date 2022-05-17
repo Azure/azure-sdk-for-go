@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
@@ -30,14 +28,13 @@ func ExampleSubscriptionsClient_NewListByCustomerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCustomerPager("<billing-account-name>",
-		"<customer-name>",
+	pager := client.NewListByCustomerPager("{billingAccountName}",
+		"{customerName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,13 +54,12 @@ func ExampleSubscriptionsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,14 +79,13 @@ func ExampleSubscriptionsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -110,15 +105,14 @@ func ExampleSubscriptionsClient_NewListByInvoiceSectionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInvoiceSectionPager("<billing-account-name>",
-		"<billing-profile-name>",
-		"<invoice-section-name>",
+	pager := client.NewListByInvoiceSectionPager("{billingAccountName}",
+		"{billingProfileName}",
+		"{invoiceSectionName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -134,12 +128,12 @@ func ExampleSubscriptionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewSubscriptionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
+		"{billingAccountName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -155,15 +149,15 @@ func ExampleSubscriptionsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewSubscriptionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<billing-account-name>",
+		"{billingAccountName}",
 		armbilling.Subscription{
 			Properties: &armbilling.SubscriptionProperties{
-				CostCenter: to.Ptr("<cost-center>"),
+				CostCenter: to.Ptr("ABC1234"),
 			},
 		},
 		nil)
@@ -181,20 +175,20 @@ func ExampleSubscriptionsClient_BeginMove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewSubscriptionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginMove(ctx,
-		"<billing-account-name>",
+		"{billingAccountName}",
 		armbilling.TransferBillingSubscriptionRequestProperties{
-			DestinationInvoiceSectionID: to.Ptr("<destination-invoice-section-id>"),
+			DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
 		},
-		&armbilling.SubscriptionsClientBeginMoveOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -209,14 +203,14 @@ func ExampleSubscriptionsClient_ValidateMove() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbilling.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armbilling.NewSubscriptionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateMove(ctx,
-		"<billing-account-name>",
+		"{billingAccountName}",
 		armbilling.TransferBillingSubscriptionRequestProperties{
-			DestinationInvoiceSectionID: to.Ptr("<destination-invoice-section-id>"),
+			DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
 		},
 		nil)
 	if err != nil {

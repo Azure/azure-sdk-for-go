@@ -28,8 +28,8 @@ func ExampleRoleAssignmentsClient_GetByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByBillingAccount(ctx,
-		"<billing-account-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingRoleAssignmentId}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,8 +50,8 @@ func ExampleRoleAssignmentsClient_DeleteByBillingAccount() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteByBillingAccount(ctx,
-		"<billing-account-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingRoleAssignmentName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,10 +72,10 @@ func ExampleRoleAssignmentsClient_GetByInvoiceSection() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByInvoiceSection(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<invoice-section-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{invoiceSectionName}",
+		"{billingRoleAssignmentName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,10 +96,10 @@ func ExampleRoleAssignmentsClient_DeleteByInvoiceSection() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteByInvoiceSection(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<invoice-section-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{invoiceSectionName}",
+		"{billingRoleAssignmentName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -120,9 +120,9 @@ func ExampleRoleAssignmentsClient_GetByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByBillingProfile(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{billingRoleAssignmentName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -143,9 +143,9 @@ func ExampleRoleAssignmentsClient_DeleteByBillingProfile() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteByBillingProfile(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
-		"<billing-role-assignment-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
+		"{billingRoleAssignmentName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -165,13 +165,12 @@ func ExampleRoleAssignmentsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -191,15 +190,14 @@ func ExampleRoleAssignmentsClient_NewListByInvoiceSectionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByInvoiceSectionPager("<billing-account-name>",
-		"<billing-profile-name>",
-		"<invoice-section-name>",
+	pager := client.NewListByInvoiceSectionPager("{billingAccountName}",
+		"{billingProfileName}",
+		"{invoiceSectionName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -219,14 +217,13 @@ func ExampleRoleAssignmentsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

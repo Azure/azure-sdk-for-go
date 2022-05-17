@@ -1,5 +1,44 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*InvoicesClient.BeginDownloadBillingSubscriptionInvoice` return value(s) have been changed from `(*armruntime.Poller[InvoicesClientDownloadBillingSubscriptionInvoiceResponse], error)` to `(*runtime.Poller[InvoicesClientDownloadBillingSubscriptionInvoiceResponse], error)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingSubscriptionInvoices` return value(s) have been changed from `(*armruntime.Poller[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse], error)` to `(*runtime.Poller[InvoicesClientDownloadMultipleBillingSubscriptionInvoicesResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*SubscriptionsClient.BeginMove` return value(s) have been changed from `(*armruntime.Poller[SubscriptionsClientMoveResponse], error)` to `(*runtime.Poller[SubscriptionsClientMoveResponse], error)`
+- Function `*InvoicesClient.BeginDownloadInvoice` return value(s) have been changed from `(*armruntime.Poller[InvoicesClientDownloadInvoiceResponse], error)` to `(*runtime.Poller[InvoicesClientDownloadInvoiceResponse], error)`
+- Function `*InvoiceSectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InvoiceSectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InvoiceSectionsClientCreateOrUpdateResponse], error)`
+- Function `*ProfilesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ProfilesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ProfilesClientCreateOrUpdateResponse], error)`
+- Function `*InvoicesClient.BeginDownloadMultipleBillingProfileInvoices` return value(s) have been changed from `(*armruntime.Poller[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse], error)` to `(*runtime.Poller[InvoicesClientDownloadMultipleBillingProfileInvoicesResponse], error)`
+- Function `ProductsListResult.MarshalJSON` has been removed
+- Function `ValidateAddressResponse.MarshalJSON` has been removed
+- Function `PermissionsListResult.MarshalJSON` has been removed
+- Function `SubscriptionsListResult.MarshalJSON` has been removed
+- Function `DownloadURL.MarshalJSON` has been removed
+- Function `ProfileCreationRequest.MarshalJSON` has been removed
+- Function `ReservationsListResult.MarshalJSON` has been removed
+- Function `InstructionListResult.MarshalJSON` has been removed
+- Function `EnrollmentAccountListResult.MarshalJSON` has been removed
+- Function `ErrorDetails.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `PeriodsListResult.MarshalJSON` has been removed
+- Function `AgreementListResult.MarshalJSON` has been removed
+- Function `RoleDefinitionListResult.MarshalJSON` has been removed
+- Function `CustomerListResult.MarshalJSON` has been removed
+- Function `InvoiceSectionListResult.MarshalJSON` has been removed
+- Function `InvoiceSectionListWithCreateSubPermissionResult.MarshalJSON` has been removed
+- Function `TransactionListResult.MarshalJSON` has been removed
+- Function `ReservationProperty.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `EnrollmentAccountContext.MarshalJSON` has been removed
+- Function `InvoiceListResult.MarshalJSON` has been removed
+- Function `RoleAssignmentListResult.MarshalJSON` has been removed
+- Function `ProfileListResult.MarshalJSON` has been removed
+- Function `InvoiceSectionWithCreateSubPermission.MarshalJSON` has been removed
+- Function `ReservationPropertyUtilization.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

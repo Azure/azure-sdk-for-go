@@ -32,7 +32,6 @@ func ExampleEnrollmentAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,7 +52,7 @@ func ExampleEnrollmentAccountsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<name>",
+		"e1bf1c8c-5ac6-44a0-bdcd-aa7c1cf60556",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

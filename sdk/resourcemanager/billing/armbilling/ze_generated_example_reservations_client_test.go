@@ -28,17 +28,16 @@ func ExampleReservationsClient_NewListByBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingAccountPager("<billing-account-name>",
-		&armbilling.ReservationsClientListByBillingAccountOptions{Filter: to.Ptr("<filter>"),
-			Orderby:        to.Ptr("<orderby>"),
+	pager := client.NewListByBillingAccountPager("{billingAccountName}",
+		&armbilling.ReservationsClientListByBillingAccountOptions{Filter: to.Ptr("properties/reservedResourceType eq 'VirtualMachines'"),
+			Orderby:        to.Ptr("properties/userFriendlyAppliedScopeType asc"),
 			RefreshSummary: nil,
-			SelectedState:  to.Ptr("<selected-state>"),
+			SelectedState:  to.Ptr("Succeeded"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,18 +57,17 @@ func ExampleReservationsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-name>",
-		"<billing-profile-name>",
-		&armbilling.ReservationsClientListByBillingProfileOptions{Filter: to.Ptr("<filter>"),
-			Orderby:        to.Ptr("<orderby>"),
+	pager := client.NewListByBillingProfilePager("{billingAccountName}",
+		"{billingProfileName}",
+		&armbilling.ReservationsClientListByBillingProfileOptions{Filter: to.Ptr("properties/reservedResourceType eq 'VirtualMachines'"),
+			Orderby:        to.Ptr("properties/userFriendlyAppliedScopeType asc"),
 			RefreshSummary: nil,
-			SelectedState:  to.Ptr("<selected-state>"),
+			SelectedState:  to.Ptr("Succeeded"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

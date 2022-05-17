@@ -36,7 +36,7 @@ func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewCustomersClient(credential azcore.TokenCredential, options *arm.ClientOp
 // Get - Gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft Partner
 // Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - CustomersClientGetOptions contains the optional parameters for the CustomersClient.Get method.
@@ -93,7 +94,7 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -109,11 +110,12 @@ func (client *CustomersClient) getHandleResponse(resp *http.Response) (Customers
 // NewListByBillingAccountPager - Lists the customers that are billed to a billing account. The operation is supported only
 // for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - CustomersClientListByBillingAccountOptions contains the optional parameters for the CustomersClient.ListByBillingAccount
 // method.
 func (client *CustomersClient) NewListByBillingAccountPager(billingAccountName string, options *CustomersClientListByBillingAccountOptions) *runtime.Pager[CustomersClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomersClientListByBillingAccountResponse]{
 		More: func(page CustomersClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -160,7 +162,7 @@ func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Con
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -176,12 +178,13 @@ func (client *CustomersClient) listByBillingAccountHandleResponse(resp *http.Res
 // NewListByBillingProfilePager - Lists the customers that are billed to a billing profile. The operation is supported only
 // for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - CustomersClientListByBillingProfileOptions contains the optional parameters for the CustomersClient.ListByBillingProfile
 // method.
 func (client *CustomersClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *CustomersClientListByBillingProfileOptions) *runtime.Pager[CustomersClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomersClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomersClientListByBillingProfileResponse]{
 		More: func(page CustomersClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -232,7 +235,7 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

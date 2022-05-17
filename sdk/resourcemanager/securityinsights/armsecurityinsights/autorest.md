@@ -4,10 +4,12 @@
 
 ``` yaml
 azure-arm: true
+tag: package-2021-10
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/f92aaf88f4c9d1ffb9a014eba196d887a9288c3a/specification/securityinsights/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/f92aaf88f4c9d1ffb9a014eba196d887a9288c3a/specification/securityinsights/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/securityinsights/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.3.0
-
+module-version: 1.0.0
+modelerfour:
+  lenient-model-deduplication: true
 ```

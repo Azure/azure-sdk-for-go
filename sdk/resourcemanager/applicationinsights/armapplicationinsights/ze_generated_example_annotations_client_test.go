@@ -26,20 +26,19 @@ func ExampleAnnotationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnnotationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
-		"<start>",
-		"<end>",
+	pager := client.NewListPager("my-resource-group",
+		"my-component",
+		"2018-02-05T00%253A30%253A00.000Z",
+		"2018-02-06T00%253A33A00.000Z",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,19 +54,19 @@ func ExampleAnnotationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnnotationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.Annotation{
-			AnnotationName: to.Ptr("<annotation-name>"),
-			Category:       to.Ptr("<category>"),
+			AnnotationName: to.Ptr("TestAnnotation"),
+			Category:       to.Ptr("Text"),
 			EventTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-31T13:41:38.657Z"); return t }()),
-			ID:             to.Ptr("<id>"),
-			Properties:     to.Ptr("<properties>"),
+			ID:             to.Ptr("444e2c08-274a-4bbb-a89e-d77bb720f44a"),
+			Properties:     to.Ptr("{\"Comments\":\"Testing\",\"Label\":\"Success\"}"),
 		},
 		nil)
 	if err != nil {
@@ -84,14 +83,14 @@ func ExampleAnnotationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnnotationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<annotation-id>",
+		"my-resource-group",
+		"my-component",
+		"bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,14 +104,14 @@ func ExampleAnnotationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnnotationsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnnotationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<annotation-id>",
+		"my-resource-group",
+		"my-component",
+		"444e2c08-274a-4bbb-a89e-d77bb720f44a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -24,17 +24,16 @@ func ExampleWebTestsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("my-resource-group",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,13 +49,13 @@ func ExampleWebTestsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<web-test-name>",
+		"my-resource-group",
+		"my-webtest-01-mywebservice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,31 +71,31 @@ func ExampleWebTestsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<web-test-name>",
+		"my-resource-group",
+		"my-webtest-my-component",
 		armapplicationinsights.WebTest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("South Central US"),
 			Kind:     to.Ptr(armapplicationinsights.WebTestKindPing),
 			Properties: &armapplicationinsights.WebTestProperties{
 				Configuration: &armapplicationinsights.WebTestPropertiesConfiguration{
-					WebTest: to.Ptr("<web-test>"),
+					WebTest: to.Ptr("<WebTest Name=\"my-webtest\" Id=\"678ddf96-1ab8-44c8-9274-123456789abc\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"120\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\" ><Items><Request Method=\"GET\" Guid=\"a4162485-9114-fcfc-e086-123456789abc\" Version=\"1.1\" Url=\"http://my-component.azurewebsites.net\" ThinkTime=\"0\" Timeout=\"120\" ParseDependentRequests=\"True\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>"),
 				},
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Ping web test alert for mytestwebapp"),
 				Enabled:     to.Ptr(true),
 				Frequency:   to.Ptr[int32](900),
 				WebTestKind: to.Ptr(armapplicationinsights.WebTestKindPing),
 				Locations: []*armapplicationinsights.WebTestGeolocation{
 					{
-						Location: to.Ptr("<location>"),
+						Location: to.Ptr("us-fl-mia-edge"),
 					}},
-				WebTestName:        to.Ptr("<web-test-name>"),
+				WebTestName:        to.Ptr("my-webtest-my-component"),
 				RetryEnabled:       to.Ptr(true),
-				SyntheticMonitorID: to.Ptr("<synthetic-monitor-id>"),
+				SyntheticMonitorID: to.Ptr("my-webtest-my-component"),
 				Timeout:            to.Ptr[int32](120),
 			},
 		},
@@ -115,13 +114,13 @@ func ExampleWebTestsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<web-test-name>",
+		"my-resource-group",
+		"my-webtest-my-component",
 		armapplicationinsights.TagsResource{
 			Tags: map[string]*string{
 				"Color":          to.Ptr("AzureBlue"),
@@ -146,13 +145,13 @@ func ExampleWebTestsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<web-test-name>",
+		"my-resource-group",
+		"my-webtest-01-mywebservice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -166,7 +165,7 @@ func ExampleWebTestsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -175,7 +174,6 @@ func ExampleWebTestsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -191,18 +189,17 @@ func ExampleWebTestsClient_NewListByComponentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWebTestsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWebTestsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByComponentPager("<component-name>",
-		"<resource-group-name>",
+	pager := client.NewListByComponentPager("my-component",
+		"my-resource-group",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

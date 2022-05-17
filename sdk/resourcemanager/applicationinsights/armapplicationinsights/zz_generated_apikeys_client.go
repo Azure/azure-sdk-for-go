@@ -38,7 +38,7 @@ func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Create - Create an API Key of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // apiKeyProperties - Properties that need to be specified to create an API key of a Application Insights component.
@@ -97,7 +98,7 @@ func (client *APIKeysClient) createCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, apiKeyProperties)
 }
 
@@ -112,6 +113,7 @@ func (client *APIKeysClient) createHandleResponse(resp *http.Response) (APIKeysC
 
 // Delete - Delete an API Key of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // keyID - The API Key ID. This is unique within a Application Insights component.
@@ -157,7 +159,7 @@ func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -172,6 +174,7 @@ func (client *APIKeysClient) deleteHandleResponse(resp *http.Response) (APIKeysC
 
 // Get - Get the API Key for this key id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // keyID - The API Key ID. This is unique within a Application Insights component.
@@ -217,7 +220,7 @@ func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,11 +235,12 @@ func (client *APIKeysClient) getHandleResponse(resp *http.Response) (APIKeysClie
 
 // NewListPager - Gets a list of API keys of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - APIKeysClientListOptions contains the optional parameters for the APIKeysClient.List method.
 func (client *APIKeysClient) NewListPager(resourceGroupName string, resourceName string, options *APIKeysClientListOptions) *runtime.Pager[APIKeysClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APIKeysClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APIKeysClientListResponse]{
 		More: func(page APIKeysClientListResponse) bool {
 			return false
 		},
@@ -279,7 +283,7 @@ func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

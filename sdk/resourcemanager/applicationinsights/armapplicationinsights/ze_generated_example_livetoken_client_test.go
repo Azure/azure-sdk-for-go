@@ -28,7 +28,7 @@ func ExampleLiveTokenClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
+		"subscriptions/df602c9c-7aa0-407d-a6fb-eb20c8bd1192/resourceGroups/FabrikamFiberApp/providers/microsoft.insights/components/CustomAvailabilityTest/providers/microsoft.insights/generatelivetoken",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -24,13 +24,13 @@ func ExampleComponentLinkedStorageAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("86dc51d3-92ed-4d7e-947a-775ea79b4918", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"someResourceGroupName",
+		"myComponent",
 		armapplicationinsights.StorageTypeServiceProfiler,
 		nil)
 	if err != nil {
@@ -47,17 +47,17 @@ func ExampleComponentLinkedStorageAccountsClient_CreateAndUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("86dc51d3-92ed-4d7e-947a-775ea79b4918", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateAndUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"someResourceGroupName",
+		"myComponent",
 		armapplicationinsights.StorageTypeServiceProfiler,
 		armapplicationinsights.ComponentLinkedStorageAccounts{
 			Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
-				LinkedStorageAccount: to.Ptr("<linked-storage-account>"),
+				LinkedStorageAccount: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname"),
 			},
 		},
 		nil)
@@ -75,17 +75,17 @@ func ExampleComponentLinkedStorageAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("86dc51d3-92ed-4d7e-947a-775ea79b4918", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"someResourceGroupName",
+		"myComponent",
 		armapplicationinsights.StorageTypeServiceProfiler,
 		armapplicationinsights.ComponentLinkedStorageAccountsPatch{
 			Properties: &armapplicationinsights.LinkedStorageAccountsProperties{
-				LinkedStorageAccount: to.Ptr("<linked-storage-account>"),
+				LinkedStorageAccount: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4918/resourceGroups/someResourceGroupName/providers/Microsoft.Storage/storageAccounts/storageaccountname"),
 			},
 		},
 		nil)
@@ -103,13 +103,13 @@ func ExampleComponentLinkedStorageAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentLinkedStorageAccountsClient("86dc51d3-92ed-4d7e-947a-775ea79b4918", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"someResourceGroupName",
+		"myComponent",
 		armapplicationinsights.StorageTypeServiceProfiler,
 		nil)
 	if err != nil {

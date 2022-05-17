@@ -38,7 +38,7 @@ func NewExportConfigurationsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewExportConfigurationsClient(subscriptionID string, credential azcore.Toke
 
 // Create - Create a Continuous Export configuration of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // exportProperties - Properties that need to be specified to create a Continuous Export configuration of a Application Insights
@@ -99,7 +100,7 @@ func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exportProperties)
 }
 
@@ -114,6 +115,7 @@ func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Respon
 
 // Delete - Delete a Continuous Export configuration of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -160,7 +162,7 @@ func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -175,6 +177,7 @@ func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Respon
 
 // Get - Get the Continuous Export configuration for this export id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -221,7 +224,7 @@ func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -236,6 +239,7 @@ func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response)
 
 // List - Gets a list of Continuous Export configuration of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - ExportConfigurationsClientListOptions contains the optional parameters for the ExportConfigurationsClient.List
@@ -277,7 +281,7 @@ func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,6 +296,7 @@ func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response
 
 // Update - Update the Continuous Export configuration for this export id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // exportID - The Continuous Export configuration ID. This is unique within a Application Insights component.
@@ -339,7 +344,7 @@ func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exportProperties)
 }
 

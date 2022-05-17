@@ -38,7 +38,7 @@ func NewComponentsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewComponentsClient(subscriptionID string, credential azcore.TokenCredentia
 // CreateOrUpdate - Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
 // InstrumentationKey nor AppId in the Put operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // insightProperties - Properties that need to be specified to create an Application Insights component.
@@ -99,7 +100,7 @@ func (client *ComponentsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, insightProperties)
 }
 
@@ -114,6 +115,7 @@ func (client *ComponentsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - ComponentsClientDeleteOptions contains the optional parameters for the ComponentsClient.Delete method.
@@ -154,12 +156,13 @@ func (client *ComponentsClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - ComponentsClientGetOptions contains the optional parameters for the ComponentsClient.Get method.
@@ -200,7 +203,7 @@ func (client *ComponentsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,6 +218,7 @@ func (client *ComponentsClient) getHandleResponse(resp *http.Response) (Componen
 
 // GetPurgeStatus - Get status for an ongoing purge operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
@@ -261,7 +265,7 @@ func (client *ComponentsClient) getPurgeStatusCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -276,9 +280,10 @@ func (client *ComponentsClient) getPurgeStatusHandleResponse(resp *http.Response
 
 // NewListPager - Gets a list of all Application Insights components within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // options - ComponentsClientListOptions contains the optional parameters for the ComponentsClient.List method.
 func (client *ComponentsClient) NewListPager(options *ComponentsClientListOptions) *runtime.Pager[ComponentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ComponentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ComponentsClientListResponse]{
 		More: func(page ComponentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -319,7 +324,7 @@ func (client *ComponentsClient) listCreateRequest(ctx context.Context, options *
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -334,11 +339,12 @@ func (client *ComponentsClient) listHandleResponse(resp *http.Response) (Compone
 
 // NewListByResourceGroupPager - Gets a list of Application Insights components within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ComponentsClientListByResourceGroupOptions contains the optional parameters for the ComponentsClient.ListByResourceGroup
 // method.
 func (client *ComponentsClient) NewListByResourceGroupPager(resourceGroupName string, options *ComponentsClientListByResourceGroupOptions) *runtime.Pager[ComponentsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ComponentsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ComponentsClientListByResourceGroupResponse]{
 		More: func(page ComponentsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -383,7 +389,7 @@ func (client *ComponentsClient) listByResourceGroupCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -402,6 +408,7 @@ func (client *ComponentsClient) listByResourceGroupHandleResponse(resp *http.Res
 // user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior
 // to using for a purge request to verify that the results are expected.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // body - Describes the body of a request to purge data in a single table of an Application Insights component
@@ -443,7 +450,7 @@ func (client *ComponentsClient) purgeCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -458,6 +465,7 @@ func (client *ComponentsClient) purgeHandleResponse(resp *http.Response) (Compon
 
 // UpdateTags - Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-02-02
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // componentTags - Updated tag information to set into the component instance.
@@ -499,7 +507,7 @@ func (client *ComponentsClient) updateTagsCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-02-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, componentTags)
 }
 

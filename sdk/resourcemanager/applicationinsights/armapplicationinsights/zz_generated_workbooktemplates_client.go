@@ -38,7 +38,7 @@ func NewWorkbookTemplatesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkbookTemplatesClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create a new workbook template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workbookTemplateProperties - Properties that need to be specified to create a new workbook.
@@ -98,7 +99,7 @@ func (client *WorkbookTemplatesClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workbookTemplateProperties)
 }
 
@@ -113,6 +114,7 @@ func (client *WorkbookTemplatesClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete a workbook template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkbookTemplatesClientDeleteOptions contains the optional parameters for the WorkbookTemplatesClient.Delete
@@ -154,12 +156,13 @@ func (client *WorkbookTemplatesClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a single workbook template by its resourceName.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkbookTemplatesClientGetOptions contains the optional parameters for the WorkbookTemplatesClient.Get method.
@@ -200,7 +203,7 @@ func (client *WorkbookTemplatesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +218,12 @@ func (client *WorkbookTemplatesClient) getHandleResponse(resp *http.Response) (W
 
 // NewListByResourceGroupPager - Get all Workbook templates defined within a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.ListByResourceGroup
 // method.
 func (client *WorkbookTemplatesClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkbookTemplatesClientListByResourceGroupOptions) *runtime.Pager[WorkbookTemplatesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkbookTemplatesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkbookTemplatesClientListByResourceGroupResponse]{
 		More: func(page WorkbookTemplatesClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -258,7 +262,7 @@ func (client *WorkbookTemplatesClient) listByResourceGroupCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -273,6 +277,7 @@ func (client *WorkbookTemplatesClient) listByResourceGroupHandleResponse(resp *h
 
 // Update - Updates a workbook template that has already been added.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - WorkbookTemplatesClientUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.Update
@@ -314,7 +319,7 @@ func (client *WorkbookTemplatesClient) updateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.WorkbookTemplateUpdateParameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.WorkbookTemplateUpdateParameters)
 	}

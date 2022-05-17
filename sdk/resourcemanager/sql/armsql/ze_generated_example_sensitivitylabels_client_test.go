@@ -17,20 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceCurrent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceCurrent.json
 func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCurrentByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListCurrentByDatabasePager("myRG",
+		"myServer",
+		"myDatabase",
 		&armsql.SensitivityLabelsClientListCurrentByDatabaseOptions{SkipToken: nil,
 			Count:  nil,
 			Filter: nil,
@@ -39,7 +39,6 @@ func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -48,63 +47,63 @@ func ExampleSensitivityLabelsClient_NewListCurrentByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsCurrentUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SensitivityLabelsCurrentUpdate.json
 func ExampleSensitivityLabelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
 		armsql.SensitivityLabelUpdateList{
 			Operations: []*armsql.SensitivityLabelUpdate{
 				{
 					Properties: &armsql.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column1"),
 						Op:     to.Ptr(armsql.SensitivityLabelUpdateKindSet),
 						SensitivityLabel: &armsql.SensitivityLabel{
 							Properties: &armsql.SensitivityLabelProperties{
-								InformationType:   to.Ptr("<information-type>"),
-								InformationTypeID: to.Ptr("<information-type-id>"),
-								LabelID:           to.Ptr("<label-id>"),
-								LabelName:         to.Ptr("<label-name>"),
+								InformationType:   to.Ptr("Financial"),
+								InformationTypeID: to.Ptr("1D3652D6-422C-4115-82F1-65DAEBC665C8"),
+								LabelID:           to.Ptr("3A477B16-9423-432B-AA97-6069B481CEC3"),
+								LabelName:         to.Ptr("Highly Confidential"),
 								Rank:              to.Ptr(armsql.SensitivityLabelRankLow),
 							},
 						},
-						Table: to.Ptr("<table>"),
+						Table: to.Ptr("table1"),
 					},
 				},
 				{
 					Properties: &armsql.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column2"),
 						Op:     to.Ptr(armsql.SensitivityLabelUpdateKindSet),
 						SensitivityLabel: &armsql.SensitivityLabel{
 							Properties: &armsql.SensitivityLabelProperties{
-								InformationType:   to.Ptr("<information-type>"),
-								InformationTypeID: to.Ptr("<information-type-id>"),
-								LabelID:           to.Ptr("<label-id>"),
-								LabelName:         to.Ptr("<label-name>"),
+								InformationType:   to.Ptr("PhoneNumber"),
+								InformationTypeID: to.Ptr("d22fa6e9-5ee4-3bde-4c2b-a409604c4646"),
+								LabelID:           to.Ptr("bf91e08c-f4f0-478a-b016-25164b2a65ff"),
+								LabelName:         to.Ptr("PII"),
 								Rank:              to.Ptr(armsql.SensitivityLabelRankCritical),
 							},
 						},
-						Table: to.Ptr("<table>"),
+						Table: to.Ptr("table2"),
 					},
 				},
 				{
 					Properties: &armsql.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("Column3"),
 						Op:     to.Ptr(armsql.SensitivityLabelUpdateKindRemove),
-						Table:  to.Ptr("<table>"),
+						Table:  to.Ptr("Table1"),
 					},
 				}},
 		},
@@ -114,20 +113,20 @@ func ExampleSensitivityLabelsClient_Update() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceRecommended.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/SensitivityLabelsListByDatabaseWithSourceRecommended.json
 func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRecommendedByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListRecommendedByDatabasePager("myRG",
+		"myServer",
+		"myDatabase",
 		&armsql.SensitivityLabelsClientListRecommendedByDatabaseOptions{SkipToken: nil,
 			IncludeDisabledRecommendations: nil,
 			Filter:                         nil,
@@ -136,7 +135,6 @@ func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -145,24 +143,72 @@ func ExampleSensitivityLabelsClient_NewListRecommendedByDatabasePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ColumnSensitivityLabelGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/RecommendedColumnSensitivityLabelEnable.json
+func ExampleSensitivityLabelsClient_EnableRecommendation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.EnableRecommendation(ctx,
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/RecommendedColumnSensitivityLabelDisable.json
+func ExampleSensitivityLabelsClient_DisableRecommendation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.DisableRecommendation(ctx,
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnSensitivityLabelGet.json
 func ExampleSensitivityLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		armsql.SensitivityLabelSourceCurrent,
 		nil)
 	if err != nil {
@@ -172,30 +218,30 @@ func ExampleSensitivityLabelsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ColumnSensitivityLabelCreateMax.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnSensitivityLabelCreateMax.json
 func ExampleSensitivityLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		armsql.SensitivityLabel{
 			Properties: &armsql.SensitivityLabelProperties{
-				InformationType:   to.Ptr("<information-type>"),
-				InformationTypeID: to.Ptr("<information-type-id>"),
-				LabelID:           to.Ptr("<label-id>"),
-				LabelName:         to.Ptr("<label-name>"),
+				InformationType:   to.Ptr("PhoneNumber"),
+				InformationTypeID: to.Ptr("d22fa6e9-5ee4-3bde-4c2b-a409604c4646"),
+				LabelID:           to.Ptr("bf91e08c-f4f0-478a-b016-25164b2a65ff"),
+				LabelName:         to.Ptr("PII"),
 				Rank:              to.Ptr(armsql.SensitivityLabelRankLow),
 			},
 		},
@@ -207,102 +253,26 @@ func ExampleSensitivityLabelsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/ColumnSensitivityLabelDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2020-11-01-preview/examples/ColumnSensitivityLabelDelete.json
 func ExampleSensitivityLabelsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/RecommendedColumnSensitivityLabelDisable.json
-func ExampleSensitivityLabelsClient_DisableRecommendation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.DisableRecommendation(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/RecommendedColumnSensitivityLabelEnable.json
-func ExampleSensitivityLabelsClient_EnableRecommendation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.EnableRecommendation(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/sql/resource-manager/Microsoft.Sql/preview/2021-11-01-preview/examples/SensitivityLabelsListByDatabase.json
-func ExampleSensitivityLabelsClient_NewListByDatabasePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armsql.NewSensitivityLabelsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		&armsql.SensitivityLabelsClientListByDatabaseOptions{Filter: nil})
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
 	}
 }

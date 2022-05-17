@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,23 +24,23 @@ func ExampleTdeCertificatesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewTdeCertificatesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewTdeCertificatesClient("00000000-0000-0000-0000-000000000001", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testtdecert",
+		"testtdecert",
 		armsql.TdeCertificate{
 			Properties: &armsql.TdeCertificateProperties{
-				PrivateBlob: to.Ptr("<private-blob>"),
+				PrivateBlob: to.Ptr("MIIXXXXXXXX"),
 			},
 		},
-		&armsql.TdeCertificatesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

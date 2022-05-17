@@ -24,13 +24,13 @@ func ExampleServerAdvisorsClient_ListByServer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAdvisorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAdvisorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByServer(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"workloadinsight-demos",
+		"misosisvr",
 		&armsql.ServerAdvisorsClientListByServerOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,14 +46,14 @@ func ExampleServerAdvisorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAdvisorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAdvisorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<advisor-name>",
+		"workloadinsight-demos",
+		"misosisvr",
+		"CreateIndex",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,14 +69,14 @@ func ExampleServerAdvisorsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewServerAdvisorsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewServerAdvisorsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<advisor-name>",
+		"workloadinsight-demos",
+		"misosisvr",
+		"CreateIndex",
 		armsql.Advisor{
 			Properties: &armsql.AdvisorProperties{
 				AutoExecuteStatus: to.Ptr(armsql.AutoExecuteStatusDisabled),

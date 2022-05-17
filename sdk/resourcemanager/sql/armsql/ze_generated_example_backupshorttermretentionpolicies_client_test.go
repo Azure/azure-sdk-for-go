@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,14 +24,14 @@ func ExampleBackupShortTermRetentionPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		armsql.ShortTermRetentionPolicyNameDefault,
 		nil)
 	if err != nil {
@@ -50,14 +48,14 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"resourceGroup",
+		"testsvr",
+		"testdb",
 		armsql.ShortTermRetentionPolicyNameDefault,
 		armsql.BackupShortTermRetentionPolicy{
 			Properties: &armsql.BackupShortTermRetentionPolicyProperties{
@@ -65,11 +63,11 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginCreateOrUpdate() {
 				RetentionDays:             to.Ptr[int32](7),
 			},
 		},
-		&armsql.BackupShortTermRetentionPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -84,14 +82,14 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"resourceGroup",
+		"testsvr",
+		"testdb",
 		armsql.ShortTermRetentionPolicyNameDefault,
 		armsql.BackupShortTermRetentionPolicy{
 			Properties: &armsql.BackupShortTermRetentionPolicyProperties{
@@ -99,11 +97,11 @@ func ExampleBackupShortTermRetentionPoliciesClient_BeginUpdate() {
 				RetentionDays:             to.Ptr[int32](7),
 			},
 		},
-		&armsql.BackupShortTermRetentionPoliciesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -118,19 +116,18 @@ func ExampleBackupShortTermRetentionPoliciesClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewBackupShortTermRetentionPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("Default-SQL-SouthEastAsia",
+		"testsvr",
+		"testdb",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

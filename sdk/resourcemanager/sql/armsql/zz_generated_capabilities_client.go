@@ -38,7 +38,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 
 // ListByLocation - Gets the subscription capabilities available for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // locationName - The location name whose capabilities are retrieved.
 // options - CapabilitiesClientListByLocationOptions contains the optional parameters for the CapabilitiesClient.ListByLocation
 // method.
@@ -95,7 +96,7 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

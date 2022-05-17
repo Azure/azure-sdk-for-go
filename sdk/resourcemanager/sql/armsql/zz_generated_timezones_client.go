@@ -38,7 +38,7 @@ func NewTimeZonesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTimeZonesClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets a managed instance time zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // options - TimeZonesClientGetOptions contains the optional parameters for the TimeZonesClient.Get method.
 func (client *TimeZonesClient) Get(ctx context.Context, locationName string, timeZoneID string, options *TimeZonesClientGetOptions) (TimeZonesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, timeZoneID, options)
@@ -94,7 +95,7 @@ func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -109,10 +110,11 @@ func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZones
 
 // NewListByLocationPager - Gets a list of managed instance time zones by location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // options - TimeZonesClientListByLocationOptions contains the optional parameters for the TimeZonesClient.ListByLocation
 // method.
 func (client *TimeZonesClient) NewListByLocationPager(locationName string, options *TimeZonesClientListByLocationOptions) *runtime.Pager[TimeZonesClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TimeZonesClientListByLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TimeZonesClientListByLocationResponse]{
 		More: func(page TimeZonesClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -157,7 +159,7 @@ func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

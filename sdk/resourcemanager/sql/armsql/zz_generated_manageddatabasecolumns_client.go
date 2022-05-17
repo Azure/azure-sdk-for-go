@@ -38,7 +38,7 @@ func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.To
 
 // Get - Get managed database column
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -118,7 +119,7 @@ func (client *ManagedDatabaseColumnsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -133,6 +134,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 
 // NewListByDatabasePager - List managed database columns
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -140,7 +142,7 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 // options - ManagedDatabaseColumnsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseColumnsClient.ListByDatabase
 // method.
 func (client *ManagedDatabaseColumnsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseColumnsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseColumnsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -216,7 +218,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,6 +233,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 
 // NewListByTablePager - List managed database columns
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -240,7 +243,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 // options - ManagedDatabaseColumnsClientListByTableOptions contains the optional parameters for the ManagedDatabaseColumnsClient.ListByTable
 // method.
 func (client *ManagedDatabaseColumnsClient) NewListByTablePager(resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) *runtime.Pager[ManagedDatabaseColumnsClientListByTableResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseColumnsClientListByTableResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseColumnsClientListByTableResponse]{
 		More: func(page ManagedDatabaseColumnsClientListByTableResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -304,7 +307,7 @@ func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
@@ -26,18 +24,17 @@ func ExampleCommitmentPlansClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"accountName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleCommitmentPlansClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<commitment-plan-name>",
+		"resourceGroupName",
+		"accountName",
+		"commitmentPlanName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,22 +73,22 @@ func ExampleCommitmentPlansClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<commitment-plan-name>",
+		"resourceGroupName",
+		"accountName",
+		"commitmentPlanName",
 		armcognitiveservices.CommitmentPlan{
 			Properties: &armcognitiveservices.CommitmentPlanProperties{
 				AutoRenew: to.Ptr(true),
 				Current: &armcognitiveservices.CommitmentPeriod{
-					Tier: to.Ptr("<tier>"),
+					Tier: to.Ptr("T1"),
 				},
 				HostingModel: to.Ptr(armcognitiveservices.HostingModelWeb),
-				PlanType:     to.Ptr("<plan-type>"),
+				PlanType:     to.Ptr("Speech2Text"),
 			},
 		},
 		nil)
@@ -109,19 +106,19 @@ func ExampleCommitmentPlansClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewCommitmentPlansClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewCommitmentPlansClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<commitment-plan-name>",
-		&armcognitiveservices.CommitmentPlansClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"accountName",
+		"commitmentPlanName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

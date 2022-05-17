@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
@@ -25,14 +23,14 @@ func ExampleDeletedAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeletedAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewDeletedAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<resource-group-name>",
-		"<account-name>",
+		"westus",
+		"myResourceGroup",
+		"myAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,19 +46,19 @@ func ExampleDeletedAccountsClient_BeginPurge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeletedAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewDeletedAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPurge(ctx,
-		"<location>",
-		"<resource-group-name>",
-		"<account-name>",
-		&armcognitiveservices.DeletedAccountsClientBeginPurgeOptions{ResumeToken: ""})
+		"westus",
+		"myResourceGroup",
+		"PropTest01",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -73,7 +71,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewDeletedAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewDeletedAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -82,7 +80,6 @@ func ExampleDeletedAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

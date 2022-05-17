@@ -1,5 +1,35 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*CommitmentPlansClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CommitmentPlansClientDeleteResponse], error)` to `(*runtime.Poller[CommitmentPlansClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*DeletedAccountsClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[DeletedAccountsClientPurgeResponse], error)` to `(*runtime.Poller[DeletedAccountsClientPurgeResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `UsageListResult.MarshalJSON` has been removed
+- Function `ResourceSKURestrictions.MarshalJSON` has been removed
+- Function `SKUAvailabilityListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `DeploymentListResult.MarshalJSON` has been removed
+- Function `ResourceSKUListResult.MarshalJSON` has been removed
+- Function `CommitmentTierListResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `CommitmentPlanListResult.MarshalJSON` has been removed
+- Function `ResourceSKURestrictionInfo.MarshalJSON` has been removed
+- Function `ResourceSKU.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `AccountSKUListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `AccountModelListResult.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-15)
 ### Breaking Changes
 

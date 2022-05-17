@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagecache/armstoragecache"
@@ -26,18 +24,17 @@ func ExampleStorageTargetsClient_NewListByCachePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCachePager("<resource-group-name>",
-		"<cache-name>",
+	pager := client.NewListByCachePager("scgroup",
+		"sc1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,21 +50,19 @@ func ExampleStorageTargetsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
-		&armstoragecache.StorageTargetsClientBeginDeleteOptions{Force: nil,
-			ResumeToken: "",
-		})
+		"scgroup",
+		"sc1",
+		"st1",
+		&armstoragecache.StorageTargetsClientBeginDeleteOptions{Force: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -80,14 +75,14 @@ func ExampleStorageTargetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
+		"scgroup",
+		"sc1",
+		"st1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,42 +98,41 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("<subscription-id>", cred, nil)
+	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cache-name>",
-		"<storage-target-name>",
+		"scgroup",
+		"sc1",
+		"st1",
 		&armstoragecache.StorageTargetsClientBeginCreateOrUpdateOptions{Storagetarget: &armstoragecache.StorageTarget{
 			Properties: &armstoragecache.StorageTargetProperties{
 				Junctions: []*armstoragecache.NamespaceJunction{
 					{
-						NamespacePath:   to.Ptr("<namespace-path>"),
-						NfsAccessPolicy: to.Ptr("<nfs-access-policy>"),
-						NfsExport:       to.Ptr("<nfs-export>"),
-						TargetPath:      to.Ptr("<target-path>"),
+						NamespacePath:   to.Ptr("/path/on/cache"),
+						NfsAccessPolicy: to.Ptr("default"),
+						NfsExport:       to.Ptr("exp1"),
+						TargetPath:      to.Ptr("/path/on/exp1"),
 					},
 					{
-						NamespacePath:   to.Ptr("<namespace-path>"),
-						NfsAccessPolicy: to.Ptr("<nfs-access-policy>"),
-						NfsExport:       to.Ptr("<nfs-export>"),
-						TargetPath:      to.Ptr("<target-path>"),
+						NamespacePath:   to.Ptr("/path2/on/cache"),
+						NfsAccessPolicy: to.Ptr("rootSquash"),
+						NfsExport:       to.Ptr("exp2"),
+						TargetPath:      to.Ptr("/path2/on/exp2"),
 					}},
 				Nfs3: &armstoragecache.Nfs3Target{
-					Target:     to.Ptr("<target>"),
-					UsageModel: to.Ptr("<usage-model>"),
+					Target:     to.Ptr("10.0.44.44"),
+					UsageModel: to.Ptr("READ_HEAVY_INFREQ"),
 				},
 				TargetType: to.Ptr(armstoragecache.StorageTargetTypeNfs3),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

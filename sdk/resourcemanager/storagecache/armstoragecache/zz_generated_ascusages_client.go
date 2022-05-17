@@ -39,7 +39,7 @@ func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,10 +57,11 @@ func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Gets the quantity used and quota limit for resources
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // location - The name of the region to query for usage information.
 // options - AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.List method.
 func (client *AscUsagesClient) NewListPager(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AscUsagesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AscUsagesClientListResponse]{
 		More: func(page AscUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -105,7 +106,7 @@ func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,28 +58,30 @@ func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCreden
 // BeginFlush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
 // target's namespace will return errors until the flush operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginFlushOptions contains the optional parameters for the StorageTargetClient.BeginFlush
 // method.
-func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*armruntime.Poller[StorageTargetClientFlushResponse], error) {
+func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*runtime.Poller[StorageTargetClientFlushResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.flush(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientFlushResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientFlushResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetClientFlushResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientFlushResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Flush - Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
 // target's namespace will return errors until the flush operation completes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginFlushOptions) (*http.Response, error) {
 	req, err := client.flushCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -121,35 +123,37 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginInvalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back
 // end on the next request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginInvalidateOptions contains the optional parameters for the StorageTargetClient.BeginInvalidate
 // method.
-func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*armruntime.Poller[StorageTargetClientInvalidateResponse], error) {
+func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*runtime.Poller[StorageTargetClientInvalidateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.invalidate(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientInvalidateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientInvalidateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetClientInvalidateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientInvalidateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Invalidate - Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end
 // on the next request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginInvalidateOptions) (*http.Response, error) {
 	req, err := client.invalidateCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -191,33 +195,35 @@ func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginResume - Resumes client access to a previously suspended storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginResumeOptions contains the optional parameters for the StorageTargetClient.BeginResume
 // method.
-func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*armruntime.Poller[StorageTargetClientResumeResponse], error) {
+func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*runtime.Poller[StorageTargetClientResumeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.resume(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientResumeResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientResumeResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetClientResumeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientResumeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Resume - Resumes client access to a previously suspended storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -259,33 +265,35 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginSuspend - Suspends client access to a storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - Target resource group.
 // cacheName - Name of Cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
 // storageTargetName - Name of Storage Target.
 // options - StorageTargetClientBeginSuspendOptions contains the optional parameters for the StorageTargetClient.BeginSuspend
 // method.
-func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*armruntime.Poller[StorageTargetClientSuspendResponse], error) {
+func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*runtime.Poller[StorageTargetClientSuspendResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.suspend(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[StorageTargetClientSuspendResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientSuspendResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageTargetClientSuspendResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientSuspendResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Suspend - Suspends client access to a storage target.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetClientBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
 	if err != nil {
@@ -327,6 +335,6 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

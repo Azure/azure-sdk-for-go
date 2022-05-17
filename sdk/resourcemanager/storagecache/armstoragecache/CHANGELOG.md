@@ -1,5 +1,37 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*StorageTargetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StorageTargetsClientDeleteResponse], error)` to `(*runtime.Poller[StorageTargetsClientDeleteResponse], error)`
+- Function `*CachesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CachesClientDeleteResponse], error)` to `(*runtime.Poller[CachesClientDeleteResponse], error)`
+- Function `*StorageTargetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[StorageTargetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[StorageTargetsClientCreateOrUpdateResponse], error)`
+- Function `*StorageTargetClient.BeginSuspend` return value(s) have been changed from `(*armruntime.Poller[StorageTargetClientSuspendResponse], error)` to `(*runtime.Poller[StorageTargetClientSuspendResponse], error)`
+- Function `*CachesClient.BeginDebugInfo` return value(s) have been changed from `(*armruntime.Poller[CachesClientDebugInfoResponse], error)` to `(*runtime.Poller[CachesClientDebugInfoResponse], error)`
+- Function `*StorageTargetClient.BeginFlush` return value(s) have been changed from `(*armruntime.Poller[StorageTargetClientFlushResponse], error)` to `(*runtime.Poller[StorageTargetClientFlushResponse], error)`
+- Function `*CachesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[CachesClientStartResponse], error)` to `(*runtime.Poller[CachesClientStartResponse], error)`
+- Function `*CachesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CachesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CachesClientCreateOrUpdateResponse], error)`
+- Function `*CachesClient.BeginFlush` return value(s) have been changed from `(*armruntime.Poller[CachesClientFlushResponse], error)` to `(*runtime.Poller[CachesClientFlushResponse], error)`
+- Function `*CachesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[CachesClientStopResponse], error)` to `(*runtime.Poller[CachesClientStopResponse], error)`
+- Function `*CachesClient.BeginUpgradeFirmware` return value(s) have been changed from `(*armruntime.Poller[CachesClientUpgradeFirmwareResponse], error)` to `(*runtime.Poller[CachesClientUpgradeFirmwareResponse], error)`
+- Function `*StorageTargetClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[StorageTargetClientResumeResponse], error)` to `(*runtime.Poller[StorageTargetClientResumeResponse], error)`
+- Function `*StorageTargetsClient.BeginDNSRefresh` return value(s) have been changed from `(*armruntime.Poller[StorageTargetsClientDNSRefreshResponse], error)` to `(*runtime.Poller[StorageTargetsClientDNSRefreshResponse], error)`
+- Function `*StorageTargetClient.BeginInvalidate` return value(s) have been changed from `(*armruntime.Poller[StorageTargetClientInvalidateResponse], error)` to `(*runtime.Poller[StorageTargetClientInvalidateResponse], error)`
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ResourceSKUsResult.MarshalJSON` has been removed
+- Function `StorageTargetsResult.MarshalJSON` has been removed
+- Function `APIOperationListResult.MarshalJSON` has been removed
+- Function `Restriction.MarshalJSON` has been removed
+- Function `AscOperationProperties.MarshalJSON` has been removed
+- Function `ResourceSKU.MarshalJSON` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+- Function `UsageModelsResult.MarshalJSON` has been removed
+- Function `APIOperationPropertiesServiceSpecification.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ResourceUsagesListResult.MarshalJSON` has been removed
+- Function `CachesListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

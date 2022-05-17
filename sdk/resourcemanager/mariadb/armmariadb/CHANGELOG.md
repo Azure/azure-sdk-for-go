@@ -1,5 +1,48 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*FirewallRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientDeleteResponse], error)` to `(*runtime.Poller[FirewallRulesClientDeleteResponse], error)`
+- Function `*ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServerSecurityAlertPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServersClientDeleteResponse], error)` to `(*runtime.Poller[ServersClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DatabasesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkRulesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*ServerParametersClient.BeginListUpdateConfigurations` return value(s) have been changed from `(*armruntime.Poller[ServerParametersClientListUpdateConfigurationsResponse], error)` to `(*runtime.Poller[ServerParametersClientListUpdateConfigurationsResponse], error)`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServersClientUpdateResponse], error)` to `(*runtime.Poller[ServersClientUpdateResponse], error)`
+- Function `*ServersClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ServersClientRestartResponse], error)` to `(*runtime.Poller[ServersClientRestartResponse], error)`
+- Function `*FirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `*ServersClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ServersClientStopResponse], error)` to `(*runtime.Poller[ServersClientStopResponse], error)`
+- Function `*ServersClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ServersClientStartResponse], error)` to `(*runtime.Poller[ServersClientStartResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdateTags` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientUpdateTagsResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientUpdateTagsResponse], error)`
+- Function `*ManagementClient.BeginCreateRecommendedActionSession` return value(s) have been changed from `(*armruntime.Poller[ManagementClientCreateRecommendedActionSessionResponse], error)` to `(*runtime.Poller[ManagementClientCreateRecommendedActionSessionResponse], error)`
+- Function `*VirtualNetworkRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkRulesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkRulesClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientDeleteResponse], error)` to `(*runtime.Poller[DatabasesClientDeleteResponse], error)`
+- Function `*ServersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ServersClientCreateResponse], error)` to `(*runtime.Poller[ServersClientCreateResponse], error)`
+- Function `VirtualNetworkRuleListResult.MarshalJSON` has been removed
+- Function `RecommendationActionsResultList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `DatabaseListResult.MarshalJSON` has been removed
+- Function `RecommendedActionSessionsOperationStatus.MarshalJSON` has been removed
+- Function `QueryTextsResultList.MarshalJSON` has been removed
+- Function `FirewallRuleListResult.MarshalJSON` has been removed
+- Function `PerformanceTierListResult.MarshalJSON` has been removed
+- Function `TopQueryStatisticsResultList.MarshalJSON` has been removed
+- Function `ServerListResult.MarshalJSON` has been removed
+- Function `PerformanceTierProperties.MarshalJSON` has been removed
+- Function `LogFileListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `WaitStatisticsResultList.MarshalJSON` has been removed
+- Function `ServerSecurityAlertPolicyListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `AdvisorsResultList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

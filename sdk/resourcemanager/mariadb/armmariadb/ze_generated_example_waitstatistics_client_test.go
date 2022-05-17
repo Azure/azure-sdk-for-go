@@ -26,14 +26,14 @@ func ExampleWaitStatisticsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmariadb.NewWaitStatisticsClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewWaitStatisticsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<wait-statistics-id>",
+		"testResourceGroupName",
+		"testServerName",
+		"636927606000000000-636927615000000000-send-wait/io/socket/sql/client_connection-2--0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,15 +49,15 @@ func ExampleWaitStatisticsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmariadb.NewWaitStatisticsClient("<subscription-id>", cred, nil)
+	client, err := armmariadb.NewWaitStatisticsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("testResourceGroupName",
+		"testServerName",
 		armmariadb.WaitStatisticsInput{
 			Properties: &armmariadb.WaitStatisticsInputProperties{
-				AggregationWindow:    to.Ptr("<aggregation-window>"),
+				AggregationWindow:    to.Ptr("PT15M"),
 				ObservationEndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T20:00:00.000Z"); return t }()),
 				ObservationStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-01T20:00:00.000Z"); return t }()),
 			},
@@ -67,7 +67,6 @@ func ExampleWaitStatisticsClient_NewListByServerPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

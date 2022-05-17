@@ -97,6 +97,11 @@ type AccessReviewDecisionIdentity struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionIdentity.
+func (a *AccessReviewDecisionIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return a
+}
+
 // AccessReviewDecisionListResult - List of access review decisions.
 type AccessReviewDecisionListResult struct {
 	// The URL to use for getting the next set of results.
@@ -160,6 +165,11 @@ type AccessReviewDecisionResource struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// GetAccessReviewDecisionResource implements the AccessReviewDecisionResourceClassification interface for type AccessReviewDecisionResource.
+func (a *AccessReviewDecisionResource) GetAccessReviewDecisionResource() *AccessReviewDecisionResource {
+	return a
+}
+
 // AccessReviewDecisionResourceAzureRole - Target of the decision.
 type AccessReviewDecisionResourceAzureRole struct {
 	// REQUIRED; The type of resource: azureRole
@@ -170,6 +180,15 @@ type AccessReviewDecisionResourceAzureRole struct {
 
 	// READ-ONLY; The id of resource associated with a decision record.
 	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// GetAccessReviewDecisionResource implements the AccessReviewDecisionResourceClassification interface for type AccessReviewDecisionResourceAzureRole.
+func (a *AccessReviewDecisionResourceAzureRole) GetAccessReviewDecisionResource() *AccessReviewDecisionResource {
+	return &AccessReviewDecisionResource{
+		Type:        a.Type,
+		ID:          a.ID,
+		DisplayName: a.DisplayName,
+	}
 }
 
 // AccessReviewDecisionServicePrincipalIdentity - Service Principal Decision Target
@@ -187,6 +206,15 @@ type AccessReviewDecisionServicePrincipalIdentity struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionServicePrincipalIdentity.
+func (a *AccessReviewDecisionServicePrincipalIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return &AccessReviewDecisionIdentity{
+		Type:        a.Type,
+		ID:          a.ID,
+		DisplayName: a.DisplayName,
+	}
+}
+
 // AccessReviewDecisionUserIdentity - User Decision Target
 type AccessReviewDecisionUserIdentity struct {
 	// REQUIRED; The type of decision target : User/ServicePrincipal
@@ -200,6 +228,15 @@ type AccessReviewDecisionUserIdentity struct {
 
 	// READ-ONLY; The user principal name of the user whose access was reviewed.
 	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
+}
+
+// GetAccessReviewDecisionIdentity implements the AccessReviewDecisionIdentityClassification interface for type AccessReviewDecisionUserIdentity.
+func (a *AccessReviewDecisionUserIdentity) GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity {
+	return &AccessReviewDecisionIdentity{
+		Type:        a.Type,
+		ID:          a.ID,
+		DisplayName: a.DisplayName,
+	}
 }
 
 // AccessReviewDefaultSettings - Access Review Default Settings.

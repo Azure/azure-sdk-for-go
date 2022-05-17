@@ -38,7 +38,7 @@ func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAccessReviewHistoryDefinitionsClient(subscriptionID string, credential a
 
 // GetByID - Get access review history definition by definition Id
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // historyDefinitionID - The id of the access review history definition.
 // options - AccessReviewHistoryDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.GetByID
 // method.
@@ -92,7 +93,7 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,10 +109,11 @@ func (client *AccessReviewHistoryDefinitionsClient) getByIDHandleResponse(resp *
 // NewListPager - Lists the accessReviewHistoryDefinitions available from this provider, definition instances are only available
 // for 30 days after creation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // options - AccessReviewHistoryDefinitionsClientListOptions contains the optional parameters for the AccessReviewHistoryDefinitionsClient.List
 // method.
 func (client *AccessReviewHistoryDefinitionsClient) NewListPager(options *AccessReviewHistoryDefinitionsClientListOptions) *runtime.Pager[AccessReviewHistoryDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewHistoryDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewHistoryDefinitionsClientListResponse]{
 		More: func(page AccessReviewHistoryDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -157,7 +159,7 @@ func (client *AccessReviewHistoryDefinitionsClient) listCreateRequest(ctx contex
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

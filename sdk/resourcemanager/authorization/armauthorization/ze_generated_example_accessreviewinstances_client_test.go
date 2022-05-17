@@ -23,17 +23,16 @@ func ExampleAccessReviewInstancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstancesClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstancesClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<schedule-definition-id>",
+	pager := client.NewListPager("265785a7-a81f-4201-8a18-bb0db95982b7",
 		&armauthorization.AccessReviewInstancesClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,13 +48,13 @@ func ExampleAccessReviewInstancesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstancesClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstancesClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
+		"4135f961-be78-4005-8101-c72a5af307a2",
 		armauthorization.AccessReviewInstanceProperties{},
 		nil)
 	if err != nil {

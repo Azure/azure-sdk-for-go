@@ -27,14 +27,13 @@ func ExampleAccessReviewInstanceMyDecisionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<schedule-definition-id>",
-		"<id>",
+	pager := client.NewListPager("488a6d0e-0a63-4946-86e3-1f5bbc934661",
+		"4135f961-be78-4005-8101-c72a5af307a2",
 		&armauthorization.AccessReviewInstanceMyDecisionsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,9 +54,9 @@ func ExampleAccessReviewInstanceMyDecisionsClient_Patch() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Patch(ctx,
-		"<schedule-definition-id>",
-		"<id>",
-		"<decision-id>",
+		"488a6d0e-0a63-4946-86e3-1f5bbc934661",
+		"4135f961-be78-4005-8101-c72a5af307a2",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
 		armauthorization.AccessReviewDecisionProperties{},
 		nil)
 	if err != nil {

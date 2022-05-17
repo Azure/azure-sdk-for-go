@@ -23,7 +23,7 @@ func ExampleAccessReviewHistoryDefinitionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewHistoryDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewHistoryDefinitionsClient("129a304b-4aea-4b86-a9f7-ba7e2b23737a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleAccessReviewHistoryDefinitionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

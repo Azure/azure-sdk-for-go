@@ -28,13 +28,12 @@ func ExampleAccessReviewInstancesAssignedForMyApprovalClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<schedule-definition-id>",
-		&armauthorization.AccessReviewInstancesAssignedForMyApprovalClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager("488a6d0e-0a63-4946-86e3-1f5bbc934661",
+		&armauthorization.AccessReviewInstancesAssignedForMyApprovalClientListOptions{Filter: to.Ptr("assignedToMeToReview()")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

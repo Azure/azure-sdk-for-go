@@ -38,7 +38,7 @@ func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAccessReviewScheduleDefinitionsClient(subscriptionID string, credential 
 
 // CreateOrUpdateByID - Create or Update access review schedule definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // properties - Access review schedule definition properties.
 // options - AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.CreateOrUpdateByID
@@ -93,7 +94,7 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
@@ -108,6 +109,7 @@ func (client *AccessReviewScheduleDefinitionsClient) createOrUpdateByIDHandleRes
 
 // DeleteByID - Delete access review schedule definition
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewScheduleDefinitionsClientDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.DeleteByID
 // method.
@@ -144,12 +146,13 @@ func (client *AccessReviewScheduleDefinitionsClient) deleteByIDCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetByID - Get single access review definition
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewScheduleDefinitionsClientGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.GetByID
 // method.
@@ -186,7 +189,7 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -201,10 +204,11 @@ func (client *AccessReviewScheduleDefinitionsClient) getByIDHandleResponse(resp 
 
 // NewListPager - Get access review schedule definitions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // options - AccessReviewScheduleDefinitionsClientListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.List
 // method.
 func (client *AccessReviewScheduleDefinitionsClient) NewListPager(options *AccessReviewScheduleDefinitionsClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewScheduleDefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewScheduleDefinitionsClientListResponse]{
 		More: func(page AccessReviewScheduleDefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -250,7 +254,7 @@ func (client *AccessReviewScheduleDefinitionsClient) listCreateRequest(ctx conte
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -265,6 +269,7 @@ func (client *AccessReviewScheduleDefinitionsClient) listHandleResponse(resp *ht
 
 // Stop - Stop access review definition
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewScheduleDefinitionsClientStopOptions contains the optional parameters for the AccessReviewScheduleDefinitionsClient.Stop
 // method.
@@ -301,6 +306,6 @@ func (client *AccessReviewScheduleDefinitionsClient) stopCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

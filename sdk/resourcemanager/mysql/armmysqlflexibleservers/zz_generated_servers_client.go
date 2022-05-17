@@ -38,7 +38,7 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,24 +56,26 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreate - Creates a new server or updates an existing server. The update action will overwrite the existing server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for creating or updating a server.
 // options - ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
-func (client *ServersClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, parameters Server, options *ServersClientBeginCreateOptions) (*armruntime.Poller[ServersClientCreateResponse], error) {
+func (client *ServersClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, parameters Server, options *ServersClientBeginCreateOptions) (*runtime.Poller[ServersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, serverName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new server or updates an existing server. The update action will overwrite the existing server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters Server, options *ServersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
@@ -111,29 +113,31 @@ func (client *ServersClient) createCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServersClientBeginDeleteOptions contains the optional parameters for the ServersClient.BeginDelete method.
-func (client *ServersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (*armruntime.Poller[ServersClientDeleteResponse], error) {
+func (client *ServersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (*runtime.Poller[ServersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
@@ -171,29 +175,31 @@ func (client *ServersClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginFailover - Manual failover a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServersClientBeginFailoverOptions contains the optional parameters for the ServersClient.BeginFailover method.
-func (client *ServersClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginFailoverOptions) (*armruntime.Poller[ServersClientFailoverResponse], error) {
+func (client *ServersClient) BeginFailover(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginFailoverOptions) (*runtime.Poller[ServersClientFailoverResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.failover(ctx, resourceGroupName, serverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientFailoverResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientFailoverResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientFailoverResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientFailoverResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Failover - Manual failover a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) failover(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginFailoverOptions) (*http.Response, error) {
 	req, err := client.failoverCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
@@ -231,12 +237,13 @@ func (client *ServersClient) failoverCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServersClientGetOptions contains the optional parameters for the ServersClient.Get method.
@@ -277,7 +284,7 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,9 +299,10 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 
 // NewListPager - List all the servers in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // options - ServersClientListOptions contains the optional parameters for the ServersClient.List method.
 func (client *ServersClient) NewListPager(options *ServersClientListOptions) *runtime.Pager[ServersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServersClientListResponse]{
 		More: func(page ServersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -335,7 +343,7 @@ func (client *ServersClient) listCreateRequest(ctx context.Context, options *Ser
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -350,11 +358,12 @@ func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersCli
 
 // NewListByResourceGroupPager - List all the servers in a given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup
 // method.
 func (client *ServersClient) NewListByResourceGroupPager(resourceGroupName string, options *ServersClientListByResourceGroupOptions) *runtime.Pager[ServersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServersClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServersClientListByResourceGroupResponse]{
 		More: func(page ServersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -399,7 +408,7 @@ func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -414,24 +423,26 @@ func (client *ServersClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // BeginRestart - Restarts a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for restarting a server.
 // options - ServersClientBeginRestartOptions contains the optional parameters for the ServersClient.BeginRestart method.
-func (client *ServersClient) BeginRestart(ctx context.Context, resourceGroupName string, serverName string, parameters ServerRestartParameter, options *ServersClientBeginRestartOptions) (*armruntime.Poller[ServersClientRestartResponse], error) {
+func (client *ServersClient) BeginRestart(ctx context.Context, resourceGroupName string, serverName string, parameters ServerRestartParameter, options *ServersClientBeginRestartOptions) (*runtime.Poller[ServersClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, resourceGroupName, serverName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientRestartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientRestartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Restart - Restarts a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) restart(ctx context.Context, resourceGroupName string, serverName string, parameters ServerRestartParameter, options *ServersClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
@@ -469,29 +480,31 @@ func (client *ServersClient) restartCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginStart - Starts a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServersClientBeginStartOptions contains the optional parameters for the ServersClient.BeginStart method.
-func (client *ServersClient) BeginStart(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStartOptions) (*armruntime.Poller[ServersClientStartResponse], error) {
+func (client *ServersClient) BeginStart(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStartOptions) (*runtime.Poller[ServersClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, serverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) start(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
@@ -529,29 +542,31 @@ func (client *ServersClient) startCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ServersClientBeginStopOptions contains the optional parameters for the ServersClient.BeginStop method.
-func (client *ServersClient) BeginStop(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStopOptions) (*armruntime.Poller[ServersClientStopResponse], error) {
+func (client *ServersClient) BeginStop(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStopOptions) (*runtime.Poller[ServersClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, serverName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stops a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) stop(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
@@ -589,32 +604,34 @@ func (client *ServersClient) stopCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Updates an existing server. The request body can contain one to many of the properties present in the normal
 // server definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for updating a server.
 // options - ServersClientBeginUpdateOptions contains the optional parameters for the ServersClient.BeginUpdate method.
-func (client *ServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForUpdate, options *ServersClientBeginUpdateOptions) (*armruntime.Poller[ServersClientUpdateResponse], error) {
+func (client *ServersClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForUpdate, options *ServersClientBeginUpdateOptions) (*runtime.Poller[ServersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serverName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServersClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing server. The request body can contain one to many of the properties present in the normal server
 // definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *ServersClient) update(ctx context.Context, resourceGroupName string, serverName string, parameters ServerForUpdate, options *ServersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
@@ -652,6 +669,6 @@ func (client *ServersClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

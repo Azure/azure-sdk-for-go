@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
@@ -26,20 +24,19 @@ func ExampleReplicationStorageClassificationMappingsClient_NewListByReplicationS
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("vault1",
+		"resourceGroupPS1",
+		"9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationStorageClassificationsPager("<fabric-name>",
-		"<storage-classification-name>",
+	pager := client.NewListByReplicationStorageClassificationsPager("2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
+		"8891569e-aaef-4a46-a4a0-78c14f2d7b09",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,16 +52,16 @@ func ExampleReplicationStorageClassificationMappingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("vault1",
+		"resourceGroupPS1",
+		"9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<storage-classification-name>",
-		"<storage-classification-mapping-name>",
+		"2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
+		"8891569e-aaef-4a46-a4a0-78c14f2d7b09",
+		"testStorageMapping",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,26 +77,26 @@ func ExampleReplicationStorageClassificationMappingsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("vault1",
+		"resourceGroupPS1",
+		"9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<fabric-name>",
-		"<storage-classification-name>",
-		"<storage-classification-mapping-name>",
+		"2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
+		"8891569e-aaef-4a46-a4a0-78c14f2d7b09",
+		"testStorageMapping",
 		armrecoveryservicessiterecovery.StorageClassificationMappingInput{
 			Properties: &armrecoveryservicessiterecovery.StorageMappingInputProperties{
-				TargetStorageClassificationID: to.Ptr("<target-storage-classification-id>"),
+				TargetStorageClassificationID: to.Ptr("/Subscriptions/9112a37f-0f3e-46ec-9c00-060c6edca071/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0/replicationStorageClassifications/8891569e-aaef-4a46-a4a0-78c14f2d7b09"),
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -114,21 +111,21 @@ func ExampleReplicationStorageClassificationMappingsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("vault1",
+		"resourceGroupPS1",
+		"9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<fabric-name>",
-		"<storage-classification-name>",
-		"<storage-classification-mapping-name>",
-		&armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientBeginDeleteOptions{ResumeToken: ""})
+		"2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
+		"8891569e-aaef-4a46-a4a0-78c14f2d7b09",
+		"testStorageMapping",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,9 +138,9 @@ func ExampleReplicationStorageClassificationMappingsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationStorageClassificationMappingsClient("vault1",
+		"resourceGroupPS1",
+		"9112a37f-0f3e-46ec-9c00-060c6edca071", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -152,7 +149,6 @@ func ExampleReplicationStorageClassificationMappingsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

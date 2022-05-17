@@ -23,13 +23,13 @@ func ExampleReplicationEligibilityResultsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient("<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient("testRg1",
+		"d90d145a-4cdd-45a3-b2c4-971d69775278", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<virtual-machine-name>",
+		"testVm2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,13 +45,13 @@ func ExampleReplicationEligibilityResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient("<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationEligibilityResultsClient("testRg1",
+		"d90d145a-4cdd-45a3-b2c4-971d69775278", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<virtual-machine-name>",
+		"testVm1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

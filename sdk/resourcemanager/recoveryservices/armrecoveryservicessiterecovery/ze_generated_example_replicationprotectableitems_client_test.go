@@ -23,14 +23,14 @@ func ExampleReplicationProtectableItemsClient_NewListByReplicationProtectionCont
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
-		"<protection-container-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
 		&armrecoveryservicessiterecovery.ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions{Filter: nil,
 			Take:      nil,
 			SkipToken: nil,
@@ -39,7 +39,6 @@ func ExampleReplicationProtectableItemsClient_NewListByReplicationProtectionCont
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,16 +54,16 @@ func ExampleReplicationProtectableItemsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationProtectableItemsClient("vault1",
+		"resourceGroupPS1",
+		"c183865e-6077-46f2-a3b1-deb0f4f4650a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<protectable-item-name>",
+		"cloud1",
+		"cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+		"c0c14913-3d7a-48ea-9531-cc99e0e686e6",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

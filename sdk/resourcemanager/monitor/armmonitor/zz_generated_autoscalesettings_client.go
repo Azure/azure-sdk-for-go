@@ -38,7 +38,7 @@ func NewAutoscaleSettingsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAutoscaleSettingsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Creates or updates an autoscale setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // autoscaleSettingName - The autoscale setting name.
 // parameters - Parameters supplied to the operation.
@@ -98,7 +99,7 @@ func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -113,6 +114,7 @@ func (client *AutoscaleSettingsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Deletes and autoscale setting
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // autoscaleSettingName - The autoscale setting name.
 // options - AutoscaleSettingsClientDeleteOptions contains the optional parameters for the AutoscaleSettingsClient.Delete
@@ -154,12 +156,13 @@ func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an autoscale setting
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // autoscaleSettingName - The autoscale setting name.
 // options - AutoscaleSettingsClientGetOptions contains the optional parameters for the AutoscaleSettingsClient.Get method.
@@ -200,7 +203,7 @@ func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +218,12 @@ func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (A
 
 // NewListByResourceGroupPager - Lists the autoscale settings for a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.ListByResourceGroup
 // method.
 func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AutoscaleSettingsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListByResourceGroupResponse]{
 		More: func(page AutoscaleSettingsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -264,7 +268,7 @@ func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -279,10 +283,11 @@ func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - Lists the autoscale settings for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // options - AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.ListBySubscription
 // method.
 func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AutoscaleSettingsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListBySubscriptionResponse]{
 		More: func(page AutoscaleSettingsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -323,7 +328,7 @@ func (client *AutoscaleSettingsClient) listBySubscriptionCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -338,6 +343,7 @@ func (client *AutoscaleSettingsClient) listBySubscriptionHandleResponse(resp *ht
 
 // Update - Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // autoscaleSettingName - The autoscale setting name.
 // autoscaleSettingResource - Parameters supplied to the operation.
@@ -380,7 +386,7 @@ func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, autoscaleSettingResource)
 }
 

@@ -1,5 +1,72 @@
 # Release History
 
+## 0.7.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*PrivateLinkScopedResourcesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkScopedResourcesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkScopedResourcesClientDeleteResponse], error)`
+- Function `*ActionGroupsClient.BeginPostTestNotifications` return value(s) have been changed from `(*armruntime.Poller[ActionGroupsClientPostTestNotificationsResponse], error)` to `(*runtime.Poller[ActionGroupsClientPostTestNotificationsResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkScopedResourcesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkScopedResourcesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkScopedResourcesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkScopesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkScopesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkScopesClientDeleteResponse], error)`
+- Function `MetricValue.MarshalJSON` has been removed
+- Function `EventDataCollection.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `Metric.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `MetricDefinitionCollection.MarshalJSON` has been removed
+- Function `TimeSeriesElement.MarshalJSON` has been removed
+- Function `TestNotificationDetailsResponse.MarshalJSON` has been removed
+- Function `EventData.MarshalJSON` has been removed
+- Function `DataCollectionEndpointResourceListResult.MarshalJSON` has been removed
+- Function `DataCollectionRuleAssociationProxyOnlyResourceListResult.MarshalJSON` has been removed
+- Function `AlertRuleList.MarshalJSON` has been removed
+- Function `MetricNamespaceCollection.MarshalJSON` has been removed
+- Function `MetricDefinition.MarshalJSON` has been removed
+- Function `AlertRuleResourceCollection.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `AzureMonitorPrivateLinkScopeListResult.MarshalJSON` has been removed
+- Function `MetricBaselinesResponse.MarshalJSON` has been removed
+- Function `AutoscaleSettingResourceCollection.MarshalJSON` has been removed
+- Function `EventCategoryCollection.MarshalJSON` has been removed
+- Function `LogProfileCollection.MarshalJSON` has been removed
+- Function `MetricBaselinesProperties.MarshalJSON` has been removed
+- Function `ActionGroupList.MarshalJSON` has been removed
+- Function `DiagnosticSettingsCategoryResourceCollection.MarshalJSON` has been removed
+- Function `MetricAlertResourceCollection.MarshalJSON` has been removed
+- Function `TimeSeriesBaseline.MarshalJSON` has been removed
+- Function `MetricAlertStatusCollection.MarshalJSON` has been removed
+- Function `Response.MarshalJSON` has been removed
+- Function `IncidentListResult.MarshalJSON` has been removed
+- Function `Incident.MarshalJSON` has been removed
+- Function `MetricAlertStatusProperties.MarshalJSON` has been removed
+- Function `ErrorResponseCommon.MarshalJSON` has been removed
+- Function `DataCollectionRuleResourceListResult.MarshalJSON` has been removed
+- Function `SingleBaseline.MarshalJSON` has been removed
+- Function `LogSearchRuleResourceCollection.MarshalJSON` has been removed
+- Function `ScopedResourceListResult.MarshalJSON` has been removed
+- Function `OperationStatus.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `DiagnosticSettingsResourceCollection.MarshalJSON` has been removed
+- Struct `TestNotificationResponse` has been removed
+- Field `TestNotificationResponse` of struct `ActionGroupsClientPostTestNotificationsResponse` has been removed
+
+### Features Added
+
+- New function `*ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel(context.Context, string, string, string, *ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions) (ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse, error)`
+- New function `*ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel(context.Context, string, NotificationRequestBody, *ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions) (*runtime.Poller[ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse], error)`
+- New function `*ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel(context.Context, string, string, *ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions) (ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse, error)`
+- New function `*ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel(context.Context, string, string, NotificationRequestBody, *ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions) (*runtime.Poller[ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse], error)`
+- New struct `ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions`
+- New struct `ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions`
+- New struct `ActionGroupsClientCreateNotificationsAtActionGroupResourceLevelResponse`
+- New struct `ActionGroupsClientCreateNotificationsAtResourceGroupLevelResponse`
+- New struct `ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions`
+- New struct `ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse`
+- New struct `ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions`
+- New struct `ActionGroupsClientGetTestNotificationsAtResourceGroupLevelResponse`
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

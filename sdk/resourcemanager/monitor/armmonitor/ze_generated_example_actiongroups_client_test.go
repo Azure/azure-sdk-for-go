@@ -12,125 +12,123 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/createOrUpdateActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/createOrUpdateActionGroup.json
 func ExampleActionGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<action-group-name>",
+		"Default-NotificationRules",
+		"SampleActionGroup",
 		armmonitor.ActionGroupResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Global"),
 			Tags:     map[string]*string{},
 			Properties: &armmonitor.ActionGroup{
 				ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
 					{
-						Name:                 to.Ptr("<name>"),
-						RoleID:               to.Ptr("<role-id>"),
+						Name:                 to.Ptr("Sample armRole"),
+						RoleID:               to.Ptr("8e3af657-a8ff-443c-a75c-2fe8c4bcb635"),
 						UseCommonAlertSchema: to.Ptr(true),
 					}},
 				AutomationRunbookReceivers: []*armmonitor.AutomationRunbookReceiver{
 					{
-						Name:                 to.Ptr("<name>"),
-						AutomationAccountID:  to.Ptr("<automation-account-id>"),
+						Name:                 to.Ptr("testRunbook"),
+						AutomationAccountID:  to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest"),
 						IsGlobalRunbook:      to.Ptr(false),
-						RunbookName:          to.Ptr("<runbook-name>"),
-						ServiceURI:           to.Ptr("<service-uri>"),
+						RunbookName:          to.Ptr("Sample runbook"),
+						ServiceURI:           to.Ptr("<serviceUri>"),
 						UseCommonAlertSchema: to.Ptr(true),
-						WebhookResourceID:    to.Ptr("<webhook-resource-id>"),
+						WebhookResourceID:    to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest/webhooks/Alert1510184037084"),
 					}},
 				AzureAppPushReceivers: []*armmonitor.AzureAppPushReceiver{
 					{
-						Name:         to.Ptr("<name>"),
-						EmailAddress: to.Ptr("<email-address>"),
+						Name:         to.Ptr("Sample azureAppPush"),
+						EmailAddress: to.Ptr("johndoe@email.com"),
 					}},
 				AzureFunctionReceivers: []*armmonitor.AzureFunctionReceiver{
 					{
-						Name:                  to.Ptr("<name>"),
-						FunctionAppResourceID: to.Ptr("<function-app-resource-id>"),
-						FunctionName:          to.Ptr("<function-name>"),
-						HTTPTriggerURL:        to.Ptr("<httptrigger-url>"),
+						Name:                  to.Ptr("Sample azureFunction"),
+						FunctionAppResourceID: to.Ptr("/subscriptions/5def922a-3ed4-49c1-b9fd-05ec533819a3/resourceGroups/aznsTest/providers/Microsoft.Web/sites/testFunctionApp"),
+						FunctionName:          to.Ptr("HttpTriggerCSharp1"),
+						HTTPTriggerURL:        to.Ptr("http://test.me"),
 						UseCommonAlertSchema:  to.Ptr(true),
 					}},
 				EmailReceivers: []*armmonitor.EmailReceiver{
 					{
-						Name:                 to.Ptr("<name>"),
-						EmailAddress:         to.Ptr("<email-address>"),
+						Name:                 to.Ptr("John Doe's email"),
+						EmailAddress:         to.Ptr("johndoe@email.com"),
 						UseCommonAlertSchema: to.Ptr(false),
 					},
 					{
-						Name:                 to.Ptr("<name>"),
-						EmailAddress:         to.Ptr("<email-address>"),
+						Name:                 to.Ptr("Jane Smith's email"),
+						EmailAddress:         to.Ptr("janesmith@email.com"),
 						UseCommonAlertSchema: to.Ptr(true),
 					}},
 				Enabled: to.Ptr(true),
 				EventHubReceivers: []*armmonitor.EventHubReceiver{
 					{
-						Name:              to.Ptr("<name>"),
-						EventHubName:      to.Ptr("<event-hub-name>"),
-						EventHubNameSpace: to.Ptr("<event-hub-name-space>"),
-						SubscriptionID:    to.Ptr("<subscription-id>"),
-						TenantID:          to.Ptr("<tenant-id>"),
+						Name:              to.Ptr("Sample eventHub"),
+						EventHubName:      to.Ptr("testEventHub"),
+						EventHubNameSpace: to.Ptr("testEventHubNameSpace"),
+						SubscriptionID:    to.Ptr("187f412d-1758-44d9-b052-169e2564721d"),
+						TenantID:          to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
 					}},
-				GroupShortName: to.Ptr("<group-short-name>"),
+				GroupShortName: to.Ptr("sample"),
 				ItsmReceivers: []*armmonitor.ItsmReceiver{
 					{
-						Name:                to.Ptr("<name>"),
-						ConnectionID:        to.Ptr("<connection-id>"),
-						Region:              to.Ptr("<region>"),
-						TicketConfiguration: to.Ptr("<ticket-configuration>"),
-						WorkspaceID:         to.Ptr("<workspace-id>"),
+						Name:                to.Ptr("Sample itsm"),
+						ConnectionID:        to.Ptr("a3b9076c-ce8e-434e-85b4-aff10cb3c8f1"),
+						Region:              to.Ptr("westcentralus"),
+						TicketConfiguration: to.Ptr("{\"PayloadRevision\":0,\"WorkItemType\":\"Incident\",\"UseTemplate\":false,\"WorkItemData\":\"{}\",\"CreateOneWIPerCI\":false}"),
+						WorkspaceID:         to.Ptr("5def922a-3ed4-49c1-b9fd-05ec533819a3|55dfd1f8-7e59-4f89-bf56-4c82f5ace23c"),
 					}},
 				LogicAppReceivers: []*armmonitor.LogicAppReceiver{
 					{
-						Name:                 to.Ptr("<name>"),
-						CallbackURL:          to.Ptr("<callback-url>"),
-						ResourceID:           to.Ptr("<resource-id>"),
+						Name:                 to.Ptr("Sample logicApp"),
+						CallbackURL:          to.Ptr("https://prod-27.northcentralus.logic.azure.com/workflows/68e572e818e5457ba898763b7db90877/triggers/manual/paths/invoke/azns/test?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Abpsb72UYJxPPvmDo937uzofupO5r_vIeWEx7KVHo7w"),
+						ResourceID:           to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp"),
 						UseCommonAlertSchema: to.Ptr(false),
 					}},
 				SmsReceivers: []*armmonitor.SmsReceiver{
 					{
-						Name:        to.Ptr("<name>"),
-						CountryCode: to.Ptr("<country-code>"),
-						PhoneNumber: to.Ptr("<phone-number>"),
+						Name:        to.Ptr("John Doe's mobile"),
+						CountryCode: to.Ptr("1"),
+						PhoneNumber: to.Ptr("1234567890"),
 					},
 					{
-						Name:        to.Ptr("<name>"),
-						CountryCode: to.Ptr("<country-code>"),
-						PhoneNumber: to.Ptr("<phone-number>"),
+						Name:        to.Ptr("Jane Smith's mobile"),
+						CountryCode: to.Ptr("1"),
+						PhoneNumber: to.Ptr("0987654321"),
 					}},
 				VoiceReceivers: []*armmonitor.VoiceReceiver{
 					{
-						Name:        to.Ptr("<name>"),
-						CountryCode: to.Ptr("<country-code>"),
-						PhoneNumber: to.Ptr("<phone-number>"),
+						Name:        to.Ptr("Sample voice"),
+						CountryCode: to.Ptr("1"),
+						PhoneNumber: to.Ptr("1234567890"),
 					}},
 				WebhookReceivers: []*armmonitor.WebhookReceiver{
 					{
-						Name:                 to.Ptr("<name>"),
-						ServiceURI:           to.Ptr("<service-uri>"),
+						Name:                 to.Ptr("Sample webhook 1"),
+						ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
 						UseCommonAlertSchema: to.Ptr(true),
 					},
 					{
-						Name:                 to.Ptr("<name>"),
-						IdentifierURI:        to.Ptr("<identifier-uri>"),
-						ObjectID:             to.Ptr("<object-id>"),
-						ServiceURI:           to.Ptr("<service-uri>"),
-						TenantID:             to.Ptr("<tenant-id>"),
+						Name:                 to.Ptr("Sample webhook 2"),
+						IdentifierURI:        to.Ptr("http://someidentifier/d7811ba3-7996-4a93-99b6-6b2f3f355f8a"),
+						ObjectID:             to.Ptr("d3bb868c-fe44-452c-aa26-769a6538c808"),
+						ServiceURI:           to.Ptr("http://www.example.com/webhook2"),
+						TenantID:             to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
 						UseAADAuth:           to.Ptr(true),
 						UseCommonAlertSchema: to.Ptr(true),
 					}},
@@ -144,20 +142,20 @@ func ExampleActionGroupsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/getActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getActionGroup.json
 func ExampleActionGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<action-group-name>",
+		"Default-NotificationRules",
+		"SampleActionGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -166,40 +164,40 @@ func ExampleActionGroupsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/deleteActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/deleteActionGroup.json
 func ExampleActionGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<action-group-name>",
+		"Default-NotificationRules",
+		"SampleActionGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/patchActionGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/patchActionGroup.json
 func ExampleActionGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<action-group-name>",
+		"Default-NotificationRules",
+		"SampleActionGroup",
 		armmonitor.ActionGroupPatchBody{
 			Properties: &armmonitor.ActionGroupPatch{
 				Enabled: to.Ptr(false),
@@ -217,133 +215,397 @@ func ExampleActionGroupsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/postTestNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/postTestNotifications.json
 func ExampleActionGroupsClient_BeginPostTestNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPostTestNotifications(ctx,
 		armmonitor.NotificationRequestBody{
-			AlertType: to.Ptr("<alert-type>"),
+			AlertType: to.Ptr("budget"),
+			ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
+				{
+					Name:                 to.Ptr("ArmRole-Common"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(true),
+				},
+				{
+					Name:                 to.Ptr("ArmRole-nonCommon"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(false),
+				}},
 			AutomationRunbookReceivers: []*armmonitor.AutomationRunbookReceiver{
 				{
-					Name:                 to.Ptr("<name>"),
-					AutomationAccountID:  to.Ptr("<automation-account-id>"),
+					Name:                 to.Ptr("testRunbook"),
+					AutomationAccountID:  to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest"),
 					IsGlobalRunbook:      to.Ptr(false),
-					RunbookName:          to.Ptr("<runbook-name>"),
-					ServiceURI:           to.Ptr("<service-uri>"),
+					RunbookName:          to.Ptr("Sample runbook"),
+					ServiceURI:           to.Ptr("http://test.me"),
 					UseCommonAlertSchema: to.Ptr(true),
-					WebhookResourceID:    to.Ptr("<webhook-resource-id>"),
+					WebhookResourceID:    to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest/webhooks/Alert1510184037084"),
 				}},
 			AzureAppPushReceivers: []*armmonitor.AzureAppPushReceiver{
 				{
-					Name:         to.Ptr("<name>"),
-					EmailAddress: to.Ptr("<email-address>"),
+					Name:         to.Ptr("Sample azureAppPush"),
+					EmailAddress: to.Ptr("johndoe@email.com"),
 				}},
 			AzureFunctionReceivers: []*armmonitor.AzureFunctionReceiver{
 				{
-					Name:                  to.Ptr("<name>"),
-					FunctionAppResourceID: to.Ptr("<function-app-resource-id>"),
-					FunctionName:          to.Ptr("<function-name>"),
-					HTTPTriggerURL:        to.Ptr("<httptrigger-url>"),
+					Name:                  to.Ptr("Sample azureFunction"),
+					FunctionAppResourceID: to.Ptr("/subscriptions/5def922a-3ed4-49c1-b9fd-05ec533819a3/resourceGroups/aznsTest/providers/Microsoft.Web/sites/testFunctionApp"),
+					FunctionName:          to.Ptr("HttpTriggerCSharp1"),
+					HTTPTriggerURL:        to.Ptr("http://test.me"),
 					UseCommonAlertSchema:  to.Ptr(true),
 				}},
 			EmailReceivers: []*armmonitor.EmailReceiver{
 				{
-					Name:                 to.Ptr("<name>"),
-					EmailAddress:         to.Ptr("<email-address>"),
+					Name:                 to.Ptr("John Doe's email"),
+					EmailAddress:         to.Ptr("johndoe@email.com"),
 					UseCommonAlertSchema: to.Ptr(false),
 				},
 				{
-					Name:                 to.Ptr("<name>"),
-					EmailAddress:         to.Ptr("<email-address>"),
+					Name:                 to.Ptr("Jane Smith's email"),
+					EmailAddress:         to.Ptr("janesmith@email.com"),
 					UseCommonAlertSchema: to.Ptr(true),
 				}},
 			EventHubReceivers: []*armmonitor.EventHubReceiver{
 				{
-					Name:              to.Ptr("<name>"),
-					EventHubName:      to.Ptr("<event-hub-name>"),
-					EventHubNameSpace: to.Ptr("<event-hub-name-space>"),
-					SubscriptionID:    to.Ptr("<subscription-id>"),
-					TenantID:          to.Ptr("<tenant-id>"),
+					Name:              to.Ptr("Sample eventHub"),
+					EventHubName:      to.Ptr("testEventHub"),
+					EventHubNameSpace: to.Ptr("testEventHubNameSpace"),
+					SubscriptionID:    to.Ptr("187f412d-1758-44d9-b052-169e2564721d"),
+					TenantID:          to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
 				}},
 			ItsmReceivers: []*armmonitor.ItsmReceiver{
 				{
-					Name:                to.Ptr("<name>"),
-					ConnectionID:        to.Ptr("<connection-id>"),
-					Region:              to.Ptr("<region>"),
-					TicketConfiguration: to.Ptr("<ticket-configuration>"),
-					WorkspaceID:         to.Ptr("<workspace-id>"),
+					Name:                to.Ptr("Sample itsm"),
+					ConnectionID:        to.Ptr("a3b9076c-ce8e-434e-85b4-aff10cb3c8f1"),
+					Region:              to.Ptr("westcentralus"),
+					TicketConfiguration: to.Ptr("{\"PayloadRevision\":0,\"WorkItemType\":\"Incident\",\"UseTemplate\":false,\"WorkItemData\":\"{}\",\"CreateOneWIPerCI\":false}"),
+					WorkspaceID:         to.Ptr("5def922a-3ed4-49c1-b9fd-05ec533819a3|55dfd1f8-7e59-4f89-bf56-4c82f5ace23c"),
 				}},
 			LogicAppReceivers: []*armmonitor.LogicAppReceiver{
 				{
-					Name:                 to.Ptr("<name>"),
-					CallbackURL:          to.Ptr("<callback-url>"),
-					ResourceID:           to.Ptr("<resource-id>"),
+					Name:                 to.Ptr("Sample logicApp"),
+					CallbackURL:          to.Ptr("https://prod-27.northcentralus.logic.azure.com/workflows/68e572e818e5457ba898763b7db90877/triggers/manual/paths/invoke/azns/test?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Abpsb72UYJxPPvmDo937uzofupO5r_vIeWEx7KVHo7w"),
+					ResourceID:           to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp"),
 					UseCommonAlertSchema: to.Ptr(false),
 				}},
 			SmsReceivers: []*armmonitor.SmsReceiver{
 				{
-					Name:        to.Ptr("<name>"),
-					CountryCode: to.Ptr("<country-code>"),
-					PhoneNumber: to.Ptr("<phone-number>"),
+					Name:        to.Ptr("John Doe's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
 				},
 				{
-					Name:        to.Ptr("<name>"),
-					CountryCode: to.Ptr("<country-code>"),
-					PhoneNumber: to.Ptr("<phone-number>"),
+					Name:        to.Ptr("Jane Smith's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("0987654321"),
 				}},
 			VoiceReceivers: []*armmonitor.VoiceReceiver{
 				{
-					Name:        to.Ptr("<name>"),
-					CountryCode: to.Ptr("<country-code>"),
-					PhoneNumber: to.Ptr("<phone-number>"),
+					Name:        to.Ptr("Sample voice"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
 				}},
 			WebhookReceivers: []*armmonitor.WebhookReceiver{
 				{
-					Name:                 to.Ptr("<name>"),
-					ServiceURI:           to.Ptr("<service-uri>"),
+					Name:                 to.Ptr("Sample webhook 1"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
 					UseCommonAlertSchema: to.Ptr(true),
 				},
 				{
-					Name:                 to.Ptr("<name>"),
-					IdentifierURI:        to.Ptr("<identifier-uri>"),
-					ObjectID:             to.Ptr("<object-id>"),
-					ServiceURI:           to.Ptr("<service-uri>"),
-					TenantID:             to.Ptr("<tenant-id>"),
+					Name:                 to.Ptr("Sample webhook 2"),
+					IdentifierURI:        to.Ptr("http://someidentifier/d7811ba3-7996-4a93-99b6-6b2f3f355f8a"),
+					ObjectID:             to.Ptr("d3bb868c-fe44-452c-aa26-769a6538c808"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook2"),
+					TenantID:             to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
 					UseAADAuth:           to.Ptr(true),
 					UseCommonAlertSchema: to.Ptr(true),
 				}},
 		},
-		&armmonitor.ActionGroupsClientBeginPostTestNotificationsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/getTestNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/postTestNotificationsAtResourceGroupLevel.json
+func ExampleActionGroupsClient_BeginCreateNotificationsAtResourceGroupLevel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateNotificationsAtResourceGroupLevel(ctx,
+		"Default-TestNotifications",
+		armmonitor.NotificationRequestBody{
+			AlertType: to.Ptr("budget"),
+			ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
+				{
+					Name:                 to.Ptr("ArmRole-Common"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(true),
+				},
+				{
+					Name:                 to.Ptr("ArmRole-nonCommon"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(false),
+				}},
+			AutomationRunbookReceivers: []*armmonitor.AutomationRunbookReceiver{
+				{
+					Name:                 to.Ptr("testRunbook"),
+					AutomationAccountID:  to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest"),
+					IsGlobalRunbook:      to.Ptr(false),
+					RunbookName:          to.Ptr("Sample runbook"),
+					ServiceURI:           to.Ptr("http://test.me"),
+					UseCommonAlertSchema: to.Ptr(true),
+					WebhookResourceID:    to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest/webhooks/Alert1510184037084"),
+				}},
+			AzureAppPushReceivers: []*armmonitor.AzureAppPushReceiver{
+				{
+					Name:         to.Ptr("Sample azureAppPush"),
+					EmailAddress: to.Ptr("johndoe@email.com"),
+				}},
+			AzureFunctionReceivers: []*armmonitor.AzureFunctionReceiver{
+				{
+					Name:                  to.Ptr("Sample azureFunction"),
+					FunctionAppResourceID: to.Ptr("/subscriptions/5def922a-3ed4-49c1-b9fd-05ec533819a3/resourceGroups/aznsTest/providers/Microsoft.Web/sites/testFunctionApp"),
+					FunctionName:          to.Ptr("HttpTriggerCSharp1"),
+					HTTPTriggerURL:        to.Ptr("http://test.me"),
+					UseCommonAlertSchema:  to.Ptr(true),
+				}},
+			EmailReceivers: []*armmonitor.EmailReceiver{
+				{
+					Name:                 to.Ptr("John Doe's email"),
+					EmailAddress:         to.Ptr("johndoe@email.com"),
+					UseCommonAlertSchema: to.Ptr(false),
+				},
+				{
+					Name:                 to.Ptr("Jane Smith's email"),
+					EmailAddress:         to.Ptr("janesmith@email.com"),
+					UseCommonAlertSchema: to.Ptr(true),
+				}},
+			EventHubReceivers: []*armmonitor.EventHubReceiver{
+				{
+					Name:              to.Ptr("Sample eventHub"),
+					EventHubName:      to.Ptr("testEventHub"),
+					EventHubNameSpace: to.Ptr("testEventHubNameSpace"),
+					SubscriptionID:    to.Ptr("187f412d-1758-44d9-b052-169e2564721d"),
+					TenantID:          to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
+				}},
+			ItsmReceivers: []*armmonitor.ItsmReceiver{
+				{
+					Name:                to.Ptr("Sample itsm"),
+					ConnectionID:        to.Ptr("a3b9076c-ce8e-434e-85b4-aff10cb3c8f1"),
+					Region:              to.Ptr("westcentralus"),
+					TicketConfiguration: to.Ptr("{\"PayloadRevision\":0,\"WorkItemType\":\"Incident\",\"UseTemplate\":false,\"WorkItemData\":\"{}\",\"CreateOneWIPerCI\":false}"),
+					WorkspaceID:         to.Ptr("5def922a-3ed4-49c1-b9fd-05ec533819a3|55dfd1f8-7e59-4f89-bf56-4c82f5ace23c"),
+				}},
+			LogicAppReceivers: []*armmonitor.LogicAppReceiver{
+				{
+					Name:                 to.Ptr("Sample logicApp"),
+					CallbackURL:          to.Ptr("https://prod-27.northcentralus.logic.azure.com/workflows/68e572e818e5457ba898763b7db90877/triggers/manual/paths/invoke/azns/test?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Abpsb72UYJxPPvmDo937uzofupO5r_vIeWEx7KVHo7w"),
+					ResourceID:           to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp"),
+					UseCommonAlertSchema: to.Ptr(false),
+				}},
+			SmsReceivers: []*armmonitor.SmsReceiver{
+				{
+					Name:        to.Ptr("John Doe's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
+				},
+				{
+					Name:        to.Ptr("Jane Smith's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("0987654321"),
+				}},
+			VoiceReceivers: []*armmonitor.VoiceReceiver{
+				{
+					Name:        to.Ptr("Sample voice"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
+				}},
+			WebhookReceivers: []*armmonitor.WebhookReceiver{
+				{
+					Name:                 to.Ptr("Sample webhook 1"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
+					UseCommonAlertSchema: to.Ptr(true),
+				},
+				{
+					Name:                 to.Ptr("Sample webhook 2"),
+					IdentifierURI:        to.Ptr("http://someidentifier/d7811ba3-7996-4a93-99b6-6b2f3f355f8a"),
+					ObjectID:             to.Ptr("d3bb868c-fe44-452c-aa26-769a6538c808"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook2"),
+					TenantID:             to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
+					UseAADAuth:           to.Ptr(true),
+					UseCommonAlertSchema: to.Ptr(true),
+				}},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/postTestNotificationsAtActionGroupResourceLevel.json
+func ExampleActionGroupsClient_BeginCreateNotificationsAtActionGroupResourceLevel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmonitor.NewActionGroupsClient("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateNotificationsAtActionGroupResourceLevel(ctx,
+		"TestRgName",
+		"TestAgName",
+		armmonitor.NotificationRequestBody{
+			AlertType: to.Ptr("budget"),
+			ArmRoleReceivers: []*armmonitor.ArmRoleReceiver{
+				{
+					Name:                 to.Ptr("ArmRole-Common"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(true),
+				},
+				{
+					Name:                 to.Ptr("ArmRole-nonCommon"),
+					RoleID:               to.Ptr("11111111-1111-1111-1111-111111111111"),
+					UseCommonAlertSchema: to.Ptr(false),
+				}},
+			AutomationRunbookReceivers: []*armmonitor.AutomationRunbookReceiver{
+				{
+					Name:                 to.Ptr("testRunbook"),
+					AutomationAccountID:  to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest"),
+					IsGlobalRunbook:      to.Ptr(false),
+					RunbookName:          to.Ptr("Sample runbook"),
+					ServiceURI:           to.Ptr("http://test.me"),
+					UseCommonAlertSchema: to.Ptr(true),
+					WebhookResourceID:    to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/runbookTest/providers/Microsoft.Automation/automationAccounts/runbooktest/webhooks/Alert1510184037084"),
+				}},
+			AzureAppPushReceivers: []*armmonitor.AzureAppPushReceiver{
+				{
+					Name:         to.Ptr("Sample azureAppPush"),
+					EmailAddress: to.Ptr("johndoe@email.com"),
+				}},
+			AzureFunctionReceivers: []*armmonitor.AzureFunctionReceiver{
+				{
+					Name:                  to.Ptr("Sample azureFunction"),
+					FunctionAppResourceID: to.Ptr("/subscriptions/5def922a-3ed4-49c1-b9fd-05ec533819a3/resourceGroups/aznsTest/providers/Microsoft.Web/sites/testFunctionApp"),
+					FunctionName:          to.Ptr("HttpTriggerCSharp1"),
+					HTTPTriggerURL:        to.Ptr("http://test.me"),
+					UseCommonAlertSchema:  to.Ptr(true),
+				}},
+			EmailReceivers: []*armmonitor.EmailReceiver{
+				{
+					Name:                 to.Ptr("John Doe's email"),
+					EmailAddress:         to.Ptr("johndoe@email.com"),
+					UseCommonAlertSchema: to.Ptr(false),
+				},
+				{
+					Name:                 to.Ptr("Jane Smith's email"),
+					EmailAddress:         to.Ptr("janesmith@email.com"),
+					UseCommonAlertSchema: to.Ptr(true),
+				}},
+			EventHubReceivers: []*armmonitor.EventHubReceiver{
+				{
+					Name:              to.Ptr("Sample eventHub"),
+					EventHubName:      to.Ptr("testEventHub"),
+					EventHubNameSpace: to.Ptr("testEventHubNameSpace"),
+					SubscriptionID:    to.Ptr("187f412d-1758-44d9-b052-169e2564721d"),
+					TenantID:          to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
+				}},
+			ItsmReceivers: []*armmonitor.ItsmReceiver{
+				{
+					Name:                to.Ptr("Sample itsm"),
+					ConnectionID:        to.Ptr("a3b9076c-ce8e-434e-85b4-aff10cb3c8f1"),
+					Region:              to.Ptr("westcentralus"),
+					TicketConfiguration: to.Ptr("{\"PayloadRevision\":0,\"WorkItemType\":\"Incident\",\"UseTemplate\":false,\"WorkItemData\":\"{}\",\"CreateOneWIPerCI\":false}"),
+					WorkspaceID:         to.Ptr("5def922a-3ed4-49c1-b9fd-05ec533819a3|55dfd1f8-7e59-4f89-bf56-4c82f5ace23c"),
+				}},
+			LogicAppReceivers: []*armmonitor.LogicAppReceiver{
+				{
+					Name:                 to.Ptr("Sample logicApp"),
+					CallbackURL:          to.Ptr("https://prod-27.northcentralus.logic.azure.com/workflows/68e572e818e5457ba898763b7db90877/triggers/manual/paths/invoke/azns/test?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Abpsb72UYJxPPvmDo937uzofupO5r_vIeWEx7KVHo7w"),
+					ResourceID:           to.Ptr("/subscriptions/187f412d-1758-44d9-b052-169e2564721d/resourceGroups/LogicApp/providers/Microsoft.Logic/workflows/testLogicApp"),
+					UseCommonAlertSchema: to.Ptr(false),
+				}},
+			SmsReceivers: []*armmonitor.SmsReceiver{
+				{
+					Name:        to.Ptr("John Doe's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
+				},
+				{
+					Name:        to.Ptr("Jane Smith's mobile"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("0987654321"),
+				}},
+			VoiceReceivers: []*armmonitor.VoiceReceiver{
+				{
+					Name:        to.Ptr("Sample voice"),
+					CountryCode: to.Ptr("1"),
+					PhoneNumber: to.Ptr("1234567890"),
+				}},
+			WebhookReceivers: []*armmonitor.WebhookReceiver{
+				{
+					Name:                 to.Ptr("Sample webhook 1"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
+					UseCommonAlertSchema: to.Ptr(true),
+				},
+				{
+					Name:                 to.Ptr("Sample webhook 2"),
+					IdentifierURI:        to.Ptr("http://someidentifier/d7811ba3-7996-4a93-99b6-6b2f3f355f8a"),
+					ObjectID:             to.Ptr("d3bb868c-fe44-452c-aa26-769a6538c808"),
+					ServiceURI:           to.Ptr("http://www.example.com/webhook2"),
+					TenantID:             to.Ptr("68a4459a-ccb8-493c-b9da-dd30457d1b84"),
+					UseAADAuth:           to.Ptr(true),
+					UseCommonAlertSchema: to.Ptr(true),
+				}},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getTestNotifications.json
 func ExampleActionGroupsClient_GetTestNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetTestNotifications(ctx,
-		"<notification-id>",
+		"11000222191287",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -352,24 +614,68 @@ func ExampleActionGroupsClient_GetTestNotifications() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/listActionGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getTestNotificationsAtResourceGroupLevel.json
+func ExampleActionGroupsClient_GetTestNotificationsAtResourceGroupLevel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetTestNotificationsAtResourceGroupLevel(ctx,
+		"Default-TestNotifications",
+		"11000222191287",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getTestNotificationsAtActionGroupResourceLevel.json
+func ExampleActionGroupsClient_GetTestNotificationsAtActionGroupResourceLevel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armmonitor.NewActionGroupsClient("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetTestNotificationsAtActionGroupResourceLevel(ctx,
+		"TestRgName",
+		"TestAgName",
+		"11000222191287",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/listActionGroups.json
 func ExampleActionGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("Default-NotificationRules",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -378,22 +684,22 @@ func ExampleActionGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-09-01/examples/enableReceiver.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/enableReceiver.json
 func ExampleActionGroupsClient_EnableReceiver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActionGroupsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActionGroupsClient("187f412d-1758-44d9-b052-169e2564721d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.EnableReceiver(ctx,
-		"<resource-group-name>",
-		"<action-group-name>",
+		"Default-NotificationRules",
+		"SampleActionGroup",
 		armmonitor.EnableRequest{
-			ReceiverName: to.Ptr("<receiver-name>"),
+			ReceiverName: to.Ptr("John Doe's mobile"),
 		},
 		nil)
 	if err != nil {

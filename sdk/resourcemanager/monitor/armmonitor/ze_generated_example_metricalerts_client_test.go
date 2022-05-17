@@ -24,7 +24,7 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("gigtest",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleMetricAlertsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"MetricAlertOnMultipleResources",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,21 +95,21 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"MetricAlertOnMultipleResources",
 		armmonitor.MetricAlertResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Tags:     map[string]*string{},
 			Properties: &armmonitor.MetricAlertProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("This is the description of the rule1"),
 				Actions: []*armmonitor.MetricAlertAction{
 					{
-						ActionGroupID: to.Ptr("<action-group-id>"),
+						ActionGroupID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
 						WebHookProperties: map[string]*string{
 							"key11": to.Ptr("value11"),
 							"key12": to.Ptr("value12"),
@@ -122,11 +120,11 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 					ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria),
 					AllOf: []armmonitor.MultiMetricCriteriaClassification{
 						&armmonitor.DynamicMetricCriteria{
-							Name:             to.Ptr("<name>"),
+							Name:             to.Ptr("High_CPU_80"),
 							CriterionType:    to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
 							Dimensions:       []*armmonitor.MetricDimension{},
-							MetricName:       to.Ptr("<metric-name>"),
-							MetricNamespace:  to.Ptr("<metric-namespace>"),
+							MetricName:       to.Ptr("Percentage CPU"),
+							MetricNamespace:  to.Ptr("microsoft.compute/virtualmachines"),
 							TimeAggregation:  to.Ptr(armmonitor.AggregationTypeEnumAverage),
 							AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
 							FailingPeriods: &armmonitor.DynamicThresholdFailingPeriods{
@@ -137,14 +135,14 @@ func ExampleMetricAlertsClient_CreateOrUpdate() {
 						}},
 				},
 				Enabled:             to.Ptr(true),
-				EvaluationFrequency: to.Ptr("<evaluation-frequency>"),
+				EvaluationFrequency: to.Ptr("PT1M"),
 				Scopes: []*string{
 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme1"),
 					to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme2")},
 				Severity:             to.Ptr[int32](3),
-				TargetResourceRegion: to.Ptr("<target-resource-region>"),
-				TargetResourceType:   to.Ptr("<target-resource-type>"),
-				WindowSize:           to.Ptr("<window-size>"),
+				TargetResourceRegion: to.Ptr("southcentralus"),
+				TargetResourceType:   to.Ptr("Microsoft.Compute/virtualMachines"),
+				WindowSize:           to.Ptr("PT15M"),
 			},
 		},
 		nil)
@@ -162,19 +160,19 @@ func ExampleMetricAlertsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"chiricutin",
 		armmonitor.MetricAlertResourcePatch{
 			Properties: &armmonitor.MetricAlertPropertiesPatch{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("This is the description of the rule1"),
 				Actions: []*armmonitor.MetricAlertAction{
 					{
-						ActionGroupID: to.Ptr("<action-group-id>"),
+						ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
 						WebHookProperties: map[string]*string{
 							"key11": to.Ptr("value11"),
 							"key12": to.Ptr("value12"),
@@ -185,21 +183,21 @@ func ExampleMetricAlertsClient_Update() {
 					ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria),
 					AllOf: []*armmonitor.MetricCriteria{
 						{
-							Name:            to.Ptr("<name>"),
+							Name:            to.Ptr("High_CPU_80"),
 							CriterionType:   to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
 							Dimensions:      []*armmonitor.MetricDimension{},
-							MetricName:      to.Ptr("<metric-name>"),
+							MetricName:      to.Ptr("\\Processor(_Total)\\% Processor Time"),
 							TimeAggregation: to.Ptr(armmonitor.AggregationTypeEnumAverage),
 							Operator:        to.Ptr(armmonitor.OperatorGreaterThan),
 							Threshold:       to.Ptr[float64](80.5),
 						}},
 				},
 				Enabled:             to.Ptr(true),
-				EvaluationFrequency: to.Ptr("<evaluation-frequency>"),
+				EvaluationFrequency: to.Ptr("Pt1m"),
 				Scopes: []*string{
 					to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 				Severity:   to.Ptr[int32](3),
-				WindowSize: to.Ptr("<window-size>"),
+				WindowSize: to.Ptr("Pt15m"),
 			},
 			Tags: map[string]*string{},
 		},
@@ -218,13 +216,13 @@ func ExampleMetricAlertsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"chiricutin",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

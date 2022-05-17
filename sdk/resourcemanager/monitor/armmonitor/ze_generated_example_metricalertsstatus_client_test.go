@@ -23,13 +23,13 @@ func ExampleMetricAlertsStatusClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsStatusClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsStatusClient("14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
+		"gigtest",
+		"chiricutin",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleMetricAlertsStatusClient_ListByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewMetricAlertsStatusClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewMetricAlertsStatusClient("009f6022-67ec-423e-9aa7-691182870588", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByName(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
-		"<status-name>",
+		"EastUs",
+		"custom1",
+		"cmVzb3VyY2VJZD0vc3Vic2NyaXB0aW9ucy8xNGRkZjBjNS03N2M1LTRiNTMtODRmNi1lMWZhNDNhZDY4ZjcvcmVzb3VyY2VHcm91cHMvZ2lndGVzdC9wcm92aWRlcnMvTWljcm9zb2Z0LkNvbXB1dGUvdmlydHVhbE1hY2hpbmVzL2dpZ3dhZG1l",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

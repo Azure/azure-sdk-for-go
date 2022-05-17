@@ -23,17 +23,16 @@ func ExampleActivityLogsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewActivityLogsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewActivityLogsClient("089bd33f-d4ec-47fe-8ba5-0753aa5c5b33", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<filter>",
+	pager := client.NewListPager("eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and resourceGroupName eq 'MSSupportGroup'",
 		&armmonitor.ActivityLogsClientListOptions{Select: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

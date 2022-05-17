@@ -28,7 +28,7 @@ func ExampleVMInsightsClient_GetOnboardingStatus() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetOnboardingStatus(ctx,
-		"<resource-uri>",
+		"subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/my-service-cluster/providers/Microsoft.Compute/virtualMachineScaleSets/scale-set-01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

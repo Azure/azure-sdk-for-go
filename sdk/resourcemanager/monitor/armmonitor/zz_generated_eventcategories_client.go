@@ -33,7 +33,7 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,9 +51,10 @@ func NewEventCategoriesClient(credential azcore.TokenCredential, options *arm.Cl
 // NewListPager - Get the list of available event categories supported in the Activity Logs Service. The current list includes
 // the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // options - EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
 func (client *EventCategoriesClient) NewListPager(options *EventCategoriesClientListOptions) *runtime.Pager[EventCategoriesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EventCategoriesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EventCategoriesClientListResponse]{
 		More: func(page EventCategoriesClientListResponse) bool {
 			return false
 		},
@@ -84,7 +85,7 @@ func (client *EventCategoriesClient) listCreateRequest(ctx context.Context, opti
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

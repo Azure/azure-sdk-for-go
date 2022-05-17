@@ -40,7 +40,7 @@ func NewMicrosoftSerialConsoleClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewMicrosoftSerialConsoleClient(subscriptionID string, credential azcore.To
 
 // DisableConsole - Disables the Serial Console service for all VMs and VM scale sets in the provided subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // defaultParam - Default parameter. Leave the value as "default".
 // options - MicrosoftSerialConsoleClientDisableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.DisableConsole
 // method.
@@ -94,7 +95,7 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,6 +123,7 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleHandleResponse(resp *h
 
 // EnableConsole - Enables the Serial Console service for all VMs and VM scale sets in the provided subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // defaultParam - Default parameter. Leave the value as "default".
 // options - MicrosoftSerialConsoleClientEnableConsoleOptions contains the optional parameters for the MicrosoftSerialConsoleClient.EnableConsole
 // method.
@@ -158,7 +160,7 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,6 +188,7 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleHandleResponse(resp *ht
 
 // GetConsoleStatus - Gets whether or not Serial Console is disabled for a given subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // defaultParam - Default parameter. Leave the value as "default".
 // options - MicrosoftSerialConsoleClientGetConsoleStatusOptions contains the optional parameters for the MicrosoftSerialConsoleClient.GetConsoleStatus
 // method.
@@ -222,7 +225,7 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,6 +253,7 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleResponse(resp 
 
 // ListOperations - Gets a list of Serial Console API operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-05-01
 // options - MicrosoftSerialConsoleClientListOperationsOptions contains the optional parameters for the MicrosoftSerialConsoleClient.ListOperations
 // method.
 func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, options *MicrosoftSerialConsoleClientListOperationsOptions) (MicrosoftSerialConsoleClientListOperationsResponse, error) {
@@ -277,7 +281,7 @@ func (client *MicrosoftSerialConsoleClient) listOperationsCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

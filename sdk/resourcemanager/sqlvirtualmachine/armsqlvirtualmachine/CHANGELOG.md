@@ -1,5 +1,25 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*GroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GroupsClientDeleteResponse], error)` to `(*runtime.Poller[GroupsClientDeleteResponse], error)`
+- Function `*SQLVirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SQLVirtualMachinesClientUpdateResponse], error)` to `(*runtime.Poller[SQLVirtualMachinesClientUpdateResponse], error)`
+- Function `*SQLVirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[SQLVirtualMachinesClientRedeployResponse], error)` to `(*runtime.Poller[SQLVirtualMachinesClientRedeployResponse], error)`
+- Function `*GroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GroupsClientCreateOrUpdateResponse], error)`
+- Function `*AvailabilityGroupListenersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AvailabilityGroupListenersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AvailabilityGroupListenersClientCreateOrUpdateResponse], error)`
+- Function `*GroupsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[GroupsClientUpdateResponse], error)` to `(*runtime.Poller[GroupsClientUpdateResponse], error)`
+- Function `*AvailabilityGroupListenersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AvailabilityGroupListenersClientDeleteResponse], error)` to `(*runtime.Poller[AvailabilityGroupListenersClientDeleteResponse], error)`
+- Function `*SQLVirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SQLVirtualMachinesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SQLVirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `*SQLVirtualMachinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLVirtualMachinesClientDeleteResponse], error)` to `(*runtime.Poller[SQLVirtualMachinesClientDeleteResponse], error)`
+- Function `*SQLVirtualMachinesClient.BeginStartAssessment` return value(s) have been changed from `(*armruntime.Poller[SQLVirtualMachinesClientStartAssessmentResponse], error)` to `(*runtime.Poller[SQLVirtualMachinesClientStartAssessmentResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `GroupListResult.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `AvailabilityGroupListenerListResult.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

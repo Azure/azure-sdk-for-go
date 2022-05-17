@@ -1,5 +1,27 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ProviderRegistrationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ProviderRegistrationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ProviderRegistrationsClientCreateOrUpdateResponse], error)`
+- Function `*ResourceTypeRegistrationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ResourceTypeRegistrationsClientCreateOrUpdateResponse], error)`
+- Function `*DefaultRolloutsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DefaultRolloutsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DefaultRolloutsClientCreateOrUpdateResponse], error)`
+- Function `ResourceType.MarshalJSON` has been removed
+- Function `ResourceProviderEndpoint.MarshalJSON` has been removed
+- Function `CustomRolloutArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `Error.MarshalJSON` has been removed
+- Function `DefaultRolloutArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `InnerError.MarshalJSON` has been removed
+- Function `ErrorResponseError.MarshalJSON` has been removed
+- Function `NotificationRegistrationArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `ErrorInnerError.MarshalJSON` has been removed
+- Function `ProviderRegistrationArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `SKUResourceArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `ResourceProviderManifest.MarshalJSON` has been removed
+- Function `ResourceTypeRegistrationArrayResponseWithContinuation.MarshalJSON` has been removed
+- Function `OperationsDefinitionArrayResponseWithContinuation.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

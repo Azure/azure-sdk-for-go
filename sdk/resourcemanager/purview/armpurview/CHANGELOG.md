@@ -1,5 +1,24 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AccountsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `OperationMetaMetricSpecification.MarshalJSON` has been removed
+- Function `ErrorModel.MarshalJSON` has been removed
+- Function `ErrorResponseModelError.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `PrivateLinkResourceList.MarshalJSON` has been removed
+- Function `OperationMetaServiceSpecification.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `AccountList.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

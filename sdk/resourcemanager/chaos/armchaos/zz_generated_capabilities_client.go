@@ -38,7 +38,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Create or update a Capability resource that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -118,7 +119,7 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, capability)
 }
 
@@ -133,6 +134,7 @@ func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Delete a Capability that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -193,12 +195,13 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Capability resource that extends a Target resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -259,7 +262,7 @@ func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -274,6 +277,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 
 // NewListPager - Get a list of Capability resources that extend a Target resource..
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-15-preview
 // resourceGroupName - String that represents an Azure resource group.
 // parentProviderNamespace - String that represents a resource provider namespace.
 // parentResourceType - String that represents a resource type.
@@ -281,7 +285,7 @@ func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (Capabi
 // targetName - String that represents a Target resource name.
 // options - CapabilitiesClientListOptions contains the optional parameters for the CapabilitiesClient.List method.
 func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CapabilitiesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CapabilitiesClientListResponse]{
 		More: func(page CapabilitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -345,7 +349,7 @@ func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourc
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

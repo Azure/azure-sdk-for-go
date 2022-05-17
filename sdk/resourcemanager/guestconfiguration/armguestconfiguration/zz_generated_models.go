@@ -24,6 +24,9 @@ type Assignment struct {
 	// READ-ONLY; ARM resource id of the guest configuration assignment.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -184,6 +187,16 @@ type AssignmentReportsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AssignmentReportsVMSSClientGetOptions contains the optional parameters for the AssignmentReportsVMSSClient.Get method.
+type AssignmentReportsVMSSClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentReportsVMSSClientListOptions contains the optional parameters for the AssignmentReportsVMSSClient.List method.
+type AssignmentReportsVMSSClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssignmentsClientCreateOrUpdateOptions contains the optional parameters for the AssignmentsClient.CreateOrUpdate method.
 type AssignmentsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -211,6 +224,21 @@ type AssignmentsClientRGListOptions struct {
 
 // AssignmentsClientSubscriptionListOptions contains the optional parameters for the AssignmentsClient.SubscriptionList method.
 type AssignmentsClientSubscriptionListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsVMSSClientDeleteOptions contains the optional parameters for the AssignmentsVMSSClient.Delete method.
+type AssignmentsVMSSClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsVMSSClientGetOptions contains the optional parameters for the AssignmentsVMSSClient.Get method.
+type AssignmentsVMSSClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsVMSSClientListOptions contains the optional parameters for the AssignmentsVMSSClient.List method.
+type AssignmentsVMSSClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -263,31 +291,31 @@ type ConfigurationParameter struct {
 
 // ConfigurationSetting - Configuration setting of LCM (Local Configuration Manager).
 type ConfigurationSetting struct {
-	// Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration
+	// READ-ONLY; Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration
 	// and StopConfiguration
-	ActionAfterReboot *ActionAfterReboot `json:"actionAfterReboot,omitempty"`
+	ActionAfterReboot *ActionAfterReboot `json:"actionAfterReboot,omitempty" azure:"ro"`
 
-	// If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target node.
-	// Otherwise, false
-	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
+	// READ-ONLY; If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target
+	// node. Otherwise, false
+	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty" azure:"ro"`
 
-	// Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible values
-	// are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
-	ConfigurationMode *ConfigurationMode `json:"configurationMode,omitempty"`
+	// READ-ONLY; Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible
+	// values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect.
+	ConfigurationMode *ConfigurationMode `json:"configurationMode,omitempty" azure:"ro"`
 
-	// How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode
+	// READ-ONLY; How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode
 	// property is set to ApplyOnly. The default value is 15.
-	ConfigurationModeFrequencyMins *float32 `json:"configurationModeFrequencyMins,omitempty"`
+	ConfigurationModeFrequencyMins *float32 `json:"configurationModeFrequencyMins,omitempty" azure:"ro"`
 
-	// Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise, you
-	// will have to manually reboot the node for any configuration that requires it.
+	// READ-ONLY; Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise,
+	// you will have to manually reboot the node for any configuration that requires it.
 	// The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as
 	// Windows Installer), combine this setting with the xPendingReboot module.
-	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty"`
+	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty" azure:"ro"`
 
-	// The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value is ignored
-	// if the LCM is not configured in pull mode. The default value is 30.
-	RefreshFrequencyMins *float32 `json:"refreshFrequencyMins,omitempty"`
+	// READ-ONLY; The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value
+	// is ignored if the LCM is not configured in pull mode. The default value is 30.
+	RefreshFrequencyMins *float32 `json:"refreshFrequencyMins,omitempty" azure:"ro"`
 }
 
 // ErrorResponse - Error response of an operation failure
@@ -348,9 +376,6 @@ type Navigation struct {
 	// The protected configuration parameters for the guest configuration.
 	ConfigurationProtectedParameter []*ConfigurationParameter `json:"configurationProtectedParameter,omitempty"`
 
-	// The configuration setting for the guest configuration.
-	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty"`
-
 	// Combined hash of the guest configuration package and configuration parameters.
 	ContentHash *string `json:"contentHash,omitempty"`
 
@@ -365,6 +390,12 @@ type Navigation struct {
 
 	// Version of the guest configuration.
 	Version *string `json:"version,omitempty"`
+
+	// READ-ONLY; Specifies the origin of the configuration.
+	AssignmentSource *string `json:"assignmentSource,omitempty" azure:"ro"`
+
+	// READ-ONLY; The configuration setting for the guest configuration.
+	ConfigurationSetting *ConfigurationSetting `json:"configurationSetting,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the content type of the configuration. Possible values could be Builtin or Custom.
 	ContentType *string `json:"contentType,omitempty" azure:"ro"`
@@ -442,6 +473,27 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
 // VMInfo - Information about the VM.

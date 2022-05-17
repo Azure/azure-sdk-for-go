@@ -1,5 +1,12 @@
 # Release History
 
+## 0.4.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*RolloutsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RolloutsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RolloutsClientCreateOrUpdateResponse], error)`
+- Function `*ServiceUnitsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceUnitsClientCreateOrUpdateResponse], error)`
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

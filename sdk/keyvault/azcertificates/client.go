@@ -8,10 +8,8 @@ package azcertificates
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"net/http"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -75,7 +73,7 @@ type BeginCreateCertificateOptions struct {
 	Tags map[string]string `json:"tags,omitempty"`
 
 	// ResumeToken is a token for resuming long running operations from a previous poller
-	ResumeToken *string
+	ResumeToken string
 }
 
 func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCreateCertificateOptions {
@@ -84,82 +82,11 @@ func (b BeginCreateCertificateOptions) toGenerated() *generated.KeyVaultClientCr
 
 // CreateCertificateResponse contains response fields for Client.BeginCreateCertificate
 type CreateCertificateResponse struct {
-	Operation
-}
-
-// CreateCertificatePoller is the poller returned by the Client.BeginCreateCertificate
-type CreateCertificatePoller struct {
-	certName       string
-	certVersion    string
-	vaultURL       string
-	client         *generated.KeyVaultClient
-	createResponse CreateCertificateResponse
-	lastResponse   generated.KeyVaultClientGetCertificateResponse
-	getRawResponse *http.Response
-	resumeToken    string
-}
-
-// ResumeToken returns a token for resuming polling at a later time
-func (p *CreateCertificatePoller) ResumeToken() (string, error) {
-	return p.resumeToken, nil
-}
-
-// Done returns true if the LRO has reached a terminal state
-func (b *CreateCertificatePoller) Done() bool {
-	if b.getRawResponse == nil {
-		return false
-	}
-	return b.getRawResponse.StatusCode == http.StatusOK
-}
-
-// Poll fetches the latest state of the operations. It returns an HTTP response or error.
-// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (b *CreateCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
-	var getRawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
-	resp, err := b.client.GetCertificate(ctx, b.vaultURL, b.certName, b.certVersion, nil)
-	if err == nil {
-		b.getRawResponse = getRawResp
-		b.lastResponse = resp
-		b.createResponse.ID = b.lastResponse.ID
-		return getRawResp, nil
-	}
-
-	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
-		// The certificate has not been fully created yet
-		b.getRawResponse = getRawResp
-		b.lastResponse = resp
-		return b.getRawResponse, nil
-	}
-
-	// There was an error in this operation, return the original raw response and the error
-	return getRawResp, err
-}
-
-// FinalResponse returns the final response after the operations has finished
-func (b *CreateCertificatePoller) FinalResponse(ctx context.Context) (CreateCertificateResponse, error) {
-	return b.createResponse, nil
-}
-
-// PollUntilDone continually polls the service with a 't' delay until completion.
-func (b *CreateCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (CreateCertificateResponse, error) {
-	for {
-		resp, err := b.Poll(ctx)
-		if err != nil {
-			return CreateCertificateResponse{}, err
-		}
-		b.getRawResponse = resp
-		if b.Done() {
-			break
-		}
-		time.Sleep(t)
-	}
-	return b.createResponse, nil
+	CertificateWithPolicy
 }
 
 // BeginCreateCertificate creates a new certificate resource, if a certificate with this name already exists, a new version is created. This operation requires the certificates/create permission.
-func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName string, policy Policy, options *BeginCreateCertificateOptions) (*CreateCertificatePoller, error) {
+func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName string, policy Policy, options *BeginCreateCertificateOptions) (*runtime.Poller[CreateCertificateResponse], error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
 	}
@@ -169,60 +96,55 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 		tags = convertToGeneratedMap(options.Tags)
 	}
 
-	var createResp generated.KeyVaultClientCreateCertificateResponse
-	var err error
-	var rt string
-
-	if options.ResumeToken == nil {
-		createResp, err = c.genClient.CreateCertificate(
-			ctx,
-			c.vaultURL,
-			certificateName,
-			generated.CertificateCreateParameters{
-				CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-				Tags:                  tags,
-				CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
-			},
-			options.toGenerated(),
-		)
-		if err != nil {
-			return nil, err
-		}
-
-		marshalled, err := json.Marshal(createResp)
-		if err != nil {
-			return nil, err
-		}
-		rt = string(marshalled)
-	} else {
-		rt = *options.ResumeToken
-		err = json.Unmarshal([]byte(rt), &createResp)
-		if err != nil {
-			return nil, err
-		}
+	handler := beginCreateCertificateOperation{
+		poll: func(ctx context.Context, endpoint string) (*http.Response, error) {
+			req, err := runtime.NewRequest(ctx, http.MethodGet, endpoint)
+			if err != nil {
+				return nil, err
+			}
+			return c.genClient.Pipeline().Do(req)
+		},
+		result: func(ctx context.Context) (CreateCertificateResponse, error) {
+			resp, err := c.GetCertificate(ctx, certificateName, nil)
+			if err != nil {
+				return CreateCertificateResponse{}, err
+			}
+			return CreateCertificateResponse(resp), nil
+		},
 	}
 
-	return &CreateCertificatePoller{
-		certName:    certificateName,
-		certVersion: "",
-		vaultURL:    c.vaultURL,
-		client:      c.genClient,
-		createResponse: CreateCertificateResponse{
-			Operation: Operation{
-				CancellationRequested: createResp.CancellationRequested,
-				CSR:                   createResp.Csr,
-				Error:                 certificateErrorFromGenerated(createResp.Error),
-				IssuerParameters:      issuerParametersFromGenerated(createResp.IssuerParameters),
-				RequestID:             createResp.RequestID,
-				Status:                createResp.Status,
-				StatusDetails:         createResp.StatusDetails,
-				Target:                createResp.Target,
-				ID:                    createResp.ID,
-			},
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.genClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CreateCertificateResponse]{
+			Handler: &handler,
+		})
+	}
+
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
+	createResp, err := c.genClient.CreateCertificate(
+		ctx,
+		c.vaultURL,
+		certificateName,
+		generated.CertificateCreateParameters{
+			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
+			Tags:                  tags,
+			CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
 		},
-		lastResponse: generated.KeyVaultClientGetCertificateResponse{},
-		resumeToken:  rt,
-	}, nil
+		options.toGenerated(),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	pollURL := rawResp.Header.Get("Location")
+	if pollURL == "" {
+		return nil, errors.New("missing Location header")
+	}
+	handler.PollURL = pollURL
+	handler.Status = *createResp.Status
+	return runtime.NewPoller(rawResp, c.genClient.Pipeline(), &runtime.NewPollerOptions[CreateCertificateResponse]{
+		Handler: &handler,
+	})
 }
 
 // GetCertificateOptions contains optional parameters for Client.GetCertificate
@@ -298,7 +220,7 @@ func (c *Client) GetCertificateOperation(ctx context.Context, certificateName st
 // BeginDeleteCertificateOptions contains optional parameters for Client.BeginDeleteCertificate
 type BeginDeleteCertificateOptions struct {
 	// ResumeToken is a string to begin polling from a previous operation
-	ResumeToken *string
+	ResumeToken string
 }
 
 // convert public options to generated options struct
@@ -330,119 +252,39 @@ func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCert
 	}
 }
 
-// DeleteCertificatePoller is the poller returned by the Client.BeginDeleteCertificate operation
-type DeleteCertificatePoller struct {
-	certificateName string // This is the certificate to Poll for in GetDeletedCertificate
-	vaultURL        string
-	client          *generated.KeyVaultClient
-	deleteResponse  generated.KeyVaultClientDeleteCertificateResponse
-	lastResponse    generated.KeyVaultClientGetDeletedCertificateResponse
-	lastRawResponse *http.Response
-	resumeToken     string
-}
-
-// ResumeToken returns a token for resuming polling at a later time
-func (s *DeleteCertificatePoller) ResumeToken() (string, error) {
-	return string(s.resumeToken), nil
-}
-
-// Done returns true if the LRO has reached a terminal state
-func (s *DeleteCertificatePoller) Done() bool {
-	if s.lastRawResponse == nil {
-		return false
-	}
-	return s.lastRawResponse.StatusCode == http.StatusOK
-}
-
-// Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
-// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
-func (s *DeleteCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
-	var getRawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
-	resp, err := s.client.GetDeletedCertificate(ctx, s.vaultURL, s.certificateName, nil)
-	if err == nil {
-		// Service recognizes DeletedCertificate, operation is done
-		s.lastRawResponse = getRawResp
-		s.lastResponse = resp
-		return s.lastRawResponse, nil
-	}
-
-	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
-		// This is the expected result
-		s.lastRawResponse = getRawResp
-		return s.lastRawResponse, nil
-	}
-	return s.lastRawResponse, err
-}
-
-// FinalResponse returns the final response after the operations has finished
-func (s *DeleteCertificatePoller) FinalResponse(ctx context.Context) (DeleteCertificateResponse, error) {
-	return deleteCertificateResponseFromGenerated(s.deleteResponse), nil
-}
-
-// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
-// Poll is a wait determined by the t parameter.
-func (s *DeleteCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteCertificateResponse, error) {
-	for {
-		resp, err := s.Poll(ctx)
-		if err != nil {
-			return DeleteCertificateResponse{}, err
-		}
-		s.lastRawResponse = resp
-		if s.Done() {
-			break
-		}
-		time.Sleep(t)
-	}
-	return deleteCertificateResponseFromGenerated(s.deleteResponse), nil
-}
-
 // BeginDeleteCertificate deletes a certificate from the keyvault. Delete cannot be applied to an individual version of a certificate. This operation
 // requires the certificate/delete permission. This response contains a response with a Poller struct that can be used to Poll for a response, or the
 // DeleteCertificatePollerResponse.PollUntilDone function can be used to poll until completion.
-func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName string, options *BeginDeleteCertificateOptions) (*DeleteCertificatePoller, error) {
+func (c *Client) BeginDeleteCertificate(ctx context.Context, certificateName string, options *BeginDeleteCertificateOptions) (*runtime.Poller[DeleteCertificateResponse], error) {
 	if options == nil {
 		options = &BeginDeleteCertificateOptions{}
 	}
-	var resumeToken string
-	var delResp generated.KeyVaultClientDeleteCertificateResponse
-	var err error
-	if options.ResumeToken == nil {
-		delResp, err = c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
-		if err != nil {
-			return nil, err
-		}
 
-		marshalled, err := json.Marshal(delResp)
-		if err != nil {
-			return nil, err
-		}
-		resumeToken = string(marshalled)
-	} else {
-		resumeToken = *options.ResumeToken
-		err = json.Unmarshal([]byte(resumeToken), &delResp)
-		if err != nil {
-			return nil, err
-		}
+	handler := beginDeleteCertificateOperation{
+		poll: func(ctx context.Context) (*http.Response, error) {
+			req, err := c.genClient.GetDeletedCertificateCreateRequest(ctx, c.vaultURL, certificateName, nil)
+			if err != nil {
+				return nil, err
+			}
+			return c.genClient.Pipeline().Do(req)
+		},
 	}
 
-	getResp, err := c.genClient.GetDeletedCertificate(ctx, c.vaultURL, certificateName, nil)
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
-			return nil, err
-		}
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.genClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeleteCertificateResponse]{
+			Handler: &handler,
+		})
 	}
 
-	return &DeleteCertificatePoller{
-		vaultURL:        c.vaultURL,
-		certificateName: certificateName,
-		client:          c.genClient,
-		deleteResponse:  delResp,
-		lastResponse:    getResp,
-		resumeToken:     resumeToken,
-	}, nil
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
+	if _, err := c.genClient.DeleteCertificate(ctx, c.vaultURL, certificateName, options.toGenerated()); err != nil {
+		return nil, err
+	}
+
+	return runtime.NewPoller(rawResp, c.genClient.Pipeline(), &runtime.NewPollerOptions[DeleteCertificateResponse]{
+		Handler: &handler,
+	})
 }
 
 // PurgeDeletedCertificateOptions contains optional parameters for Client.PurgeDeletedCertificateOptions
@@ -1357,79 +1199,11 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 // BeginRecoverDeletedCertificateOptions contains optional parameters for Client.BeginRecoverDeletedCertificate
 type BeginRecoverDeletedCertificateOptions struct {
 	// ResumeToken is a token for resuming long running operations from a previous call.
-	ResumeToken *string
+	ResumeToken string
 }
 
 func (b *BeginRecoverDeletedCertificateOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedCertificateOptions {
 	return &generated.KeyVaultClientRecoverDeletedCertificateOptions{}
-}
-
-// RecoverDeletedCertificatePoller is the poller for the Client.RecoverDeletedCertificate
-type RecoverDeletedCertificatePoller struct {
-	certName        string
-	vaultUrl        string
-	client          *generated.KeyVaultClient
-	recoverResponse generated.KeyVaultClientRecoverDeletedCertificateResponse
-	lastResponse    generated.KeyVaultClientGetCertificateResponse
-	lastRawResponse *http.Response
-	resumeToken     string
-}
-
-// ResumeToken returns a token for resuming polling at a later time
-func (p *RecoverDeletedCertificatePoller) ResumeToken() (string, error) {
-	return p.resumeToken, nil
-}
-
-// Done returns true when the polling operation is completed
-func (b *RecoverDeletedCertificatePoller) Done() bool {
-	if b.lastRawResponse == nil {
-		return false
-	}
-	return b.lastRawResponse.StatusCode == http.StatusOK
-}
-
-// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
-// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
-// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-func (b *RecoverDeletedCertificatePoller) Poll(ctx context.Context) (*http.Response, error) {
-	var getRawResp *http.Response
-	ctx = runtime.WithCaptureResponse(ctx, &getRawResp)
-	resp, err := b.client.GetCertificate(ctx, b.vaultUrl, b.certName, "", nil)
-	if err == nil {
-		// Service has recovered certificate, operation is done
-		b.lastRawResponse = getRawResp
-		b.lastResponse = resp
-		return b.lastRawResponse, nil
-	}
-
-	if getRawResp != nil && getRawResp.StatusCode == http.StatusNotFound {
-		// This is our expected result
-		b.lastRawResponse = getRawResp
-		return b.lastRawResponse, nil
-	}
-
-	return getRawResp, err
-}
-
-// FinalResponse returns the final response after the operations has finished
-func (b *RecoverDeletedCertificatePoller) FinalResponse(ctx context.Context) (RecoverDeletedCertificateResponse, error) {
-	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
-}
-
-// PollUntilDone is the method for the Response.PollUntilDone struct
-func (b *RecoverDeletedCertificatePoller) PollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedCertificateResponse, error) {
-	for {
-		resp, err := b.Poll(ctx)
-		if err != nil {
-			b.lastRawResponse = resp
-		}
-		if b.Done() {
-			break
-		}
-		b.lastRawResponse = resp
-		time.Sleep(t)
-	}
-	return recoverDeletedCertificateResponseFromGenerated(b.recoverResponse), nil
 }
 
 // RecoverDeletedCertificateResponse contains response fields for Client.RecoverDeletedCertificate
@@ -1446,48 +1220,36 @@ func recoverDeletedCertificateResponseFromGenerated(i generated.KeyVaultClientRe
 
 // BeginRecoverDeletedCertificate recovers the deleted certificate in the specified vault to the latest version.
 // This operation can only be performed on a soft-delete enabled vault. This operation requires the certificates/recover permission.
-func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificateName string, options *BeginRecoverDeletedCertificateOptions) (*RecoverDeletedCertificatePoller, error) {
+func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificateName string, options *BeginRecoverDeletedCertificateOptions) (*runtime.Poller[RecoverDeletedCertificateResponse], error) {
 	if options == nil {
 		options = &BeginRecoverDeletedCertificateOptions{}
 	}
-	var recoverResp generated.KeyVaultClientRecoverDeletedCertificateResponse
-	var resumeToken string
-	var err error
-	if options.ResumeToken == nil {
-		recoverResp, err = c.genClient.RecoverDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated())
-		if err != nil {
-			return nil, err
-		}
 
-		marshalled, err := json.Marshal(recoverResp)
-		if err != nil {
-			return nil, err
-		}
-		resumeToken = string(marshalled)
-	} else {
-		resumeToken = *options.ResumeToken
-		err = json.Unmarshal([]byte(resumeToken), &recoverResp)
-		if err != nil {
-			return nil, err
-		}
+	handler := beginRecoverDeletedCertificate{
+		poll: func(ctx context.Context) (*http.Response, error) {
+			req, err := c.genClient.GetCertificateCreateRequest(ctx, c.vaultURL, certificateName, "", nil)
+			if err != nil {
+				return nil, err
+			}
+			return c.genClient.Pipeline().Do(req)
+		},
 	}
 
-	getResp, err := c.genClient.GetCertificate(ctx, c.vaultURL, certificateName, "", nil)
-	var httpErr *azcore.ResponseError
-	if errors.As(err, &httpErr) {
-		if httpErr.RawResponse.StatusCode != http.StatusNotFound {
-			return nil, err
-		}
+	if options.ResumeToken != "" {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.genClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoverDeletedCertificateResponse]{
+			Handler: &handler,
+		})
 	}
 
-	return &RecoverDeletedCertificatePoller{
-		lastResponse:    getResp,
-		certName:        certificateName,
-		client:          c.genClient,
-		vaultUrl:        c.vaultURL,
-		recoverResponse: recoverResp,
-		resumeToken:     resumeToken,
-	}, nil
+	var rawResp *http.Response
+	ctx = runtime.WithCaptureResponse(ctx, &rawResp)
+	if _, err := c.genClient.RecoverDeletedCertificate(ctx, c.vaultURL, certificateName, options.toGenerated()); err != nil {
+		return nil, err
+	}
+
+	return runtime.NewPoller(rawResp, c.genClient.Pipeline(), &runtime.NewPollerOptions[RecoverDeletedCertificateResponse]{
+		Handler: &handler,
+	})
 }
 
 // ListDeletedCertificatesResponse contains response field for ListDeletedCertificatesPager.NextPage

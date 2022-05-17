@@ -17,6 +17,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -90,6 +91,7 @@ func startTest(t *testing.T) func() {
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
+	// NOTE: not really random names, the sequence is deterministic else test playback wouldn't work
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))
 	return prefix + fmt.Sprint(h.Sum32()), err
@@ -130,11 +132,8 @@ func createClient(t *testing.T) (*Client, error) {
 	return NewClient(vaultUrl, cred, options)
 }
 
-func delay() time.Duration {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return time.Microsecond
-	}
-	return time.Second
+func delay() *runtime.PollUntilDoneOptions {
+	return &runtime.PollUntilDoneOptions{Frequency: time.Second}
 }
 
 type FakeCredential struct {
@@ -158,14 +157,13 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 
 func cleanUp(t *testing.T, client *Client, certName string) {
 	delResp, err := client.BeginDeleteCertificate(ctx, certName, nil)
-	if err == nil {
-		delPollerResp, err := delResp.PollUntilDone(ctx, delay())
-		require.NoError(t, err)
-		require.Contains(t, *delPollerResp.ID, certName)
+	require.NoError(t, err)
+	delPollerResp, err := delResp.PollUntilDone(ctx, delay())
+	require.NoError(t, err)
+	require.Contains(t, *delPollerResp.ID, certName)
 
-		_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
-		require.NoError(t, err)
-	}
+	_, err = client.PurgeDeletedCertificate(ctx, certName, nil)
+	require.NoError(t, err)
 }
 
 func createCert(t *testing.T, client *Client, certName string) {

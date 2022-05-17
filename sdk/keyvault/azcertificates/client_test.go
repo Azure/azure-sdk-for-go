@@ -16,11 +16,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/big"
+	"net/http"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -59,15 +62,9 @@ func TestClient_BeginCreateCertificate(t *testing.T) {
 
 	// want to interface with x509 std library
 
-	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
-	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
-
-	// load certificate request
-	csrblock, _ := pem.Decode([]byte(csr))
-	require.NotNil(t, csrblock)
-	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	cert, err := x509.ParseCertificate(pollerResp.CER)
 	require.NoError(t, err)
-	require.NoError(t, req.CheckSignature())
+	require.NotNil(t, cert)
 }
 
 func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
@@ -86,7 +83,7 @@ func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
 	rt, err := resp.ResumeToken()
 	require.NoError(t, err)
 
-	newPoller, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), &BeginCreateCertificateOptions{ResumeToken: &rt})
+	newPoller, err := client.BeginCreateCertificate(ctx, certName, NewDefaultCertificatePolicy(), &BeginCreateCertificateOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	pollerResp, err := newPoller.PollUntilDone(ctx, delay())
@@ -96,15 +93,10 @@ func TestClient_BeginCreateCertificateRehydrated(t *testing.T) {
 	defer cleanUp(t, client, certName)
 
 	// want to interface with x509 std library
-	mid := base64.StdEncoding.EncodeToString(pollerResp.CSR)
-	csr := fmt.Sprintf("-----BEGIN CERTIFICATE REQUEST-----\n%s\n-----END CERTIFICATE REQUEST-----", mid)
 
-	// load certificate request
-	csrblock, _ := pem.Decode([]byte(csr))
-	require.NotNil(t, csrblock)
-	req, err := x509.ParseCertificateRequest(csrblock.Bytes)
+	cert, err := x509.ParseCertificate(pollerResp.CER)
 	require.NoError(t, err)
-	require.NoError(t, req.CheckSignature())
+	require.NotNil(t, cert)
 }
 
 func TestClient_BeginDeleteCertificate(t *testing.T) {
@@ -165,7 +157,7 @@ func TestClient_BeginDeleteCertificateRehydrated(t *testing.T) {
 	rt, err := delResp.ResumeToken()
 	require.NoError(t, err)
 
-	poller, err := client.BeginDeleteCertificate(ctx, certName, &BeginDeleteCertificateOptions{ResumeToken: &rt})
+	poller, err := client.BeginDeleteCertificate(ctx, certName, &BeginDeleteCertificateOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	delPollerResp, err := poller.PollUntilDone(ctx, delay())
@@ -263,25 +255,27 @@ func TestClient_ListCertificates(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
+	created := [4]string{}
 	createdCount := 0
 	for i := 0; i < 4; i++ {
-		name, err := createRandomName(t, fmt.Sprintf("cert%d", i))
-		fmt.Println(name)
+		name, err := createRandomName(t, fmt.Sprintf("listcerts%d", i))
+		created[i] = name
 		require.NoError(t, err)
 		createCert(t, client, name)
 		defer cleanUp(t, client, name)
 		createdCount++
 	}
 
-	time.Sleep(10 * delay())
-
 	pager := client.NewListPropertiesOfCertificatesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		createdCount -= len(page.Certificates)
-		for _, c := range page.Certificates {
-			fmt.Println(*c.ID)
+		for _, cert := range page.Certificates {
+			// the list of certs will contain results from other tests
+			// so we just count the ones with the prefix from this test
+			if strings.HasPrefix(*cert.Properties.Name, "listcerts") {
+				createdCount--
+			}
 		}
 	}
 
@@ -298,7 +292,6 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 	name, err := createRandomName(t, "cert1")
 	require.NoError(t, err)
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 	defer cleanUp(t, client, name)
 
 	pager := client.NewListPropertiesOfCertificateVersionsPager(name, nil)
@@ -313,7 +306,6 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	// Add a second version
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 
 	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count = 0
@@ -327,7 +319,6 @@ func TestClient_ListCertificateVersions(t *testing.T) {
 
 	// Add a third version
 	createCert(t, client, name)
-	time.Sleep(10 * delay())
 
 	pager = client.NewListPropertiesOfCertificateVersionsPager(name, nil)
 	count = 0
@@ -585,7 +576,7 @@ func TestCRUDOperations(t *testing.T) {
 
 	pollerResp, err := client.BeginCreateCertificate(ctx, certName, policy, nil)
 	require.NoError(t, err)
-	finalResp, err := pollerResp.PollUntilDone(ctx, time.Second)
+	finalResp, err := pollerResp.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	require.NoError(t, err)
 
 	received, err := client.GetCertificate(ctx, certName, nil)
@@ -652,6 +643,20 @@ func TestMergeCertificate(t *testing.T) {
 		},
 	}
 
+	poller, err := client.BeginCreateCertificate(ctx, certName, certPolicy, nil)
+	require.NoError(t, err)
+	// can't PollUntilDone for this scenario
+	resp, err := poller.Poll(ctx)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	if retryAfter := resp.Header.Get("Retry-After"); retryAfter != "" && recording.GetRecordMode() != recording.PlaybackMode {
+		// sleep before moving on
+		asInt, err := strconv.Atoi(retryAfter)
+		require.NoError(t, err)
+		time.Sleep(time.Duration(asInt) * time.Second)
+	}
+	defer cleanUp(t, client, certName)
+
 	// Load public key
 	data, err := ioutil.ReadFile("testdata/ca.crt")
 	require.NoError(t, err)
@@ -667,12 +672,6 @@ func TestMergeCertificate(t *testing.T) {
 	require.Equal(t, pkeyBlock.Type, "RSA PRIVATE KEY")
 	pkey, err := x509.ParsePKCS1PrivateKey(pkeyBlock.Bytes)
 	require.NoError(t, err)
-
-	resp, err := client.BeginCreateCertificate(ctx, certName, certPolicy, nil)
-	require.NoError(t, err)
-	_, err = resp.PollUntilDone(ctx, time.Second)
-	require.NoError(t, err)
-	defer cleanUp(t, client, certName)
 
 	certOpResp, err := client.GetCertificateOperation(ctx, certName, nil)
 	require.NoError(t, err)
@@ -743,7 +742,7 @@ func TestClient_BeginRecoverDeletedCertificate(t *testing.T) {
 	recover, err := client.BeginRecoverDeletedCertificate(ctx, certName, nil)
 	require.NoError(t, err)
 
-	recoveredResp, err := recover.PollUntilDone(ctx, time.Second)
+	recoveredResp, err := recover.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	require.NoError(t, err)
 	require.Contains(t, *recoveredResp.ID, certName)
 }
@@ -781,10 +780,10 @@ func TestClient_BeginRecoverDeletedCertificateRehydrated(t *testing.T) {
 	rt, err := recover.ResumeToken()
 	require.NoError(t, err)
 
-	poller, err := client.BeginRecoverDeletedCertificate(ctx, certName, &BeginRecoverDeletedCertificateOptions{ResumeToken: &rt})
+	poller, err := client.BeginRecoverDeletedCertificate(ctx, certName, &BeginRecoverDeletedCertificateOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
-	recoveredResp, err := poller.PollUntilDone(ctx, time.Second)
+	recoveredResp, err := poller.PollUntilDone(ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	require.NoError(t, err)
 	require.Contains(t, *recoveredResp.ID, certName)
 
@@ -876,6 +875,7 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 		createCert(t, client, name)
 		createdCount++
 	}
+	require.Equal(t, 4, createdCount)
 
 	for _, name := range names {
 		poller, err := client.BeginDeleteCertificate(ctx, name, nil)
@@ -884,17 +884,15 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	time.Sleep(10 * delay())
-
 	pager := client.NewListDeletedCertificatesPager(nil)
 	deletedCount := 0
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		for i := range page.Certificates {
-			purgeCert(t, client, names[i])
+		for _, cert := range page.Certificates {
+			purgeCert(t, client, *cert.Name)
 			deletedCount += 1
 		}
 	}
-	require.Equal(t, 4, createdCount)
+	require.Equal(t, createdCount, deletedCount)
 }

@@ -17,25 +17,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuildServices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListBuildServices.json
 func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBuildServicesPager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListBuildServicesPager("myResourceGroup",
+		"myservice",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,21 +43,21 @@ func ExampleBuildServiceClient_NewListBuildServicesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetBuildService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetBuildService.json
 func ExampleBuildServiceClient_GetBuildService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuildService(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,26 +66,25 @@ func ExampleBuildServiceClient_GetBuildService() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuilds.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListBuilds.json
 func ExampleBuildServiceClient_NewListBuildsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBuildsPager("<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
+	pager := client.NewListBuildsPager("myResourceGroup",
+		"myservice",
+		"default",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -95,22 +93,22 @@ func ExampleBuildServiceClient_NewListBuildsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetBuild.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetBuild.json
 func ExampleBuildServiceClient_GetBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuild(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<build-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"mybuild",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,30 +117,30 @@ func ExampleBuildServiceClient_GetBuild() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_CreateOrUpdateBuild.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_CreateOrUpdateBuild.json
 func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateBuild(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<build-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"mybuild",
 		armappplatform.Build{
 			Properties: &armappplatform.BuildProperties{
-				AgentPool: to.Ptr("<agent-pool>"),
-				Builder:   to.Ptr("<builder>"),
+				AgentPool: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/agentPools/default"),
+				Builder:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/buildServices/default/builders/default"),
 				Env: map[string]*string{
 					"environmentVariable": to.Ptr("test"),
 				},
-				RelativePath: to.Ptr("<relative-path>"),
+				RelativePath: to.Ptr("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855-20210601-3ed9f4a2-986b-4bbd-b833-a42dccb2f777"),
 			},
 		},
 		nil)
@@ -153,27 +151,26 @@ func ExampleBuildServiceClient_CreateOrUpdateBuild() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListBuildResults.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListBuildResults.json
 func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBuildResultsPager("<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<build-name>",
+	pager := client.NewListBuildResultsPager("myResourceGroup",
+		"myservice",
+		"default",
+		"mybuild",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -182,23 +179,23 @@ func ExampleBuildServiceClient_NewListBuildResultsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetBuildResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetBuildResult.json
 func ExampleBuildServiceClient_GetBuildResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuildResult(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<build-name>",
-		"<build-result-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"mybuild",
+		"123",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -207,23 +204,23 @@ func ExampleBuildServiceClient_GetBuildResult() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetBuildResultLog.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetBuildResultLog.json
 func ExampleBuildServiceClient_GetBuildResultLog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBuildResultLog(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<build-name>",
-		"<build-result-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"mybuild",
+		"123",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -232,21 +229,21 @@ func ExampleBuildServiceClient_GetBuildResultLog() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListSupportedBuildpacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListSupportedBuildpacks.json
 func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSupportedBuildpacks(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -255,22 +252,22 @@ func ExampleBuildServiceClient_ListSupportedBuildpacks() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetSupportedBuildpack.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetSupportedBuildpack.json
 func ExampleBuildServiceClient_GetSupportedBuildpack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSupportedBuildpack(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<buildpack-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"tanzu-buildpacks-java-azure",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -279,21 +276,21 @@ func ExampleBuildServiceClient_GetSupportedBuildpack() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_ListSupportedStacks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_ListSupportedStacks.json
 func ExampleBuildServiceClient_ListSupportedStacks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSupportedStacks(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -302,22 +299,22 @@ func ExampleBuildServiceClient_ListSupportedStacks() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/BuildService_GetSupportedStack.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/BuildService_GetSupportedStack.json
 func ExampleBuildServiceClient_GetSupportedStack() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewBuildServiceClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSupportedStack(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<build-service-name>",
-		"<stack-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
+		"io.buildpacks.stacks.bionic-base",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -1,5 +1,267 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*DeploymentsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStopResponse], error)` to `(*runtime.Poller[DeploymentsClientStopResponse], error)`
+- Function `*ConfigurationServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientDeleteResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientDeleteResponse], error)`
+- Function `*ConfigServersClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientValidateResponse], error)` to `(*runtime.Poller[ConfigServersClientValidateResponse], error)`
+- Function `*AppsClient.BeginSetActiveDeployments` return value(s) have been changed from `(*armruntime.Poller[AppsClientSetActiveDeploymentsResponse], error)` to `(*runtime.Poller[AppsClientSetActiveDeploymentsResponse], error)`
+- Function `*ConfigServersClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientUpdatePutResponse], error)` to `(*runtime.Poller[ConfigServersClientUpdatePutResponse], error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePatch` return value(s) have been changed from `(*armruntime.Poller[MonitoringSettingsClientUpdatePatchResponse], error)` to `(*runtime.Poller[MonitoringSettingsClientUpdatePatchResponse], error)`
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AppsClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error)`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AppsClientDeleteResponse], error)` to `(*runtime.Poller[AppsClientDeleteResponse], error)`
+- Function `*BindingsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[BindingsClientUpdateResponse], error)` to `(*runtime.Poller[BindingsClientUpdateResponse], error)`
+- Function `*BuildpackBindingClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BuildpackBindingClientDeleteResponse], error)` to `(*runtime.Poller[BuildpackBindingClientDeleteResponse], error)`
+- Function `*ServiceRegistriesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceRegistriesClientDeleteResponse], error)` to `(*runtime.Poller[ServiceRegistriesClientDeleteResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientUpdateResponse], error)` to `(*runtime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*ConfigurationServicesClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationServicesClientValidateResponse], error)` to `(*runtime.Poller[ConfigurationServicesClientValidateResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateHeapDump` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientGenerateHeapDumpResponse], error)` to `(*runtime.Poller[DeploymentsClientGenerateHeapDumpResponse], error)`
+- Function `*BindingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BindingsClientDeleteResponse], error)` to `(*runtime.Poller[BindingsClientDeleteResponse], error)`
+- Function `*ServiceRegistriesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error)`
+- Function `*MonitoringSettingsClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[MonitoringSettingsClientUpdatePutResponse], error)` to `(*runtime.Poller[MonitoringSettingsClientUpdatePutResponse], error)`
+- Function `*BuildServiceBuilderClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BuildServiceBuilderClientCreateOrUpdateResponse], error)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CertificatesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CertificatesClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*BuildServiceBuilderClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BuildServiceBuilderClientDeleteResponse], error)` to `(*runtime.Poller[BuildServiceBuilderClientDeleteResponse], error)`
+- Function `*BuildpackBindingClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BuildpackBindingClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BuildpackBindingClientCreateOrUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientRestartResponse], error)` to `(*runtime.Poller[DeploymentsClientRestartResponse], error)`
+- Function `*DeploymentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientDeleteResponse], error)` to `(*runtime.Poller[DeploymentsClientDeleteResponse], error)`
+- Function `*CustomDomainsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientDeleteResponse], error)` to `(*runtime.Poller[CustomDomainsClientDeleteResponse], error)`
+- Function `*DeploymentsClient.BeginStartJFR` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStartJFRResponse], error)` to `(*runtime.Poller[DeploymentsClientStartJFRResponse], error)`
+- Function `*CustomDomainsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientUpdateResponse], error)` to `(*runtime.Poller[CustomDomainsClientUpdateResponse], error)`
+- Function `*BuildServiceAgentPoolClient.BeginUpdatePut` return value(s) have been changed from `(*armruntime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error)` to `(*runtime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error)`
+- Function `*DeploymentsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientStartResponse], error)` to `(*runtime.Poller[DeploymentsClientStartResponse], error)`
+- Function `*ConfigServersClient.BeginUpdatePatch` return value(s) have been changed from `(*armruntime.Poller[ConfigServersClientUpdatePatchResponse], error)` to `(*runtime.Poller[ConfigServersClientUpdatePatchResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*CustomDomainsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- Function `*BindingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BindingsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BindingsClientCreateOrUpdateResponse], error)`
+- Function `*CertificatesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CertificatesClientDeleteResponse], error)` to `(*runtime.Poller[CertificatesClientDeleteResponse], error)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientUpdateResponse], error)` to `(*runtime.Poller[AppsClientUpdateResponse], error)`
+- Function `*DeploymentsClient.BeginGenerateThreadDump` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientGenerateThreadDumpResponse], error)` to `(*runtime.Poller[DeploymentsClientGenerateThreadDumpResponse], error)`
+- Function `*DeploymentsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DeploymentsClientUpdateResponse], error)` to `(*runtime.Poller[DeploymentsClientUpdateResponse], error)`
+- Const `StorageTypeStorageAccount` has been removed
+- Const `APIPortalProvisioningStateCreating` has been removed
+- Const `GatewayProvisioningStateUpdating` has been removed
+- Const `APIPortalProvisioningStateDeleting` has been removed
+- Const `PowerStateStopped` has been removed
+- Const `APIPortalProvisioningStateUpdating` has been removed
+- Const `APIPortalProvisioningStateFailed` has been removed
+- Const `GatewayProvisioningStateSucceeded` has been removed
+- Const `APIPortalProvisioningStateSucceeded` has been removed
+- Const `GatewayProvisioningStateFailed` has been removed
+- Const `GatewayProvisioningStateDeleting` has been removed
+- Const `PowerStateRunning` has been removed
+- Const `TypeAzureFileVolume` has been removed
+- Const `GatewayProvisioningStateCreating` has been removed
+- Function `*APIPortalsClient.BeginCreateOrUpdate` has been removed
+- Function `PossibleStorageTypeValues` has been removed
+- Function `ResourceSKUZoneDetails.MarshalJSON` has been removed
+- Function `*CustomPersistentDiskResource.UnmarshalJSON` has been removed
+- Function `PossibleGatewayProvisioningStateValues` has been removed
+- Function `*APIPortalsClient.NewListPager` has been removed
+- Function `*APIPortalsClient.ValidateDomain` has been removed
+- Function `PossibleTypeValues` has been removed
+- Function `*GatewayRouteConfigsClient.BeginCreateOrUpdate` has been removed
+- Function `*GatewayCustomDomainsClient.BeginDelete` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `*APIPortalCustomDomainsClient.BeginCreateOrUpdate` has been removed
+- Function `*AzureFileVolume.UnmarshalJSON` has been removed
+- Function `StorageResourceCollection.MarshalJSON` has been removed
+- Function `*GatewayRouteConfigsClient.NewListPager` has been removed
+- Function `*StoragesClient.NewListPager` has been removed
+- Function `BuildServiceAgentPoolResourceCollection.MarshalJSON` has been removed
+- Function `*APIPortalsClient.BeginDelete` has been removed
+- Function `*CustomContainerUserSourceInfo.GetUserSourceInfo` has been removed
+- Function `SupportedBuildpacksCollection.MarshalJSON` has been removed
+- Function `BuildpackBindingResourceCollection.MarshalJSON` has been removed
+- Function `*APIPortalCustomDomainsClient.NewListPager` has been removed
+- Function `*StorageProperties.GetStorageProperties` has been removed
+- Function `GatewayProperties.MarshalJSON` has been removed
+- Function `*GatewaysClient.BeginDelete` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ConfigServerSettingsValidateResult.MarshalJSON` has been removed
+- Function `ConfigurationServiceGitPropertyValidateResult.MarshalJSON` has been removed
+- Function `GatewayOperatorProperties.MarshalJSON` has been removed
+- Function `NewAPIPortalsClient` has been removed
+- Function `ServiceResourceList.MarshalJSON` has been removed
+- Function `ManagedIdentityProperties.MarshalJSON` has been removed
+- Function `CustomPersistentDiskResource.MarshalJSON` has been removed
+- Function `BuildResultCollection.MarshalJSON` has been removed
+- Function `*GatewaysClient.NewListPager` has been removed
+- Function `PossiblePowerStateValues` has been removed
+- Function `*ServicesClient.BeginStop` has been removed
+- Function `*GatewaysClient.BeginCreateOrUpdate` has been removed
+- Function `*StoragesClient.BeginDelete` has been removed
+- Function `PossibleAPIPortalProvisioningStateValues` has been removed
+- Function `NewGatewayCustomDomainsClient` has been removed
+- Function `GatewayRouteConfigResourceCollection.MarshalJSON` has been removed
+- Function `ServiceRegistryResourceCollection.MarshalJSON` has been removed
+- Function `*GatewayCustomDomainsClient.Get` has been removed
+- Function `*GatewayCustomDomainsClient.NewListPager` has been removed
+- Function `ResourceSKURestrictionInfo.MarshalJSON` has been removed
+- Function `AppResourceCollection.MarshalJSON` has been removed
+- Function `BuildCollection.MarshalJSON` has been removed
+- Function `ConfigServerSettingsErrorRecord.MarshalJSON` has been removed
+- Function `*GatewayCustomDomainsClient.BeginCreateOrUpdate` has been removed
+- Function `ResourceSKUCollection.MarshalJSON` has been removed
+- Function `APIPortalCustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `*GatewaysClient.ValidateDomain` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+- Function `SsoProperties.MarshalJSON` has been removed
+- Function `APIPortalResourceCollection.MarshalJSON` has been removed
+- Function `*CustomContainerUserSourceInfo.UnmarshalJSON` has been removed
+- Function `NewGatewayRouteConfigsClient` has been removed
+- Function `AzureFileVolume.MarshalJSON` has been removed
+- Function `*StorageResource.UnmarshalJSON` has been removed
+- Function `*StorageAccount.UnmarshalJSON` has been removed
+- Function `GatewayRouteConfigProperties.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `BuilderResourceCollection.MarshalJSON` has been removed
+- Function `APIPortalProperties.MarshalJSON` has been removed
+- Function `NewGatewaysClient` has been removed
+- Function `*APIPortalsClient.Get` has been removed
+- Function `StorageAccount.MarshalJSON` has been removed
+- Function `*ServicesClient.BeginStart` has been removed
+- Function `GatewayResourceCollection.MarshalJSON` has been removed
+- Function `NewStoragesClient` has been removed
+- Function `CustomContainerUserSourceInfo.MarshalJSON` has been removed
+- Function `SupportedStacksCollection.MarshalJSON` has been removed
+- Function `*GatewaysClient.Get` has been removed
+- Function `CertificateResourceCollection.MarshalJSON` has been removed
+- Function `*StoragesClient.BeginCreateOrUpdate` has been removed
+- Function `CustomPersistentDiskProperties.MarshalJSON` has been removed
+- Function `GatewayCustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `CustomContainer.MarshalJSON` has been removed
+- Function `*APIPortalCustomDomainsClient.BeginDelete` has been removed
+- Function `*StoragesClient.Get` has been removed
+- Function `*AzureFileVolume.GetCustomPersistentDiskProperties` has been removed
+- Function `*GatewayRouteConfigsClient.Get` has been removed
+- Function `AvailableRuntimeVersions.MarshalJSON` has been removed
+- Function `ValidationMessages.MarshalJSON` has been removed
+- Function `*GatewayRouteConfigsClient.BeginDelete` has been removed
+- Function `BuildServiceCollection.MarshalJSON` has been removed
+- Function `ResourceSKURestrictions.MarshalJSON` has been removed
+- Function `BindingResourceCollection.MarshalJSON` has been removed
+- Function `GatewayAPIRoute.MarshalJSON` has been removed
+- Function `StorageResource.MarshalJSON` has been removed
+- Function `*CustomPersistentDiskProperties.GetCustomPersistentDiskProperties` has been removed
+- Function `GatewayCorsProperties.MarshalJSON` has been removed
+- Function `*StorageAccount.GetStorageProperties` has been removed
+- Function `ResourceSKU.MarshalJSON` has been removed
+- Function `CustomDomainResourceCollection.MarshalJSON` has been removed
+- Function `*APIPortalCustomDomainsClient.Get` has been removed
+- Function `AvailableOperations.MarshalJSON` has been removed
+- Function `DeploymentResourceCollection.MarshalJSON` has been removed
+- Function `NewAPIPortalCustomDomainsClient` has been removed
+- Function `ConfigurationServiceResourceCollection.MarshalJSON` has been removed
+- Struct `APIPortalCustomDomainProperties` has been removed
+- Struct `APIPortalCustomDomainResource` has been removed
+- Struct `APIPortalCustomDomainResourceCollection` has been removed
+- Struct `APIPortalCustomDomainsClient` has been removed
+- Struct `APIPortalCustomDomainsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `APIPortalCustomDomainsClientBeginDeleteOptions` has been removed
+- Struct `APIPortalCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Struct `APIPortalCustomDomainsClientDeleteResponse` has been removed
+- Struct `APIPortalCustomDomainsClientGetOptions` has been removed
+- Struct `APIPortalCustomDomainsClientGetResponse` has been removed
+- Struct `APIPortalCustomDomainsClientListOptions` has been removed
+- Struct `APIPortalCustomDomainsClientListResponse` has been removed
+- Struct `APIPortalInstance` has been removed
+- Struct `APIPortalProperties` has been removed
+- Struct `APIPortalResource` has been removed
+- Struct `APIPortalResourceCollection` has been removed
+- Struct `APIPortalResourceRequests` has been removed
+- Struct `APIPortalsClient` has been removed
+- Struct `APIPortalsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `APIPortalsClientBeginDeleteOptions` has been removed
+- Struct `APIPortalsClientCreateOrUpdateResponse` has been removed
+- Struct `APIPortalsClientDeleteResponse` has been removed
+- Struct `APIPortalsClientGetOptions` has been removed
+- Struct `APIPortalsClientGetResponse` has been removed
+- Struct `APIPortalsClientListOptions` has been removed
+- Struct `APIPortalsClientListResponse` has been removed
+- Struct `APIPortalsClientValidateDomainOptions` has been removed
+- Struct `APIPortalsClientValidateDomainResponse` has been removed
+- Struct `AzureFileVolume` has been removed
+- Struct `ContainerProbeSettings` has been removed
+- Struct `CustomContainer` has been removed
+- Struct `CustomContainerUserSourceInfo` has been removed
+- Struct `CustomPersistentDiskProperties` has been removed
+- Struct `CustomPersistentDiskResource` has been removed
+- Struct `GatewayAPIMetadataProperties` has been removed
+- Struct `GatewayAPIRoute` has been removed
+- Struct `GatewayCorsProperties` has been removed
+- Struct `GatewayCustomDomainProperties` has been removed
+- Struct `GatewayCustomDomainResource` has been removed
+- Struct `GatewayCustomDomainResourceCollection` has been removed
+- Struct `GatewayCustomDomainsClient` has been removed
+- Struct `GatewayCustomDomainsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `GatewayCustomDomainsClientBeginDeleteOptions` has been removed
+- Struct `GatewayCustomDomainsClientCreateOrUpdateResponse` has been removed
+- Struct `GatewayCustomDomainsClientDeleteResponse` has been removed
+- Struct `GatewayCustomDomainsClientGetOptions` has been removed
+- Struct `GatewayCustomDomainsClientGetResponse` has been removed
+- Struct `GatewayCustomDomainsClientListOptions` has been removed
+- Struct `GatewayCustomDomainsClientListResponse` has been removed
+- Struct `GatewayInstance` has been removed
+- Struct `GatewayOperatorProperties` has been removed
+- Struct `GatewayOperatorResourceRequests` has been removed
+- Struct `GatewayProperties` has been removed
+- Struct `GatewayResource` has been removed
+- Struct `GatewayResourceCollection` has been removed
+- Struct `GatewayResourceRequests` has been removed
+- Struct `GatewayRouteConfigProperties` has been removed
+- Struct `GatewayRouteConfigResource` has been removed
+- Struct `GatewayRouteConfigResourceCollection` has been removed
+- Struct `GatewayRouteConfigsClient` has been removed
+- Struct `GatewayRouteConfigsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `GatewayRouteConfigsClientBeginDeleteOptions` has been removed
+- Struct `GatewayRouteConfigsClientCreateOrUpdateResponse` has been removed
+- Struct `GatewayRouteConfigsClientDeleteResponse` has been removed
+- Struct `GatewayRouteConfigsClientGetOptions` has been removed
+- Struct `GatewayRouteConfigsClientGetResponse` has been removed
+- Struct `GatewayRouteConfigsClientListOptions` has been removed
+- Struct `GatewayRouteConfigsClientListResponse` has been removed
+- Struct `GatewaysClient` has been removed
+- Struct `GatewaysClientBeginCreateOrUpdateOptions` has been removed
+- Struct `GatewaysClientBeginDeleteOptions` has been removed
+- Struct `GatewaysClientCreateOrUpdateResponse` has been removed
+- Struct `GatewaysClientDeleteResponse` has been removed
+- Struct `GatewaysClientGetOptions` has been removed
+- Struct `GatewaysClientGetResponse` has been removed
+- Struct `GatewaysClientListOptions` has been removed
+- Struct `GatewaysClientListResponse` has been removed
+- Struct `GatewaysClientValidateDomainOptions` has been removed
+- Struct `GatewaysClientValidateDomainResponse` has been removed
+- Struct `ImageRegistryCredential` has been removed
+- Struct `ServicesClientBeginStartOptions` has been removed
+- Struct `ServicesClientBeginStopOptions` has been removed
+- Struct `ServicesClientStartResponse` has been removed
+- Struct `ServicesClientStopResponse` has been removed
+- Struct `SsoProperties` has been removed
+- Struct `StorageAccount` has been removed
+- Struct `StorageProperties` has been removed
+- Struct `StorageResource` has been removed
+- Struct `StorageResourceCollection` has been removed
+- Struct `StoragesClient` has been removed
+- Struct `StoragesClientBeginCreateOrUpdateOptions` has been removed
+- Struct `StoragesClientBeginDeleteOptions` has been removed
+- Struct `StoragesClientCreateOrUpdateResponse` has been removed
+- Struct `StoragesClientDeleteResponse` has been removed
+- Struct `StoragesClientGetOptions` has been removed
+- Struct `StoragesClientGetResponse` has been removed
+- Struct `StoragesClientListOptions` has been removed
+- Struct `StoragesClientListResponse` has been removed
+- Struct `UserAssignedManagedIdentity` has been removed
+- Field `PowerState` of struct `ClusterResourceProperties` has been removed
+- Field `ContainerProbeSettings` of struct `DeploymentSettings` has been removed
+- Field `UserAssignedIdentities` of struct `ManagedIdentityProperties` has been removed
+- Field `CustomPersistentDisks` of struct `AppResourceProperties` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

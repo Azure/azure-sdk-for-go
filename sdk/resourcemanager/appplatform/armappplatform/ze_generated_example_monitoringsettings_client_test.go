@@ -12,27 +12,25 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/MonitoringSettings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/MonitoringSettings_Get.json
 func ExampleMonitoringSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewMonitoringSettingsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewMonitoringSettingsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,32 +39,32 @@ func ExampleMonitoringSettingsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/MonitoringSettings_UpdatePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/MonitoringSettings_UpdatePut.json
 func ExampleMonitoringSettingsClient_BeginUpdatePut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewMonitoringSettingsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewMonitoringSettingsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdatePut(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		armappplatform.MonitoringSettingResource{
 			Properties: &armappplatform.MonitoringSettingProperties{
-				AppInsightsInstrumentationKey: to.Ptr("<app-insights-instrumentation-key>"),
+				AppInsightsInstrumentationKey: to.Ptr("00000000-0000-0000-0000-000000000000"),
 				AppInsightsSamplingRate:       to.Ptr[float64](10),
 				TraceEnabled:                  to.Ptr(true),
 			},
 		},
-		&armappplatform.MonitoringSettingsClientBeginUpdatePutOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -74,32 +72,32 @@ func ExampleMonitoringSettingsClient_BeginUpdatePut() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/MonitoringSettings_UpdatePatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/MonitoringSettings_UpdatePatch.json
 func ExampleMonitoringSettingsClient_BeginUpdatePatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewMonitoringSettingsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewMonitoringSettingsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdatePatch(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"myResourceGroup",
+		"myservice",
 		armappplatform.MonitoringSettingResource{
 			Properties: &armappplatform.MonitoringSettingProperties{
-				AppInsightsInstrumentationKey: to.Ptr("<app-insights-instrumentation-key>"),
+				AppInsightsInstrumentationKey: to.Ptr("00000000-0000-0000-0000-000000000000"),
 				AppInsightsSamplingRate:       to.Ptr[float64](10),
 				TraceEnabled:                  to.Ptr(true),
 			},
 		},
-		&armappplatform.MonitoringSettingsClientBeginUpdatePatchOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

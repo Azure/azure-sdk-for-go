@@ -39,7 +39,7 @@ func NewBuildServiceAgentPoolClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewBuildServiceAgentPoolClient(subscriptionID string, credential azcore.Tok
 
 // Get - Get build service agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -107,9 +108,9 @@ func (client *BuildServiceAgentPoolClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -124,6 +125,7 @@ func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response
 
 // NewListPager - List build service agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -131,7 +133,7 @@ func (client *BuildServiceAgentPoolClient) getHandleResponse(resp *http.Response
 // options - BuildServiceAgentPoolClientListOptions contains the optional parameters for the BuildServiceAgentPoolClient.List
 // method.
 func (client *BuildServiceAgentPoolClient) NewListPager(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceAgentPoolClientListOptions) *runtime.Pager[BuildServiceAgentPoolClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BuildServiceAgentPoolClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BuildServiceAgentPoolClientListResponse]{
 		More: func(page BuildServiceAgentPoolClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -182,9 +184,9 @@ func (client *BuildServiceAgentPoolClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -199,6 +201,7 @@ func (client *BuildServiceAgentPoolClient) listHandleResponse(resp *http.Respons
 
 // BeginUpdatePut - Create or update build service agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -207,22 +210,23 @@ func (client *BuildServiceAgentPoolClient) listHandleResponse(resp *http.Respons
 // agentPoolResource - Parameters for the update operation
 // options - BuildServiceAgentPoolClientBeginUpdatePutOptions contains the optional parameters for the BuildServiceAgentPoolClient.BeginUpdatePut
 // method.
-func (client *BuildServiceAgentPoolClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource BuildServiceAgentPoolResource, options *BuildServiceAgentPoolClientBeginUpdatePutOptions) (*armruntime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error) {
+func (client *BuildServiceAgentPoolClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource BuildServiceAgentPoolResource, options *BuildServiceAgentPoolClientBeginUpdatePutOptions) (*runtime.Poller[BuildServiceAgentPoolClientUpdatePutResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updatePut(ctx, resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BuildServiceAgentPoolClientUpdatePutResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BuildServiceAgentPoolClientUpdatePutResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BuildServiceAgentPoolClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BuildServiceAgentPoolClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UpdatePut - Create or update build service agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 func (client *BuildServiceAgentPoolClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, buildServiceName string, agentPoolName string, agentPoolResource BuildServiceAgentPoolResource, options *BuildServiceAgentPoolClientBeginUpdatePutOptions) (*http.Response, error) {
 	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, options)
 	if err != nil {
@@ -266,8 +270,8 @@ func (client *BuildServiceAgentPoolClient) updatePutCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, agentPoolResource)
 }

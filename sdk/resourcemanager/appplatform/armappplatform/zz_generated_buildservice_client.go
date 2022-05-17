@@ -39,7 +39,7 @@ func NewBuildServiceClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewBuildServiceClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdateBuild - Create or update a KPack build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -108,9 +109,9 @@ func (client *BuildServiceClient) createOrUpdateBuildCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, buildParam)
 }
 
@@ -125,6 +126,7 @@ func (client *BuildServiceClient) createOrUpdateBuildHandleResponse(resp *http.R
 
 // GetBuild - Get a KPack build.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -174,9 +176,9 @@ func (client *BuildServiceClient) getBuildCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -191,6 +193,7 @@ func (client *BuildServiceClient) getBuildHandleResponse(resp *http.Response) (B
 
 // GetBuildResult - Get a KPack build result.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -246,9 +249,9 @@ func (client *BuildServiceClient) getBuildResultCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,6 +266,7 @@ func (client *BuildServiceClient) getBuildResultHandleResponse(resp *http.Respon
 
 // GetBuildResultLog - Get a KPack build result log download URL.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -318,9 +322,9 @@ func (client *BuildServiceClient) getBuildResultLogCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -335,6 +339,7 @@ func (client *BuildServiceClient) getBuildResultLogHandleResponse(resp *http.Res
 
 // GetBuildService - Get a build service resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -380,9 +385,9 @@ func (client *BuildServiceClient) getBuildServiceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -397,6 +402,7 @@ func (client *BuildServiceClient) getBuildServiceHandleResponse(resp *http.Respo
 
 // GetResourceUploadURL - Get an resource upload URL for build service, which may be artifacts or source archive.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -442,9 +448,9 @@ func (client *BuildServiceClient) getResourceUploadURLCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -459,6 +465,7 @@ func (client *BuildServiceClient) getResourceUploadURLHandleResponse(resp *http.
 
 // GetSupportedBuildpack - Get the supported buildpack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -509,9 +516,9 @@ func (client *BuildServiceClient) getSupportedBuildpackCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -526,6 +533,7 @@ func (client *BuildServiceClient) getSupportedBuildpackHandleResponse(resp *http
 
 // GetSupportedStack - Get the supported stack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -576,9 +584,9 @@ func (client *BuildServiceClient) getSupportedStackCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -593,6 +601,7 @@ func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Res
 
 // NewListBuildResultsPager - List KPack build results.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -601,7 +610,7 @@ func (client *BuildServiceClient) getSupportedStackHandleResponse(resp *http.Res
 // options - BuildServiceClientListBuildResultsOptions contains the optional parameters for the BuildServiceClient.ListBuildResults
 // method.
 func (client *BuildServiceClient) NewListBuildResultsPager(resourceGroupName string, serviceName string, buildServiceName string, buildName string, options *BuildServiceClientListBuildResultsOptions) *runtime.Pager[BuildServiceClientListBuildResultsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildResultsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BuildServiceClientListBuildResultsResponse]{
 		More: func(page BuildServiceClientListBuildResultsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -656,9 +665,9 @@ func (client *BuildServiceClient) listBuildResultsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -673,13 +682,14 @@ func (client *BuildServiceClient) listBuildResultsHandleResponse(resp *http.Resp
 
 // NewListBuildServicesPager - List build services resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - BuildServiceClientListBuildServicesOptions contains the optional parameters for the BuildServiceClient.ListBuildServices
 // method.
 func (client *BuildServiceClient) NewListBuildServicesPager(resourceGroupName string, serviceName string, options *BuildServiceClientListBuildServicesOptions) *runtime.Pager[BuildServiceClientListBuildServicesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildServicesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BuildServiceClientListBuildServicesResponse]{
 		More: func(page BuildServiceClientListBuildServicesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -726,9 +736,9 @@ func (client *BuildServiceClient) listBuildServicesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -743,13 +753,14 @@ func (client *BuildServiceClient) listBuildServicesHandleResponse(resp *http.Res
 
 // NewListBuildsPager - List KPack builds.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // buildServiceName - The name of the build service resource.
 // options - BuildServiceClientListBuildsOptions contains the optional parameters for the BuildServiceClient.ListBuilds method.
 func (client *BuildServiceClient) NewListBuildsPager(resourceGroupName string, serviceName string, buildServiceName string, options *BuildServiceClientListBuildsOptions) *runtime.Pager[BuildServiceClientListBuildsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BuildServiceClientListBuildsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BuildServiceClientListBuildsResponse]{
 		More: func(page BuildServiceClientListBuildsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -800,9 +811,9 @@ func (client *BuildServiceClient) listBuildsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -817,6 +828,7 @@ func (client *BuildServiceClient) listBuildsHandleResponse(resp *http.Response) 
 
 // ListSupportedBuildpacks - Get all supported buildpacks.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -862,9 +874,9 @@ func (client *BuildServiceClient) listSupportedBuildpacksCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -879,6 +891,7 @@ func (client *BuildServiceClient) listSupportedBuildpacksHandleResponse(resp *ht
 
 // ListSupportedStacks - Get all supported stacks.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -924,9 +937,9 @@ func (client *BuildServiceClient) listSupportedStacksCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

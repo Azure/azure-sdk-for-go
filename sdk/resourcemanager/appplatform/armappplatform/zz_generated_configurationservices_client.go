@@ -39,7 +39,7 @@ func NewConfigurationServicesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewConfigurationServicesClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrUpdate - Create the default Application Configuration Service or update the existing Application Configuration
 // Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -65,23 +66,24 @@ func NewConfigurationServicesClient(subscriptionID string, credential azcore.Tok
 // configurationServiceResource - Parameters for the update operation
 // options - ConfigurationServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigurationServicesClient.BeginCreateOrUpdate
 // method.
-func (client *ConfigurationServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, configurationServiceResource ConfigurationServiceResource, options *ConfigurationServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error) {
+func (client *ConfigurationServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, configurationServiceResource ConfigurationServiceResource, options *ConfigurationServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ConfigurationServicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigurationServicesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ConfigurationServicesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ConfigurationServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ConfigurationServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create the default Application Configuration Service or update the existing Application Configuration
 // Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 func (client *ConfigurationServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, configurationServiceResource ConfigurationServiceResource, options *ConfigurationServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, options)
 	if err != nil {
@@ -121,36 +123,38 @@ func (client *ConfigurationServicesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, configurationServiceResource)
 }
 
 // BeginDelete - Disable the default Application Configuration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // configurationServiceName - The name of Application Configuration Service.
 // options - ConfigurationServicesClientBeginDeleteOptions contains the optional parameters for the ConfigurationServicesClient.BeginDelete
 // method.
-func (client *ConfigurationServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, options *ConfigurationServicesClientBeginDeleteOptions) (*armruntime.Poller[ConfigurationServicesClientDeleteResponse], error) {
+func (client *ConfigurationServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, options *ConfigurationServicesClientBeginDeleteOptions) (*runtime.Poller[ConfigurationServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, configurationServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigurationServicesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ConfigurationServicesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ConfigurationServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ConfigurationServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Disable the default Application Configuration Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 func (client *ConfigurationServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, options *ConfigurationServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, configurationServiceName, options)
 	if err != nil {
@@ -190,14 +194,15 @@ func (client *ConfigurationServicesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the Application Configuration Service and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -243,9 +248,9 @@ func (client *ConfigurationServicesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -260,13 +265,14 @@ func (client *ConfigurationServicesClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Handles requests to list all resources in a Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
 // options - ConfigurationServicesClientListOptions contains the optional parameters for the ConfigurationServicesClient.List
 // method.
 func (client *ConfigurationServicesClient) NewListPager(resourceGroupName string, serviceName string, options *ConfigurationServicesClientListOptions) *runtime.Pager[ConfigurationServicesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationServicesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationServicesClientListResponse]{
 		More: func(page ConfigurationServicesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -313,9 +319,9 @@ func (client *ConfigurationServicesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -330,6 +336,7 @@ func (client *ConfigurationServicesClient) listHandleResponse(resp *http.Respons
 
 // BeginValidate - Check if the Application Configuration Service settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serviceName - The name of the Service resource.
@@ -337,22 +344,23 @@ func (client *ConfigurationServicesClient) listHandleResponse(resp *http.Respons
 // settings - Application Configuration Service settings to be validated
 // options - ConfigurationServicesClientBeginValidateOptions contains the optional parameters for the ConfigurationServicesClient.BeginValidate
 // method.
-func (client *ConfigurationServicesClient) BeginValidate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, settings ConfigurationServiceSettings, options *ConfigurationServicesClientBeginValidateOptions) (*armruntime.Poller[ConfigurationServicesClientValidateResponse], error) {
+func (client *ConfigurationServicesClient) BeginValidate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, settings ConfigurationServiceSettings, options *ConfigurationServicesClientBeginValidateOptions) (*runtime.Poller[ConfigurationServicesClientValidateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.validate(ctx, resourceGroupName, serviceName, configurationServiceName, settings, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ConfigurationServicesClientValidateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ConfigurationServicesClientValidateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ConfigurationServicesClientValidateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ConfigurationServicesClientValidateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Validate - Check if the Application Configuration Service settings are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 func (client *ConfigurationServicesClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configurationServiceName string, settings ConfigurationServiceSettings, options *ConfigurationServicesClientBeginValidateOptions) (*http.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, serviceName, configurationServiceName, settings, options)
 	if err != nil {
@@ -392,8 +400,8 @@ func (client *ConfigurationServicesClient) validateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, settings)
 }

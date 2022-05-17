@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
@@ -26,18 +24,17 @@ func ExampleGlobalReachConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewGlobalReachConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewGlobalReachConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<private-cloud-name>",
+	pager := client.NewListPager("group1",
+		"cloud1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleGlobalReachConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewGlobalReachConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewGlobalReachConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<global-reach-connection-name>",
+		"group1",
+		"cloud1",
+		"connection1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,25 +73,25 @@ func ExampleGlobalReachConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewGlobalReachConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewGlobalReachConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<global-reach-connection-name>",
+		"group1",
+		"cloud1",
+		"connection1",
 		armavs.GlobalReachConnection{
 			Properties: &armavs.GlobalReachConnectionProperties{
-				AuthorizationKey:        to.Ptr("<authorization-key>"),
-				PeerExpressRouteCircuit: to.Ptr("<peer-express-route-circuit>"),
+				AuthorizationKey:        to.Ptr("01010101-0101-0101-0101-010101010101"),
+				PeerExpressRouteCircuit: to.Ptr("/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/mygroup/providers/Microsoft.Network/expressRouteCircuits/mypeer"),
 			},
 		},
-		&armavs.GlobalReachConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,19 +106,19 @@ func ExampleGlobalReachConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armavs.NewGlobalReachConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armavs.NewGlobalReachConnectionsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<private-cloud-name>",
-		"<global-reach-connection-name>",
-		&armavs.GlobalReachConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"group1",
+		"cloud1",
+		"connection1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

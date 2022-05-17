@@ -1,5 +1,81 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDNSZone` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreateDNSZoneResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreateDNSZoneResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdatePortMirroring` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdatePortMirroringResponse], error)`
+- Function `*CloudLinksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CloudLinksClientDeleteResponse], error)` to `(*runtime.Poller[CloudLinksClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateDhcp` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdateDhcpResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateVMGroup` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdateVMGroupResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteDNSService` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeleteDNSServiceResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeleteDNSServiceResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDhcp` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreateDhcpResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreateDhcpResponse], error)`
+- Function `*CloudLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CloudLinksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CloudLinksClientCreateOrUpdateResponse], error)`
+- Function `*ScriptExecutionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ScriptExecutionsClientDeleteResponse], error)` to `(*runtime.Poller[ScriptExecutionsClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateSegments` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreateSegmentsResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreateSegmentsResponse], error)`
+- Function `*AuthorizationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AuthorizationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AuthorizationsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestrictMovement` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRestrictMovementResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRestrictMovementResponse], error)`
+- Function `*AddonsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AddonsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AddonsClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateVMGroup` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreateVMGroupResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreateVMGroupResponse], error)`
+- Function `*PlacementPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PlacementPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[PlacementPoliciesClientDeleteResponse], error)`
+- Function `*PlacementPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PlacementPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PlacementPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*DatastoresClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DatastoresClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DatastoresClientCreateOrUpdateResponse], error)`
+- Function `*PrivateCloudsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateCloudsClientUpdateResponse], error)` to `(*runtime.Poller[PrivateCloudsClientUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteDNSZone` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeleteDNSZoneResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeleteDNSZoneResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeletePublicIP` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeletePublicIPResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeletePublicIPResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreateDNSService` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreateDNSServiceResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreateDNSServiceResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteSegment` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeleteSegmentResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeleteSegmentResponse], error)`
+- Function `*DatastoresClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatastoresClientDeleteResponse], error)` to `(*runtime.Poller[DatastoresClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteDhcp` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeleteDhcpResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeleteDhcpResponse], error)`
+- Function `*GlobalReachConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[GlobalReachConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[GlobalReachConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateCloudsClient.BeginRotateNsxtPassword` return value(s) have been changed from `(*armruntime.Poller[PrivateCloudsClientRotateNsxtPasswordResponse], error)` to `(*runtime.Poller[PrivateCloudsClientRotateNsxtPasswordResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreatePublicIP` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreatePublicIPResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreatePublicIPResponse], error)`
+- Function `*PrivateCloudsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateCloudsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateCloudsClientCreateOrUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateDNSService` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdateDNSServiceResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeletePortMirroring` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeletePortMirroringResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeletePortMirroringResponse], error)`
+- Function `*WorkloadNetworksClient.BeginDeleteVMGroup` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientDeleteVMGroupResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientDeleteVMGroupResponse], error)`
+- Function `*PrivateCloudsClient.BeginRotateVcenterPassword` return value(s) have been changed from `(*armruntime.Poller[PrivateCloudsClientRotateVcenterPasswordResponse], error)` to `(*runtime.Poller[PrivateCloudsClientRotateVcenterPasswordResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateSegments` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdateSegmentsResponse], error)`
+- Function `*AddonsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AddonsClientDeleteResponse], error)` to `(*runtime.Poller[AddonsClientDeleteResponse], error)`
+- Function `*PrivateCloudsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateCloudsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateCloudsClientDeleteResponse], error)`
+- Function `*GlobalReachConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[GlobalReachConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[GlobalReachConnectionsClientDeleteResponse], error)`
+- Function `*PlacementPoliciesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PlacementPoliciesClientUpdateResponse], error)` to `(*runtime.Poller[PlacementPoliciesClientUpdateResponse], error)`
+- Function `*WorkloadNetworksClient.BeginUpdateDNSZone` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientUpdateDNSZoneResponse], error)`
+- Function `*AuthorizationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AuthorizationsClientDeleteResponse], error)` to `(*runtime.Poller[AuthorizationsClientDeleteResponse], error)`
+- Function `*WorkloadNetworksClient.BeginCreatePortMirroring` return value(s) have been changed from `(*armruntime.Poller[WorkloadNetworksClientCreatePortMirroringResponse], error)` to `(*runtime.Poller[WorkloadNetworksClientCreatePortMirroringResponse], error)`
+- Function `*ScriptExecutionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ScriptExecutionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ScriptExecutionsClientCreateOrUpdateResponse], error)`
+- Function `WorkloadNetworkPortMirroringList.MarshalJSON` has been removed
+- Function `PrivateCloudList.MarshalJSON` has been removed
+- Function `WorkloadNetworkVMGroupsList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `CloudLinkList.MarshalJSON` has been removed
+- Function `WorkloadNetworkPublicIPsList.MarshalJSON` has been removed
+- Function `PlacementPoliciesList.MarshalJSON` has been removed
+- Function `WorkloadNetworkSegmentsList.MarshalJSON` has been removed
+- Function `WorkloadNetworkDhcpList.MarshalJSON` has been removed
+- Function `ExpressRouteAuthorizationList.MarshalJSON` has been removed
+- Function `Quota.MarshalJSON` has been removed
+- Function `WorkloadNetworkDNSServicesList.MarshalJSON` has been removed
+- Function `ClusterList.MarshalJSON` has been removed
+- Function `WorkloadNetworkDNSZonesList.MarshalJSON` has been removed
+- Function `WorkloadNetworkVirtualMachinesList.MarshalJSON` has been removed
+- Function `GlobalReachConnectionList.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `HcxEnterpriseSiteList.MarshalJSON` has been removed
+- Function `ScriptExecutionsList.MarshalJSON` has been removed
+- Function `VirtualMachinesList.MarshalJSON` has been removed
+- Function `ScriptCmdletsList.MarshalJSON` has been removed
+- Function `WorkloadNetworkGatewayList.MarshalJSON` has been removed
+- Function `ScriptPackagesList.MarshalJSON` has been removed
+- Function `AddonList.MarshalJSON` has been removed
+- Function `DatastoreList.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

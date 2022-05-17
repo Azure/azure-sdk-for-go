@@ -42,7 +42,7 @@ func NewReplicationvCentersClient(resourceName string, resourceGroupName string,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,25 +62,27 @@ func NewReplicationvCentersClient(resourceName string, resourceGroupName string,
 
 // BeginCreate - The operation to create a vCenter object..
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // vcenterName - vcenter name.
 // addVCenterRequest - The input to the add vCenter operation.
 // options - ReplicationvCentersClientBeginCreateOptions contains the optional parameters for the ReplicationvCentersClient.BeginCreate
 // method.
-func (client *ReplicationvCentersClient) BeginCreate(ctx context.Context, fabricName string, vcenterName string, addVCenterRequest AddVCenterRequest, options *ReplicationvCentersClientBeginCreateOptions) (*armruntime.Poller[ReplicationvCentersClientCreateResponse], error) {
+func (client *ReplicationvCentersClient) BeginCreate(ctx context.Context, fabricName string, vcenterName string, addVCenterRequest AddVCenterRequest, options *ReplicationvCentersClientBeginCreateOptions) (*runtime.Poller[ReplicationvCentersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, fabricName, vcenterName, addVCenterRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationvCentersClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationvCentersClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationvCentersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationvCentersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - The operation to create a vCenter object..
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationvCentersClient) create(ctx context.Context, fabricName string, vcenterName string, addVCenterRequest AddVCenterRequest, options *ReplicationvCentersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, vcenterName, addVCenterRequest, options)
 	if err != nil {
@@ -126,30 +128,32 @@ func (client *ReplicationvCentersClient) createCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, addVCenterRequest)
 }
 
 // BeginDelete - The operation to remove(unregister) a registered vCenter server from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // vcenterName - vcenter name.
 // options - ReplicationvCentersClientBeginDeleteOptions contains the optional parameters for the ReplicationvCentersClient.BeginDelete
 // method.
-func (client *ReplicationvCentersClient) BeginDelete(ctx context.Context, fabricName string, vcenterName string, options *ReplicationvCentersClientBeginDeleteOptions) (*armruntime.Poller[ReplicationvCentersClientDeleteResponse], error) {
+func (client *ReplicationvCentersClient) BeginDelete(ctx context.Context, fabricName string, vcenterName string, options *ReplicationvCentersClientBeginDeleteOptions) (*runtime.Poller[ReplicationvCentersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, fabricName, vcenterName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationvCentersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationvCentersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationvCentersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationvCentersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The operation to remove(unregister) a registered vCenter server from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationvCentersClient) deleteOperation(ctx context.Context, fabricName string, vcenterName string, options *ReplicationvCentersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, vcenterName, options)
 	if err != nil {
@@ -200,6 +204,7 @@ func (client *ReplicationvCentersClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets the details of a registered vCenter server(Add vCenter server).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // vcenterName - vcenter name.
 // options - ReplicationvCentersClientGetOptions contains the optional parameters for the ReplicationvCentersClient.Get method.
@@ -248,7 +253,7 @@ func (client *ReplicationvCentersClient) getCreateRequest(ctx context.Context, f
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,10 +268,11 @@ func (client *ReplicationvCentersClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists the vCenter servers registered in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationvCentersClientListOptions contains the optional parameters for the ReplicationvCentersClient.List
 // method.
 func (client *ReplicationvCentersClient) NewListPager(options *ReplicationvCentersClientListOptions) *runtime.Pager[ReplicationvCentersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationvCentersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationvCentersClientListResponse]{
 		More: func(page ReplicationvCentersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -315,7 +321,7 @@ func (client *ReplicationvCentersClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -330,11 +336,12 @@ func (client *ReplicationvCentersClient) listHandleResponse(resp *http.Response)
 
 // NewListByReplicationFabricsPager - Lists the vCenter servers registered in a fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // options - ReplicationvCentersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationvCentersClient.ListByReplicationFabrics
 // method.
 func (client *ReplicationvCentersClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationvCentersClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationvCentersClientListByReplicationFabricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationvCentersClientListByReplicationFabricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationvCentersClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationvCentersClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -387,7 +394,7 @@ func (client *ReplicationvCentersClient) listByReplicationFabricsCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -402,25 +409,27 @@ func (client *ReplicationvCentersClient) listByReplicationFabricsHandleResponse(
 
 // BeginUpdate - The operation to update a registered vCenter.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // vcenterName - vcenter name.
 // updateVCenterRequest - The input to the update vCenter operation.
 // options - ReplicationvCentersClientBeginUpdateOptions contains the optional parameters for the ReplicationvCentersClient.BeginUpdate
 // method.
-func (client *ReplicationvCentersClient) BeginUpdate(ctx context.Context, fabricName string, vcenterName string, updateVCenterRequest UpdateVCenterRequest, options *ReplicationvCentersClientBeginUpdateOptions) (*armruntime.Poller[ReplicationvCentersClientUpdateResponse], error) {
+func (client *ReplicationvCentersClient) BeginUpdate(ctx context.Context, fabricName string, vcenterName string, updateVCenterRequest UpdateVCenterRequest, options *ReplicationvCentersClientBeginUpdateOptions) (*runtime.Poller[ReplicationvCentersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, fabricName, vcenterName, updateVCenterRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationvCentersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationvCentersClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationvCentersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationvCentersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The operation to update a registered vCenter.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationvCentersClient) update(ctx context.Context, fabricName string, vcenterName string, updateVCenterRequest UpdateVCenterRequest, options *ReplicationvCentersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, vcenterName, updateVCenterRequest, options)
 	if err != nil {
@@ -466,6 +475,6 @@ func (client *ReplicationvCentersClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateVCenterRequest)
 }

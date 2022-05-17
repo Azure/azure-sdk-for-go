@@ -1,5 +1,248 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ReplicationNetworkMappingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationNetworkMappingsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationNetworkMappingsClientDeleteResponse], error)`
+- Function `*ReplicationJobsClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[ReplicationJobsClientResumeResponse], error)` to `(*runtime.Poller[ReplicationJobsClientResumeResponse], error)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationStorageClassificationMappingsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationStorageClassificationMappingsClientDeleteResponse], error)`
+- Function `*ReplicationStorageClassificationMappingsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationStorageClassificationMappingsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationStorageClassificationMappingsClientCreateResponse], error)`
+- Function `*ReplicationPoliciesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationPoliciesClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationPoliciesClientUpdateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientUpdateResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginUnplannedFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientUnplannedFailoverResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientUnplannedFailoverResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientDeleteResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientCreateResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginReprotect` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientReprotectResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientReprotectResponse], error)`
+- Function `*ReplicationVaultSettingClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationVaultSettingClientCreateResponse], error)` to `(*runtime.Poller[ReplicationVaultSettingClientCreateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCancel` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientFailoverCancelResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientFailoverCancelResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginMigrate` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientMigrateResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientMigrateResponse], error)`
+- Function `*ReplicationJobsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ReplicationJobsClientRestartResponse], error)` to `(*runtime.Poller[ReplicationJobsClientRestartResponse], error)`
+- Function `*ReplicationvCentersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationvCentersClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationvCentersClientUpdateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginRemoveDisks` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientRemoveDisksResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientRemoveDisksResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginApplyRecoveryPoint` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientApplyRecoveryPointResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientApplyRecoveryPointResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientUpdateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginFailoverCommit` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientFailoverCommitResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientFailoverCommitResponse], error)`
+- Function `*ReplicationProtectionContainersClient.BeginDiscoverProtectableItem` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainersClientDiscoverProtectableItemResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainersClientDiscoverProtectableItemResponse], error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryServicesProvidersClientCreateResponse], error)` to `(*runtime.Poller[ReplicationRecoveryServicesProvidersClientCreateResponse], error)`
+- Function `*ReplicationFabricsClient.BeginRenewCertificate` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientRenewCertificateResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientRenewCertificateResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrateCleanup` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientTestMigrateCleanupResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientTestMigrateCleanupResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientDeleteResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCommit` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientFailoverCommitResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientFailoverCommitResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginTestMigrate` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientTestMigrateResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientTestMigrateResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginFailoverCancel` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientFailoverCancelResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientFailoverCancelResponse], error)`
+- Function `*ReplicationFabricsClient.BeginReassociateGateway` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientReassociateGatewayResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientReassociateGatewayResponse], error)`
+- Function `*ReplicationPoliciesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationPoliciesClientCreateResponse], error)` to `(*runtime.Poller[ReplicationPoliciesClientCreateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientTestFailoverResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientTestFailoverResponse], error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryServicesProvidersClientPurgeResponse], error)` to `(*runtime.Poller[ReplicationRecoveryServicesProvidersClientPurgeResponse], error)`
+- Function `*ReplicationPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationPoliciesClientDeleteResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientTestFailoverResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverResponse], error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse], error)` to `(*runtime.Poller[ReplicationRecoveryServicesProvidersClientRefreshProviderResponse], error)`
+- Function `*ReplicationJobsClient.BeginExport` return value(s) have been changed from `(*armruntime.Poller[ReplicationJobsClientExportResponse], error)` to `(*runtime.Poller[ReplicationJobsClientExportResponse], error)`
+- Function `*ReplicationJobsClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[ReplicationJobsClientCancelResponse], error)` to `(*runtime.Poller[ReplicationJobsClientCancelResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginSwitchProvider` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientSwitchProviderResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientSwitchProviderResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginUnplannedFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientUnplannedFailoverResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientUnplannedFailoverResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientDeleteResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateMobilityService` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientUpdateMobilityServiceResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientUpdateMobilityServiceResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginPlannedFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientPlannedFailoverResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientPlannedFailoverResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginResync` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientResyncResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientResyncResponse], error)`
+- Function `*ReplicationvCentersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationvCentersClientCreateResponse], error)` to `(*runtime.Poller[ReplicationvCentersClientCreateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginReprotect` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientReprotectResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientReprotectResponse], error)`
+- Function `*ReplicationProtectionContainersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainersClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainersClientDeleteResponse], error)`
+- Function `*ReplicationvCentersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationvCentersClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationvCentersClientDeleteResponse], error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginResolveHealthErrors` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientResolveHealthErrorsResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientResolveHealthErrorsResponse], error)`
+- Function `*ReplicationFabricsClient.BeginMigrateToAAD` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientMigrateToAADResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientMigrateToAADResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginUpdateAppliance` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientUpdateApplianceResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientUpdateApplianceResponse], error)`
+- Function `*ReplicationProtectionContainersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainersClientCreateResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainersClientCreateResponse], error)`
+- Function `*ReplicationFabricsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientDeleteResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientPurgeResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientPurgeResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginAddDisks` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientAddDisksResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientAddDisksResponse], error)`
+- Function `*ReplicationRecoveryServicesProvidersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryServicesProvidersClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationRecoveryServicesProvidersClientDeleteResponse], error)`
+- Function `*ReplicationFabricsClient.BeginCheckConsistency` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientCheckConsistencyResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientCheckConsistencyResponse], error)`
+- Function `*ReplicationProtectionContainersClient.BeginSwitchProtection` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainersClientSwitchProtectionResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainersClientSwitchProtectionResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientCreateResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientCreateResponse], error)`
+- Function `*ReplicationNetworkMappingsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationNetworkMappingsClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationNetworkMappingsClientUpdateResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginRepairReplication` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientRepairReplicationResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientRepairReplicationResponse], error)`
+- Function `*ReplicationNetworkMappingsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationNetworkMappingsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationNetworkMappingsClientCreateResponse], error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error)`
+- Function `*ReplicationFabricsClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientPurgeResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientPurgeResponse], error)`
+- Function `*ReplicationProtectedItemsClient.BeginTestFailoverCleanup` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectedItemsClientTestFailoverCleanupResponse], error)` to `(*runtime.Poller[ReplicationProtectedItemsClientTestFailoverCleanupResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginPlannedFailover` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientPlannedFailoverResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientPlannedFailoverResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientCreateResponse], error)`
+- Function `*ReplicationMigrationItemsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationMigrationItemsClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationMigrationItemsClientUpdateResponse], error)`
+- Function `*ReplicationRecoveryPlansClient.BeginTestFailoverCleanup` return value(s) have been changed from `(*armruntime.Poller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse], error)` to `(*runtime.Poller[ReplicationRecoveryPlansClientTestFailoverCleanupResponse], error)`
+- Function `*ReplicationVaultHealthClient.BeginRefresh` return value(s) have been changed from `(*armruntime.Poller[ReplicationVaultHealthClientRefreshResponse], error)` to `(*runtime.Poller[ReplicationVaultHealthClientRefreshResponse], error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginPurge` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error)`
+- Function `*ReplicationProtectionContainerMappingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error)`
+- Function `*ReplicationFabricsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationFabricsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationFabricsClientCreateResponse], error)`
+- Function `HyperVSiteDetails.MarshalJSON` has been removed
+- Function `FailoverReplicationProtectedItemDetails.MarshalJSON` has been removed
+- Function `ProcessServerDetails.MarshalJSON` has been removed
+- Function `InMageRcmFailbackDiscoveredProtectedVMDetails.MarshalJSON` has been removed
+- Function `AzureToAzureNetworkMappingSettings.MarshalJSON` has been removed
+- Function `SupportedOSProperty.MarshalJSON` has been removed
+- Function `InMageAzureV2EventDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaBlueReplicationDetails.MarshalJSON` has been removed
+- Function `LogicalNetworkCollection.MarshalJSON` has been removed
+- Function `InMageFabricSwitchProviderBlockingErrorDetails.MarshalJSON` has been removed
+- Function `AlertProperties.MarshalJSON` has been removed
+- Function `CurrentScenarioDetails.MarshalJSON` has been removed
+- Function `AzureFabricSpecificDetails.MarshalJSON` has been removed
+- Function `InMageRcmFailbackEventDetails.MarshalJSON` has been removed
+- Function `ReplicationGroupDetails.MarshalJSON` has been removed
+- Function `ReplicationApplianceProperties.MarshalJSON` has been removed
+- Function `A2AProtectedManagedDiskDetails.MarshalJSON` has been removed
+- Function `A2APolicyDetails.MarshalJSON` has been removed
+- Function `InnerHealthError.MarshalJSON` has been removed
+- Function `NetworkCollection.MarshalJSON` has been removed
+- Function `A2AReplicationIntentDetails.MarshalJSON` has been removed
+- Function `InMageRcmPolicyDetails.MarshalJSON` has been removed
+- Function `OperationsDiscoveryCollection.MarshalJSON` has been removed
+- Function `RecoveryPointCollection.MarshalJSON` has been removed
+- Function `InMageAzureV2SwitchProviderBlockingErrorDetails.MarshalJSON` has been removed
+- Function `VMwareCbtProtectionContainerMappingDetails.MarshalJSON` has been removed
+- Function `InMageRcmMobilityAgentDetails.MarshalJSON` has been removed
+- Function `TestFailoverJobDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaBluePolicyDetails.MarshalJSON` has been removed
+- Function `RecoveryServicesProviderProperties.MarshalJSON` has been removed
+- Function `JobTaskDetails.MarshalJSON` has been removed
+- Function `InMageProtectedDiskDetails.MarshalJSON` has been removed
+- Function `DraDetails.MarshalJSON` has been removed
+- Function `VMNicUpdatesTaskDetails.MarshalJSON` has been removed
+- Function `FabricProperties.MarshalJSON` has been removed
+- Function `InconsistentVMDetails.MarshalJSON` has been removed
+- Function `InMageRcmEventDetails.MarshalJSON` has been removed
+- Function `JobProperties.MarshalJSON` has been removed
+- Function `RcmProxyDetails.MarshalJSON` has been removed
+- Function `A2ARecoveryPointDetails.MarshalJSON` has been removed
+- Function `MigrationRecoveryPointCollection.MarshalJSON` has been removed
+- Function `ReplicationAgentDetails.MarshalJSON` has been removed
+- Function `GroupTaskDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaPolicyDetails.MarshalJSON` has been removed
+- Function `PolicyCollection.MarshalJSON` has been removed
+- Function `VmmVirtualMachineDetails.MarshalJSON` has been removed
+- Function `InMageAzureV2RecoveryPointDetails.MarshalJSON` has been removed
+- Function `ProtectionContainerCollection.MarshalJSON` has been removed
+- Function `VmmToVmmNetworkMappingSettings.MarshalJSON` has been removed
+- Function `ReplicationProtectionIntentCollection.MarshalJSON` has been removed
+- Function `FailoverJobDetails.MarshalJSON` has been removed
+- Function `InMageDiskDetails.MarshalJSON` has been removed
+- Function `RecoveryPlanA2ADetails.MarshalJSON` has been removed
+- Function `HyperVReplicaAzureReplicationDetails.MarshalJSON` has been removed
+- Function `NetworkMappingCollection.MarshalJSON` has been removed
+- Function `VmwareCbtPolicyDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaBaseEventDetails.MarshalJSON` has been removed
+- Function `InMageAgentDetails.MarshalJSON` has been removed
+- Function `ManualActionTaskDetails.MarshalJSON` has been removed
+- Function `InMagePolicyDetails.MarshalJSON` has been removed
+- Function `FabricReplicationGroupTaskDetails.MarshalJSON` has been removed
+- Function `ASRTask.MarshalJSON` has been removed
+- Function `ProcessServer.MarshalJSON` has been removed
+- Function `InlineWorkflowTaskDetails.MarshalJSON` has been removed
+- Function `HyperVVirtualMachineDetails.MarshalJSON` has been removed
+- Function `AzureToAzureVMSyncedConfigDetails.MarshalJSON` has been removed
+- Function `JobDetails.MarshalJSON` has been removed
+- Function `InMageRcmFailbackMobilityAgentDetails.MarshalJSON` has been removed
+- Function `ProtectableItemProperties.MarshalJSON` has been removed
+- Function `InMageReplicationDetails.MarshalJSON` has been removed
+- Function `InMageBasePolicyDetails.MarshalJSON` has been removed
+- Function `VCenterCollection.MarshalJSON` has been removed
+- Function `VmmToAzureNetworkMappingSettings.MarshalJSON` has been removed
+- Function `InMageAzureV2PolicyDetails.MarshalJSON` has been removed
+- Function `InMageRcmRecoveryPointDetails.MarshalJSON` has been removed
+- Function `MigrationRecoveryPointProperties.MarshalJSON` has been removed
+- Function `EventProperties.MarshalJSON` has been removed
+- Function `HealthErrorSummary.MarshalJSON` has been removed
+- Function `VersionDetails.MarshalJSON` has been removed
+- Function `InMageRcmApplianceSpecificDetails.MarshalJSON` has been removed
+- Function `InMageRcmReplicationDetails.MarshalJSON` has been removed
+- Function `VMNicDetails.MarshalJSON` has been removed
+- Function `RecoveryPlanCollection.MarshalJSON` has been removed
+- Function `InMageRcmFailbackPolicyDetails.MarshalJSON` has been removed
+- Function `InMageRcmAgentUpgradeBlockingErrorDetails.MarshalJSON` has been removed
+- Function `VMwareDetails.MarshalJSON` has been removed
+- Function `IPConfigDetails.MarshalJSON` has been removed
+- Function `EventQueryParameter.MarshalJSON` has been removed
+- Function `A2AProtectionContainerMappingDetails.MarshalJSON` has been removed
+- Function `A2AEventDetails.MarshalJSON` has been removed
+- Function `HyperVReplica2012R2EventDetails.MarshalJSON` has been removed
+- Function `MigrationItemProperties.MarshalJSON` has been removed
+- Function `ConsistencyCheckTaskDetails.MarshalJSON` has been removed
+- Function `VmmDetails.MarshalJSON` has been removed
+- Function `VaultSettingCollection.MarshalJSON` has been removed
+- Function `ApplianceCollection.MarshalJSON` has been removed
+- Function `VirtualMachineTaskDetails.MarshalJSON` has been removed
+- Function `ReplicationProtectedItemProperties.MarshalJSON` has been removed
+- Function `A2AReplicationDetails.MarshalJSON` has been removed
+- Function `RecoveryPlanGroupTaskDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaBasePolicyDetails.MarshalJSON` has been removed
+- Function `FabricCollection.MarshalJSON` has been removed
+- Function `TargetComputeSizeCollection.MarshalJSON` has been removed
+- Function `JobCollection.MarshalJSON` has been removed
+- Function `VMwareCbtMigrationDetails.MarshalJSON` has been removed
+- Function `RecoveryPlanShutdownGroupTaskDetails.MarshalJSON` has been removed
+- Function `SupportedOSProperties.MarshalJSON` has been removed
+- Function `InMageRcmLastAgentUpgradeErrorDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaBaseReplicationDetails.MarshalJSON` has been removed
+- Function `ScriptActionTaskDetails.MarshalJSON` has been removed
+- Function `ReplicationProtectionIntentProperties.MarshalJSON` has been removed
+- Function `InMageAzureV2ReplicationDetails.MarshalJSON` has been removed
+- Function `EventCollection.MarshalJSON` has been removed
+- Function `PolicyProperties.MarshalJSON` has been removed
+- Function `InMageRcmFabricSwitchProviderBlockingErrorDetails.MarshalJSON` has been removed
+- Function `NetworkMappingProperties.MarshalJSON` has been removed
+- Function `RecoveryPointProperties.MarshalJSON` has been removed
+- Function `CurrentJobDetails.MarshalJSON` has been removed
+- Function `JobStatusEventDetails.MarshalJSON` has been removed
+- Function `ReplicationEligibilityResultsCollection.MarshalJSON` has been removed
+- Function `InMageRcmFabricSpecificDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaAzureEventDetails.MarshalJSON` has been removed
+- Function `ReplicationEligibilityResultsProperties.MarshalJSON` has been removed
+- Function `InMageRcmApplianceDetails.MarshalJSON` has been removed
+- Function `PushInstallerDetails.MarshalJSON` has been removed
+- Function `InMageRcmFailbackReplicationDetails.MarshalJSON` has been removed
+- Function `NetworkProperties.MarshalJSON` has been removed
+- Function `MarsAgentDetails.MarshalJSON` has been removed
+- Function `HyperVReplicaReplicationDetails.MarshalJSON` has been removed
+- Function `HyperVReplica2012EventDetails.MarshalJSON` has been removed
+- Function `A2AProtectedDiskDetails.MarshalJSON` has been removed
+- Function `ProtectionContainerMappingCollection.MarshalJSON` has been removed
+- Function `HyperVReplicaAzurePolicyDetails.MarshalJSON` has been removed
+- Function `ProtectionContainerMappingProperties.MarshalJSON` has been removed
+- Function `AutomationRunbookTaskDetails.MarshalJSON` has been removed
+- Function `InMageRcmProtectionContainerMappingDetails.MarshalJSON` has been removed
+- Function `ReprotectAgentDetails.MarshalJSON` has been removed
+- Function `VMwareV2FabricSpecificDetails.MarshalJSON` has been removed
+- Function `StorageClassificationCollection.MarshalJSON` has been removed
+- Function `AgentDetails.MarshalJSON` has been removed
+- Function `AsrJobDetails.MarshalJSON` has been removed
+- Function `AlertCollection.MarshalJSON` has been removed
+- Function `TargetComputeSizeProperties.MarshalJSON` has been removed
+- Function `ExportJobDetails.MarshalJSON` has been removed
+- Function `VCenterProperties.MarshalJSON` has been removed
+- Function `ResourceHealthSummary.MarshalJSON` has been removed
+- Function `A2ACrossClusterMigrationReplicationDetails.MarshalJSON` has been removed
+- Function `InMageRcmFailbackProtectedDiskDetails.MarshalJSON` has been removed
+- Function `Subnet.MarshalJSON` has been removed
+- Function `VMwareCbtEventDetails.MarshalJSON` has been removed
+- Function `ReplicationProtectedItemCollection.MarshalJSON` has been removed
+- Function `SupportedOSDetails.MarshalJSON` has been removed
+- Function `RecoveryServicesProviderCollection.MarshalJSON` has been removed
+- Function `EncryptionDetails.MarshalJSON` has been removed
+- Function `InMageRcmDiscoveredProtectedVMDetails.MarshalJSON` has been removed
+- Function `HealthError.MarshalJSON` has been removed
+- Function `StorageClassificationMappingCollection.MarshalJSON` has been removed
+- Function `RecoveryPlanProperties.MarshalJSON` has been removed
+- Function `ProtectableItemCollection.MarshalJSON` has been removed
+- Function `InMageAzureV2ProtectedDiskDetails.MarshalJSON` has been removed
+- Function `MigrationItemCollection.MarshalJSON` has been removed
+- Function `SwitchProtectionJobDetails.MarshalJSON` has been removed
+- Function `VaultHealthProperties.MarshalJSON` has been removed
+- Function `MasterTargetServer.MarshalJSON` has been removed
+- Function `JobErrorDetails.MarshalJSON` has been removed
+- Function `VMwareVirtualMachineDetails.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

@@ -42,7 +42,7 @@ func NewReplicationStorageClassificationsClient(resourceName string, resourceGro
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewReplicationStorageClassificationsClient(resourceName string, resourceGro
 
 // Get - Gets the details of the specified storage classification.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // options - ReplicationStorageClassificationsClientGetOptions contains the optional parameters for the ReplicationStorageClassificationsClient.Get
@@ -111,7 +112,7 @@ func (client *ReplicationStorageClassificationsClient) getCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,10 +127,11 @@ func (client *ReplicationStorageClassificationsClient) getHandleResponse(resp *h
 
 // NewListPager - Lists the storage classifications in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.List
 // method.
 func (client *ReplicationStorageClassificationsClient) NewListPager(options *ReplicationStorageClassificationsClientListOptions) *runtime.Pager[ReplicationStorageClassificationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationStorageClassificationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationStorageClassificationsClientListResponse]{
 		More: func(page ReplicationStorageClassificationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -178,7 +180,7 @@ func (client *ReplicationStorageClassificationsClient) listCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -193,11 +195,12 @@ func (client *ReplicationStorageClassificationsClient) listHandleResponse(resp *
 
 // NewListByReplicationFabricsPager - Lists the storage classifications available in the specified fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // fabricName - Site name of interest.
 // options - ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the
 // ReplicationStorageClassificationsClient.ListByReplicationFabrics method.
 func (client *ReplicationStorageClassificationsClient) NewListByReplicationFabricsPager(fabricName string, options *ReplicationStorageClassificationsClientListByReplicationFabricsOptions) *runtime.Pager[ReplicationStorageClassificationsClientListByReplicationFabricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationStorageClassificationsClientListByReplicationFabricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationStorageClassificationsClientListByReplicationFabricsResponse]{
 		More: func(page ReplicationStorageClassificationsClientListByReplicationFabricsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -250,7 +253,7 @@ func (client *ReplicationStorageClassificationsClient) listByReplicationFabricsC
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

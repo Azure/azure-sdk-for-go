@@ -192,6 +192,12 @@ type AuthInfoUpdateParameters struct {
 	TokenType *TokenType `json:"tokenType,omitempty"`
 }
 
+// AzureADAuthenticationAsArmPolicy - The policy for using ARM audience token for a container registry.
+type AzureADAuthenticationAsArmPolicy struct {
+	// The value that indicates whether the policy is enabled or not.
+	Status *AzureADAuthenticationAsArmPolicyStatus `json:"status,omitempty"`
+}
+
 // BaseImageDependency - Properties that describe a base image dependency.
 type BaseImageDependency struct {
 	// The sha256-based digest of the image manifest.
@@ -461,6 +467,16 @@ type DockerBuildRequest struct {
 	Timeout *int32 `json:"timeout,omitempty"`
 }
 
+// GetRunRequest implements the RunRequestClassification interface for type DockerBuildRequest.
+func (d *DockerBuildRequest) GetRunRequest() *RunRequest {
+	return &RunRequest{
+		Type:             d.Type,
+		IsArchiveEnabled: d.IsArchiveEnabled,
+		AgentPoolName:    d.AgentPoolName,
+		LogTemplate:      d.LogTemplate,
+	}
+}
+
 // DockerBuildStep - The Docker build step.
 type DockerBuildStep struct {
 	// REQUIRED; The Docker file path relative to the source context.
@@ -494,6 +510,16 @@ type DockerBuildStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
+// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type DockerBuildStep.
+func (d *DockerBuildStep) GetTaskStepProperties() *TaskStepProperties {
+	return &TaskStepProperties{
+		Type:                  d.Type,
+		BaseImageDependencies: d.BaseImageDependencies,
+		ContextPath:           d.ContextPath,
+		ContextAccessToken:    d.ContextAccessToken,
+	}
+}
+
 // DockerBuildStepUpdateParameters - The properties for updating a docker build step.
 type DockerBuildStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -522,6 +548,15 @@ type DockerBuildStepUpdateParameters struct {
 
 	// The name of the target build stage for the docker build.
 	Target *string `json:"target,omitempty"`
+}
+
+// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type DockerBuildStepUpdateParameters.
+func (d *DockerBuildStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
+	return &TaskStepUpdateParameters{
+		Type:               d.Type,
+		ContextPath:        d.ContextPath,
+		ContextAccessToken: d.ContextAccessToken,
+	}
 }
 
 // EncodedTaskRunRequest - The parameters for a quick task run request.
@@ -564,6 +599,16 @@ type EncodedTaskRunRequest struct {
 	Values []*SetValue `json:"values,omitempty"`
 }
 
+// GetRunRequest implements the RunRequestClassification interface for type EncodedTaskRunRequest.
+func (e *EncodedTaskRunRequest) GetRunRequest() *RunRequest {
+	return &RunRequest{
+		Type:             e.Type,
+		IsArchiveEnabled: e.IsArchiveEnabled,
+		AgentPoolName:    e.AgentPoolName,
+		LogTemplate:      e.LogTemplate,
+	}
+}
+
 // EncodedTaskStep - The properties of a encoded task step.
 type EncodedTaskStep struct {
 	// REQUIRED; Base64 encoded value of the template/definition file content.
@@ -588,6 +633,16 @@ type EncodedTaskStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
+// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type EncodedTaskStep.
+func (e *EncodedTaskStep) GetTaskStepProperties() *TaskStepProperties {
+	return &TaskStepProperties{
+		Type:                  e.Type,
+		BaseImageDependencies: e.BaseImageDependencies,
+		ContextPath:           e.ContextPath,
+		ContextAccessToken:    e.ContextAccessToken,
+	}
+}
+
 // EncodedTaskStepUpdateParameters - The properties for updating encoded task step.
 type EncodedTaskStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -607,6 +662,15 @@ type EncodedTaskStepUpdateParameters struct {
 
 	// The collection of overridable values that can be passed when running a task.
 	Values []*SetValue `json:"values,omitempty"`
+}
+
+// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type EncodedTaskStepUpdateParameters.
+func (e *EncodedTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
+	return &TaskStepUpdateParameters{
+		Type:               e.Type,
+		ContextPath:        e.ContextPath,
+		ContextAccessToken: e.ContextAccessToken,
+	}
 }
 
 type EncryptionProperty struct {
@@ -854,6 +918,16 @@ type FileTaskRunRequest struct {
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
 }
 
+// GetRunRequest implements the RunRequestClassification interface for type FileTaskRunRequest.
+func (f *FileTaskRunRequest) GetRunRequest() *RunRequest {
+	return &RunRequest{
+		Type:             f.Type,
+		IsArchiveEnabled: f.IsArchiveEnabled,
+		AgentPoolName:    f.AgentPoolName,
+		LogTemplate:      f.LogTemplate,
+	}
+}
+
 // FileTaskStep - The properties of a task step.
 type FileTaskStep struct {
 	// REQUIRED; The task template/definition file path relative to the source context.
@@ -878,6 +952,16 @@ type FileTaskStep struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
+// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type FileTaskStep.
+func (f *FileTaskStep) GetTaskStepProperties() *TaskStepProperties {
+	return &TaskStepProperties{
+		Type:                  f.Type,
+		BaseImageDependencies: f.BaseImageDependencies,
+		ContextPath:           f.ContextPath,
+		ContextAccessToken:    f.ContextAccessToken,
+	}
+}
+
 // FileTaskStepUpdateParameters - The properties of updating a task step.
 type FileTaskStepUpdateParameters struct {
 	// REQUIRED; The type of the step.
@@ -897,6 +981,15 @@ type FileTaskStepUpdateParameters struct {
 
 	// The values/parameters file path relative to the source context.
 	ValuesFilePath *string `json:"valuesFilePath,omitempty"`
+}
+
+// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type FileTaskStepUpdateParameters.
+func (f *FileTaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters {
+	return &TaskStepUpdateParameters{
+		Type:               f.Type,
+		ContextPath:        f.ContextPath,
+		ContextAccessToken: f.ContextAccessToken,
+	}
 }
 
 // GenerateCredentialsParameters - The parameters used to generate credentials for a specified token or user of a container
@@ -1153,9 +1246,6 @@ type NetworkRuleSet struct {
 
 	// The IP ACL rules.
 	IPRules []*IPRule `json:"ipRules,omitempty"`
-
-	// The virtual network rules.
-	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
 // OperationDefinition - The definition of a container registry operation.
@@ -1272,6 +1362,15 @@ type OverrideTaskStepProperties struct {
 
 	// The collection of overridable values that can be passed when running a Task.
 	Values []*SetValue `json:"values,omitempty"`
+}
+
+// PackageType - The properties of a package type.
+type PackageType struct {
+	// The name of the package type.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; The endpoint of the package type.
+	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
 }
 
 // ParentProperties - The properties of the connected registry parent.
@@ -1463,6 +1562,9 @@ type PlatformUpdateParameters struct {
 
 // Policies - The policies for a container registry.
 type Policies struct {
+	// The policy for using ARM audience token for a container registry.
+	AzureADAuthenticationAsArmPolicy *AzureADAuthenticationAsArmPolicy `json:"azureADAuthenticationAsArmPolicy,omitempty"`
+
 	// The export policy for a container registry.
 	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
 
@@ -1471,6 +1573,9 @@ type Policies struct {
 
 	// The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+
+	// The soft delete policy for a container registry.
+	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 
 	// The content trust policy for a container registry.
 	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
@@ -2220,6 +2325,9 @@ type RunRequest struct {
 	LogTemplate *string `json:"logTemplate,omitempty"`
 }
 
+// GetRunRequest implements the RunRequestClassification interface for type RunRequest.
+func (r *RunRequest) GetRunRequest() *RunRequest { return r }
+
 // RunUpdateParameters - The set of run properties that can be updated.
 type RunUpdateParameters struct {
 	// The value that indicates whether archiving is enabled or not.
@@ -2377,6 +2485,18 @@ type SetValue struct {
 	IsSecret *bool `json:"isSecret,omitempty"`
 }
 
+// SoftDeletePolicy - The soft delete policy for a container registry
+type SoftDeletePolicy struct {
+	// The number of days after which a soft-deleted item is permanently deleted.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+
+	// The value that indicates whether the policy is enabled or not.
+	Status *PolicyStatus `json:"status,omitempty"`
+
+	// READ-ONLY; The timestamp when the policy was last updated.
+	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+}
+
 // Source - The registry node that generated the event. Put differently, while the actor initiates the event, the source generates
 // it.
 type Source struct {
@@ -2517,6 +2637,12 @@ type StatusDetailProperties struct {
 
 	// READ-ONLY; The component of the connected registry corresponding to the status.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// StorageAccountProperties - The properties of a storage account for a container registry. Only applicable to Classic SKU.
+type StorageAccountProperties struct {
+	// REQUIRED; The resource ID of the storage account.
+	ID *string `json:"id,omitempty"`
 }
 
 // SyncProperties - The sync properties of the connected registry with its parent.
@@ -2810,6 +2936,16 @@ type TaskRunRequest struct {
 	OverrideTaskStepProperties *OverrideTaskStepProperties `json:"overrideTaskStepProperties,omitempty"`
 }
 
+// GetRunRequest implements the RunRequestClassification interface for type TaskRunRequest.
+func (t *TaskRunRequest) GetRunRequest() *RunRequest {
+	return &RunRequest{
+		Type:             t.Type,
+		IsArchiveEnabled: t.IsArchiveEnabled,
+		AgentPoolName:    t.AgentPoolName,
+		LogTemplate:      t.LogTemplate,
+	}
+}
+
 // TaskRunUpdateParameters - The parameters for updating a task run.
 type TaskRunUpdateParameters struct {
 	// Identity for the resource.
@@ -2882,6 +3018,9 @@ type TaskStepProperties struct {
 	BaseImageDependencies []*BaseImageDependency `json:"baseImageDependencies,omitempty" azure:"ro"`
 }
 
+// GetTaskStepProperties implements the TaskStepPropertiesClassification interface for type TaskStepProperties.
+func (t *TaskStepProperties) GetTaskStepProperties() *TaskStepProperties { return t }
+
 // TaskStepUpdateParametersClassification provides polymorphic access to related types.
 // Call the interface's GetTaskStepUpdateParameters() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2902,6 +3041,9 @@ type TaskStepUpdateParameters struct {
 	// The URL(absolute or relative) of the source context for the task step.
 	ContextPath *string `json:"contextPath,omitempty"`
 }
+
+// GetTaskStepUpdateParameters implements the TaskStepUpdateParametersClassification interface for type TaskStepUpdateParameters.
+func (t *TaskStepUpdateParameters) GetTaskStepUpdateParameters() *TaskStepUpdateParameters { return t }
 
 // TaskUpdateParameters - The parameters for updating a task.
 type TaskUpdateParameters struct {
@@ -3144,15 +3286,6 @@ type UserIdentityProperties struct {
 
 	// The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty"`
-}
-
-// VirtualNetworkRule - Virtual network rule.
-type VirtualNetworkRule struct {
-	// REQUIRED; Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-	VirtualNetworkResourceID *string `json:"id,omitempty"`
-
-	// The action of virtual network rule.
-	Action *Action `json:"action,omitempty"`
 }
 
 // Webhook - An object that represents a webhook for a container registry.

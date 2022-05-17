@@ -12,33 +12,30 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhci"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/ListExtensionsByArcSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/ListExtensionsByArcSetting.json
 func ExampleExtensionsClient_NewListByArcSettingPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurestackhci.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armazurestackhci.NewExtensionsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByArcSettingPager("<resource-group-name>",
-		"<cluster-name>",
-		"<arc-setting-name>",
+	pager := client.NewListByArcSettingPager("test-rg",
+		"myCluster",
+		"default",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -47,22 +44,22 @@ func ExampleExtensionsClient_NewListByArcSettingPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/GetExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/GetExtension.json
 func ExampleExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurestackhci.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armazurestackhci.NewExtensionsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<arc-setting-name>",
-		"<extension-name>",
+		"test-rg",
+		"myCluster",
+		"default",
+		"MicrosoftMonitoringAgent",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,42 +68,42 @@ func ExampleExtensionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/PutExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/PutExtension.json
 func ExampleExtensionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurestackhci.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armazurestackhci.NewExtensionsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<arc-setting-name>",
-		"<extension-name>",
+		"test-rg",
+		"myCluster",
+		"default",
+		"MicrosoftMonitoringAgent",
 		armazurestackhci.Extension{
 			Properties: &armazurestackhci.ExtensionProperties{
 				ExtensionParameters: &armazurestackhci.ExtensionParameters{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("MicrosoftMonitoringAgent"),
 					ProtectedSettings: map[string]interface{}{
 						"workspaceKey": "xx",
 					},
-					Publisher: to.Ptr("<publisher>"),
+					Publisher: to.Ptr("Microsoft.Compute"),
 					Settings: map[string]interface{}{
 						"workspaceId": "xx",
 					},
-					TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+					TypeHandlerVersion: to.Ptr("1.10"),
 				},
 			},
 		},
-		&armazurestackhci.ExtensionsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -114,65 +111,67 @@ func ExampleExtensionsClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/PatchExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/PatchExtension.json
 func ExampleExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurestackhci.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armazurestackhci.NewExtensionsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<arc-setting-name>",
-		"<extension-name>",
+		"test-rg",
+		"myCluster",
+		"default",
+		"MicrosoftMonitoringAgent",
 		armazurestackhci.Extension{
 			Properties: &armazurestackhci.ExtensionProperties{
 				ExtensionParameters: &armazurestackhci.ExtensionParameters{
-					Type:      to.Ptr("<type>"),
-					Publisher: to.Ptr("<publisher>"),
+					Type:      to.Ptr("MicrosoftMonitoringAgent"),
+					Publisher: to.Ptr("Microsoft.Compute"),
 					Settings: map[string]interface{}{
 						"workspaceId": "xx",
 					},
-					TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+					TypeHandlerVersion: to.Ptr("1.10"),
 				},
 			},
 		},
-		&armazurestackhci.ExtensionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-03-01/examples/DeleteExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/DeleteExtension.json
 func ExampleExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazurestackhci.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armazurestackhci.NewExtensionsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<arc-setting-name>",
-		"<extension-name>",
-		&armazurestackhci.ExtensionsClientBeginDeleteOptions{ResumeToken: ""})
+		"test-rg",
+		"myCluster",
+		"default",
+		"MicrosoftMonitoringAgent",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

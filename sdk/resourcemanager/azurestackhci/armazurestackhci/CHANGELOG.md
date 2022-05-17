@@ -1,5 +1,38 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ArcSettingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ArcSettingsClientDeleteResponse], error)` to `(*runtime.Poller[ArcSettingsClientDeleteResponse], error)`
+- Function `*ExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[ExtensionsClientUpdateResponse], error)`
+- Function `*ExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[ExtensionsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginCreateIdentity` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateIdentityResponse], error)` to `(*runtime.Poller[ClustersClientCreateIdentityResponse], error)`
+- Function `*ExtensionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientCreateResponse], error)` to `(*runtime.Poller[ExtensionsClientCreateResponse], error)`
+- Function `*ArcSettingsClient.BeginCreateIdentity` return value(s) have been changed from `(*armruntime.Poller[ArcSettingsClientCreateIdentityResponse], error)` to `(*runtime.Poller[ArcSettingsClientCreateIdentityResponse], error)`
+- Function `*ClustersClient.BeginUploadCertificate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUploadCertificateResponse], error)` to `(*runtime.Poller[ClustersClientUploadCertificateResponse], error)`
+- Function `ExtensionList.MarshalJSON` has been removed
+- Function `*ClustersClient.Delete` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `PasswordCredential.MarshalJSON` has been removed
+- Function `ClusterList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ArcSettingList.MarshalJSON` has been removed
+- Struct `ClustersClientDeleteOptions` has been removed
+
+### Features Added
+
+- New function `*ClustersClient.BeginDelete(context.Context, string, string, *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error)`
+- New function `ArcSettingsPatch.MarshalJSON() ([]byte, error)`
+- New function `*ArcSettingsClient.Update(context.Context, string, string, string, ArcSettingsPatch, *ArcSettingsClientUpdateOptions) (ArcSettingsClientUpdateResponse, error)`
+- New struct `ArcConnectivityProperties`
+- New struct `ArcSettingsClientUpdateOptions`
+- New struct `ArcSettingsClientUpdateResponse`
+- New struct `ArcSettingsPatch`
+- New struct `ArcSettingsPatchProperties`
+- New struct `ClustersClientBeginDeleteOptions`
+- New field `ConnectivityProperties` in struct `ArcSettingProperties`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

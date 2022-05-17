@@ -1,23 +1,21 @@
-# Azure Key Vault Secrets client library for Go
+# Azure Key Vault Secrets client module for Go
 Azure Key Vault helps solve the following problems:
-* Secrets management (this library) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
-* Cryptographic key management ([azkeys](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys)) - create, store, and control access to the keys used to encrypt your data
-* Certificate management ([azcertificates](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates)) - create, manage, and deploy public and private SSL/TLS certificates
-Azure Key Vault helps securely store and control access to tokens, passwords, certificates, API keys, and other secrets.
+* Secrets management (this module) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Cryptographic key management ([azkeys](https://azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
+* Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
 
-[Source code][secret_client_src] | [Package (pkg.go.dev)][reference_docs] | [Product documentation][keyvault_docs] | [Samples][secrets_samples]
+[Source code][module_source] | [Package (pkg.go.dev)][reference_docs] | [Product documentation][keyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 
 ### Install packages
-Install `azsecrets` and [azidentity][azidentity_goget]:
+Install `azsecrets` and `azidentity`:
 ```
-go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+
+go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 [azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
-```
-go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
-```
 
 
 ### Prerequisites
@@ -60,10 +58,10 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
   }
   ```
 
-  > The `"vaultUri"` property is the `vaultUrl` used by [azsecrets.NewClient][secret_client_docs]
+  > The `"vaultUri"` property is the `vaultURL` for [azsecrets.NewClient][secret_client_docs]
 
 ### Authenticate the client
-This document demonstrates using [DefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credentials.
+This document demonstrates using [azidentity.DefaultAzureCredential][default_cred] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any `azidentity` credential. See the [azidentity documentation][azure_identity] for information about other credentials.
 
 
 #### Create a service principal (optional)
@@ -102,18 +100,14 @@ az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --secret-permi
 If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
 #### Create a client
-Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables are set, [DefaultAzureCredential][default_cred_ref] will be able to authenticate the Client.
+Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables are set, [DefaultAzureCredential][default_cred] will be able to authenticate the Client.
 
-Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is the vault's "DNS Name".
+Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
 
 ```golang
 import (
-	"context"
-	"fmt"
 	"os"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -136,7 +130,7 @@ func main() {
 ### Secret
 A secret consists of a secret value and its associated metadata and management information. This library handles secret values as strings, but Azure Key Vault doesn't store them as such. For more information about secrets and how Key Vault stores and manages them, see the [Key Vault documentation](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
-Client can set secret values in the vault, update secret metadata, and delete secrets, as shown in the [examples](#examples "examples") below.
+`azseecrets.Client` can set secret values in the vault, update secret metadata, and delete secrets, as shown in the examples below.
 
 ## Examples
 This section contains code snippets covering common tasks:
@@ -147,7 +141,7 @@ This section contains code snippets covering common tasks:
 * [List Secrets](#list-secrets "List Secrets")
 
 ### Set a Secret
-[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
+[SetSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
 
 ```golang
 import (
@@ -184,7 +178,7 @@ func main() {
 ```
 
 ### Retrieve a Secret
-[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
 
 ```golang
 import (
@@ -225,7 +219,9 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -260,7 +256,7 @@ func main() {
 		Name:    getResp.Secret.Properties.Name,
 		Version: getResp.Secret.Properties.Version,
 	}
-	resp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret, nil)
+	resp, err := client.UpdateSecretProperties(context.TODO(), getResp.Secret, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -269,13 +265,13 @@ func main() {
 ```
 
 ### Delete a Secret
-[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
+[BeginDeleteSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) a secret as soon as possible in a vault with [soft-delete][soft_delete] enabled, as it is by default. `BeginDeleteSecret` itself is permanent in a vault with soft-delete disabled.
 
 ```golang
 import (
 	"context"
-	"fmt"
 	"os"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -299,8 +295,7 @@ func main() {
 	}
 
 	// If you do not care when the secret is deleted, you do not have to
-	// call resp.PollUntilDone. If you need to know when it's done use
-	// the PollUntilDone method.
+	// call resp.PollUntilDone.
 	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
 	if err != nil {
 		panic(err)
@@ -309,7 +304,7 @@ func main() {
 ```
 
 ### List secrets
-[NewListPropertiesOfSecretsPager](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client.NewListPropertiesOfSecretsPager) creates a `Pager` that lists the properties of all of the secrets in the client's vault, not including their secret values.
+[NewListPropertiesOfSecretsPager](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.NewListPropertiesOfSecretsPager) creates a `Pager` that lists the properties of all of the secrets in the client's vault, not including their secret values.
 
 ```golang
 import (
@@ -350,11 +345,11 @@ func main() {
 
 ### Error Handling
 
-All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
+All I/O operations return a non-nil `error` when they fail. These errors include their motivating HTTP response, if any:
 ```golang
-resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
+resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
 if err != nil {
-    var httpErr azcore.ResponseError
+    var httpErr *azcore.ResponseError
     if errors.As(err, &httpErr) {
         // investigate httpErr.RawResponse
     }
@@ -363,44 +358,37 @@ if err != nil {
 
 ### Logging
 
-This module uses the classification based logging implementation in `azcore`. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azsecrets`, you must create your own logger and set the log classification as `LogCredential`.
-
-To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
+This module uses the classification based logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
 
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-// Set log to output to the console
+
 azlog.SetListener(func(cls azlog.Event, msg string) {
     fmt.Println(msg)
 })
 
-// Includes only requests and responses in credential logs
 azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 ```
 
-> CAUTION: logs from credentials contain sensitive information.
-> These logs must be protected to avoid compromising account security.
-
 ### Accessing `http.Response`
-You can access the raw `*http.Response` returned by the service using the `runtime.WithCaptureResponse` method and a context passed to any client method.
+You can access the raw `*http.Response` returned by Key Vault using the `runtime.WithCaptureResponse` method and a context passed to any client method.
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
 func main() {
     var respFromCtx *http.Response
-    ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
+    ctx := runtime.WithCaptureResponse(context.TODO(), &respFromCtx)
     _, err = client.GetSecret(ctx, "mySecretName", nil)
     if err != nil {
         panic(err)
     }
-    // Do something with *http.Response
     fmt.Println(respFromCtx.StatusCode)
 }
 ```
 
 ###  Additional Documentation
-For more extensive documentation on Azure Key Vault, see the [API reference documentation][reference_docs].
+See the [API reference documentation][reference_docs] for complete documentation of this module.
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -410,18 +398,16 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity/
-[azidentity_goget]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+[default_cred]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
-[reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
-[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets#Client
-[secret_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/client.go
-[soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
+[reference_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs
+[secret_client_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs#Client
+[module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets
 [secrets_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/example_test.go
+[soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazsecrets%2FREADME.png)

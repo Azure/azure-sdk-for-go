@@ -23,13 +23,13 @@ func ExampleIotSecuritySolutionAnalyticsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionAnalyticsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"MyGroup",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,13 +45,13 @@ func ExampleIotSecuritySolutionAnalyticsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewIotSecuritySolutionAnalyticsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewIotSecuritySolutionAnalyticsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"MyGroup",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

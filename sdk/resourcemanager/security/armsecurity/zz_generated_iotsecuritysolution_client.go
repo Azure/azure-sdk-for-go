@@ -38,7 +38,7 @@ func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIotSecuritySolutionClient(subscriptionID string, credential azcore.Token
 
 // CreateOrUpdate - Use this method to create or update yours IoT Security solution
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // iotSecuritySolutionData - The security solution data
@@ -98,7 +99,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, iotSecuritySolutionData)
 }
 
@@ -113,6 +114,7 @@ func (client *IotSecuritySolutionClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Use this method to delete yours IoT Security solution
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionClientDeleteOptions contains the optional parameters for the IotSecuritySolutionClient.Delete
@@ -154,12 +156,13 @@ func (client *IotSecuritySolutionClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - User this method to get details of a specific IoT Security solution based on solution name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionClientGetOptions contains the optional parameters for the IotSecuritySolutionClient.Get method.
@@ -200,7 +203,7 @@ func (client *IotSecuritySolutionClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,11 +218,12 @@ func (client *IotSecuritySolutionClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Use this method to get the list IoT Security solutions organized by resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - IotSecuritySolutionClientListByResourceGroupOptions contains the optional parameters for the IotSecuritySolutionClient.ListByResourceGroup
 // method.
 func (client *IotSecuritySolutionClient) NewListByResourceGroupPager(resourceGroupName string, options *IotSecuritySolutionClientListByResourceGroupOptions) *runtime.Pager[IotSecuritySolutionClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotSecuritySolutionClientListByResourceGroupResponse]{
 		More: func(page IotSecuritySolutionClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -267,7 +271,7 @@ func (client *IotSecuritySolutionClient) listByResourceGroupCreateRequest(ctx co
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -282,10 +286,11 @@ func (client *IotSecuritySolutionClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Use this method to get the list of IoT Security solutions by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // options - IotSecuritySolutionClientListBySubscriptionOptions contains the optional parameters for the IotSecuritySolutionClient.ListBySubscription
 // method.
 func (client *IotSecuritySolutionClient) NewListBySubscriptionPager(options *IotSecuritySolutionClientListBySubscriptionOptions) *runtime.Pager[IotSecuritySolutionClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotSecuritySolutionClientListBySubscriptionResponse]{
 		More: func(page IotSecuritySolutionClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -329,7 +334,7 @@ func (client *IotSecuritySolutionClient) listBySubscriptionCreateRequest(ctx con
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -345,6 +350,7 @@ func (client *IotSecuritySolutionClient) listBySubscriptionHandleResponse(resp *
 // Update - Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
 // use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // updateIotSecuritySolutionData - The security solution data
@@ -387,7 +393,7 @@ func (client *IotSecuritySolutionClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateIotSecuritySolutionData)
 }
 

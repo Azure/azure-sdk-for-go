@@ -24,7 +24,7 @@ func ExampleContactsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewContactsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewContactsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleContactsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,12 +48,12 @@ func ExampleContactsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewContactsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewContactsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<security-contact-name>",
+		"default1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,21 +69,21 @@ func ExampleContactsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewContactsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewContactsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<security-contact-name>",
+		"default1",
 		armsecurity.Contact{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("default1"),
+			Type: to.Ptr("Microsoft.Security/securityContacts"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityContacts/default1"),
 			Properties: &armsecurity.ContactProperties{
 				AlertNotifications: to.Ptr(armsecurity.AlertNotificationsOn),
 				AlertsToAdmins:     to.Ptr(armsecurity.AlertsToAdminsOn),
-				Email:              to.Ptr("<email>"),
-				Phone:              to.Ptr("<phone>"),
+				Email:              to.Ptr("john@contoso.com"),
+				Phone:              to.Ptr("(214)275-4038"),
 			},
 		},
 		nil)
@@ -102,12 +101,12 @@ func ExampleContactsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewContactsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewContactsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<security-contact-name>",
+		"default1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -121,19 +120,19 @@ func ExampleContactsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewContactsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewContactsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<security-contact-name>",
+		"john",
 		armsecurity.Contact{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
-			ID:   to.Ptr("<id>"),
+			Name: to.Ptr("default1"),
+			Type: to.Ptr("Microsoft.Security/securityContacts"),
+			ID:   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityContacts/default1"),
 			Properties: &armsecurity.ContactProperties{
 				AlertNotifications: to.Ptr(armsecurity.AlertNotificationsOn),
-				Phone:              to.Ptr("<phone>"),
+				Phone:              to.Ptr("(214)275-4038"),
 			},
 		},
 		nil)

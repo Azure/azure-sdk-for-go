@@ -23,7 +23,7 @@ func ExampleSolutionsReferenceDataClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewSolutionsReferenceDataClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewSolutionsReferenceDataClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -43,12 +43,12 @@ func ExampleSolutionsReferenceDataClient_ListByHomeRegion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewSolutionsReferenceDataClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewSolutionsReferenceDataClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByHomeRegion(ctx,
-		"<asc-location>",
+		"westcentralus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

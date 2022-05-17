@@ -38,7 +38,7 @@ func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - creating settings about where we should store your security data and logs
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // workspaceSettingName - Name of the security setting
 // workspaceSetting - Security data setting object
 // options - WorkspaceSettingsClientCreateOptions contains the optional parameters for the WorkspaceSettingsClient.Create
@@ -93,7 +94,7 @@ func (client *WorkspaceSettingsClient) createCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workspaceSetting)
 }
 
@@ -108,6 +109,7 @@ func (client *WorkspaceSettingsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // workspaceSettingName - Name of the security setting
 // options - WorkspaceSettingsClientDeleteOptions contains the optional parameters for the WorkspaceSettingsClient.Delete
 // method.
@@ -144,13 +146,14 @@ func (client *WorkspaceSettingsClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Settings about where we should store your security data and logs. If the result is empty, it means that no custom-workspace
 // configuration was set
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // workspaceSettingName - Name of the security setting
 // options - WorkspaceSettingsClientGetOptions contains the optional parameters for the WorkspaceSettingsClient.Get method.
 func (client *WorkspaceSettingsClient) Get(ctx context.Context, workspaceSettingName string, options *WorkspaceSettingsClientGetOptions) (WorkspaceSettingsClientGetResponse, error) {
@@ -186,7 +189,7 @@ func (client *WorkspaceSettingsClient) getCreateRequest(ctx context.Context, wor
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -202,9 +205,10 @@ func (client *WorkspaceSettingsClient) getHandleResponse(resp *http.Response) (W
 // NewListPager - Settings about where we should store your security data and logs. If the result is empty, it means that
 // no custom-workspace configuration was set
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // options - WorkspaceSettingsClientListOptions contains the optional parameters for the WorkspaceSettingsClient.List method.
 func (client *WorkspaceSettingsClient) NewListPager(options *WorkspaceSettingsClientListOptions) *runtime.Pager[WorkspaceSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceSettingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceSettingsClientListResponse]{
 		More: func(page WorkspaceSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -245,7 +249,7 @@ func (client *WorkspaceSettingsClient) listCreateRequest(ctx context.Context, op
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -260,6 +264,7 @@ func (client *WorkspaceSettingsClient) listHandleResponse(resp *http.Response) (
 
 // Update - Settings about where we should store your security data and logs
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // workspaceSettingName - Name of the security setting
 // workspaceSetting - Security data setting object
 // options - WorkspaceSettingsClientUpdateOptions contains the optional parameters for the WorkspaceSettingsClient.Update
@@ -297,7 +302,7 @@ func (client *WorkspaceSettingsClient) updateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workspaceSetting)
 }
 

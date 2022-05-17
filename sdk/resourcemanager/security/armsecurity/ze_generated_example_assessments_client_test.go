@@ -28,13 +28,12 @@ func ExampleAssessmentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,8 +54,8 @@ func ExampleAssessmentsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-id>",
-		"<assessment-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
+		"21300918-b2e3-0346-785f-c77ff57d243b",
 		&armsecurity.AssessmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,8 +76,8 @@ func ExampleAssessmentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-id>",
-		"<assessment-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
+		"8bb8be0a-6010-4789-812f-e4d661c4ed0e",
 		armsecurity.Assessment{
 			Properties: &armsecurity.AssessmentProperties{
 				ResourceDetails: &armsecurity.AzureResourceDetails{
@@ -109,8 +108,8 @@ func ExampleAssessmentsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-id>",
-		"<assessment-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss2",
+		"8bb8be0a-6010-4789-812f-e4d661c4ed0e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

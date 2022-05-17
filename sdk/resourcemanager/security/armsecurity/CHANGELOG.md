@@ -1,5 +1,62 @@
 # Release History
 
+## 0.7.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*AdaptiveNetworkHardeningsClient.BeginEnforce` return value(s) have been changed from `(*armruntime.Poller[AdaptiveNetworkHardeningsClientEnforceResponse], error)` to `(*runtime.Poller[AdaptiveNetworkHardeningsClientEnforceResponse], error)`
+- Function `*ServerVulnerabilityAssessmentClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServerVulnerabilityAssessmentClientDeleteResponse], error)` to `(*runtime.Poller[ServerVulnerabilityAssessmentClientDeleteResponse], error)`
+- Function `ComplianceResultList.MarshalJSON` has been removed
+- Function `AdaptiveApplicationControlGroups.MarshalJSON` has been removed
+- Function `ConnectorsList.MarshalJSON` has been removed
+- Function `AutoProvisioningSettingList.MarshalJSON` has been removed
+- Function `SubAssessmentList.MarshalJSON` has been removed
+- Function `SecureScoreControlList.MarshalJSON` has been removed
+- Function `IoTSecurityAggregatedRecommendationList.MarshalJSON` has been removed
+- Function `CustomEntityStoreAssignmentsListResult.MarshalJSON` has been removed
+- Function `IngestionSettingList.MarshalJSON` has been removed
+- Function `AlertList.MarshalJSON` has been removed
+- Function `ConnectionStrings.MarshalJSON` has been removed
+- Function `ServerVulnerabilityAssessmentsList.MarshalJSON` has been removed
+- Function `TaskList.MarshalJSON` has been removed
+- Function `TopologyList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `AssessmentList.MarshalJSON` has been removed
+- Function `SolutionsReferenceDataList.MarshalJSON` has been removed
+- Function `InformationProtectionPolicyList.MarshalJSON` has been removed
+- Function `WorkspaceSettingList.MarshalJSON` has been removed
+- Function `DiscoveredSecuritySolutionList.MarshalJSON` has been removed
+- Function `RegulatoryComplianceStandardList.MarshalJSON` has been removed
+- Function `AllowedConnectionsList.MarshalJSON` has been removed
+- Function `MdeOnboardingDataList.MarshalJSON` has been removed
+- Function `IoTSecuritySolutionsList.MarshalJSON` has been removed
+- Function `SoftwaresList.MarshalJSON` has been removed
+- Function `AlertsSuppressionRulesList.MarshalJSON` has been removed
+- Function `DeviceSecurityGroupList.MarshalJSON` has been removed
+- Function `IoTSecurityAggregatedAlertList.MarshalJSON` has been removed
+- Function `ConnectorSettingList.MarshalJSON` has been removed
+- Function `IoTSecuritySolutionAnalyticsModelList.MarshalJSON` has been removed
+- Function `JitNetworkAccessPoliciesList.MarshalJSON` has been removed
+- Function `ScanResults.MarshalJSON` has been removed
+- Function `AssessmentMetadataResponseList.MarshalJSON` has been removed
+- Function `CustomAssessmentAutomationsListResult.MarshalJSON` has been removed
+- Function `AutomationList.MarshalJSON` has been removed
+- Function `RegulatoryComplianceControlList.MarshalJSON` has been removed
+- Function `SecureScoreControlDefinitionList.MarshalJSON` has been removed
+- Function `SecureScoresList.MarshalJSON` has been removed
+- Function `ComplianceList.MarshalJSON` has been removed
+- Function `SolutionList.MarshalJSON` has been removed
+- Function `PricingList.MarshalJSON` has been removed
+- Function `AdaptiveNetworkHardeningsList.MarshalJSON` has been removed
+- Function `ContactList.MarshalJSON` has been removed
+- Function `SettingsList.MarshalJSON` has been removed
+- Function `Scans.MarshalJSON` has been removed
+- Function `RulesResults.MarshalJSON` has been removed
+- Function `RegulatoryComplianceAssessmentList.MarshalJSON` has been removed
+- Function `AscLocationList.MarshalJSON` has been removed
+- Function `ExternalSecuritySolutionList.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

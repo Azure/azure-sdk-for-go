@@ -24,7 +24,7 @@ func ExampleAlertsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleAlertsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleAlertsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myRg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,17 +73,16 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSubscriptionLevelByRegionPager("<asc-location>",
+	pager := client.NewListSubscriptionLevelByRegionPager("westeurope",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -101,18 +98,17 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListResourceGroupLevelByRegionPager("<asc-location>",
-		"<resource-group-name>",
+	pager := client.NewListResourceGroupLevelByRegionPager("westeurope",
+		"myRg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -128,13 +124,13 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSubscriptionLevel(ctx,
-		"<asc-location>",
-		"<alert-name>",
+		"westeurope",
+		"2518770965529163669_F144EE95-A3E5-42DA-A279-967D115809AA",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,14 +146,14 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetResourceGroupLevel(ctx,
-		"<asc-location>",
-		"<alert-name>",
-		"<resource-group-name>",
+		"westeurope",
+		"2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a",
+		"myRg1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -173,13 +169,13 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToDismiss() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateSubscriptionLevelStateToDismiss(ctx,
-		"<asc-location>",
-		"<alert-name>",
+		"westeurope",
+		"2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -193,13 +189,13 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToResolve() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateSubscriptionLevelStateToResolve(ctx,
-		"<asc-location>",
-		"<alert-name>",
+		"westeurope",
+		"2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -213,13 +209,13 @@ func ExampleAlertsClient_UpdateSubscriptionLevelStateToActivate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateSubscriptionLevelStateToActivate(ctx,
-		"<asc-location>",
-		"<alert-name>",
+		"westeurope",
+		"2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -233,14 +229,14 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToResolve() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateResourceGroupLevelStateToResolve(ctx,
-		"<asc-location>",
-		"<alert-name>",
-		"<resource-group-name>",
+		"westeurope",
+		"2518765996949954086_2325cf9e-42a2-4f72-ae7f-9b863cba2d22",
+		"myRg2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -254,14 +250,14 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToDismiss() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateResourceGroupLevelStateToDismiss(ctx,
-		"<asc-location>",
-		"<alert-name>",
-		"<resource-group-name>",
+		"westeurope",
+		"2518765996949954086_2325cf9e-42a2-4f72-ae7f-9b863cba2d22",
+		"myRg2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -275,14 +271,14 @@ func ExampleAlertsClient_UpdateResourceGroupLevelStateToActivate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.UpdateResourceGroupLevelStateToActivate(ctx,
-		"<asc-location>",
-		"<alert-name>",
-		"<resource-group-name>",
+		"westeurope",
+		"2518765996949954086_2325cf9e-42a2-4f72-ae7f-9b863cba2d22",
+		"myRg2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -296,12 +292,12 @@ func ExampleAlertsClient_Simulate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAlertsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Simulate(ctx,
-		"<asc-location>",
+		"centralus",
 		armsecurity.AlertSimulatorRequestBody{
 			Properties: &armsecurity.AlertSimulatorBundlesRequestProperties{
 				Kind: to.Ptr(armsecurity.KindBundles),

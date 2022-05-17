@@ -39,7 +39,7 @@ func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string
 
 // Dismiss - Use this method to dismiss an aggregated IoT Security Solution Alert.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // aggregatedAlertName - Identifier of the aggregated alert.
@@ -103,13 +104,14 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) dismissCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is performed
 // by alert name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // aggregatedAlertName - Identifier of the aggregated alert.
@@ -156,7 +158,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -171,12 +173,13 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) getHandleRespo
 
 // NewListPager - Use this method to get the aggregated alert list of yours IoT Security solution.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-08-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // solutionName - The name of the IoT Security solution.
 // options - IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions contains the optional parameters for the IotSecuritySolutionsAnalyticsAggregatedAlertClient.List
 // method.
 func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) NewListPager(resourceGroupName string, solutionName string, options *IotSecuritySolutionsAnalyticsAggregatedAlertClientListOptions) *runtime.Pager[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse]{
 		More: func(page IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -228,7 +231,7 @@ func (client *IotSecuritySolutionsAnalyticsAggregatedAlertClient) listCreateRequ
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

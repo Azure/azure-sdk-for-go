@@ -36,7 +36,7 @@ func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.Cli
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.Cli
 
 // Get - Get a security sub-assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // assessmentName - The Assessment Key - Unique key for the assessment type
@@ -92,7 +93,7 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,12 +108,13 @@ func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubA
 
 // NewListPager - Get security sub-assessments on all your scanned resources inside a scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // assessmentName - The Assessment Key - Unique key for the assessment type
 // options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.List method.
 func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAssessmentsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListResponse]{
 		More: func(page SubAssessmentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -154,7 +156,7 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,11 +171,12 @@ func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (Sub
 
 // NewListAllPager - Get security sub-assessments on all your scanned resources inside a subscription scope
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-01-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - SubAssessmentsClientListAllOptions contains the optional parameters for the SubAssessmentsClient.ListAll method.
 func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAssessmentsClientListAllOptions) *runtime.Pager[SubAssessmentsClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubAssessmentsClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListAllResponse]{
 		More: func(page SubAssessmentsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -211,7 +214,7 @@ func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, sc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

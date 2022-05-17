@@ -28,13 +28,12 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-id>",
+	pager := client.NewListPager("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,8 +54,8 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-id>",
-		"<device-security-group-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
+		"samplesecuritygroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,17 +76,17 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-id>",
-		"<device-security-group-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
+		"samplesecuritygroup",
 		armsecurity.DeviceSecurityGroup{
 			Properties: &armsecurity.DeviceSecurityGroupProperties{
 				TimeWindowRules: []armsecurity.TimeWindowCustomAlertRuleClassification{
 					&armsecurity.ActiveConnectionsNotInAllowedRange{
 						IsEnabled:      to.Ptr(true),
-						RuleType:       to.Ptr("<rule-type>"),
+						RuleType:       to.Ptr("ActiveConnectionsNotInAllowedRange"),
 						MaxThreshold:   to.Ptr[int32](30),
 						MinThreshold:   to.Ptr[int32](0),
-						TimeWindowSize: to.Ptr("<time-window-size>"),
+						TimeWindowSize: to.Ptr("PT05M"),
 					}},
 			},
 		},
@@ -111,8 +110,8 @@ func ExampleDeviceSecurityGroupsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-id>",
-		"<device-security-group-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Devices/iotHubs/sampleiothub",
+		"samplesecuritygroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

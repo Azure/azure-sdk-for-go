@@ -27,13 +27,12 @@ func ExampleComplianceResultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,8 +53,8 @@ func ExampleComplianceResultsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-id>",
-		"<compliance-result-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"DesignateMoreThanOneOwner",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

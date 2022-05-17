@@ -40,7 +40,7 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Creates a topic in the specified namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -104,7 +105,7 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *TopicsClient) createOrUpdateHandleResponse(resp *http.Response) (T
 
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for the specified topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -171,7 +173,7 @@ func (client *TopicsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -186,6 +188,7 @@ func (client *TopicsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *
 
 // Delete - Deletes a topic from the specified namespace and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -231,12 +234,13 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAuthorizationRule - Deletes a topic authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -288,12 +292,13 @@ func (client *TopicsClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns a description for the specified topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -339,7 +344,7 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -354,6 +359,7 @@ func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClient
 
 // GetAuthorizationRule - Returns the specified authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -405,7 +411,7 @@ func (client *TopicsClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -420,13 +426,14 @@ func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 
 // NewListAuthorizationRulesPager - Gets authorization rules for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
 // options - TopicsClientListAuthorizationRulesOptions contains the optional parameters for the TopicsClient.ListAuthorizationRules
 // method.
 func (client *TopicsClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, topicName string, options *TopicsClientListAuthorizationRulesOptions) *runtime.Pager[TopicsClientListAuthorizationRulesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopicsClientListAuthorizationRulesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopicsClientListAuthorizationRulesResponse]{
 		More: func(page TopicsClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -479,7 +486,7 @@ func (client *TopicsClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -494,11 +501,12 @@ func (client *TopicsClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 
 // NewListByNamespacePager - Gets all the topics in a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - TopicsClientListByNamespaceOptions contains the optional parameters for the TopicsClient.ListByNamespace method.
 func (client *TopicsClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *TopicsClientListByNamespaceOptions) *runtime.Pager[TopicsClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TopicsClientListByNamespaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TopicsClientListByNamespaceResponse]{
 		More: func(page TopicsClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -553,7 +561,7 @@ func (client *TopicsClient) listByNamespaceCreateRequest(ctx context.Context, re
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -568,6 +576,7 @@ func (client *TopicsClient) listByNamespaceHandleResponse(resp *http.Response) (
 
 // ListKeys - Gets the primary and secondary connection strings for the topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -618,7 +627,7 @@ func (client *TopicsClient) listKeysCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -633,6 +642,7 @@ func (client *TopicsClient) listKeysHandleResponse(resp *http.Response) (TopicsC
 
 // RegenerateKeys - Regenerates primary or secondary connection strings for the topic.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // topicName - The topic name.
@@ -684,7 +694,7 @@ func (client *TopicsClient) regenerateKeysCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

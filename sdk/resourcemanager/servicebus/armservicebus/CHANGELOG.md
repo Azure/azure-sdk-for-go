@@ -1,5 +1,28 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*MigrationConfigsClient.BeginCreateAndStartMigration` return value(s) have been changed from `(*armruntime.Poller[MigrationConfigsClientCreateAndStartMigrationResponse], error)` to `(*runtime.Poller[MigrationConfigsClientCreateAndStartMigrationResponse], error)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientDeleteResponse], error)` to `(*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `SBSubscriptionListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `NetworkRuleSetListResult.MarshalJSON` has been removed
+- Function `SBTopicListResult.MarshalJSON` has been removed
+- Function `MigrationConfigListResult.MarshalJSON` has been removed
+- Function `SBQueueListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesListResult.MarshalJSON` has been removed
+- Function `ErrorResponseError.MarshalJSON` has been removed
+- Function `SBAuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `ArmDisasterRecoveryListResult.MarshalJSON` has been removed
+- Function `SBNamespaceListResult.MarshalJSON` has been removed
+- Function `RuleListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

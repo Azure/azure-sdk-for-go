@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
@@ -26,18 +24,17 @@ func ExampleMigrationConfigsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListPager("ResourceGroup",
+		"sdk-Namespace-9259",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,25 +50,25 @@ func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateAndStartMigration(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"ResourceGroup",
+		"sdk-Namespace-41",
 		armservicebus.MigrationConfigurationNameDefault,
 		armservicebus.MigrationConfigProperties{
 			Properties: &armservicebus.MigrationConfigPropertiesProperties{
-				PostMigrationName: to.Ptr("<post-migration-name>"),
-				TargetNamespace:   to.Ptr("<target-namespace>"),
+				PostMigrationName: to.Ptr("sdk-PostMigration-5919"),
+				TargetNamespace:   to.Ptr("/subscriptions/SubscriptionId/resourceGroups/ResourceGroup/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-4028"),
 			},
 		},
-		&armservicebus.MigrationConfigsClientBeginCreateAndStartMigrationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -86,13 +83,13 @@ func ExampleMigrationConfigsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"ResourceGroup",
+		"sdk-Namespace-41",
 		armservicebus.MigrationConfigurationNameDefault,
 		nil)
 	if err != nil {
@@ -107,13 +104,13 @@ func ExampleMigrationConfigsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"ResourceGroup",
+		"sdk-Namespace-41",
 		armservicebus.MigrationConfigurationNameDefault,
 		nil)
 	if err != nil {
@@ -130,13 +127,13 @@ func ExampleMigrationConfigsClient_CompleteMigration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CompleteMigration(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"ResourceGroup",
+		"sdk-Namespace-41",
 		armservicebus.MigrationConfigurationNameDefault,
 		nil)
 	if err != nil {
@@ -151,13 +148,13 @@ func ExampleMigrationConfigsClient_Revert() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("<subscription-id>", cred, nil)
+	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Revert(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"ResourceGroup",
+		"sdk-Namespace-41",
 		armservicebus.MigrationConfigurationNameDefault,
 		nil)
 	if err != nil {

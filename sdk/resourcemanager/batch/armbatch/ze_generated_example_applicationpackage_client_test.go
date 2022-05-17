@@ -24,17 +24,17 @@ func ExampleApplicationPackageClient_Activate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewApplicationPackageClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewApplicationPackageClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Activate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<application-name>",
-		"<version-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"app1",
+		"1",
 		armbatch.ActivateApplicationPackageParameters{
-			Format: to.Ptr("<format>"),
+			Format: to.Ptr("zip"),
 		},
 		nil)
 	if err != nil {
@@ -51,15 +51,15 @@ func ExampleApplicationPackageClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewApplicationPackageClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewApplicationPackageClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<application-name>",
-		"<version-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"app1",
+		"1",
 		&armbatch.ApplicationPackageClientCreateOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,15 +75,15 @@ func ExampleApplicationPackageClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewApplicationPackageClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewApplicationPackageClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<application-name>",
-		"<version-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"app1",
+		"1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,15 +97,15 @@ func ExampleApplicationPackageClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewApplicationPackageClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewApplicationPackageClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<application-name>",
-		"<version-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"app1",
+		"1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -121,19 +121,18 @@ func ExampleApplicationPackageClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewApplicationPackageClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewApplicationPackageClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<application-name>",
+	pager := client.NewListPager("default-azurebatch-japaneast",
+		"sampleacct",
+		"app1",
 		&armbatch.ApplicationPackageClientListOptions{Maxresults: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

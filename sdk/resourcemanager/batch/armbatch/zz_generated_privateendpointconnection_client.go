@@ -39,7 +39,7 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 
 // Get - Gets information about the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
@@ -103,7 +104,7 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,12 +119,13 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 
 // NewListByBatchAccountPager - Lists all of the private endpoint connections in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - PrivateEndpointConnectionClientListByBatchAccountOptions contains the optional parameters for the PrivateEndpointConnectionClient.ListByBatchAccount
 // method.
 func (client *PrivateEndpointConnectionClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PrivateEndpointConnectionClientListByBatchAccountOptions) *runtime.Pager[PrivateEndpointConnectionClientListByBatchAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionClientListByBatchAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionClientListByBatchAccountResponse]{
 		More: func(page PrivateEndpointConnectionClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -175,7 +177,7 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(c
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -190,6 +192,7 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(
 
 // BeginUpdate - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // privateEndpointConnectionName - The private endpoint connection name. This must be unique within the account.
@@ -197,22 +200,23 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(
 // any property not supplied will be unchanged.
 // options - PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
 // method.
-func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionClientUpdateResponse], error) {
+func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, privateEndpointConnectionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
@@ -255,8 +259,8 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

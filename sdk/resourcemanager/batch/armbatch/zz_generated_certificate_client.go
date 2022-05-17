@@ -39,7 +39,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -61,6 +61,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 // you do not need to run this operation after the deletion failed. You must make
 // sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -108,7 +109,7 @@ func (client *CertificateClient) cancelDeletionCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,6 +127,7 @@ func (client *CertificateClient) cancelDeletionHandleResponse(resp *http.Respons
 
 // Create - Creates a new certificate inside the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -174,12 +176,12 @@ func (client *CertificateClient) createCreateRequest(ctx context.Context, resour
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -197,27 +199,29 @@ func (client *CertificateClient) createHandleResponse(resp *http.Response) (Cert
 
 // BeginDelete - Deletes the specified certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
 // and must match the certificate data in the request. For example SHA1-a3d1c5.
 // options - CertificateClientBeginDeleteOptions contains the optional parameters for the CertificateClient.BeginDelete method.
-func (client *CertificateClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*armruntime.Poller[CertificateClientDeleteResponse], error) {
+func (client *CertificateClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*runtime.Poller[CertificateClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, certificateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CertificateClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CertificateClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CertificateClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CertificateClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 func (client *CertificateClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, certificateName, options)
 	if err != nil {
@@ -259,12 +263,13 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -311,7 +316,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -329,12 +334,13 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 
 // NewListByBatchAccountPager - Lists all of the certificates in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.ListByBatchAccount
 // method.
 func (client *CertificateClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *CertificateClientListByBatchAccountOptions) *runtime.Pager[CertificateClientListByBatchAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByBatchAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CertificateClientListByBatchAccountResponse]{
 		More: func(page CertificateClientListByBatchAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -392,7 +398,7 @@ func (client *CertificateClient) listByBatchAccountCreateRequest(ctx context.Con
 	}
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -407,6 +413,7 @@ func (client *CertificateClient) listByBatchAccountHandleResponse(resp *http.Res
 
 // Update - Updates the properties of an existing certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
@@ -455,9 +462,9 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -113,33 +113,46 @@ func (s *ServiceClient) ListShares(o *ServiceListSharesOptions) *runtime.Pager[S
 	listOptions := o.format()
 	return runtime.NewPager(runtime.PagingHandler[ServiceListSharesResponse]{
 		More: func(page ServiceListSharesResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
+			if page.Marker == nil || len(*page.Marker) == 0 {
+				return false
+			}
+			return true
 		},
 		Fetcher: func(ctx context.Context, page *ServiceListSharesResponse) (ServiceListSharesResponse, error) {
-			if page.ListSharesResponse.NextMarker == nil || len(*page.NextMarker) == 0 {
-				return ServiceListSharesResponse{}, handleError(errors.New("unexpected missing NextMarker"))
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = listOptions.Marker
 			}
-			req, err := s.client.listSharesSegmentCreateRequest(ctx, listOptions)
+
+			req, err := s.client.listSharesSegmentCreateRequest(ctx, &listOptions)
 			if err != nil {
-				return ServiceListSharesResponse{}, handleError(err)
+				return ServiceListSharesResponse{}, err
 			}
-			queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
-			if err != nil {
-				return ServiceListSharesResponse{}, handleError(err)
+
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return ServiceListSharesResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
 			}
-			queryValues.Set("marker", *page.ListSharesResponse.NextMarker)
-			req.Raw().URL.RawQuery = queryValues.Encode()
 
 			resp, err := s.client.pl.Do(req)
 			if err != nil {
-				return ServiceListSharesResponse{}, handleError(err)
+				return ServiceListSharesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceListSharesResponse{}, handleError(runtime.NewResponseError(resp))
+				return ServiceListSharesResponse{}, runtime.NewResponseError(resp)
 			}
 
 			generatedResp, err := s.client.listSharesSegmentHandleResponse(resp)
-			return toServiceListSharesResponse(generatedResp), handleError(err)
+			return toServiceListSharesResponse(generatedResp), err
 		},
 	})
 }

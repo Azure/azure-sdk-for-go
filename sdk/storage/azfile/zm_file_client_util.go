@@ -219,9 +219,7 @@ type FileDownloadOptions struct {
 }
 
 func (o *FileDownloadOptions) format(offset, count int64) (downloadOptions *fileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) {
-	downloadOptions = &fileClientDownloadOptions{
-		Range: NewHttpRange(offset, count).format(),
-	}
+	downloadOptions = &fileClientDownloadOptions{Range: NewHttpRange(offset, count).format()}
 
 	if o != nil {
 		downloadOptions.RangeGetContentMD5 = o.RangeGetContentMD5
@@ -439,35 +437,27 @@ type FileUploadRangeOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *FileUploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (rangeParam string,
-	fileRangeWrite FileRangeWriteType, contentLength int64, uploadRangeOptions *fileClientUploadRangeOptions,
-	leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileUploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (string, FileRangeWriteType, int64,
+	*fileClientUploadRangeOptions, *LeaseAccessConditions, error) {
 
-	if offset < 0 {
-		err = errors.New("invalid argument, offset must be >= 0")
-		return
-	}
-	if body == nil {
-		err = errors.New("invalid argument, body must not be nil")
-		return
+	if offset < 0 || body == nil {
+		return "", "", 0, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
 	count := int64(CountToEnd)
-	count, err = validateSeekableStreamAt0AndGetCount(body)
+	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
-		return
+		return "", "", 0, nil, nil, err
 	}
 
 	if count == 0 {
-		err = errors.New("invalid argument, body must contain readable data whose size is > 0")
-		return
+		return "", "", 0, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
 	}
 
-	rangeParam = *NewHttpRange(offset, count).format()
-	fileRangeWrite = FileRangeWriteTypeUpdate
-	contentLength = count
-
+	httpRange := getSourceRange(to.Ptr(offset), to.Ptr(count))
+	fileRangeWrite := FileRangeWriteTypeUpdate
 	var contentMD5 []byte
+	var leaseAccessConditions *LeaseAccessConditions
 
 	if o != nil {
 		if o.FileRangeWrite != nil {
@@ -479,12 +469,8 @@ func (o *FileUploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (r
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
-	uploadRangeOptions = &fileClientUploadRangeOptions{
-		ContentMD5:   contentMD5,
-		Optionalbody: body,
-	}
-
-	return
+	uploadRangeOptions := &fileClientUploadRangeOptions{ContentMD5: contentMD5, Optionalbody: body}
+	return httpRange, fileRangeWrite, count, uploadRangeOptions, leaseAccessConditions, nil
 }
 
 type FileUploadRangeResponse struct {
@@ -511,24 +497,21 @@ type FileUploadRangeFromURLOptions struct {
 	SourceRange *string
 }
 
-func (o *FileUploadRangeFromURLOptions) format(sourceURL string, sourceOffset, destinationOffset, count int64) (rangeParam string,
-	copySource string, contentLength int64, uploadRangeFromURLOptions *fileClientUploadRangeFromURLOptions,
-	sourceModifiedAccessConditions *SourceModifiedAccessConditions, leaseAccessConditions *LeaseAccessConditions) {
+func (o *FileUploadRangeFromURLOptions) format(sourceURL string, sourceOffset, destinationOffset, count int64) (string,
+	string, int64, *fileClientUploadRangeFromURLOptions, *SourceModifiedAccessConditions, *LeaseAccessConditions) {
 
-	rangeParam = *(NewHttpRange(destinationOffset, count).format())
-	copySource = sourceURL
-	contentLength = count
-	uploadRangeFromURLOptions = &fileClientUploadRangeFromURLOptions{
+	destinationDataRange := getSourceRange(to.Ptr(destinationOffset), to.Ptr(count))
+	uploadRangeFromURLOptions := &fileClientUploadRangeFromURLOptions{
 		SourceRange: NewHttpRange(sourceOffset, count).format(),
 	}
+
 	if o != nil {
 		uploadRangeFromURLOptions.SourceContentCRC64 = o.SourceContentCRC64
 		uploadRangeFromURLOptions.CopySourceAuthorization = o.CopySourceAuthorization
-
-		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
-		leaseAccessConditions = o.LeaseAccessConditions
+		return destinationDataRange, sourceURL, count, uploadRangeFromURLOptions, o.SourceModifiedAccessConditions, o.LeaseAccessConditions
 	}
-	return
+
+	return destinationDataRange, sourceURL, count, uploadRangeFromURLOptions, nil, nil
 }
 
 type FileUploadRangeFromURLResponse struct {
@@ -554,23 +537,23 @@ type FileClearRangeOptions struct {
 }
 
 func (o *FileClearRangeOptions) format(offset, count int64) (string, FileRangeWriteType, int64, *fileClientUploadRangeOptions, *LeaseAccessConditions, error) {
-	httpRange := NewHttpRange(offset, count).format()
+	httpRange := getSourceRange(to.Ptr(offset), to.Ptr(count))
 	fileRangeWrite := FileRangeWriteTypeClear
 	contentLength := int64(0)
 
 	if offset < 0 || count <= 0 {
-		return *httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, errors.New("invalid argument: either offset is < 0 or count <= 0")
+		return httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, errors.New("invalid argument: either offset is < 0 or count <= 0")
 	}
 
 	if o == nil {
-		return *httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, nil
+		return httpRange, fileRangeWrite, contentLength, &fileClientUploadRangeOptions{}, nil, nil
 	}
 
 	uploadRangeOptions := fileClientUploadRangeOptions{
 		ContentMD5:   o.ContentMD5,
 		Optionalbody: o.OptionalBody,
 	}
-	return *httpRange, fileRangeWrite, contentLength, &uploadRangeOptions, o.LeaseAccessConditions, nil
+	return httpRange, fileRangeWrite, contentLength, &uploadRangeOptions, o.LeaseAccessConditions, nil
 }
 
 type FileClearRangeResponse struct {
@@ -594,16 +577,16 @@ type FileGetRangeListOptions struct {
 
 func (o *FileGetRangeListOptions) format(offset, count int64) (*fileClientGetRangeListOptions, *LeaseAccessConditions) {
 	getRangeListOptions := &fileClientGetRangeListOptions{
-		Prevsharesnapshot: o.PrevShareSnapshot,
-		Range:             NewHttpRange(offset, count).format(),
-		Sharesnapshot:     o.ShareSnapshot,
+		Range: NewHttpRange(offset, count).format(),
 	}
 
-	if o == nil {
-		return getRangeListOptions, nil
+	if o != nil {
+		getRangeListOptions.Prevsharesnapshot = o.PrevShareSnapshot
+		getRangeListOptions.Sharesnapshot = o.ShareSnapshot
+		return getRangeListOptions, o.LeaseAccessConditions
 	}
 
-	return getRangeListOptions, o.LeaseAccessConditions
+	return getRangeListOptions, nil
 }
 
 type FileGetRangeListResponse struct {

@@ -204,11 +204,11 @@ type DirectoryListFilesAndDirectoriesOptions struct {
 	ShareSnapshot *string
 }
 
-func (o *DirectoryListFilesAndDirectoriesOptions) format() *directoryClientListFilesAndDirectoriesSegmentOptions {
+func (o *DirectoryListFilesAndDirectoriesOptions) format() directoryClientListFilesAndDirectoriesSegmentOptions {
 	if o == nil {
-		return nil
+		return directoryClientListFilesAndDirectoriesSegmentOptions{}
 	}
-	return &directoryClientListFilesAndDirectoriesSegmentOptions{
+	return directoryClientListFilesAndDirectoriesSegmentOptions{
 		Marker:        o.Marker,
 		Maxresults:    o.MaxResults,
 		Prefix:        o.Prefix,

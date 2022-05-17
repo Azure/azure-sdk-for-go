@@ -136,7 +136,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	// Creating again will result in 409 and ResourceAlreadyExists.
 	cResp, err = dirClient.Create(context.Background(), &DirectoryCreateOptions{Metadata: md})
 	_require.NotNil(err)
-	//serr := err.(*StorageError)
+	//serr := err.(*ShareError)
 	//_require.Equal(serr.Response().StatusCode,409)
 	validateStorageError(_require, err, ShareErrorCodeResourceAlreadyExists)
 

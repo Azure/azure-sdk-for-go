@@ -25,9 +25,9 @@ type InternalError struct {
 	cause error
 }
 
-// Error checks if InternalError can be cast as StorageError
+// Error checks if InternalError can be cast as ShareError
 func (e *InternalError) Error() string {
-	if (errors.Is(e.cause, StorageError{})) {
+	if (errors.Is(e.cause, ShareError{})) {
 		return e.cause.Error()
 	}
 
@@ -54,10 +54,10 @@ func (e *InternalError) As(target interface{}) bool {
 	return errors.As(e.cause, target)
 }
 
-// StorageError is the internal struct that replaces the generated StorageError.
-// TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
+// ShareError is the internal struct that replaces the generated ShareError.
+// TL;DR: This implements xml.Unmarshaler, and when the original ShareError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the responseBody, cause, and service code.
-type StorageError struct {
+type ShareError struct {
 	response    *http.Response
 	description string
 
@@ -81,9 +81,9 @@ func handleError(err error) error {
 	return nil
 }
 
-// converts an *azcore.ResponseError to a *StorageError, or if that fails, a *InternalError
+// converts an *azcore.ResponseError to a *ShareError, or if that fails, a *InternalError
 func responseErrorToStorageError(responseError *azcore.ResponseError) error {
-	var storageError StorageError
+	var storageError ShareError
 	body, err := runtime.Payload(responseError.RawResponse)
 	if err != nil {
 		goto Default
@@ -112,12 +112,12 @@ Default:
 }
 
 // StatusCode returns service-error information. The caller may examine these values but should not modify any of them.
-func (e *StorageError) StatusCode() int {
+func (e *ShareError) StatusCode() int {
 	return e.response.StatusCode
 }
 
 // Error implements the error interface's Error method to return a string representation of the error.
-func (e StorageError) Error() string {
+func (e ShareError) Error() string {
 	b := &bytes.Buffer{}
 
 	if e.response != nil {
@@ -147,16 +147,16 @@ func (e StorageError) Error() string {
 	// return e.ErrorNode.Error(b.String())
 }
 
-// Is checks if err can be cast as StorageError
-func (e StorageError) Is(err error) bool {
-	_, ok := err.(StorageError)
-	_, ok2 := err.(*StorageError)
+// Is checks if err can be cast as ShareError
+func (e ShareError) Is(err error) bool {
+	_, ok := err.(ShareError)
+	_, ok2 := err.(*ShareError)
 
 	return ok || ok2
 }
 
-// Response returns StorageError.responseBody
-func (e StorageError) Response() *http.Response {
+// Response returns ShareError.responseBody
+func (e ShareError) Response() *http.Response {
 	return e.response
 }
 
@@ -196,7 +196,7 @@ func writeHeader(b *bytes.Buffer, header map[string][]string) {
 }
 
 // Temporary returns true if the error occurred due to a temporary condition (including an HTTP status of 500 or 503).
-func (e *StorageError) Temporary() bool {
+func (e *ShareError) Temporary() bool {
 	if e.response != nil {
 		if (e.response.StatusCode == http.StatusInternalServerError) || (e.response.StatusCode == http.StatusServiceUnavailable) || (e.response.StatusCode == http.StatusBadGateway) {
 			return true
@@ -208,7 +208,7 @@ func (e *StorageError) Temporary() bool {
 
 // UnmarshalXML performs custom unmarshalling of XML-formatted Azure storage request errors.
 //nolint
-func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err error) {
+func (e *ShareError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err error) {
 	tokName := ""
 	var t xml.Token
 	for t, err = d.Token(); err == nil; t, err = d.Token() {

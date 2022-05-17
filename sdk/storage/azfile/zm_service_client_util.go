@@ -125,11 +125,11 @@ type ServiceListSharesOptions struct {
 	Prefix *string
 }
 
-func (o *ServiceListSharesOptions) format() *serviceClientListSharesSegmentOptions {
+func (o *ServiceListSharesOptions) format() serviceClientListSharesSegmentOptions {
 	if o == nil {
-		return nil
+		return serviceClientListSharesSegmentOptions{}
 	}
-	return &serviceClientListSharesSegmentOptions{
+	return serviceClientListSharesSegmentOptions{
 		Include:    o.Include,
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,

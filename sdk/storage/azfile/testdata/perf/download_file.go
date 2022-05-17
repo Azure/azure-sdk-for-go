@@ -119,11 +119,17 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 	if err != nil {
 		return nil, err
 	}
-	bc, err := containerClient.NewBlockBlobClient(d.blobName)
+
+	dirClient, err := shareClient.NewDirectoryClient(g.directoryName)
 	if err != nil {
 		return nil, err
 	}
-	d.blobClient = bc
+
+	fileClient, err := dirClient.NewFileClient(g.fileName)
+	if err != nil {
+		return nil, err
+	}
+	d.fileClient = fileClient
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)
 	if err != nil {
@@ -135,7 +141,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 }
 
 func (d *downloadPerfTest) Run(ctx context.Context) error {
-	get, err := d.blobClient.Download(ctx, nil)
+	get, err := d.fileClient.Download(ctx, 0, azfile.CountToEnd, nil)
 	if err != nil {
 		return err
 	}

@@ -24,6 +24,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
+// SharedKeyCredential contains an account's name and its primary or secondary key.
+// It is immutable making it shareable and goroutine-safe.
+type SharedKeyCredential struct {
+	// Only the NewSharedKeyCredential method should set these; all other methods should treat them as read-only
+	accountName string
+	accountKey  atomic.Value // []byte
+}
+
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCredential, error) {
@@ -32,14 +40,6 @@ func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCr
 		return nil, err
 	}
 	return &c, nil
-}
-
-// SharedKeyCredential contains an account's name and its primary or secondary key.
-// It is immutable making it shareable and goroutine-safe.
-type SharedKeyCredential struct {
-	// Only the NewSharedKeyCredential method should set these; all other methods should treat them as read-only
-	accountName string
-	accountKey  atomic.Value // []byte
 }
 
 // AccountName returns the Storage account's name.

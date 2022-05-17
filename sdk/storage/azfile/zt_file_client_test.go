@@ -515,7 +515,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //		abortResp, err := destFile.AbortCopy(ctx, copyResp.CopyID())
 //		_require.NotNil(err)
 //		_require(abortResp, chk.IsNil)
-//		se, ok := err.(StorageError)
+//		se, ok := err.(ShareError)
 //		_require(ok, chk.Equals, true)
 //		_require(se.RawResponse.StatusCode, chk.Equals, http.StatusConflict)
 //	}
@@ -807,7 +807,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	if err != nil {
 //		// If the error is nil, the test continues as normal.
 //		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-//		_require((err.(StorageError)).RawResponse.StatusCode, chk.Equals, 409)
+//		_require((err.(ShareError)).RawResponse.StatusCode, chk.Equals, 409)
 //		c.Error("The test failed because the copy completed because it was aborted")
 //	}
 //
@@ -887,7 +887,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //
 //	_, err := fClient.Resize(ctx, -4)
 //	_require.NotNil(err)
-//	sErr := err.(StorageError)
+//	sErr := err.(ShareError)
 //	_require(sErr.RawResponse.StatusCode, chk.Equals, http.StatusBadRequest)
 //}
 //
@@ -1689,10 +1689,12 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRangesCountLess()
 	srClient, fClient := setupGetRangeListTest(_require, testName)
 	defer delShare(_require, srClient, nil)
 
-	resp, err := fClient.GetRangeList(ctx, 0, int64(testFileRangeSize-1), nil)
+	resp, err := fClient.GetRangeList(ctx, 0, int64(testFileRangeSize), nil)
 	_require.Nil(err)
 	_require.Len(resp.Ranges, 1)
-	_require.EqualValues(*resp.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(testFileRangeSize - 1))})
+	_require.EqualValues(int64(0), *(resp.Ranges[0].Start))
+	_require.EqualValues(int64(testFileRangeSize-1), *(resp.Ranges[0].End))
+
 }
 
 func (s *azfileLiveTestSuite) TestFileGetRangeListNonContiguousRangesCountExceed() {

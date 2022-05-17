@@ -32,7 +32,7 @@ func NewHttpRange(offset, count int64) *HttpRange {
 }
 
 func (r *HttpRange) format() *string {
-	if r != nil || (r.Offset == 0 && r.Count == 0) { // Do common case first for performance
+	if r == nil || (r.Offset == 0 && r.Count == 0) { // Do common case first for performance
 		return nil // No specified range
 	}
 	endOffset := "" // if Count == CountToEnd (0)
@@ -46,10 +46,7 @@ func (r *HttpRange) format() *string {
 // getSourceRange makes range string adhere to REST API.
 // A Count with value CountToEnd means Count of bytes from Offset to the end of file.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-the-range-header-for-file-service-operations.
-func getSourceRange(offset, count *int64) *string {
-	if offset == nil && count == nil {
-		return nil
-	}
+func getSourceRange(offset, count *int64) string {
 	newOffset := int64(0)
 	newCount := int64(CountToEnd)
 
@@ -61,7 +58,13 @@ func getSourceRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return (&HttpRange{Offset: newOffset, Count: newCount}).format()
+	endOffset := "" // if Count == CountToEnd (0)
+	if newCount > 0 {
+		endOffset = strconv.FormatInt((newOffset+newCount)-1, 10)
+	}
+	dataRange := fmt.Sprintf("bytes=%v-%s", newOffset, endOffset)
+
+	return dataRange
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

@@ -371,7 +371,7 @@ type SourceModifiedAccessConditions struct {
 	SourceIfNoneMatchCRC64 []byte
 }
 
-//type StorageError struct {
+//type ShareError struct {
 //	Message *string `json:"Message,omitempty"`
 //}
 

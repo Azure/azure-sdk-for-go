@@ -40,7 +40,7 @@ func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewAPIOperationClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Creates a new operation in the API or updates an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -112,9 +113,9 @@ func (client *APIOperationClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -132,6 +133,7 @@ func (client *APIOperationClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes the specified operation in the API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -185,13 +187,14 @@ func (client *APIOperationClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the details of the API Operation specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -243,7 +246,7 @@ func (client *APIOperationClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -260,6 +263,7 @@ func (client *APIOperationClient) getHandleResponse(resp *http.Response) (APIOpe
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the API operation specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -275,6 +279,9 @@ func (client *APIOperationClient) GetEntityTag(ctx context.Context, resourceGrou
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return APIOperationClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -309,7 +316,7 @@ func (client *APIOperationClient) getEntityTagCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -319,21 +326,20 @@ func (client *APIOperationClient) getEntityTagHandleResponse(resp *http.Response
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByAPIPager - Lists a collection of the operations for the specified API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - APIOperationClientListByAPIOptions contains the optional parameters for the APIOperationClient.ListByAPI method.
 func (client *APIOperationClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIOperationClientListByAPIOptions) *runtime.Pager[APIOperationClientListByAPIResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APIOperationClientListByAPIResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APIOperationClientListByAPIResponse]{
 		More: func(page APIOperationClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -398,7 +404,7 @@ func (client *APIOperationClient) listByAPICreateRequest(ctx context.Context, re
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -413,6 +419,7 @@ func (client *APIOperationClient) listByAPIHandleResponse(resp *http.Response) (
 
 // Update - Updates the details of the operation in the API specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -467,8 +474,8 @@ func (client *APIOperationClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

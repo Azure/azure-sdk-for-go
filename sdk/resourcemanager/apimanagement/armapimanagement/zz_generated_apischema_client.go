@@ -40,7 +40,7 @@ func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Creates or updates schema configuration for the API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -66,22 +67,23 @@ func NewAPISchemaClient(subscriptionID string, credential azcore.TokenCredential
 // parameters - The schema contents to apply.
 // options - APISchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the APISchemaClient.BeginCreateOrUpdate
 // method.
-func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*armruntime.Poller[APISchemaClientCreateOrUpdateResponse], error) {
+func (client *APISchemaClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*runtime.Poller[APISchemaClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, apiID, schemaID, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[APISchemaClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[APISchemaClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[APISchemaClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[APISchemaClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates schema configuration for the API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *APISchemaClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, schemaID string, parameters SchemaContract, options *APISchemaClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, apiID, schemaID, parameters, options)
 	if err != nil {
@@ -128,14 +130,15 @@ func (client *APISchemaClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Deletes the schema configuration at the Api.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -192,13 +195,14 @@ func (client *APISchemaClient) deleteCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the schema configuration at the API level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -250,7 +254,7 @@ func (client *APISchemaClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -267,6 +271,7 @@ func (client *APISchemaClient) getHandleResponse(resp *http.Response) (APISchema
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the schema specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -281,6 +286,9 @@ func (client *APISchemaClient) GetEntityTag(ctx context.Context, resourceGroupNa
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APISchemaClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return APISchemaClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -315,7 +323,7 @@ func (client *APISchemaClient) getEntityTagCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -325,21 +333,20 @@ func (client *APISchemaClient) getEntityTagHandleResponse(resp *http.Response) (
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByAPIPager - Get the schema configuration at the API level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
 // ;rev=n as a suffix where n is the revision number.
 // options - APISchemaClientListByAPIOptions contains the optional parameters for the APISchemaClient.ListByAPI method.
 func (client *APISchemaClient) NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APISchemaClientListByAPIOptions) *runtime.Pager[APISchemaClientListByAPIResponse] {
-	return runtime.NewPager(runtime.PageProcessor[APISchemaClientListByAPIResponse]{
+	return runtime.NewPager(runtime.PagingHandler[APISchemaClientListByAPIResponse]{
 		More: func(page APISchemaClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -401,7 +408,7 @@ func (client *APISchemaClient) listByAPICreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

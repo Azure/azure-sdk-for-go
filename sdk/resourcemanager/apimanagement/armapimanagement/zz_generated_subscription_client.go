@@ -40,7 +40,7 @@ func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewSubscriptionClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Creates or updates the subscription of specified user to the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -112,9 +113,9 @@ func (client *SubscriptionClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -132,6 +133,7 @@ func (client *SubscriptionClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -179,13 +181,14 @@ func (client *SubscriptionClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified Subscription entity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -231,7 +234,7 @@ func (client *SubscriptionClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,6 +251,7 @@ func (client *SubscriptionClient) getHandleResponse(resp *http.Response) (Subscr
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -261,6 +265,9 @@ func (client *SubscriptionClient) GetEntityTag(ctx context.Context, resourceGrou
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SubscriptionClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return SubscriptionClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -291,7 +298,7 @@ func (client *SubscriptionClient) getEntityTagCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,19 +308,18 @@ func (client *SubscriptionClient) getEntityTagHandleResponse(resp *http.Response
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListPager - Lists all subscriptions of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - SubscriptionClientListOptions contains the optional parameters for the SubscriptionClient.List method.
 func (client *SubscriptionClient) NewListPager(resourceGroupName string, serviceName string, options *SubscriptionClientListOptions) *runtime.Pager[SubscriptionClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionClientListResponse]{
 		More: func(page SubscriptionClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -371,7 +377,7 @@ func (client *SubscriptionClient) listCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -386,6 +392,7 @@ func (client *SubscriptionClient) listHandleResponse(resp *http.Response) (Subsc
 
 // ListSecrets - Gets the specified Subscription keys.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -432,7 +439,7 @@ func (client *SubscriptionClient) listSecretsCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -450,6 +457,7 @@ func (client *SubscriptionClient) listSecretsHandleResponse(resp *http.Response)
 
 // RegeneratePrimaryKey - Regenerates primary key of existing subscription of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -496,12 +504,13 @@ func (client *SubscriptionClient) regeneratePrimaryKeyCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // RegenerateSecondaryKey - Regenerates secondary key of existing subscription of the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -548,12 +557,13 @@ func (client *SubscriptionClient) regenerateSecondaryKeyCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Updates the details of a subscription specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // sid - Subscription entity Identifier. The entity represents the association between a user and a product in API Management.
@@ -608,8 +618,8 @@ func (client *SubscriptionClient) updateCreateRequest(ctx context.Context, resou
 		reqQP.Set("appType", string(*options.AppType))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

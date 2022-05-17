@@ -24,14 +24,14 @@ func ExampleAPIPolicyClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"57d1f7558aa04f15146d9d8a",
 		armapimanagement.PolicyIDNamePolicy,
 		nil)
 	if err != nil {
@@ -46,14 +46,14 @@ func ExampleAPIPolicyClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"5600b59475ff190048040001",
 		armapimanagement.PolicyIDNamePolicy,
 		&armapimanagement.APIPolicyClientGetOptions{Format: nil})
 	if err != nil {
@@ -70,22 +70,22 @@ func ExampleAPIPolicyClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"5600b57e7e8880006a040001",
 		armapimanagement.PolicyIDNamePolicy,
 		armapimanagement.PolicyContract{
 			Properties: &armapimanagement.PolicyContractProperties{
 				Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
-				Value:  to.Ptr("<value>"),
+				Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
 			},
 		},
-		&armapimanagement.APIPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("<if-match>")})
+		&armapimanagement.APIPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -100,16 +100,16 @@ func ExampleAPIPolicyClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewAPIPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewAPIPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"loggerId",
 		armapimanagement.PolicyIDNamePolicy,
-		"<if-match>",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

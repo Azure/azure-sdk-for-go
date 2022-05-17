@@ -39,7 +39,7 @@ func NewNotificationRecipientEmailClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewNotificationRecipientEmailClient(subscriptionID string, credential azcor
 }
 
 // CheckEntityExists - Determine if Notification Recipient Email subscribed to the notification.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -71,11 +72,10 @@ func (client *NotificationRecipientEmailClient) CheckEntityExists(ctx context.Co
 	if err != nil {
 		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, err
 	}
-	result := NotificationRecipientEmailClientCheckEntityExistsResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent, http.StatusNotFound) {
+		return NotificationRecipientEmailClientCheckEntityExistsResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return NotificationRecipientEmailClientCheckEntityExistsResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
@@ -108,12 +108,13 @@ func (client *NotificationRecipientEmailClient) checkEntityExistsCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Adds the Email address to the list of Recipients for the Notification.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -165,7 +166,7 @@ func (client *NotificationRecipientEmailClient) createOrUpdateCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -180,6 +181,7 @@ func (client *NotificationRecipientEmailClient) createOrUpdateHandleResponse(res
 
 // Delete - Removes the email from the list of Notification.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -231,12 +233,13 @@ func (client *NotificationRecipientEmailClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // ListByNotification - Gets the list of the Notification Recipient Emails subscribed to a notification.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // notificationName - Notification Name Identifier.
@@ -283,7 +286,7 @@ func (client *NotificationRecipientEmailClient) listByNotificationCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

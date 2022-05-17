@@ -40,7 +40,7 @@ func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewUserGroupClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Lists all user groups.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // userID - User identifier. Must be unique in the current API Management service instance.
 // options - UserGroupClientListOptions contains the optional parameters for the UserGroupClient.List method.
 func (client *UserGroupClient) NewListPager(resourceGroupName string, serviceName string, userID string, options *UserGroupClientListOptions) *runtime.Pager[UserGroupClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UserGroupClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UserGroupClientListResponse]{
 		More: func(page UserGroupClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -125,7 +126,7 @@ func (client *UserGroupClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

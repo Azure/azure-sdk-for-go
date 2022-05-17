@@ -24,12 +24,12 @@ func ExampleGroupClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.GroupClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleGroupClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleGroupClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +74,14 @@ func ExampleGroupClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,17 +97,17 @@ func ExampleGroupClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
+		"rg1",
+		"apimService1",
+		"tempgroup",
 		armapimanagement.GroupCreateParameters{
 			Properties: &armapimanagement.GroupCreateParametersProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("temp group"),
 			},
 		},
 		&armapimanagement.GroupClientCreateOrUpdateOptions{IfMatch: nil})
@@ -126,18 +125,18 @@ func ExampleGroupClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"tempgroup",
+		"*",
 		armapimanagement.GroupUpdateParameters{
 			Properties: &armapimanagement.GroupUpdateParametersProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("temp group"),
 			},
 		},
 		nil)
@@ -155,15 +154,15 @@ func ExampleGroupClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<group-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"aadGroup",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

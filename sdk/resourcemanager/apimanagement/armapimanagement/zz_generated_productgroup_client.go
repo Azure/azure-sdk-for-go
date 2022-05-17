@@ -40,7 +40,7 @@ func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewProductGroupClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // CheckEntityExists - Checks that Group entity specified by identifier is associated with the Product entity.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
@@ -72,11 +73,10 @@ func (client *ProductGroupClient) CheckEntityExists(ctx context.Context, resourc
 	if err != nil {
 		return ProductGroupClientCheckEntityExistsResponse{}, err
 	}
-	result := ProductGroupClientCheckEntityExistsResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
+		return ProductGroupClientCheckEntityExistsResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return ProductGroupClientCheckEntityExistsResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
@@ -109,12 +109,13 @@ func (client *ProductGroupClient) checkEntityExistsCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Adds the association between the specified developer group with the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
@@ -166,7 +167,7 @@ func (client *ProductGroupClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -181,6 +182,7 @@ func (client *ProductGroupClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes the association between the specified group and product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
@@ -231,19 +233,20 @@ func (client *ProductGroupClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByProductPager - Lists the collection of developer groups associated with the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - ProductGroupClientListByProductOptions contains the optional parameters for the ProductGroupClient.ListByProduct
 // method.
 func (client *ProductGroupClient) NewListByProductPager(resourceGroupName string, serviceName string, productID string, options *ProductGroupClientListByProductOptions) *runtime.Pager[ProductGroupClientListByProductResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductGroupClientListByProductResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductGroupClientListByProductResponse]{
 		More: func(page ProductGroupClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -305,7 +308,7 @@ func (client *ProductGroupClient) listByProductCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -39,7 +39,7 @@ func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewRegionClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByServicePager - Lists all azure regions in which the service exists.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - RegionClientListByServiceOptions contains the optional parameters for the RegionClient.ListByService method.
 func (client *RegionClient) NewListByServicePager(resourceGroupName string, serviceName string, options *RegionClientListByServiceOptions) *runtime.Pager[RegionClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegionClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegionClientListByServiceResponse]{
 		More: func(page RegionClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -110,7 +111,7 @@ func (client *RegionClient) listByServiceCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -40,7 +40,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // NewListByAPIPager - Lists report records by API.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - The filter to apply on the operation.
 // options - ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.ListByAPI method.
 func (client *ReportsClient) NewListByAPIPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByAPIOptions) *runtime.Pager[ReportsClientListByAPIResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByAPIResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByAPIResponse]{
 		More: func(page ReportsClientListByAPIResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -122,7 +123,7 @@ func (client *ReportsClient) listByAPICreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -137,6 +138,7 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 
 // NewListByGeoPager - Lists report records by geography.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -166,7 +168,7 @@ func (client *ReportsClient) listByAPIHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByGeoOptions contains the optional parameters for the ReportsClient.ListByGeo method.
 func (client *ReportsClient) NewListByGeoPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByGeoOptions) *runtime.Pager[ReportsClientListByGeoResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByGeoResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByGeoResponse]{
 		More: func(page ReportsClientListByGeoResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -222,7 +224,7 @@ func (client *ReportsClient) listByGeoCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,6 +239,7 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 
 // NewListByOperationPager - Lists report records by API Operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -265,7 +268,7 @@ func (client *ReportsClient) listByGeoHandleResponse(resp *http.Response) (Repor
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByOperationOptions contains the optional parameters for the ReportsClient.ListByOperation method.
 func (client *ReportsClient) NewListByOperationPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByOperationOptions) *runtime.Pager[ReportsClientListByOperationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByOperationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByOperationResponse]{
 		More: func(page ReportsClientListByOperationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +327,7 @@ func (client *ReportsClient) listByOperationCreateRequest(ctx context.Context, r
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +342,7 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 
 // NewListByProductPager - Lists report records by Product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -365,7 +369,7 @@ func (client *ReportsClient) listByOperationHandleResponse(resp *http.Response) 
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByProductOptions contains the optional parameters for the ReportsClient.ListByProduct method.
 func (client *ReportsClient) NewListByProductPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByProductOptions) *runtime.Pager[ReportsClientListByProductResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByProductResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByProductResponse]{
 		More: func(page ReportsClientListByProductResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -424,7 +428,7 @@ func (client *ReportsClient) listByProductCreateRequest(ctx context.Context, res
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -439,6 +443,7 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 
 // NewListByRequestPager - Lists report records by Request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -452,7 +457,7 @@ func (client *ReportsClient) listByProductHandleResponse(resp *http.Response) (R
 // | subscriptionId | filter | eq | |
 // options - ReportsClientListByRequestOptions contains the optional parameters for the ReportsClient.ListByRequest method.
 func (client *ReportsClient) NewListByRequestPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByRequestOptions) *runtime.Pager[ReportsClientListByRequestResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByRequestResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByRequestResponse]{
 		More: func(page ReportsClientListByRequestResponse) bool {
 			return false
 		},
@@ -502,7 +507,7 @@ func (client *ReportsClient) listByRequestCreateRequest(ctx context.Context, res
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -517,6 +522,7 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 
 // NewListBySubscriptionPager - Lists report records by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -544,7 +550,7 @@ func (client *ReportsClient) listByRequestHandleResponse(resp *http.Response) (R
 // options - ReportsClientListBySubscriptionOptions contains the optional parameters for the ReportsClient.ListBySubscription
 // method.
 func (client *ReportsClient) NewListBySubscriptionPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListBySubscriptionOptions) *runtime.Pager[ReportsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListBySubscriptionResponse]{
 		More: func(page ReportsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -603,7 +609,7 @@ func (client *ReportsClient) listBySubscriptionCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -618,6 +624,7 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 
 // NewListByTimePager - Lists report records by Time.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -648,7 +655,7 @@ func (client *ReportsClient) listBySubscriptionHandleResponse(resp *http.Respons
 // TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
 // options - ReportsClientListByTimeOptions contains the optional parameters for the ReportsClient.ListByTime method.
 func (client *ReportsClient) NewListByTimePager(resourceGroupName string, serviceName string, filter string, interval string, options *ReportsClientListByTimeOptions) *runtime.Pager[ReportsClientListByTimeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByTimeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByTimeResponse]{
 		More: func(page ReportsClientListByTimeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -708,7 +715,7 @@ func (client *ReportsClient) listByTimeCreateRequest(ctx context.Context, resour
 	reqQP.Set("interval", interval)
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -723,6 +730,7 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 
 // NewListByUserPager - Lists report records by User.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // filter - | Field | Usage | Supported operators | Supported functions |
@@ -751,7 +759,7 @@ func (client *ReportsClient) listByTimeHandleResponse(resp *http.Response) (Repo
 // | serviceTimeMax | select | | |
 // options - ReportsClientListByUserOptions contains the optional parameters for the ReportsClient.ListByUser method.
 func (client *ReportsClient) NewListByUserPager(resourceGroupName string, serviceName string, filter string, options *ReportsClientListByUserOptions) *runtime.Pager[ReportsClientListByUserResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByUserResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByUserResponse]{
 		More: func(page ReportsClientListByUserResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -810,7 +818,7 @@ func (client *ReportsClient) listByUserCreateRequest(ctx context.Context, resour
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

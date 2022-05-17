@@ -39,7 +39,7 @@ func NewAPIOperationPolicyClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAPIOperationPolicyClient(subscriptionID string, credential azcore.TokenC
 
 // CreateOrUpdate - Creates or updates policy configuration for the API Operation level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -116,9 +117,9 @@ func (client *APIOperationPolicyClient) createOrUpdateCreateRequest(ctx context.
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -136,6 +137,7 @@ func (client *APIOperationPolicyClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes the policy configuration at the Api Operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -195,13 +197,14 @@ func (client *APIOperationPolicyClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the policy configuration at the API Operation level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -261,7 +264,7 @@ func (client *APIOperationPolicyClient) getCreateRequest(ctx context.Context, re
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -278,6 +281,7 @@ func (client *APIOperationPolicyClient) getHandleResponse(resp *http.Response) (
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the API operation policy specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -294,6 +298,9 @@ func (client *APIOperationPolicyClient) GetEntityTag(ctx context.Context, resour
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return APIOperationPolicyClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -332,7 +339,7 @@ func (client *APIOperationPolicyClient) getEntityTagCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -342,14 +349,13 @@ func (client *APIOperationPolicyClient) getEntityTagHandleResponse(resp *http.Re
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // ListByOperation - Get the list of policy configuration at the API Operation level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // apiID - API revision identifier. Must be unique in the current API Management service instance. Non-current revision has
@@ -402,7 +408,7 @@ func (client *APIOperationPolicyClient) listByOperationCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

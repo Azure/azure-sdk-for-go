@@ -23,13 +23,13 @@ func ExampleTenantAccessGitClient_RegeneratePrimaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessGitClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessGitClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegeneratePrimaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExampleTenantAccessGitClient_RegenerateSecondaryKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantAccessGitClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantAccessGitClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegenerateSecondaryKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.AccessIDNameAccess,
 		nil)
 	if err != nil {

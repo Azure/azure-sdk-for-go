@@ -24,13 +24,13 @@ func ExampleDelegationSettingsClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDelegationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDelegationSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,13 +44,13 @@ func ExampleDelegationSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDelegationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDelegationSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -66,24 +66,24 @@ func ExampleDelegationSettingsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDelegationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDelegationSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"*",
 		armapimanagement.PortalDelegationSettings{
 			Properties: &armapimanagement.PortalDelegationSettingsProperties{
 				Subscriptions: &armapimanagement.SubscriptionsDelegationSettingsProperties{
 					Enabled: to.Ptr(true),
 				},
-				URL: to.Ptr("<url>"),
+				URL: to.Ptr("http://contoso.com/delegation"),
 				UserRegistration: &armapimanagement.RegistrationDelegationSettingsProperties{
 					Enabled: to.Ptr(true),
 				},
-				ValidationKey: to.Ptr("<validation-key>"),
+				ValidationKey: to.Ptr("<validationKey>"),
 			},
 		},
 		nil)
@@ -99,26 +99,26 @@ func ExampleDelegationSettingsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDelegationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDelegationSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.PortalDelegationSettings{
 			Properties: &armapimanagement.PortalDelegationSettingsProperties{
 				Subscriptions: &armapimanagement.SubscriptionsDelegationSettingsProperties{
 					Enabled: to.Ptr(true),
 				},
-				URL: to.Ptr("<url>"),
+				URL: to.Ptr("http://contoso.com/delegation"),
 				UserRegistration: &armapimanagement.RegistrationDelegationSettingsProperties{
 					Enabled: to.Ptr(true),
 				},
-				ValidationKey: to.Ptr("<validation-key>"),
+				ValidationKey: to.Ptr("<validationKey>"),
 			},
 		},
-		&armapimanagement.DelegationSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("<if-match>")})
+		&armapimanagement.DelegationSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -133,13 +133,13 @@ func ExampleDelegationSettingsClient_ListSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewDelegationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewDelegationSettingsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSecrets(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

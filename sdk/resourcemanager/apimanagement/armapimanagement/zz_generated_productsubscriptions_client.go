@@ -40,7 +40,7 @@ func NewProductSubscriptionsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,13 +58,14 @@ func NewProductSubscriptionsClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Lists the collection of subscriptions to the specified product.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // productID - Product identifier. Must be unique in the current API Management service instance.
 // options - ProductSubscriptionsClientListOptions contains the optional parameters for the ProductSubscriptionsClient.List
 // method.
 func (client *ProductSubscriptionsClient) NewListPager(resourceGroupName string, serviceName string, productID string, options *ProductSubscriptionsClientListOptions) *runtime.Pager[ProductSubscriptionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProductSubscriptionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProductSubscriptionsClientListResponse]{
 		More: func(page ProductSubscriptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -126,7 +127,7 @@ func (client *ProductSubscriptionsClient) listCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

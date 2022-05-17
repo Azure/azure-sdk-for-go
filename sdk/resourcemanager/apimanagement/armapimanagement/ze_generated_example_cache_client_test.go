@@ -24,12 +24,12 @@ func ExampleCacheClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.CacheClientListByServiceOptions{Top: nil,
 			Skip: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleCacheClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleCacheClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<cache-id>",
+		"rg1",
+		"apimService1",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,14 +73,14 @@ func ExampleCacheClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<cache-id>",
+		"rg1",
+		"apimService1",
+		"c1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,20 +96,20 @@ func ExampleCacheClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<cache-id>",
+		"rg1",
+		"apimService1",
+		"c1",
 		armapimanagement.CacheContract{
 			Properties: &armapimanagement.CacheContractProperties{
-				Description:      to.Ptr("<description>"),
-				ConnectionString: to.Ptr("<connection-string>"),
-				ResourceID:       to.Ptr("<resource-id>"),
-				UseFromLocation:  to.Ptr("<use-from-location>"),
+				Description:      to.Ptr("Redis cache instances in West India"),
+				ConnectionString: to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
+				ResourceID:       to.Ptr("https://management.azure.com/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1"),
+				UseFromLocation:  to.Ptr("default"),
 			},
 		},
 		&armapimanagement.CacheClientCreateOrUpdateOptions{IfMatch: nil})
@@ -128,18 +127,18 @@ func ExampleCacheClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<cache-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"c1",
+		"*",
 		armapimanagement.CacheUpdateParameters{
 			Properties: &armapimanagement.CacheUpdateProperties{
-				UseFromLocation: to.Ptr("<use-from-location>"),
+				UseFromLocation: to.Ptr("westindia"),
 			},
 		},
 		nil)
@@ -157,15 +156,15 @@ func ExampleCacheClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewCacheClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewCacheClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<cache-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"southindia",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

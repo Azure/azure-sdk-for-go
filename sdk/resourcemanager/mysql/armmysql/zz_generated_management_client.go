@@ -38,7 +38,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateRecommendedActionSession - Create recommendation action session for the advisor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // advisorName - The advisor name for recommendation action.
 // databaseName - The name of the database.
 // options - ManagementClientBeginCreateRecommendedActionSessionOptions contains the optional parameters for the ManagementClient.BeginCreateRecommendedActionSession
 // method.
-func (client *ManagementClient) BeginCreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string, options *ManagementClientBeginCreateRecommendedActionSessionOptions) (*armruntime.Poller[ManagementClientCreateRecommendedActionSessionResponse], error) {
+func (client *ManagementClient) BeginCreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string, options *ManagementClientBeginCreateRecommendedActionSessionOptions) (*runtime.Poller[ManagementClientCreateRecommendedActionSessionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createRecommendedActionSession(ctx, resourceGroupName, serverName, advisorName, databaseName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagementClientCreateRecommendedActionSessionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagementClientCreateRecommendedActionSessionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientCreateRecommendedActionSessionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientCreateRecommendedActionSessionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateRecommendedActionSession - Create recommendation action session for the advisor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ManagementClient) createRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string, options *ManagementClientBeginCreateRecommendedActionSessionOptions) (*http.Response, error) {
 	req, err := client.createRecommendedActionSessionCreateRequest(ctx, resourceGroupName, serverName, advisorName, databaseName, options)
 	if err != nil {
@@ -123,6 +125,7 @@ func (client *ManagementClient) createRecommendedActionSessionCreateRequest(ctx 
 
 // ResetQueryPerformanceInsightData - Reset data for Query Performance Insight.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ManagementClientResetQueryPerformanceInsightDataOptions contains the optional parameters for the ManagementClient.ResetQueryPerformanceInsightData
@@ -164,7 +167,7 @@ func (client *ManagementClient) resetQueryPerformanceInsightDataCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

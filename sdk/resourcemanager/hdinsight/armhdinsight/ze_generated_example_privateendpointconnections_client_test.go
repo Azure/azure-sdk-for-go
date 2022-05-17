@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
@@ -26,18 +24,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("rg1",
+		"cluster1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,28 +50,28 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-connection-name>",
+		"rg1",
+		"cluster1",
+		"testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2",
 		armhdinsight.PrivateEndpointConnection{
 			Properties: &armhdinsight.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armhdinsight.PrivateLinkServiceConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
+					Description:     to.Ptr("update it from pending to approved."),
+					ActionsRequired: to.Ptr("None"),
 					Status:          to.Ptr(armhdinsight.PrivateLinkServiceConnectionStatusApproved),
 				},
 			},
 		},
-		&armhdinsight.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -89,14 +86,14 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-connection-name>",
+		"rg1",
+		"cluster1",
+		"testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -112,19 +109,19 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewPrivateEndpointConnectionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<private-endpoint-connection-name>",
-		&armhdinsight.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		"testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -38,7 +38,7 @@ func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCre
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account, collection and
 // region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -68,7 +69,7 @@ func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCre
 // options - CollectionRegionClientListMetricsOptions contains the optional parameters for the CollectionRegionClient.ListMetrics
 // method.
 func (client *CollectionRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionRegionClientListMetricsOptions) *runtime.Pager[CollectionRegionClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CollectionRegionClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CollectionRegionClientListMetricsResponse]{
 		More: func(page CollectionRegionClientListMetricsResponse) bool {
 			return false
 		},
@@ -121,10 +122,10 @@ func (client *CollectionRegionClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -67,7 +68,7 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 // options - PartitionKeyRangeIDClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDClient.ListMetrics
 // method.
 func (client *PartitionKeyRangeIDClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions) *runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PartitionKeyRangeIDClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PartitionKeyRangeIDClientListMetricsResponse]{
 		More: func(page PartitionKeyRangeIDClientListMetricsResponse) bool {
 			return false
 		},
@@ -120,10 +121,10 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewRestorableMongodbCollectionsClient(subscriptionID string, credential azc
 // database. This helps in scenario where container was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-15
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableMongodbCollectionsClientListOptions contains the optional parameters for the RestorableMongodbCollectionsClient.List
 // method.
 func (client *RestorableMongodbCollectionsClient) NewListPager(location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions) *runtime.Pager[RestorableMongodbCollectionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableMongodbCollectionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RestorableMongodbCollectionsClientListResponse]{
 		More: func(page RestorableMongodbCollectionsClientListResponse) bool {
 			return false
 		},
@@ -104,18 +105,12 @@ func (client *RestorableMongodbCollectionsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-15-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	if options != nil && options.RestorableMongodbDatabaseRid != nil {
 		reqQP.Set("restorableMongodbDatabaseRid", *options.RestorableMongodbDatabaseRid)
 	}
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
-	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", *options.EndTime)
-	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

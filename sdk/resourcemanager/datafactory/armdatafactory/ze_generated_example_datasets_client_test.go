@@ -24,18 +24,17 @@ func ExampleDatasetsClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("<resource-group-name>",
-		"<factory-name>",
+	pager := client.NewListByFactoryPager("exampleResourceGroup",
+		"exampleFactoryName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,20 +50,20 @@ func ExampleDatasetsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<dataset-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleDataset",
 		armdatafactory.DatasetResource{
 			Properties: &armdatafactory.AzureBlobDataset{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("AzureBlob"),
 				LinkedServiceName: &armdatafactory.LinkedServiceReference{
 					Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
-					ReferenceName: to.Ptr("<reference-name>"),
+					ReferenceName: to.Ptr("exampleLinkedService"),
 				},
 				Parameters: map[string]*armdatafactory.ParameterSpecification{
 					"MyFileName": {
@@ -76,7 +75,7 @@ func ExampleDatasetsClient_CreateOrUpdate() {
 				},
 				TypeProperties: &armdatafactory.AzureBlobDatasetTypeProperties{
 					Format: &armdatafactory.TextFormat{
-						Type: to.Ptr("<type>"),
+						Type: to.Ptr("TextFormat"),
 					},
 					FileName: map[string]interface{}{
 						"type":  "Expression",
@@ -104,14 +103,14 @@ func ExampleDatasetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<dataset-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleDataset",
 		&armdatafactory.DatasetsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -127,14 +126,14 @@ func ExampleDatasetsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewDatasetsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewDatasetsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<dataset-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleDataset",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

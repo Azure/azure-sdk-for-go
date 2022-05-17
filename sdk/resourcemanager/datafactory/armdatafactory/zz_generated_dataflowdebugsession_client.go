@@ -38,7 +38,7 @@ func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.Toke
 
 // AddDataFlow - Add a data flow into debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // request - Data flow debug session definition with debug content.
@@ -98,7 +99,7 @@ func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
@@ -113,25 +114,27 @@ func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.R
 
 // BeginCreate - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // request - Data flow debug session definition
 // options - DataFlowDebugSessionClientBeginCreateOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginCreate
 // method.
-func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*armruntime.Poller[DataFlowDebugSessionClientCreateResponse], error) {
+func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*runtime.Poller[DataFlowDebugSessionClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, factoryName, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DataFlowDebugSessionClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataFlowDebugSessionClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DataFlowDebugSessionClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
@@ -169,12 +172,13 @@ func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // Delete - Deletes a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // request - Data flow debug session definition for deletion
@@ -217,31 +221,33 @@ func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // BeginExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // request - Data flow debug command definition.
 // options - DataFlowDebugSessionClientBeginExecuteCommandOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginExecuteCommand
 // method.
-func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*armruntime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error) {
+func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*runtime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.executeCommand(ctx, resourceGroupName, factoryName, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DataFlowDebugSessionClientExecuteCommandResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataFlowDebugSessionClientExecuteCommandResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DataFlowDebugSessionClientExecuteCommandResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientExecuteCommandResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*http.Response, error) {
 	req, err := client.executeCommandCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
@@ -279,18 +285,19 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // NewQueryByFactoryPager - Query all active data flow debug sessions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.QueryByFactory
 // method.
 func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataFlowDebugSessionClientQueryByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataFlowDebugSessionClientQueryByFactoryResponse]{
 		More: func(page DataFlowDebugSessionClientQueryByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -339,7 +346,7 @@ func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

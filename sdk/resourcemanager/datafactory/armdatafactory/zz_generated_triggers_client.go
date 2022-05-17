@@ -38,7 +38,7 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
@@ -103,9 +104,9 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, trigger)
 }
 
@@ -120,6 +121,7 @@ func (client *TriggersClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
@@ -165,12 +167,13 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
@@ -217,9 +220,9 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,6 +237,7 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // GetEventSubscriptionStatus - Get a trigger's event subscription status.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
@@ -280,7 +284,7 @@ func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -295,11 +299,12 @@ func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *htt
 
 // NewListByFactoryPager - Lists triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - TriggersClientListByFactoryOptions contains the optional parameters for the TriggersClient.ListByFactory method.
 func (client *TriggersClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *TriggersClientListByFactoryOptions) *runtime.Pager[TriggersClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TriggersClientListByFactoryResponse]{
 		More: func(page TriggersClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -348,7 +353,7 @@ func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,6 +368,7 @@ func (client *TriggersClient) listByFactoryHandleResponse(resp *http.Response) (
 
 // QueryByFactory - Query triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // filterParameters - Parameters to filter the triggers.
@@ -404,7 +410,7 @@ func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, filterParameters)
 }
 
@@ -419,24 +425,26 @@ func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) 
 
 // BeginStart - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginStartOptions contains the optional parameters for the TriggersClient.BeginStart method.
-func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*armruntime.Poller[TriggersClientStartResponse], error) {
+func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*runtime.Poller[TriggersClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, factoryName, triggerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *TriggersClient) start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -478,30 +486,32 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginStopOptions contains the optional parameters for the TriggersClient.BeginStop method.
-func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*armruntime.Poller[TriggersClientStopResponse], error) {
+func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*runtime.Poller[TriggersClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, factoryName, triggerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stops a trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -543,31 +553,33 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginSubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginSubscribeToEventsOptions contains the optional parameters for the TriggersClient.BeginSubscribeToEvents
 // method.
-func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*armruntime.Poller[TriggersClientSubscribeToEventsResponse], error) {
+func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*runtime.Poller[TriggersClientSubscribeToEventsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.subscribeToEvents(ctx, resourceGroupName, factoryName, triggerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientSubscribeToEventsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientSubscribeToEventsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientSubscribeToEventsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientSubscribeToEventsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // SubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginSubscribeToEventsOptions) (*http.Response, error) {
 	req, err := client.subscribeToEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -609,31 +621,33 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // triggerName - The trigger name.
 // options - TriggersClientBeginUnsubscribeFromEventsOptions contains the optional parameters for the TriggersClient.BeginUnsubscribeFromEvents
 // method.
-func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*armruntime.Poller[TriggersClientUnsubscribeFromEventsResponse], error) {
+func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*runtime.Poller[TriggersClientUnsubscribeFromEventsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.unsubscribeFromEvents(ctx, resourceGroupName, factoryName, triggerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientUnsubscribeFromEventsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientUnsubscribeFromEventsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientUnsubscribeFromEventsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientUnsubscribeFromEventsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // UnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersClientBeginUnsubscribeFromEventsOptions) (*http.Response, error) {
 	req, err := client.unsubscribeFromEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
@@ -675,6 +689,6 @@ func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

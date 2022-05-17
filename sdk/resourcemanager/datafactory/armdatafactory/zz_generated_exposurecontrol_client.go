@@ -38,7 +38,7 @@ func NewExposureControlClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewExposureControlClient(subscriptionID string, credential azcore.TokenCred
 
 // GetFeatureValue - Get exposure control feature for specific location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // locationID - The location identifier.
 // exposureControlRequest - The exposure control request.
 // options - ExposureControlClientGetFeatureValueOptions contains the optional parameters for the ExposureControlClient.GetFeatureValue
@@ -93,7 +94,7 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exposureControlRequest)
 }
 
@@ -108,6 +109,7 @@ func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Re
 
 // GetFeatureValueByFactory - Get exposure control feature for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // exposureControlRequest - The exposure control request.
@@ -150,7 +152,7 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exposureControlRequest)
 }
 
@@ -165,6 +167,7 @@ func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp
 
 // QueryFeatureValuesByFactory - Get list of exposure control features for specific factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // exposureControlBatchRequest - The exposure control request for list of features.
@@ -207,7 +210,7 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exposureControlBatchRequest)
 }
 

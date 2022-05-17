@@ -1,5 +1,82 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*TriggersClient.BeginSubscribeToEvents` return value(s) have been changed from `(*armruntime.Poller[TriggersClientSubscribeToEventsResponse], error)` to `(*runtime.Poller[TriggersClientSubscribeToEventsResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientStopResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientStopResponse], error)`
+- Function `*DataFlowDebugSessionClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[DataFlowDebugSessionClientCreateResponse], error)` to `(*runtime.Poller[DataFlowDebugSessionClientCreateResponse], error)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error)` to `(*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error)`
+- Function `*TriggersClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[TriggersClientStartResponse], error)` to `(*runtime.Poller[TriggersClientStartResponse], error)`
+- Function `*TriggersClient.BeginUnsubscribeFromEvents` return value(s) have been changed from `(*armruntime.Poller[TriggersClientUnsubscribeFromEventsResponse], error)` to `(*runtime.Poller[TriggersClientUnsubscribeFromEventsResponse], error)`
+- Function `*TriggersClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[TriggersClientStopResponse], error)` to `(*runtime.Poller[TriggersClientStopResponse], error)`
+- Function `*DataFlowDebugSessionClient.BeginExecuteCommand` return value(s) have been changed from `(*armruntime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error)` to `(*runtime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientStartResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientStartResponse], error)`
+- Function `IntegrationRuntimeListResponse.MarshalJSON` has been removed
+- Function `LinkedServiceListResponse.MarshalJSON` has been removed
+- Function `SsisProject.MarshalJSON` has been removed
+- Function `DataFlowDebugSessionInfo.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeNode.MarshalJSON` has been removed
+- Function `PipelineRun.MarshalJSON` has been removed
+- Function `OperationListResponse.MarshalJSON` has been removed
+- Function `TabularTranslator.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeStatusTypeProperties.MarshalJSON` has been removed
+- Function `SsisPackage.MarshalJSON` has been removed
+- Function `PipelineListResponse.MarshalJSON` has been removed
+- Function `SsisEnvironment.MarshalJSON` has been removed
+- Function `ManagedPrivateEndpointListResponse.MarshalJSON` has been removed
+- Function `GetDataFactoryOperationStatusResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeConnectionInfo.MarshalJSON` has been removed
+- Function `PipelineRunsQueryResponse.MarshalJSON` has been removed
+- Function `CopyTranslator.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `ExposureControlBatchResponse.MarshalJSON` has been removed
+- Function `DatasetListResponse.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesWrapper.MarshalJSON` has been removed
+- Function `IntegrationRuntimeStatusResponse.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeError.MarshalJSON` has been removed
+- Function `TriggerQueryResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesEndpoint.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `DataFlowListResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `FactoryListResponse.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeOperationResult.MarshalJSON` has been removed
+- Function `OperationMetricSpecification.MarshalJSON` has been removed
+- Function `SsisFolder.MarshalJSON` has been removed
+- Function `ActivityRunsQueryResponse.MarshalJSON` has been removed
+- Function `TriggerRun.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResponse.MarshalJSON` has been removed
+- Function `TriggerListResponse.MarshalJSON` has been removed
+- Function `LinkedIntegrationRuntime.MarshalJSON` has been removed
+- Function `OperationServiceSpecification.MarshalJSON` has been removed
+- Function `SsisObjectMetadataListResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse.MarshalJSON` has been removed
+- Function `ActivityRun.MarshalJSON` has been removed
+- Function `TriggerRunsQueryResponse.MarshalJSON` has been removed
+- Function `QueryDataFlowDebugSessionsResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeStatusListResponse.MarshalJSON` has been removed
+- Function `DatasetSchemaDataElement.MarshalJSON` has been removed
+- Function `ManagedVirtualNetworkListResponse.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeStatusTypeProperties.MarshalJSON` has been removed
+- Function `IntegrationRuntimeMonitoringData.MarshalJSON` has been removed
+- Function `IntegrationRuntimeNodeMonitoringData.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeNode.MarshalJSON` has been removed
+
+### Features Added
+
+- New struct `PrivateEndpoint`
+- New struct `PurviewConfiguration`
+- New field `PurviewConfiguration` in struct `FactoryProperties`
+- New field `PrivateEndpoint` in struct `PrivateLinkConnectionApprovalRequest`
+- New field `SourceStagingConcurrency` in struct `ExecuteDataFlowActivityTypeProperties`
+- New field `RejectedDataLinkedService` in struct `DataFlowSink`
+- New field `SourceStagingConcurrency` in struct `ExecutePowerQueryActivityTypeProperties`
+- New field `RejectedDataLinkedService` in struct `PowerQuerySink`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -39,7 +39,7 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPipelinesClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates or updates a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // pipelineName - The pipeline name.
@@ -105,9 +106,9 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, pipeline)
 }
 
@@ -122,6 +123,7 @@ func (client *PipelinesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // CreateRun - Creates a run of a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // pipelineName - The pipeline name.
@@ -179,7 +181,7 @@ func (client *PipelinesClient) createRunCreateRequest(ctx context.Context, resou
 		reqQP.Set("startFromFailure", strconv.FormatBool(*options.StartFromFailure))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, options.Parameters)
 	}
@@ -197,6 +199,7 @@ func (client *PipelinesClient) createRunHandleResponse(resp *http.Response) (Pip
 
 // Delete - Deletes a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // pipelineName - The pipeline name.
@@ -242,12 +245,13 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a pipeline.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // pipelineName - The pipeline name.
@@ -294,9 +298,9 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -311,11 +315,12 @@ func (client *PipelinesClient) getHandleResponse(resp *http.Response) (Pipelines
 
 // NewListByFactoryPager - Lists pipelines.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - PipelinesClientListByFactoryOptions contains the optional parameters for the PipelinesClient.ListByFactory method.
 func (client *PipelinesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PipelinesClientListByFactoryOptions) *runtime.Pager[PipelinesClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelinesClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelinesClientListByFactoryResponse]{
 		More: func(page PipelinesClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -364,7 +369,7 @@ func (client *PipelinesClient) listByFactoryCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

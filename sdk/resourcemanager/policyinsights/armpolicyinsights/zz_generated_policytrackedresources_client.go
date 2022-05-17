@@ -39,7 +39,7 @@ func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.To
 
 // NewListQueryResultsForManagementGroupPager - Queries policy tracked resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-07-01-preview
 // managementGroupName - Management group name.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
@@ -65,7 +66,7 @@ func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.To
 // options - PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the
 // PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForManagementGroupPager(managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -117,7 +118,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupCr
 	}
 	reqQP.Set("api-version", "2018-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -132,6 +133,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 
 // NewListQueryResultsForResourcePager - Queries policy tracked resources under the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-07-01-preview
 // resourceID - Resource ID.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
@@ -140,7 +142,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 // options - PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResource
 // method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourcePager(resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -188,7 +190,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceCreateReq
 	}
 	reqQP.Set("api-version", "2018-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -203,6 +205,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 
 // NewListQueryResultsForResourceGroupPager - Queries policy tracked resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-07-01-preview
 // resourceGroupName - Resource group name.
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
@@ -211,7 +214,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 // options - PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the
 // PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourceGroupPager(resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -266,7 +269,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupCrea
 	}
 	reqQP.Set("api-version", "2018-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -281,6 +284,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 
 // NewListQueryResultsForSubscriptionPager - Queries policy tracked resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-07-01-preview
 // policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
 // is allowed.
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
@@ -288,7 +292,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 // options - PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForSubscription
 // method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForSubscriptionPager(policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -339,7 +343,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForSubscriptionCreat
 	}
 	reqQP.Set("api-version", "2018-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

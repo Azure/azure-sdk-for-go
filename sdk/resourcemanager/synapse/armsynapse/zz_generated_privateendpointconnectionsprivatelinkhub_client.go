@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string, cr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateEndpointConnectionsPrivateLinkHubClient(subscriptionID string, cr
 
 // Get - Get all PrivateEndpointConnection in the PrivateLinkHub by name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateLinkHubName - Name of the privateLinkHub
 // privateEndpointConnectionName - Name of the privateEndpointConnection
@@ -102,7 +103,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) getHandleResponse(
 
 // NewListPager - Get all PrivateEndpointConnections in the PrivateLinkHub
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateLinkHubName - Name of the privateLinkHub
 // options - PrivateEndpointConnectionsPrivateLinkHubClientListOptions contains the optional parameters for the PrivateEndpointConnectionsPrivateLinkHubClient.List
 // method.
 func (client *PrivateEndpointConnectionsPrivateLinkHubClient) NewListPager(resourceGroupName string, privateLinkHubName string, options *PrivateEndpointConnectionsPrivateLinkHubClientListOptions) *runtime.Pager[PrivateEndpointConnectionsPrivateLinkHubClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsPrivateLinkHubClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsPrivateLinkHubClientListResponse]{
 		More: func(page PrivateEndpointConnectionsPrivateLinkHubClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -171,7 +173,7 @@ func (client *PrivateEndpointConnectionsPrivateLinkHubClient) listCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

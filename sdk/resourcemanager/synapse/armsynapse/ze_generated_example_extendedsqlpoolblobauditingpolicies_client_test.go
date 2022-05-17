@@ -24,14 +24,14 @@ func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"blobauditingtest-6852",
+		"blobauditingtest-2080",
+		"testdb",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleExtendedSQLPoolBlobAuditingPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewExtendedSQLPoolBlobAuditingPoliciesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"blobauditingtest-4799",
+		"blobauditingtest-6440",
+		"testdb",
 		armsynapse.ExtendedSQLPoolBlobAuditingPolicy{
 			Properties: &armsynapse.ExtendedSQLPoolBlobAuditingPolicyProperties{
 				IsAzureMonitorTargetEnabled: to.Ptr(true),

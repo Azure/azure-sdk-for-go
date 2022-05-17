@@ -24,14 +24,14 @@ func ExampleOperationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armsynapse.CheckNameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("workspace1"),
+			Type: to.Ptr("Microsoft.Synapse/workspaces"),
 		},
 		nil)
 	if err != nil {
@@ -68,14 +68,14 @@ func ExampleOperationsClient_GetLocationHeaderResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetLocationHeaderResult(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<operation-id>",
+		"resourceGroup1",
+		"workspace1",
+		"01234567-89ab-4def-0123-456789abcdef",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -89,14 +89,14 @@ func ExampleOperationsClient_GetAzureAsyncHeaderResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewOperationsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewOperationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureAsyncHeaderResult(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<operation-id>",
+		"resourceGroup1",
+		"workspace1",
+		"01234567-89ab-4def-0123-456789abcdef",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

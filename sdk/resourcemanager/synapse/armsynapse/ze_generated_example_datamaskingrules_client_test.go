@@ -24,23 +24,23 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<data-masking-rule-name>",
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-331",
+		"rule1",
 		armsynapse.DataMaskingRule{
 			Properties: &armsynapse.DataMaskingRuleProperties{
-				AliasName:       to.Ptr("<alias-name>"),
-				ColumnName:      to.Ptr("<column-name>"),
+				AliasName:       to.Ptr("nickname"),
+				ColumnName:      to.Ptr("test1"),
 				MaskingFunction: to.Ptr(armsynapse.DataMaskingFunctionDefault),
 				RuleState:       to.Ptr(armsynapse.DataMaskingRuleStateEnabled),
-				SchemaName:      to.Ptr("<schema-name>"),
-				TableName:       to.Ptr("<table-name>"),
+				SchemaName:      to.Ptr("dbo"),
+				TableName:       to.Ptr("Table_1"),
 			},
 		},
 		nil)
@@ -58,15 +58,15 @@ func ExampleDataMaskingRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<data-masking-rule-name>",
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-331",
+		"rule1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -1,5 +1,156 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*WorkspaceAADAdminsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceAADAdminsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceAADAdminsClientCreateOrUpdateResponse], error)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceSQLAADAdminsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceSQLAADAdminsClientCreateOrUpdateResponse], error)`
+- Function `*IntegrationRuntimeObjectMetadataClient.BeginRefresh` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error)` to `(*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error)`
+- Function `*AzureADOnlyAuthenticationsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AzureADOnlyAuthenticationsClientCreateResponse], error)` to `(*runtime.Poller[AzureADOnlyAuthenticationsClientCreateResponse], error)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginRevalidate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientRevalidateResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginDisableInteractiveQuery` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientDisableInteractiveQueryResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientDisableInteractiveQueryResponse], error)`
+- Function `*WorkspaceAADAdminsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspaceAADAdminsClientDeleteResponse], error)` to `(*runtime.Poller[WorkspaceAADAdminsClientDeleteResponse], error)`
+- Function `*KustoPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolsClientDeleteResponse], error)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLPoolWorkloadClassifierClientDeleteResponse], error)` to `(*runtime.Poller[SQLPoolWorkloadClassifierClientDeleteResponse], error)`
+- Function `*SQLPoolsClient.BeginPause` return value(s) have been changed from `(*armruntime.Poller[SQLPoolsClientPauseResponse], error)` to `(*runtime.Poller[SQLPoolsClientPauseResponse], error)`
+- Function `*WorkspaceManagedSQLServerSecurityAlertPolicyClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerSecurityAlertPolicyClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolDataConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDataConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolDataConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolDatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDatabasesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolDatabasesClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolAttachedDatabaseConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolAttachedDatabaseConfigurationsClientDeleteResponse], error)`
+- Function `*WorkspaceManagedSQLServerEncryptionProtectorClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerEncryptionProtectorClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolDatabasesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDatabasesClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolDatabasesClientDeleteResponse], error)`
+- Function `*KustoPoolDataConnectionsClient.BeginDataConnectionValidation` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDataConnectionsClientDataConnectionValidationResponse], error)` to `(*runtime.Poller[KustoPoolDataConnectionsClientDataConnectionValidationResponse], error)`
+- Function `*KustoPoolsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientStartResponse], error)` to `(*runtime.Poller[KustoPoolsClientStartResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolPrincipalAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolsClient.BeginRemoveLanguageExtensions` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientRemoveLanguageExtensionsResponse], error)` to `(*runtime.Poller[KustoPoolsClientRemoveLanguageExtensionsResponse], error)`
+- Function `*KustoPoolDataConnectionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDataConnectionsClientUpdateResponse], error)` to `(*runtime.Poller[KustoPoolDataConnectionsClientUpdateResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginEnableInteractiveQuery` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientEnableInteractiveQueryResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientEnableInteractiveQueryResponse], error)`
+- Function `*SQLPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLPoolsClientDeleteResponse], error)` to `(*runtime.Poller[SQLPoolsClientDeleteResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientDeleteResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientDeleteResponse], error)`
+- Function `*IPFirewallRulesClient.BeginReplaceAll` return value(s) have been changed from `(*armruntime.Poller[IPFirewallRulesClientReplaceAllResponse], error)` to `(*runtime.Poller[IPFirewallRulesClientReplaceAllResponse], error)`
+- Function `*KustoPoolsClient.BeginDetachFollowerDatabases` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientDetachFollowerDatabasesResponse], error)` to `(*runtime.Poller[KustoPoolsClientDetachFollowerDatabasesResponse], error)`
+- Function `*KustoPoolsClient.BeginAddLanguageExtensions` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientAddLanguageExtensionsResponse], error)` to `(*runtime.Poller[KustoPoolsClientAddLanguageExtensionsResponse], error)`
+- Function `*SQLPoolRestorePointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SQLPoolRestorePointsClientCreateResponse], error)` to `(*runtime.Poller[SQLPoolRestorePointsClientCreateResponse], error)`
+- Function `*SQLPoolsClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[SQLPoolsClientResumeResponse], error)` to `(*runtime.Poller[SQLPoolsClientResumeResponse], error)`
+- Function `*WorkspaceManagedSQLServerBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerBlobAuditingPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*SQLPoolsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SQLPoolsClientCreateResponse], error)` to `(*runtime.Poller[SQLPoolsClientCreateResponse], error)`
+- Function `*WorkspaceSQLAADAdminsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspaceSQLAADAdminsClientDeleteResponse], error)` to `(*runtime.Poller[WorkspaceSQLAADAdminsClientDeleteResponse], error)`
+- Function `*SQLPoolWorkloadClassifierClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolDatabasesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDatabasesClientUpdateResponse], error)` to `(*runtime.Poller[KustoPoolDatabasesClientUpdateResponse], error)`
+- Function `*BigDataPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BigDataPoolsClientDeleteResponse], error)` to `(*runtime.Poller[BigDataPoolsClientDeleteResponse], error)`
+- Function `*SQLPoolVulnerabilityAssessmentScansClient.BeginInitiateScan` return value(s) have been changed from `(*armruntime.Poller[SQLPoolVulnerabilityAssessmentScansClientInitiateScanResponse], error)` to `(*runtime.Poller[SQLPoolVulnerabilityAssessmentScansClientInitiateScanResponse], error)`
+- Function `*IPFirewallRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IPFirewallRulesClientDeleteResponse], error)` to `(*runtime.Poller[IPFirewallRulesClientDeleteResponse], error)`
+- Function `*KustoPoolsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientUpdateResponse], error)` to `(*runtime.Poller[KustoPoolsClientUpdateResponse], error)`
+- Function `*WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse], error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse], error)`
+- Function `*KustoPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolsClientCreateOrUpdateResponse], error)`
+- Function `*IPFirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IPFirewallRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IPFirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `*SQLPoolWorkloadGroupClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SQLPoolWorkloadGroupClientDeleteResponse], error)` to `(*runtime.Poller[SQLPoolWorkloadGroupClientDeleteResponse], error)`
+- Function `*WorkspaceManagedIdentitySQLControlSettingsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedIdentitySQLControlSettingsClientCreateOrUpdateResponse], error)`
+- Function `*BigDataPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BigDataPoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BigDataPoolsClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkHubsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkHubsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkHubsClientDeleteResponse], error)`
+- Function `*KustoPoolPrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolPrincipalAssignmentsClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolPrincipalAssignmentsClientDeleteResponse], error)`
+- Function `*KustoPoolDataConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDataConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[KustoPoolDataConnectionsClientDeleteResponse], error)`
+- Function `*KustoPoolAttachedDatabaseConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolAttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientUpdateResponse], error)`
+- Function `*WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*KustoPoolDatabasePrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientCreateResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientCreateResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientStartResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientStartResponse], error)`
+- Function `*KustoPoolsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[KustoPoolsClientStopResponse], error)` to `(*runtime.Poller[KustoPoolsClientStopResponse], error)`
+- Function `*IntegrationRuntimesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[IntegrationRuntimesClientStopResponse], error)` to `(*runtime.Poller[IntegrationRuntimesClientStopResponse], error)`
+- Function `*SQLPoolWorkloadGroupClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse], error)`
+- Function `OperationMetaServiceSpecification.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ServerUsage.MarshalJSON` has been removed
+- Function `SsisEnvironment.MarshalJSON` has been removed
+- Function `ServerUsageListResult.MarshalJSON` has been removed
+- Function `ReplicationLinkListResult.MarshalJSON` has been removed
+- Function `DatabasePrincipalAssignmentListResult.MarshalJSON` has been removed
+- Function `RestorableDroppedSQLPoolListResult.MarshalJSON` has been removed
+- Function `QueryInterval.MarshalJSON` has been removed
+- Function `AzureADOnlyAuthenticationListResult.MarshalJSON` has been removed
+- Function `SsisObjectMetadataListResponse.MarshalJSON` has been removed
+- Function `ServerBlobAuditingPolicyListResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeListResponse.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint.MarshalJSON` has been removed
+- Function `IntegrationRuntimeNodeMonitoringData.MarshalJSON` has been removed
+- Function `DataConnectionValidationListResult.MarshalJSON` has been removed
+- Function `SQLPoolBlobAuditingPolicySQLPoolOperationListResult.MarshalJSON` has been removed
+- Function `SQLPoolTableListResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesEndpoint.MarshalJSON` has been removed
+- Function `FollowerDatabaseListResult.MarshalJSON` has been removed
+- Function `DedicatedSQLminimalTLSSettingsListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.MarshalJSON` has been removed
+- Function `WorkspaceInfoListResult.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeNode.MarshalJSON` has been removed
+- Function `ListSQLPoolSecurityAlertPolicies.MarshalJSON` has been removed
+- Function `OperationMetaMetricSpecification.MarshalJSON` has been removed
+- Function `VulnerabilityAssessmentScanRecordListResult.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeStatusTypeProperties.MarshalJSON` has been removed
+- Function `OperationResource.MarshalJSON` has been removed
+- Function `SsisPackage.MarshalJSON` has been removed
+- Function `RestorePointListResult.MarshalJSON` has been removed
+- Function `DatabaseListResult.MarshalJSON` has been removed
+- Function `SensitivityLabelListResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse.MarshalJSON` has been removed
+- Function `BigDataPoolResourceInfoListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ServerVulnerabilityAssessmentListResult.MarshalJSON` has been removed
+- Function `ClusterPrincipalAssignmentListResult.MarshalJSON` has been removed
+- Function `GeoBackupPolicyListResult.MarshalJSON` has been removed
+- Function `SQLPoolBlobAuditingPolicyListResult.MarshalJSON` has been removed
+- Function `TransparentDataEncryptionListResult.MarshalJSON` has been removed
+- Function `ExtendedSQLPoolBlobAuditingPolicyListResult.MarshalJSON` has been removed
+- Function `SsisFolder.MarshalJSON` has been removed
+- Function `PrivateLinkHubInfoListResult.MarshalJSON` has been removed
+- Function `ServerSecurityAlertPolicyListResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeMonitoringData.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeStatusTypeProperties.MarshalJSON` has been removed
+- Function `SQLPoolColumnListResult.MarshalJSON` has been removed
+- Function `SKUDescriptionList.MarshalJSON` has been removed
+- Function `SQLPoolUsageListResult.MarshalJSON` has been removed
+- Function `SKULocationInfoItem.MarshalJSON` has been removed
+- Function `EncryptionProtectorListResult.MarshalJSON` has been removed
+- Function `TopQueries.MarshalJSON` has been removed
+- Function `IntegrationRuntimeStatusResponse.MarshalJSON` has been removed
+- Function `SQLPoolVulnerabilityAssessmentListResult.MarshalJSON` has been removed
+- Function `DataConnectionListResult.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `QueryStatistic.MarshalJSON` has been removed
+- Function `SKUDescription.MarshalJSON` has been removed
+- Function `SQLPoolInfoListResult.MarshalJSON` has been removed
+- Function `RecoverableSQLPoolListResult.MarshalJSON` has been removed
+- Function `SQLPoolUsage.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeNode.MarshalJSON` has been removed
+- Function `LinkedIntegrationRuntime.MarshalJSON` has been removed
+- Function `SsisProject.MarshalJSON` has been removed
+- Function `DataMaskingRuleListResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeConnectionInfo.MarshalJSON` has been removed
+- Function `ExtendedServerBlobAuditingPolicyListResult.MarshalJSON` has been removed
+- Function `LibraryListResponse.MarshalJSON` has been removed
+- Function `ListResourceSKUsResult.MarshalJSON` has been removed
+- Function `IntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `SelfHostedIntegrationRuntimeStatus.MarshalJSON` has been removed
+- Function `AttachedDatabaseConfigurationListResult.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeError.MarshalJSON` has been removed
+- Function `KeyInfoListResult.MarshalJSON` has been removed
+- Function `WorkloadGroupListResult.MarshalJSON` has been removed
+- Function `SQLPoolSchemaListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionList.MarshalJSON` has been removed
+- Function `KustoPoolListResult.MarshalJSON` has been removed
+- Function `TopQueriesListResult.MarshalJSON` has been removed
+- Function `ManagedIntegrationRuntimeOperationResult.MarshalJSON` has been removed
+- Function `IPFirewallRuleInfoListResult.MarshalJSON` has been removed
+- Function `WorkloadClassifierListResult.MarshalJSON` has been removed
+- Function `SparkConfigurationListResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

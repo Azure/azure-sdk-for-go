@@ -24,19 +24,18 @@ func ExampleSQLPoolSensitivityLabelsClient_NewListCurrentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCurrentPager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+	pager := client.NewListCurrentPager("myRG",
+		"myServer",
+		"myDatabase",
 		&armsynapse.SQLPoolSensitivityLabelsClientListCurrentOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,56 +51,56 @@ func ExampleSQLPoolSensitivityLabelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"myRG",
+		"myWorkspace",
+		"mySqlPool",
 		armsynapse.SensitivityLabelUpdateList{
 			Operations: []*armsynapse.SensitivityLabelUpdate{
 				{
 					Properties: &armsynapse.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column1"),
 						Op:     to.Ptr(armsynapse.SensitivityLabelUpdateKindSet),
 						SensitivityLabel: &armsynapse.SensitivityLabel{
 							Properties: &armsynapse.SensitivityLabelProperties{
-								InformationType:   to.Ptr("<information-type>"),
-								InformationTypeID: to.Ptr("<information-type-id>"),
-								LabelID:           to.Ptr("<label-id>"),
-								LabelName:         to.Ptr("<label-name>"),
+								InformationType:   to.Ptr("Financial"),
+								InformationTypeID: to.Ptr("1D3652D6-422C-4115-82F1-65DAEBC665C8"),
+								LabelID:           to.Ptr("3A477B16-9423-432B-AA97-6069B481CEC3"),
+								LabelName:         to.Ptr("Highly Confidential"),
 								Rank:              to.Ptr(armsynapse.SensitivityLabelRankLow),
 							},
 						},
-						Table: to.Ptr("<table>"),
+						Table: to.Ptr("table1"),
 					},
 				},
 				{
 					Properties: &armsynapse.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column2"),
 						Op:     to.Ptr(armsynapse.SensitivityLabelUpdateKindSet),
 						SensitivityLabel: &armsynapse.SensitivityLabel{
 							Properties: &armsynapse.SensitivityLabelProperties{
-								InformationType:   to.Ptr("<information-type>"),
-								InformationTypeID: to.Ptr("<information-type-id>"),
-								LabelID:           to.Ptr("<label-id>"),
-								LabelName:         to.Ptr("<label-name>"),
+								InformationType:   to.Ptr("PhoneNumber"),
+								InformationTypeID: to.Ptr("d22fa6e9-5ee4-3bde-4c2b-a409604c4646"),
+								LabelID:           to.Ptr("bf91e08c-f4f0-478a-b016-25164b2a65ff"),
+								LabelName:         to.Ptr("PII"),
 								Rank:              to.Ptr(armsynapse.SensitivityLabelRankCritical),
 							},
 						},
-						Table: to.Ptr("<table>"),
+						Table: to.Ptr("table2"),
 					},
 				},
 				{
 					Properties: &armsynapse.SensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("Column3"),
 						Op:     to.Ptr(armsynapse.SensitivityLabelUpdateKindRemove),
-						Table:  to.Ptr("<table>"),
+						Table:  to.Ptr("Table1"),
 					},
 				}},
 		},
@@ -118,13 +117,13 @@ func ExampleSQLPoolSensitivityLabelsClient_NewListRecommendedPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRecommendedPager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+	pager := client.NewListRecommendedPager("myRG",
+		"myServer",
+		"myDatabase",
 		&armsynapse.SQLPoolSensitivityLabelsClientListRecommendedOptions{IncludeDisabledRecommendations: nil,
 			SkipToken: nil,
 			Filter:    nil,
@@ -133,7 +132,6 @@ func ExampleSQLPoolSensitivityLabelsClient_NewListRecommendedPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -149,23 +147,23 @@ func ExampleSQLPoolSensitivityLabelsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		armsynapse.SensitivityLabel{
 			Properties: &armsynapse.SensitivityLabelProperties{
-				InformationType:   to.Ptr("<information-type>"),
-				InformationTypeID: to.Ptr("<information-type-id>"),
-				LabelID:           to.Ptr("<label-id>"),
-				LabelName:         to.Ptr("<label-name>"),
+				InformationType:   to.Ptr("PhoneNumber"),
+				InformationTypeID: to.Ptr("d22fa6e9-5ee4-3bde-4c2b-a409604c4646"),
+				LabelID:           to.Ptr("bf91e08c-f4f0-478a-b016-25164b2a65ff"),
+				LabelName:         to.Ptr("PII"),
 			},
 		},
 		nil)
@@ -183,17 +181,17 @@ func ExampleSQLPoolSensitivityLabelsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -207,17 +205,17 @@ func ExampleSQLPoolSensitivityLabelsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		armsynapse.SensitivityLabelSourceCurrent,
 		nil)
 	if err != nil {
@@ -234,17 +232,17 @@ func ExampleSQLPoolSensitivityLabelsClient_EnableRecommendation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.EnableRecommendation(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -258,17 +256,17 @@ func ExampleSQLPoolSensitivityLabelsClient_DisableRecommendation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DisableRecommendation(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<schema-name>",
-		"<table-name>",
-		"<column-name>",
+		"myRG",
+		"myServer",
+		"myDatabase",
+		"dbo",
+		"myTable",
+		"myColumn",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

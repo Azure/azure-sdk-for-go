@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
@@ -26,17 +24,17 @@ func ExampleIntegrationRuntimesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		armsynapse.UpdateIntegrationRuntimeRequest{
 			AutoUpdate:        to.Ptr(armsynapse.IntegrationRuntimeAutoUpdateOff),
-			UpdateDelayOffset: to.Ptr("<update-delay-offset>"),
+			UpdateDelayOffset: to.Ptr("\"PT3H\""),
 		},
 		nil)
 	if err != nil {
@@ -53,14 +51,14 @@ func ExampleIntegrationRuntimesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		&armsynapse.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,27 +74,25 @@ func ExampleIntegrationRuntimesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		armsynapse.IntegrationRuntimeResource{
 			Properties: &armsynapse.SelfHostedIntegrationRuntime{
 				Type:        to.Ptr(armsynapse.IntegrationRuntimeTypeSelfHosted),
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("A selfhosted integration runtime"),
 			},
 		},
-		&armsynapse.IntegrationRuntimesClientBeginCreateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armsynapse.IntegrationRuntimesClientBeginCreateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,19 +107,19 @@ func ExampleIntegrationRuntimesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesClientBeginDeleteOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -136,14 +132,14 @@ func ExampleIntegrationRuntimesClient_Upgrade() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Upgrade(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -157,18 +153,17 @@ func ExampleIntegrationRuntimesClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("exampleResourceGroup",
+		"exampleWorkspace",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -184,19 +179,19 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesClientBeginStartOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -211,19 +206,19 @@ func ExampleIntegrationRuntimesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesClientBeginStopOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -236,14 +231,14 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("ade9c2b6-c160-4305-9bb9-80342f6c1ae2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -259,19 +254,19 @@ func ExampleIntegrationRuntimesClient_BeginEnableInteractiveQuery() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginEnableInteractiveQuery(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesClientBeginEnableInteractiveQueryOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -284,19 +279,19 @@ func ExampleIntegrationRuntimesClient_BeginDisableInteractiveQuery() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDisableInteractiveQuery(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
-		&armsynapse.IntegrationRuntimesClientBeginDisableInteractiveQueryOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

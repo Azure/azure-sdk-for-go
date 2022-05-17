@@ -24,16 +24,16 @@ func ExampleKustoPoolChildResourceClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewKustoPoolChildResourceClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewKustoPoolChildResourceClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<workspace-name>",
-		"<kusto-pool-name>",
-		"<resource-group-name>",
+		"kustorptest",
+		"kustoclusterrptest4",
+		"kustorptest",
 		armsynapse.DatabaseCheckNameRequest{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("adc1"),
 			Type: to.Ptr(armsynapse.TypeMicrosoftSynapseWorkspacesKustoPoolsAttachedDatabaseConfigurations),
 		},
 		nil)

@@ -1,5 +1,188 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*LinkedServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LinkedServicesClientDeleteResponse], error)` to `(*runtime.Poller[LinkedServicesClientDeleteResponse], error)`
+- Function `*LinkedServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LinkedServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LinkedServicesClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Const `SourceEnumCustomer` has been removed
+- Const `TableTypeEnumSearchResults` has been removed
+- Const `TableTypeEnumMicrosoft` has been removed
+- Const `CreatedByTypeUser` has been removed
+- Const `ProvisioningStateEnumInProgress` has been removed
+- Const `CreatedByTypeManagedIdentity` has been removed
+- Const `TableTypeEnumRestoredLogs` has been removed
+- Const `ColumnDataTypeHintEnumArmPath` has been removed
+- Const `TableTypeEnumCustomLog` has been removed
+- Const `ColumnTypeEnumReal` has been removed
+- Const `TablePlanEnumAnalytics` has been removed
+- Const `IdentityTypeUser` has been removed
+- Const `ColumnDataTypeHintEnumGUID` has been removed
+- Const `SourceEnumMicrosoft` has been removed
+- Const `ColumnTypeEnumGUID` has been removed
+- Const `TableSubTypeEnumAny` has been removed
+- Const `CreatedByTypeApplication` has been removed
+- Const `ColumnDataTypeHintEnumURI` has been removed
+- Const `ProvisioningStateEnumUpdating` has been removed
+- Const `TableSubTypeEnumClassic` has been removed
+- Const `ProvisioningStateEnumSucceeded` has been removed
+- Const `ColumnTypeEnumInt` has been removed
+- Const `IdentityTypeManagedIdentity` has been removed
+- Const `TablePlanEnumBasic` has been removed
+- Const `IdentityTypeApplication` has been removed
+- Const `ColumnDataTypeHintEnumIP` has been removed
+- Const `ColumnTypeEnumBoolean` has been removed
+- Const `ColumnTypeEnumDynamic` has been removed
+- Const `TableSubTypeEnumDataCollectionRuleBased` has been removed
+- Const `ColumnTypeEnumLong` has been removed
+- Const `CreatedByTypeKey` has been removed
+- Const `ColumnTypeEnumString` has been removed
+- Const `ColumnTypeEnumDateTime` has been removed
+- Const `IdentityTypeKey` has been removed
+- Function `*QueriesClient.NewSearchPager` has been removed
+- Function `SearchSchemaValue.MarshalJSON` has been removed
+- Function `LogAnalyticsQueryPackQuery.MarshalJSON` has been removed
+- Function `*TablesClient.BeginDelete` has been removed
+- Function `PossibleProvisioningStateEnumValues` has been removed
+- Function `LinkedStorageAccountsListResult.MarshalJSON` has been removed
+- Function `*TablesClient.Migrate` has been removed
+- Function `LogAnalyticsQueryPackProperties.MarshalJSON` has been removed
+- Function `QueryPacksResource.MarshalJSON` has been removed
+- Function `LogAnalyticsQueryPackQuerySearchProperties.MarshalJSON` has been removed
+- Function `PossibleTableSubTypeEnumValues` has been removed
+- Function `LogAnalyticsQueryPackQueryProperties.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `*QueriesClient.Get` has been removed
+- Function `TagsResource.MarshalJSON` has been removed
+- Function `LinkedServiceListResult.MarshalJSON` has been removed
+- Function `LogAnalyticsQueryPackQueryPropertiesRelated.MarshalJSON` has been removed
+- Function `*QueryPacksClient.NewListPager` has been removed
+- Function `SearchMetadata.MarshalJSON` has been removed
+- Function `UsageMetric.MarshalJSON` has been removed
+- Function `*TablesClient.BeginUpdate` has been removed
+- Function `*QueryPacksClient.Get` has been removed
+- Function `LogAnalyticsQueryPackListResult.MarshalJSON` has been removed
+- Function `NewQueryPacksClient` has been removed
+- Function `*SystemData.UnmarshalJSON` has been removed
+- Function `PossibleTableTypeEnumValues` has been removed
+- Function `LogAnalyticsQueryPack.MarshalJSON` has been removed
+- Function `Schema.MarshalJSON` has been removed
+- Function `SearchGetSchemaResponse.MarshalJSON` has been removed
+- Function `WorkspaceListManagementGroupsResult.MarshalJSON` has been removed
+- Function `WorkspaceListResult.MarshalJSON` has been removed
+- Function `*QueryPacksClient.CreateOrUpdate` has been removed
+- Function `PossibleSourceEnumValues` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `*QueriesClient.Update` has been removed
+- Function `*QueriesClient.Delete` has been removed
+- Function `*QueryPacksClient.Delete` has been removed
+- Function `NewQueriesClient` has been removed
+- Function `*QueryPacksClient.UpdateTags` has been removed
+- Function `*QueryPacksClient.NewListByResourceGroupPager` has been removed
+- Function `*TablesClient.BeginCreateOrUpdate` has been removed
+- Function `*QueriesClient.Put` has been removed
+- Function `LogAnalyticsQueryPackQueryListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `PossibleColumnDataTypeHintEnumValues` has been removed
+- Function `PossibleColumnTypeEnumValues` has been removed
+- Function `*LogAnalyticsQueryPackQueryProperties.UnmarshalJSON` has been removed
+- Function `PossibleCreatedByTypeValues` has been removed
+- Function `StorageInsightListResult.MarshalJSON` has been removed
+- Function `*SystemDataAutoGenerated.UnmarshalJSON` has been removed
+- Function `RestoredLogs.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `SavedSearchesListResult.MarshalJSON` has been removed
+- Function `*QueriesClient.NewListPager` has been removed
+- Function `*LogAnalyticsQueryPackProperties.UnmarshalJSON` has been removed
+- Function `PossibleTablePlanEnumValues` has been removed
+- Function `DataExportListResult.MarshalJSON` has been removed
+- Function `ManagementGroupProperties.MarshalJSON` has been removed
+- Function `LogAnalyticsQueryPackQuerySearchPropertiesRelated.MarshalJSON` has been removed
+- Function `WorkspaceListUsagesResult.MarshalJSON` has been removed
+- Function `*RestoredLogs.UnmarshalJSON` has been removed
+- Function `TablesListResult.MarshalJSON` has been removed
+- Function `SystemDataAutoGenerated.MarshalJSON` has been removed
+- Function `DataSourceListResult.MarshalJSON` has been removed
+- Function `SearchResults.MarshalJSON` has been removed
+- Function `*SearchResults.UnmarshalJSON` has been removed
+- Struct `AzureResourceProperties` has been removed
+- Struct `Column` has been removed
+- Struct `LogAnalyticsQueryPack` has been removed
+- Struct `LogAnalyticsQueryPackListResult` has been removed
+- Struct `LogAnalyticsQueryPackProperties` has been removed
+- Struct `LogAnalyticsQueryPackQuery` has been removed
+- Struct `LogAnalyticsQueryPackQueryListResult` has been removed
+- Struct `LogAnalyticsQueryPackQueryProperties` has been removed
+- Struct `LogAnalyticsQueryPackQueryPropertiesRelated` has been removed
+- Struct `LogAnalyticsQueryPackQuerySearchProperties` has been removed
+- Struct `LogAnalyticsQueryPackQuerySearchPropertiesRelated` has been removed
+- Struct `QueriesClient` has been removed
+- Struct `QueriesClientDeleteOptions` has been removed
+- Struct `QueriesClientDeleteResponse` has been removed
+- Struct `QueriesClientGetOptions` has been removed
+- Struct `QueriesClientGetResponse` has been removed
+- Struct `QueriesClientListOptions` has been removed
+- Struct `QueriesClientListResponse` has been removed
+- Struct `QueriesClientPutOptions` has been removed
+- Struct `QueriesClientPutResponse` has been removed
+- Struct `QueriesClientSearchOptions` has been removed
+- Struct `QueriesClientSearchResponse` has been removed
+- Struct `QueriesClientUpdateOptions` has been removed
+- Struct `QueriesClientUpdateResponse` has been removed
+- Struct `QueryPacksClient` has been removed
+- Struct `QueryPacksClientCreateOrUpdateOptions` has been removed
+- Struct `QueryPacksClientCreateOrUpdateResponse` has been removed
+- Struct `QueryPacksClientDeleteOptions` has been removed
+- Struct `QueryPacksClientDeleteResponse` has been removed
+- Struct `QueryPacksClientGetOptions` has been removed
+- Struct `QueryPacksClientGetResponse` has been removed
+- Struct `QueryPacksClientListByResourceGroupOptions` has been removed
+- Struct `QueryPacksClientListByResourceGroupResponse` has been removed
+- Struct `QueryPacksClientListOptions` has been removed
+- Struct `QueryPacksClientListResponse` has been removed
+- Struct `QueryPacksClientUpdateTagsOptions` has been removed
+- Struct `QueryPacksClientUpdateTagsResponse` has been removed
+- Struct `QueryPacksResource` has been removed
+- Struct `RestoredLogs` has been removed
+- Struct `ResultStatistics` has been removed
+- Struct `Schema` has been removed
+- Struct `SearchResults` has been removed
+- Struct `SystemData` has been removed
+- Struct `SystemDataAutoGenerated` has been removed
+- Struct `TablesClientBeginCreateOrUpdateOptions` has been removed
+- Struct `TablesClientBeginDeleteOptions` has been removed
+- Struct `TablesClientBeginUpdateOptions` has been removed
+- Struct `TablesClientCreateOrUpdateResponse` has been removed
+- Struct `TablesClientDeleteResponse` has been removed
+- Struct `TablesClientMigrateOptions` has been removed
+- Struct `TablesClientMigrateResponse` has been removed
+- Struct `TagsResource` has been removed
+- Field `DefaultDataCollectionRuleResourceID` of struct `WorkspaceProperties` has been removed
+- Field `ArchiveRetentionInDays` of struct `TableProperties` has been removed
+- Field `TotalRetentionInDays` of struct `TableProperties` has been removed
+- Field `LastPlanModifiedDate` of struct `TableProperties` has been removed
+- Field `ResultStatistics` of struct `TableProperties` has been removed
+- Field `RestoredLogs` of struct `TableProperties` has been removed
+- Field `SearchResults` of struct `TableProperties` has been removed
+- Field `ProvisioningState` of struct `TableProperties` has been removed
+- Field `Plan` of struct `TableProperties` has been removed
+- Field `Schema` of struct `TableProperties` has been removed
+- Field `ETag` of struct `Workspace` has been removed
+- Field `SystemData` of struct `Workspace` has been removed
+- Field `SystemData` of struct `Table` has been removed
+
+### Features Added
+
+- New function `*TablesClient.Update(context.Context, string, string, string, Table, *TablesClientUpdateOptions) (TablesClientUpdateResponse, error)`
+- New struct `TablesClientUpdateOptions`
+- New field `Etag` in struct `Workspace`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

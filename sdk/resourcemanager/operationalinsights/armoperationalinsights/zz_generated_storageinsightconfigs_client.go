@@ -38,7 +38,7 @@ func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.Tok
 
 // CreateOrUpdate - Create or update a storage insight.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // storageInsightName - Name of the storageInsightsConfigs resource
@@ -103,7 +104,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Deletes a storageInsightsConfigs resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // storageInsightName - Name of the storageInsightsConfigs resource
@@ -169,6 +171,7 @@ func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Conte
 
 // Get - Gets a storage insight instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // storageInsightName - Name of the storageInsightsConfigs resource
@@ -215,7 +218,7 @@ func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response
 
 // NewListByWorkspacePager - Lists the storage insight instances within a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
 // method.
 func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageInsightConfigsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageInsightConfigsClientListByWorkspaceResponse]{
 		More: func(page StorageInsightConfigsClientListByWorkspaceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

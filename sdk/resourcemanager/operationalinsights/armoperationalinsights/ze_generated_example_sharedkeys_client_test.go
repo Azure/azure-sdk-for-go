@@ -23,13 +23,13 @@ func ExampleSharedKeysClient_GetSharedKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSharedKeysClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSharedKeysClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSharedKeys(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"rg1",
+		"TestLinkWS",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,13 +45,13 @@ func ExampleSharedKeysClient_Regenerate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSharedKeysClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSharedKeysClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Regenerate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"rg1",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -23,13 +23,13 @@ func ExampleSchemaClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSchemaClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSchemaClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"mms-eus",
+		"atlantisdemo",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

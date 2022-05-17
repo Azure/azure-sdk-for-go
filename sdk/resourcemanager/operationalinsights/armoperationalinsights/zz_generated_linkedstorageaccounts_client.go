@@ -38,7 +38,7 @@ func NewLinkedStorageAccountsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLinkedStorageAccountsClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - Create or Update a link relation between current workspace and a group of storage accounts of a specific
 // data source type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceType - Linked storage accounts type.
@@ -104,7 +105,7 @@ func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceType - Linked storage accounts type.
@@ -170,6 +172,7 @@ func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Conte
 
 // Get - Gets all linked storage account of a specific data source type associated with the specified workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceType - Linked storage accounts type.
@@ -216,7 +219,7 @@ func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response
 // NewListByWorkspacePager - Gets all linked storage accounts associated with the specified workspace, storage accounts will
 // be sorted by their data source type.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.ListByWorkspace
 // method.
 func (client *LinkedStorageAccountsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *LinkedStorageAccountsClientListByWorkspaceOptions) *runtime.Pager[LinkedStorageAccountsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LinkedStorageAccountsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LinkedStorageAccountsClientListByWorkspaceResponse]{
 		More: func(page LinkedStorageAccountsClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -280,7 +284,7 @@ func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

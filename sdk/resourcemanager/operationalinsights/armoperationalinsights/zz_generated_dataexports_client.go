@@ -38,7 +38,7 @@ func NewDataExportsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataExportsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create or update a data export.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataExportName - The data export rule name.
@@ -103,7 +104,7 @@ func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *DataExportsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes the specified data export in a given workspace..
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataExportName - The data export rule name.
@@ -163,12 +165,13 @@ func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a data export instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataExportName - The data export rule name.
@@ -214,7 +217,7 @@ func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,12 +232,13 @@ func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExp
 
 // NewListByWorkspacePager - Lists the data export instances within a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace
 // method.
 func (client *DataExportsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) *runtime.Pager[DataExportsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataExportsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataExportsClientListByWorkspaceResponse]{
 		More: func(page DataExportsClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -277,7 +281,7 @@ func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

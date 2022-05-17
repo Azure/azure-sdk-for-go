@@ -12,21 +12,19 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesSubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesSubscriptionList.json
 func ExampleWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleWorkspacesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -44,24 +41,23 @@ func ExampleWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("oiautorest6685",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -70,22 +66,22 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesCreate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"oiautorest6685",
+		"oiautorest6685",
 		armoperationalinsights.Workspace{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("australiasoutheast"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("val1"),
 			},
@@ -96,11 +92,11 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armoperationalinsights.WorkspacesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,46 +104,44 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesDelete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		&armoperationalinsights.WorkspacesClientBeginDeleteOptions{Force: nil,
-			ResumeToken: "",
-		})
+		"oiautorest6685",
+		"oiautorest6685",
+		&armoperationalinsights.WorkspacesClientBeginDeleteOptions{Force: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesGet.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"oiautorest6685",
+		"oiautorest6685",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,20 +150,20 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/WorkspacesUpdate.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"oiautorest6685",
+		"oiautorest6685",
 		armoperationalinsights.WorkspacePatch{
 			Properties: &armoperationalinsights.WorkspaceProperties{
 				RetentionInDays: to.Ptr[int32](30),

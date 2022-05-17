@@ -24,21 +24,21 @@ func ExampleWorkspacePurgeClient_Purge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacePurgeClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacePurgeClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Purge(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"OIAutoRest5123",
+		"aztest5048",
 		armoperationalinsights.WorkspacePurgeBody{
 			Filters: []*armoperationalinsights.WorkspacePurgeBodyFilters{
 				{
-					Column:   to.Ptr("<column>"),
-					Operator: to.Ptr("<operator>"),
+					Column:   to.Ptr("TimeGenerated"),
+					Operator: to.Ptr(">"),
 					Value:    "2017-09-01T00:00:00",
 				}},
-			Table: to.Ptr("<table>"),
+			Table: to.Ptr("Heartbeat"),
 		},
 		nil)
 	if err != nil {
@@ -53,14 +53,14 @@ func ExampleWorkspacePurgeClient_GetPurgeStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewWorkspacePurgeClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewWorkspacePurgeClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPurgeStatus(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<purge-id>",
+		"OIAutoRest5123",
+		"aztest5048",
+		"purge-970318e7-b859-4edb-8903-83b1b54d0b74",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

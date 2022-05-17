@@ -38,7 +38,7 @@ func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create or update a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // linkedServiceName - Name of the linkedServices resource
 // parameters - The parameters required to create or update a linked service.
 // options - LinkedServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.BeginCreateOrUpdate
 // method.
-func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LinkedServicesClientCreateOrUpdateResponse], error) {
+func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[LinkedServicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LinkedServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LinkedServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkedServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkedServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, linkedServiceName, parameters, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // linkedServiceName - Name of the linked service.
 // options - LinkedServicesClientBeginDeleteOptions contains the optional parameters for the LinkedServicesClient.BeginDelete
 // method.
-func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*armruntime.Poller[LinkedServicesClientDeleteResponse], error) {
+func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*runtime.Poller[LinkedServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LinkedServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LinkedServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkedServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkedServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, linkedServiceName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // linkedServiceName - Name of the linked service.
@@ -234,7 +239,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 
 // NewListByWorkspacePager - Gets the linked services instances in a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.ListByWorkspace
 // method.
 func (client *LinkedServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) *runtime.Pager[LinkedServicesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LinkedServicesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LinkedServicesClientListByWorkspaceResponse]{
 		More: func(page LinkedServicesClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -297,7 +303,7 @@ func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

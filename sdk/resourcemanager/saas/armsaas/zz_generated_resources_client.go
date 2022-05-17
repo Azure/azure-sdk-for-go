@@ -36,7 +36,7 @@ func NewResourcesClient(credential azcore.TokenCredential, options *arm.ClientOp
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,9 +53,10 @@ func NewResourcesClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // NewListPager - Get All Resources
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // options - ResourcesClientListOptions contains the optional parameters for the ResourcesClient.List method.
 func (client *ResourcesClient) NewListPager(options *ResourcesClientListOptions) *runtime.Pager[ResourcesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourcesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourcesClientListResponse]{
 		More: func(page ResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -92,7 +93,7 @@ func (client *ResourcesClient) listCreateRequest(ctx context.Context, options *R
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *ResourcesClient) listHandleResponse(resp *http.Response) (Resource
 
 // ListAccessToken - Gets the ISV access token for a SaaS resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-03-01-beta
 // resourceID - The Saas resource ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // options - ResourcesClientListAccessTokenOptions contains the optional parameters for the ResourcesClient.ListAccessToken
 // method.
@@ -139,7 +141,7 @@ func (client *ResourcesClient) listAccessTokenCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-03-01-beta")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

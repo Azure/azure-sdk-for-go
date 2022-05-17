@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas"
@@ -26,7 +24,7 @@ func ExampleSubscriptionLevelClient_NewListByAzureSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleSubscriptionLevelClient_NewListByAzureSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleSubscriptionLevelClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("my-saas-rg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleSubscriptionLevelClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-saas-rg",
+		"MyContosoSubscription",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,33 +95,33 @@ func ExampleSubscriptionLevelClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-saas-rg",
+		"MyContosoSubscription",
 		armsaas.ResourceCreation{
-			Name:     to.Ptr("<name>"),
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("MyContosoSubscription"),
+			Location: to.Ptr("global"),
 			Properties: &armsaas.CreationProperties{
-				OfferID: to.Ptr("<offer-id>"),
+				OfferID: to.Ptr("contosoOffer"),
 				PaymentChannelMetadata: map[string]*string{
 					"AzureSubscriptionId": to.Ptr("155af98a-3205-47e7-883b-a2ab9db9f88d"),
 				},
 				PaymentChannelType: to.Ptr(armsaas.PaymentChannelTypeSubscriptionDelegated),
-				PublisherID:        to.Ptr("<publisher-id>"),
-				SaasResourceName:   to.Ptr("<saas-resource-name>"),
-				SKUID:              to.Ptr("<skuid>"),
-				TermID:             to.Ptr("<term-id>"),
+				PublisherID:        to.Ptr("microsoft-contoso"),
+				SaasResourceName:   to.Ptr("MyContosoSubscription"),
+				SKUID:              to.Ptr("free"),
+				TermID:             to.Ptr("hjdtn7tfnxcy"),
 			},
 		},
-		&armsaas.SubscriptionLevelClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -140,24 +136,24 @@ func ExampleSubscriptionLevelClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-saas-rg",
+		"MyContosoSubscription",
 		armsaas.ResourceCreation{
 			Properties: &armsaas.CreationProperties{
-				SKUID: to.Ptr("<skuid>"),
+				SKUID: to.Ptr("premium"),
 			},
 			Tags: map[string]*string{},
 		},
-		&armsaas.SubscriptionLevelClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -172,18 +168,18 @@ func ExampleSubscriptionLevelClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armsaas.SubscriptionLevelClientBeginDeleteOptions{ResumeToken: ""})
+		"my-saas-rg",
+		"MyContosoSubscription",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -196,23 +192,23 @@ func ExampleSubscriptionLevelClient_BeginUpdateToUnsubscribed() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateToUnsubscribed(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-saas-rg",
+		"MyContosoSubscription",
 		armsaas.DeleteOptions{
-			Feedback:        to.Ptr("<feedback>"),
+			Feedback:        to.Ptr("No longer need this SaaS"),
 			ReasonCode:      to.Ptr[float32](0),
 			UnsubscribeOnly: to.Ptr(true),
 		},
-		&armsaas.SubscriptionLevelClientBeginUpdateToUnsubscribedOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -225,13 +221,13 @@ func ExampleSubscriptionLevelClient_ListAccessToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListAccessToken(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-saas-rg",
+		"MyContosoSubscription",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -247,18 +243,18 @@ func ExampleSubscriptionLevelClient_ValidateMoveResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ValidateMoveResources(ctx,
-		"<resource-group-name>",
+		"my-saas-rg",
 		armsaas.MoveResource{
 			Resources: []*string{
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
-			TargetResourceGroup: to.Ptr("<target-resource-group>"),
+			TargetResourceGroup: to.Ptr("/subscriptions/5122d0a3-1e10-4baf-bdc5-c2a452489525/resourceGroups/new-saas-rg"),
 		},
 		nil)
 	if err != nil {
@@ -273,24 +269,24 @@ func ExampleSubscriptionLevelClient_BeginMoveResources() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsaas.NewSubscriptionLevelClient("<subscription-id>", cred, nil)
+	client, err := armsaas.NewSubscriptionLevelClient("c825645b-e31b-9cf4-1cee-2aba9e58bc7c", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginMoveResources(ctx,
-		"<resource-group-name>",
+		"my-saas-rg",
 		armsaas.MoveResource{
 			Resources: []*string{
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas1"),
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas2"),
 				to.Ptr("/subscriptions/c825645b-e31b-9cf4-1cee-2aba9e58bc7c/resourceGroups/my-saas-rg/providers/Microsoft.SaaS/resources/saas3")},
-			TargetResourceGroup: to.Ptr("<target-resource-group>"),
+			TargetResourceGroup: to.Ptr("/subscriptions/5122d0a3-1e10-4baf-bdc5-c2a452489525/resourceGroups/new-saas-rg"),
 		},
-		&armsaas.SubscriptionLevelClientBeginMoveResourcesOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

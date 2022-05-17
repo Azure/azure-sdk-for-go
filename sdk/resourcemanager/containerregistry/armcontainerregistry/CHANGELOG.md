@@ -1,5 +1,95 @@
 # Release History
 
+## 0.6.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*RegistriesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientCreateResponse], error)` to `(*runtime.Poller[RegistriesClientCreateResponse], error)`
+- Function `*ConnectedRegistriesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ConnectedRegistriesClientUpdateResponse], error)` to `(*runtime.Poller[ConnectedRegistriesClientUpdateResponse], error)`
+- Function `*RegistriesClient.BeginScheduleRun` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientScheduleRunResponse], error)` to `(*runtime.Poller[RegistriesClientScheduleRunResponse], error)`
+- Function `*RegistriesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientUpdateResponse], error)` to `(*runtime.Poller[RegistriesClientUpdateResponse], error)`
+- Function `*AgentPoolsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientUpdateResponse], error)` to `(*runtime.Poller[AgentPoolsClientUpdateResponse], error)`
+- Function `*WebhooksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[WebhooksClientUpdateResponse], error)` to `(*runtime.Poller[WebhooksClientUpdateResponse], error)`
+- Function `*AgentPoolsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientCreateResponse], error)` to `(*runtime.Poller[AgentPoolsClientCreateResponse], error)`
+- Function `*TasksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[TasksClientUpdateResponse], error)` to `(*runtime.Poller[TasksClientUpdateResponse], error)`
+- Function `*ScopeMapsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ScopeMapsClientDeleteResponse], error)` to `(*runtime.Poller[ScopeMapsClientDeleteResponse], error)`
+- Function `*WebhooksClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[WebhooksClientCreateResponse], error)` to `(*runtime.Poller[WebhooksClientCreateResponse], error)`
+- Function `*ReplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ReplicationsClientDeleteResponse], error)` to `(*runtime.Poller[ReplicationsClientDeleteResponse], error)`
+- Function `*TasksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TasksClientDeleteResponse], error)` to `(*runtime.Poller[TasksClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*TaskRunsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TaskRunsClientDeleteResponse], error)` to `(*runtime.Poller[TaskRunsClientDeleteResponse], error)`
+- Function `*TasksClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TasksClientCreateResponse], error)` to `(*runtime.Poller[TasksClientCreateResponse], error)`
+- Function `*ConnectedRegistriesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConnectedRegistriesClientDeleteResponse], error)` to `(*runtime.Poller[ConnectedRegistriesClientDeleteResponse], error)`
+- Function `*RunsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[RunsClientUpdateResponse], error)` to `(*runtime.Poller[RunsClientUpdateResponse], error)`
+- Function `*ReplicationsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ReplicationsClientCreateResponse], error)` to `(*runtime.Poller[ReplicationsClientCreateResponse], error)`
+- Function `*RegistriesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientDeleteResponse], error)` to `(*runtime.Poller[RegistriesClientDeleteResponse], error)`
+- Function `*TokensClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[TokensClientUpdateResponse], error)` to `(*runtime.Poller[TokensClientUpdateResponse], error)`
+- Function `*ScopeMapsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ScopeMapsClientCreateResponse], error)` to `(*runtime.Poller[ScopeMapsClientCreateResponse], error)`
+- Function `*TokensClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TokensClientDeleteResponse], error)` to `(*runtime.Poller[TokensClientDeleteResponse], error)`
+- Function `*ImportPipelinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ImportPipelinesClientDeleteResponse], error)` to `(*runtime.Poller[ImportPipelinesClientDeleteResponse], error)`
+- Function `*ExportPipelinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExportPipelinesClientDeleteResponse], error)` to `(*runtime.Poller[ExportPipelinesClientDeleteResponse], error)`
+- Function `*ConnectedRegistriesClient.BeginDeactivate` return value(s) have been changed from `(*armruntime.Poller[ConnectedRegistriesClientDeactivateResponse], error)` to `(*runtime.Poller[ConnectedRegistriesClientDeactivateResponse], error)`
+- Function `*ScopeMapsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ScopeMapsClientUpdateResponse], error)` to `(*runtime.Poller[ScopeMapsClientUpdateResponse], error)`
+- Function `*RunsClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[RunsClientCancelResponse], error)` to `(*runtime.Poller[RunsClientCancelResponse], error)`
+- Function `*ReplicationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReplicationsClientUpdateResponse], error)` to `(*runtime.Poller[ReplicationsClientUpdateResponse], error)`
+- Function `*RegistriesClient.BeginImportImage` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientImportImageResponse], error)` to `(*runtime.Poller[RegistriesClientImportImageResponse], error)`
+- Function `*WebhooksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WebhooksClientDeleteResponse], error)` to `(*runtime.Poller[WebhooksClientDeleteResponse], error)`
+- Function `*PipelineRunsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PipelineRunsClientCreateResponse], error)` to `(*runtime.Poller[PipelineRunsClientCreateResponse], error)`
+- Function `*TaskRunsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[TaskRunsClientUpdateResponse], error)` to `(*runtime.Poller[TaskRunsClientUpdateResponse], error)`
+- Function `*AgentPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AgentPoolsClientDeleteResponse], error)` to `(*runtime.Poller[AgentPoolsClientDeleteResponse], error)`
+- Function `*TaskRunsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TaskRunsClientCreateResponse], error)` to `(*runtime.Poller[TaskRunsClientCreateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*TokensClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TokensClientCreateResponse], error)` to `(*runtime.Poller[TokensClientCreateResponse], error)`
+- Function `*ImportPipelinesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ImportPipelinesClientCreateResponse], error)` to `(*runtime.Poller[ImportPipelinesClientCreateResponse], error)`
+- Function `*RegistriesClient.BeginGenerateCredentials` return value(s) have been changed from `(*armruntime.Poller[RegistriesClientGenerateCredentialsResponse], error)` to `(*runtime.Poller[RegistriesClientGenerateCredentialsResponse], error)`
+- Function `*ExportPipelinesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ExportPipelinesClientCreateResponse], error)` to `(*runtime.Poller[ExportPipelinesClientCreateResponse], error)`
+- Function `*PipelineRunsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PipelineRunsClientDeleteResponse], error)` to `(*runtime.Poller[PipelineRunsClientDeleteResponse], error)`
+- Function `*ConnectedRegistriesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ConnectedRegistriesClientCreateResponse], error)` to `(*runtime.Poller[ConnectedRegistriesClientCreateResponse], error)`
+- Function `AgentPoolListResult.MarshalJSON` has been removed
+- Function `WebhookListResult.MarshalJSON` has been removed
+- Function `EventResponseMessage.MarshalJSON` has been removed
+- Function `ConnectedRegistryListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ExportPipelineListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `RegistryListCredentialsResult.MarshalJSON` has been removed
+- Function `RunFilter.MarshalJSON` has been removed
+- Function `TaskRunListResult.MarshalJSON` has been removed
+- Function `PipelineRunListResult.MarshalJSON` has been removed
+- Function `TaskListResult.MarshalJSON` has been removed
+- Function `RegistryListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `ErrorResponseBody.MarshalJSON` has been removed
+- Function `ScopeMapListResult.MarshalJSON` has been removed
+- Function `EventContent.MarshalJSON` has been removed
+- Function `TokenListResult.MarshalJSON` has been removed
+- Function `ReplicationListResult.MarshalJSON` has been removed
+- Function `OperationServiceSpecificationDefinition.MarshalJSON` has been removed
+- Function `RegistryUsageListResult.MarshalJSON` has been removed
+- Function `EventListResult.MarshalJSON` has been removed
+- Function `CallbackConfig.MarshalJSON` has been removed
+- Function `RunListResult.MarshalJSON` has been removed
+- Function `GenerateCredentialsResult.MarshalJSON` has been removed
+- Function `ImportPipelineListResult.MarshalJSON` has been removed
+- Function `EventRequestMessage.MarshalJSON` has been removed
+- Struct `VirtualNetworkRule` has been removed
+- Field `VirtualNetworkRules` of struct `NetworkRuleSet` has been removed
+
+### Features Added
+
+- New const `AzureADAuthenticationAsArmPolicyStatusDisabled`
+- New const `AzureADAuthenticationAsArmPolicyStatusEnabled`
+- New function `*SoftDeletePolicy.UnmarshalJSON([]byte) error`
+- New function `PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus`
+- New function `SoftDeletePolicy.MarshalJSON() ([]byte, error)`
+- New struct `AzureADAuthenticationAsArmPolicy`
+- New struct `PackageType`
+- New struct `SoftDeletePolicy`
+- New struct `StorageAccountProperties`
+- New field `AzureADAuthenticationAsArmPolicy` in struct `Policies`
+- New field `SoftDeletePolicy` in struct `Policies`
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

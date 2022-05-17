@@ -38,7 +38,7 @@ func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewWebhooksClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Creates a webhook for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
 // webhookCreateParameters - The parameters for creating a webhook.
 // options - WebhooksClientBeginCreateOptions contains the optional parameters for the WebhooksClient.BeginCreate method.
-func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*armruntime.Poller[WebhooksClientCreateResponse], error) {
+func (client *WebhooksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*runtime.Poller[WebhooksClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WebhooksClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WebhooksClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a webhook for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *WebhooksClient) create(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters WebhookCreateParameters, options *WebhooksClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookCreateParameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *WebhooksClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, webhookCreateParameters)
 }
 
 // BeginDelete - Deletes a webhook from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
 // options - WebhooksClientBeginDeleteOptions contains the optional parameters for the WebhooksClient.BeginDelete method.
-func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*armruntime.Poller[WebhooksClientDeleteResponse], error) {
+func (client *WebhooksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*runtime.Poller[WebhooksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, webhookName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WebhooksClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WebhooksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a webhook from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *WebhooksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
 	if err != nil {
@@ -179,13 +183,14 @@ func (client *WebhooksClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the properties of the specified webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
@@ -229,9 +234,9 @@ func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -246,6 +251,7 @@ func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksCl
 
 // GetCallbackConfig - Gets the configuration of service URI and custom headers for the webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
@@ -290,9 +296,9 @@ func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -307,11 +313,12 @@ func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Respons
 
 // NewListPager - Lists all the webhooks for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - WebhooksClientListOptions contains the optional parameters for the WebhooksClient.List method.
 func (client *WebhooksClient) NewListPager(resourceGroupName string, registryName string, options *WebhooksClientListOptions) *runtime.Pager[WebhooksClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebhooksClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListResponse]{
 		More: func(page WebhooksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -358,9 +365,9 @@ func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -375,12 +382,13 @@ func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksC
 
 // NewListEventsPager - Lists recent events for the specified webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
 // options - WebhooksClientListEventsOptions contains the optional parameters for the WebhooksClient.ListEvents method.
 func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, registryName string, webhookName string, options *WebhooksClientListEventsOptions) *runtime.Pager[WebhooksClientListEventsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebhooksClientListEventsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebhooksClientListEventsResponse]{
 		More: func(page WebhooksClientListEventsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -431,9 +439,9 @@ func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -448,6 +456,7 @@ func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (Web
 
 // Ping - Triggers a ping event to be sent to the webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
@@ -491,9 +500,9 @@ func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -508,25 +517,27 @@ func (client *WebhooksClient) pingHandleResponse(resp *http.Response) (WebhooksC
 
 // BeginUpdate - Updates a webhook with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // webhookName - The name of the webhook.
 // webhookUpdateParameters - The parameters for updating a webhook.
 // options - WebhooksClientBeginUpdateOptions contains the optional parameters for the WebhooksClient.BeginUpdate method.
-func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*armruntime.Poller[WebhooksClientUpdateResponse], error) {
+func (client *WebhooksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*runtime.Poller[WebhooksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WebhooksClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WebhooksClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WebhooksClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WebhooksClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a webhook with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *WebhooksClient) update(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters WebhookUpdateParameters, options *WebhooksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, webhookName, webhookUpdateParameters, options)
 	if err != nil {
@@ -566,8 +577,8 @@ func (client *WebhooksClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, webhookUpdateParameters)
 }

@@ -38,7 +38,7 @@ func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreate - Creates a token for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // tokenName - The name of the token.
 // tokenCreateParameters - The parameters for creating a token.
 // options - TokensClientBeginCreateOptions contains the optional parameters for the TokensClient.BeginCreate method.
-func (client *TokensClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenCreateParameters Token, options *TokensClientBeginCreateOptions) (*armruntime.Poller[TokensClientCreateResponse], error) {
+func (client *TokensClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenCreateParameters Token, options *TokensClientBeginCreateOptions) (*runtime.Poller[TokensClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, tokenName, tokenCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TokensClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TokensClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TokensClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TokensClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a token for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *TokensClient) create(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenCreateParameters Token, options *TokensClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, tokenName, tokenCreateParameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *TokensClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tokenCreateParameters)
 }
 
 // BeginDelete - Deletes a token from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // tokenName - The name of the token.
 // options - TokensClientBeginDeleteOptions contains the optional parameters for the TokensClient.BeginDelete method.
-func (client *TokensClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *TokensClientBeginDeleteOptions) (*armruntime.Poller[TokensClientDeleteResponse], error) {
+func (client *TokensClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *TokensClientBeginDeleteOptions) (*runtime.Poller[TokensClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, tokenName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TokensClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TokensClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TokensClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TokensClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a token from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *TokensClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, tokenName string, options *TokensClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, tokenName, options)
 	if err != nil {
@@ -179,14 +183,15 @@ func (client *TokensClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified token.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // tokenName - The name of the token.
@@ -230,9 +235,9 @@ func (client *TokensClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,11 +252,12 @@ func (client *TokensClient) getHandleResponse(resp *http.Response) (TokensClient
 
 // NewListPager - Lists all the tokens for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - TokensClientListOptions contains the optional parameters for the TokensClient.List method.
 func (client *TokensClient) NewListPager(resourceGroupName string, registryName string, options *TokensClientListOptions) *runtime.Pager[TokensClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TokensClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TokensClientListResponse]{
 		More: func(page TokensClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,9 +304,9 @@ func (client *TokensClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,25 +321,27 @@ func (client *TokensClient) listHandleResponse(resp *http.Response) (TokensClien
 
 // BeginUpdate - Updates a token with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // tokenName - The name of the token.
 // tokenUpdateParameters - The parameters for updating a token.
 // options - TokensClientBeginUpdateOptions contains the optional parameters for the TokensClient.BeginUpdate method.
-func (client *TokensClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters TokenUpdateParameters, options *TokensClientBeginUpdateOptions) (*armruntime.Poller[TokensClientUpdateResponse], error) {
+func (client *TokensClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters TokenUpdateParameters, options *TokensClientBeginUpdateOptions) (*runtime.Poller[TokensClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, tokenName, tokenUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TokensClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TokensClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TokensClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TokensClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a token with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *TokensClient) update(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters TokenUpdateParameters, options *TokensClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, tokenName, tokenUpdateParameters, options)
 	if err != nil {
@@ -373,8 +381,8 @@ func (client *TokensClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tokenUpdateParameters)
 }

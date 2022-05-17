@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
@@ -26,18 +24,17 @@ func ExampleTasksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<registry-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myRegistry",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleTasksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myTask",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,16 +73,16 @@ func ExampleTasksClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"mytTask",
 		armcontainerregistry.Task{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Tags: map[string]*string{
 				"testkey": to.Ptr("value"),
 			},
@@ -97,7 +94,7 @@ func ExampleTasksClient_BeginCreate() {
 					CPU: to.Ptr[int32](2),
 				},
 				IsSystemTask: to.Ptr(false),
-				LogTemplate:  to.Ptr("<log-template>"),
+				LogTemplate:  to.Ptr("acr/tasks:{{.Run.OS}}"),
 				Platform: &armcontainerregistry.PlatformProperties{
 					Architecture: to.Ptr(armcontainerregistry.ArchitectureAmd64),
 					OS:           to.Ptr(armcontainerregistry.OSLinux),
@@ -105,19 +102,19 @@ func ExampleTasksClient_BeginCreate() {
 				Status: to.Ptr(armcontainerregistry.TaskStatusEnabled),
 				Step: &armcontainerregistry.DockerBuildStep{
 					Type:        to.Ptr(armcontainerregistry.StepTypeDocker),
-					ContextPath: to.Ptr("<context-path>"),
+					ContextPath: to.Ptr("src"),
 					Arguments: []*armcontainerregistry.Argument{
 						{
-							Name:     to.Ptr("<name>"),
+							Name:     to.Ptr("mytestargument"),
 							IsSecret: to.Ptr(false),
-							Value:    to.Ptr("<value>"),
+							Value:    to.Ptr("mytestvalue"),
 						},
 						{
-							Name:     to.Ptr("<name>"),
+							Name:     to.Ptr("mysecrettestargument"),
 							IsSecret: to.Ptr(true),
-							Value:    to.Ptr("<value>"),
+							Value:    to.Ptr("mysecrettestvalue"),
 						}},
-					DockerFilePath: to.Ptr("<docker-file-path>"),
+					DockerFilePath: to.Ptr("src/DockerFile"),
 					ImageNames: []*string{
 						to.Ptr("azurerest:testtag")},
 					IsPushEnabled: to.Ptr(true),
@@ -125,19 +122,19 @@ func ExampleTasksClient_BeginCreate() {
 				},
 				Trigger: &armcontainerregistry.TriggerProperties{
 					BaseImageTrigger: &armcontainerregistry.BaseImageTrigger{
-						Name:                     to.Ptr("<name>"),
+						Name:                     to.Ptr("myBaseImageTrigger"),
 						BaseImageTriggerType:     to.Ptr(armcontainerregistry.BaseImageTriggerTypeRuntime),
-						UpdateTriggerEndpoint:    to.Ptr("<update-trigger-endpoint>"),
+						UpdateTriggerEndpoint:    to.Ptr("https://user:pass@mycicd.webhook.com?token=foo"),
 						UpdateTriggerPayloadType: to.Ptr(armcontainerregistry.UpdateTriggerPayloadTypeToken),
 					},
 					SourceTriggers: []*armcontainerregistry.SourceTrigger{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("mySourceTrigger"),
 							SourceRepository: &armcontainerregistry.SourceProperties{
-								Branch:        to.Ptr("<branch>"),
-								RepositoryURL: to.Ptr("<repository-url>"),
+								Branch:        to.Ptr("master"),
+								RepositoryURL: to.Ptr("https://github.com/Azure/azure-rest-api-specs"),
 								SourceControlAuthProperties: &armcontainerregistry.AuthInfo{
-									Token:     to.Ptr("<token>"),
+									Token:     to.Ptr("xxxxx"),
 									TokenType: to.Ptr(armcontainerregistry.TokenTypePAT),
 								},
 								SourceControlType: to.Ptr(armcontainerregistry.SourceControlTypeGithub),
@@ -147,17 +144,17 @@ func ExampleTasksClient_BeginCreate() {
 						}},
 					TimerTriggers: []*armcontainerregistry.TimerTrigger{
 						{
-							Name:     to.Ptr("<name>"),
-							Schedule: to.Ptr("<schedule>"),
+							Name:     to.Ptr("myTimerTrigger"),
+							Schedule: to.Ptr("30 9 * * 1-5"),
 						}},
 				},
 			},
 		},
-		&armcontainerregistry.TasksClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -172,19 +169,19 @@ func ExampleTasksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-name>",
-		&armcontainerregistry.TasksClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myRegistry",
+		"myTask",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -197,14 +194,14 @@ func ExampleTasksClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myTask",
 		armcontainerregistry.TaskUpdateParameters{
 			Properties: &armcontainerregistry.TaskPropertiesUpdateParameters{
 				AgentConfiguration: &armcontainerregistry.AgentProperties{
@@ -213,33 +210,33 @@ func ExampleTasksClient_BeginUpdate() {
 				Credentials: &armcontainerregistry.Credentials{
 					CustomRegistries: map[string]*armcontainerregistry.CustomRegistryCredentials{
 						"myregistry.azurecr.io": {
-							Identity: to.Ptr("<identity>"),
+							Identity: to.Ptr("[system]"),
 							Password: &armcontainerregistry.SecretObject{
 								Type:  to.Ptr(armcontainerregistry.SecretObjectTypeVaultsecret),
-								Value: to.Ptr("<value>"),
+								Value: to.Ptr("https://myacbvault.vault.azure.net/secrets/password"),
 							},
 							UserName: &armcontainerregistry.SecretObject{
 								Type:  to.Ptr(armcontainerregistry.SecretObjectTypeOpaque),
-								Value: to.Ptr("<value>"),
+								Value: to.Ptr("username"),
 							},
 						},
 					},
 				},
-				LogTemplate: to.Ptr("<log-template>"),
+				LogTemplate: to.Ptr("acr/tasks:{{.Run.OS}}"),
 				Status:      to.Ptr(armcontainerregistry.TaskStatusEnabled),
 				Step: &armcontainerregistry.DockerBuildStepUpdateParameters{
 					Type:           to.Ptr(armcontainerregistry.StepTypeDocker),
-					DockerFilePath: to.Ptr("<docker-file-path>"),
+					DockerFilePath: to.Ptr("src/DockerFile"),
 					ImageNames: []*string{
 						to.Ptr("azurerest:testtag1")},
 				},
 				Trigger: &armcontainerregistry.TriggerUpdateParameters{
 					SourceTriggers: []*armcontainerregistry.SourceTriggerUpdateParameters{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("mySourceTrigger"),
 							SourceRepository: &armcontainerregistry.SourceUpdateParameters{
 								SourceControlAuthProperties: &armcontainerregistry.AuthInfoUpdateParameters{
-									Token:     to.Ptr("<token>"),
+									Token:     to.Ptr("xxxxx"),
 									TokenType: to.Ptr(armcontainerregistry.TokenTypePAT),
 								},
 							},
@@ -252,11 +249,11 @@ func ExampleTasksClient_BeginUpdate() {
 				"testkey": to.Ptr("value"),
 			},
 		},
-		&armcontainerregistry.TasksClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -271,14 +268,14 @@ func ExampleTasksClient_GetDetails() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTasksClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewTasksClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDetails(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<task-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myTask",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

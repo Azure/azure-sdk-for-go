@@ -10,10 +10,10 @@ package armcontainerregistry
 
 const (
 	moduleName    = "armcontainerregistry"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
-// Action - The action of virtual network rule.
+// Action - The action of IP ACL rule.
 type Action string
 
 const (
@@ -94,6 +94,22 @@ func PossibleAuditLogStatusValues() []AuditLogStatus {
 	return []AuditLogStatus{
 		AuditLogStatusDisabled,
 		AuditLogStatusEnabled,
+	}
+}
+
+// AzureADAuthenticationAsArmPolicyStatus - The value that indicates whether the policy is enabled or not.
+type AzureADAuthenticationAsArmPolicyStatus string
+
+const (
+	AzureADAuthenticationAsArmPolicyStatusDisabled AzureADAuthenticationAsArmPolicyStatus = "disabled"
+	AzureADAuthenticationAsArmPolicyStatusEnabled  AzureADAuthenticationAsArmPolicyStatus = "enabled"
+)
+
+// PossibleAzureADAuthenticationAsArmPolicyStatusValues returns the possible values for the AzureADAuthenticationAsArmPolicyStatus const type.
+func PossibleAzureADAuthenticationAsArmPolicyStatusValues() []AzureADAuthenticationAsArmPolicyStatus {
+	return []AzureADAuthenticationAsArmPolicyStatus{
+		AzureADAuthenticationAsArmPolicyStatusDisabled,
+		AzureADAuthenticationAsArmPolicyStatusEnabled,
 	}
 }
 

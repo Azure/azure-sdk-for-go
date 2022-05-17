@@ -12,32 +12,29 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/PrivateEndpointConnectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2022-02-01-preview/examples/PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<registry-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myRegistry",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,21 +43,21 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/PrivateEndpointConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2022-02-01-preview/examples/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<private-endpoint-connection-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,34 +66,34 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/PrivateEndpointConnectionCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2022-02-01-preview/examples/PrivateEndpointConnectionCreateOrUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<private-endpoint-connection-name>",
+		"myResourceGroup",
+		"myRegistry",
+		"myConnection",
 		armcontainerregistry.PrivateEndpointConnection{
 			Properties: &armcontainerregistry.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armcontainerregistry.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("<description>"),
+					Description: to.Ptr("Auto-Approved"),
 					Status:      to.Ptr(armcontainerregistry.ConnectionStatusApproved),
 				},
 			},
 		},
-		&armcontainerregistry.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -104,26 +101,26 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2021-12-01-preview/examples/PrivateEndpointConnectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2022-02-01-preview/examples/PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armcontainerregistry.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<registry-name>",
-		"<private-endpoint-connection-name>",
-		&armcontainerregistry.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myRegistry",
+		"myConnection",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

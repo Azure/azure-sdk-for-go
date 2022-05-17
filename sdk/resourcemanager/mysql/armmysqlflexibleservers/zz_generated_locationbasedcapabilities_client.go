@@ -38,7 +38,7 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,11 +56,12 @@ func NewLocationBasedCapabilitiesClient(subscriptionID string, credential azcore
 
 // NewListPager - Get capabilities at specified location in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The name of the location.
 // options - LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.List
 // method.
 func (client *LocationBasedCapabilitiesClient) NewListPager(locationName string, options *LocationBasedCapabilitiesClientListOptions) *runtime.Pager[LocationBasedCapabilitiesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LocationBasedCapabilitiesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LocationBasedCapabilitiesClientListResponse]{
 		More: func(page LocationBasedCapabilitiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -105,7 +106,7 @@ func (client *LocationBasedCapabilitiesClient) listCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -23,7 +23,7 @@ func ExampleResourceSKUsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewResourceSKUsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewResourceSKUsClient("f1c637e4-72ec-4f89-8d2b-0f933c036002", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,6 @@ func ExampleResourceSKUsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

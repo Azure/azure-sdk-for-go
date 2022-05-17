@@ -26,35 +26,35 @@ func ExampleServersClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"TargetResourceGroup",
+		"targetserver",
 		armpostgresql.ServerForCreate{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("brazilsouth"),
 			Properties: &armpostgresql.ServerPropertiesForRestore{
 				CreateMode:         to.Ptr(armpostgresql.CreateModePointInTimeRestore),
 				RestorePointInTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-14T00:00:37.467Z"); return t }()),
-				SourceServerID:     to.Ptr("<source-server-id>"),
+				SourceServerID:     to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/SourceResourceGroup/providers/Microsoft.DBforPostgreSQL/servers/sourceserver"),
 			},
 			SKU: &armpostgresql.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("B_Gen5_2"),
 				Capacity: to.Ptr[int32](2),
-				Family:   to.Ptr("<family>"),
+				Family:   to.Ptr("Gen5"),
 				Tier:     to.Ptr(armpostgresql.SKUTierBasic),
 			},
 			Tags: map[string]*string{
 				"ElasticServer": to.Ptr("1"),
 			},
 		},
-		&armpostgresql.ServersClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -69,25 +69,25 @@ func ExampleServersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"pgtestsvc4",
 		armpostgresql.ServerUpdateParameters{
 			Properties: &armpostgresql.ServerUpdateParametersProperties{
-				AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
+				AdministratorLoginPassword: to.Ptr("<administratorLoginPassword>"),
 				MinimalTLSVersion:          to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
 				SSLEnforcement:             to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 			},
 		},
-		&armpostgresql.ServersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -102,18 +102,18 @@ func ExampleServersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armpostgresql.ServersClientBeginDeleteOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -126,13 +126,13 @@ func ExampleServersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"pgtestsvc1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -148,17 +148,16 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -174,7 +173,7 @@ func ExampleServersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -183,7 +182,6 @@ func ExampleServersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -199,18 +197,18 @@ func ExampleServersClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewServersClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewServersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		&armpostgresql.ServersClientBeginRestartOptions{ResumeToken: ""})
+		"TestGroup",
+		"testserver",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

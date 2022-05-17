@@ -38,7 +38,7 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Fetches the backup management usage summaries of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.List
 // method.
 func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) *runtime.Pager[BackupUsageSummariesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BackupUsageSummariesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BackupUsageSummariesClientListResponse]{
 		More: func(page BackupUsageSummariesClientListResponse) bool {
 			return false
 		},
@@ -102,7 +103,7 @@ func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -110,7 +111,7 @@ func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context,
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

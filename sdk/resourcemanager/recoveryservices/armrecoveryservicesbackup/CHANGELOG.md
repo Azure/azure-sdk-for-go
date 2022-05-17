@@ -1,5 +1,64 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ResourceGuardProxyClient.Put` parameter(s) have been changed from `(context.Context, string, string, string, *ResourceGuardProxyClientPutOptions)` to `(context.Context, string, string, string, ResourceGuardProxyBaseResource, *ResourceGuardProxyClientPutOptions)`
+- Function `*PrivateEndpointConnectionClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionClient.BeginPut` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionClientPutResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionClientPutResponse], error)`
+- Function `*Client.BeginBMSTriggerDataMove` return value(s) have been changed from `(*armruntime.Poller[ClientBMSTriggerDataMoveResponse], error)` to `(*runtime.Poller[ClientBMSTriggerDataMoveResponse], error)`
+- Function `*ValidateOperationClient.BeginTrigger` return value(s) have been changed from `(*armruntime.Poller[ValidateOperationClientTriggerResponse], error)` to `(*runtime.Poller[ValidateOperationClientTriggerResponse], error)`
+- Function `*Client.BeginMoveRecoveryPoint` return value(s) have been changed from `(*armruntime.Poller[ClientMoveRecoveryPointResponse], error)` to `(*runtime.Poller[ClientMoveRecoveryPointResponse], error)`
+- Function `*ProtectionPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ProtectionPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[ProtectionPoliciesClientDeleteResponse], error)`
+- Function `*Client.BeginBMSPrepareDataMove` return value(s) have been changed from `(*armruntime.Poller[ClientBMSPrepareDataMoveResponse], error)` to `(*runtime.Poller[ClientBMSPrepareDataMoveResponse], error)`
+- Function `*RestoresClient.BeginTrigger` return value(s) have been changed from `(*armruntime.Poller[RestoresClientTriggerResponse], error)` to `(*runtime.Poller[RestoresClientTriggerResponse], error)`
+- Const `TieringModeTierRecommended` has been removed
+- Const `TieringModeInvalid` has been removed
+- Const `TieringModeTierAfter` has been removed
+- Const `TieringModeDoNotTier` has been removed
+- Function `BackupManagementUsage.MarshalJSON` has been removed
+- Function `PrepareDataMoveResponse.MarshalJSON` has been removed
+- Function `BackupManagementUsageList.MarshalJSON` has been removed
+- Function `ProtectionPolicyResourceList.MarshalJSON` has been removed
+- Function `OperationWorkerResponse.MarshalJSON` has been removed
+- Function `BMSRPQueryObject.MarshalJSON` has been removed
+- Function `WorkloadItemResourceList.MarshalJSON` has been removed
+- Function `OperationStatusProvisionILRExtendedInfo.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationStatus.MarshalJSON` has been removed
+- Function `OperationResultInfo.MarshalJSON` has been removed
+- Function `ClientDiscoveryForServiceSpecification.MarshalJSON` has been removed
+- Function `OperationStatusJobsExtendedInfo.MarshalJSON` has been removed
+- Function `WorkloadProtectableItemResourceList.MarshalJSON` has been removed
+- Function `JobResourceList.MarshalJSON` has been removed
+- Function `ResourceGuardProxyBaseResourceList.MarshalJSON` has been removed
+- Function `NewErrorResponseError.MarshalJSON` has been removed
+- Function `JobQueryObject.MarshalJSON` has been removed
+- Function `ProtectableContainerResourceList.MarshalJSON` has been removed
+- Function `RecoveryPointResourceList.MarshalJSON` has been removed
+- Function `ProtectionContainerResourceList.MarshalJSON` has been removed
+- Function `ValidateOperationResponse.MarshalJSON` has been removed
+- Function `BackupEngineBaseResourceList.MarshalJSON` has been removed
+- Function `OperationResultInfoBaseResource.MarshalJSON` has been removed
+- Function `OperationStatusJobExtendedInfo.MarshalJSON` has been removed
+- Function `ProtectedItemResourceList.MarshalJSON` has been removed
+- Function `InstantItemRecoveryTarget.MarshalJSON` has been removed
+- Function `OperationStatusValidateOperationExtendedInfo.MarshalJSON` has been removed
+- Function `ExportJobsOperationResultInfo.MarshalJSON` has been removed
+- Function `PossibleTieringModeValues` has been removed
+- Function `ClientDiscoveryResponse.MarshalJSON` has been removed
+- Function `ProtectionIntentResourceList.MarshalJSON` has been removed
+- Struct `TieringPolicy` has been removed
+- Field `TieringPolicy` of struct `AzureIaaSVMProtectionPolicy` has been removed
+- Field `NewestRecoveryPointInArchive` of struct `AzureVMWorkloadProtectedItemExtendedInfo` has been removed
+- Field `OldestRecoveryPointInArchive` of struct `AzureVMWorkloadProtectedItemExtendedInfo` has been removed
+- Field `OldestRecoveryPointInVault` of struct `AzureVMWorkloadProtectedItemExtendedInfo` has been removed
+- Field `NewestRecoveryPointInArchive` of struct `AzureIaaSVMProtectedItemExtendedInfo` has been removed
+- Field `OldestRecoveryPointInArchive` of struct `AzureIaaSVMProtectedItemExtendedInfo` has been removed
+- Field `OldestRecoveryPointInVault` of struct `AzureIaaSVMProtectedItemExtendedInfo` has been removed
+- Field `TieringPolicy` of struct `SubProtectionPolicy` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

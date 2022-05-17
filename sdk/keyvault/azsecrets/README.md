@@ -11,9 +11,9 @@ Azure Key Vault helps solve the following problems:
 ### Install packages
 Install `azsecrets` and `azidentity`:
 ```
-go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 
-go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
 [azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
 
@@ -349,7 +349,7 @@ All I/O operations return a non-nil `error` when they fail. These errors include
 ```golang
 resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
 if err != nil {
-    var httpErr azcore.ResponseError
+    var httpErr *azcore.ResponseError
     if errors.As(err, &httpErr) {
         // investigate httpErr.RawResponse
     }

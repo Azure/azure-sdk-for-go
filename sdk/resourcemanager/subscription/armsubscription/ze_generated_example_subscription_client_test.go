@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
@@ -31,7 +29,7 @@ func ExampleClient_Cancel() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Cancel(ctx,
-		"<subscription-id>",
+		"83aa47df-e3e9-49ff-877b-94304bf3d3ad",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -52,9 +50,9 @@ func ExampleClient_Rename() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Rename(ctx,
-		"<subscription-id>",
+		"83aa47df-e3e9-49ff-877b-94304bf3d3ad",
 		armsubscription.Name{
-			SubscriptionName: to.Ptr("<subscription-name>"),
+			SubscriptionName: to.Ptr("Test Sub"),
 		},
 		nil)
 	if err != nil {
@@ -76,7 +74,7 @@ func ExampleClient_Enable() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Enable(ctx,
-		"<subscription-id>",
+		"7948bcee-488c-47ce-941c-38e20ede803d",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,10 +95,10 @@ func ExampleClient_BeginAcceptOwnership() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAcceptOwnership(ctx,
-		"<subscription-id>",
+		"291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
 		armsubscription.AcceptOwnershipRequest{
 			Properties: &armsubscription.AcceptOwnershipRequestProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("Test Subscription"),
 				Tags: map[string]*string{
 					"tag1": to.Ptr("Messi"),
 					"tag2": to.Ptr("Ronaldo"),
@@ -108,11 +106,11 @@ func ExampleClient_BeginAcceptOwnership() {
 				},
 			},
 		},
-		&armsubscription.ClientBeginAcceptOwnershipOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -130,7 +128,7 @@ func ExampleClient_AcceptOwnershipStatus() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.AcceptOwnershipStatus(ctx,
-		"<subscription-id>",
+		"291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

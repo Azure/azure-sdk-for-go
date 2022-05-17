@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
@@ -26,12 +24,12 @@ func ExampleCertificateClient_NewListByBatchAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBatchAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByBatchAccountPager("default-azurebatch-japaneast",
+		"sampleacct",
 		&armbatch.CertificateClientListByBatchAccountOptions{Maxresults: nil,
 			Select: nil,
 			Filter: nil,
@@ -40,7 +38,6 @@ func ExampleCertificateClient_NewListByBatchAccountPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,21 +53,21 @@ func ExampleCertificateClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<certificate-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
 		armbatch.CertificateCreateOrUpdateParameters{
 			Properties: &armbatch.CertificateCreateOrUpdateProperties{
 				Format:              to.Ptr(armbatch.CertificateFormatPfx),
-				Thumbprint:          to.Ptr("<thumbprint>"),
-				ThumbprintAlgorithm: to.Ptr("<thumbprint-algorithm>"),
-				Data:                to.Ptr("<data>"),
-				Password:            to.Ptr("<password>"),
+				Thumbprint:          to.Ptr("0a0e4f50d51beadeac1d35afc5116098e7902e6e"),
+				ThumbprintAlgorithm: to.Ptr("sha1"),
+				Data:                to.Ptr("MIIJsgIBAzCCCW4GCSqGSIb3DQE..."),
+				Password:            to.Ptr("<ExamplePassword>"),
 			},
 		},
 		&armbatch.CertificateClientCreateOptions{IfMatch: nil,
@@ -90,18 +87,18 @@ func ExampleCertificateClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<certificate-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
 		armbatch.CertificateCreateOrUpdateParameters{
 			Properties: &armbatch.CertificateCreateOrUpdateProperties{
-				Data:     to.Ptr("<data>"),
-				Password: to.Ptr("<password>"),
+				Data:     to.Ptr("MIIJsgIBAzCCCW4GCSqGSIb3DQE..."),
+				Password: to.Ptr("<ExamplePassword>"),
 			},
 		},
 		&armbatch.CertificateClientUpdateOptions{IfMatch: nil})
@@ -119,19 +116,19 @@ func ExampleCertificateClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<certificate-name>",
-		&armbatch.CertificateClientBeginDeleteOptions{ResumeToken: ""})
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -144,14 +141,14 @@ func ExampleCertificateClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<certificate-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -167,14 +164,14 @@ func ExampleCertificateClient_CancelDeletion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbatch.NewCertificateClient("<subscription-id>", cred, nil)
+	client, err := armbatch.NewCertificateClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CancelDeletion(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<certificate-name>",
+		"default-azurebatch-japaneast",
+		"sampleacct",
+		"sha1-0a0e4f50d51beadeac1d35afc5116098e7902e6e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

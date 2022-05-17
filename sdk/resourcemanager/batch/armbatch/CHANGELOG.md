@@ -1,5 +1,33 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*CertificateClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CertificateClientDeleteResponse], error)` to `(*runtime.Poller[CertificateClientDeleteResponse], error)`
+- Function `*PoolClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PoolClientDeleteResponse], error)` to `(*runtime.Poller[PoolClientDeleteResponse], error)`
+- Function `*AccountClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountClientCreateResponse], error)` to `(*runtime.Poller[AccountClientCreateResponse], error)`
+- Function `*PrivateEndpointConnectionClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionClientUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionClientUpdateResponse], error)`
+- Function `*AccountClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountClientDeleteResponse], error)` to `(*runtime.Poller[AccountClientDeleteResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ListCertificatesResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `AccountProperties.MarshalJSON` has been removed
+- Function `ListApplicationsResult.MarshalJSON` has been removed
+- Function `ListPrivateEndpointConnectionsResult.MarshalJSON` has been removed
+- Function `ListApplicationPackagesResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `ListPrivateLinkResourcesResult.MarshalJSON` has been removed
+- Function `DetectorListResult.MarshalJSON` has been removed
+- Function `ListPoolsResult.MarshalJSON` has been removed
+- Function `SupportedSKU.MarshalJSON` has been removed
+- Function `SupportedSKUsResult.MarshalJSON` has been removed
+- Function `Account.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointCollection.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

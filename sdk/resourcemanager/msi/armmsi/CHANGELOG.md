@@ -1,5 +1,14 @@
 # Release History
 
+## 0.6.0 (2022-05-17)
+### Breaking Changes
+
+- Function `AssociatedResourcesListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `UserAssignedIdentitiesListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

@@ -39,7 +39,7 @@ func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewUserAssignedIdentitiesClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Create or update an identity in the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // parameters - Parameters to create or update the identity
@@ -99,7 +100,7 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -114,6 +115,7 @@ func (client *UserAssignedIdentitiesClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Deletes the identity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // options - UserAssignedIdentitiesClientDeleteOptions contains the optional parameters for the UserAssignedIdentitiesClient.Delete
@@ -155,12 +157,13 @@ func (client *UserAssignedIdentitiesClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the identity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // options - UserAssignedIdentitiesClientGetOptions contains the optional parameters for the UserAssignedIdentitiesClient.Get
@@ -202,7 +205,7 @@ func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,12 +220,13 @@ func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *http.Respons
 
 // NewListAssociatedResourcesPager - Lists the associated resources for this identity.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // options - UserAssignedIdentitiesClientListAssociatedResourcesOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListAssociatedResources
 // method.
 func (client *UserAssignedIdentitiesClient) NewListAssociatedResourcesPager(resourceGroupName string, resourceName string, options *UserAssignedIdentitiesClientListAssociatedResourcesOptions) *runtime.Pager[UserAssignedIdentitiesClientListAssociatedResourcesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListAssociatedResourcesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UserAssignedIdentitiesClientListAssociatedResourcesResponse]{
 		More: func(page UserAssignedIdentitiesClientListAssociatedResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +290,7 @@ func (client *UserAssignedIdentitiesClient) listAssociatedResourcesCreateRequest
 	}
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,11 +305,12 @@ func (client *UserAssignedIdentitiesClient) listAssociatedResourcesHandleRespons
 
 // NewListByResourceGroupPager - Lists all the userAssignedIdentities available under the specified ResourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // options - UserAssignedIdentitiesClientListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListByResourceGroup
 // method.
 func (client *UserAssignedIdentitiesClient) NewListByResourceGroupPager(resourceGroupName string, options *UserAssignedIdentitiesClientListByResourceGroupOptions) *runtime.Pager[UserAssignedIdentitiesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UserAssignedIdentitiesClientListByResourceGroupResponse]{
 		More: func(page UserAssignedIdentitiesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -350,7 +355,7 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -365,10 +370,11 @@ func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - Lists all the userAssignedIdentities available under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // options - UserAssignedIdentitiesClientListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentitiesClient.ListBySubscription
 // method.
 func (client *UserAssignedIdentitiesClient) NewListBySubscriptionPager(options *UserAssignedIdentitiesClientListBySubscriptionOptions) *runtime.Pager[UserAssignedIdentitiesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UserAssignedIdentitiesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UserAssignedIdentitiesClientListBySubscriptionResponse]{
 		More: func(page UserAssignedIdentitiesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -409,7 +415,7 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -424,6 +430,7 @@ func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleResponse(res
 
 // Update - Update an identity in the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-30-preview
 // resourceGroupName - The name of the Resource Group to which the identity belongs.
 // resourceName - The name of the identity resource.
 // parameters - Parameters to update the identity
@@ -466,7 +473,7 @@ func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

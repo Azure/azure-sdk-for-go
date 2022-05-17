@@ -24,7 +24,7 @@ func ExampleManagementAssociationsClient_ListBySubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementAssociationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,20 +44,20 @@ func ExampleManagementAssociationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementAssociationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<management-association-name>",
+		"rg1",
+		"providerName",
+		"resourceType",
+		"resourceName",
+		"managementAssociation1",
 		armoperationsmanagement.ManagementAssociation{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armoperationsmanagement.ManagementAssociationProperties{
-				ApplicationID: to.Ptr("<application-id>"),
+				ApplicationID: to.Ptr("/subscriptions/sub1/resourcegroups/rg1/providers/Microsoft.Appliance/Appliances/appliance1"),
 			},
 		},
 		nil)
@@ -75,16 +75,16 @@ func ExampleManagementAssociationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementAssociationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<management-association-name>",
+		"rg1",
+		"providerName",
+		"resourceType",
+		"resourceName",
+		"managementAssociationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -98,16 +98,16 @@ func ExampleManagementAssociationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewManagementAssociationsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewManagementAssociationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<management-association-name>",
+		"rg1",
+		"providerName",
+		"resourceType",
+		"resourceName",
+		"managementAssociation1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

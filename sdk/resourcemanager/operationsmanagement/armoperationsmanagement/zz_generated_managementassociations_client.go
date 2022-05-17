@@ -39,7 +39,7 @@ func NewManagementAssociationsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewManagementAssociationsClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Creates or updates the ManagementAssociation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // providerName - Provider name for the parent resource.
 // resourceType - Resource type for the parent resource
@@ -114,7 +115,7 @@ func (client *ManagementAssociationsClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -129,6 +130,7 @@ func (client *ManagementAssociationsClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Deletes the ManagementAssociation in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // providerName - Provider name for the parent resource.
 // resourceType - Resource type for the parent resource
@@ -185,12 +187,13 @@ func (client *ManagementAssociationsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves the user ManagementAssociation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // resourceGroupName - The name of the resource group to get. The name is case insensitive.
 // providerName - Provider name for the parent resource.
 // resourceType - Resource type for the parent resource
@@ -247,7 +250,7 @@ func (client *ManagementAssociationsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -262,6 +265,7 @@ func (client *ManagementAssociationsClient) getHandleResponse(resp *http.Respons
 
 // ListBySubscription - Retrieves the ManagementAssociations list.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-11-01-preview
 // options - ManagementAssociationsClientListBySubscriptionOptions contains the optional parameters for the ManagementAssociationsClient.ListBySubscription
 // method.
 func (client *ManagementAssociationsClient) ListBySubscription(ctx context.Context, options *ManagementAssociationsClientListBySubscriptionOptions) (ManagementAssociationsClientListBySubscriptionResponse, error) {
@@ -293,7 +297,7 @@ func (client *ManagementAssociationsClient) listBySubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -24,15 +24,15 @@ func ExampleDashboardsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<dashboard-name>",
+		"testRG",
+		"testDashboard",
 		armportal.Dashboard{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armportal.DashboardProperties{
 				Lenses: []*armportal.DashboardLens{
 					{
@@ -88,13 +88,13 @@ func ExampleDashboardsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<dashboard-name>",
+		"testRG",
+		"testDashboard",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -108,13 +108,13 @@ func ExampleDashboardsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dashboard-name>",
+		"testRG",
+		"testDashboard",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -130,13 +130,13 @@ func ExampleDashboardsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<dashboard-name>",
+		"testRG",
+		"testDashboard",
 		armportal.PatchableDashboard{
 			Tags: map[string]*string{
 				"aKey":       to.Ptr("bValue"),
@@ -158,17 +158,16 @@ func ExampleDashboardsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -184,7 +183,7 @@ func ExampleDashboardsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armportal.NewDashboardsClient("<subscription-id>", cred, nil)
+	client, err := armportal.NewDashboardsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -193,7 +192,6 @@ func ExampleDashboardsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

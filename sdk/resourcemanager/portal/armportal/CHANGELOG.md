@@ -1,5 +1,15 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `ViolationsList.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `DashboardListResult.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `ConfigurationList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

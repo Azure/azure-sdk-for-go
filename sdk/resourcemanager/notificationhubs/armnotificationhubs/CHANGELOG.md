@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientDeleteResponse], error)` to `(*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `NotificationHubListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `SharedAccessAuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `NamespaceListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

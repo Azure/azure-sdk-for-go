@@ -1,5 +1,18 @@
 # Release History
 
+## 0.6.0 (2022-05-17)
+### Breaking Changes
+
+- Function `AccessReviewDecisionListResult.MarshalJSON` has been removed
+- Function `AccessReviewHistoryDefinitionListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `AccessReviewContactedReviewerListResult.MarshalJSON` has been removed
+- Function `AccessReviewHistoryDefinitionInstanceListResult.MarshalJSON` has been removed
+- Function `AccessReviewContactedReviewerProperties.MarshalJSON` has been removed
+- Function `AccessReviewInstanceListResult.MarshalJSON` has been removed
+- Function `AccessReviewScheduleDefinitionListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

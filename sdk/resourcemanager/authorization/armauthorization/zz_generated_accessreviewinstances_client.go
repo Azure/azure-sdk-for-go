@@ -38,7 +38,7 @@ func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAccessReviewInstancesClient(subscriptionID string, credential azcore.Tok
 
 // Create - Update access review instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // properties - Access review instance properties.
@@ -98,7 +99,7 @@ func (client *AccessReviewInstancesClient) createCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
@@ -113,6 +114,7 @@ func (client *AccessReviewInstancesClient) createHandleResponse(resp *http.Respo
 
 // GetByID - Get access review instances
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstancesClientGetByIDOptions contains the optional parameters for the AccessReviewInstancesClient.GetByID
@@ -154,7 +156,7 @@ func (client *AccessReviewInstancesClient) getByIDCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,11 +171,12 @@ func (client *AccessReviewInstancesClient) getByIDHandleResponse(resp *http.Resp
 
 // NewListPager - Get access review instances
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // options - AccessReviewInstancesClientListOptions contains the optional parameters for the AccessReviewInstancesClient.List
 // method.
 func (client *AccessReviewInstancesClient) NewListPager(scheduleDefinitionID string, options *AccessReviewInstancesClientListOptions) *runtime.Pager[AccessReviewInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstancesClientListResponse]{
 		More: func(page AccessReviewInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -223,7 +226,7 @@ func (client *AccessReviewInstancesClient) listCreateRequest(ctx context.Context
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

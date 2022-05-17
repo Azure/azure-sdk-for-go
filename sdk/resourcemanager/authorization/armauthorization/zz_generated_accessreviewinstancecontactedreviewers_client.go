@@ -38,7 +38,7 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 
 // NewListPager - Get access review instance contacted reviewers
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-16-preview
 // scheduleDefinitionID - The id of the access review schedule definition.
 // id - The id of the access review instance.
 // options - AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.List
 // method.
 func (client *AccessReviewInstanceContactedReviewersClient) NewListPager(scheduleDefinitionID string, id string, options *AccessReviewInstanceContactedReviewersClientListOptions) *runtime.Pager[AccessReviewInstanceContactedReviewersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccessReviewInstanceContactedReviewersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccessReviewInstanceContactedReviewersClientListResponse]{
 		More: func(page AccessReviewInstanceContactedReviewersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -110,7 +111,7 @@ func (client *AccessReviewInstanceContactedReviewersClient) listCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

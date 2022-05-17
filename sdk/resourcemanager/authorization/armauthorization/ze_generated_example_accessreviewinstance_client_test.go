@@ -23,13 +23,13 @@ func ExampleAccessReviewInstanceClient_Stop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Stop(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
+		"d9b9e056-7004-470b-bf21-1635e98487da",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,13 +43,13 @@ func ExampleAccessReviewInstanceClient_ResetDecisions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ResetDecisions(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
+		"d9b9e056-7004-470b-bf21-1635e98487da",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -63,13 +63,13 @@ func ExampleAccessReviewInstanceClient_ApplyDecisions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ApplyDecisions(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
+		"d9b9e056-7004-470b-bf21-1635e98487da",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -83,13 +83,13 @@ func ExampleAccessReviewInstanceClient_SendReminders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewInstanceClient("<subscription-id>", cred, nil)
+	client, err := armauthorization.NewAccessReviewInstanceClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SendReminders(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"fa73e90b-5bf1-45fd-a182-35ce5fc0674d",
+		"d9b9e056-7004-470b-bf21-1635e98487da",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -108,8 +108,8 @@ func ExampleAccessReviewInstanceClient_AcceptRecommendations() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.AcceptRecommendations(ctx,
-		"<schedule-definition-id>",
-		"<id>",
+		"488a6d0e-0a63-4946-86e3-1f5bbc934661",
+		"d9b9e056-7004-470b-bf21-1635e98487da",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

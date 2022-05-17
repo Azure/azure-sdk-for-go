@@ -1,5 +1,42 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServersClientDeleteResponse], error)` to `(*runtime.Poller[ServersClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientCreateResponse], error)` to `(*runtime.Poller[DatabasesClientCreateResponse], error)`
+- Function `*ServersClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ServersClientStartResponse], error)` to `(*runtime.Poller[ServersClientStartResponse], error)`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServersClientUpdateResponse], error)` to `(*runtime.Poller[ServersClientUpdateResponse], error)`
+- Function `*ConfigurationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationsClientUpdateResponse], error)` to `(*runtime.Poller[ConfigurationsClientUpdateResponse], error)`
+- Function `*FirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `*FirewallRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientDeleteResponse], error)` to `(*runtime.Poller[FirewallRulesClientDeleteResponse], error)`
+- Function `*ServersClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ServersClientStopResponse], error)` to `(*runtime.Poller[ServersClientStopResponse], error)`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientDeleteResponse], error)` to `(*runtime.Poller[DatabasesClientDeleteResponse], error)`
+- Function `*ConfigurationsClient.BeginPut` return value(s) have been changed from `(*armruntime.Poller[ConfigurationsClientPutResponse], error)` to `(*runtime.Poller[ConfigurationsClientPutResponse], error)`
+- Function `*ServersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ServersClientCreateResponse], error)` to `(*runtime.Poller[ServersClientCreateResponse], error)`
+- Function `*ServersClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ServersClientRestartResponse], error)` to `(*runtime.Poller[ServersClientRestartResponse], error)`
+- Function `FirewallRuleListResult.MarshalJSON` has been removed
+- Function `FlexibleServerEditionCapability.MarshalJSON` has been removed
+- Function `HyperscaleNodeEditionCapability.MarshalJSON` has been removed
+- Function `CapabilityProperties.MarshalJSON` has been removed
+- Function `VirtualNetworkSubnetUsageResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `StorageEditionCapability.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `CapabilitiesListResult.MarshalJSON` has been removed
+- Function `DatabaseListResult.MarshalJSON` has been removed
+- Function `ServerListResult.MarshalJSON` has been removed
+- Function `ServerVersionCapability.MarshalJSON` has been removed
+- Function `ConfigurationListResult.MarshalJSON` has been removed
+
+### Features Added
+
+- New field `SupportedHAMode` in struct `CapabilityProperties`
+- New field `Location` in struct `VirtualNetworkSubnetUsageResult`
+- New field `SubscriptionID` in struct `VirtualNetworkSubnetUsageResult`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

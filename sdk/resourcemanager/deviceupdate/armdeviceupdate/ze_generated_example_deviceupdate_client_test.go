@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceupdate/armdeviceupdate"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2020-03-01-preview/examples/CheckNameAvailability_AlreadyExists.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/CheckNameAvailability_AlreadyExists.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdeviceupdate.NewClient("<subscription-id>", cred, nil)
+	client, err := armdeviceupdate.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armdeviceupdate.CheckNameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("contoso"),
+			Type: to.Ptr("Microsoft.DeviceUpdate/accounts"),
 		},
 		nil)
 	if err != nil {

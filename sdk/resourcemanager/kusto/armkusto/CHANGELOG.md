@@ -1,5 +1,62 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ClustersClient.BeginDiagnoseVirtualNetwork` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDiagnoseVirtualNetworkResponse], error)` to `(*runtime.Poller[ClustersClientDiagnoseVirtualNetworkResponse], error)`
+- Function `*ScriptsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ScriptsClientUpdateResponse], error)` to `(*runtime.Poller[ScriptsClientUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*ClusterPrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClusterPrincipalAssignmentsClientDeleteResponse], error)` to `(*runtime.Poller[ClusterPrincipalAssignmentsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*ScriptsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ScriptsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ScriptsClientCreateOrUpdateResponse], error)`
+- Function `*AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*ClustersClient.BeginRemoveLanguageExtensions` return value(s) have been changed from `(*armruntime.Poller[ClustersClientRemoveLanguageExtensionsResponse], error)` to `(*runtime.Poller[ClustersClientRemoveLanguageExtensionsResponse], error)`
+- Function `*ManagedPrivateEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ManagedPrivateEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[ManagedPrivateEndpointsClientDeleteResponse], error)`
+- Function `*DatabasesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientUpdateResponse], error)` to `(*runtime.Poller[DatabasesClientUpdateResponse], error)`
+- Function `*DataConnectionsClient.BeginDataConnectionValidation` return value(s) have been changed from `(*armruntime.Poller[DataConnectionsClientDataConnectionValidationResponse], error)` to `(*runtime.Poller[DataConnectionsClientDataConnectionValidationResponse], error)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*DataConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DataConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DataConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ManagedPrivateEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ManagedPrivateEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[ManagedPrivateEndpointsClientUpdateResponse], error)`
+- Function `*DatabasesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientDeleteResponse], error)` to `(*runtime.Poller[DatabasesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginDetachFollowerDatabases` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDetachFollowerDatabasesResponse], error)` to `(*runtime.Poller[ClustersClientDetachFollowerDatabasesResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*DataConnectionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DataConnectionsClientUpdateResponse], error)` to `(*runtime.Poller[DataConnectionsClientUpdateResponse], error)`
+- Function `*DatabasePrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DatabasePrincipalAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `*DatabasePrincipalAssignmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DatabasePrincipalAssignmentsClientDeleteResponse], error)` to `(*runtime.Poller[DatabasePrincipalAssignmentsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ClustersClientStartResponse], error)` to `(*runtime.Poller[ClustersClientStartResponse], error)`
+- Function `*ClustersClient.BeginAddLanguageExtensions` return value(s) have been changed from `(*armruntime.Poller[ClustersClientAddLanguageExtensionsResponse], error)` to `(*runtime.Poller[ClustersClientAddLanguageExtensionsResponse], error)`
+- Function `*ManagedPrivateEndpointsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ManagedPrivateEndpointsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ManagedPrivateEndpointsClientCreateOrUpdateResponse], error)`
+- Function `*ScriptsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ScriptsClientDeleteResponse], error)` to `(*runtime.Poller[ScriptsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ClustersClientStopResponse], error)` to `(*runtime.Poller[ClustersClientStopResponse], error)`
+- Function `*DatabasesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DatabasesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DatabasesClientCreateOrUpdateResponse], error)`
+- Function `*AttachedDatabaseConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AttachedDatabaseConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[AttachedDatabaseConfigurationsClientDeleteResponse], error)`
+- Function `*ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `*DataConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DataConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[DataConnectionsClientDeleteResponse], error)`
+- Function `DatabasePrincipalAssignmentListResult.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `ListResourceSKUsResult.MarshalJSON` has been removed
+- Function `SKUDescriptionList.MarshalJSON` has been removed
+- Function `ClusterPrincipalAssignmentListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ManagedPrivateEndpointListResult.MarshalJSON` has been removed
+- Function `OperationResult.MarshalJSON` has been removed
+- Function `DataConnectionValidationListResult.MarshalJSON` has been removed
+- Function `DiagnoseVirtualNetworkResult.MarshalJSON` has been removed
+- Function `DataConnectionListResult.MarshalJSON` has been removed
+- Function `ScriptListResult.MarshalJSON` has been removed
+- Function `AttachedDatabaseConfigurationListResult.MarshalJSON` has been removed
+- Function `OutboundNetworkDependenciesEndpointListResult.MarshalJSON` has been removed
+- Function `DatabaseListResult.MarshalJSON` has been removed
+- Function `SKUDescription.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `DatabasePrincipalListResult.MarshalJSON` has been removed
+- Function `FollowerDatabaseListResult.MarshalJSON` has been removed
+- Function `SKULocationInfoItem.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

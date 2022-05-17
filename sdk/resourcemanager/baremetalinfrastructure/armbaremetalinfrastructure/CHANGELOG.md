@@ -1,5 +1,18 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `OperationList.MarshalJSON` has been removed
+- Function `StorageProfile.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `TrackedResource.MarshalJSON` has been removed
+- Function `NetworkProfile.MarshalJSON` has been removed
+- Function `AzureBareMetalInstance.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `AzureBareMetalInstancesListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

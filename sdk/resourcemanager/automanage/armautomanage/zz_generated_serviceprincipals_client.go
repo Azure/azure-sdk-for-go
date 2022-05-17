@@ -38,7 +38,7 @@ func NewServicePrincipalsClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServicePrincipalsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get the Automanage AAD first party Application Service Principal details for the subscription id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // options - ServicePrincipalsClientGetOptions contains the optional parameters for the ServicePrincipalsClient.Get method.
 func (client *ServicePrincipalsClient) Get(ctx context.Context, options *ServicePrincipalsClientGetOptions) (ServicePrincipalsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -86,7 +87,7 @@ func (client *ServicePrincipalsClient) getCreateRequest(ctx context.Context, opt
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -102,10 +103,11 @@ func (client *ServicePrincipalsClient) getHandleResponse(resp *http.Response) (S
 // NewListBySubscriptionPager - Get the Automanage AAD first party Application Service Principal details for the subscription
 // id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // options - ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
 // method.
 func (client *ServicePrincipalsClient) NewListBySubscriptionPager(options *ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServicePrincipalsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServicePrincipalsClientListBySubscriptionResponse]{
 		More: func(page ServicePrincipalsClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -140,7 +142,7 @@ func (client *ServicePrincipalsClient) listBySubscriptionCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

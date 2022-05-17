@@ -1,5 +1,48 @@
 # Release History
 
+## 0.5.0 (2022-05-17)
+### Breaking Changes
+
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `BestPracticeList.MarshalJSON` has been removed
+- Function `ServicePrincipalListResult.MarshalJSON` has been removed
+- Function `ConfigurationProfileAssignmentList.MarshalJSON` has been removed
+- Function `ConfigurationProfileList.MarshalJSON` has been removed
+- Function `ReportList.MarshalJSON` has been removed
+
+### Features Added
+
+- New function `*ConfigurationProfileAssignmentsClient.NewListByVirtualMachinesPager(string, string, *ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse]`
+- New function `*ConfigurationProfileAssignmentsClient.NewListByMachineNamePager(string, string, *ConfigurationProfileAssignmentsClientListByMachineNameOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByMachineNameResponse]`
+- New function `*ConfigurationProfileAssignmentsClient.NewListByClusterNamePager(string, string, *ConfigurationProfileAssignmentsClientListByClusterNameOptions) *runtime.Pager[ConfigurationProfileAssignmentsClientListByClusterNameResponse]`
+- New struct `ConfigurationProfileAssignmentsClientListByClusterNameOptions`
+- New struct `ConfigurationProfileAssignmentsClientListByClusterNameResponse`
+- New struct `ConfigurationProfileAssignmentsClientListByMachineNameOptions`
+- New struct `ConfigurationProfileAssignmentsClientListByMachineNameResponse`
+- New struct `ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions`
+- New struct `ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse`
+- New struct `ConfigurationProfileHCIAssignmentsClientCreateOrUpdateOptions`
+- New struct `ConfigurationProfileHCIAssignmentsClientCreateOrUpdateResponse`
+- New struct `ConfigurationProfileHCIAssignmentsClientDeleteOptions`
+- New struct `ConfigurationProfileHCIAssignmentsClientDeleteResponse`
+- New struct `ConfigurationProfileHCIAssignmentsClientGetOptions`
+- New struct `ConfigurationProfileHCIAssignmentsClientGetResponse`
+- New struct `ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions`
+- New struct `ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateResponse`
+- New struct `ConfigurationProfileHCRPAssignmentsClientDeleteOptions`
+- New struct `ConfigurationProfileHCRPAssignmentsClientDeleteResponse`
+- New struct `ConfigurationProfileHCRPAssignmentsClientGetOptions`
+- New struct `ConfigurationProfileHCRPAssignmentsClientGetResponse`
+- New struct `HCIReportsClientGetOptions`
+- New struct `HCIReportsClientGetResponse`
+- New struct `HCIReportsClientListByConfigurationProfileAssignmentsOptions`
+- New struct `HCIReportsClientListByConfigurationProfileAssignmentsResponse`
+- New struct `HCRPReportsClientGetOptions`
+- New struct `HCRPReportsClientGetResponse`
+- New struct `HCRPReportsClientListByConfigurationProfileAssignmentsOptions`
+- New struct `HCRPReportsClientListByConfigurationProfileAssignmentsResponse`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

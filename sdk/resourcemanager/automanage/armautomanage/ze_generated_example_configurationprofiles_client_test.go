@@ -24,15 +24,15 @@ func ExampleConfigurationProfilesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<configuration-profile-name>",
-		"<resource-group-name>",
+		"customConfigurationProfile",
+		"myResourceGroupName",
 		armautomanage.ConfigurationProfile{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Tags: map[string]*string{
 				"Organization": to.Ptr("Administration"),
 			},
@@ -90,13 +90,13 @@ func ExampleConfigurationProfilesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<configuration-profile-name>",
-		"<resource-group-name>",
+		"customConfigurationProfile",
+		"myResourceGroupName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -112,13 +112,13 @@ func ExampleConfigurationProfilesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<configuration-profile-name>",
+		"rg",
+		"customConfigurationProfile",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -132,13 +132,13 @@ func ExampleConfigurationProfilesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<configuration-profile-name>",
-		"<resource-group-name>",
+		"customConfigurationProfile",
+		"myResourceGroupName",
 		armautomanage.ConfigurationProfileUpdate{
 			Tags: map[string]*string{
 				"Organization": to.Ptr("Administration"),
@@ -172,17 +172,16 @@ func ExampleConfigurationProfilesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroupName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -198,7 +197,7 @@ func ExampleConfigurationProfilesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfilesClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfilesClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -207,7 +206,6 @@ func ExampleConfigurationProfilesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

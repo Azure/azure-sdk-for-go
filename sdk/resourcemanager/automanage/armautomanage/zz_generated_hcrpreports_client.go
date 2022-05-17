@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// ReportsClient contains the methods for the Reports group.
-// Don't use this type directly, use NewReportsClient() instead.
-type ReportsClient struct {
+// HCRPReportsClient contains the methods for the HCRPReports group.
+// Don't use this type directly, use NewHCRPReportsClient() instead.
+type HCRPReportsClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewReportsClient creates a new instance of ReportsClient with the specified values.
+// NewHCRPReportsClient creates a new instance of HCRPReportsClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
+func NewHCRPReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HCRPReportsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if err != nil {
 		return nil, err
 	}
-	client := &ReportsClient{
+	client := &HCRPReportsClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -58,32 +58,40 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the Arc machine.
 // configurationProfileAssignmentName - The configuration profile assignment name.
 // reportName - The report name.
-// vmName - The name of the virtual machine.
-// options - ReportsClientGetOptions contains the optional parameters for the ReportsClient.Get method.
-func (client *ReportsClient) Get(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, reportName string, vmName string, options *ReportsClientGetOptions) (ReportsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, configurationProfileAssignmentName, reportName, vmName, options)
+// options - HCRPReportsClientGetOptions contains the optional parameters for the HCRPReportsClient.Get method.
+func (client *HCRPReportsClient) Get(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, reportName string, options *HCRPReportsClientGetOptions) (HCRPReportsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, reportName, options)
 	if err != nil {
-		return ReportsClientGetResponse{}, err
+		return HCRPReportsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ReportsClientGetResponse{}, err
+		return HCRPReportsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ReportsClientGetResponse{}, runtime.NewResponseError(resp)
+		return HCRPReportsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, reportName string, vmName string, options *ReportsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports/{reportName}"
+func (client *HCRPReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, reportName string, options *HCRPReportsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports/{reportName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if machineName == "" {
+		return nil, errors.New("parameter machineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
 	if configurationProfileAssignmentName == "" {
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
@@ -92,14 +100,6 @@ func (client *ReportsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter reportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{reportName}", url.PathEscape(reportName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -112,10 +112,10 @@ func (client *ReportsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReportsClient) getHandleResponse(resp *http.Response) (ReportsClientGetResponse, error) {
-	result := ReportsClientGetResponse{}
+func (client *HCRPReportsClient) getHandleResponse(resp *http.Response) (HCRPReportsClientGetResponse, error) {
+	result := HCRPReportsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Report); err != nil {
-		return ReportsClientGetResponse{}, err
+		return HCRPReportsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -124,26 +124,26 @@ func (client *ReportsClient) getHandleResponse(resp *http.Response) (ReportsClie
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
+// machineName - The name of the Arc machine.
 // configurationProfileAssignmentName - The configuration profile assignment name.
-// vmName - The name of the virtual machine.
-// options - ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
+// options - HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.ListByConfigurationProfileAssignments
 // method.
-func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByConfigurationProfileAssignmentsResponse]{
-		More: func(page ReportsClientListByConfigurationProfileAssignmentsResponse) bool {
+func (client *HCRPReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, machineName string, configurationProfileAssignmentName string, options *HCRPReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[HCRPReportsClientListByConfigurationProfileAssignmentsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[HCRPReportsClientListByConfigurationProfileAssignmentsResponse]{
+		More: func(page HCRPReportsClientListByConfigurationProfileAssignmentsResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *ReportsClientListByConfigurationProfileAssignmentsResponse) (ReportsClientListByConfigurationProfileAssignmentsResponse, error) {
-			req, err := client.listByConfigurationProfileAssignmentsCreateRequest(ctx, resourceGroupName, configurationProfileAssignmentName, vmName, options)
+		Fetcher: func(ctx context.Context, page *HCRPReportsClientListByConfigurationProfileAssignmentsResponse) (HCRPReportsClientListByConfigurationProfileAssignmentsResponse, error) {
+			req, err := client.listByConfigurationProfileAssignmentsCreateRequest(ctx, resourceGroupName, machineName, configurationProfileAssignmentName, options)
 			if err != nil {
-				return ReportsClientListByConfigurationProfileAssignmentsResponse{}, err
+				return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return ReportsClientListByConfigurationProfileAssignmentsResponse{}, err
+				return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ReportsClientListByConfigurationProfileAssignmentsResponse{}, runtime.NewResponseError(resp)
+				return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listByConfigurationProfileAssignmentsHandleResponse(resp)
 		},
@@ -151,8 +151,8 @@ func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resou
 }
 
 // listByConfigurationProfileAssignmentsCreateRequest creates the ListByConfigurationProfileAssignments request.
-func (client *ReportsClient) listByConfigurationProfileAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports"
+func (client *HCRPReportsClient) listByConfigurationProfileAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, machineName string, configurationProfileAssignmentName string, options *HCRPReportsClientListByConfigurationProfileAssignmentsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.Automanage/configurationProfileAssignments/{configurationProfileAssignmentName}/reports"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -161,14 +161,14 @@ func (client *ReportsClient) listByConfigurationProfileAssignmentsCreateRequest(
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if machineName == "" {
+		return nil, errors.New("parameter machineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
 	if configurationProfileAssignmentName == "" {
 		return nil, errors.New("parameter configurationProfileAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationProfileAssignmentName}", url.PathEscape(configurationProfileAssignmentName))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -181,10 +181,10 @@ func (client *ReportsClient) listByConfigurationProfileAssignmentsCreateRequest(
 }
 
 // listByConfigurationProfileAssignmentsHandleResponse handles the ListByConfigurationProfileAssignments response.
-func (client *ReportsClient) listByConfigurationProfileAssignmentsHandleResponse(resp *http.Response) (ReportsClientListByConfigurationProfileAssignmentsResponse, error) {
-	result := ReportsClientListByConfigurationProfileAssignmentsResponse{}
+func (client *HCRPReportsClient) listByConfigurationProfileAssignmentsHandleResponse(resp *http.Response) (HCRPReportsClientListByConfigurationProfileAssignmentsResponse, error) {
+	result := HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReportList); err != nil {
-		return ReportsClientListByConfigurationProfileAssignmentsResponse{}, err
+		return HCRPReportsClientListByConfigurationProfileAssignmentsResponse{}, err
 	}
 	return result, nil
 }

@@ -1,5 +1,22 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ServersClient.BeginSuspend` return value(s) have been changed from `(*armruntime.Poller[ServersClientSuspendResponse], error)` to `(*runtime.Poller[ServersClientSuspendResponse], error)`
+- Function `*ServersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ServersClientCreateResponse], error)` to `(*runtime.Poller[ServersClientCreateResponse], error)`
+- Function `*ServersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServersClientDeleteResponse], error)` to `(*runtime.Poller[ServersClientDeleteResponse], error)`
+- Function `*ServersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServersClientUpdateResponse], error)` to `(*runtime.Poller[ServersClientUpdateResponse], error)`
+- Function `*ServersClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[ServersClientResumeResponse], error)` to `(*runtime.Poller[ServersClientResumeResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `OperationPropertiesServiceSpecification.MarshalJSON` has been removed
+- Function `SKUEnumerationForExistingResourceResult.MarshalJSON` has been removed
+- Function `SKUEnumerationForNewResourceResult.MarshalJSON` has been removed
+- Function `Servers.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `MetricSpecifications.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

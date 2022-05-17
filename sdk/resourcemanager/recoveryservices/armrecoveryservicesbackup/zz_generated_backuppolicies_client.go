@@ -38,7 +38,7 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 // NewListPager - Lists of backup policies associated with Recovery Services Vault. API provides pagination parameters to
 // fetch scoped results.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
 func (client *BackupPoliciesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BackupPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -108,12 +109,12 @@ func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, vault
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

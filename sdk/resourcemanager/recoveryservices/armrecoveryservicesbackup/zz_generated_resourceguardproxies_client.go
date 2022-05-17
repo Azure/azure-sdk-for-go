@@ -38,7 +38,7 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewResourceGuardProxiesClient(subscriptionID string, credential azcore.Toke
 
 // NewGetPager - List the ResourceGuardProxies under vault
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // vaultName - The name of the recovery services vault.
 // resourceGroupName - The name of the resource group where the recovery services vault is present.
 // options - ResourceGuardProxiesClientGetOptions contains the optional parameters for the ResourceGuardProxiesClient.Get
 // method.
 func (client *ResourceGuardProxiesClient) NewGetPager(vaultName string, resourceGroupName string, options *ResourceGuardProxiesClientGetOptions) *runtime.Pager[ResourceGuardProxiesClientGetResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceGuardProxiesClientGetResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceGuardProxiesClientGetResponse]{
 		More: func(page ResourceGuardProxiesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -108,9 +109,9 @@ func (client *ResourceGuardProxiesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

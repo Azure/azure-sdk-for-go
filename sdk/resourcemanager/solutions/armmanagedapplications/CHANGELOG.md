@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*JitRequestsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[JitRequestsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[JitRequestsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginRefreshPermissions` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientRefreshPermissionsResponse], error)` to `(*runtime.Poller[ApplicationsClientRefreshPermissionsResponse], error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationDefinitionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationDefinitionsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationDefinitionsClientDeleteResponse], error)`
+- Function `JitRequestDefinitionListResult.MarshalJSON` has been removed
+- Function `ApplicationDefinitionListResult.MarshalJSON` has been removed
+- Function `ApplicationListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

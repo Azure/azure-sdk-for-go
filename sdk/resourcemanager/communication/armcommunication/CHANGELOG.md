@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0 (2022-05-17)
+### Breaking Changes
+
+- Function `*ServiceClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceClientDeleteResponse], error)` to `(*runtime.Poller[ServiceClientDeleteResponse], error)`
+- Function `*ServiceClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceClientCreateOrUpdateResponse], error)`
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `ServiceResourceList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

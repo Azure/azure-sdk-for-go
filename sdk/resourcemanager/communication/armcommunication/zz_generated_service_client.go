@@ -38,7 +38,7 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CheckNameAvailability - Checks that the CommunicationService name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // options - ServiceClientCheckNameAvailabilityOptions contains the optional parameters for the ServiceClient.CheckNameAvailability
 // method.
 func (client *ServiceClient) CheckNameAvailability(ctx context.Context, options *ServiceClientCheckNameAvailabilityOptions) (ServiceClientCheckNameAvailabilityResponse, error) {
@@ -87,7 +88,7 @@ func (client *ServiceClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.NameAvailabilityParameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.NameAvailabilityParameters)
 	}
@@ -105,26 +106,28 @@ func (client *ServiceClient) checkNameAvailabilityHandleResponse(resp *http.Resp
 
 // BeginCreateOrUpdate - Create a new CommunicationService or update an existing CommunicationService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceClient.BeginCreateOrUpdate
 // method.
-func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ServiceClientCreateOrUpdateResponse], error) {
+func (client *ServiceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServiceClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, communicationServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ServiceClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServiceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create a new CommunicationService or update an existing CommunicationService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 func (client *ServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, communicationServiceName, options)
 	if err != nil {
@@ -162,7 +165,7 @@ func (client *ServiceClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
@@ -171,25 +174,27 @@ func (client *ServiceClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // BeginDelete - Operation to delete a CommunicationService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
-func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginDeleteOptions) (*armruntime.Poller[ServiceClientDeleteResponse], error) {
+func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginDeleteOptions) (*runtime.Poller[ServiceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, communicationServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServiceClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ServiceClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Operation to delete a CommunicationService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 func (client *ServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, communicationServiceName string, options *ServiceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, communicationServiceName, options)
 	if err != nil {
@@ -227,12 +232,13 @@ func (client *ServiceClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the CommunicationService and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
@@ -273,7 +279,7 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -288,6 +294,7 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 
 // LinkNotificationHub - Links an Azure Notification Hub to this communication service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientLinkNotificationHubOptions contains the optional parameters for the ServiceClient.LinkNotificationHub
@@ -329,7 +336,7 @@ func (client *ServiceClient) linkNotificationHubCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.LinkNotificationHubParameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.LinkNotificationHubParameters)
 	}
@@ -347,11 +354,12 @@ func (client *ServiceClient) linkNotificationHubHandleResponse(resp *http.Respon
 
 // NewListByResourceGroupPager - Handles requests to list all resources in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServiceClientListByResourceGroupOptions contains the optional parameters for the ServiceClient.ListByResourceGroup
 // method.
 func (client *ServiceClient) NewListByResourceGroupPager(resourceGroupName string, options *ServiceClientListByResourceGroupOptions) *runtime.Pager[ServiceClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceClientListByResourceGroupResponse]{
 		More: func(page ServiceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -396,7 +404,7 @@ func (client *ServiceClient) listByResourceGroupCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -411,10 +419,11 @@ func (client *ServiceClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionPager - Handles requests to list all resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // options - ServiceClientListBySubscriptionOptions contains the optional parameters for the ServiceClient.ListBySubscription
 // method.
 func (client *ServiceClient) NewListBySubscriptionPager(options *ServiceClientListBySubscriptionOptions) *runtime.Pager[ServiceClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceClientListBySubscriptionResponse]{
 		More: func(page ServiceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -455,7 +464,7 @@ func (client *ServiceClient) listBySubscriptionCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -470,6 +479,7 @@ func (client *ServiceClient) listBySubscriptionHandleResponse(resp *http.Respons
 
 // ListKeys - Get the access keys of the CommunicationService resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientListKeysOptions contains the optional parameters for the ServiceClient.ListKeys method.
@@ -510,7 +520,7 @@ func (client *ServiceClient) listKeysCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -526,6 +536,7 @@ func (client *ServiceClient) listKeysHandleResponse(resp *http.Response) (Servic
 // RegenerateKey - Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
 // time.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // parameters - Parameter that describes the Regenerate Key Operation.
@@ -567,7 +578,7 @@ func (client *ServiceClient) regenerateKeyCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -582,6 +593,7 @@ func (client *ServiceClient) regenerateKeyHandleResponse(resp *http.Response) (S
 
 // Update - Operation to update an existing CommunicationService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-20
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // communicationServiceName - The name of the CommunicationService resource.
 // options - ServiceClientUpdateOptions contains the optional parameters for the ServiceClient.Update method.
@@ -622,7 +634,7 @@ func (client *ServiceClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
